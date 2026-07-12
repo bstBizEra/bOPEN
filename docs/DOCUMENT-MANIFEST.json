@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 208,
+  "count": 209,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -524,8 +524,8 @@
       "path": "docs/08-engineering/branching.md",
       "title": "Branching",
       "status": "",
-      "sha256": "99bed73bfa0c2b2e0c83edf5dcf42ba14d37c2433ccfc3cc21ee3f741ef9ef00",
-      "bytes": 190
+      "sha256": "a3c2857cb8131734337883f78e57034faf9b8c944c4706d89b10c57f563e2cbf",
+      "bytes": 618
     },
     {
       "path": "docs/08-engineering/ci-cd.md",
@@ -552,8 +552,8 @@
       "path": "docs/08-engineering/local-development.md",
       "title": "Local Development",
       "status": "",
-      "sha256": "8b3ad5bfae0eb7c7e46e197a20487a4fcb5303244afaf4e80970c3f7e2dbf24b",
-      "bytes": 201
+      "sha256": "27e2c033ea43293087a01b8ed0fdeed28de8517b4a468732a3102171c005ced8",
+      "bytes": 1122
     },
     {
       "path": "docs/08-engineering/migration-policy.md",
@@ -580,8 +580,8 @@
       "path": "docs/08-engineering/repository-model.md",
       "title": "Repository Model",
       "status": "",
-      "sha256": "ce5319421a418fbe041d02f859397989be18562f8f29c05b95ade91fafff6238",
-      "bytes": 195
+      "sha256": "140de832d239b7c174cb84f4a932766054459af7b8870b168b699911fd3a7a70",
+      "bytes": 2005
     },
     {
       "path": "docs/08-engineering/testing-strategy.md",
@@ -839,15 +839,15 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "7c097b6c843bc73cea4b3ff126826c2ceb31ec3e28beaad9c4a424845e29d4f4",
-      "bytes": 385
+      "sha256": "9c48d0f646f39abf958d1c81ba9bfeea1ed5f80789996f6179276f2749edbbe1",
+      "bytes": 877
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "001502f14b439c0c012f6106321f3e0544c3d3a46ff3af4d47c85cde206681c3",
-      "bytes": 584
+      "sha256": "53d200700232eecfdda532623fcb05d555a88be7a7a426474a4fbf968ad2fa5b",
+      "bytes": 707
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -871,11 +871,18 @@
       "bytes": 1556
     },
     {
+      "path": "docs/evidence/EVD-BOOT-004-source-control-start.md",
+      "title": "EVD-BOOT-004 - Local Source-Control Build Start",
+      "status": "",
+      "sha256": "5fbd0f2384e28d876548c8f80316cc994ef2e877cdd62759395b98e853212892",
+      "bytes": 4118
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "ac2a76cb3b50c141046c1e2d795166116afe43a48624ed3956cbb7545f6d0c95",
-      "bytes": 595
+      "sha256": "247e6c8f51fd5db7665c49b4ae719ea6ebe47a3b032e02271b072938a8d29039",
+      "bytes": 760
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1273,8 +1280,8 @@
       "path": "docs/risks/RISK-REGISTER.md",
       "title": "Risk Register",
       "status": "",
-      "sha256": "be8cd9e2a779bab423e81e5763ca8ea1162ecee8015232d35008e5bfd7f4cad9",
-      "bytes": 1156
+      "sha256": "3ab9d69e4fd4a98f8ec8058b0e71b016d1d9ee9572b056207869b9169815be59",
+      "bytes": 1601
     },
     {
       "path": "docs/templates/adr-template.md",
@@ -1350,8 +1357,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "808be1c1aaa9bb29414ce2c7abe02c6252f2c79ec1fa173b1f63e04101840436",
-      "bytes": 1136
+      "sha256": "b542cda56215c69cc3930efe71cd6709a388fe862c093a45d241db33a48a786c",
+      "bytes": 1295
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

@@ -10,3 +10,5 @@
 | RSK-006 | bOPEN naming conflict | Brand/legal | Codename status and clearance | Product/Legal | Open |
 | RSK-007 | Unclear open-source license | Legal/commercial | All-rights-reserved bootstrap and legal strategy | Legal | Open |
 | RSK-008 | Documentation diverges from code | Governance | Same-change updates and traceability validation | Engineering | Open |
+| RSK-009 | Local bootstrap history and GitHub stable `main` history diverge | Release/source integrity | Require DEC-0006 before stable `main` publication; prohibit blind force-push | Engineering | Open |
+| RSK-010 | Local bGitea `origin` repository is not yet verified | Local collaboration blocked or pushed to wrong repo | Confirm or create local bGitea repository before configuring `origin` or pushing work branches | Engineering | Open |
