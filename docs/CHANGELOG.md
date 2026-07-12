@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-13 - bootstrap gate readiness
+
+- Added a deterministic bootstrap gate readiness report tool for BOOT-P0-12.
+- Generated `artifacts/validation/bootstrap-gate-readiness.md`.
+- Added governance tests for the report and EVD-BOOT-007 evidence.
+- Confirmed B7 remains review-required and production implementation remains unauthorized.
+
 ## 2026-07-13 - vertical-slice fixtures
 
 - Added the first vertical-slice acceptance fixture for BOOT-P0-11.

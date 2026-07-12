@@ -34,3 +34,7 @@ Production platform business logic and unapproved architecture decisions.
 ## Required evidence
 
 `docs/evidence/<evidence-id>.md` or approved CI/review reference.
+
+## Current readiness artifact
+
+`artifacts/validation/bootstrap-gate-readiness.md` records the current BOOT-P0-12 readiness state. The report currently identifies B7 as review-required and does not authorize production platform kernel implementation.
