@@ -1,0 +1,15 @@
+{
+  "name": "bopen-platform-kernel",
+  "version": "0.0.0-bootstrap",
+  "private": true,
+  "description": "Governed bootstrap for the bOPEN platform kernel",
+  "scripts": {
+    "validate": "python tools/validate_repository.py",
+    "test:governance": "python -m unittest discover -s tests/governance -p \"test_*.py\"",
+    "docs:manifest": "python tools/generate_document_manifest.py"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  }
+}

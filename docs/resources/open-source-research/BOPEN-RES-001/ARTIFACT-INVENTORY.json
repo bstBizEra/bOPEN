@@ -1,0 +1,260 @@
+{
+  "generated_on": "2026-07-12",
+  "files": [
+    {
+      "path": "00-governance/clean-room-boundary.md",
+      "sha256": "3feb7c09f4b6c5dd677b4337e9784a2e85ebba96aadd45b536d10149bea8fbda",
+      "bytes": 1418
+    },
+    {
+      "path": "00-governance/clone-provenance-policy.md",
+      "sha256": "c65287e6989a8cfb1c077425fd7557d7294027bbe7ca79925b1ddaa6aaf79141",
+      "bytes": 901
+    },
+    {
+      "path": "00-governance/evidence-classification.md",
+      "sha256": "95d8acc3eeadf438dce314af76a65140f1f36600c6add1363b110d3ba7ffee8a",
+      "bytes": 1072
+    },
+    {
+      "path": "00-governance/license-compliance-plan.md",
+      "sha256": "cdb792857e15f46ec40fdc11da61f01b1d0539202258e1b715e0cc5cf77a0e97",
+      "bytes": 1255
+    },
+    {
+      "path": "00-governance/observation-inference-decision-standard.md",
+      "sha256": "bce3c2808b0b7a2208a70839019c813725796a163ef22ff21be19bf78440b922",
+      "bytes": 733
+    },
+    {
+      "path": "00-governance/research-charter.md",
+      "sha256": "5e201d4d3e489e75433a3f2b8e3c3bd1dbc3a87b65e0c8a6e14d7d01c2922fc5",
+      "bytes": 1018
+    },
+    {
+      "path": "00-governance/research-method.md",
+      "sha256": "20a0a712680ea09f2a2aab441c233b3fb6439f9b1c6d01b198a6b7a9ee04c397",
+      "bytes": 1218
+    },
+    {
+      "path": "00-governance/research-quality-gates.md",
+      "sha256": "324bbc48f09f9543cc8f07ac5b60b994167a703258b3545fb4beb4a7afb3eb60",
+      "bytes": 1043
+    },
+    {
+      "path": "00-governance/research-scope.md",
+      "sha256": "8a52ee4fb4302d835e5ecd42c8a6a7df13f57b2fa33aac7efb7cc984585ff435",
+      "bytes": 1093
+    },
+    {
+      "path": "00-governance/roles-raci.md",
+      "sha256": "fdfa0aae523e67bdac6a2a3fbd4a5654e926c9d508b700846c5a7b4f738558c3",
+      "bytes": 896
+    },
+    {
+      "path": "00-governance/security-sandbox-policy.md",
+      "sha256": "cec2280b42d039c947cbe2494c50bac45896add89b54c7af70e55de5ceb3ba21",
+      "bytes": 710
+    },
+    {
+      "path": "00-governance/source-register.md",
+      "sha256": "15d77b590d7b0ea941945226922841de84ea8d74aafc808ac5f36859aac14e42",
+      "bytes": 2070
+    },
+    {
+      "path": "01-boxyhq/README.md",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
+    },
+    {
+      "path": "01-boxyhq/authorization-analysis.md",
+      "sha256": "cb79b031cae434f4c0b55a6eadb1b11508349a734c0bb40bcc0b61145fb9b2e2",
+      "bytes": 1224
+    },
+    {
+      "path": "01-boxyhq/capability-event-audit-analysis.md",
+      "sha256": "23320d9769749445b407ff33539715ed465a1cbb017f10bc421a9f7df20b5997",
+      "bytes": 1150
+    },
+    {
+      "path": "01-boxyhq/clone-bootstrap.md",
+      "sha256": "a399a6ac20531eb563a2a42a502cbee56ae7eb9cc5d3c11f1ff340d6ccb38b9d",
+      "bytes": 721
+    },
+    {
+      "path": "01-boxyhq/context-resolution-analysis.md",
+      "sha256": "fafcdb17cf2bdc934633e4a9daf1bf89ae57b31362e9d412ec3a5e4ea045e082",
+      "bytes": 1213
+    },
+    {
+      "path": "01-boxyhq/domain-model-map.md",
+      "sha256": "797a4bbc18d2ecbc5e6212bfd03f66fc2ffcbfd6ff193993f5f6eb8aedf04a0c",
+      "bytes": 1828
+    },
+    {
+      "path": "01-boxyhq/entitlement-commercial-analysis.md",
+      "sha256": "0588e3f6590089467442a4017c73e8b00f1e563e896bf0a9639e375a27830530",
+      "bytes": 1110
+    },
+    {
+      "path": "01-boxyhq/evidence-index.md",
+      "sha256": "217b57861dfb84d2824dd2618126b6be989a6f032197fa313bcf6e82b174b844",
+      "bytes": 1564
+    },
+    {
+      "path": "01-boxyhq/gaps-and-non-goals.md",
+      "sha256": "bc5f24a1a11f1cfa03e45abdde5c22068b3e1f404b1ca7a4ce957499205887f9",
+      "bytes": 868
+    },
+    {
+      "path": "01-boxyhq/identity-principal-analysis.md",
+      "sha256": "731e59b39251c256fd7c627c50bc08f2def2afe4ee2e9b72b339bb5fd983f36b",
+      "bytes": 1048
+    },
+    {
+      "path": "01-boxyhq/lifecycle-map.md",
+      "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
+      "bytes": 2681
+    },
+    {
+      "path": "01-boxyhq/repository-structure-study.md",
+      "sha256": "b8cdd053deb956b681eb3f8df7d3f10591aad186f44a9364df4c4c6a8835bcfd",
+      "bytes": 1414
+    },
+    {
+      "path": "01-boxyhq/security-review-checklist.md",
+      "sha256": "d998e9e072641552404debc4746d99a93303a31de4e77e222b1667894bc82548",
+      "bytes": 1600
+    },
+    {
+      "path": "01-boxyhq/tenant-membership-analysis.md",
+      "sha256": "bb02b95087bed81ed45324d1e4c546b24a8b919b198f662814b484aa69660abd",
+      "bytes": 1149
+    },
+    {
+      "path": "01-boxyhq/test-scenario-catalog.md",
+      "sha256": "805712738805e7a258a76bf52f8d7ca4b7ca7546b76fcb283c8c1d973bf0eef1",
+      "bytes": 1563
+    },
+    {
+      "path": "01-boxyhq/upstream-pin.json",
+      "sha256": "4ec7fb4404a264b74f7ef3325798f936f3023e2807e19913246ed6b25eb4691b",
+      "bytes": 452
+    },
+    {
+      "path": "02-execution/decision-register.md",
+      "sha256": "674107a627b7ec079c3307943942c8b56034f9275e7edf0a28c4461e24455f17",
+      "bytes": 1170
+    },
+    {
+      "path": "02-execution/evidence-matrix.md",
+      "sha256": "ebec7cb7d221cf1056cfdd21323f8abc3fc543af8fb21df47b79af9e340bf2dc",
+      "bytes": 883
+    },
+    {
+      "path": "02-execution/exit-gates.md",
+      "sha256": "96ca5500f75962f4c472b9ddf8b259798316d94b5007eca5b91b9dda703bc478",
+      "bytes": 1145
+    },
+    {
+      "path": "02-execution/implementation-handoff.md",
+      "sha256": "7e8a15dc1342d0d13c0505d605cb762cdc0c61e5eb06b49daefcfc6eab33a86e",
+      "bytes": 1232
+    },
+    {
+      "path": "02-execution/risk-register.md",
+      "sha256": "3b334ff77b423abd3b4a0be01ca1c0f3d26318e53641d5bbd458ba39b118a982",
+      "bytes": 1251
+    },
+    {
+      "path": "02-execution/sprint-plan.md",
+      "sha256": "af559859b563d6b027e1da69aaf9be1c8bbd37d9282f92c3244fe3288d113bc3",
+      "bytes": 835
+    },
+    {
+      "path": "02-execution/work-package-register.md",
+      "sha256": "35eec54dccc2fe161f87949719a5975ead4f400986888bd45fcd5d39be774e6d",
+      "bytes": 3804
+    },
+    {
+      "path": "03-templates/architecture-decision-template.md",
+      "sha256": "7a0e31094a510c0c3aae9b24bc4bf45580a2ebbe4b9d2bd5df8c7b97e60ccc1a",
+      "bytes": 412
+    },
+    {
+      "path": "03-templates/code-provenance-header-template.md",
+      "sha256": "2db8b5d50d5afa85ac1b1115e0006fa8aad31b2f4bf34db8cae7f86c959a038b",
+      "bytes": 458
+    },
+    {
+      "path": "03-templates/gap-record-template.md",
+      "sha256": "70838691da7fbf48135866b3f342f547840b09d63510fb7c2a9106e4381c7973",
+      "bytes": 268
+    },
+    {
+      "path": "03-templates/license-review-template.md",
+      "sha256": "7269bcfdfa4fbe9f0e9929dfee2e10d72cc89d50fc55b0b9de4ceca1eeeea897",
+      "bytes": 460
+    },
+    {
+      "path": "03-templates/lifecycle-trace-template.md",
+      "sha256": "4f40b2ada2af8ecf03d2183da630b3852550a14c6d5caba6e85e1cf0256083c7",
+      "bytes": 518
+    },
+    {
+      "path": "03-templates/source-observation-template.md",
+      "sha256": "fc3e6495b225d08086e83e20fed32b54b5561c42b33ea6bf9c2feb0b8adcceea",
+      "bytes": 549
+    },
+    {
+      "path": "BOPEN-RES-001.md",
+      "sha256": "22df706391ac94acf572d098bcc3359d8660beca494924c16427f96892aee0f3",
+      "bytes": 17179
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "c7fe60abc00ac1d9508bb65057db6e2a13a4de4c988ab000d22724f247fd5cc4",
+      "bytes": 495
+    },
+    {
+      "path": "README.md",
+      "sha256": "8c0c57c8360d92de1cff633633c8c2f6fe859363b0b90c776229536c69154d32",
+      "bytes": 1655
+    },
+    {
+      "path": "RESEARCH-COVERAGE.md",
+      "sha256": "151854752377957f533baddfe1a84372ccd1b0d7578ee59c99189cfa57ad2b46",
+      "bytes": 1988
+    },
+    {
+      "path": "RESEARCH-MANIFEST.json",
+      "sha256": "4ffc4eac5e82435f17be019f1ba6da5e272107ddce32fcd0773f35c136f4e0c9",
+      "bytes": 1273
+    },
+    {
+      "path": "RESEARCH-STATUS.md",
+      "sha256": "9c5a4916f3176c363a62947db5feb8268a0ac8d2bab748691a736385b76e5712",
+      "bytes": 1704
+    },
+    {
+      "path": "scripts/bootstrap-boxyhq-study.ps1",
+      "sha256": "4706a37427a42d69311b384958c7254b47a52b1b6b606465f79fc4edc9687ac7",
+      "bytes": 1278
+    },
+    {
+      "path": "scripts/bootstrap-boxyhq-study.sh",
+      "sha256": "0bd6eeae8efa72432e56a620d9a2bb4b738009f2f57fc68f0e8c828b2318c4fb",
+      "bytes": 1076
+    },
+    {
+      "path": "scripts/verify-upstream-pin.ps1",
+      "sha256": "1f39463bf44103d6afa8715a80a75ad4428cc82ea07858d9b742684f99864407",
+      "bytes": 449
+    },
+    {
+      "path": "scripts/verify-upstream-pin.sh",
+      "sha256": "0e4e56757fbbf14211db1cd80aa25901bbae04e3d5691a404702bef68f8c2717",
+      "bytes": 400
+    }
+  ]
+}

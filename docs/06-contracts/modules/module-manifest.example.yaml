@@ -1,0 +1,27 @@
+id: bopen.work.project
+name: Project Management
+version: 0.1.0-draft
+status: draft
+platform:
+  minimum_version: 0.1.0
+capabilities:
+  - project.create
+  - project.read
+  - project.update
+resources:
+  - project
+  - work_item
+dependencies:
+  - bopen.foundation.party
+  - bopen.foundation.document
+events:
+  publishes:
+    - project.created.v1
+  consumes:
+    - tenant.suspended.v1
+entitlements:
+  - project_management
+agents:
+  tools:
+    - project.search
+    - work_item.create
