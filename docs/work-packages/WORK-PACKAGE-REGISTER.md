@@ -13,4 +13,5 @@
 | BOOT-P0-09 | Local development baseline | Execution complete | Document environments, tooling and synthetic data policy. |
 | BOOT-P0-10 | Normative architecture queue | Execution complete | Initiate REQ/ARCH/TENANT/AUTHZ/ENT/MOD/PARTY/SEC drafts. |
 | BOOT-P0-11 | First vertical-slice specification | Execution complete | Specify principal -> tenant -> owner membership -> context -> authorization -> audit. |
+| DEV-P0-01 | Multi-tenant development readiness contracts | Execution complete; authority review pending | Make membership, active context, tenant ownership, and cross-tenant denial executable as draft contracts and tests. |
 | BOOT-P0-12 | Bootstrap exit gate | Authority review pending | Review B0–B7 and approve next execution phase. |

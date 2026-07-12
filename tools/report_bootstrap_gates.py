@@ -74,7 +74,8 @@ def build_report(root: Path = ROOT) -> dict[str, object]:
     execution_pending_packages = [
         item
         for item in work_packages
-        if item.get("ID") != "BOOT-P0-12"
+        if item.get("ID", "").startswith("BOOT-P0-")
+        and item.get("ID") != "BOOT-P0-12"
         and item.get("Status", "").lower() != "execution complete"
     ]
     b7_review_ready = not pending_evidence and not execution_pending_packages

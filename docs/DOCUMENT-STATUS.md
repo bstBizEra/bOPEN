@@ -6,7 +6,7 @@
 | BOPEN-BOOT-001 | Approved for bootstrap execution | Repository/docs/tooling only | Execute BOOT-P0-01–12 |
 | BOPEN-REQ-001 | Draft shell | No | Product authority review |
 | BOPEN-ARCH-001 | Draft shell | No | Architecture synthesis |
-| BOPEN-TENANT-001 | Draft shell | No | Define tenant, organization, membership, context and isolation |
+| BOPEN-TENANT-001 | Draft contract baseline | No | Authority review of DEV-P0-01 membership, context, ownership and isolation inputs |
 | BOPEN-AUTHZ-001 | Draft shell | No | Define authorization and delegation |
 | BOPEN-ENT-001 | Draft shell | No | Define entitlement and usage model |
 | BOPEN-MOD-001 | Draft shell | No | Define capability/module contracts |

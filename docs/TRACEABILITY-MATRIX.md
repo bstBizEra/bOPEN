@@ -13,8 +13,10 @@
 | REQ-ENG-007 BOOT-P0 completion self-review | BOPEN-BOOT-001 | WORK-PACKAGE-REGISTER/DEC-0007/DEC-0008 | BOOT-P0-01 through BOOT-P0-12 | EVD-BOOT-009/EVD-BOOT-011 | Protected review pending |
 | REQ-RES-001 Clean-room separation | BOPEN-RES-001 | ADR-0002 | RES-P0-01/14 | Source/evidence registers | In progress |
 | REQ-TEN-001 Tenant boundary | BOPEN-TENANT-001 | Pending | Future | Pending | Draft |
-| REQ-MEM-001 First-class membership | BOPEN-TENANT-001 | ADR-0006 | Future | Pending | Draft |
-| REQ-CTX-001 Explicit active context | BOPEN-TENANT-001 | Pending | Future | Pending | Draft |
+| REQ-TEN-002 Multi-tenant DEV readiness | BOPEN-TENANT-001/BOPEN-AUTHZ-001/BOPEN-SEC-001 | membership/active-context/tenant-ownership schemas | DEV-P0-01 | EVD-DEV-001 | Draft contracts validated |
+| REQ-MEM-001 First-class membership | BOPEN-TENANT-001 | ADR-0006/membership schema | DEV-P0-01 | EVD-DEV-001 | Draft contract validated |
+| REQ-CTX-001 Explicit active context | BOPEN-TENANT-001 | active-context schema | DEV-P0-01 | EVD-DEV-001 | Draft contract validated |
 | REQ-AUTH-001 Deny-by-default | BOPEN-AUTHZ-001 | Pending policy contract | Future | Pending | Draft |
+| REQ-ISO-001 API and database tenant isolation | BOPEN-TENANT-001/BOPEN-SEC-001 | tenant-ownership schema/readiness fixture | DEV-P0-01 | EVD-DEV-001 | Negative fixture validated |
 | REQ-ENT-001 Entitlement separation | BOPEN-ENT-001 | Pending decision contract | Future | Pending | Draft |
 | REQ-MOD-001 Versioned capability registry | BOPEN-MOD-001 | module-manifest.schema.json | BOOT-P0-10 | Contract validation | Draft |

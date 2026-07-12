@@ -32,3 +32,14 @@ Membership != Role != Permission != Entitlement
 - tenant switching and session implications;
 - support/partner cross-tenant grants;
 - suspension, retention and purge behavior.
+
+## DEV-P0-01 executable draft baseline
+
+The first development-readiness contracts are:
+
+- `bopen://schemas/tenancy/membership/0.1.0-draft`;
+- `bopen://schemas/tenancy/active-context/0.1.0-draft`;
+- `bopen://schemas/tenancy/tenant-ownership/0.1.0-draft`;
+- `docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json`.
+
+They establish testable boundaries without resolving the required decisions above or granting production implementation authority. Membership contains no role, permission, or entitlement; active context accepts only server or trusted-service validation sources; and cross-tenant access must deny at both API and database layers.
