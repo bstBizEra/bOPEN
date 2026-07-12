@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-13 - approved GitHub reconciliation
+
+- Recorded sponsor approval of DEC-0006 option 1.
+- Rebuilt the BOOT-P0 history on a reconciliation branch from existing GitHub `main`.
+- Preserved the GitHub root commit and resolved the one-line README conflict with the governed bootstrap README.
+- Added EVD-BOOT-010 and kept direct or force publication to `main` prohibited.
+
 ## 2026-07-13 - BOOT-P0 completion self-review
 
 - Audited all BOOT-P0-01 through BOOT-P0-12 outcomes against current evidence.

@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 220,
+  "count": 221,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -860,15 +860,15 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "eedf6b8afc2acff31a5246155a713c036fe0fc4c2d834367445e5cad97545bdd",
-      "bytes": 2718
+      "sha256": "5c8dcf81ee93ff66f6335f86b7c400b4275a34a81080bad03b1a18b8569e88ee",
+      "bytes": 3096
     },
     {
       "path": "docs/decisions/DEC-0006.md",
       "title": "DEC-0006 - GitHub stable history reconciliation",
-      "status": "Proposed",
-      "sha256": "ac481743f7db1c7cf0f70a35c7d36a22f5ed8786079432f3165671dc4a3ecee9",
-      "bytes": 1087
+      "status": "Approved",
+      "sha256": "0fb7c99c40bcd22c5090d008c75a2248dd0f13e27e077188a6823a0655863a88",
+      "bytes": 1282
     },
     {
       "path": "docs/decisions/DEC-0007.md",
@@ -881,8 +881,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "306f1c297e7a60eb1b7506869385bfc5820b820a3f39ade439cb015d4dbf928e",
-      "bytes": 817
+      "sha256": "0351fea6688ec822abd4a09d3e600a6efb5d7603844148c9e7e35f8208b94b3c",
+      "bytes": 824
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -948,11 +948,18 @@
       "bytes": 3898
     },
     {
+      "path": "docs/evidence/EVD-BOOT-010-github-reconciliation.md",
+      "title": "EVD-BOOT-010 - Approved GitHub history reconciliation",
+      "status": "",
+      "sha256": "1d4bee5adfce1b9eca2e215d7d0015d3d7cf483b964905bf948daa9bcbe2160b",
+      "bytes": 1838
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "5a3b346e1b16c4aa1921a1da59232deaffef8981edcf3f888cb26c9dea4d902d",
-      "bytes": 1568
+      "sha256": "9cd0eb744db6c0085ea7cc2658d9e2425a5e68473de1c284dfc7aefb6242f0a1",
+      "bytes": 1725
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1357,8 +1364,8 @@
       "path": "docs/risks/RISK-REGISTER.md",
       "title": "Risk Register",
       "status": "",
-      "sha256": "3ab9d69e4fd4a98f8ec8058b0e71b016d1d9ee9572b056207869b9169815be59",
-      "bytes": 1601
+      "sha256": "88bba9035ad6848c5d6c641ab813783669de4f12443ff009b2916994ee67b0ab",
+      "bytes": 1631
     },
     {
       "path": "docs/templates/adr-template.md",
@@ -1434,8 +1441,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "783eb0d8a8d351c6dee5144b6a07f620f209144de47deba85447b029eb0035cd",
-      "bytes": 2228
+      "sha256": "6d277d12dbc953d70b40a533b0fd235d7721ec73aba14cadb0e632e8efb30562",
+      "bytes": 2289
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

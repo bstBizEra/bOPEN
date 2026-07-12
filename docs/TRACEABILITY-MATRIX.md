@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|
 | REQ-GOV-001 Agent governance | BOPEN-BOOT-001 | Root/scoped AGENTS.md | BOOT-P0-02 | EVD-BOOT-001 | Evidence generated |
 | REQ-GOV-002 Document control | BOPEN-BOOT-001 | Document templates | BOOT-P0-03 | EVD-BOOT-002 | Evidence generated |
-| REQ-ENG-001 Local source-control baseline | BOPEN-BOOT-001 | repository-model/branching/local-development | BOOT-P0-09/BOOT-P0-01 | EVD-BOOT-004 | Started |
+| REQ-ENG-001 Local source-control baseline | BOPEN-BOOT-001 | repository-model/branching/local-development/DEC-0006 | BOOT-P0-09/BOOT-P0-01 | EVD-BOOT-004/EVD-BOOT-010 | GitHub reconciliation prepared; bGitea pending |
 | REQ-ENG-002 Contract validation harness | BOPEN-BOOT-001 | contract-governance/schema-conventions | BOOT-P0-10 | EVD-BOOT-005 | Started |
 | REQ-ENG-003 First vertical-slice acceptance fixture | BOPEN-BOOT-001 | FIRST-VERTICAL-SLICE-SPEC/audit-event schema | BOOT-P0-11 | EVD-BOOT-006 | Started |
 | REQ-ENG-004 Bootstrap exit-gate readiness | BOPEN-BOOT-001 | BOOTSTRAP-GATES/report_bootstrap_gates.py | BOOT-P0-12 | EVD-BOOT-007 | Review required |
