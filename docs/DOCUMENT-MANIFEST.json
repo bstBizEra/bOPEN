@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "f3fc1dfd9b81c638ca5004c3687ef1743ebb0d7caeb2be724198e12df286e95d",
-      "bytes": 4550
+      "sha256": "946324131ae67b189a8e8a0c8bad0ebc638bd4bb8aa87714e0eb99ebb05b6846",
+      "bytes": 4724
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -965,8 +965,8 @@
       "path": "docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md",
       "title": "EVD-BOOT-011 - bGitea protected review activation",
       "status": "",
-      "sha256": "01184d9201323d42c0322bfd65da687c9f0a5149db4ff88a5e7a5a8b85e550d5",
-      "bytes": 4555
+      "sha256": "a3d87b69b669bbfb1a60f3fcb53b4fba72adcb5085c22a84f2459f43254980f2",
+      "bytes": 5039
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",

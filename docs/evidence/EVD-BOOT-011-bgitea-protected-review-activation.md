@@ -44,6 +44,8 @@ The first run failed before checkout because this WSL kernel has no `/dev/net/tu
 
 The rerun at head `535e98ff40409c5ae8256e38b05eca759ac91545` completed successfully as Actions run 17/job 33. Repository, contract, clean-room, secret, supply-chain, and all 21 bootstrap tests passed. Commit status reported the exact context `Bootstrap Governance / validate (pull_request)`, which was then added to the existing `main` protection rule and verified as enabled. This sequence prevented an unobserved or misspelled context from deadlocking the repository.
 
+An independent review of the evidence follow-up at `7a41644383731b0a2f699136dc3bd3b32198e382` requested workflow hardening before approval. The Gitea workflow now explicitly limits `GITEA_TOKEN` to read-only contents. Both GitHub and Gitea workflows pin `actions/checkout` and `actions/setup-python` to full commit SHAs, and the supply-chain validator plus negative tests cover both enforcement workflows. A fresh required run on the resulting final SHA is required before approval.
+
 ## Artifacts and external receipts
 
 - `CODEOWNERS`

@@ -4,11 +4,29 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ACTION_USE = re.compile(r"^\s*-\s+uses:\s+([^\s#]+)", re.MULTILINE)
+
+
+def check_workflow_text(workflow: str, relative: str) -> list[str]:
+    """Validate least privilege and immutable external action references."""
+    errors: list[str] = []
+    if "permissions:\n  contents: read" not in workflow:
+        errors.append(f"{relative} must use read-only contents permission")
+    if "write-all" in workflow or "contents: write" in workflow:
+        errors.append(f"{relative} must not request write permission")
+    for use in ACTION_USE.findall(workflow):
+        if use.startswith("./"):
+            continue
+        action, separator, reference = use.rpartition("@")
+        if not separator or not action or re.fullmatch(r"[0-9a-fA-F]{40}", reference) is None:
+            errors.append(f"{relative} action must be pinned to a full commit SHA: {use}")
+    return errors
 
 
 def check_baseline(root: Path = ROOT) -> tuple[list[str], list[str]]:
@@ -22,6 +40,7 @@ def check_baseline(root: Path = ROOT) -> tuple[list[str], list[str]]:
         ".github/CODEOWNERS",
         ".github/dependabot.yml",
         ".github/workflows/bootstrap-governance.yml",
+        ".gitea/workflows/governance.yml",
         "docs/07-security/supply-chain/dependency-policy.md",
         "docs/08-engineering/dependency-policy.md",
     )
@@ -44,13 +63,14 @@ def check_baseline(root: Path = ROOT) -> tuple[list[str], list[str]]:
             if f"package-ecosystem: {ecosystem}" not in dependabot:
                 errors.append(f"dependabot does not cover {ecosystem}")
 
-    workflow_path = root / ".github/workflows/bootstrap-governance.yml"
-    if workflow_path.is_file():
-        workflow = workflow_path.read_text(encoding="utf-8")
-        if "permissions:\n  contents: read" not in workflow:
-            errors.append("bootstrap workflow must use read-only contents permission")
-        if "write-all" in workflow:
-            errors.append("bootstrap workflow must not request write-all permission")
+    workflow_paths = (
+        ".github/workflows/bootstrap-governance.yml",
+        ".gitea/workflows/governance.yml",
+    )
+    for relative in workflow_paths:
+        workflow_path = root / relative
+        if workflow_path.is_file():
+            errors.extend(check_workflow_text(workflow_path.read_text(encoding="utf-8"), relative))
 
     codeowners_path = root / ".github/CODEOWNERS"
     if codeowners_path.is_file() and "@bopen/" in codeowners_path.read_text(encoding="utf-8"):

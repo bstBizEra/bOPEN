@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from tools.check_secrets import scan_repository, scan_text
-from tools.check_supply_chain import check_baseline
+from tools.check_supply_chain import check_baseline, check_workflow_text
 
 
 class SecretControlTests(unittest.TestCase):
@@ -30,6 +30,18 @@ class SupplyChainControlTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             errors, _warnings = check_baseline(Path(temporary))
         self.assertGreater(len(errors), 0)
+
+    def test_mutable_action_reference_fails_closed(self):
+        workflow = "permissions:\n  contents: read\nsteps:\n  - uses: actions/checkout@v4\n"
+        errors = check_workflow_text(workflow, ".gitea/workflows/governance.yml")
+        self.assertTrue(any("full commit SHA" in error for error in errors))
+
+    def test_read_only_pinned_workflow_passes(self):
+        workflow = (
+            "permissions:\n  contents: read\nsteps:\n"
+            "  - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5\n"
+        )
+        self.assertEqual(check_workflow_text(workflow, "workflow.yml"), [])
 
 
 if __name__ == "__main__":
