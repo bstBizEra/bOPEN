@@ -7,3 +7,4 @@
 | DEC-0003 | Keep bOPEN as codename pending brand clearance | Open condition | Product Authority |
 | DEC-0004 | Select production technology stack | Pending | Architecture Authority |
 | DEC-0005 | Select identity provider/integration strategy | Pending | Security/Architecture Authorities |
+| DEC-0006 | Select GitHub stable history reconciliation path for local bootstrap pack | Pending | Engineering Authority |
