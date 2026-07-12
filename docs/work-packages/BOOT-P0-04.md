@@ -1,9 +1,10 @@
 # BOOT-P0-04 — Control templates and registers
 
-**Status:** Proposed  
-**Owner:** Unassigned  
-**Phase:** Bootstrap P0  
-**Dependencies:** See register  
+**Status:** Execution complete
+**Owner:** BST Codex Motor
+**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
+**Phase:** Bootstrap P0
+**Dependencies:** See register
 
 ## Objective
 
@@ -33,4 +34,4 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/<evidence-id>.md` or approved CI/review reference.
+`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`.

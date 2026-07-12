@@ -1,9 +1,10 @@
 # BOOT-P0-01 — Repository initialization and protections
 
-**Status:** Proposed  
-**Owner:** Unassigned  
-**Phase:** Bootstrap P0  
-**Dependencies:** See register  
+**Status:** External activation pending
+**Owner:** Engineering Authority
+**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
+**Phase:** Bootstrap P0
+**Dependencies:** See register
 
 ## Objective
 
@@ -33,4 +34,8 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/<evidence-id>.md` or approved CI/review reference.
+`docs/evidence/EVD-BOOT-004-source-control-start.md` and `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`.
+
+## Residual activation
+
+The local bGitea repository URL, `origin`, protected branch settings, and external review evidence remain unverified. DEC-0006 must be approved before stable GitHub reconciliation.

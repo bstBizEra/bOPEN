@@ -10,4 +10,5 @@
 | EVD-BOOT-006 | BOOT-P0-11 | First vertical-slice acceptance fixtures and tests | `docs/evidence/EVD-BOOT-006-first-vertical-slice-fixtures.md` | Generated |
 | EVD-BOOT-007 | BOOT-P0-12 | Bootstrap exit-gate readiness report | `docs/evidence/EVD-BOOT-007-bootstrap-gate-readiness.md` | Generated |
 | EVD-BOOT-008 | BOOT-P0-02/BOOT-P0-03/BOOT-P0-12 | Missing bootstrap validation evidence closure | `docs/evidence/EVD-BOOT-008-missing-bootstrap-evidence-closure.md` | Generated |
+| EVD-BOOT-009 | BOOT-P0-01 through BOOT-P0-12 | Requirement-by-requirement bootstrap completion self-review | `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` | Generated |
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |

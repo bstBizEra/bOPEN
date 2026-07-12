@@ -9,6 +9,8 @@
 | REQ-ENG-003 First vertical-slice acceptance fixture | BOPEN-BOOT-001 | FIRST-VERTICAL-SLICE-SPEC/audit-event schema | BOOT-P0-11 | EVD-BOOT-006 | Started |
 | REQ-ENG-004 Bootstrap exit-gate readiness | BOPEN-BOOT-001 | BOOTSTRAP-GATES/report_bootstrap_gates.py | BOOT-P0-12 | EVD-BOOT-007 | Review required |
 | REQ-ENG-005 Bootstrap validation evidence closure | BOPEN-BOOT-001 | BOOTSTRAP-GATES/EVIDENCE-INDEX | BOOT-P0-02/03/12 | EVD-BOOT-008 | Review required |
+| REQ-ENG-006 Bootstrap security and supply-chain controls | BOPEN-BOOT-001 | check_secrets/check_supply_chain/CI | BOOT-P0-05/06 | EVD-BOOT-009 | Execution complete |
+| REQ-ENG-007 BOOT-P0 completion self-review | BOPEN-BOOT-001 | WORK-PACKAGE-REGISTER/DEC-0007 | BOOT-P0-01 through BOOT-P0-12 | EVD-BOOT-009 | External activation pending |
 | REQ-RES-001 Clean-room separation | BOPEN-RES-001 | ADR-0002 | RES-P0-01/14 | Source/evidence registers | In progress |
 | REQ-TEN-001 Tenant boundary | BOPEN-TENANT-001 | Pending | Future | Pending | Draft |
 | REQ-MEM-001 First-class membership | BOPEN-TENANT-001 | ADR-0006 | Future | Pending | Draft |

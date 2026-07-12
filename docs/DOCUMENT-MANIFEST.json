@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 216,
+  "count": 220,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -860,15 +860,29 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "38033cbe2e098d13898cf473fc45291c827ff8fc6f93eca330a843c88487dba7",
-      "bytes": 2212
+      "sha256": "eedf6b8afc2acff31a5246155a713c036fe0fc4c2d834367445e5cad97545bdd",
+      "bytes": 2718
+    },
+    {
+      "path": "docs/decisions/DEC-0006.md",
+      "title": "DEC-0006 - GitHub stable history reconciliation",
+      "status": "Proposed",
+      "sha256": "ac481743f7db1c7cf0f70a35c7d36a22f5ed8786079432f3165671dc4a3ecee9",
+      "bytes": 1087
+    },
+    {
+      "path": "docs/decisions/DEC-0007.md",
+      "title": "DEC-0007 - BOOT-P0 bootstrap exit review",
+      "status": "Proposed",
+      "sha256": "942deca2dfd0e8aea988905489ca92806e8b0e59ba11e3cf6e3d24f12962c816",
+      "bytes": 1200
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "53d200700232eecfdda532623fcb05d555a88be7a7a426474a4fbf968ad2fa5b",
-      "bytes": 707
+      "sha256": "306f1c297e7a60eb1b7506869385bfc5820b820a3f39ade439cb015d4dbf928e",
+      "bytes": 817
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -927,11 +941,25 @@
       "bytes": 2116
     },
     {
+      "path": "docs/evidence/EVD-BOOT-009-bootstrap-self-review.md",
+      "title": "EVD-BOOT-009 - BOOT-P0 completion self-review",
+      "status": "",
+      "sha256": "9371155e1fb663dd884230f5434fb9d1460d64081debf7e6bd50d29f19aa1254",
+      "bytes": 3898
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "caa3157947d8e48a44c7e669518500dd462ba9a4af2138e16de92a11905abed3",
-      "bytes": 1389
+      "sha256": "5a3b346e1b16c4aa1921a1da59232deaffef8981edcf3f888cb26c9dea4d902d",
+      "bytes": 1568
+    },
+    {
+      "path": "docs/exceptions/EXCEPTION-REGISTER.md",
+      "title": "Exception Register",
+      "status": "Active bootstrap control",
+      "sha256": "70a0d5200cdf0866bf3ddd3c5d0dacf64242f92fe96ba8c7bd4d797662095173",
+      "bytes": 664
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1406,99 +1434,99 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "9db88f44406ea3e60897cccced0a5f514d23012ecd710e7df63601e07b017cf3",
-      "bytes": 1886
+      "sha256": "783eb0d8a8d351c6dee5144b6a07f620f209144de47deba85447b029eb0035cd",
+      "bytes": 2228
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
       "title": "BOOT-P0-01 \u2014 Repository initialization and protections",
-      "status": "Proposed",
-      "sha256": "01c3a1a710ec9855f3b7659a020e9a0244999c176f4e3215a3de0aab6f0fd1eb",
-      "bytes": 935
+      "status": "External activation pending",
+      "sha256": "bfb1b3c3a31375bffba521fbcd9fe0003e9abd9487952082241242a8c7552456",
+      "bytes": 1280
     },
     {
       "path": "docs/work-packages/BOOT-P0-02.md",
       "title": "BOOT-P0-02 \u2014 AGENTS.md hierarchy",
-      "status": "Proposed",
-      "sha256": "22f7f591d782df4b0fb97da1e2c0b2b992fdabc388bc0e6913d430080f1d16e3",
-      "bytes": 874
+      "status": "Execution complete",
+      "sha256": "77d0da29d513213537faef136ac29460730c79fa05a71b877c2f4fbbc1babb1b",
+      "bytes": 973
     },
     {
       "path": "docs/work-packages/BOOT-P0-03.md",
       "title": "BOOT-P0-03 \u2014 Documentation system",
-      "status": "Proposed",
-      "sha256": "5634931cd8376a0adcfc86d8ee343a6da5d7a5ba790c3268683f1ae9761193a4",
-      "bytes": 902
+      "status": "Execution complete",
+      "sha256": "5049cd09c1442607ac8cad6e1a458371ad2047f1ba5486291cb6cdbae2f08f75",
+      "bytes": 1001
     },
     {
       "path": "docs/work-packages/BOOT-P0-04.md",
       "title": "BOOT-P0-04 \u2014 Control templates and registers",
-      "status": "Proposed",
-      "sha256": "fab78c1e3d8a984c3e8f81aabbc0c747b22980cac7fe93cf2fde0bffbed9b3e9",
-      "bytes": 916
+      "status": "Execution complete",
+      "sha256": "855b3aee4046439f98b18a1cdced587566ee1cce467560b5228e64fb144959cd",
+      "bytes": 983
     },
     {
       "path": "docs/work-packages/BOOT-P0-05.md",
       "title": "BOOT-P0-05 \u2014 CI and validation",
-      "status": "Proposed",
-      "sha256": "f77deca1879a94f0a4cab2bd99f83aa244921ab0602bd8229651784a8dfce327",
-      "bytes": 885
+      "status": "Execution complete",
+      "sha256": "541bd7533ea7ae87cf21e2307f4e768ad198af7cf4d3ac02758e4bd4ae9d8c0d",
+      "bytes": 999
     },
     {
       "path": "docs/work-packages/BOOT-P0-06.md",
       "title": "BOOT-P0-06 \u2014 Security and supply chain",
-      "status": "Proposed",
-      "sha256": "82bab0ca8a3d904f4df0862d4a658a79bbcc44269fb0f0a0870c8bba960b81bb",
-      "bytes": 905
+      "status": "Execution complete",
+      "sha256": "524c3031efc6b32d0733d1fe7756d3e5211dceae27131dafc605e035adf7145b",
+      "bytes": 972
     },
     {
       "path": "docs/work-packages/BOOT-P0-07.md",
       "title": "BOOT-P0-07 \u2014 Research integration",
-      "status": "Proposed",
-      "sha256": "5f21b7de37cd9dbb0b276667e10694f94fafa2ef8cfd60d4f35ddf34a1875e20",
-      "bytes": 891
+      "status": "Execution complete",
+      "sha256": "815159410644b4fbf42ab068a9c847fa699366db49042ae3db1b132e76e15920",
+      "bytes": 1015
     },
     {
       "path": "docs/work-packages/BOOT-P0-08.md",
       "title": "BOOT-P0-08 \u2014 Ownership and review governance",
-      "status": "Proposed",
-      "sha256": "4d33c35ca9ff10ee0be660dee206f261cb41164635d11de12f006281dc3c6d7c",
-      "bytes": 882
+      "status": "External activation pending",
+      "sha256": "d315b7b356e458a83ca2f802841a3eb173b0ef200e97e4078ffed08611d21334",
+      "bytes": 1244
     },
     {
       "path": "docs/work-packages/BOOT-P0-09.md",
       "title": "BOOT-P0-09 \u2014 Local development baseline",
-      "status": "Proposed",
-      "sha256": "3363871c88af253d82e7bd4154031e546f3d24c742e13be3fece0d749ecf3f55",
-      "bytes": 893
+      "status": "Execution complete",
+      "sha256": "a9244f8c010b836bb5c1adb7e21189719e271c68845c527d31de0c21bce9c4c3",
+      "bytes": 1017
     },
     {
       "path": "docs/work-packages/BOOT-P0-10.md",
       "title": "BOOT-P0-10 \u2014 Normative architecture queue",
-      "status": "Proposed",
-      "sha256": "bc52770197c6c7e12c43643a6a10c5c1a8f0b224013f3e614127fb628ab53d80",
-      "bytes": 894
+      "status": "Execution complete",
+      "sha256": "8df338e9c312a7ab52139279cd97360bfada6989e5cb31f116662ff8d325bb6b",
+      "bytes": 1025
     },
     {
       "path": "docs/work-packages/BOOT-P0-11.md",
       "title": "BOOT-P0-11 \u2014 First vertical-slice specification",
-      "status": "Proposed",
-      "sha256": "4c18d4463c1293a0b78167f953cdfcbcf8496a489172240854505b69324a1bad",
-      "bytes": 929
+      "status": "Execution complete",
+      "sha256": "7480dd8c32edf4bc2125c8c0ce732a204306d783e4ef67cb78220e2f96d4bc5f",
+      "bytes": 1062
     },
     {
       "path": "docs/work-packages/BOOT-P0-12.md",
       "title": "BOOT-P0-12 \u2014 Bootstrap exit gate",
-      "status": "Proposed",
-      "sha256": "9651f247b910c891317a199332589c343900c5fb70e4ceb9817566eae2a92ce4",
-      "bytes": 1128
+      "status": "Authority review pending",
+      "sha256": "afea5ad46c8afc00e7a29ebaff1ce22e25c9c3077ce056ac374e215970130d89",
+      "bytes": 1256
     },
     {
       "path": "docs/work-packages/BOOTSTRAP-GATES.md",
       "title": "Bootstrap Gates",
       "status": "",
-      "sha256": "1b9472587cf3a6f95472607abcf52247b6093f9bcb9fc65901fc4c8841fcf591",
-      "bytes": 1193
+      "sha256": "919d9ed1801825dff8687784d696a9fbb2eab859e31ed0c9ededc8cd989a4f2e",
+      "bytes": 1253
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
@@ -1511,8 +1539,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "be26f9cd78ef9aeb51982775b5e5e0fa7354667be194b741399b1a2279b63acc",
-      "bytes": 1532
+      "sha256": "ff25b30e54088e1cc3a73a9d0ea1b923e991a0a39e1267fe607360b78423579e",
+      "bytes": 1676
     }
   ]
 }

@@ -1,9 +1,10 @@
 # BOOT-P0-08 — Ownership and review governance
 
-**Status:** Proposed  
-**Owner:** Unassigned  
-**Phase:** Bootstrap P0  
-**Dependencies:** See register  
+**Status:** External activation pending
+**Owner:** Engineering Authority
+**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
+**Phase:** Bootstrap P0
+**Dependencies:** See register
 
 ## Objective
 
@@ -33,4 +34,8 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/<evidence-id>.md` or approved CI/review reference.
+`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` plus pending external branch-protection evidence.
+
+## Residual activation
+
+CODEOWNERS paths and branch policy are prepared. Actual owner identities, required reviews, protected branch settings, and CI enforcement must be configured and evidenced in local bGitea before completion.

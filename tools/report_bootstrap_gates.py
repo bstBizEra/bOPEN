@@ -44,6 +44,9 @@ def parse_markdown_table(path: Path) -> list[dict[str, str]]:
 def load_registers(root: Path = ROOT) -> dict[str, list[dict[str, str]]]:
     return {
         "gates": parse_markdown_table(root / "docs/work-packages/BOOTSTRAP-GATES.md"),
+        "work_packages": parse_markdown_table(
+            root / "docs/work-packages/WORK-PACKAGE-REGISTER.md"
+        ),
         "evidence": parse_markdown_table(root / "docs/evidence/EVIDENCE-INDEX.md"),
         "documents": parse_markdown_table(root / "docs/DOCUMENT-STATUS.md"),
     }
@@ -52,6 +55,7 @@ def load_registers(root: Path = ROOT) -> dict[str, list[dict[str, str]]]:
 def build_report(root: Path = ROOT) -> dict[str, object]:
     registers = load_registers(root)
     gates = registers["gates"]
+    work_packages = registers["work_packages"]
     evidence = registers["evidence"]
     documents = registers["documents"]
 
@@ -67,21 +71,35 @@ def build_report(root: Path = ROOT) -> dict[str, object]:
         if item.get("Artifact") in REQUIRED_IMPLEMENTATION_ARTIFACTS
         and item.get("Implementation authority", "").lower() != "yes"
     ]
+    execution_pending_packages = [
+        item
+        for item in work_packages
+        if item.get("ID") != "BOOT-P0-12"
+        and item.get("Status", "").lower() != "execution complete"
+    ]
+    b7_review_ready = not pending_evidence and not execution_pending_packages
 
     blockers: list[str] = []
+    if execution_pending_packages:
+        blockers.append("Some BOOT-P0 execution packages require external activation.")
     if b7.get("Status") != "Approved":
         blockers.append("B7 exit gate is not approved.")
     if pending_evidence:
         blockers.append("Some bootstrap evidence remains ungenerated.")
-    if implementation_blocking_docs:
-        blockers.append("Required implementation artifacts do not grant implementation authority.")
-
     return {
-        "bootstrap_review_state": "review_required" if blockers else "ready",
+        "bootstrap_review_state": (
+            "approved"
+            if b7.get("Status") == "Approved" and b7_review_ready
+            else "ready_for_authority_review"
+            if b7_review_ready
+            else "incomplete"
+        ),
+        "b7_review_ready": b7_review_ready,
         "production_implementation_authorized": False,
         "gate_count": len(gates),
         "b7_status": b7.get("Status", "Missing"),
         "pending_evidence": pending_evidence,
+        "execution_pending_packages": execution_pending_packages,
         "implementation_blocking_docs": implementation_blocking_docs,
         "blockers": blockers,
     }
@@ -92,6 +110,7 @@ def format_report(report: dict[str, object]) -> str:
         "# Bootstrap Gate Readiness Report",
         "",
         f"**Bootstrap review state:** `{report['bootstrap_review_state']}`",
+        f"**B7 review ready:** `{str(report['b7_review_ready']).lower()}`",
         f"**Production implementation authorized:** `{str(report['production_implementation_authorized']).lower()}`",
         f"**Gate count:** {report['gate_count']}",
         f"**B7 status:** {report['b7_status']}",
@@ -111,6 +130,14 @@ def format_report(report: dict[str, object]) -> str:
     if pending_evidence:
         for item in pending_evidence:  # type: ignore[union-attr]
             lines.append(f"- {item['Evidence ID']} ({item['Work package']}): {item['Status']}")
+    else:
+        lines.append("- None")
+
+    lines.extend(["", "## Execution Packages Pending", ""])
+    packages = report["execution_pending_packages"]
+    if packages:
+        for item in packages:  # type: ignore[union-attr]
+            lines.append(f"- {item['ID']}: {item['Status']}")
     else:
         lines.append("- None")
 
