@@ -7,6 +7,7 @@
     "validate": "python tools/validate_repository.py && python tools/validate_contracts.py",
     "test:governance": "python -m unittest discover -s tests/governance -p \"test_*.py\"",
     "test:contracts": "python -m unittest discover -s tests/contracts -p \"test_*.py\"",
+    "report:bootstrap-gates": "python tools/report_bootstrap_gates.py",
     "docs:manifest": "python tools/generate_document_manifest.py"
   },
   "engines": {
