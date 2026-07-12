@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-13 - first coding move
+
+- Added a standard-library contract validation harness for Phase 0 machine-readable contracts.
+- Added contract validator tests and package scripts.
+- Marked existing draft JSON schemas with top-level draft status metadata.
+- Added EVD-BOOT-005 evidence for BOOT-P0-10.
+
 ## 2026-07-13 - roadmap build start
 
 - Started the roadmap-safe Phase 0 build lane through BOOT-P0-09/BOOT-P0-01.

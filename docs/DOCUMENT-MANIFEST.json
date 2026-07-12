@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 209,
+  "count": 210,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -426,8 +426,8 @@
       "path": "docs/06-contracts/contract-governance.md",
       "title": "Contract Governance",
       "status": "",
-      "sha256": "3abe8fc64ed5c089d3057ae2a14613222789d9a15e1c681d0047548bf9a90812",
-      "bytes": 263
+      "sha256": "593c8a106f6a3a72a758b19ea322b3143186590c9608d1a00af8019c59292dfb",
+      "bytes": 450
     },
     {
       "path": "docs/06-contracts/events/event-envelope.md",
@@ -447,22 +447,22 @@
       "path": "docs/06-contracts/modules/module-manifest.schema.json",
       "title": "",
       "status": "",
-      "sha256": "54f10125d28248d7766a0937dab9e13e7ea074aea43c1aca837451594721cc55",
-      "bytes": 1198
+      "sha256": "74e0e74c487084e335b6ba6de8c2e880d8c94c6101370fab9a1a1afaa1e9fc16",
+      "bytes": 1219
     },
     {
       "path": "docs/06-contracts/policies/authorization-decision.schema.json",
       "title": "",
       "status": "",
-      "sha256": "47a436cf30ed1527f99177601ae13fcb82abdb293f084240e74ed1486cc327a6",
-      "bytes": 749
+      "sha256": "88b96868343e6b350705543fceb2ec6ac43be5f4d582117b6cef45149e1757e0",
+      "bytes": 770
     },
     {
       "path": "docs/06-contracts/schemas/schema-conventions.md",
       "title": "Schema Conventions",
       "status": "",
-      "sha256": "ecf2969d34362648c6c0f4971d1e3346512664fcc03fc24a972584616491cd7c",
-      "bytes": 197
+      "sha256": "4e78d62624b140cc38833bd7c93a6e8b0708f2826d5a41ce1ef411c28b39913b",
+      "bytes": 347
     },
     {
       "path": "docs/07-security/authorization/privileged-access.md",
@@ -587,8 +587,8 @@
       "path": "docs/08-engineering/testing-strategy.md",
       "title": "Testing Strategy",
       "status": "",
-      "sha256": "6b34a80d3f1d9d60665131248244a1548296428cc05080b4732e8fe541cc5824",
-      "bytes": 180
+      "sha256": "1be8085a4b4cd74bbf45d2ccab90192cddc329445ad9d245eca79fa1ba7af384",
+      "bytes": 375
     },
     {
       "path": "docs/08-engineering/versioning.md",
@@ -839,8 +839,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "9c48d0f646f39abf958d1c81ba9bfeea1ed5f80789996f6179276f2749edbbe1",
-      "bytes": 877
+      "sha256": "b03eb85e3c493858ef415b6c00758a5d38e329fe4cc9513bdae6abc905b5fa16",
+      "bytes": 1183
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -878,11 +878,18 @@
       "bytes": 4118
     },
     {
+      "path": "docs/evidence/EVD-BOOT-005-contract-validation-harness.md",
+      "title": "EVD-BOOT-005 - Contract Validation Harness",
+      "status": "",
+      "sha256": "f4c5c77fd4cf1cff270437d2889d10d4646177d0ccf31b0fec1e8e3bede0e511",
+      "bytes": 2755
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "247e6c8f51fd5db7665c49b4ae719ea6ebe47a3b032e02271b072938a8d29039",
-      "bytes": 760
+      "sha256": "68449fcd1843904b39ec5a0c1ccd9bc5e5b94c4c746c42ff433385ea791c5649",
+      "bytes": 913
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1357,8 +1364,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "b542cda56215c69cc3930efe71cd6709a388fe862c093a45d241db33a48a786c",
-      "bytes": 1295
+      "sha256": "8f1eae64035bafda70ea4ad8cbe561c4fe0683dec815b4e703c83ab86671adb7",
+      "bytes": 1435
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

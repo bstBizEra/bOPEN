@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "bopen://schemas/authorization-decision/0.1.0-draft",
+  "status": "draft",
   "title": "Authorization Decision",
   "type": "object",
   "required": [
