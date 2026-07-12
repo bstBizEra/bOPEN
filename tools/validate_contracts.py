@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -11,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_ROOTS = (ROOT / "docs" / "06-contracts", ROOT / "contracts")
+RFC3339_OFFSET = re.compile(r"(?:Z|[+-]\d{2}:\d{2})$")
 
 
 def iter_contract_files(root: Path = ROOT) -> list[Path]:
@@ -152,11 +154,19 @@ def validate_schema_instance(instance: object, schema: dict, label: str) -> list
         if isinstance(value, int) and not isinstance(value, bool) and value < definition.get("minimum", value):
             errors.append(f"CONTRACT INSTANCE MINIMUM INVALID {label}: {key}")
         if definition.get("format") == "date-time" and isinstance(value, str):
-            try:
-                datetime.fromisoformat(value.replace("Z", "+00:00"))
-            except ValueError:
+            if parse_rfc3339_datetime(value) is None:
                 errors.append(f"CONTRACT INSTANCE DATE-TIME INVALID {label}: {key}")
     return errors
+
+
+def parse_rfc3339_datetime(value: str) -> datetime | None:
+    if "T" not in value or RFC3339_OFFSET.search(value) is None:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo is not None else None
 
 
 def validate_multitenant_readiness_fixture(
@@ -248,8 +258,34 @@ def validate_multitenant_readiness_fixture(
                 errors.append(f"VALID MEMBERSHIP MUST BE ACTIVE {rel}: {scenario_id}")
             if active_context.get("membership_id") != membership.get("membership_id"):
                 errors.append(f"VALID CONTEXT MEMBERSHIP MUST MATCH {rel}: {scenario_id}")
+            if active_context.get("principal_id") != membership.get("principal_id"):
+                errors.append(f"VALID CONTEXT PRINCIPAL MUST MATCH {rel}: {scenario_id}")
+            if active_context.get("tenant_id") != membership.get("tenant_id"):
+                errors.append(f"VALID CONTEXT TENANT MUST MATCH {rel}: {scenario_id}")
+            if active_context.get("status") != "active":
+                errors.append(f"VALID CONTEXT MUST BE ACTIVE {rel}: {scenario_id}")
             if active_context.get("validation_source") not in {"server_session", "trusted_service"}:
                 errors.append(f"VALID CONTEXT MUST BE SERVER VALIDATED {rel}: {scenario_id}")
+            issued_at = parse_rfc3339_datetime(active_context.get("issued_at", ""))
+            expires_at = parse_rfc3339_datetime(active_context.get("expires_at", ""))
+            if issued_at is None or expires_at is None or issued_at >= expires_at:
+                errors.append(f"VALID CONTEXT TIME WINDOW INVALID {rel}: {scenario_id}")
+            expected_context_claims = {
+                "principal_id": active_context.get("principal_id"),
+                "tenant_id": active_context.get("tenant_id"),
+                "membership_id": membership.get("membership_id"),
+                "membership_state": membership.get("state"),
+                "validation_source": active_context.get("validation_source"),
+            }
+            if any(context.get(key) != value for key, value in expected_context_claims.items()):
+                errors.append(f"VALID SCENARIO CONTEXT CLAIMS MUST MATCH {rel}: {scenario_id}")
+            expected_resource_claims = {
+                "tenant_id": ownership.get("tenant_id"),
+                "resource_type": ownership.get("resource_type"),
+                "resource_id": ownership.get("resource_id"),
+            }
+            if any(resource.get(key) != value for key, value in expected_resource_claims.items()):
+                errors.append(f"VALID SCENARIO RESOURCE CLAIMS MUST MATCH {rel}: {scenario_id}")
         elif decision.get("decision") != "DENY":
             errors.append(f"NEGATIVE MULTITENANT SCENARIO MUST DENY {rel}: {scenario_id}")
 

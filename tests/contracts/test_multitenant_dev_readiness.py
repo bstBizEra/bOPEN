@@ -162,6 +162,53 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             )
             self.assertTrue(any("DENIAL REASON INVALID" in error for error in errors))
 
+    def test_validator_rejects_inconsistent_positive_composition(self):
+        mutations = (
+            ("memberships", "membership-alpha-owner", "principal_id", "principal-other", "PRINCIPAL"),
+            ("memberships", "membership-alpha-owner", "tenant_id", "tenant-other", "CONTEXT TENANT"),
+            ("active_contexts", "context-alpha-owner", "status", "expired", "MUST BE ACTIVE"),
+        )
+        for group, instance_id, key, value, expected in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["instances"][group][instance_id][key] = value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(group=group, key=key):
+                self.assertTrue(any(expected in error for error in errors))
+
+    def test_validator_rejects_contradictory_positive_claims(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][0]["context"]["tenant_id"] = "tenant-contradiction"
+        fixture["scenarios"][0]["resource"]["resource_id"] = "resource-contradiction"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("CONTEXT CLAIMS MUST MATCH" in error for error in errors))
+        self.assertTrue(any("RESOURCE CLAIMS MUST MATCH" in error for error in errors))
+
+    def test_validator_rejects_invalid_active_context_time_window(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["instances"]["active_contexts"]["context-alpha-owner"]["expires_at"] = (
+            "2026-07-13T03:00:00+07:00"
+        )
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("TIME WINDOW INVALID" in error for error in errors))
+
+    def test_validator_requires_timezone_aware_rfc3339_datetime(self):
+        membership_schema = json.loads(
+            (CONTRACT_ROOT / "tenancy/membership.schema.json").read_text(encoding="utf-8")
+        )
+        membership = copy.deepcopy(self.instances["memberships"]["membership-alpha-owner"])
+        for invalid_value in ("2026-07-13", "2026-07-13T03:10:00", "not-a-date"):
+            candidate = copy.deepcopy(membership)
+            candidate["created_at"] = invalid_value
+            errors = validate_schema_instance(candidate, membership_schema, "membership")
+            with self.subTest(value=invalid_value):
+                self.assertTrue(any("DATE-TIME INVALID" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

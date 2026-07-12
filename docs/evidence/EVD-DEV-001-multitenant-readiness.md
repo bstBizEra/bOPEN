@@ -21,7 +21,7 @@
 3. Added schema-conforming synthetic membership, active-context, and ownership instance catalogs composed by seven readiness scenarios.
 4. Represented cross-tenant denial separately at API and database enforcement layers.
 5. Extended the contract validator to reject membership/authorization conflation, client-validated context, missing tenant ownership, incomplete scenario coverage, and non-denying negative cases.
-6. Added focused tests for direct schema-instance validity, schema boundaries, trusted context sources, denial semantics, API/database isolation, and audit correlation.
+6. Added focused tests for direct schema-instance validity, full positive principal/tenant/membership/context/ownership composition, RFC 3339 context lifetime, denial semantics, API/database isolation, and audit correlation.
 7. Ran the complete repository validation suite.
 
 ## Expected result
@@ -35,7 +35,7 @@ bOPEN has executable, independently reviewable development inputs for the minimu
 - Clean-room validation: PASS.
 - Secret scan: PASS.
 - Supply-chain baseline: PASS.
-- Full tests: PASS, 38 tests.
+- Full tests: PASS, 42 tests.
 
 The contracts enforce these draft invariants:
 
