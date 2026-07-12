@@ -13,6 +13,7 @@ class BootstrapGateReportTests(unittest.TestCase):
         self.assertFalse(report["production_implementation_authorized"])
         self.assertEqual(report["b7_status"], "Pending execution review")
         self.assertGreaterEqual(len(report["blockers"]), 1)
+        self.assertEqual(report["pending_evidence"], [])
 
     def test_report_flags_pending_evidence_and_no_implementation_authority(self):
         with tempfile.TemporaryDirectory() as tmp:
