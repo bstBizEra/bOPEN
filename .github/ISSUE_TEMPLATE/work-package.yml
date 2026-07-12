@@ -1,0 +1,27 @@
+name: Work package execution
+description: Execute an accepted bOPEN work package
+title: "[WP] "
+labels: ["work-package"]
+body:
+  - type: input
+    id: work_package
+    attributes:
+      label: Work-package ID
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Governing artifact, requirement and ADR IDs
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Required evidence

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/authorization-decision/0.1.0-draft",
+  "title": "Authorization Decision",
+  "type": "object",
+  "required": [
+    "decision",
+    "reason_code",
+    "policy_version",
+    "correlation_id"
+  ],
+  "properties": {
+    "decision": {
+      "enum": [
+        "ALLOW",
+        "DENY"
+      ]
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "correlation_id": {
+      "type": "string"
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evaluated_scope": {
+      "type": "object"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

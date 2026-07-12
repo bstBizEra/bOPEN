@@ -1,0 +1,11 @@
+# Replace placeholders with actual GitHub teams/users before enforcement.
+* @bopen/engineering
+/AGENTS.md @bopen/architecture @bopen/engineering
+/docs/ @bopen/architecture @bopen/product
+/docs/07-security/ @bopen/security
+/contracts/ @bopen/architecture @bopen/security
+/services/ @bopen/engineering @bopen/architecture
+/packages/platform/ @bopen/architecture @bopen/security
+/infrastructure/ @bopen/platform-engineering @bopen/security
+/research/ @bopen/research @bopen/legal
+/.github/ @bopen/engineering @bopen/security
