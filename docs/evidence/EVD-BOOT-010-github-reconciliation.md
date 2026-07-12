@@ -21,7 +21,9 @@ A linear, reviewable branch contains the complete governed bootstrap history on 
 
 ## Actual result
 
-The seven BOOT-P0 commits replayed successfully. The reconciliation branch is ready for validation and a protected pull request. GitHub publication and branch-protection evidence remain pending authentication and remote review.
+The seven BOOT-P0 commits replayed successfully. The reconciliation branch was published and draft PR #1 was opened against `main`. The GitHub Bootstrap Governance check passed in 7 seconds.
+
+The authenticated repository audit verified `bstBizEra` as the sole administrator and replaced placeholder CODEOWNERS identities with `@bstBizEra`. GitHub returned HTTP 403 for branch protection and repository rulesets because the repository is private and the current account plan does not provide those features. DEC-0008 records the required resolution; repository visibility was not changed.
 
 ## Artifacts/logs
 
@@ -29,12 +31,13 @@ The seven BOOT-P0 commits replayed successfully. The reconciliation branch is re
 - `docs/work-packages/BOOT-P0-01.md`
 - `docs/work-packages/BOOT-P0-08.md`
 - `artifacts/validation/bootstrap-gate-readiness-after-evidence.md`
+- `https://github.com/bstBizEra/bOPEN/pull/1`
 
 No credentials, upstream source, or production kernel logic were introduced.
 
 ## Reviewer
 
-Engineering Authority review is required on the GitHub pull request. Local bGitea ownership and protection remain separately pending.
+Engineering Authority review is required on GitHub pull request #1. Local bGitea ownership and protection remain separately pending and are the recommended BOOT-P0-08 enforcement path under DEC-0008.
 
 ## Decision
 

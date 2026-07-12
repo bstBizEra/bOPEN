@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 221,
+  "count": 222,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "5c8dcf81ee93ff66f6335f86b7c400b4275a34a81080bad03b1a18b8569e88ee",
-      "bytes": 3096
+      "sha256": "0e6a0adb1e541e15876c8bd0b1f1e1d15aa74657810f4c63c9551f4c261b495a",
+      "bytes": 3491
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -878,11 +878,18 @@
       "bytes": 1200
     },
     {
+      "path": "docs/decisions/DEC-0008.md",
+      "title": "DEC-0008 - Stable repository protection capability",
+      "status": "Proposed",
+      "sha256": "87a8a45f26ed2f8a784add1efd524daf4559e0f01a25a749cb612c448ed73cd0",
+      "bytes": 1168
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "0351fea6688ec822abd4a09d3e600a6efb5d7603844148c9e7e35f8208b94b3c",
-      "bytes": 824
+      "sha256": "77cd0b30fecbe45048e0375cb3db9f9ae569a675fc646989be5cf501d1853d2c",
+      "bytes": 943
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -951,8 +958,8 @@
       "path": "docs/evidence/EVD-BOOT-010-github-reconciliation.md",
       "title": "EVD-BOOT-010 - Approved GitHub history reconciliation",
       "status": "",
-      "sha256": "1d4bee5adfce1b9eca2e215d7d0015d3d7cf483b964905bf948daa9bcbe2160b",
-      "bytes": 1838
+      "sha256": "7c89107125f0216d5ddbaca9d3581d4cb17d6e22cd1f5e75c56f67f8fc037a97",
+      "bytes": 2310
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1364,8 +1371,8 @@
       "path": "docs/risks/RISK-REGISTER.md",
       "title": "Risk Register",
       "status": "",
-      "sha256": "88bba9035ad6848c5d6c641ab813783669de4f12443ff009b2916994ee67b0ab",
-      "bytes": 1631
+      "sha256": "489bef2949722324f5abe28b163fd3e614c53713e22cfb6114137ea0503a03f6",
+      "bytes": 1942
     },
     {
       "path": "docs/templates/adr-template.md",

@@ -12,3 +12,4 @@
 | RSK-008 | Documentation diverges from code | Governance | Same-change updates and traceability validation | Engineering | Open |
 | RSK-009 | Local bootstrap history and GitHub stable `main` history diverge | Release/source integrity | DEC-0006 option 1 approved; reconcile through protected branch and pull request; prohibit force-push | Engineering | Controlled |
 | RSK-010 | Local bGitea `origin` repository is not yet verified | Local collaboration blocked or pushed to wrong repo | Confirm or create local bGitea repository before configuring `origin` or pushing work branches | Engineering | Open |
+| RSK-011 | Private GitHub repository cannot enable branch protection on the current account plan | Stable review controls cannot be enforced on GitHub | Keep repository private; resolve DEC-0008 through bGitea enforcement or account upgrade; do not treat draft PR/CI alone as protection | Engineering | Open |

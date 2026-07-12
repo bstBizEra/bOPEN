@@ -53,9 +53,7 @@ def check_baseline(root: Path = ROOT) -> tuple[list[str], list[str]]:
             errors.append("bootstrap workflow must not request write-all permission")
 
     codeowners_path = root / ".github/CODEOWNERS"
-    if codeowners_path.is_file() and "Replace placeholders" in codeowners_path.read_text(
-        encoding="utf-8"
-    ):
+    if codeowners_path.is_file() and "@bopen/" in codeowners_path.read_text(encoding="utf-8"):
         warnings.append("CODEOWNERS identities remain pending external repository activation")
 
     return errors, warnings

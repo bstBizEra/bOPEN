@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-13 - GitHub draft review activation
+
+- Published the reconciliation branch and opened draft GitHub PR #1.
+- Recorded the passing Bootstrap Governance workflow result.
+- Replaced placeholder CODEOWNERS teams with verified repository administrator `@bstBizEra`.
+- Recorded DEC-0008 and RSK-011 after GitHub rejected private-repository branch protection under the current account plan.
+
 ## 2026-07-13 - approved GitHub reconciliation
 
 - Recorded sponsor approval of DEC-0006 option 1.
