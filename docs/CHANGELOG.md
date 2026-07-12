@@ -1,5 +1,14 @@
 # Documentation Changelog
 
+## 2026-07-13 - bGitea protected review activation
+
+- Created and verified the private `bst-sa/bopen` local source-of-truth repository and configured credential-free `origin`.
+- Added separated Gitea Architect, Engineer, and Reviewer teams with repository-only membership.
+- Installed the checksum-verified repository-scoped Gitea Runner 2.0.1 over rootless Podman.
+- Protected `main` against direct/force pushes and administrator bypass, with Reviewer-only approval and merge authority.
+- Added Gitea CODEOWNERS and governance workflow controls plus EVD-BOOT-011.
+- Reported the Gitea hardening incident and residual host decisions to SecB and bstSA SARCHI without credential values.
+
 ## 2026-07-13 - GitHub draft review activation
 
 - Published the reconciliation branch and opened draft GitHub PR #1.

@@ -1,11 +1,11 @@
-# Bootstrap owner verified through GitHub repository administration evidence.
-* @bstBizEra
-/AGENTS.md @bstBizEra
-/docs/ @bstBizEra
-/docs/07-security/ @bstBizEra
-/contracts/ @bstBizEra
-/services/ @bstBizEra
-/packages/platform/ @bstBizEra
-/infrastructure/ @bstBizEra
-/research/ @bstBizEra
-/.github/ @bstBizEra
+# Gitea code owners. GitHub uses .github/CODEOWNERS instead.
+* @bst-sa/bopen-reviewers
+/AGENTS.md @bst-sa/bopen-architects @bst-sa/bopen-reviewers
+/docs/ @bst-sa/bopen-architects @bst-sa/bopen-reviewers
+/docs/07-security/ @bst-sa/bopen-reviewers
+/contracts/ @bst-sa/bopen-reviewers
+/services/ @bst-sa/bopen-engineers @bst-sa/bopen-reviewers
+/packages/platform/ @bst-sa/bopen-architects @bst-sa/bopen-reviewers
+/infrastructure/ @bst-sa/bopen-reviewers
+/research/ @bst-sa/bopen-reviewers
+/.gitea/ @bst-sa/bopen-reviewers

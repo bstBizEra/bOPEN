@@ -17,8 +17,8 @@ origin  -> local bGitea, working branches and integration review
 github  -> GitHub stable mirror, protected main and releases only
 ```
 
-At the first EVD-BOOT-004 check, this working copy had no configured remotes. EVD-BOOT-004 now records the stable GitHub remote as `https://github.com/bstBizEra/bOPEN.git`. The local bGitea URL remains pending and should be configured as `origin` when available. Do not add placeholder remote URLs; record actual URLs in evidence when they are configured.
+At the first EVD-BOOT-004 check, this working copy had no configured remotes. The active remotes are now `origin` at `http://localhost:3030/bst-sa/bopen.git` and `github` at `https://github.com/bstBizEra/bOPEN.git`. Credentials are not embedded in either URL. EVD-BOOT-011 records creation and control verification for the private Gitea repository.
 
 The current local bootstrap history and GitHub `main` history are unrelated. Stable publication to GitHub requires an approved reconciliation path before `main` is pushed or protected. Do not force-push over GitHub `main` unless an approved emergency or repository replacement decision explicitly authorizes it.
 
-The local bGitea service is available at `http://localhost:3030/` with login at `http://localhost:3030/user/login`. The bOPEN repository URL has not been verified through an authenticated or public endpoint yet. Configure `origin` only after the local bGitea repository path is created or confirmed.
+The local bGitea service is available only through the host loopback at `http://localhost:3030/`, with login at `http://localhost:3030/user/login`. Gitea `main` was seeded from GitHub baseline `9a80f9d042f1ed176c9939bae57953443d0c5964` and is protected against direct and force pushes. Working changes enter through Gitea pull requests; reviewed stable versions are published separately to GitHub.

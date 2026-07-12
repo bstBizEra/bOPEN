@@ -1,6 +1,6 @@
 # BOOT-P0-08 — Ownership and review governance
 
-**Status:** External activation pending
+**Status:** External review pending
 **Owner:** Engineering Authority
 **Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
 **Phase:** Bootstrap P0
@@ -34,8 +34,8 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` plus pending external branch-protection evidence.
+`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` and `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md` plus the pending protected-review receipt.
 
 ## Residual activation
 
-CODEOWNERS paths and branch policy are prepared. Actual owner identities, required reviews, protected branch settings, and CI enforcement must be configured and evidenced in local bGitea before completion.
+Gitea owner identities, separated role teams, CODEOWNERS paths, required Reviewer approval, merge restriction, direct-push denial, and administrator compliance are configured and observed. Completion still requires a passing Gitea governance context, activation of that exact required context, Reviewer approval, and protected merge evidence.

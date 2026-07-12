@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 222,
+  "count": 223,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -545,8 +545,8 @@
       "path": "docs/08-engineering/branching.md",
       "title": "Branching",
       "status": "",
-      "sha256": "a3c2857cb8131734337883f78e57034faf9b8c944c4706d89b10c57f563e2cbf",
-      "bytes": 618
+      "sha256": "19dad5b13920df0f61381f9d577ee3efb48f78301ba80ffa83ab0962c1ed915d",
+      "bytes": 1309
     },
     {
       "path": "docs/08-engineering/ci-cd.md",
@@ -601,8 +601,8 @@
       "path": "docs/08-engineering/repository-model.md",
       "title": "Repository Model",
       "status": "",
-      "sha256": "140de832d239b7c174cb84f4a932766054459af7b8870b168b699911fd3a7a70",
-      "bytes": 2005
+      "sha256": "8bc8afb61cbb001eca923de233c612183700fac1117d0033fb461ad020da6458",
+      "bytes": 2096
     },
     {
       "path": "docs/08-engineering/testing-strategy.md",
@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "866aef84184626aa7c53ea473d897a9d836bf68f2dccf19f2afad892911ba462",
-      "bytes": 3632
+      "sha256": "bd84d83d48e3730c9583f5d1fcc78d1fd19a8810b9c53481ef16fba68f8ff035",
+      "bytes": 4318
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -881,8 +881,8 @@
       "path": "docs/decisions/DEC-0008.md",
       "title": "DEC-0008 - Stable repository protection capability",
       "status": "Approved",
-      "sha256": "e52e276555cbe733909f33ec5a8c9e1c3a7d29a542dc6d47ca325ce08d2860ba",
-      "bytes": 1385
+      "sha256": "f5eff141f1e8e771dcdc4d4b600b7f8fe5d74979896cf37a0be02001d1f81565",
+      "bytes": 1710
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -962,11 +962,18 @@
       "bytes": 2354
     },
     {
+      "path": "docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md",
+      "title": "EVD-BOOT-011 - bGitea protected review activation",
+      "status": "",
+      "sha256": "1463d5e8d82d43c65d28f0c457ac427ed03b007986bee17f3040ff747d2460a4",
+      "bytes": 3954
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "9cd0eb744db6c0085ea7cc2658d9e2425a5e68473de1c284dfc7aefb6242f0a1",
-      "bytes": 1725
+      "sha256": "7666f89f3d9a6e8b24b98a18f931b8c1ec8d04549a73397e198411d5c9770897",
+      "bytes": 1950
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1371,8 +1378,8 @@
       "path": "docs/risks/RISK-REGISTER.md",
       "title": "Risk Register",
       "status": "",
-      "sha256": "489bef2949722324f5abe28b163fd3e614c53713e22cfb6114137ea0503a03f6",
-      "bytes": 1942
+      "sha256": "fa4787169f610a1340b0d6545dd24b32306966ada893cd53f1e5eccba5df1d70",
+      "bytes": 1914
     },
     {
       "path": "docs/templates/adr-template.md",
@@ -1448,15 +1455,15 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "6d277d12dbc953d70b40a533b0fd235d7721ec73aba14cadb0e632e8efb30562",
-      "bytes": 2289
+      "sha256": "5b56065ee28e7341b6a7e6f5b933a5ddd7b5b10a1b6865f1d104cf033a9c470f",
+      "bytes": 2326
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
       "title": "BOOT-P0-01 \u2014 Repository initialization and protections",
-      "status": "External activation pending",
-      "sha256": "bfb1b3c3a31375bffba521fbcd9fe0003e9abd9487952082241242a8c7552456",
-      "bytes": 1280
+      "status": "External review pending",
+      "sha256": "72f499d9055ec0b464fc516ccae83e3e293411850197efaa5063590518db0aa3",
+      "bytes": 1445
     },
     {
       "path": "docs/work-packages/BOOT-P0-02.md",
@@ -1503,9 +1510,9 @@
     {
       "path": "docs/work-packages/BOOT-P0-08.md",
       "title": "BOOT-P0-08 \u2014 Ownership and review governance",
-      "status": "External activation pending",
-      "sha256": "d315b7b356e458a83ca2f802841a3eb173b0ef200e97e4078ffed08611d21334",
-      "bytes": 1244
+      "status": "External review pending",
+      "sha256": "4c09d9259bc4bd237ac0d45081fc51411a4a6f35919b0ab23f1d8b11fa5a9d97",
+      "bytes": 1441
     },
     {
       "path": "docs/work-packages/BOOT-P0-09.md",
@@ -1553,8 +1560,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "ff25b30e54088e1cc3a73a9d0ea1b923e991a0a39e1267fe607360b78423579e",
-      "bytes": 1676
+      "sha256": "942e4cf11c34f12fb9674d472d3bfa27e01d7f7fd42639853aea452e51869a74",
+      "bytes": 1668
     }
   ]
 }

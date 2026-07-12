@@ -1,0 +1,27 @@
+name: Bootstrap Governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate repository governance
+        run: python tools/validate_repository.py
+      - name: Validate draft contracts
+        run: python tools/validate_contracts.py
+      - name: Validate clean-room boundary
+        run: python tools/check_clean_room.py
+      - name: Scan repository for secrets
+        run: python tools/check_secrets.py
+      - name: Validate supply-chain baseline
+        run: python tools/check_supply_chain.py
+      - name: Run full bootstrap test suite
+        run: python -m unittest discover -s tests -p 'test_*.py'
