@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 215,
+  "count": 216,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "8385daaf088a2b5935b9483c7e81c7cef7e2267dd1bf4395659dc88505b83ff0",
-      "bytes": 1889
+      "sha256": "38033cbe2e098d13898cf473fc45291c827ff8fc6f93eca330a843c88487dba7",
+      "bytes": 2212
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -920,11 +920,18 @@
       "bytes": 2360
     },
     {
+      "path": "docs/evidence/EVD-BOOT-008-missing-bootstrap-evidence-closure.md",
+      "title": "EVD-BOOT-008 - Missing Bootstrap Evidence Closure",
+      "status": "",
+      "sha256": "6ec3b8e27051b8a0722feb98c0d527f70cfb9ef2728b8d2b2e9d9fa446f940cc",
+      "bytes": 2116
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "9f1badc5eefcdb6282ca596fb212f2b837c22b7b23849ffccf83e143bb7c58cb",
-      "bytes": 1212
+      "sha256": "caa3157947d8e48a44c7e669518500dd462ba9a4af2138e16de92a11905abed3",
+      "bytes": 1389
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1399,8 +1406,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "30c49eac918a75c8bf2ef878797f276f8c6630c1e3e21b35d33e4e6e06415be2",
-      "bytes": 1746
+      "sha256": "9db88f44406ea3e60897cccced0a5f514d23012ecd710e7df63601e07b017cf3",
+      "bytes": 1886
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1490,8 +1497,8 @@
       "path": "docs/work-packages/BOOTSTRAP-GATES.md",
       "title": "Bootstrap Gates",
       "status": "",
-      "sha256": "6d6ccecce3f018628f9840dcf5979916f0f80d38ba898e17705a2d348c5c9542",
-      "bytes": 1029
+      "sha256": "1b9472587cf3a6f95472607abcf52247b6093f9bcb9fc65901fc4c8841fcf591",
+      "bytes": 1193
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

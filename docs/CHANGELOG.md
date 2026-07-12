@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-13 - missing bootstrap evidence
+
+- Generated EVD-BOOT-001 AGENTS hierarchy validation evidence.
+- Generated EVD-BOOT-002 document manifest validation evidence.
+- Updated BOOTSTRAP-GATES B2/B3 status to evidence generated.
+- Refreshed the bootstrap gate readiness report so pending evidence is no longer listed.
+
 ## 2026-07-13 - bootstrap gate readiness
 
 - Added a deterministic bootstrap gate readiness report tool for BOOT-P0-12.
