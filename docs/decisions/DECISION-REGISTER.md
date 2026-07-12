@@ -9,4 +9,4 @@
 | DEC-0005 | Select identity provider/integration strategy | Pending | Security/Architecture Authorities |
 | DEC-0006 | Reconcile GitHub from existing main through a protected branch and pull request | Approved | Engineering Authority |
 | DEC-0007 | Review BOOT-P0 completion evidence and decide B7 exit | Pending | bOPEN Architecture Authority |
-| DEC-0008 | Select stable branch-protection capability for the private repository | Pending | Engineering Authority |
+| DEC-0008 | Enforce protected working branches in private bGitea and use GitHub for stable reviewed publication | Approved | Engineering Authority |

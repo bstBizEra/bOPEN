@@ -23,7 +23,7 @@ A linear, reviewable branch contains the complete governed bootstrap history on 
 
 The seven BOOT-P0 commits replayed successfully. The reconciliation branch was published and draft PR #1 was opened against `main`. The GitHub Bootstrap Governance check passed in 7 seconds.
 
-The authenticated repository audit verified `bstBizEra` as the sole administrator and replaced placeholder CODEOWNERS identities with `@bstBizEra`. GitHub returned HTTP 403 for branch protection and repository rulesets because the repository is private and the current account plan does not provide those features. DEC-0008 records the required resolution; repository visibility was not changed.
+The authenticated repository audit verified `bstBizEra` as the sole administrator and replaced placeholder CODEOWNERS identities with `@bstBizEra`. GitHub returned HTTP 403 for branch protection and repository rulesets because the repository is private and the current account plan does not provide those features. DEC-0008 option 2 records the approved resolution through private bGitea enforcement; repository visibility was not changed.
 
 ## Artifacts/logs
 

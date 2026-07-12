@@ -6,6 +6,7 @@
 - Recorded the passing Bootstrap Governance workflow result.
 - Replaced placeholder CODEOWNERS teams with verified repository administrator `@bstBizEra`.
 - Recorded DEC-0008 and RSK-011 after GitHub rejected private-repository branch protection under the current account plan.
+- Approved DEC-0008 option 2, preserving private bGitea as the protected working source and GitHub as the stable review/publication surface.
 
 ## 2026-07-13 - approved GitHub reconciliation
 

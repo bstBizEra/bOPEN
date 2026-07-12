@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "0e6a0adb1e541e15876c8bd0b1f1e1d15aa74657810f4c63c9551f4c261b495a",
-      "bytes": 3491
+      "sha256": "866aef84184626aa7c53ea473d897a9d836bf68f2dccf19f2afad892911ba462",
+      "bytes": 3632
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -880,16 +880,16 @@
     {
       "path": "docs/decisions/DEC-0008.md",
       "title": "DEC-0008 - Stable repository protection capability",
-      "status": "Proposed",
-      "sha256": "87a8a45f26ed2f8a784add1efd524daf4559e0f01a25a749cb612c448ed73cd0",
-      "bytes": 1168
+      "status": "Approved",
+      "sha256": "e52e276555cbe733909f33ec5a8c9e1c3a7d29a542dc6d47ca325ce08d2860ba",
+      "bytes": 1385
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "77cd0b30fecbe45048e0375cb3db9f9ae569a675fc646989be5cf501d1853d2c",
-      "bytes": 943
+      "sha256": "419adedee392ab8b31b47bcfd0faa6935ba673bd7480a3a4433c6f96e1e6658f",
+      "bytes": 974
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -958,8 +958,8 @@
       "path": "docs/evidence/EVD-BOOT-010-github-reconciliation.md",
       "title": "EVD-BOOT-010 - Approved GitHub history reconciliation",
       "status": "",
-      "sha256": "7c89107125f0216d5ddbaca9d3581d4cb17d6e22cd1f5e75c56f67f8fc037a97",
-      "bytes": 2310
+      "sha256": "ef97e3a90bc89449122942653b45288d6da4832f62c7879026955cde97a3a090",
+      "bytes": 2354
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
