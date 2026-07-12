@@ -12,3 +12,5 @@ schema_version, data, metadata
 ```
 
 Usage and audit events may extend this envelope but have separate schemas and retention rules.
+
+The first draft audit-event schema for authorization outcomes is `docs/06-contracts/events/audit-event.schema.json`.
