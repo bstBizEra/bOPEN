@@ -35,7 +35,7 @@ bOPEN has executable, independently reviewable development inputs for the minimu
 - Clean-room validation: PASS.
 - Secret scan: PASS.
 - Supply-chain baseline: PASS.
-- Full tests: PASS, 42 tests.
+- Full tests: PASS, 43 tests.
 
 The contracts enforce these draft invariants:
 

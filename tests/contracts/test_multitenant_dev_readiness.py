@@ -209,6 +209,17 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             with self.subTest(value=invalid_value):
                 self.assertTrue(any("DATE-TIME INVALID" in error for error in errors))
 
+    def test_validator_handles_non_string_context_dates_as_errors(self):
+        for invalid_value in (123, None):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["instances"]["active_contexts"]["context-alpha-owner"]["issued_at"] = invalid_value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(value=invalid_value):
+                self.assertTrue(any("TYPE INVALID" in error for error in errors))
+                self.assertTrue(any("TIME WINDOW INVALID" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

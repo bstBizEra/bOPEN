@@ -159,7 +159,9 @@ def validate_schema_instance(instance: object, schema: dict, label: str) -> list
     return errors
 
 
-def parse_rfc3339_datetime(value: str) -> datetime | None:
+def parse_rfc3339_datetime(value: object) -> datetime | None:
+    if not isinstance(value, str):
+        return None
     if "T" not in value or RFC3339_OFFSET.search(value) is None:
         return None
     try:
