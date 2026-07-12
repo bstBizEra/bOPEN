@@ -56,6 +56,9 @@ def validate_json_contract(path: Path, root: Path = ROOT) -> list[str]:
             if required_key not in data:
                 errors.append(f"SCHEMA METADATA MISSING {rel}: {required_key}")
 
+    if path.name.endswith(".acceptance.json"):
+        errors.extend(validate_acceptance_fixture(data, rel))
+
     if schema_id is not None and not isinstance(schema_id, str):
         errors.append(f"SCHEMA ID MUST BE STRING: {rel}")
     elif isinstance(schema_id, str):
@@ -66,6 +69,71 @@ def validate_json_contract(path: Path, root: Path = ROOT) -> list[str]:
 
     if status is not None and status not in {"draft", "approved", "deprecated"}:
         errors.append(f"UNKNOWN CONTRACT STATUS {rel}: {status}")
+
+    return errors
+
+
+def validate_acceptance_fixture(data: dict, rel: Path) -> list[str]:
+    errors: list[str] = []
+    required_top_level = ("id", "status", "work_package", "chain", "scenarios")
+    for key in required_top_level:
+        if key not in data:
+            errors.append(f"ACCEPTANCE FIXTURE FIELD MISSING {rel}: {key}")
+
+    if data.get("status") != "draft":
+        errors.append(f"ACCEPTANCE FIXTURE MUST BE DRAFT: {rel}")
+
+    scenarios = data.get("scenarios")
+    if not isinstance(scenarios, list) or not scenarios:
+        errors.append(f"ACCEPTANCE FIXTURE SCENARIOS MISSING: {rel}")
+        return errors
+
+    saw_deny = False
+    for index, scenario in enumerate(scenarios, start=1):
+        prefix = f"{rel} scenario {index}"
+        if not isinstance(scenario, dict):
+            errors.append(f"ACCEPTANCE SCENARIO MUST BE OBJECT: {prefix}")
+            continue
+
+        for key in ("id", "title", "authorization_decision", "audit_event"):
+            if key not in scenario:
+                errors.append(f"ACCEPTANCE SCENARIO FIELD MISSING {prefix}: {key}")
+
+        decision = scenario.get("authorization_decision")
+        audit_event = scenario.get("audit_event")
+        if not isinstance(decision, dict) or not isinstance(audit_event, dict):
+            continue
+
+        for key in ("decision", "reason_code", "policy_version", "correlation_id"):
+            if key not in decision:
+                errors.append(f"AUTHORIZATION DECISION FIELD MISSING {prefix}: {key}")
+
+        if decision.get("decision") == "DENY":
+            saw_deny = True
+        elif decision.get("decision") != "ALLOW":
+            errors.append(f"AUTHORIZATION DECISION INVALID {prefix}: decision")
+
+        for key in (
+            "event_id",
+            "event_type",
+            "event_version",
+            "occurred_at",
+            "principal_id",
+            "tenant_id",
+            "resource_type",
+            "resource_id",
+            "action",
+            "result",
+            "correlation_id",
+        ):
+            if key not in audit_event:
+                errors.append(f"AUDIT EVENT FIELD MISSING {prefix}: {key}")
+
+        if decision.get("correlation_id") != audit_event.get("correlation_id"):
+            errors.append(f"CORRELATION ID MISMATCH: {prefix}")
+
+    if not saw_deny:
+        errors.append(f"ACCEPTANCE FIXTURE MUST INCLUDE DENY SCENARIO: {rel}")
 
     return errors
 

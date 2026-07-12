@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 210,
+  "count": 214,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -409,6 +409,20 @@
       "bytes": 86
     },
     {
+      "path": "docs/06-contracts/acceptance/first-vertical-slice.acceptance.json",
+      "title": "",
+      "status": "",
+      "sha256": "f116df78de905ae8af7386b4f05228a0a7dfb28696416b8a647d33c4cedfebfb",
+      "bytes": 7798
+    },
+    {
+      "path": "docs/06-contracts/acceptance/README.md",
+      "title": "Acceptance Contract Fixtures",
+      "status": "",
+      "sha256": "2981047bccf7477ba333da8f9787b11e8bae78a4e681906f42120def509dff95",
+      "bytes": 279
+    },
+    {
       "path": "docs/06-contracts/agents/agent-tool-contract.md",
       "title": "Agent Tool Contract",
       "status": "",
@@ -426,15 +440,22 @@
       "path": "docs/06-contracts/contract-governance.md",
       "title": "Contract Governance",
       "status": "",
-      "sha256": "593c8a106f6a3a72a758b19ea322b3143186590c9608d1a00af8019c59292dfb",
-      "bytes": 450
+      "sha256": "11f31d150db21464762aeccaab6a8b2f66773e942de94a7d76ed33abc653ef39",
+      "bytes": 670
+    },
+    {
+      "path": "docs/06-contracts/events/audit-event.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "8969e1d038c8e965c6de595634bce0e029844d3fec9ac9eb197eb2fe93b25057",
+      "bytes": 1530
     },
     {
       "path": "docs/06-contracts/events/event-envelope.md",
       "title": "Event Envelope",
       "status": "",
-      "sha256": "9d1ad2b236a432ad9511044dc8b4b1519c38eaac8912e93872761d0cdc122f96",
-      "bytes": 350
+      "sha256": "ec38041d3e42e4e1a5e9ff2a3b4beeb48d72965004b8725a3eeeeb59855afe10",
+      "bytes": 468
     },
     {
       "path": "docs/06-contracts/modules/module-manifest.example.yaml",
@@ -839,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "b03eb85e3c493858ef415b6c00758a5d38e329fe4cc9513bdae6abc905b5fa16",
-      "bytes": 1183
+      "sha256": "ecfa80781b5b7aaa7977c6099582e8b62bca9bdfec94fc5cd79bef7602b9f06a",
+      "bytes": 1547
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -885,11 +906,18 @@
       "bytes": 2755
     },
     {
+      "path": "docs/evidence/EVD-BOOT-006-first-vertical-slice-fixtures.md",
+      "title": "EVD-BOOT-006 - First Vertical-Slice Acceptance Fixtures",
+      "status": "",
+      "sha256": "04ae34256789ac137ef4ce65fb31c59854bf9be9e16cefbd4e8c95e20e622822",
+      "bytes": 2734
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "68449fcd1843904b39ec5a0c1ccd9bc5e5b94c4c746c42ff433385ea791c5649",
-      "bytes": 913
+      "sha256": "a18242f74e0495e02b1598d44c001e92faf269debb4ceb6a0e9841eea0530b92",
+      "bytes": 1072
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1364,8 +1392,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "8f1eae64035bafda70ea4ad8cbe561c4fe0683dec815b4e703c83ab86671adb7",
-      "bytes": 1435
+      "sha256": "c40c6405a14aa071fadecc382608719bdc70377e8c9472d82512fe5d1a839ee5",
+      "bytes": 1593
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1462,8 +1490,8 @@
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
-      "sha256": "aad0393d3becdb20497d2074d4d8dee9dbc090a8487d3ad31f12bd3f241bbf7f",
-      "bytes": 1193
+      "sha256": "0e701a27c2c11021e5f5143edc7864353c181fbed1ef101fc5677f18f3641e77",
+      "bytes": 1531
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

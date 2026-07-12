@@ -1,5 +1,13 @@
 # Documentation Changelog
 
+## 2026-07-13 - vertical-slice fixtures
+
+- Added the first vertical-slice acceptance fixture for BOOT-P0-11.
+- Added a draft authorization audit-event schema.
+- Extended contract validation to check `.acceptance.json` fixtures and correlation consistency.
+- Added contract tests covering the seven first-slice acceptance scenarios.
+- Added EVD-BOOT-006 evidence.
+
 ## 2026-07-13 - first coding move
 
 - Added a standard-library contract validation harness for Phase 0 machine-readable contracts.
