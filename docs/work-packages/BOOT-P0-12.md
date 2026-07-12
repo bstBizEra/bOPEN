@@ -1,9 +1,10 @@
 # BOOT-P0-12 — Bootstrap exit gate
 
-**Status:** Proposed  
-**Owner:** Unassigned  
-**Phase:** Bootstrap P0  
-**Dependencies:** See register  
+**Status:** Authority review pending
+**Owner:** bOPEN Architecture Authority
+**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
+**Phase:** Bootstrap P0
+**Dependencies:** See register
 
 ## Objective
 
@@ -33,7 +34,7 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/<evidence-id>.md` or approved CI/review reference.
+EVD-BOOT-007, EVD-BOOT-008, `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`, and DEC-0007.
 
 ## Current readiness artifact
 

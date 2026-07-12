@@ -1,5 +1,13 @@
 # Documentation Changelog
 
+## 2026-07-13 - BOOT-P0 completion self-review
+
+- Audited all BOOT-P0-01 through BOOT-P0-12 outcomes against current evidence.
+- Added executable secret and supply-chain checks with tests and full CI/pre-commit coverage.
+- Added the missing exception register and formal DEC-0006/DEC-0007 decision requests.
+- Classified ten packages as execution-complete, two as external-activation-pending, and BOOT-P0-12 as authority-review-pending.
+- Recorded EVD-BOOT-009 without retaining local bGitea credentials.
+
 ## 2026-07-13 - missing bootstrap evidence
 
 - Generated EVD-BOOT-001 AGENTS hierarchy validation evidence.

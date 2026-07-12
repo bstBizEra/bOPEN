@@ -1,18 +1,24 @@
 # Bootstrap Gate Readiness Report
 
-**Bootstrap review state:** `review_required`
+**Bootstrap review state:** `incomplete`
+**B7 review ready:** `false`
 **Production implementation authorized:** `false`
 **Gate count:** 8
 **B7 status:** Pending execution review
 
 ## Blockers
 
+- Some BOOT-P0 execution packages require external activation.
 - B7 exit gate is not approved.
-- Required implementation artifacts do not grant implementation authority.
 
 ## Pending Evidence
 
 - None
+
+## Execution Packages Pending
+
+- BOOT-P0-01: External activation pending
+- BOOT-P0-08: External activation pending
 
 ## Implementation Authority Gaps
 

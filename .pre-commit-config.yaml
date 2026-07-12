@@ -6,3 +6,23 @@ repos:
         entry: python tools/validate_repository.py
         language: system
         pass_filenames: false
+      - id: bopen-contracts
+        name: bOPEN contract validation
+        entry: python tools/validate_contracts.py
+        language: system
+        pass_filenames: false
+      - id: bopen-clean-room
+        name: bOPEN clean-room validation
+        entry: python tools/check_clean_room.py
+        language: system
+        pass_filenames: false
+      - id: bopen-secrets
+        name: bOPEN secret scan
+        entry: python tools/check_secrets.py
+        language: system
+        pass_filenames: false
+      - id: bopen-supply-chain
+        name: bOPEN supply-chain baseline
+        entry: python tools/check_supply_chain.py
+        language: system
+        pass_filenames: false

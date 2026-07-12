@@ -9,11 +9,16 @@ class BootstrapGateReportTests(unittest.TestCase):
     def test_repository_report_requires_review_and_blocks_production_implementation(self):
         report = build_report()
 
-        self.assertEqual(report["bootstrap_review_state"], "review_required")
+        self.assertEqual(report["bootstrap_review_state"], "incomplete")
+        self.assertFalse(report["b7_review_ready"])
         self.assertFalse(report["production_implementation_authorized"])
         self.assertEqual(report["b7_status"], "Pending execution review")
         self.assertGreaterEqual(len(report["blockers"]), 1)
         self.assertEqual(report["pending_evidence"], [])
+        self.assertEqual(
+            [item["ID"] for item in report["execution_pending_packages"]],
+            ["BOOT-P0-01", "BOOT-P0-08"],
+        )
 
     def test_report_flags_pending_evidence_and_no_implementation_authority(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -26,6 +31,16 @@ class BootstrapGateReportTests(unittest.TestCase):
 | Gate | Criteria | Status |
 |---|---|---|
 | B7 Exit | Validation evidence reviewed and next work authorized | Pending execution review |
+""",
+                encoding="utf-8",
+            )
+            (root / "docs/work-packages/WORK-PACKAGE-REGISTER.md").write_text(
+                """# Work-Package Register
+
+| ID | Title | Status | Primary outcome |
+|---|---|---|---|
+| BOOT-P0-01 | Repository | Execution complete | Repository initialized |
+| BOOT-P0-12 | Exit | Authority review pending | Review B7 |
 """,
                 encoding="utf-8",
             )
@@ -50,7 +65,7 @@ class BootstrapGateReportTests(unittest.TestCase):
 
             report = build_report(root)
 
-        self.assertEqual(report["bootstrap_review_state"], "review_required")
+        self.assertEqual(report["bootstrap_review_state"], "incomplete")
         self.assertEqual(len(report["pending_evidence"]), 1)
         self.assertEqual(len(report["implementation_blocking_docs"]), 1)
 
@@ -58,10 +73,12 @@ class BootstrapGateReportTests(unittest.TestCase):
         report = format_report(
             {
                 "bootstrap_review_state": "review_required",
+                "b7_review_ready": True,
                 "production_implementation_authorized": False,
                 "gate_count": 8,
                 "b7_status": "Pending execution review",
                 "pending_evidence": [],
+                "execution_pending_packages": [],
                 "implementation_blocking_docs": [],
                 "blockers": ["B7 exit gate is not approved."],
             }
