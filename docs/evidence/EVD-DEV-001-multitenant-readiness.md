@@ -18,10 +18,10 @@
 
 1. Preserved approved Gitea reconciliation SHA `c0de0f240497381ce0e4b93ebe0de419a8229bbc` and created a separate stacked work branch.
 2. Defined draft membership, active-context, and tenant-ownership JSON Schemas.
-3. Added seven synthetic readiness scenarios covering one valid context and six deny-by-default boundaries.
+3. Added schema-conforming synthetic membership, active-context, and ownership instance catalogs composed by seven readiness scenarios.
 4. Represented cross-tenant denial separately at API and database enforcement layers.
 5. Extended the contract validator to reject membership/authorization conflation, client-validated context, missing tenant ownership, incomplete scenario coverage, and non-denying negative cases.
-6. Added focused tests for schema boundaries, trusted context sources, deny behavior, API/database isolation, and audit correlation.
+6. Added focused tests for direct schema-instance validity, schema boundaries, trusted context sources, denial semantics, API/database isolation, and audit correlation.
 7. Ran the complete repository validation suite.
 
 ## Expected result
@@ -35,7 +35,7 @@ bOPEN has executable, independently reviewable development inputs for the minimu
 - Clean-room validation: PASS.
 - Secret scan: PASS.
 - Supply-chain baseline: PASS.
-- Full tests: PASS, 32 tests.
+- Full tests: PASS, 38 tests.
 
 The contracts enforce these draft invariants:
 

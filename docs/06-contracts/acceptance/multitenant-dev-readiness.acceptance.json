@@ -16,6 +16,83 @@
     "bopen://schemas/tenancy/tenant-ownership/0.1.0-draft",
     "bopen://schemas/authorization-decision/0.1.0-draft"
   ],
+  "instances": {
+    "memberships": {
+      "membership-alpha-owner": {
+        "membership_id": "membership-alpha-owner",
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-alpha",
+        "state": "active",
+        "created_at": "2026-07-13T03:00:00+07:00",
+        "updated_at": "2026-07-13T03:00:00+07:00",
+        "valid_until": null
+      },
+      "membership-alpha-suspended": {
+        "membership_id": "membership-alpha-suspended",
+        "principal_id": "principal-suspended",
+        "tenant_id": "tenant-alpha",
+        "state": "suspended",
+        "created_at": "2026-07-13T03:00:00+07:00",
+        "updated_at": "2026-07-13T03:05:00+07:00",
+        "valid_until": null
+      }
+    },
+    "active_contexts": {
+      "context-alpha-owner": {
+        "context_id": "context-alpha-owner",
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-owner",
+        "status": "active",
+        "validation_source": "server_session",
+        "issued_at": "2026-07-13T03:10:00+07:00",
+        "expires_at": "2026-07-13T04:10:00+07:00",
+        "correlation_id": "context-corr-alpha-owner"
+      },
+      "context-alpha-suspended": {
+        "context_id": "context-alpha-suspended",
+        "principal_id": "principal-suspended",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-suspended",
+        "status": "active",
+        "validation_source": "server_session",
+        "issued_at": "2026-07-13T03:10:00+07:00",
+        "expires_at": "2026-07-13T04:10:00+07:00",
+        "correlation_id": "context-corr-alpha-suspended"
+      },
+      "context-beta-with-alpha-membership": {
+        "context_id": "context-beta-with-alpha-membership",
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-beta",
+        "membership_id": "membership-alpha-owner",
+        "status": "active",
+        "validation_source": "server_session",
+        "issued_at": "2026-07-13T03:10:00+07:00",
+        "expires_at": "2026-07-13T04:10:00+07:00",
+        "correlation_id": "context-corr-beta-mismatch"
+      }
+    },
+    "resource_ownership": {
+      "tenant-alpha": {
+        "tenant_id": "tenant-alpha",
+        "resource_type": "tenant",
+        "resource_id": "tenant-alpha",
+        "ownership_version": 1
+      },
+      "tenant-beta": {
+        "tenant_id": "tenant-beta",
+        "resource_type": "tenant",
+        "resource_id": "tenant-beta",
+        "ownership_version": 1
+      },
+      "document-beta-001": {
+        "tenant_id": "tenant-beta",
+        "resource_type": "document",
+        "resource_id": "document-beta-001",
+        "ownership_version": 1
+      }
+    }
+  },
   "chain": [
     "resolve_principal",
     "load_server_validated_context",
@@ -29,6 +106,11 @@
       "id": "MTD-001",
       "title": "Active membership and matching ownership allow tenant read",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-alpha-owner",
+        "resource_ownership": "tenant-alpha"
+      },
       "context": {
         "principal_id": "principal-alpha-owner",
         "tenant_id": "tenant-alpha",
@@ -71,6 +153,11 @@
       "id": "MTD-002",
       "title": "Missing membership denies tenant read",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": null,
+        "active_context": null,
+        "resource_ownership": "tenant-alpha"
+      },
       "context": {
         "principal_id": "principal-no-membership",
         "tenant_id": "tenant-alpha",
@@ -113,6 +200,11 @@
       "id": "MTD-003",
       "title": "Suspended membership denies tenant read",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-suspended",
+        "active_context": "context-alpha-suspended",
+        "resource_ownership": "tenant-alpha"
+      },
       "context": {
         "principal_id": "principal-suspended",
         "tenant_id": "tenant-alpha",
@@ -155,6 +247,11 @@
       "id": "MTD-004",
       "title": "Client-forged tenant context is denied",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-alpha-owner",
+        "resource_ownership": "tenant-beta"
+      },
       "context": {
         "principal_id": "principal-alpha-owner",
         "tenant_id": "tenant-beta",
@@ -169,7 +266,7 @@
       },
       "authorization_decision": {
         "decision": "DENY",
-        "reason_code": "ACTIVE_CONTEXT_NOT_SERVER_VALIDATED",
+        "reason_code": "CLIENT_TENANT_OVERRIDE_DENIED",
         "policy_version": "authz-policy-draft-0.2.0",
         "correlation_id": "corr-mtd-004",
         "evaluated_scope": {
@@ -188,7 +285,7 @@
         "resource_id": "tenant-beta",
         "action": "tenant.read",
         "result": "DENY",
-        "reason_code": "ACTIVE_CONTEXT_NOT_SERVER_VALIDATED",
+        "reason_code": "CLIENT_TENANT_OVERRIDE_DENIED",
         "policy_version": "authz-policy-draft-0.2.0",
         "correlation_id": "corr-mtd-004"
       }
@@ -197,6 +294,11 @@
       "id": "MTD-005",
       "title": "Membership tenant mismatch is denied",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-beta-with-alpha-membership",
+        "resource_ownership": "tenant-beta"
+      },
       "context": {
         "principal_id": "principal-alpha-owner",
         "tenant_id": "tenant-beta",
@@ -240,6 +342,11 @@
       "id": "MTD-006",
       "title": "Cross-tenant resource read is denied at the API boundary",
       "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-alpha-owner",
+        "resource_ownership": "document-beta-001"
+      },
       "context": {
         "principal_id": "principal-alpha-owner",
         "tenant_id": "tenant-alpha",
@@ -283,6 +390,11 @@
       "id": "MTD-007",
       "title": "Cross-tenant resource read is denied at the database boundary",
       "enforcement_layer": "database",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-alpha-owner",
+        "resource_ownership": "document-beta-001"
+      },
       "context": {
         "principal_id": "principal-alpha-owner",
         "tenant_id": "tenant-alpha",

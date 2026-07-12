@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 
 
@@ -59,7 +60,7 @@ def validate_json_contract(path: Path, root: Path = ROOT) -> list[str]:
     if path.name.endswith(".acceptance.json"):
         errors.extend(validate_acceptance_fixture(data, rel))
         if path.name == "multitenant-dev-readiness.acceptance.json":
-            errors.extend(validate_multitenant_readiness_fixture(data, rel))
+            errors.extend(validate_multitenant_readiness_fixture(data, rel, root))
 
     if path.parent.name == "tenancy" and path.name.endswith(".schema.json"):
         errors.extend(validate_tenancy_schema(data, rel, path.name))
@@ -109,7 +110,58 @@ def validate_tenancy_schema(data: dict, rel: Path, name: str) -> list[str]:
     return errors
 
 
-def validate_multitenant_readiness_fixture(data: dict, rel: Path) -> list[str]:
+def validate_schema_instance(instance: object, schema: dict, label: str) -> list[str]:
+    """Validate the JSON Schema subset used by the DEV-P0-01 contracts."""
+    errors: list[str] = []
+    if not isinstance(instance, dict):
+        return [f"CONTRACT INSTANCE MUST BE OBJECT: {label}"]
+
+    properties = schema.get("properties", {})
+    required = schema.get("required", [])
+    for key in required:
+        if key not in instance:
+            errors.append(f"CONTRACT INSTANCE FIELD MISSING {label}: {key}")
+    if schema.get("additionalProperties") is False:
+        for key in set(instance).difference(properties):
+            errors.append(f"CONTRACT INSTANCE UNKNOWN FIELD {label}: {key}")
+
+    type_checks = {
+        "string": lambda value: isinstance(value, str),
+        "integer": lambda value: isinstance(value, int) and not isinstance(value, bool),
+        "null": lambda value: value is None,
+        "object": lambda value: isinstance(value, dict),
+        "array": lambda value: isinstance(value, list),
+        "boolean": lambda value: isinstance(value, bool),
+    }
+    for key, value in instance.items():
+        definition = properties.get(key)
+        if not isinstance(definition, dict):
+            continue
+        allowed_types = definition.get("type")
+        if isinstance(allowed_types, str):
+            allowed_types = [allowed_types]
+        if isinstance(allowed_types, list) and not any(
+            type_checks.get(item, lambda _value: False)(value) for item in allowed_types
+        ):
+            errors.append(f"CONTRACT INSTANCE TYPE INVALID {label}: {key}")
+            continue
+        if "enum" in definition and value not in definition["enum"]:
+            errors.append(f"CONTRACT INSTANCE ENUM INVALID {label}: {key}")
+        if isinstance(value, str) and len(value) < definition.get("minLength", 0):
+            errors.append(f"CONTRACT INSTANCE STRING TOO SHORT {label}: {key}")
+        if isinstance(value, int) and not isinstance(value, bool) and value < definition.get("minimum", value):
+            errors.append(f"CONTRACT INSTANCE MINIMUM INVALID {label}: {key}")
+        if definition.get("format") == "date-time" and isinstance(value, str):
+            try:
+                datetime.fromisoformat(value.replace("Z", "+00:00"))
+            except ValueError:
+                errors.append(f"CONTRACT INSTANCE DATE-TIME INVALID {label}: {key}")
+    return errors
+
+
+def validate_multitenant_readiness_fixture(
+    data: dict, rel: Path, root: Path = ROOT
+) -> list[str]:
     errors: list[str] = []
     if data.get("work_package") != "DEV-P0-01":
         errors.append(f"MULTITENANT FIXTURE WORK PACKAGE INVALID: {rel}")
@@ -122,6 +174,31 @@ def validate_multitenant_readiness_fixture(data: dict, rel: Path) -> list[str]:
     if not required_contracts.issubset(set(data.get("contracts", []))):
         errors.append(f"MULTITENANT FIXTURE CONTRACT REFERENCES MISSING: {rel}")
 
+    instances = data.get("instances")
+    if not isinstance(instances, dict):
+        return errors + [f"MULTITENANT CONTRACT INSTANCES MISSING: {rel}"]
+    instance_groups = {
+        "membership": ("memberships", "membership.schema.json"),
+        "active_context": ("active_contexts", "active-context.schema.json"),
+        "resource_ownership": ("resource_ownership", "tenant-ownership.schema.json"),
+    }
+    schemas: dict[str, dict] = {}
+    for ref_name, (group_name, schema_name) in instance_groups.items():
+        schema_path = root / "docs/06-contracts/tenancy" / schema_name
+        schema, parse_error = read_json(schema_path)
+        if parse_error or not isinstance(schema, dict):
+            errors.append(f"MULTITENANT INSTANCE SCHEMA INVALID {rel}: {schema_name}")
+            continue
+        schemas[ref_name] = schema
+        group = instances.get(group_name)
+        if not isinstance(group, dict) or not group:
+            errors.append(f"MULTITENANT INSTANCE GROUP MISSING {rel}: {group_name}")
+            continue
+        for instance_id, instance in group.items():
+            errors.extend(
+                validate_schema_instance(instance, schema, f"{rel} {group_name}.{instance_id}")
+            )
+
     scenarios = data.get("scenarios", [])
     expected_ids = [f"MTD-{index:03d}" for index in range(1, 8)]
     actual_ids = [scenario.get("id") for scenario in scenarios if isinstance(scenario, dict)]
@@ -130,6 +207,7 @@ def validate_multitenant_readiness_fixture(data: dict, rel: Path) -> list[str]:
         return errors
 
     by_id = {scenario["id"]: scenario for scenario in scenarios}
+    resolved: dict[str, dict[str, object | None]] = {}
     for scenario_id, scenario in by_id.items():
         context = scenario.get("context")
         resource = scenario.get("resource")
@@ -140,28 +218,82 @@ def validate_multitenant_readiness_fixture(data: dict, rel: Path) -> list[str]:
             continue
         if layer not in {"api", "database"}:
             errors.append(f"MULTITENANT ENFORCEMENT LAYER INVALID {rel}: {scenario_id}")
+        refs = scenario.get("instance_refs")
+        if not isinstance(refs, dict):
+            errors.append(f"MULTITENANT INSTANCE REFS MISSING {rel}: {scenario_id}")
+            continue
+        resolved[scenario_id] = {}
+        for ref_name, (group_name, _schema_name) in instance_groups.items():
+            ref = refs.get(ref_name)
+            if ref is None:
+                resolved[scenario_id][ref_name] = None
+                continue
+            group = instances.get(group_name, {})
+            if not isinstance(group, dict) or ref not in group:
+                errors.append(f"MULTITENANT INSTANCE REF INVALID {rel}: {scenario_id}.{ref_name}")
+                continue
+            resolved[scenario_id][ref_name] = group[ref]
         if scenario_id == "MTD-001":
             if decision.get("decision") != "ALLOW":
                 errors.append(f"VALID TENANT CONTEXT MUST ALLOW {rel}: {scenario_id}")
-            if context.get("tenant_id") != resource.get("tenant_id"):
+            membership = resolved[scenario_id].get("membership")
+            active_context = resolved[scenario_id].get("active_context")
+            ownership = resolved[scenario_id].get("resource_ownership")
+            if not all(isinstance(item, dict) for item in (membership, active_context, ownership)):
+                errors.append(f"VALID CONTRACT COMPOSITION MISSING {rel}: {scenario_id}")
+                continue
+            if active_context.get("tenant_id") != ownership.get("tenant_id"):
                 errors.append(f"VALID TENANT OWNERSHIP MUST MATCH {rel}: {scenario_id}")
-            if context.get("membership_state") != "active":
+            if membership.get("state") != "active":
                 errors.append(f"VALID MEMBERSHIP MUST BE ACTIVE {rel}: {scenario_id}")
-            if context.get("validation_source") not in {"server_session", "trusted_service"}:
+            if active_context.get("membership_id") != membership.get("membership_id"):
+                errors.append(f"VALID CONTEXT MEMBERSHIP MUST MATCH {rel}: {scenario_id}")
+            if active_context.get("validation_source") not in {"server_session", "trusted_service"}:
                 errors.append(f"VALID CONTEXT MUST BE SERVER VALIDATED {rel}: {scenario_id}")
         elif decision.get("decision") != "DENY":
             errors.append(f"NEGATIVE MULTITENANT SCENARIO MUST DENY {rel}: {scenario_id}")
 
-    if by_id["MTD-004"].get("context", {}).get("validation_source") != "client_input":
-        errors.append(f"FORGED CONTEXT SCENARIO MISSING: {rel}")
-    if by_id["MTD-005"].get("authorization_decision", {}).get("reason_code") != "MEMBERSHIP_TENANT_MISMATCH":
-        errors.append(f"MEMBERSHIP TENANT MISMATCH DENIAL MISSING: {rel}")
+    expected_reasons = {
+        "MTD-002": "NO_ACTIVE_MEMBERSHIP",
+        "MTD-003": "MEMBERSHIP_NOT_ACTIVE",
+        "MTD-004": "CLIENT_TENANT_OVERRIDE_DENIED",
+        "MTD-005": "MEMBERSHIP_TENANT_MISMATCH",
+        "MTD-006": "CROSS_TENANT_ACCESS_DENIED",
+        "MTD-007": "DATABASE_TENANT_POLICY_DENIED",
+    }
+    for scenario_id, reason in expected_reasons.items():
+        if by_id[scenario_id].get("authorization_decision", {}).get("reason_code") != reason:
+            errors.append(f"MULTITENANT DENIAL REASON INVALID {rel}: {scenario_id}")
+
+    if resolved.get("MTD-002", {}).get("membership") is not None or resolved.get("MTD-002", {}).get("active_context") is not None:
+        errors.append(f"MISSING MEMBERSHIP SCENARIO INVALID: {rel}")
+    suspended = resolved.get("MTD-003", {}).get("membership")
+    if not isinstance(suspended, dict) or suspended.get("state") != "suspended":
+        errors.append(f"SUSPENDED MEMBERSHIP SCENARIO INVALID: {rel}")
+    forged_claim = by_id["MTD-004"].get("context", {})
+    server_context = resolved.get("MTD-004", {}).get("active_context")
+    if (
+        not isinstance(server_context, dict)
+        or forged_claim.get("validation_source") != "client_input"
+        or forged_claim.get("tenant_id") == server_context.get("tenant_id")
+    ):
+        errors.append(f"FORGED CONTEXT SCENARIO INVALID: {rel}")
+    mismatch_membership = resolved.get("MTD-005", {}).get("membership")
+    mismatch_context = resolved.get("MTD-005", {}).get("active_context")
+    if (
+        not isinstance(mismatch_membership, dict)
+        or not isinstance(mismatch_context, dict)
+        or mismatch_membership.get("tenant_id") == mismatch_context.get("tenant_id")
+    ):
+        errors.append(f"MEMBERSHIP TENANT MISMATCH SCENARIO INVALID: {rel}")
 
     cross_tenant_layers = {
         by_id[scenario_id].get("enforcement_layer")
         for scenario_id in ("MTD-006", "MTD-007")
-        if by_id[scenario_id].get("context", {}).get("tenant_id")
-        != by_id[scenario_id].get("resource", {}).get("tenant_id")
+        if isinstance(resolved.get(scenario_id, {}).get("active_context"), dict)
+        and isinstance(resolved.get(scenario_id, {}).get("resource_ownership"), dict)
+        and resolved[scenario_id]["active_context"].get("tenant_id")
+        != resolved[scenario_id]["resource_ownership"].get("tenant_id")
         and by_id[scenario_id].get("authorization_decision", {}).get("decision") == "DENY"
     }
     if cross_tenant_layers != {"api", "database"}:

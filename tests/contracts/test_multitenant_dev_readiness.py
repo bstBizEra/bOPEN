@@ -8,6 +8,7 @@ from pathlib import Path
 from tools.validate_contracts import (
     validate_contracts,
     validate_multitenant_readiness_fixture,
+    validate_schema_instance,
     validate_tenancy_schema,
 )
 
@@ -22,6 +23,11 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
     def setUpClass(cls):
         cls.fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))
         cls.scenarios = {scenario["id"]: scenario for scenario in cls.fixture["scenarios"]}
+        cls.instances = cls.fixture["instances"]
+
+    def resolve(self, scenario_id, ref_name, group_name):
+        ref = self.scenarios[scenario_id]["instance_refs"][ref_name]
+        return None if ref is None else self.instances[group_name][ref]
 
     def test_repository_contracts_validate(self):
         self.assertEqual(validate_contracts(), [])
@@ -57,11 +63,25 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
     def test_cross_tenant_denial_exists_at_api_and_database_layers(self):
         layers = {
             scenario["enforcement_layer"]
-            for scenario in self.scenarios.values()
-            if scenario["context"]["tenant_id"] != scenario["resource"]["tenant_id"]
+            for scenario_id, scenario in self.scenarios.items()
+            if isinstance(self.resolve(scenario_id, "active_context", "active_contexts"), dict)
+            and self.resolve(scenario_id, "active_context", "active_contexts")["tenant_id"]
+            != self.resolve(scenario_id, "resource_ownership", "resource_ownership")["tenant_id"]
             and scenario["authorization_decision"]["decision"] == "DENY"
         }
         self.assertEqual(layers, {"api", "database"})
+
+    def test_catalog_instances_conform_to_their_contracts(self):
+        schema_by_group = {
+            "memberships": "membership.schema.json",
+            "active_contexts": "active-context.schema.json",
+            "resource_ownership": "tenant-ownership.schema.json",
+        }
+        for group_name, schema_name in schema_by_group.items():
+            schema = json.loads((CONTRACT_ROOT / "tenancy" / schema_name).read_text(encoding="utf-8"))
+            for instance_id, instance in self.instances[group_name].items():
+                with self.subTest(group=group_name, instance=instance_id):
+                    self.assertEqual(validate_schema_instance(instance, schema, instance_id), [])
 
     def test_every_decision_is_correlated_with_its_audit_event(self):
         for scenario_id, scenario in self.scenarios.items():
@@ -100,6 +120,47 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             fixture, Path("multitenant-dev-readiness.acceptance.json")
         )
         self.assertTrue(any("API AND DATABASE" in error for error in errors))
+
+    def test_validator_rejects_present_membership_in_missing_membership_scenario(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][1]["instance_refs"]["membership"] = "membership-alpha-owner"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("MISSING MEMBERSHIP SCENARIO" in error for error in errors))
+
+    def test_validator_rejects_active_membership_in_suspended_scenario(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][2]["instance_refs"]["membership"] = "membership-alpha-owner"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("SUSPENDED MEMBERSHIP SCENARIO" in error for error in errors))
+
+    def test_validator_rejects_non_forged_context_in_forgery_scenario(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][3]["context"]["tenant_id"] = "tenant-alpha"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("FORGED CONTEXT SCENARIO" in error for error in errors))
+
+    def test_validator_rejects_matching_membership_in_mismatch_scenario(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][4]["instance_refs"]["active_context"] = "context-alpha-owner"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("MEMBERSHIP TENANT MISMATCH SCENARIO" in error for error in errors))
+
+    def test_validator_rejects_wrong_cross_tenant_reason_codes(self):
+        for index in (5, 6):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][index]["authorization_decision"]["reason_code"] = "WRONG_REASON"
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            self.assertTrue(any("DENIAL REASON INVALID" in error for error in errors))
 
 
 if __name__ == "__main__":
