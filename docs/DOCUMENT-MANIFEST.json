@@ -545,8 +545,8 @@
       "path": "docs/08-engineering/branching.md",
       "title": "Branching",
       "status": "",
-      "sha256": "19dad5b13920df0f61381f9d577ee3efb48f78301ba80ffa83ab0962c1ed915d",
-      "bytes": 1309
+      "sha256": "154e30b52ac1406df5282d8fe9eb0220c0ca7cecaa36ed89c48f3af87fba986a",
+      "bytes": 1510
     },
     {
       "path": "docs/08-engineering/ci-cd.md",
@@ -860,8 +860,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "bd84d83d48e3730c9583f5d1fcc78d1fd19a8810b9c53481ef16fba68f8ff035",
-      "bytes": 4318
+      "sha256": "f3fc1dfd9b81c638ca5004c3687ef1743ebb0d7caeb2be724198e12df286e95d",
+      "bytes": 4550
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -965,8 +965,8 @@
       "path": "docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md",
       "title": "EVD-BOOT-011 - bGitea protected review activation",
       "status": "",
-      "sha256": "1463d5e8d82d43c65d28f0c457ac427ed03b007986bee17f3040ff747d2460a4",
-      "bytes": 3954
+      "sha256": "01184d9201323d42c0322bfd65da687c9f0a5149db4ff88a5e7a5a8b85e550d5",
+      "bytes": 4555
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1378,8 +1378,8 @@
       "path": "docs/risks/RISK-REGISTER.md",
       "title": "Risk Register",
       "status": "",
-      "sha256": "fa4787169f610a1340b0d6545dd24b32306966ada893cd53f1e5eccba5df1d70",
-      "bytes": 1914
+      "sha256": "a8e5f11e9fd3906066ea56282775e4f862306b2f3871b8d8fc74b8d9930b5ec3",
+      "bytes": 2259
     },
     {
       "path": "docs/templates/adr-template.md",

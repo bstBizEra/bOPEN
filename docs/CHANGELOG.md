@@ -7,6 +7,8 @@
 - Installed the checksum-verified repository-scoped Gitea Runner 2.0.1 over rootless Podman.
 - Protected `main` against direct/force pushes and administrator bypass, with Reviewer-only approval and merge authority.
 - Added Gitea CODEOWNERS and governance workflow controls plus EVD-BOOT-011.
+- Observed successful Actions run 17/job 33 and required the exact `Bootstrap Governance / validate (pull_request)` context.
+- Recorded RSK-012 for rootless WSL host job networking required by the unavailable `/dev/net/tun` device.
 - Reported the Gitea hardening incident and residual host decisions to SecB and bstSA SARCHI without credential values.
 
 ## 2026-07-13 - GitHub draft review activation

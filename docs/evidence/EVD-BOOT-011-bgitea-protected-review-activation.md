@@ -36,11 +36,13 @@ The private local source of truth has separated implementation and review identi
 | Review freshness | Stale approvals dismissed; rejected, outdated, and outstanding official reviews block merge |
 | Administrator bypass | Disabled |
 | Runner | `bst-bopen-runner`, repository-scoped, label `ubuntu-latest`, capacity 1 |
-| Isolation | Rootless Podman over `/run/bst-gitea-runner/podman.sock`; no network listener |
+| Isolation | Rootless Podman over `/run/bst-gitea-runner/podman.sock`; no Podman network listener; host job networking documented under RSK-012 |
 | Runner binary | SHA-256 `7c5413504a457726be2f32aca133028097cc91315df99761754b98c704fcce84` |
 | Secret custody | Bootstrap PAT and runner state mode 0600; registration token removed; no token value logged |
 
-Status-check enforcement is intentionally deferred until the first pull-request workflow reports its actual context name. The context will then be added to the existing branch rule before review completion, preventing an unverified or misspelled context from deadlocking the repository.
+The first run failed before checkout because this WSL kernel has no `/dev/net/tun`, which rootless Podman requires for its default slirp network. The runner was kept rootless and switched to host job networking; Gitea remained bound to the Windows loopback and no listener was added. RSK-012 records the reduced job-network separation for SecB review.
+
+The rerun at head `535e98ff40409c5ae8256e38b05eca759ac91545` completed successfully as Actions run 17/job 33. Repository, contract, clean-room, secret, supply-chain, and all 21 bootstrap tests passed. Commit status reported the exact context `Bootstrap Governance / validate (pull_request)`, which was then added to the existing `main` protection rule and verified as enabled. This sequence prevented an unobserved or misspelled context from deadlocking the repository.
 
 ## Artifacts and external receipts
 
@@ -55,8 +57,8 @@ The host hardening receipt records the pre-change backup hashes, loopback bindin
 
 ## Reviewer
 
-The first Gitea pull request, successful governance context, Reviewer approval, and protected merge remain required. bOPEN Architecture Authority retains B7 approval.
+Gitea pull request #1 and the required successful governance context are active. Independent Reviewer approval and the protected human-authorized merge remain required. bOPEN Architecture Authority retains B7 approval.
 
 ## Decision
 
-Proceed with the exact branch push and Gitea pull request. Add the observed CI context to `main` protection before merge. Production kernel implementation remains unauthorized until the separate BOPEN-RES-001 G7 and normative approval conditions pass.
+Proceed only with independent review of the final branch SHA and protected merge. Production kernel implementation remains unauthorized until the separate BOPEN-RES-001 G7 and normative approval conditions pass.
