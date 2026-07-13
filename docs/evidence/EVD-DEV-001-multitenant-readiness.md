@@ -7,7 +7,7 @@
 **Environment:** Windows local workspace, Python standard-library governance harness  
 **Base commit:** `af3fdaa38d04992991b43a2bf36f4aff640f0472`
 
-**Tested implementation commit:** `176f7c9bb99eeed7c7a47a07ae84005da00caf60`
+**Tested implementation commit:** `7d9ea5f7912d2f6b549445bf6a3d8c572989200a`
 
 **Source branch:** `motor/DEV-P0-01-multitenant-readiness`
 
@@ -30,7 +30,7 @@
 5. Added a deterministic evaluation instant and explicit expired-context and expired-membership denial scenarios.
 6. Extended the contract validator to reject membership/authorization conflation, untrusted context sources, expired lifetimes, contradictory cross-tenant composition, incomplete audit correlation, malformed shapes, and non-RFC-3339 dates.
 7. Added focused mutation tests for every three-pane review finding and fail-closed input boundary.
-8. Ran the complete repository validation suite at tested implementation commit `176f7c9bb99eeed7c7a47a07ae84005da00caf60`.
+8. Ran the complete repository validation suite at tested implementation commit `7d9ea5f7912d2f6b549445bf6a3d8c572989200a`.
 
 ## Expected result
 
@@ -43,7 +43,7 @@ bOPEN has executable, independently reviewable development inputs for the minimu
 - Clean-room validation: PASS.
 - Secret scan: PASS.
 - Supply-chain baseline: PASS.
-- Full tests: PASS, 53 tests.
+- Full tests: PASS, 54 tests.
 
 The contracts enforce these draft invariants:
 
@@ -58,7 +58,7 @@ The contracts enforce these draft invariants:
 
 ## Review remediation receipt
 
-The initial exact-SHA ARCHI, ENGIN, and REV reviews requested changes. Commit `176f7c9bb99eeed7c7a47a07ae84005da00caf60` closes the reported gaps: lifetime evaluation, cross-tenant audit attribution, composition closure, trusted context-source enumeration, strict RFC 3339 parsing, malformed-shape handling, audit-decision consistency, controlled status synchronization, and exact-history evidence binding.
+The initial exact-SHA ARCHI, ENGIN, and REV reviews requested changes. Commits `176f7c9bb99eeed7c7a47a07ae84005da00caf60` and `7d9ea5f7912d2f6b549445bf6a3d8c572989200a` close the reported gaps: lifetime evaluation, cross-tenant and expiry composition closure, audit attribution, trusted context-source enumeration, strict RFC 3339 parsing, malformed-shape handling, audit-decision consistency, controlled status synchronization, and exact-history evidence binding.
 
 This evidence file is published in a follow-up documentation commit, so it identifies the tested implementation commit explicitly instead of claiming that a commit contains its own not-yet-computable SHA. Final PR-head CI and exact-SHA team reviews remain required before merge.
 
