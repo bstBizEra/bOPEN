@@ -25,7 +25,7 @@
 
 ## R1 execution classification - 2026-07-13
 
-The upstream runner declares 42 Playwright cases in 9 files. R1 executed only test discovery. Therefore all scenarios above remain E0/E2 leads until a controlled database-backed run produces E3 evidence.
+Static inspection found 42 `test`, `setup` or `teardown` declarations in 9 Git-tracked TypeScript files. R1 did not load or execute upstream code. Therefore all scenarios above remain E0/E2 leads until a controlled database-backed run produces E3 evidence.
 
 Highest-priority missing declarations or runtime probes are:
 

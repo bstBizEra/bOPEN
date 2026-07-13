@@ -56,12 +56,12 @@ The R0 result authorizes planning for RES-P0-04 through RES-P0-07 only. It does 
 
 | Package | Result | Evidence |
 |---|---|---|
-| RES-P0-04 | Complete at E2 | Two operators verified 26 path/marker observations across UI, API, validation, model, schema, integration and test layers. |
+| RES-P0-04 | Complete at E2 | Two operators verified the explicit case-by-layer matrix with gaps preserved as gap anchors and no runtime claim. |
 | RES-P0-05 | Trace complete; acceptance partial | Identity/principal gaps and positive declarations mapped; required negative runtime evidence remains open. |
 | RES-P0-06 | Trace complete; acceptance partial | Team/membership states and constraints mapped; atomic owner and cross-team/role runtime negatives remain open. |
 | RES-P0-07 | Trace complete; acceptance not satisfied | End-to-end expiry, revoke, replay, concurrency and event/audit evidence is absent. |
 
-G3 remains open. R1 test discovery is E2 and does not authorize RES-P0-08 implementation, production adoption or any clean-room handoff.
+G3 remains open. R1 static declaration inventory is E2 and does not authorize RES-P0-08 implementation, production adoption or any clean-room handoff.
 
 ## RES-P0-08 — Context and authorization trace
 

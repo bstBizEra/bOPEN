@@ -31,7 +31,7 @@ The repository is a single application starter. bOPEN must not infer service dec
 
 ## R1 verified orientation - 2026-07-13
 
-The R1 validator independently verified 26 path/marker observations in two detached checkouts at the pinned commit. Coverage spans all required layers:
+The R1 validator independently verified 56 case-specific evidence records in two detached checkouts at the pinned commit: 46 observations and 10 gap anchors. The controlled matrix records required layers per lifecycle case and preserves missing behavior as explicit gaps:
 
 | Lifecycle | UI | API | Validation/model | Schema | Integration | Declared tests |
 |---|---|---|---|---|---|---|

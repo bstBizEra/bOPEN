@@ -98,8 +98,8 @@
     },
     {
       "path": "01-boxyhq/evidence-index.md",
-      "sha256": "fdef52187ea6140667cc02822503fe2603591c23e6074fa9863f2e72d78b092a",
-      "bytes": 2523
+      "sha256": "58fa48882785a7f69e36fe49b67751e94ddfbcee96cc6fc7665ad2361cf4ce56",
+      "bytes": 2595
     },
     {
       "path": "01-boxyhq/gaps-and-non-goals.md",
@@ -118,8 +118,8 @@
     },
     {
       "path": "01-boxyhq/repository-structure-study.md",
-      "sha256": "14e6e590dd310d3394da8a6752fd1d080afb36b5b983a69cf1af96f325343218",
-      "bytes": 2899
+      "sha256": "a57389da9f1968b0d99610ca5a98bcb64f32aadd2d4a49bd6119de9eb978af1d",
+      "bytes": 3019
     },
     {
       "path": "01-boxyhq/security-review-checklist.md",
@@ -133,8 +133,8 @@
     },
     {
       "path": "01-boxyhq/test-scenario-catalog.md",
-      "sha256": "36b93a54e21954e9b9918af6b62028ed93cf084b50131d10943016afdc8bd682",
-      "bytes": 2311
+      "sha256": "071508bcdd2ab79e5c5c5f742992c91994698d30f16b73ae68b404398831dd88",
+      "bytes": 2364
     },
     {
       "path": "01-boxyhq/upstream-pin.json",
@@ -173,8 +173,8 @@
     },
     {
       "path": "02-execution/work-package-register.md",
-      "sha256": "8d019fb5a5107e86ac8fb04de0ec15eb8101fc1298609eed4ca3bcb89209fadd",
-      "bytes": 5422
+      "sha256": "9ef0e132baccc8b1fa8298ab093ba5d1a644f61469e3d48834a4c961f2eb3275",
+      "bytes": 5427
     },
     {
       "path": "03-templates/architecture-decision-template.md",
@@ -233,8 +233,8 @@
     },
     {
       "path": "RESEARCH-STATUS.md",
-      "sha256": "0e079ee23d52d3deee51652b2dc58a78c4619586f730a545518861302cf29ae4",
-      "bytes": 2799
+      "sha256": "141a7ba81965cfd60dc3b8ba6f9c06011595491ecd5788870135ee6a2790739d",
+      "bytes": 2853
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.ps1",
@@ -258,8 +258,8 @@
     },
     {
       "path": "scripts/run-boxyhq-r1-trace.ps1",
-      "sha256": "1de74d98f224a42c8ba7a7f401cc8e40d8ec43087313581064669ac2ae2efcff",
-      "bytes": 2988
+      "sha256": "cc900c69eed15d2e9e7a57d44bcc40b49f4ef43b25b733a75633efb6786d600a",
+      "bytes": 1500
     },
     {
       "path": "scripts/verify-upstream-pin.ps1",

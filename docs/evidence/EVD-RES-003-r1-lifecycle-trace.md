@@ -2,7 +2,7 @@
 
 **Document ID:** EVD-RES-003
 
-**Version:** 1.0
+**Version:** 1.1
 
 **Status:** Accepted research evidence; G3 open
 
@@ -18,20 +18,20 @@
 ## Procedure
 
 1. ARCHI traced repository paths for registration, login/session, team, membership and invitation lifecycles in the pinned external checkout.
-2. ENGIN independently traced identity and principal behavior, then ran the existing Jest suite, schema validation, lint/type checks and a no-execution Playwright inventory.
-3. REV independently traced team, membership and invitation behavior, then ran the existing Jest suite, lint/type checks and static transaction/test probes.
-4. The tracked R1 validator verified 26 sanitized path/marker observations against each detached, clean checkout.
-5. The tracked runner cleared ambient secret-bearing variables and executed only `playwright test --list`. It did not provision a database or execute application tests.
+2. ENGIN independently traced identity and principal behavior without executing upstream code.
+3. REV independently traced team, membership and invitation behavior without executing upstream code.
+4. The tracked R1 validator verified 56 case-specific evidence records against each detached, clean checkout: 46 observations and 10 gap anchors.
+5. The validator read Git-tracked TypeScript test files as data and statically counted 42 `test`, `setup` or `teardown` declarations in 9 files. It did not load upstream configuration, execute upstream code, provision a database or require network access.
 6. Each operator evidence store was secret-scanned and manifest-verified under the DEC-0009 external research root.
 
 ## Reproduced receipts
 
-| Operator | Source observations | Declared Playwright tests | Runtime executed | Secret scan | Manifest SHA-256 |
-|---|---:|---:|---:|---|---|
-| ENGIN-R1-20260713 | 26 | 42 in 9 files | No | 3 payloads, 0 findings | `022ecae4aee03776cba113859c760ea7affcaf8053e669590aaffbbe33bb5b64` |
-| REV-R1-20260713 | 26 | 42 in 9 files | No | 3 payloads, 0 findings | `612bb8fec5bfba53d7583580a335ff4aebdad6cae5675257fd5ab96000326a83` |
+| Operator | Evidence records | Observations | Gap anchors | Static declarations | Upstream code executed | Secret scan | Manifest SHA-256 |
+|---|---:|---:|---:|---:|---|---|---|
+| ENGIN-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `00308a32d3d0e3e5bb43700eaa135be6f94c74dd0a4c86209c4a4480f350a40c` |
+| REV-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `e7a5871dcf38d799bd0cf370e12cdfcff55dc2fae4800440314419d4b03f3f0b` |
 
-Each manifest contains four records: the R1 trace receipt, Playwright list receipt, sanitized test-list log and secret-scan receipt. Raw upstream source remains external and is not included.
+Each manifest contains three records: the R1 trace receipt, static test-declaration receipt and secret-scan receipt. Raw upstream source remains external and is not included.
 
 ## Confirmed observations
 
@@ -65,14 +65,14 @@ Each manifest contains four records: the R1 trace receipt, Playwright list recei
 
 | Work package | Result | Decision |
 |---|---|---|
-| RES-P0-04 | Complete at E2 | Required UI, API, validation, model, schema, integration and test paths are indexed for every R1 lifecycle. |
+| RES-P0-04 | Complete at E2 | The controlled case-by-layer matrix is indexed; gap anchors remain explicit and no runtime behavior is claimed. |
 | RES-P0-05 | Trace complete; acceptance partial | Positive declarations exist, but verification, reset, lockout, linked-account and API-key negative runtime cases remain open. |
 | RES-P0-06 | Trace complete; acceptance partial | State paths and constraints are mapped, but atomic owner invariants and cross-tenant/role negatives are not executed. |
 | RES-P0-07 | Trace complete; acceptance not satisfied | Required end-to-end, event/audit, replay and concurrency evidence is absent. |
 
 ## Gate decision
 
-**G3 remains OPEN.** Test discovery is E2 evidence of declared coverage, not E3 evidence of behavior. Passing G3 requires isolated synthetic runtime services and independently reproduced positive and negative database-backed probes. This evidence does not authorize production implementation or promote any observation into a bOPEN normative decision.
+**G3 remains OPEN.** Static test declarations are E2 evidence of declared coverage, not E3 evidence of behavior. Passing G3 requires isolated synthetic runtime services and independently reproduced positive and negative database-backed probes. This evidence does not authorize production implementation or promote any observation into a bOPEN normative decision.
 
 ## Required G3 runtime pack
 

@@ -1021,8 +1021,8 @@
       "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
       "title": "EVD-RES-003 - R1 Core Relationship Lifecycle Trace",
       "status": "Accepted research evidence; G3 open",
-      "sha256": "7d792a485b182dd898e30315aca8778e8d670e2e8bee2136b2f3018845df5d3a",
-      "bytes": 7071
+      "sha256": "714d5930481d691082c43c0a40d38799e4adb47814441d428b56166780f87290",
+      "bytes": 7110
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1189,8 +1189,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
       "title": "Initial Evidence Index",
       "status": "",
-      "sha256": "fdef52187ea6140667cc02822503fe2603591c23e6074fa9863f2e72d78b092a",
-      "bytes": 2523
+      "sha256": "58fa48882785a7f69e36fe49b67751e94ddfbcee96cc6fc7665ad2361cf4ce56",
+      "bytes": 2595
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
@@ -1224,8 +1224,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
       "title": "Repository Structure Study",
       "status": "",
-      "sha256": "14e6e590dd310d3394da8a6752fd1d080afb36b5b983a69cf1af96f325343218",
-      "bytes": 2899
+      "sha256": "a57389da9f1968b0d99610ca5a98bcb64f32aadd2d4a49bd6119de9eb978af1d",
+      "bytes": 3019
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/security-review-checklist.md",
@@ -1245,8 +1245,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/test-scenario-catalog.md",
       "title": "Test Scenario Catalog",
       "status": "",
-      "sha256": "36b93a54e21954e9b9918af6b62028ed93cf084b50131d10943016afdc8bd682",
-      "bytes": 2311
+      "sha256": "071508bcdd2ab79e5c5c5f742992c91994698d30f16b73ae68b404398831dd88",
+      "bytes": 2364
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/upstream-pin.json",
@@ -1301,8 +1301,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/work-package-register.md",
       "title": "Work Package Register",
       "status": "",
-      "sha256": "8d019fb5a5107e86ac8fb04de0ec15eb8101fc1298609eed4ca3bcb89209fadd",
-      "bytes": 5422
+      "sha256": "9ef0e132baccc8b1fa8298ab093ba5d1a644f61469e3d48834a4c961f2eb3275",
+      "bytes": 5427
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/architecture-decision-template.md",
@@ -1350,7 +1350,7 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "c3a039445cf1be443029f771757498ddb3b5738e7a165381b66916a0c720998c",
+      "sha256": "90e96de748853c07b4090af2ff8c5dfbc8df885ce47c8a83fe07796666b8677e",
       "bytes": 9110
     },
     {
@@ -1392,8 +1392,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
       "title": "Research Status",
       "status": "`R1 STATIC TRACE EXECUTED / G3 OPEN`",
-      "sha256": "0e079ee23d52d3deee51652b2dc58a78c4619586f730a545518861302cf29ae4",
-      "bytes": 2799
+      "sha256": "141a7ba81965cfd60dc3b8ba6f9c06011595491ecd5788870135ee6a2790739d",
+      "bytes": 2853
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
@@ -1427,8 +1427,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-r1-trace.ps1",
       "title": "",
       "status": "",
-      "sha256": "1de74d98f224a42c8ba7a7f401cc8e40d8ec43087313581064669ac2ae2efcff",
-      "bytes": 2988
+      "sha256": "cc900c69eed15d2e9e7a57d44bcc40b49f4ef43b25b733a75633efb6786d600a",
+      "bytes": 1500
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.ps1",
