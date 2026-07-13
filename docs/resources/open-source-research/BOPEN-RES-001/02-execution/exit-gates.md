@@ -41,3 +41,13 @@
 - [ ] Handoff contains no upstream source.
 - [ ] Clean-room reviewer approval recorded.
 - [ ] Implementation tests are expressed in bOPEN terminology.
+
+## R0 gate decision - 2026-07-13
+
+| Gate | Decision | Conditions |
+|---|---|---|
+| G0 | PASS WITH CONDITIONS | Roles, two external workspaces and evidence controls are assigned; SecB legal interpretation remains pending. |
+| G1 | PASS WITH CONDITIONS | Origin, exact pin, public/not-archived state, license and lock hashes match twice; redistribution/legal approval is not granted. |
+| G2 | PASS WITH CONDITIONS | Two operators reproduce the declared baseline. npm 10.9.2 is required because npm 11 rejects the lock; upstream format check exits 1 while lint, types, four unit tests and build pass. |
+
+G3 through G7 remain open. No implementation handoff is authorized.

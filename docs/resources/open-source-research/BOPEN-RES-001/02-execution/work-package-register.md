@@ -18,6 +18,16 @@
 **Acceptance:** second operator reproduces result.  
 **Outputs:** terminal log, environment manifest, test report.
 
+### R0 execution receipt - 2026-07-13
+
+| Package | Result | Evidence |
+|---|---|---|
+| RES-P0-01 | Complete; G0 `PASS WITH CONDITIONS` | Named RACI, DEC-0009 external workspace control, two isolated roots, evidence secret scans pass; SecB legal interpretation pending |
+| RES-P0-02 | Complete; G1 `PASS WITH CONDITIONS` | Canonical source ID, exact pin, public/not-archived observation, license and lock checksums reproduced twice; legal review pending |
+| RES-P0-03 | Complete; G2 `PASS WITH CONDITIONS` | ENGIN and REV independently reproduce the same baseline exit matrix; npm 10.9.2 required and upstream format check remains failing |
+
+The R0 result authorizes planning for RES-P0-04 through RES-P0-07 only. It does not pass G3-G7 or authorize clean implementation.
+
 ## RES-P0-04 — Repository orientation
 
 **Tasks:** map UI, API, models, schema, integrations and tests.  

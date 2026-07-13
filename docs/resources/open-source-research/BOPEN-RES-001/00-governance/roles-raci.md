@@ -17,3 +17,15 @@
 ## Agent boundary
 
 Research agents may inspect upstream code. Clean implementation agents should receive only approved bOPEN specifications for high-risk components.
+
+## R0 named assignment - 2026-07-13
+
+| Function | Assignment | Evidence responsibility |
+|---|---|---|
+| Sponsor / gate authority | Repository sponsor; bCodex acting as SARCHI under the instruction to proceed | Scope approval and G0-G2 decision |
+| Research lead / architect | ARCHI pane `019f5919-3ca8-7c11-835b-33ca3d2a154e` | Scope, interpretation and clean-room boundary |
+| Primary source operator | ENGIN pane `019f5919-7d1a-7dd1-a684-57bf738382aa` | First isolated reproduction |
+| Security/evidence reviewer and second operator | REV pane `019f5919-bcf1-7913-962c-72911907d704` | Independent reproduction, secret and provenance checks |
+| License/compliance owner | SecB through `bstBizEra/bstAH#138` | Legal interpretation and redistribution review |
+
+SecB assignment satisfies the G0 ownership requirement, but legal approval remains pending. R0 performs research-only inspection and does not authorize redistribution or source reuse.
