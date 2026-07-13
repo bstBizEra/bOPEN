@@ -1,6 +1,6 @@
 # DEV-P0-01 - Multi-tenant development readiness contracts
 
-**Status:** Accepted for development-readiness execution  
+**Status:** Execution complete; authority review pending
 **Owner:** Engineering Authority  
 **Sponsor authorization:** 2026-07-13 instruction to start bOPEN multi-tenant DEV readiness  
 **Governing artifacts:** `BOPEN-BOOT-001`, `BOPEN-TENANT-001-DRAFT`, `BOPEN-AUTHZ-001-DRAFT`, `BOPEN-SEC-001-DRAFT`  
@@ -43,6 +43,8 @@ Make the minimum multi-tenant boundary executable as draft contracts and negativ
 4. Cross-tenant denial is represented at both API and database enforcement layers.
 5. Authorization and audit evidence share the same correlation ID, decision, reason, and policy version.
 6. Full repository, contract, clean-room, secret, supply-chain, and test validation passes.
+7. Context and membership lifetimes are evaluated against a deterministic timestamp and expired inputs deny.
+8. Cross-tenant evidence preserves validated context tenant and resource-owner tenant separately.
 
 ## Dependencies and blocked decisions
 
@@ -53,3 +55,12 @@ Production implementation remains blocked by BOPEN-RES-001 G7, approved requirem
 **Source:** Existing bOPEN invariants, draft artifacts, ADR-0006/0007/0008, and sponsor instruction  
 **Timestamp:** 2026-07-13T03:10:00+07:00  
 **Agent ID:** bCodex (BST Motor)
+
+## Completion receipt
+
+**Base:** `af3fdaa38d04992991b43a2bf36f4aff640f0472`
+
+**Target:** Recorded in `EVD-DEV-001` after final validation and commit
+
+**Evidence:** `docs/evidence/EVD-DEV-001-multitenant-readiness.md`
+**Review state:** ARCHI, ENGIN, and REV exact-SHA review required; production implementation remains unauthorized.

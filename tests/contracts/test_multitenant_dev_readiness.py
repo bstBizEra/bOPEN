@@ -6,6 +6,8 @@ import unittest
 from pathlib import Path
 
 from tools.validate_contracts import (
+    parse_rfc3339_datetime,
+    validate_acceptance_fixture,
     validate_contracts,
     validate_multitenant_readiness_fixture,
     validate_schema_instance,
@@ -113,9 +115,19 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
         )
         self.assertTrue(any("MUST BE SERVER VALIDATED" in error for error in errors))
 
+    def test_validator_rejects_unrecognized_context_validation_source(self):
+        context = json.loads(
+            (CONTRACT_ROOT / "tenancy/active-context.schema.json").read_text(encoding="utf-8")
+        )
+        context["properties"]["validation_source"]["enum"] = ["attacker_asserted"]
+        errors = validate_tenancy_schema(
+            context, Path("active-context.schema.json"), "active-context.schema.json"
+        )
+        self.assertTrue(any("MUST BE SERVER VALIDATED" in error for error in errors))
+
     def test_validator_rejects_missing_database_denial(self):
         fixture = copy.deepcopy(self.fixture)
-        fixture["scenarios"][-1]["authorization_decision"]["decision"] = "ALLOW"
+        fixture["scenarios"][6]["authorization_decision"]["decision"] = "ALLOW"
         errors = validate_multitenant_readiness_fixture(
             fixture, Path("multitenant-dev-readiness.acceptance.json")
         )
@@ -162,6 +174,31 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             )
             self.assertTrue(any("DENIAL REASON INVALID" in error for error in errors))
 
+    def test_validator_rejects_contradictory_cross_tenant_composition(self):
+        mutations = (
+            ("context", "tenant_id", "tenant-beta", "CONTEXT CLAIMS"),
+            ("resource", "tenant_id", "tenant-alpha", "RESOURCE CLAIMS"),
+            ("authorization_decision", "evaluated_scope", {}, "EVALUATED SCOPE"),
+            ("audit_event", "tenant_id", "tenant-beta", "AUDIT ATTRIBUTION"),
+            ("audit_event", "context_id", "wrong-context", "AUDIT ATTRIBUTION"),
+        )
+        for section, key, value, expected in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][5][section][key] = value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(section=section, key=key):
+                self.assertTrue(any(expected in error for error in errors))
+
+    def test_cross_tenant_audit_preserves_both_tenant_identities(self):
+        for scenario_id in ("MTD-006", "MTD-007"):
+            audit = self.scenarios[scenario_id]["audit_event"]
+            self.assertEqual(audit["tenant_id"], "tenant-alpha")
+            self.assertEqual(audit["context_tenant_id"], "tenant-alpha")
+            self.assertEqual(audit["resource_tenant_id"], "tenant-beta")
+            self.assertEqual(audit["context_id"], "context-alpha-owner")
+
     def test_validator_rejects_inconsistent_positive_composition(self):
         mutations = (
             ("memberships", "membership-alpha-owner", "principal_id", "principal-other", "PRINCIPAL"),
@@ -197,12 +234,41 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
         )
         self.assertTrue(any("TIME WINDOW INVALID" in error for error in errors))
 
+    def test_validator_rejects_expired_positive_context_and_membership(self):
+        mutations = (
+            ("active_contexts", "context-alpha-owner", "expires_at", "2026-07-13T03:17:00+07:00", "CONTEXT TIME"),
+            ("memberships", "membership-alpha-owner", "valid_until", "2026-07-13T03:17:00+07:00", "MEMBERSHIP LIFETIME"),
+        )
+        for group, instance_id, key, value, expected in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["instances"][group][instance_id][key] = value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(group=group):
+                self.assertTrue(any(expected in error for error in errors))
+
+    def test_fixture_contains_explicit_expiry_denials(self):
+        self.assertEqual(
+            self.scenarios["MTD-008"]["authorization_decision"]["reason_code"],
+            "ACTIVE_CONTEXT_EXPIRED",
+        )
+        self.assertEqual(
+            self.scenarios["MTD-009"]["authorization_decision"]["reason_code"],
+            "MEMBERSHIP_EXPIRED",
+        )
+
     def test_validator_requires_timezone_aware_rfc3339_datetime(self):
         membership_schema = json.loads(
             (CONTRACT_ROOT / "tenancy/membership.schema.json").read_text(encoding="utf-8")
         )
         membership = copy.deepcopy(self.instances["memberships"]["membership-alpha-owner"])
-        for invalid_value in ("2026-07-13", "2026-07-13T03:10:00", "not-a-date"):
+        for invalid_value in (
+            "2026-07-13",
+            "2026-07-13T03:10:00",
+            "2026-W29-1T03:10:00+07:00",
+            "not-a-date",
+        ):
             candidate = copy.deepcopy(membership)
             candidate["created_at"] = invalid_value
             errors = validate_schema_instance(candidate, membership_schema, "membership")
@@ -219,6 +285,72 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             with self.subTest(value=invalid_value):
                 self.assertTrue(any("TYPE INVALID" in error for error in errors))
                 self.assertTrue(any("TIME WINDOW INVALID" in error for error in errors))
+
+    def test_validator_rejects_invalid_evaluation_time(self):
+        for invalid_value in (None, 123, "2026-W29-1T03:18:00+07:00"):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["evaluated_at"] = invalid_value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(value=invalid_value):
+                self.assertTrue(any("EVALUATION TIME INVALID" in error for error in errors))
+
+    def test_acceptance_validator_rejects_audit_decision_mismatches(self):
+        mutations = (
+            ("result", "ALLOW", "DECISION RESULT"),
+            ("reason_code", "WRONG_REASON", "REASON CODE"),
+            ("policy_version", "wrong-policy", "POLICY VERSION"),
+            ("correlation_id", "wrong-correlation", "CORRELATION ID"),
+        )
+        for key, value, expected in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][1]["audit_event"][key] = value
+            errors = validate_acceptance_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(key=key):
+                self.assertTrue(any(expected in error for error in errors))
+
+    def test_validator_fails_closed_on_malformed_shapes(self):
+        fixture_mutations = (
+            ("contracts", None),
+            ("scenarios", None),
+        )
+        for key, value in fixture_mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture[key] = value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(key=key):
+                self.assertTrue(errors)
+
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][0]["authorization_decision"] = None
+        self.assertTrue(
+            validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+        )
+        fixture = copy.deepcopy(self.fixture)
+        fixture["scenarios"][0]["instance_refs"]["membership"] = ["bad-ref"]
+        self.assertTrue(
+            validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+        )
+
+    def test_schema_validator_rejects_non_array_required(self):
+        membership = json.loads(
+            (CONTRACT_ROOT / "tenancy/membership.schema.json").read_text(encoding="utf-8")
+        )
+        membership["required"] = 1
+        errors = validate_schema_instance({}, membership, "membership")
+        self.assertTrue(any("REQUIRED MUST BE ARRAY" in error for error in errors))
+
+    def test_rfc3339_parser_rejects_iso_week_date(self):
+        self.assertIsNone(parse_rfc3339_datetime("2026-W29-1T03:10:00+07:00"))
 
 
 if __name__ == "__main__":

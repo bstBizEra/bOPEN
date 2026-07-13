@@ -2,6 +2,7 @@
   "id": "bopen.acceptance.multitenant_dev_readiness.0.1.0-draft",
   "status": "draft",
   "work_package": "DEV-P0-01",
+  "evaluated_at": "2026-07-13T03:18:00+07:00",
   "governing_artifacts": [
     "BOPEN-TENANT-001-DRAFT",
     "BOPEN-AUTHZ-001-DRAFT",
@@ -35,6 +36,15 @@
         "created_at": "2026-07-13T03:00:00+07:00",
         "updated_at": "2026-07-13T03:05:00+07:00",
         "valid_until": null
+      },
+      "membership-alpha-expired": {
+        "membership_id": "membership-alpha-expired",
+        "principal_id": "principal-expired-membership",
+        "tenant_id": "tenant-alpha",
+        "state": "active",
+        "created_at": "2026-07-12T03:00:00+07:00",
+        "updated_at": "2026-07-12T03:00:00+07:00",
+        "valid_until": "2026-07-13T03:17:00+07:00"
       }
     },
     "active_contexts": {
@@ -70,6 +80,28 @@
         "issued_at": "2026-07-13T03:10:00+07:00",
         "expires_at": "2026-07-13T04:10:00+07:00",
         "correlation_id": "context-corr-beta-mismatch"
+      },
+      "context-alpha-expired": {
+        "context_id": "context-alpha-expired",
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-owner",
+        "status": "active",
+        "validation_source": "server_session",
+        "issued_at": "2026-07-13T02:10:00+07:00",
+        "expires_at": "2026-07-13T03:17:00+07:00",
+        "correlation_id": "context-corr-alpha-expired"
+      },
+      "context-alpha-expired-membership": {
+        "context_id": "context-alpha-expired-membership",
+        "principal_id": "principal-expired-membership",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-expired",
+        "status": "active",
+        "validation_source": "server_session",
+        "issued_at": "2026-07-13T03:10:00+07:00",
+        "expires_at": "2026-07-13T04:10:00+07:00",
+        "correlation_id": "context-corr-alpha-expired-membership"
       }
     },
     "resource_ownership": {
@@ -376,7 +408,10 @@
         "event_version": "1",
         "occurred_at": "2026-07-13T03:16:00+07:00",
         "principal_id": "principal-alpha-owner",
-        "tenant_id": "tenant-beta",
+        "tenant_id": "tenant-alpha",
+        "context_id": "context-alpha-owner",
+        "context_tenant_id": "tenant-alpha",
+        "resource_tenant_id": "tenant-beta",
         "resource_type": "document",
         "resource_id": "document-beta-001",
         "action": "document.read",
@@ -424,7 +459,10 @@
         "event_version": "1",
         "occurred_at": "2026-07-13T03:17:00+07:00",
         "principal_id": "principal-alpha-owner",
-        "tenant_id": "tenant-beta",
+        "tenant_id": "tenant-alpha",
+        "context_id": "context-alpha-owner",
+        "context_tenant_id": "tenant-alpha",
+        "resource_tenant_id": "tenant-beta",
         "resource_type": "document",
         "resource_id": "document-beta-001",
         "action": "document.read",
@@ -432,6 +470,102 @@
         "reason_code": "DATABASE_TENANT_POLICY_DENIED",
         "policy_version": "authz-policy-draft-0.2.0",
         "correlation_id": "corr-mtd-007"
+      }
+    },
+    {
+      "id": "MTD-008",
+      "title": "Expired active context denies tenant read",
+      "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-owner",
+        "active_context": "context-alpha-expired",
+        "resource_ownership": "tenant-alpha"
+      },
+      "context": {
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-owner",
+        "membership_state": "active",
+        "validation_source": "server_session"
+      },
+      "resource": {
+        "tenant_id": "tenant-alpha",
+        "resource_type": "tenant",
+        "resource_id": "tenant-alpha"
+      },
+      "authorization_decision": {
+        "decision": "DENY",
+        "reason_code": "ACTIVE_CONTEXT_EXPIRED",
+        "policy_version": "authz-policy-draft-0.2.0",
+        "correlation_id": "corr-mtd-008",
+        "evaluated_scope": {
+          "active_tenant_id": "tenant-alpha",
+          "context_expires_at": "2026-07-13T03:17:00+07:00"
+        }
+      },
+      "audit_event": {
+        "event_id": "audit-mtd-008",
+        "event_type": "platform.audit.authorization.v1",
+        "event_version": "1",
+        "occurred_at": "2026-07-13T03:18:00+07:00",
+        "principal_id": "principal-alpha-owner",
+        "tenant_id": "tenant-alpha",
+        "context_id": "context-alpha-expired",
+        "resource_type": "tenant",
+        "resource_id": "tenant-alpha",
+        "action": "tenant.read",
+        "result": "DENY",
+        "reason_code": "ACTIVE_CONTEXT_EXPIRED",
+        "policy_version": "authz-policy-draft-0.2.0",
+        "correlation_id": "corr-mtd-008"
+      }
+    },
+    {
+      "id": "MTD-009",
+      "title": "Expired membership denies tenant read",
+      "enforcement_layer": "api",
+      "instance_refs": {
+        "membership": "membership-alpha-expired",
+        "active_context": "context-alpha-expired-membership",
+        "resource_ownership": "tenant-alpha"
+      },
+      "context": {
+        "principal_id": "principal-expired-membership",
+        "tenant_id": "tenant-alpha",
+        "membership_id": "membership-alpha-expired",
+        "membership_state": "active",
+        "validation_source": "server_session"
+      },
+      "resource": {
+        "tenant_id": "tenant-alpha",
+        "resource_type": "tenant",
+        "resource_id": "tenant-alpha"
+      },
+      "authorization_decision": {
+        "decision": "DENY",
+        "reason_code": "MEMBERSHIP_EXPIRED",
+        "policy_version": "authz-policy-draft-0.2.0",
+        "correlation_id": "corr-mtd-009",
+        "evaluated_scope": {
+          "active_tenant_id": "tenant-alpha",
+          "membership_valid_until": "2026-07-13T03:17:00+07:00"
+        }
+      },
+      "audit_event": {
+        "event_id": "audit-mtd-009",
+        "event_type": "platform.audit.authorization.v1",
+        "event_version": "1",
+        "occurred_at": "2026-07-13T03:18:00+07:00",
+        "principal_id": "principal-expired-membership",
+        "tenant_id": "tenant-alpha",
+        "context_id": "context-alpha-expired-membership",
+        "resource_type": "tenant",
+        "resource_id": "tenant-alpha",
+        "action": "tenant.read",
+        "result": "DENY",
+        "reason_code": "MEMBERSHIP_EXPIRED",
+        "policy_version": "authz-policy-draft-0.2.0",
+        "correlation_id": "corr-mtd-009"
       }
     }
   ]
