@@ -1,5 +1,15 @@
 # Documentation Changelog
 
+## 2026-07-13 - research R0 control establishment
+
+- Approved DEC-0009 to keep physical upstream clones and raw evidence outside the bOPEN worktree.
+- Assigned the R0 SARCHI/ARCHI/ENGIN/REV responsibilities and SecB license/compliance ownership.
+- Consolidated the BoxyHQ source ID and expected pin, license and lock checksums.
+- Hardened the Windows clone and verification scripts against ambient credential prompting, wrong origins, attached branches, missing locks and checksum drift.
+- Added a recorded baseline runner and reproduced the exact result in separate ENGIN and REV workspaces.
+- Recorded npm 10.9.2 as the R0 compatibility requirement, npm 11 lock rejection, the pinned upstream format failure, and passing lint/types/unit/build outcomes.
+- Added EVD-RES-002 and marked G0-G2 `PASS WITH CONDITIONS`; G3-G7 and production implementation remain closed.
+
 ## 2026-07-13 - multi-tenant DEV readiness
 
 - Accepted DEV-P0-01 for contract, fixture, validator, and test execution only.

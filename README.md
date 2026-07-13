@@ -19,6 +19,8 @@ It is **not** approval to implement the production platform kernel. Production i
 
 `DEV-P0-01` makes the multi-tenant boundary executable as draft contracts and negative tests: principal-to-tenant membership, server-validated active context, tenant-owned resources, deny-by-default authorization, API isolation, database isolation, and correlated audit evidence. This is contract readiness only; it does not open the production implementation gate.
 
+`BOPEN-RES-001` Research Sprint R0 has executed RES-P0-01 through RES-P0-03 with two isolated operators. G0-G2 pass with recorded conditions; R1 lifecycle research is next, while G3-G7 and production implementation remain closed.
+
 ## Governing lifecycle
 
 ```text

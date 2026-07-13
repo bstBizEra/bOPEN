@@ -16,5 +16,5 @@ for p in sorted((ROOT/'docs').rglob('*')):
     if m: status=m.group(1).strip()
     records.append({'path':str(p.relative_to(ROOT)).replace('\\','/'),'title':title,'status':status,'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
 out={'generated':datetime.now(timezone.utc).date().isoformat(),'count':len(records),'documents':records}
-(ROOT/'docs/DOCUMENT-MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+(ROOT/'docs/DOCUMENT-MANIFEST.json').write_bytes((json.dumps(out,indent=2)+'\n').encode('utf-8'))
 print(f'Wrote {len(records)} records')

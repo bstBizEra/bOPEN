@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-07-12",
+  "generated_on": "2026-07-13",
   "files": [
     {
       "path": "00-governance/clean-room-boundary.md",
@@ -48,8 +48,8 @@
     },
     {
       "path": "00-governance/roles-raci.md",
-      "sha256": "fdfa0aae523e67bdac6a2a3fbd4a5654e926c9d508b700846c5a7b4f738558c3",
-      "bytes": 896
+      "sha256": "634626a392b8c2005d89ca9e561e07dad7707f20615b54acae9b5a0aaa2c708d",
+      "bytes": 1842
     },
     {
       "path": "00-governance/security-sandbox-policy.md",
@@ -58,8 +58,8 @@
     },
     {
       "path": "00-governance/source-register.md",
-      "sha256": "15d77b590d7b0ea941945226922841de84ea8d74aafc808ac5f36859aac14e42",
-      "bytes": 2070
+      "sha256": "3bc8a8aef22d3005ce86c392fc5171c88c50006cf1d544035506efe970b670ed",
+      "bytes": 2654
     },
     {
       "path": "01-boxyhq/README.md",
@@ -78,8 +78,8 @@
     },
     {
       "path": "01-boxyhq/clone-bootstrap.md",
-      "sha256": "a399a6ac20531eb563a2a42a502cbee56ae7eb9cc5d3c11f1ff340d6ccb38b9d",
-      "bytes": 721
+      "sha256": "99f87226ed48b7600dbd407d38a239f2d13e66a6750a9667376b3d99b6e5f819",
+      "bytes": 1794
     },
     {
       "path": "01-boxyhq/context-resolution-analysis.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "02-execution/exit-gates.md",
-      "sha256": "96ca5500f75962f4c472b9ddf8b259798316d94b5007eca5b91b9dda703bc478",
-      "bytes": 1145
+      "sha256": "fa6f2356786f863538f19f0d37c37290363f250d81172999971692fe2993a39e",
+      "bytes": 2095
     },
     {
       "path": "02-execution/implementation-handoff.md",
@@ -173,8 +173,8 @@
     },
     {
       "path": "02-execution/work-package-register.md",
-      "sha256": "35eec54dccc2fe161f87949719a5975ead4f400986888bd45fcd5d39be774e6d",
-      "bytes": 3804
+      "sha256": "eb432eeb1b249dc4a29003a7d3d6af4c8856c699a6a342b41674b0c5965f0c8d",
+      "bytes": 4576
     },
     {
       "path": "03-templates/architecture-decision-template.md",
@@ -213,8 +213,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "c7fe60abc00ac1d9508bb65057db6e2a13a4de4c988ab000d22724f247fd5cc4",
-      "bytes": 495
+      "sha256": "1e62eaf22e64420bb883f744daf13bd22b9eb4597eb166a206818a432fe336fe",
+      "bytes": 886
     },
     {
       "path": "README.md",
@@ -233,28 +233,38 @@
     },
     {
       "path": "RESEARCH-STATUS.md",
-      "sha256": "9c5a4916f3176c363a62947db5feb8268a0ac8d2bab748691a736385b76e5712",
-      "bytes": 1704
+      "sha256": "d1b68c9d0753314c20121c177eeab06cb27fbb39aee16b0f650f7af4b06d724a",
+      "bytes": 2012
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.ps1",
-      "sha256": "4706a37427a42d69311b384958c7254b47a52b1b6b606465f79fc4edc9687ac7",
-      "bytes": 1278
+      "sha256": "e22338477d2ac6e8f7e8e0417895004d957425e16a02526e7a435e6c80c535a7",
+      "bytes": 4049
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.sh",
-      "sha256": "0bd6eeae8efa72432e56a620d9a2bb4b738009f2f57fc68f0e8c828b2318c4fb",
-      "bytes": 1076
+      "sha256": "fe122ffd0b34d8f0f5319a1870ed95595060996482c4d514b71bd84d44b498ce",
+      "bytes": 4130
+    },
+    {
+      "path": "scripts/finalize-research-evidence.ps1",
+      "sha256": "b20597de7947685f5d54deed405d2d1da8bd56ecd786fb826a5c36efd9b51b26",
+      "bytes": 2643
+    },
+    {
+      "path": "scripts/run-boxyhq-baseline.ps1",
+      "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042",
+      "bytes": 5390
     },
     {
       "path": "scripts/verify-upstream-pin.ps1",
-      "sha256": "1f39463bf44103d6afa8715a80a75ad4428cc82ea07858d9b742684f99864407",
-      "bytes": 449
+      "sha256": "afaddbf3c745043cf41b1544828e1118336ffc67af8d7b94742aff6a5afb2a32",
+      "bytes": 1356
     },
     {
       "path": "scripts/verify-upstream-pin.sh",
-      "sha256": "0e4e56757fbbf14211db1cd80aa25901bbae04e3d5691a404702bef68f8c2717",
-      "bytes": 400
+      "sha256": "f9b4894667bfd32c80fefe4e463f7b1ddc00f1aa5397da6c7bf6c59bf7e4ba74",
+      "bytes": 1596
     }
   ]
 }
