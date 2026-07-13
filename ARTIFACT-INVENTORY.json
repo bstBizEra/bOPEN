@@ -763,7 +763,7 @@
     {
       "path": "docs/DOCUMENT-MANIFEST.json",
       "bytes": 59712,
-      "sha256": "e341f1202ccaec0b2609b3ee9b92ebfa9b455592e15985e277d1017d9ba88645"
+      "sha256": "41eb52cc28e9add9e6a9d730da23fe6069c795b234261eb34241cbd249f0a1d7"
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
@@ -917,8 +917,8 @@
     },
     {
       "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
-      "bytes": 7110,
-      "sha256": "714d5930481d691082c43c0a40d38799e4adb47814441d428b56166780f87290"
+      "bytes": 7250,
+      "sha256": "634df176e2c34b4b2c04729a134797c225380b6b947854d950ffafd221ab4239"
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",

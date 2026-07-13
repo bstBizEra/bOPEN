@@ -28,10 +28,10 @@
 
 | Operator | Evidence records | Observations | Gap anchors | Static declarations | Upstream code executed | Secret scan | Manifest SHA-256 |
 |---|---:|---:|---:|---:|---|---|---|
-| ENGIN-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `00308a32d3d0e3e5bb43700eaa135be6f94c74dd0a4c86209c4a4480f350a40c` |
-| REV-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `e7a5871dcf38d799bd0cf370e12cdfcff55dc2fae4800440314419d4b03f3f0b` |
+| ENGIN-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `16d384aa2539f4d95da9bcb5ccee71dc9936ab535de3db3f600d88b011296fed` |
+| REV-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `29a69424d48814fe2e6eb6d543074b55784aea00154d1e42b619e675a3233eef` |
 
-Each manifest contains three records: the R1 trace receipt, static test-declaration receipt and secret-scan receipt. Raw upstream source remains external and is not included.
+Each manifest contains three records: the R1 trace receipt, static test-declaration receipt and secret-scan receipt. Both trace and declaration receipts bind to committed validator SHA-256 `958977f29653f0572b6f703c2329bc52d61d8de6b96d0869875f109fd5f81aac`. Raw upstream source remains external and is not included.
 
 ## Confirmed observations
 
