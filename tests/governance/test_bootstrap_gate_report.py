@@ -41,6 +41,7 @@ class BootstrapGateReportTests(unittest.TestCase):
 |---|---|---|---|
 | BOOT-P0-01 | Repository | Execution complete | Repository initialized |
 | BOOT-P0-12 | Exit | Authority review pending | Review B7 |
+| DEV-P0-01 | Readiness | Authority review pending | Contract review |
 """,
                 encoding="utf-8",
             )
@@ -68,6 +69,7 @@ class BootstrapGateReportTests(unittest.TestCase):
         self.assertEqual(report["bootstrap_review_state"], "incomplete")
         self.assertEqual(len(report["pending_evidence"]), 1)
         self.assertEqual(len(report["implementation_blocking_docs"]), 1)
+        self.assertEqual(report["execution_pending_packages"], [])
 
     def test_markdown_report_is_non_authorizing(self):
         report = format_report(

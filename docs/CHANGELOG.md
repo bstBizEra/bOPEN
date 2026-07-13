@@ -1,5 +1,13 @@
 # Documentation Changelog
 
+## 2026-07-13 - multi-tenant DEV readiness
+
+- Accepted DEV-P0-01 for contract, fixture, validator, and test execution only.
+- Added draft membership, active-context, and tenant-ownership schemas.
+- Added seven synthetic multi-tenant readiness scenarios with API and database cross-tenant denial.
+- Extended contract validation and focused tests for membership separation, trusted context, tenant ownership, deny-by-default behavior, and audit correlation.
+- Added EVD-DEV-001 while keeping G7, normative approval, and production implementation gates closed.
+
 ## 2026-07-13 - bGitea protected review activation
 
 - Created and verified the private `bst-sa/bopen` local source-of-truth repository and configured credential-free `origin`.

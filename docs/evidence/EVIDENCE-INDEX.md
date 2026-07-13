@@ -13,4 +13,5 @@
 | EVD-BOOT-009 | BOOT-P0-01 through BOOT-P0-12 | Requirement-by-requirement bootstrap completion self-review | `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` | Generated |
 | EVD-BOOT-010 | BOOT-P0-01/BOOT-P0-08 | Approved GitHub history reconciliation branch | `docs/evidence/EVD-BOOT-010-github-reconciliation.md` | Generated |
 | EVD-BOOT-011 | BOOT-P0-01/BOOT-P0-08 | Private bGitea repository, fenced teams, runner, and protected `main` activation | `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md` | Review activation in progress |
+| EVD-DEV-001 | DEV-P0-01 | Multi-tenant membership, context, ownership, and cross-tenant denial contract validation | `docs/evidence/EVD-DEV-001-multitenant-readiness.md` | Generated; authority review pending |
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |

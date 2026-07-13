@@ -15,6 +15,10 @@ This pack is approved for:
 
 It is **not** approval to implement the production platform kernel. Production implementation requires the BOPEN-RES-001 `G7` clean-room release and approval of the applicable normative artifacts.
 
+## Current development-readiness lane
+
+`DEV-P0-01` makes the multi-tenant boundary executable as draft contracts and negative tests: principal-to-tenant membership, server-validated active context, tenant-owned resources, deny-by-default authorization, API isolation, database isolation, and correlated audit evidence. This is contract readiness only; it does not open the production implementation gate.
+
 ## Governing lifecycle
 
 ```text

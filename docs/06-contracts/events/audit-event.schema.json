@@ -34,10 +34,19 @@
       "type": "string"
     },
     "tenant_id": {
-      "type": "string"
+      "type": "string",
+      "description": "Tenant of the validated active context. This is the audit partition tenant, not an untrusted claim or resource owner."
     },
     "context_id": {
       "type": "string"
+    },
+    "context_tenant_id": {
+      "type": "string",
+      "description": "Tenant bound to the validated active context; explicit for cross-tenant decisions."
+    },
+    "resource_tenant_id": {
+      "type": "string",
+      "description": "Owning tenant of the evaluated resource; explicit for cross-tenant decisions."
     },
     "principal_id": {
       "type": "string"

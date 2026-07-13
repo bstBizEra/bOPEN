@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-12",
-  "count": 223,
+  "generated": "2026-07-13",
+  "count": 229,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -251,8 +251,8 @@
       "path": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md",
       "title": "BOPEN-TENANT-001 \u2014 bOPEN Tenant, Organization Graph, Membership, Context & Isolation Specification v1.0",
       "status": "Draft \u2014 no implementation authority",
-      "sha256": "d8163f2a39b6c56537c8186d55fb7ef5c8ec827dfd81411d8c4195d2afe1156c",
-      "bytes": 1135
+      "sha256": "f8696d603664fd106776ed2a7a880749a2184924941a55ba7cb5d6d618a2c86e",
+      "bytes": 1796
     },
     {
       "path": "docs/04-platform/capability/capability-registry.md",
@@ -416,11 +416,18 @@
       "bytes": 7798
     },
     {
+      "path": "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+      "title": "",
+      "status": "",
+      "sha256": "e74a6bf2132f08c41ba3e3d2051bf93f2aab1115fd0495b40f0939579abeea0f",
+      "bytes": 20026
+    },
+    {
       "path": "docs/06-contracts/acceptance/README.md",
       "title": "Acceptance Contract Fixtures",
       "status": "",
-      "sha256": "2981047bccf7477ba333da8f9787b11e8bae78a4e681906f42120def509dff95",
-      "bytes": 279
+      "sha256": "e9feb97cf2a89e053723e761ed82d01d4196e23f27ef3a993e8d5793be01a5d2",
+      "bytes": 527
     },
     {
       "path": "docs/06-contracts/agents/agent-tool-contract.md",
@@ -447,8 +454,8 @@
       "path": "docs/06-contracts/events/audit-event.schema.json",
       "title": "",
       "status": "",
-      "sha256": "8969e1d038c8e965c6de595634bce0e029844d3fec9ac9eb197eb2fe93b25057",
-      "bytes": 1530
+      "sha256": "4495e7256462980136b6321460c3cb2e2385a94a8c7efcd653ea911474763d73",
+      "bytes": 1996
     },
     {
       "path": "docs/06-contracts/events/event-envelope.md",
@@ -484,6 +491,27 @@
       "status": "",
       "sha256": "4e78d62624b140cc38833bd7c93a6e8b0708f2826d5a41ce1ef411c28b39913b",
       "bytes": 347
+    },
+    {
+      "path": "docs/06-contracts/tenancy/active-context.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "8bb64cb16e52724065e1ceb360b4db4f7d45e69567d5d388690e0e3b2a712728",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/06-contracts/tenancy/membership.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "cec9221a4a368206e51378a75293c966ad7e3302840f1df9ee3fde505dc333ee",
+      "bytes": 1163
+    },
+    {
+      "path": "docs/06-contracts/tenancy/tenant-ownership.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "1b190276090a19443ce2d803b6cb2789e4b2e762e4a32f3b61e744becde5967e",
+      "bytes": 767
     },
     {
       "path": "docs/07-security/authorization/privileged-access.md",
@@ -860,8 +888,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "946324131ae67b189a8e8a0c8bad0ebc638bd4bb8aa87714e0eb99ebb05b6846",
-      "bytes": 4724
+      "sha256": "ec6ff4c9afbec0824b5e1f79afd40155c6beb5b2298bdbed3ee9efd1e251ea6a",
+      "bytes": 5283
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -895,15 +923,15 @@
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "22ec75e0664e39f8f2668a7ccfe65b7b54a28a339bd2d1d59df55b1f88be215a",
-      "bytes": 1105
+      "sha256": "1e96637b53013e5b6b5d235e77cf61489e5332a118802249f84c49f8f5a1bfc2",
+      "bytes": 1154
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "0637587129a674a98c2ce7efad5d9e836e3d3600655b6274b953e60502528434",
-      "bytes": 930
+      "sha256": "e51bc2a24390bff3e07fc4d25ccd5a441ef815797040f92bba186775064c218b",
+      "bytes": 961
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -969,11 +997,18 @@
       "bytes": 5039
     },
     {
+      "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
+      "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
+      "status": "",
+      "sha256": "56f279fe6f31a02c943e8288b235a9b5bc5973d6d8a971fc1a8cd77addf2d9ba",
+      "bytes": 5013
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "7666f89f3d9a6e8b24b98a18f931b8c1ec8d04549a73397e198411d5c9770897",
-      "bytes": 1950
+      "sha256": "35c7845d339955936df12804e314d6bba2ecd2d1b68508e664645d225f73441c",
+      "bytes": 2162
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1455,8 +1490,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "5b56065ee28e7341b6a7e6f5b933a5ddd7b5b10a1b6865f1d104cf033a9c470f",
-      "bytes": 2326
+      "sha256": "e20644dad971a28ca05f76c4f4bd807a96cb04421013f91f9454f0a197146c82",
+      "bytes": 2791
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1550,18 +1585,25 @@
       "bytes": 1253
     },
     {
+      "path": "docs/work-packages/DEV-P0-01.md",
+      "title": "DEV-P0-01 - Multi-tenant development readiness contracts",
+      "status": "Execution complete; authority review pending",
+      "sha256": "3abfa39d7129527f6769413f2953ad7f30a7321b6811ca9bc8567948ae6a7846",
+      "bytes": 3230
+    },
+    {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
-      "sha256": "0e701a27c2c11021e5f5143edc7864353c181fbed1ef101fc5677f18f3641e77",
-      "bytes": 1531
+      "sha256": "9c4c9a2d6117762d980695ed73548bcfab77d592193697ff903602af37f32002",
+      "bytes": 1712
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "942e4cf11c34f12fb9674d472d3bfa27e01d7f7fd42639853aea452e51869a74",
-      "bytes": 1668
+      "sha256": "42201a7d693e9c30046cbc3e0b7b2d050c6562d2251cb49b030742b65c33c17c",
+      "bytes": 1894
     }
   ]
 }
