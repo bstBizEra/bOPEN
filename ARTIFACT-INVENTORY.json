@@ -763,7 +763,7 @@
     {
       "path": "docs/DOCUMENT-MANIFEST.json",
       "bytes": 59712,
-      "sha256": "41eb52cc28e9add9e6a9d730da23fe6069c795b234261eb34241cbd249f0a1d7"
+      "sha256": "671691deabe122db9e7b17b73fded7d16b43e0a67e9c498c3b4981ac75199e86"
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
@@ -917,8 +917,8 @@
     },
     {
       "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
-      "bytes": 7250,
-      "sha256": "634df176e2c34b4b2c04729a134797c225380b6b947854d950ffafd221ab4239"
+      "bytes": 7338,
+      "sha256": "b57ae167b0519b20a92066eaf29710cbca87d2dd8e16671592d867166b3909c9"
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1033,7 +1033,7 @@
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
       "bytes": 2595,
-      "sha256": "58fa48882785a7f69e36fe49b67751e94ddfbcee96cc6fc7665ad2361cf4ce56"
+      "sha256": "3644c60a046db602d38b3ce13cccac67481e2cfbaab52f1db9962c66cacf8515"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
@@ -1053,7 +1053,7 @@
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
       "bytes": 3019,
-      "sha256": "a57389da9f1968b0d99610ca5a98bcb64f32aadd2d4a49bd6119de9eb978af1d"
+      "sha256": "4a88c694d1b57b511cd3cafff2427bb6ff4d235da49b0a079f29941b10f05953"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/security-review-checklist.md",
@@ -1143,7 +1143,7 @@
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "bytes": 9110,
-      "sha256": "90e96de748853c07b4090af2ff8c5dfbc8df885ce47c8a83fe07796666b8677e"
+      "sha256": "d6d18c43b63286f05bd63780be355dbb9075a1a7823a2218da141cbf83bac14b"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1173,7 +1173,7 @@
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
       "bytes": 2853,
-      "sha256": "141a7ba81965cfd60dc3b8ba6f9c06011595491ecd5788870135ee6a2790739d"
+      "sha256": "d4d52657b8ba792ebd25f68dc52ab4ae81dfb634f2beaa35505400d1b6426479"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
@@ -1407,8 +1407,8 @@
     },
     {
       "path": "research/sources/boxyhq-r1-trace-contract.json",
-      "bytes": 15136,
-      "sha256": "05d2555e7f52cd137f38edf9f5a56863e6e873043bfcf9856b928f19e01dbf0a"
+      "bytes": 15323,
+      "sha256": "467b8f26728c7c55973bb835194c7ff44e61d4e30b3008eff21d05f52c557b66"
     },
     {
       "path": "research/sources/boxyhq-upstream-pin.json",
@@ -1497,8 +1497,8 @@
     },
     {
       "path": "tests/governance/test_research_r1_controls.py",
-      "bytes": 4767,
-      "sha256": "f197f0ff27b0be9e9a72af8e1e7532a5c6a57a22159720440cfb500c8241bb77"
+      "bytes": 5086,
+      "sha256": "154296d26c67bec14102983490481a0f0c536df40d860e94ab0d563831e1b912"
     },
     {
       "path": "tests/governance/test_security_controls.py",

@@ -20,7 +20,7 @@
 1. ARCHI traced repository paths for registration, login/session, team, membership and invitation lifecycles in the pinned external checkout.
 2. ENGIN independently traced identity and principal behavior without executing upstream code.
 3. REV independently traced team, membership and invitation behavior without executing upstream code.
-4. The tracked R1 validator verified 56 case-specific evidence records against each detached, clean checkout: 46 observations and 10 gap anchors.
+4. The tracked R1 validator verified 57 case-specific evidence records against each detached, clean checkout: 47 observations and 10 gap anchors.
 5. The validator read Git-tracked TypeScript test files as data and statically counted 42 `test`, `setup` or `teardown` declarations in 9 files. It did not load upstream configuration, execute upstream code, provision a database or require network access.
 6. Each operator evidence store was secret-scanned and manifest-verified under the DEC-0009 external research root.
 
@@ -28,10 +28,10 @@
 
 | Operator | Evidence records | Observations | Gap anchors | Static declarations | Upstream code executed | Secret scan | Manifest SHA-256 |
 |---|---:|---:|---:|---:|---|---|---|
-| ENGIN-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `16d384aa2539f4d95da9bcb5ccee71dc9936ab535de3db3f600d88b011296fed` |
-| REV-R1-20260713 | 56 | 46 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `29a69424d48814fe2e6eb6d543074b55784aea00154d1e42b619e675a3233eef` |
+| ENGIN-R1-20260713 | 57 | 47 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `f86adbfa04485f06bef7639f7a962d812ceb0c6aad4fab99d1e9928b4f4d87bc` |
+| REV-R1-20260713 | 57 | 47 | 10 | 42 in 9 files | No | 2 payloads, 0 findings | `356bb6101a31e87ed708eec46d7874d85a1733447b15364b320a045a518105a5` |
 
-Each manifest contains three records: the R1 trace receipt, static test-declaration receipt and secret-scan receipt. Both trace and declaration receipts bind to committed validator SHA-256 `958977f29653f0572b6f703c2329bc52d61d8de6b96d0869875f109fd5f81aac`. Raw upstream source remains external and is not included.
+Each manifest contains three records: the R1 trace receipt, static test-declaration receipt and secret-scan receipt. Both trace and declaration receipts bind to committed validator SHA-256 `958977f29653f0572b6f703c2329bc52d61d8de6b96d0869875f109fd5f81aac` and contract SHA-256 `467b8f26728c7c55973bb835194c7ff44e61d4e30b3008eff21d05f52c557b66`. Raw upstream source remains external and is not included.
 
 ## Confirmed observations
 

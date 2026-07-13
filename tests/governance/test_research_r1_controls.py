@@ -112,6 +112,11 @@ class ResearchR1ControlTests(unittest.TestCase):
             ["Create a new team"],
         )
 
+    def test_login_api_attribution_uses_nextauth_entry_route(self):
+        evidence = {item["id"]: item for item in self.contract["evidence"]}
+        self.assertEqual(evidence["R1-E057"]["path"], "pages/api/auth/[...nextauth].ts")
+        self.assertEqual(evidence["R1-E057"]["case_markers"]["login"], ["NextAuth"])
+
     def test_r1_evidence_keeps_g3_and_invitation_acceptance_open(self):
         evidence = (ROOT / "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md").read_text(
             encoding="utf-8"

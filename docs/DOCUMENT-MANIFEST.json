@@ -1021,8 +1021,8 @@
       "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
       "title": "EVD-RES-003 - R1 Core Relationship Lifecycle Trace",
       "status": "Accepted research evidence; G3 open",
-      "sha256": "634df176e2c34b4b2c04729a134797c225380b6b947854d950ffafd221ab4239",
-      "bytes": 7250
+      "sha256": "b57ae167b0519b20a92066eaf29710cbca87d2dd8e16671592d867166b3909c9",
+      "bytes": 7338
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1189,7 +1189,7 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
       "title": "Initial Evidence Index",
       "status": "",
-      "sha256": "58fa48882785a7f69e36fe49b67751e94ddfbcee96cc6fc7665ad2361cf4ce56",
+      "sha256": "3644c60a046db602d38b3ce13cccac67481e2cfbaab52f1db9962c66cacf8515",
       "bytes": 2595
     },
     {
@@ -1224,7 +1224,7 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
       "title": "Repository Structure Study",
       "status": "",
-      "sha256": "a57389da9f1968b0d99610ca5a98bcb64f32aadd2d4a49bd6119de9eb978af1d",
+      "sha256": "4a88c694d1b57b511cd3cafff2427bb6ff4d235da49b0a079f29941b10f05953",
       "bytes": 3019
     },
     {
@@ -1350,7 +1350,7 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "90e96de748853c07b4090af2ff8c5dfbc8df885ce47c8a83fe07796666b8677e",
+      "sha256": "d6d18c43b63286f05bd63780be355dbb9075a1a7823a2218da141cbf83bac14b",
       "bytes": 9110
     },
     {
@@ -1392,7 +1392,7 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
       "title": "Research Status",
       "status": "`R1 STATIC TRACE EXECUTED / G3 OPEN`",
-      "sha256": "141a7ba81965cfd60dc3b8ba6f9c06011595491ecd5788870135ee6a2790739d",
+      "sha256": "d4d52657b8ba792ebd25f68dc52ab4ae81dfb634f2beaa35505400d1b6426479",
       "bytes": 2853
     },
     {

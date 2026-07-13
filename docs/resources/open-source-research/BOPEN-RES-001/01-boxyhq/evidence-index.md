@@ -19,7 +19,7 @@
 
 | Evidence ID | Class | Source | Observation | Status |
 |---|---|---|---|---|
-| BOX-E-013 | E2 | R1 trace contract and two external receipts | 56 case-specific evidence records independently match the pinned source: 46 observations and 10 gap anchors. | Confirmed |
+| BOX-E-013 | E2 | R1 trace contract and two external receipts | 57 case-specific evidence records independently match the pinned source: 47 observations and 10 gap anchors. | Confirmed |
 | BOX-E-014 | E2 | Static test-declaration receipts | 42 declarations are present in 9 Git-tracked TypeScript test files; upstream code was not executed. | Confirmed |
 | BOX-E-015 | E2 | Identity trace | Human-user identity root, session/token gaps and absent identity audit chain recorded. | Confirmed |
 | BOX-E-016 | E2 | Team/membership trace | Owner atomicity, last-owner and cross-team negative gaps recorded. | Confirmed |
