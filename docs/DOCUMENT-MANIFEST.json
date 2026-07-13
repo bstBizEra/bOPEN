@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-13",
-  "count": 233,
+  "count": 235,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -937,8 +937,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "95829cbadd64a34167909ef56a2da7b980116a440b80d0541b58dffa3c529f0c",
-      "bytes": 987
+      "sha256": "a471bdff45fb368b759927e4bac66f3d8019125613a4396791cd7957a8f67a69",
+      "bytes": 1137
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1016,6 +1016,13 @@
       "status": "",
       "sha256": "f2391009186747933e35a6bfb20ed1ada598cc9bafdcc0485d3a0cf177126b2e",
       "bytes": 4522
+    },
+    {
+      "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
+      "title": "EVD-RES-003 - R1 Core Relationship Lifecycle Trace",
+      "status": "Accepted research evidence; G3 open",
+      "sha256": "7d792a485b182dd898e30315aca8778e8d670e2e8bee2136b2f3018845df5d3a",
+      "bytes": 7071
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1182,8 +1189,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
       "title": "Initial Evidence Index",
       "status": "",
-      "sha256": "217b57861dfb84d2824dd2618126b6be989a6f032197fa313bcf6e82b174b844",
-      "bytes": 1564
+      "sha256": "fdef52187ea6140667cc02822503fe2603591c23e6074fa9863f2e72d78b092a",
+      "bytes": 2523
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
@@ -1196,15 +1203,15 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/identity-principal-analysis.md",
       "title": "Identity and Principal Analysis",
       "status": "",
-      "sha256": "731e59b39251c256fd7c627c50bc08f2def2afe4ee2e9b72b339bb5fd983f36b",
-      "bytes": 1048
+      "sha256": "301e381184b3a589932154479da5ceec9d47a77a7653c8cf34ee3554e1246921",
+      "bytes": 2033
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/lifecycle-map.md",
       "title": "BoxyHQ Lifecycle Map Against bOPEN",
       "status": "",
-      "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
-      "bytes": 2681
+      "sha256": "8df8c3416abe7b2c14b36714d217cb7f884299602150e0fd9017b573189e6b4a",
+      "bytes": 3468
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/README.md",
@@ -1217,8 +1224,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
       "title": "Repository Structure Study",
       "status": "",
-      "sha256": "b8cdd053deb956b681eb3f8df7d3f10591aad186f44a9364df4c4c6a8835bcfd",
-      "bytes": 1414
+      "sha256": "14e6e590dd310d3394da8a6752fd1d080afb36b5b983a69cf1af96f325343218",
+      "bytes": 2899
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/security-review-checklist.md",
@@ -1231,15 +1238,15 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/tenant-membership-analysis.md",
       "title": "Tenant and Membership Analysis",
       "status": "",
-      "sha256": "bb02b95087bed81ed45324d1e4c546b24a8b919b198f662814b484aa69660abd",
-      "bytes": 1149
+      "sha256": "509b779bb25a8acb1a90dc92a8cf1a2d270376e0747d2199b88bf29088825fa6",
+      "bytes": 2094
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/test-scenario-catalog.md",
       "title": "Test Scenario Catalog",
       "status": "",
-      "sha256": "805712738805e7a258a76bf52f8d7ca4b7ca7546b76fcb283c8c1d973bf0eef1",
-      "bytes": 1563
+      "sha256": "36b93a54e21954e9b9918af6b62028ed93cf084b50131d10943016afdc8bd682",
+      "bytes": 2311
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/upstream-pin.json",
@@ -1294,8 +1301,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/work-package-register.md",
       "title": "Work Package Register",
       "status": "",
-      "sha256": "eb432eeb1b249dc4a29003a7d3d6af4c8856c699a6a342b41674b0c5965f0c8d",
-      "bytes": 4576
+      "sha256": "8d019fb5a5107e86ac8fb04de0ec15eb8101fc1298609eed4ca3bcb89209fadd",
+      "bytes": 5422
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/architecture-decision-template.md",
@@ -1343,8 +1350,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "ba96c15e1745fecfdfe439b2ccb5cb030441b92d488f901f2ead7c170c28344e",
-      "bytes": 8944
+      "sha256": "c3a039445cf1be443029f771757498ddb3b5738e7a165381b66916a0c720998c",
+      "bytes": 9110
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1384,9 +1391,9 @@
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
       "title": "Research Status",
-      "status": "",
-      "sha256": "d1b68c9d0753314c20121c177eeab06cb27fbb39aee16b0f650f7af4b06d724a",
-      "bytes": 2012
+      "status": "`R1 STATIC TRACE EXECUTED / G3 OPEN`",
+      "sha256": "0e079ee23d52d3deee51652b2dc58a78c4619586f730a545518861302cf29ae4",
+      "bytes": 2799
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
@@ -1415,6 +1422,13 @@
       "status": "",
       "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042",
       "bytes": 5390
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-r1-trace.ps1",
+      "title": "",
+      "status": "",
+      "sha256": "1de74d98f224a42c8ba7a7f401cc8e40d8ec43087313581064669ac2ae2efcff",
+      "bytes": 2988
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.ps1",
@@ -1518,8 +1532,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "2768f82c3e84a0c9257b284500849e421a55a95fec3a1055f81d6ede6c927837",
-      "bytes": 2952
+      "sha256": "c0fafdc5e3f8c13a162872bd233b4cd5662727f4b3e590fe209a26a433327835",
+      "bytes": 3122
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

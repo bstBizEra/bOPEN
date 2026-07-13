@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "source_id": "SRC-BOX-001",
+  "pinned_commit": "abc9b686823cbfb4973c79bc36fea37a3244be6c",
+  "status": "research-observation-only",
+  "work_packages": [
+    {
+      "id": "RES-P0-04",
+      "required_cases": ["registration", "login-session", "team", "membership", "invitation"],
+      "required_layers": ["ui", "api", "validation", "model", "schema", "integration", "test"]
+    },
+    {
+      "id": "RES-P0-05",
+      "required_cases": ["registration", "verification", "login", "session", "linked-account", "password-reset", "lockout", "api-key"],
+      "required_layers": ["ui", "api", "validation", "model", "schema", "test"]
+    },
+    {
+      "id": "RES-P0-06",
+      "required_cases": ["team-create", "team-update", "team-delete", "owner-create", "membership-list", "role-update", "member-remove", "member-leave"],
+      "required_layers": ["ui", "api", "validation", "model", "schema", "integration", "test"]
+    },
+    {
+      "id": "RES-P0-07",
+      "required_cases": ["email-invite", "domain-link", "fetch", "accept", "expiry", "revoke-delete", "replay", "concurrency"],
+      "required_layers": ["ui", "api", "validation", "model", "schema", "integration", "test"]
+    }
+  ],
+  "evidence": [
+    {"id":"R1-E001","packages":["RES-P0-04","RES-P0-05"],"cases":["registration"],"layer":"ui","path":"pages/auth/join.tsx","markers":["Signup"]},
+    {"id":"R1-E002","packages":["RES-P0-04","RES-P0-05"],"cases":["registration"],"layer":"api","path":"pages/api/auth/join.ts","markers":["handlePOST", "createUser", "createTeam"]},
+    {"id":"R1-E003","packages":["RES-P0-04","RES-P0-05","RES-P0-06","RES-P0-07"],"cases":["registration","password-reset","api-key","team-create","team-update","role-update","member-remove","email-invite","domain-link","accept","fetch","revoke-delete"],"layer":"validation","path":"lib/zod/schema.ts","markers":["userJoinSchema", "resetPasswordSchema", "createApiKeySchema", "createTeamSchema", "updateTeamSchema", "updateMemberSchema", "inviteViaEmailSchema", "acceptInvitationSchema"]},
+    {"id":"R1-E004","packages":["RES-P0-04","RES-P0-05","RES-P0-06","RES-P0-07"],"cases":["registration","login","session","linked-account","verification","password-reset","lockout","api-key","team-create","team-update","team-delete","owner-create","membership-list","role-update","member-remove","member-leave","email-invite","domain-link","fetch","accept","expiry","revoke-delete"],"layer":"schema","path":"prisma/schema.prisma","markers":["model User", "model Account", "model Session", "model VerificationToken", "model Team", "model TeamMember", "model Invitation", "model ApiKey"]},
+    {"id":"R1-E005","packages":["RES-P0-04","RES-P0-05"],"cases":["login-session","login","session","linked-account"],"layer":"model","path":"lib/nextAuth.ts","markers":["getAuthOptions", "createDatabaseSession"]},
+    {"id":"R1-E006","packages":["RES-P0-04","RES-P0-05"],"cases":["verification"],"layer":"model","path":"models/verificationToken.ts","markers":["createVerificationToken", "isVerificationTokenExpired"]},
+    {"id":"R1-E007","packages":["RES-P0-04","RES-P0-05"],"cases":["password-reset"],"layer":"api","path":"pages/api/auth/reset-password.ts","markers":["handlePOST", "resetPasswordSchema"]},
+    {"id":"R1-E008","packages":["RES-P0-04","RES-P0-05"],"cases":["lockout"],"layer":"model","path":"lib/accountLock.ts","markers":["incrementLoginAttempts", "isAccountLocked", "unlockAccount"]},
+    {"id":"R1-E009","packages":["RES-P0-04","RES-P0-05"],"cases":["session"],"layer":"api","path":"pages/api/sessions/[id].ts","markers":["handleDELETE", "deleteSession"]},
+    {"id":"R1-E010","packages":["RES-P0-04","RES-P0-05"],"cases":["api-key"],"layer":"api","path":"pages/api/teams/[slug]/api-keys/index.ts","markers":["createApiKeySchema", "createApiKey"]},
+    {"id":"R1-E011","packages":["RES-P0-04","RES-P0-05"],"cases":["registration"],"layer":"test","path":"tests/e2e/support/account.setup.ts","markers":["Sign up"]},
+    {"id":"R1-E012","packages":["RES-P0-04","RES-P0-05"],"cases":["login","session"],"layer":"test","path":"tests/e2e/session/session.spec.ts","markers":["Session is shown", "On Remove session user logs out"]},
+    {"id":"R1-E013","packages":["RES-P0-04","RES-P0-05"],"cases":["api-key"],"layer":"test","path":"tests/e2e/settings/api-key.spec.ts","markers":["create new API Key", "delete API Key"]},
+    {"id":"R1-E014","packages":["RES-P0-04","RES-P0-06"],"cases":["team","team-create","team-update","team-delete"],"layer":"ui","path":"components/team/TeamSettings.tsx","markers":["TeamSettings"]},
+    {"id":"R1-E015","packages":["RES-P0-04","RES-P0-06"],"cases":["team-create","owner-create"],"layer":"api","path":"pages/api/teams/index.ts","markers":["handlePOST", "createTeam"]},
+    {"id":"R1-E016","packages":["RES-P0-04","RES-P0-06"],"cases":["team-update","team-delete"],"layer":"api","path":"pages/api/teams/[slug]/index.ts","markers":["handlePUT", "handleDELETE", "sendAudit"]},
+    {"id":"R1-E017","packages":["RES-P0-04","RES-P0-06"],"cases":["team-create","team-update","team-delete","owner-create","membership-list","member-remove","member-leave"],"layer":"model","path":"models/team.ts","markers":["createTeam", "addTeamMember", "removeTeamMember", "getTeamMembers", "updateTeam", "deleteTeam"]},
+    {"id":"R1-E018","packages":["RES-P0-04","RES-P0-06"],"cases":["membership","membership-list","role-update","member-remove","member-leave"],"layer":"api","path":"pages/api/teams/[slug]/members.ts","markers":["handleGET", "handleDELETE", "handlePUT", "handlePATCH", "sendEvent", "sendAudit"]},
+    {"id":"R1-E019","packages":["RES-P0-04","RES-P0-06"],"cases":["team-update","team-delete","role-update","member-remove"],"layer":"integration","path":"pages/api/teams/[slug]/members.ts","markers":["member.removed", "sendAudit"]},
+    {"id":"R1-E020","packages":["RES-P0-04","RES-P0-06"],"cases":["team-create","team-update","team-delete"],"layer":"test","path":"tests/e2e/settings/team-settings.spec.ts","markers":["update team name", "update team slug"]},
+    {"id":"R1-E021","packages":["RES-P0-04","RES-P0-06","RES-P0-07"],"cases":["membership-list","member-remove","email-invite","domain-link","accept"],"layer":"test","path":"tests/e2e/settings/members.spec.ts","markers":["list of members", "accept the invitation", "create invite using domain", "remove a member"]},
+    {"id":"R1-E022","packages":["RES-P0-04","RES-P0-07"],"cases":["invitation","email-invite","domain-link"],"layer":"ui","path":"components/invitation/InviteMember.tsx","markers":["InviteMember"]},
+    {"id":"R1-E023","packages":["RES-P0-04","RES-P0-07"],"cases":["fetch"],"layer":"api","path":"pages/api/invitations/[token].ts","markers":["handleGET", "getInvitation"]},
+    {"id":"R1-E024","packages":["RES-P0-04","RES-P0-07"],"cases":["email-invite","domain-link","accept","revoke-delete","replay","concurrency"],"layer":"api","evidence_kind":"gap-anchor","path":"pages/api/teams/[slug]/invitations.ts","markers":["handlePOST", "handleDELETE", "handlePUT", "sendEvent", "sendAudit"]},
+    {"id":"R1-E025","packages":["RES-P0-04","RES-P0-07"],"cases":["email-invite","domain-link","fetch","expiry","revoke-delete"],"layer":"model","path":"models/invitation.ts","markers":["createInvitation", "getInvitation", "deleteInvitation", "isInvitationExpired"]},
+    {"id":"R1-E026","packages":["RES-P0-04","RES-P0-07"],"cases":["email-invite","accept","revoke-delete"],"layer":"integration","path":"pages/api/teams/[slug]/invitations.ts","markers":["invitation.created", "invitation.removed", "member.created", "sendAudit"]}
+  ],
+  "runtime_evidence": {
+    "gate": "G3",
+    "status": "open",
+    "executed": false,
+    "reason": "The controlled R1 run inventories upstream tests without provisioning databases, mail, webhook, audit, SSO or other runtime services. Test presence is E2, not E3."
+  }
+}

@@ -98,8 +98,8 @@
     },
     {
       "path": "01-boxyhq/evidence-index.md",
-      "sha256": "217b57861dfb84d2824dd2618126b6be989a6f032197fa313bcf6e82b174b844",
-      "bytes": 1564
+      "sha256": "fdef52187ea6140667cc02822503fe2603591c23e6074fa9863f2e72d78b092a",
+      "bytes": 2523
     },
     {
       "path": "01-boxyhq/gaps-and-non-goals.md",
@@ -108,18 +108,18 @@
     },
     {
       "path": "01-boxyhq/identity-principal-analysis.md",
-      "sha256": "731e59b39251c256fd7c627c50bc08f2def2afe4ee2e9b72b339bb5fd983f36b",
-      "bytes": 1048
+      "sha256": "301e381184b3a589932154479da5ceec9d47a77a7653c8cf34ee3554e1246921",
+      "bytes": 2033
     },
     {
       "path": "01-boxyhq/lifecycle-map.md",
-      "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
-      "bytes": 2681
+      "sha256": "8df8c3416abe7b2c14b36714d217cb7f884299602150e0fd9017b573189e6b4a",
+      "bytes": 3468
     },
     {
       "path": "01-boxyhq/repository-structure-study.md",
-      "sha256": "b8cdd053deb956b681eb3f8df7d3f10591aad186f44a9364df4c4c6a8835bcfd",
-      "bytes": 1414
+      "sha256": "14e6e590dd310d3394da8a6752fd1d080afb36b5b983a69cf1af96f325343218",
+      "bytes": 2899
     },
     {
       "path": "01-boxyhq/security-review-checklist.md",
@@ -128,13 +128,13 @@
     },
     {
       "path": "01-boxyhq/tenant-membership-analysis.md",
-      "sha256": "bb02b95087bed81ed45324d1e4c546b24a8b919b198f662814b484aa69660abd",
-      "bytes": 1149
+      "sha256": "509b779bb25a8acb1a90dc92a8cf1a2d270376e0747d2199b88bf29088825fa6",
+      "bytes": 2094
     },
     {
       "path": "01-boxyhq/test-scenario-catalog.md",
-      "sha256": "805712738805e7a258a76bf52f8d7ca4b7ca7546b76fcb283c8c1d973bf0eef1",
-      "bytes": 1563
+      "sha256": "36b93a54e21954e9b9918af6b62028ed93cf084b50131d10943016afdc8bd682",
+      "bytes": 2311
     },
     {
       "path": "01-boxyhq/upstream-pin.json",
@@ -173,8 +173,8 @@
     },
     {
       "path": "02-execution/work-package-register.md",
-      "sha256": "eb432eeb1b249dc4a29003a7d3d6af4c8856c699a6a342b41674b0c5965f0c8d",
-      "bytes": 4576
+      "sha256": "8d019fb5a5107e86ac8fb04de0ec15eb8101fc1298609eed4ca3bcb89209fadd",
+      "bytes": 5422
     },
     {
       "path": "03-templates/architecture-decision-template.md",
@@ -233,8 +233,8 @@
     },
     {
       "path": "RESEARCH-STATUS.md",
-      "sha256": "d1b68c9d0753314c20121c177eeab06cb27fbb39aee16b0f650f7af4b06d724a",
-      "bytes": 2012
+      "sha256": "0e079ee23d52d3deee51652b2dc58a78c4619586f730a545518861302cf29ae4",
+      "bytes": 2799
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.ps1",
@@ -255,6 +255,11 @@
       "path": "scripts/run-boxyhq-baseline.ps1",
       "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042",
       "bytes": 5390
+    },
+    {
+      "path": "scripts/run-boxyhq-r1-trace.ps1",
+      "sha256": "1de74d98f224a42c8ba7a7f401cc8e40d8ec43087313581064669ac2ae2efcff",
+      "bytes": 2988
     },
     {
       "path": "scripts/verify-upstream-pin.ps1",

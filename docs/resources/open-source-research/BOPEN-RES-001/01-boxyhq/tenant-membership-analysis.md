@@ -38,3 +38,20 @@ INVITED -> ACTIVE -> SUSPENDED -> ACTIVE
  REVOKED
  DECLINED
 ```
+
+## R1 observations - 2026-07-13
+
+### Observation
+
+- Team, owner membership and webhook application provisioning are separate operations without an observed transaction boundary.
+- Leave checks for at least one owner, but direct removal/demotion does not show an equivalent atomic invariant.
+- Membership list/remove declarations exist; role transition, leave, cross-team identifiers and removed-session denial are not executed as R1 runtime evidence.
+- Event/audit coverage differs by operation and does not provide a complete correlated membership lifecycle.
+
+### Inference
+
+bOPEN tenant provisioning and owner invariants require database-enforced or transactionally serialized behavior. Membership transition authorization must be tested across actor role, target role, tenant context and concurrent mutation.
+
+### Decision status
+
+Research input only. RES-P0-06 trace is complete, but state-change acceptance is partial and G3 remains open.
