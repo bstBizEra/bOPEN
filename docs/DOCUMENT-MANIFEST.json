@@ -1,0 +1,1567 @@
+{
+  "generated": "2026-07-12",
+  "count": 223,
+  "documents": [
+    {
+      "path": "docs/00-governance/agent-governance.md",
+      "title": "Agent Governance",
+      "status": "",
+      "sha256": "7fd837e1ecdffbc52d5257e8cd74be49e5fd2b3188d3c425821a3d0536e13a4a",
+      "bytes": 267
+    },
+    {
+      "path": "docs/00-governance/agent-role-catalog.md",
+      "title": "Agent Role Catalog",
+      "status": "",
+      "sha256": "503ff018ecc797d0903a82522a165079d4244e19757a8426363ecade76875307",
+      "bytes": 1244
+    },
+    {
+      "path": "docs/00-governance/approval-policy.md",
+      "title": "Approval Policy",
+      "status": "",
+      "sha256": "d3fdcd796b0d52fc767e3366e99611211a398d1a4379dfa4910db23799bc11d9",
+      "bytes": 253
+    },
+    {
+      "path": "docs/00-governance/artifact-numbering.md",
+      "title": "Artifact Numbering",
+      "status": "",
+      "sha256": "ee77a910213462d2425eb1255551f4206c02cb2ac2bde5dfd91fce3020144039",
+      "bytes": 249
+    },
+    {
+      "path": "docs/00-governance/clean-room-policy.md",
+      "title": "Clean-Room Policy",
+      "status": "",
+      "sha256": "a8fe16a7ffaa7b2df299e3d908c1110a2d40bc29a3d015bed7aa895c187425a9",
+      "bytes": 299
+    },
+    {
+      "path": "docs/00-governance/decision-governance.md",
+      "title": "Decision Governance",
+      "status": "",
+      "sha256": "3c2b2fe0f5bc1eae972e5e49065baa2537403fe136665a63a5c3ca620ad1dadd",
+      "bytes": 246
+    },
+    {
+      "path": "docs/00-governance/document-control.md",
+      "title": "Document Control",
+      "status": "",
+      "sha256": "c0696c15a91681ef66e954415b9958386e866b42846e68af872f41b10be7980e",
+      "bytes": 328
+    },
+    {
+      "path": "docs/00-governance/exception-policy.md",
+      "title": "Exception Policy",
+      "status": "",
+      "sha256": "0132da5b5947faea83b7c4a7c447412286fc05398c03f098b0be85ffa9e3020b",
+      "bytes": 207
+    },
+    {
+      "path": "docs/00-governance/license-strategy.md",
+      "title": "License Strategy",
+      "status": "",
+      "sha256": "ee8732b2d01cf522efaddc4d5508dd939d390c0a6d72d9ac629f003b0b690e48",
+      "bytes": 302
+    },
+    {
+      "path": "docs/00-governance/raci.md",
+      "title": "Governance RACI",
+      "status": "",
+      "sha256": "b9df2c1d4964a9e837e64452beedec6f2dba70407d8430ab178c9ee5c15755c4",
+      "bytes": 321
+    },
+    {
+      "path": "docs/00-governance/source-governance.md",
+      "title": "Source Governance",
+      "status": "",
+      "sha256": "7e2f877817bdd47db2399c6c6b3f02be8099c61135f5fe1b2f68d4c1df75a961",
+      "bytes": 242
+    },
+    {
+      "path": "docs/01-product/ecosystem-map.md",
+      "title": "Ecosystem Map",
+      "status": "",
+      "sha256": "c8b58dee8317c502f0eb4aa02ebf630c4e46a08242f8274fcd3d4c35d75fbfbc",
+      "bytes": 289
+    },
+    {
+      "path": "docs/01-product/principles.md",
+      "title": "Product Principles",
+      "status": "",
+      "sha256": "ce5c953ceac137ef5c5de8956b9727fcecc68127900371633dd45aea4dc331f1",
+      "bytes": 438
+    },
+    {
+      "path": "docs/01-product/product-boundary.md",
+      "title": "Product Boundary",
+      "status": "",
+      "sha256": "790bf3addcf21f0e6458782808503df5c5b50ea13bc0a4e56175bdc47ea16b56",
+      "bytes": 346
+    },
+    {
+      "path": "docs/01-product/roadmap.md",
+      "title": "Strategic Roadmap",
+      "status": "",
+      "sha256": "e0d46f195d2799912fa19f567a6156717a19aeea81b0be2e620dcc70b5ac3272",
+      "bytes": 709
+    },
+    {
+      "path": "docs/01-product/success-metrics.md",
+      "title": "Success Metrics",
+      "status": "",
+      "sha256": "3fca22da3f274bc89baa043dade834c767c8ff6e8ac629ae1e73dde7ed73aef9",
+      "bytes": 432
+    },
+    {
+      "path": "docs/01-product/vision.md",
+      "title": "Product Vision",
+      "status": "",
+      "sha256": "8125193650f112f6253da26bf3e7d95e20b23559c699db85d4fc08d110366c19",
+      "bytes": 327
+    },
+    {
+      "path": "docs/02-requirements/acceptance/README.md",
+      "title": "Acceptance Criteria",
+      "status": "",
+      "sha256": "fe1b91e58b6b10402456f49672a1dd956e4c632c799b9abbb907f69119660ad9",
+      "bytes": 105
+    },
+    {
+      "path": "docs/02-requirements/BOPEN-REQ-001-DRAFT.md",
+      "title": "BOPEN-REQ-001 \u2014 bOPEN Multi-Tenant, Multi-Industry Open Business Platform Product Requirements Specification v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "86135d56a21a1a32628fa1493a94a513f02cabdf5bb8968c7847daacbdeac421",
+      "bytes": 4078
+    },
+    {
+      "path": "docs/02-requirements/functional/README.md",
+      "title": "Functional Requirements",
+      "status": "",
+      "sha256": "7b31592e3d96de572f5c59794ca46d49fb8485b01c9d8f4757ecca58f9edd34a",
+      "bytes": 109
+    },
+    {
+      "path": "docs/02-requirements/non-functional/README.md",
+      "title": "Non-Functional Requirements",
+      "status": "",
+      "sha256": "5e7aade65e66789a5e166e625783a7f9d64643153ebb11e911b7efc01cc58787",
+      "bytes": 137
+    },
+    {
+      "path": "docs/02-requirements/README.md",
+      "title": "Requirements",
+      "status": "",
+      "sha256": "333339f0e25a6686ff78f40e1904d898a0730a12423fc5cf15e4229e415d6e2d",
+      "bytes": 122
+    },
+    {
+      "path": "docs/03-architecture/architecture-gates.md",
+      "title": "Architecture Gates",
+      "status": "",
+      "sha256": "273c54dc0d57775270e02d52f50cd951a6c0a51e824724b46c843507512865a9",
+      "bytes": 195
+    },
+    {
+      "path": "docs/03-architecture/architecture-principles.md",
+      "title": "Architecture Principles",
+      "status": "",
+      "sha256": "d5d39802dafca0c261fabe4f0053492d0d6c2e5d442e6796573246890691d19d",
+      "bytes": 248
+    },
+    {
+      "path": "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md",
+      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel, Common Business Foundation, Capability Package & Industry Pack Architecture v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "75c058fe46a1ae92acab484fec9ff0b9e7c4ca013878f26e5cec855db1fafee8",
+      "bytes": 2118
+    },
+    {
+      "path": "docs/03-architecture/bounded-contexts.md",
+      "title": "Bounded Contexts",
+      "status": "",
+      "sha256": "774a2991650c64350a3a2c29993672455870f3ff7b598fc2f1466bd7024aa84e",
+      "bytes": 210
+    },
+    {
+      "path": "docs/03-architecture/data-architecture.md",
+      "title": "Data Architecture",
+      "status": "",
+      "sha256": "22ee3bff73a441b0354c12bcd0a680c9024192096470c8f21abdae3e512338f8",
+      "bytes": 278
+    },
+    {
+      "path": "docs/03-architecture/deployment-profiles.md",
+      "title": "Deployment Profiles",
+      "status": "",
+      "sha256": "954f52d7da8188218ca8e06314dddad1c47c79345c2bb803ee2d7fc190e9d18a",
+      "bytes": 204
+    },
+    {
+      "path": "docs/03-architecture/quality-attributes.md",
+      "title": "Quality Attributes",
+      "status": "",
+      "sha256": "515cbbb2f159f004adcdc5b2ae3a24e9afa9b348727c790f7a6eb3cf94cd795a",
+      "bytes": 220
+    },
+    {
+      "path": "docs/03-architecture/system-context.md",
+      "title": "System Context",
+      "status": "",
+      "sha256": "216eb8d3f48a7408041554ed202ec3af1319ac934694496a049c45f1200d9ad4",
+      "bytes": 272
+    },
+    {
+      "path": "docs/04-platform/agents/agent-principal.md",
+      "title": "Agent Principal",
+      "status": "",
+      "sha256": "a2dc428cdbc885c81a1883dd022a6063458328d950e41d29c779241a6f267189",
+      "bytes": 146
+    },
+    {
+      "path": "docs/04-platform/authorization/authorization-model.md",
+      "title": "Authorization Model",
+      "status": "",
+      "sha256": "29d27538a451d77068708bb0dd05b61dc5bc74d61b7f8b53d9242bcf7ccb98d7",
+      "bytes": 146
+    },
+    {
+      "path": "docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md",
+      "title": "BOPEN-AUTHZ-001 \u2014 bOPEN Authorization, Scope, Delegation & Policy Specification v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "5db9263f772356bc0408ee5c758ea08d267ef7f08d93249ca9ca216135825c17",
+      "bytes": 944
+    },
+    {
+      "path": "docs/04-platform/BOPEN-ENT-001-DRAFT.md",
+      "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "e9c52c32ecc9928328008a850725ecd9729d0d3bdd737aa120ac5fd63378daaa",
+      "bytes": 760
+    },
+    {
+      "path": "docs/04-platform/BOPEN-MOD-001-DRAFT.md",
+      "title": "BOPEN-MOD-001 \u2014 bOPEN Product, Module, Feature, Capability & Entitlement Package Contracts v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "4ffdfe30ffd6412cb791ef404ac8a3ce1e1a2abbcb749ce2536c92a184498a55",
+      "bytes": 720
+    },
+    {
+      "path": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md",
+      "title": "BOPEN-TENANT-001 \u2014 bOPEN Tenant, Organization Graph, Membership, Context & Isolation Specification v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "d8163f2a39b6c56537c8186d55fb7ef5c8ec827dfd81411d8c4195d2afe1156c",
+      "bytes": 1135
+    },
+    {
+      "path": "docs/04-platform/capability/capability-registry.md",
+      "title": "Capability Registry",
+      "status": "",
+      "sha256": "55f4df1232ab60c7a1a3759b6375de3d7dd1091939693c7dec5dcdd8468c5997",
+      "bytes": 144
+    },
+    {
+      "path": "docs/04-platform/context/active-context.md",
+      "title": "Active Context",
+      "status": "",
+      "sha256": "2aec90ce65aeaf926a740aa6cbbd43d0daf6af47c67098f01b5e7294ca6f684e",
+      "bytes": 167
+    },
+    {
+      "path": "docs/04-platform/control-plane/platform-control-plane.md",
+      "title": "Platform Control Plane",
+      "status": "",
+      "sha256": "5b109371df4256f3216de37e9d91ecfa88d57df000b8befb898c18c8942c40e6",
+      "bytes": 198
+    },
+    {
+      "path": "docs/04-platform/entitlement/entitlement-model.md",
+      "title": "Entitlement Model",
+      "status": "",
+      "sha256": "9707d6ba061d731a0437b5f38a42e3f25bef23d9fcbf5bf8bed411d292a5dc45",
+      "bytes": 135
+    },
+    {
+      "path": "docs/04-platform/events/event-and-audit.md",
+      "title": "Event and Audit Boundary",
+      "status": "",
+      "sha256": "c7706fae50404d984a0f0b73be85d22c88a2c319d45bba03bab7249083ae2a7c",
+      "bytes": 187
+    },
+    {
+      "path": "docs/04-platform/identity/identity-boundary.md",
+      "title": "Identity Boundary",
+      "status": "",
+      "sha256": "aac84604a59ea132e4321cb7cd30b0ef1b12ed0d0d0cccc52a9bec41479d683a",
+      "bytes": 144
+    },
+    {
+      "path": "docs/04-platform/isolation/tenant-isolation.md",
+      "title": "Tenant Isolation",
+      "status": "",
+      "sha256": "03b05ebeb030750db7d36807393701eba0c64b334ba6fe5e6f2a6037a996cb12",
+      "bytes": 185
+    },
+    {
+      "path": "docs/04-platform/membership/membership-model.md",
+      "title": "Membership Model",
+      "status": "",
+      "sha256": "f29368e68d8779766c1b1956e3f898f5befead9092314fe17f250fe405aab1e9",
+      "bytes": 143
+    },
+    {
+      "path": "docs/04-platform/organization/organization-graph.md",
+      "title": "Organization Graph",
+      "status": "",
+      "sha256": "19f04378cf3d72c8ac1b29678920dfbc1e8e8bce294264e306958c010bdbf3c1",
+      "bytes": 190
+    },
+    {
+      "path": "docs/04-platform/principal/principal-model.md",
+      "title": "Principal Model",
+      "status": "",
+      "sha256": "5050ae610c348714f0c13ef1e2b3bee547b84193196b5224a8404af5904d0513",
+      "bytes": 188
+    },
+    {
+      "path": "docs/04-platform/tenancy/tenant-model.md",
+      "title": "Tenant Model",
+      "status": "",
+      "sha256": "210619f65e569b1142ead04a0a73d4fa774164a93b130e5a4bfa294ae2952ecc",
+      "bytes": 138
+    },
+    {
+      "path": "docs/05-foundation/asset/README.md",
+      "title": "Asset",
+      "status": "",
+      "sha256": "18e34fad2fead864aa5eebc50ecb0083223d06fabebf49e480b7815ecc39806f",
+      "bytes": 86
+    },
+    {
+      "path": "docs/05-foundation/BOPEN-PARTY-001-DRAFT.md",
+      "title": "BOPEN-PARTY-001 \u2014 bOPEN Party, Person, Organization, Legal Entity & Business Relationship Model v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "76f6e4d017ca5a872ffc85493352b7d7ab6d20a0c835bda1228fddb73926cd4c",
+      "bytes": 944
+    },
+    {
+      "path": "docs/05-foundation/calendar/README.md",
+      "title": "Calendar",
+      "status": "",
+      "sha256": "bb924985cfd3adb8310fac9b39990b87231338c15baccbd46f6dff26a8f91166",
+      "bytes": 80
+    },
+    {
+      "path": "docs/05-foundation/document/README.md",
+      "title": "Document",
+      "status": "",
+      "sha256": "a3d0e7eb7a96242c64a42f0349aff82fff3ef1f7c912ddfc6c7d8a24cd5ac846",
+      "bytes": 87
+    },
+    {
+      "path": "docs/05-foundation/location/README.md",
+      "title": "Location",
+      "status": "",
+      "sha256": "7182d3f1dc2c00a157bc1cd8969625b1cd9491f343d72a6ef787af36b226740d",
+      "bytes": 84
+    },
+    {
+      "path": "docs/05-foundation/measurement/README.md",
+      "title": "Measurement",
+      "status": "",
+      "sha256": "92b8cf5fe009c9a52f9a9fd4eec2090dfaa0d67db8cea56fb715f426b1617398",
+      "bytes": 78
+    },
+    {
+      "path": "docs/05-foundation/money/README.md",
+      "title": "Money",
+      "status": "",
+      "sha256": "dd5ca0a6173e6f994d1b9323ccbc15e71fe3133216bb12e4a14ae6cdbb20c7a0",
+      "bytes": 79
+    },
+    {
+      "path": "docs/05-foundation/organization/README.md",
+      "title": "Organization",
+      "status": "",
+      "sha256": "d9c411e1a02619eb636b398b6c0b62ffc9d572994e098399557769902e76a687",
+      "bytes": 91
+    },
+    {
+      "path": "docs/05-foundation/party/README.md",
+      "title": "Party",
+      "status": "",
+      "sha256": "03bbe15d85e32cea01a443098d6eeea165541aeeb722cb9f342888c4e8fd48ce",
+      "bytes": 65
+    },
+    {
+      "path": "docs/05-foundation/relationship/README.md",
+      "title": "Relationship",
+      "status": "",
+      "sha256": "64a244f67a1fb12bec4faa228ff62e3d3b443f0f8e96702f92c6aacc05de98a8",
+      "bytes": 107
+    },
+    {
+      "path": "docs/05-foundation/workflow/README.md",
+      "title": "Workflow",
+      "status": "",
+      "sha256": "110d338402623ad9ab0df483f1f8218e3dbd05bc22914d8c09f2bd4f044d9792",
+      "bytes": 86
+    },
+    {
+      "path": "docs/06-contracts/acceptance/first-vertical-slice.acceptance.json",
+      "title": "",
+      "status": "",
+      "sha256": "f116df78de905ae8af7386b4f05228a0a7dfb28696416b8a647d33c4cedfebfb",
+      "bytes": 7798
+    },
+    {
+      "path": "docs/06-contracts/acceptance/README.md",
+      "title": "Acceptance Contract Fixtures",
+      "status": "",
+      "sha256": "2981047bccf7477ba333da8f9787b11e8bae78a4e681906f42120def509dff95",
+      "bytes": 279
+    },
+    {
+      "path": "docs/06-contracts/agents/agent-tool-contract.md",
+      "title": "Agent Tool Contract",
+      "status": "",
+      "sha256": "6b5c9b61b4d321433ee0dc86869de77c862788858a3703985203b4c4c5563b3b",
+      "bytes": 242
+    },
+    {
+      "path": "docs/06-contracts/api/api-conventions.md",
+      "title": "API Conventions",
+      "status": "",
+      "sha256": "aaf641417ff50daed98713217b7602efa374801a7c3eb860ab1259f403811889",
+      "bytes": 341
+    },
+    {
+      "path": "docs/06-contracts/contract-governance.md",
+      "title": "Contract Governance",
+      "status": "",
+      "sha256": "11f31d150db21464762aeccaab6a8b2f66773e942de94a7d76ed33abc653ef39",
+      "bytes": 670
+    },
+    {
+      "path": "docs/06-contracts/events/audit-event.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "8969e1d038c8e965c6de595634bce0e029844d3fec9ac9eb197eb2fe93b25057",
+      "bytes": 1530
+    },
+    {
+      "path": "docs/06-contracts/events/event-envelope.md",
+      "title": "Event Envelope",
+      "status": "",
+      "sha256": "ec38041d3e42e4e1a5e9ff2a3b4beeb48d72965004b8725a3eeeeb59855afe10",
+      "bytes": 468
+    },
+    {
+      "path": "docs/06-contracts/modules/module-manifest.example.yaml",
+      "title": "",
+      "status": "",
+      "sha256": "62d55fdbd2d8e68b99da626a1ebb47cd9a57cc2166f1a03fb27fdb0618be5641",
+      "bytes": 477
+    },
+    {
+      "path": "docs/06-contracts/modules/module-manifest.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "74e0e74c487084e335b6ba6de8c2e880d8c94c6101370fab9a1a1afaa1e9fc16",
+      "bytes": 1219
+    },
+    {
+      "path": "docs/06-contracts/policies/authorization-decision.schema.json",
+      "title": "",
+      "status": "",
+      "sha256": "88b96868343e6b350705543fceb2ec6ac43be5f4d582117b6cef45149e1757e0",
+      "bytes": 770
+    },
+    {
+      "path": "docs/06-contracts/schemas/schema-conventions.md",
+      "title": "Schema Conventions",
+      "status": "",
+      "sha256": "4e78d62624b140cc38833bd7c93a6e8b0708f2826d5a41ce1ef411c28b39913b",
+      "bytes": 347
+    },
+    {
+      "path": "docs/07-security/authorization/privileged-access.md",
+      "title": "Privileged Access",
+      "status": "",
+      "sha256": "97b972709290aa9383e12c15397f7b7262296dd28f73fd18ed5e8344966444b6",
+      "bytes": 155
+    },
+    {
+      "path": "docs/07-security/BOPEN-SEC-001-DRAFT.md",
+      "title": "BOPEN-SEC-001 \u2014 bOPEN Application Security, DevSecOps & Software Supply Chain Security Specification v1.0",
+      "status": "Draft \u2014 no production assurance",
+      "sha256": "7280a5c988a8a34ab63091b7c59649a4aab08c0f6f5b83ee9a4dc9614c487fa2",
+      "bytes": 1148
+    },
+    {
+      "path": "docs/07-security/incident/incident-classification.md",
+      "title": "Incident Classification",
+      "status": "",
+      "sha256": "dc2a45a7ac05ce0f27ed2670d7b9929dd1f70ec9f80a322df0419f59131be470",
+      "bytes": 221
+    },
+    {
+      "path": "docs/07-security/privacy/privacy-baseline.md",
+      "title": "Privacy Baseline",
+      "status": "",
+      "sha256": "8375eb2e135804cafe70e4c8080dffe7880dc643363bcce12d252268e5af483c",
+      "bytes": 207
+    },
+    {
+      "path": "docs/07-security/secrets/secrets-management.md",
+      "title": "Secrets Management",
+      "status": "",
+      "sha256": "f789a01c61f4d8f497174b71616a7e2929c9bf91c9796476bf31f788651cb9ac",
+      "bytes": 186
+    },
+    {
+      "path": "docs/07-security/supply-chain/dependency-policy.md",
+      "title": "Dependency Policy",
+      "status": "",
+      "sha256": "c24407b7b0f22ee4bd968042e43e7d76c2050890d789937d801827fa6aaa2ff5",
+      "bytes": 203
+    },
+    {
+      "path": "docs/07-security/tenant-isolation/isolation-test-standard.md",
+      "title": "Isolation Test Standard",
+      "status": "",
+      "sha256": "a3fa11ae53193138e53212cb53c7ea6a17faf359d15a7f24ed43ddf5abe41aca",
+      "bytes": 202
+    },
+    {
+      "path": "docs/07-security/threat-model/README.md",
+      "title": "Readme",
+      "status": "",
+      "sha256": "13c9c2caae6446af0ae3bb9e8cbaa1926d6f7dc92b1aa30ff6aa6da4aaefa4ec",
+      "bytes": 287
+    },
+    {
+      "path": "docs/08-engineering/branching.md",
+      "title": "Branching",
+      "status": "",
+      "sha256": "154e30b52ac1406df5282d8fe9eb0220c0ca7cecaa36ed89c48f3af87fba986a",
+      "bytes": 1510
+    },
+    {
+      "path": "docs/08-engineering/ci-cd.md",
+      "title": "Ci Cd",
+      "status": "",
+      "sha256": "48c1b2d13daa152cee03647d2b27dd7d08f1fe39c058697031f07e0580303e84",
+      "bytes": 176
+    },
+    {
+      "path": "docs/08-engineering/coding-standards.md",
+      "title": "Coding Standards",
+      "status": "",
+      "sha256": "a08322f28b417803658065981713ad0895a6525f99d85d20f198475e07a52d82",
+      "bytes": 193
+    },
+    {
+      "path": "docs/08-engineering/dependency-policy.md",
+      "title": "Dependency Policy",
+      "status": "",
+      "sha256": "6a375c054692fd24bd332285b5af981d928f5eebbf0032400821c2f0a722a228",
+      "bytes": 194
+    },
+    {
+      "path": "docs/08-engineering/local-development.md",
+      "title": "Local Development",
+      "status": "",
+      "sha256": "27e2c033ea43293087a01b8ed0fdeed28de8517b4a468732a3102171c005ced8",
+      "bytes": 1122
+    },
+    {
+      "path": "docs/08-engineering/migration-policy.md",
+      "title": "Migration Policy",
+      "status": "",
+      "sha256": "0ae2ca95173bdecbf6d16580e152d64cc4c91f28230ee0dbea12c0a310ac4426",
+      "bytes": 168
+    },
+    {
+      "path": "docs/08-engineering/observability-conventions.md",
+      "title": "Observability Conventions",
+      "status": "",
+      "sha256": "c10c1a0816ece1c49b8674b1cfda5975b2db2236b5b97ce7c0f984e370fc6a5c",
+      "bytes": 178
+    },
+    {
+      "path": "docs/08-engineering/release-management.md",
+      "title": "Release Management",
+      "status": "",
+      "sha256": "ae4aba49adcab05ba4d0e5e2c10446ecfb92ac469df0c2dc50b2efd6df5dac0b",
+      "bytes": 194
+    },
+    {
+      "path": "docs/08-engineering/repository-model.md",
+      "title": "Repository Model",
+      "status": "",
+      "sha256": "8bc8afb61cbb001eca923de233c612183700fac1117d0033fb461ad020da6458",
+      "bytes": 2096
+    },
+    {
+      "path": "docs/08-engineering/testing-strategy.md",
+      "title": "Testing Strategy",
+      "status": "",
+      "sha256": "1be8085a4b4cd74bbf45d2ccab90192cddc329445ad9d245eca79fa1ba7af384",
+      "bytes": 375
+    },
+    {
+      "path": "docs/08-engineering/versioning.md",
+      "title": "Versioning",
+      "status": "",
+      "sha256": "9ae06a9419c27a7e43e1f4e88fd4d93eba6e9c6ef6f650a63c21036360fa34be",
+      "bytes": 180
+    },
+    {
+      "path": "docs/09-operations/backup-recovery.md",
+      "title": "Backup Recovery",
+      "status": "",
+      "sha256": "7715b6e8909786361988f9c98e5de3461af4e75059b6d1002b31a787d5cfed1c",
+      "bytes": 184
+    },
+    {
+      "path": "docs/09-operations/deployment.md",
+      "title": "Deployment",
+      "status": "",
+      "sha256": "5817a570db2b9818903aff5ed946285cf1130b88a802a9d1da7a7c7747f86ac7",
+      "bytes": 163
+    },
+    {
+      "path": "docs/09-operations/environments.md",
+      "title": "Environments",
+      "status": "",
+      "sha256": "9c51151e00edb03e631091bacb9328ea8bfdcc3ae2fbe01207ee36dab8930d8d",
+      "bytes": 188
+    },
+    {
+      "path": "docs/09-operations/incident-management.md",
+      "title": "Incident Management",
+      "status": "",
+      "sha256": "d669ea7ceca0932d23658047e2233ddff659f6a94b99a04278f2a77a11bf4998",
+      "bytes": 185
+    },
+    {
+      "path": "docs/09-operations/observability.md",
+      "title": "Observability",
+      "status": "",
+      "sha256": "eaf0ce22b3bcd600eabc832660406bf4c76badcf9d2b4bee49bf5e327251e672",
+      "bytes": 186
+    },
+    {
+      "path": "docs/09-operations/runbooks/bootstrap-validation.md",
+      "title": "Runbook \u2014 Bootstrap Validation",
+      "status": "",
+      "sha256": "608c224bb4d7dbe9d8d9f0d36c490325e53cf4af42ac1f6a4e17c7dce3431fd5",
+      "bytes": 279
+    },
+    {
+      "path": "docs/09-operations/runbooks/migration-rollback.md",
+      "title": "Runbook \u2014 Migration Rollback / Compensation",
+      "status": "",
+      "sha256": "3685213e56a303d9a0d1766c7e4a2d531d75b57624433f8d91e474b496fa25ae",
+      "bytes": 290
+    },
+    {
+      "path": "docs/09-operations/runbooks/README.md",
+      "title": "Runbooks",
+      "status": "",
+      "sha256": "57c7ff8bfc0d5b29b64547dc61df76ebd62a629609c3294a8c5ec21e97538a8b",
+      "bytes": 132
+    },
+    {
+      "path": "docs/09-operations/runbooks/research-clone.md",
+      "title": "Runbook \u2014 Pinned Research Clone",
+      "status": "",
+      "sha256": "09dd3ac5e0629608c767ea7ec363d33584443f8eff2eeeab220963f136f0bb55",
+      "bytes": 280
+    },
+    {
+      "path": "docs/09-operations/runbooks/security-incident.md",
+      "title": "Runbook \u2014 Security Incident",
+      "status": "",
+      "sha256": "b4a99827146a9a56981e57786e9ed925f4723644bf6840a7e9f6764f21161c84",
+      "bytes": 321
+    },
+    {
+      "path": "docs/09-operations/service-level-objectives.md",
+      "title": "Service Level Objectives",
+      "status": "",
+      "sha256": "e62f8cd5b9bf19e10d1e90a33567a302c5ee6db51c2f363c595e8664d5e1b829",
+      "bytes": 156
+    },
+    {
+      "path": "docs/10-products/agriculture/product-composition.md",
+      "title": "agriculture Product Composition",
+      "status": "",
+      "sha256": "19af55bec4774543ba98baddec0e70e24fa8a73d8136fbfe4293e93b8d9f9fde",
+      "bytes": 195
+    },
+    {
+      "path": "docs/10-products/berp/product-composition.md",
+      "title": "berp Product Composition",
+      "status": "",
+      "sha256": "35282153adbb44c848593fef4e1b4bf8bf2052b3f8b280e3d3b9558a73b7201a",
+      "bytes": 225
+    },
+    {
+      "path": "docs/10-products/bfleet/product-composition.md",
+      "title": "bfleet Product Composition",
+      "status": "",
+      "sha256": "f687343e00c2f48e8869db37372e2387249efb73d0183133361ffb5301562385",
+      "bytes": 211
+    },
+    {
+      "path": "docs/10-products/bpro/product-composition.md",
+      "title": "bpro Product Composition",
+      "status": "",
+      "sha256": "c85ed91e9de71e078276690ecd8aa9fc7ed12d97520e11481e7e7383af87ceb0",
+      "bytes": 203
+    },
+    {
+      "path": "docs/10-products/future-products/product-onboarding-template.md",
+      "title": "Product Onboarding Template",
+      "status": "",
+      "sha256": "24783d7ec332d7b138d618d46dac5c9d708da3e0ba8feb1e979214793fc69ad4",
+      "bytes": 446
+    },
+    {
+      "path": "docs/10-products/insurance/product-composition.md",
+      "title": "insurance Product Composition",
+      "status": "",
+      "sha256": "2dde390b6ad06ba90611cfeded7ca3cac5893ad7b3cf5efa38ca14c661855106",
+      "bytes": 175
+    },
+    {
+      "path": "docs/10-products/ldm/product-composition.md",
+      "title": "ldm Product Composition",
+      "status": "",
+      "sha256": "866728eababa0038b2a4e4b4a0a7bbd3cedfb5eb6b9100eaba4012dd8c9f7290",
+      "bytes": 193
+    },
+    {
+      "path": "docs/10-products/logistics/product-composition.md",
+      "title": "logistics Product Composition",
+      "status": "",
+      "sha256": "418da140a0aa0f7d5a990bde2187772e1b69ec4f1e531921b0c016e4840a7e23",
+      "bytes": 165
+    },
+    {
+      "path": "docs/10-products/proptech/product-composition.md",
+      "title": "proptech Product Composition",
+      "status": "",
+      "sha256": "eb64361e009837edfce949c07e495771f4371db75ab2b1adb432be150764d904",
+      "bytes": 203
+    },
+    {
+      "path": "docs/10-products/README.md",
+      "title": "Product Composition",
+      "status": "",
+      "sha256": "100643266d448b9cc2184565aa6ef022ffa79ea3740b21c680a38f79b26668ee",
+      "bytes": 237
+    },
+    {
+      "path": "docs/10-products/tourism/product-composition.md",
+      "title": "tourism Product Composition",
+      "status": "",
+      "sha256": "fddb6e4e79ef58861234c8227327cb485fd251489a823dfd1ad9e1a3a16f9340",
+      "bytes": 177
+    },
+    {
+      "path": "docs/adr/ADR-0001.md",
+      "title": "ADR-0001 \u2014 bOPEN is a platform kernel, not an industry application",
+      "status": "Accepted",
+      "sha256": "6b17465e3132afeeb051b0a1d5b3e475b9b858715018256b94e8e10b2ab76a82",
+      "bytes": 591
+    },
+    {
+      "path": "docs/adr/ADR-0002.md",
+      "title": "ADR-0002 \u2014 Clean-room separation for open-source research",
+      "status": "Accepted",
+      "sha256": "f6d1c96b261854c057fede4779e9b6770c982fdb0954fbe371259766ba2b7752",
+      "bytes": 589
+    },
+    {
+      "path": "docs/adr/ADR-0003.md",
+      "title": "ADR-0003 \u2014 Governed monorepo bootstrap",
+      "status": "Accepted for bootstrap",
+      "sha256": "b98de5559c7cdbbaba5b31d6cd93c435932e394d4ad0954edb31da8fa5b264a9",
+      "bytes": 620
+    },
+    {
+      "path": "docs/adr/ADR-0004.md",
+      "title": "ADR-0004 \u2014 Contract-first implementation",
+      "status": "Accepted",
+      "sha256": "0c4d108e31361ebda1dfe76c6bbda6fc9979a50bd80550c71cdd5927ae5c53b2",
+      "bytes": 567
+    },
+    {
+      "path": "docs/adr/ADR-0005.md",
+      "title": "ADR-0005 \u2014 Pooled PostgreSQL with RLS as default candidate",
+      "status": "Proposed",
+      "sha256": "d3368f6d7bae8127878bfff920dd71e76da1108d294d0ec8ac226de1303d6db5",
+      "bytes": 602
+    },
+    {
+      "path": "docs/adr/ADR-0006.md",
+      "title": "ADR-0006 \u2014 Membership is a first-class relation",
+      "status": "Accepted as architecture baseline",
+      "sha256": "53ecb4373bb25a33cfeeac629661bac8eb0539633d630838bce876e8dc8ebda9",
+      "bytes": 615
+    },
+    {
+      "path": "docs/adr/ADR-0007.md",
+      "title": "ADR-0007 \u2014 Tenant and organization are separate concepts",
+      "status": "Accepted as architecture baseline",
+      "sha256": "7dbee1dbebd4f1fe3a9568e680aa0cac96d7bd2734b1b844e013bda2dda6d8ca",
+      "bytes": 609
+    },
+    {
+      "path": "docs/adr/ADR-0008.md",
+      "title": "ADR-0008 \u2014 Authorization, entitlement and feature rollout are separate decisions",
+      "status": "Accepted as architecture baseline",
+      "sha256": "1265ec16538050a4915b755b8ad8cb7e69b31eceb54b15d0a600add4f16c669f",
+      "bytes": 620
+    },
+    {
+      "path": "docs/adr/ADR-0009.md",
+      "title": "ADR-0009 \u2014 Modular monolith first for transactional kernel",
+      "status": "Proposed",
+      "sha256": "95226d6cad7dfa6e3acac77113ecc60269584ab0104c8f8c45ab38dac4dfe3a5",
+      "bytes": 600
+    },
+    {
+      "path": "docs/adr/README.md",
+      "title": "Architecture Decision Records",
+      "status": "",
+      "sha256": "83a3bd941c7cae565e78bda89820bf719e1c5bef1897f659d8db5822ef00e16c",
+      "bytes": 132
+    },
+    {
+      "path": "docs/AGENTS.md",
+      "title": "AGENTS.md \u2014 Controlled documentation",
+      "status": "",
+      "sha256": "24c39c35d15b77af8ab0dc0d76152fd65ecf50129c8860be5bd581d3e8b3a504",
+      "bytes": 659
+    },
+    {
+      "path": "docs/ARTIFACT-REGISTER.md",
+      "title": "Artifact Register",
+      "status": "",
+      "sha256": "2fc40f41fc20dc5c438870282067a8f2a07ccf566a43a4f341295a6e10f26ba3",
+      "bytes": 1317
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "title": "Documentation Changelog",
+      "status": "",
+      "sha256": "946324131ae67b189a8e8a0c8bad0ebc638bd4bb8aa87714e0eb99ebb05b6846",
+      "bytes": 4724
+    },
+    {
+      "path": "docs/decisions/DEC-0006.md",
+      "title": "DEC-0006 - GitHub stable history reconciliation",
+      "status": "Approved",
+      "sha256": "0fb7c99c40bcd22c5090d008c75a2248dd0f13e27e077188a6823a0655863a88",
+      "bytes": 1282
+    },
+    {
+      "path": "docs/decisions/DEC-0007.md",
+      "title": "DEC-0007 - BOOT-P0 bootstrap exit review",
+      "status": "Proposed",
+      "sha256": "942deca2dfd0e8aea988905489ca92806e8b0e59ba11e3cf6e3d24f12962c816",
+      "bytes": 1200
+    },
+    {
+      "path": "docs/decisions/DEC-0008.md",
+      "title": "DEC-0008 - Stable repository protection capability",
+      "status": "Approved",
+      "sha256": "f5eff141f1e8e771dcdc4d4b600b7f8fe5d74979896cf37a0be02001d1f81565",
+      "bytes": 1710
+    },
+    {
+      "path": "docs/decisions/DECISION-REGISTER.md",
+      "title": "Decision Register",
+      "status": "",
+      "sha256": "419adedee392ab8b31b47bcfd0faa6935ba673bd7480a3a4433c6f96e1e6658f",
+      "bytes": 974
+    },
+    {
+      "path": "docs/DOCUMENT-COVERAGE.md",
+      "title": "Documentation Coverage",
+      "status": "",
+      "sha256": "22ec75e0664e39f8f2668a7ccfe65b7b54a28a339bd2d1d59df55b1f88be215a",
+      "bytes": 1105
+    },
+    {
+      "path": "docs/DOCUMENT-STATUS.md",
+      "title": "Document Status Register",
+      "status": "",
+      "sha256": "0637587129a674a98c2ce7efad5d9e836e3d3600655b6274b953e60502528434",
+      "bytes": 930
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
+      "title": "EVD-BOOT-003 - Local Bootstrap Preparation Check",
+      "status": "",
+      "sha256": "4d00064a3477f9082b7b9b2547e39edd98105273c88154e03e2046b11d448e2d",
+      "bytes": 1556
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-004-source-control-start.md",
+      "title": "EVD-BOOT-004 - Local Source-Control Build Start",
+      "status": "",
+      "sha256": "5fbd0f2384e28d876548c8f80316cc994ef2e877cdd62759395b98e853212892",
+      "bytes": 4118
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-005-contract-validation-harness.md",
+      "title": "EVD-BOOT-005 - Contract Validation Harness",
+      "status": "",
+      "sha256": "f4c5c77fd4cf1cff270437d2889d10d4646177d0ccf31b0fec1e8e3bede0e511",
+      "bytes": 2755
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-006-first-vertical-slice-fixtures.md",
+      "title": "EVD-BOOT-006 - First Vertical-Slice Acceptance Fixtures",
+      "status": "",
+      "sha256": "04ae34256789ac137ef4ce65fb31c59854bf9be9e16cefbd4e8c95e20e622822",
+      "bytes": 2734
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-007-bootstrap-gate-readiness.md",
+      "title": "EVD-BOOT-007 - Bootstrap Gate Readiness Report",
+      "status": "",
+      "sha256": "b4c9ab3a6b95a4b37399aa72b3ab1b195fece1ba64a4eb1473c9481c73daa554",
+      "bytes": 2360
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-008-missing-bootstrap-evidence-closure.md",
+      "title": "EVD-BOOT-008 - Missing Bootstrap Evidence Closure",
+      "status": "",
+      "sha256": "6ec3b8e27051b8a0722feb98c0d527f70cfb9ef2728b8d2b2e9d9fa446f940cc",
+      "bytes": 2116
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-009-bootstrap-self-review.md",
+      "title": "EVD-BOOT-009 - BOOT-P0 completion self-review",
+      "status": "",
+      "sha256": "9371155e1fb663dd884230f5434fb9d1460d64081debf7e6bd50d29f19aa1254",
+      "bytes": 3898
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-010-github-reconciliation.md",
+      "title": "EVD-BOOT-010 - Approved GitHub history reconciliation",
+      "status": "",
+      "sha256": "ef97e3a90bc89449122942653b45288d6da4832f62c7879026955cde97a3a090",
+      "bytes": 2354
+    },
+    {
+      "path": "docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md",
+      "title": "EVD-BOOT-011 - bGitea protected review activation",
+      "status": "",
+      "sha256": "a3d87b69b669bbfb1a60f3fcb53b4fba72adcb5085c22a84f2459f43254980f2",
+      "bytes": 5039
+    },
+    {
+      "path": "docs/evidence/EVIDENCE-INDEX.md",
+      "title": "Evidence Index",
+      "status": "",
+      "sha256": "7666f89f3d9a6e8b24b98a18f931b8c1ec8d04549a73397e198411d5c9770897",
+      "bytes": 1950
+    },
+    {
+      "path": "docs/exceptions/EXCEPTION-REGISTER.md",
+      "title": "Exception Register",
+      "status": "Active bootstrap control",
+      "sha256": "70a0d5200cdf0866bf3ddd3c5d0dacf64242f92fe96ba8c7bd4d797662095173",
+      "bytes": 664
+    },
+    {
+      "path": "docs/GLOSSARY.md",
+      "title": "bOPEN Glossary",
+      "status": "",
+      "sha256": "736316c9d60541f11d541125f73ac24b1aac0debff61c8eae33baae7e9730045",
+      "bytes": 1513
+    },
+    {
+      "path": "docs/README.md",
+      "title": "bOPEN Documentation System",
+      "status": "",
+      "sha256": "70fc7f482a52af549042a53fcd2bccddf542c3fc0311c4a389b3255c40474ef1",
+      "bytes": 1829
+    },
+    {
+      "path": "docs/resources/open-source-research/AGENTS.md",
+      "title": "AGENTS.md \u2014 Controlled Research Resources",
+      "status": "",
+      "sha256": "e89285a13124833cd87d8dc101b6f893bbd0cd08e1d67992683cb899777f82b6",
+      "bytes": 303
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/clean-room-boundary.md",
+      "title": "Clean-Room Boundary",
+      "status": "",
+      "sha256": "3feb7c09f4b6c5dd677b4337e9784a2e85ebba96aadd45b536d10149bea8fbda",
+      "bytes": 1418
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/clone-provenance-policy.md",
+      "title": "Clone Provenance Policy",
+      "status": "",
+      "sha256": "c65287e6989a8cfb1c077425fd7557d7294027bbe7ca79925b1ddaa6aaf79141",
+      "bytes": 901
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/evidence-classification.md",
+      "title": "Evidence Classification",
+      "status": "",
+      "sha256": "95d8acc3eeadf438dce314af76a65140f1f36600c6add1363b110d3ba7ffee8a",
+      "bytes": 1072
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/license-compliance-plan.md",
+      "title": "License Compliance Plan",
+      "status": "",
+      "sha256": "cdb792857e15f46ec40fdc11da61f01b1d0539202258e1b715e0cc5cf77a0e97",
+      "bytes": 1255
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/observation-inference-decision-standard.md",
+      "title": "Observation, Inference and Decision Standard",
+      "status": "",
+      "sha256": "bce3c2808b0b7a2208a70839019c813725796a163ef22ff21be19bf78440b922",
+      "bytes": 733
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/research-charter.md",
+      "title": "Research Charter",
+      "status": "",
+      "sha256": "5e201d4d3e489e75433a3f2b8e3c3bd1dbc3a87b65e0c8a6e14d7d01c2922fc5",
+      "bytes": 1018
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/research-method.md",
+      "title": "Research Method",
+      "status": "",
+      "sha256": "20a0a712680ea09f2a2aab441c233b3fb6439f9b1c6d01b198a6b7a9ee04c397",
+      "bytes": 1218
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/research-quality-gates.md",
+      "title": "Research Quality Gates",
+      "status": "",
+      "sha256": "324bbc48f09f9543cc8f07ac5b60b994167a703258b3545fb4beb4a7afb3eb60",
+      "bytes": 1043
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/research-scope.md",
+      "title": "Research Scope",
+      "status": "",
+      "sha256": "8a52ee4fb4302d835e5ecd42c8a6a7df13f57b2fa33aac7efb7cc984585ff435",
+      "bytes": 1093
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/roles-raci.md",
+      "title": "Roles and RACI",
+      "status": "",
+      "sha256": "fdfa0aae523e67bdac6a2a3fbd4a5654e926c9d508b700846c5a7b4f738558c3",
+      "bytes": 896
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/security-sandbox-policy.md",
+      "title": "Security Sandbox Policy",
+      "status": "",
+      "sha256": "cec2280b42d039c947cbe2494c50bac45896add89b54c7af70e55de5ceb3ba21",
+      "bytes": 710
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/00-governance/source-register.md",
+      "title": "Source Register",
+      "status": "",
+      "sha256": "15d77b590d7b0ea941945226922841de84ea8d74aafc808ac5f36859aac14e42",
+      "bytes": 2070
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/authorization-analysis.md",
+      "title": "Authorization Analysis",
+      "status": "",
+      "sha256": "cb79b031cae434f4c0b55a6eadb1b11508349a734c0bb40bcc0b61145fb9b2e2",
+      "bytes": 1224
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/capability-event-audit-analysis.md",
+      "title": "Capability, Event and Audit Analysis",
+      "status": "",
+      "sha256": "23320d9769749445b407ff33539715ed465a1cbb017f10bc421a9f7df20b5997",
+      "bytes": 1150
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/clone-bootstrap.md",
+      "title": "Clone Bootstrap",
+      "status": "",
+      "sha256": "a399a6ac20531eb563a2a42a502cbee56ae7eb9cc5d3c11f1ff340d6ccb38b9d",
+      "bytes": 721
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/context-resolution-analysis.md",
+      "title": "Context Resolution Analysis",
+      "status": "",
+      "sha256": "fafcdb17cf2bdc934633e4a9daf1bf89ae57b31362e9d412ec3a5e4ea045e082",
+      "bytes": 1213
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/domain-model-map.md",
+      "title": "Domain Model Map",
+      "status": "",
+      "sha256": "797a4bbc18d2ecbc5e6212bfd03f66fc2ffcbfd6ff193993f5f6eb8aedf04a0c",
+      "bytes": 1828
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/entitlement-commercial-analysis.md",
+      "title": "Entitlement and Commercial Analysis",
+      "status": "",
+      "sha256": "0588e3f6590089467442a4017c73e8b00f1e563e896bf0a9639e375a27830530",
+      "bytes": 1110
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
+      "title": "Initial Evidence Index",
+      "status": "",
+      "sha256": "217b57861dfb84d2824dd2618126b6be989a6f032197fa313bcf6e82b174b844",
+      "bytes": 1564
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
+      "title": "BoxyHQ Gaps and Non-Goals",
+      "status": "",
+      "sha256": "bc5f24a1a11f1cfa03e45abdde5c22068b3e1f404b1ca7a4ce957499205887f9",
+      "bytes": 868
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/identity-principal-analysis.md",
+      "title": "Identity and Principal Analysis",
+      "status": "",
+      "sha256": "731e59b39251c256fd7c627c50bc08f2def2afe4ee2e9b72b339bb5fd983f36b",
+      "bytes": 1048
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/lifecycle-map.md",
+      "title": "BoxyHQ Lifecycle Map Against bOPEN",
+      "status": "",
+      "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
+      "bytes": 2681
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/README.md",
+      "title": "BoxyHQ Research Lab",
+      "status": "",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
+      "title": "Repository Structure Study",
+      "status": "",
+      "sha256": "b8cdd053deb956b681eb3f8df7d3f10591aad186f44a9364df4c4c6a8835bcfd",
+      "bytes": 1414
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/security-review-checklist.md",
+      "title": "Security Review Checklist",
+      "status": "",
+      "sha256": "d998e9e072641552404debc4746d99a93303a31de4e77e222b1667894bc82548",
+      "bytes": 1600
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/tenant-membership-analysis.md",
+      "title": "Tenant and Membership Analysis",
+      "status": "",
+      "sha256": "bb02b95087bed81ed45324d1e4c546b24a8b919b198f662814b484aa69660abd",
+      "bytes": 1149
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/test-scenario-catalog.md",
+      "title": "Test Scenario Catalog",
+      "status": "",
+      "sha256": "805712738805e7a258a76bf52f8d7ca4b7ca7546b76fcb283c8c1d973bf0eef1",
+      "bytes": 1563
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/upstream-pin.json",
+      "title": "",
+      "status": "",
+      "sha256": "4ec7fb4404a264b74f7ef3325798f936f3023e2807e19913246ed6b25eb4691b",
+      "bytes": 452
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/decision-register.md",
+      "title": "Decision Register",
+      "status": "",
+      "sha256": "674107a627b7ec079c3307943942c8b56034f9275e7edf0a28c4461e24455f17",
+      "bytes": 1170
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/evidence-matrix.md",
+      "title": "Evidence Matrix",
+      "status": "",
+      "sha256": "ebec7cb7d221cf1056cfdd21323f8abc3fc543af8fb21df47b79af9e340bf2dc",
+      "bytes": 883
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/exit-gates.md",
+      "title": "Exit Gates and Evidence Requirements",
+      "status": "",
+      "sha256": "96ca5500f75962f4c472b9ddf8b259798316d94b5007eca5b91b9dda703bc478",
+      "bytes": 1145
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/implementation-handoff.md",
+      "title": "Clean-Room Implementation Handoff",
+      "status": "",
+      "sha256": "7e8a15dc1342d0d13c0505d605cb762cdc0c61e5eb06b49daefcfc6eab33a86e",
+      "bytes": 1232
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/risk-register.md",
+      "title": "Risk Register",
+      "status": "",
+      "sha256": "3b334ff77b423abd3b4a0be01ca1c0f3d26318e53641d5bbd458ba39b118a982",
+      "bytes": 1251
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/sprint-plan.md",
+      "title": "Suggested Research Sprint Plan",
+      "status": "",
+      "sha256": "af559859b563d6b027e1da69aaf9be1c8bbd37d9282f92c3244fe3288d113bc3",
+      "bytes": 835
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/work-package-register.md",
+      "title": "Work Package Register",
+      "status": "",
+      "sha256": "35eec54dccc2fe161f87949719a5975ead4f400986888bd45fcd5d39be774e6d",
+      "bytes": 3804
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/architecture-decision-template.md",
+      "title": "Architecture Decision Record",
+      "status": "",
+      "sha256": "7a0e31094a510c0c3aae9b24bc4bf45580a2ebbe4b9d2bd5df8c7b97e60ccc1a",
+      "bytes": 412
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/code-provenance-header-template.md",
+      "title": "Code Provenance Declaration Template",
+      "status": "",
+      "sha256": "2db8b5d50d5afa85ac1b1115e0006fa8aad31b2f4bf34db8cae7f86c959a038b",
+      "bytes": 458
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/gap-record-template.md",
+      "title": "Gap Record",
+      "status": "",
+      "sha256": "70838691da7fbf48135866b3f342f547840b09d63510fb7c2a9106e4381c7973",
+      "bytes": 268
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/license-review-template.md",
+      "title": "License Review Record",
+      "status": "",
+      "sha256": "7269bcfdfa4fbe9f0e9929dfee2e10d72cc89d50fc55b0b9de4ceca1eeeea897",
+      "bytes": 460
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/lifecycle-trace-template.md",
+      "title": "Lifecycle Trace",
+      "status": "",
+      "sha256": "4f40b2ada2af8ecf03d2183da630b3852550a14c6d5caba6e85e1cf0256083c7",
+      "bytes": 518
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/source-observation-template.md",
+      "title": "Source Observation Record",
+      "status": "",
+      "sha256": "fc3e6495b225d08086e83e20fed32b54b5561c42b33ea6bf9c2feb0b8adcceea",
+      "bytes": 549
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
+      "title": "",
+      "status": "",
+      "sha256": "01ebde4f5c460ae3dffbe6ff590af4b9921f77a443845553a58da775a9a1c783",
+      "bytes": 8601
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
+      "title": "BOPEN-RES-001 \u2014 bOPEN Open-Source Platform Kernel Research, Clone Governance & Clean-Room Study Plan v1.0",
+      "status": "Approved for research execution",
+      "sha256": "22df706391ac94acf572d098bcc3359d8660beca494924c16427f96892aee0f3",
+      "bytes": 17179
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/CHANGELOG.md",
+      "title": "Changelog",
+      "status": "",
+      "sha256": "c7fe60abc00ac1d9508bb65057db6e2a13a4de4c988ab000d22724f247fd5cc4",
+      "bytes": 495
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/README.md",
+      "title": "BOPEN-RES-001 Artifact Set",
+      "status": "",
+      "sha256": "8c0c57c8360d92de1cff633633c8c2f6fe859363b0b90c776229536c69154d32",
+      "bytes": 1655
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-COVERAGE.md",
+      "title": "Research Coverage Matrix",
+      "status": "",
+      "sha256": "151854752377957f533baddfe1a84372ccd1b0d7578ee59c99189cfa57ad2b46",
+      "bytes": 1988
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-MANIFEST.json",
+      "title": "",
+      "status": "",
+      "sha256": "4ffc4eac5e82435f17be019f1ba6da5e272107ddce32fcd0773f35c136f4e0c9",
+      "bytes": 1273
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
+      "title": "Research Status",
+      "status": "",
+      "sha256": "9c5a4916f3176c363a62947db5feb8268a0ac8d2bab748691a736385b76e5712",
+      "bytes": 1704
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
+      "title": "",
+      "status": "",
+      "sha256": "4706a37427a42d69311b384958c7254b47a52b1b6b606465f79fc4edc9687ac7",
+      "bytes": 1278
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.sh",
+      "title": "",
+      "status": "",
+      "sha256": "0bd6eeae8efa72432e56a620d9a2bb4b738009f2f57fc68f0e8c828b2318c4fb",
+      "bytes": 1076
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.ps1",
+      "title": "",
+      "status": "",
+      "sha256": "1f39463bf44103d6afa8715a80a75ad4428cc82ea07858d9b742684f99864407",
+      "bytes": 449
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.sh",
+      "title": "",
+      "status": "",
+      "sha256": "0e4e56757fbbf14211db1cd80aa25901bbae04e3d5691a404702bef68f8c2717",
+      "bytes": 400
+    },
+    {
+      "path": "docs/resources/open-source-research/README.md",
+      "title": "Open-Source Research Resources",
+      "status": "",
+      "sha256": "f9d82080979c44f1a0a4e560ac06d5045a2683b1583c65cec7fbb51d0baee6c5",
+      "bytes": 225
+    },
+    {
+      "path": "docs/risks/RISK-REGISTER.md",
+      "title": "Risk Register",
+      "status": "",
+      "sha256": "a8e5f11e9fd3906066ea56282775e4f862306b2f3871b8d8fc74b8d9930b5ec3",
+      "bytes": 2259
+    },
+    {
+      "path": "docs/templates/adr-template.md",
+      "title": "ADR-XXXX \u2014 <Decision>",
+      "status": "Proposed",
+      "sha256": "eb086b8c43f5a90b25beeee42e764d06ea994646400040c80f9b35bf9a5115ae",
+      "bytes": 246
+    },
+    {
+      "path": "docs/templates/artifact-template.md",
+      "title": "<ARTIFACT-ID> \u2014 <Title>",
+      "status": "Draft",
+      "sha256": "8466dbafe3fed14d92e69c619da32bdda3a072324058be22975b79314989e1c0",
+      "bytes": 282
+    },
+    {
+      "path": "docs/templates/decision-template.md",
+      "title": "<DEC-ID> \u2014 <Decision>",
+      "status": "Proposed",
+      "sha256": "1aaaf62acbc2772563304b00f52e7fb2fc09bcfe2badfd8c2f61fbc6acc795e8",
+      "bytes": 150
+    },
+    {
+      "path": "docs/templates/evidence-template.md",
+      "title": "<EVIDENCE-ID> \u2014 <Title>",
+      "status": "",
+      "sha256": "1d3c40a835fac211354e85f4dae7de1d7552d07e073813ad989ca04afdda9fd0",
+      "bytes": 190
+    },
+    {
+      "path": "docs/templates/exception-template.md",
+      "title": "EXC-XXXX \u2014 <Control exception>",
+      "status": "",
+      "sha256": "311b549fd8ad4558110f76beb60e9019dc6c2439e7162620719d777e811454af",
+      "bytes": 174
+    },
+    {
+      "path": "docs/templates/requirement-template.md",
+      "title": "<REQ-ID> \u2014 <Requirement title>",
+      "status": "",
+      "sha256": "10a82433c6da0fb50186ab73ef81786a66c5c3de897334d321e8b316c9aa2de1",
+      "bytes": 213
+    },
+    {
+      "path": "docs/templates/risk-template.md",
+      "title": "<RISK-ID> \u2014 <Risk>",
+      "status": "## Trigger",
+      "sha256": "57d51563ee2a15007771a81288193907e54dacd7ff00ab2e513ee62156c143e1",
+      "bytes": 204
+    },
+    {
+      "path": "docs/templates/runbook-template.md",
+      "title": "Runbook \u2014 <Procedure>",
+      "status": "",
+      "sha256": "713681d025839d41b112f0714c17f638380d7b183f036dd23dc79de9ba2bebab",
+      "bytes": 169
+    },
+    {
+      "path": "docs/templates/source-observation-template.md",
+      "title": "<OBS-ID> \u2014 <Observation>",
+      "status": "",
+      "sha256": "57a8b2fc2dc3a0c8cae3e8b56f6b7d0f6c2785d0bdc5a9e7511c1e867632a67a",
+      "bytes": 250
+    },
+    {
+      "path": "docs/templates/work-package-template.md",
+      "title": "<WORK-PACKAGE-ID> \u2014 <Title>",
+      "status": "Proposed",
+      "sha256": "61344b903295a43cc3a05468cf1c367b1c4b5cb98b10ce8bf7c241049b081dd6",
+      "bytes": 260
+    },
+    {
+      "path": "docs/TRACEABILITY-MATRIX.md",
+      "title": "Traceability Matrix",
+      "status": "",
+      "sha256": "5b56065ee28e7341b6a7e6f5b933a5ddd7b5b10a1b6865f1d104cf033a9c470f",
+      "bytes": 2326
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-01.md",
+      "title": "BOOT-P0-01 \u2014 Repository initialization and protections",
+      "status": "External review pending",
+      "sha256": "72f499d9055ec0b464fc516ccae83e3e293411850197efaa5063590518db0aa3",
+      "bytes": 1445
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-02.md",
+      "title": "BOOT-P0-02 \u2014 AGENTS.md hierarchy",
+      "status": "Execution complete",
+      "sha256": "77d0da29d513213537faef136ac29460730c79fa05a71b877c2f4fbbc1babb1b",
+      "bytes": 973
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-03.md",
+      "title": "BOOT-P0-03 \u2014 Documentation system",
+      "status": "Execution complete",
+      "sha256": "5049cd09c1442607ac8cad6e1a458371ad2047f1ba5486291cb6cdbae2f08f75",
+      "bytes": 1001
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-04.md",
+      "title": "BOOT-P0-04 \u2014 Control templates and registers",
+      "status": "Execution complete",
+      "sha256": "855b3aee4046439f98b18a1cdced587566ee1cce467560b5228e64fb144959cd",
+      "bytes": 983
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-05.md",
+      "title": "BOOT-P0-05 \u2014 CI and validation",
+      "status": "Execution complete",
+      "sha256": "541bd7533ea7ae87cf21e2307f4e768ad198af7cf4d3ac02758e4bd4ae9d8c0d",
+      "bytes": 999
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-06.md",
+      "title": "BOOT-P0-06 \u2014 Security and supply chain",
+      "status": "Execution complete",
+      "sha256": "524c3031efc6b32d0733d1fe7756d3e5211dceae27131dafc605e035adf7145b",
+      "bytes": 972
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-07.md",
+      "title": "BOOT-P0-07 \u2014 Research integration",
+      "status": "Execution complete",
+      "sha256": "815159410644b4fbf42ab068a9c847fa699366db49042ae3db1b132e76e15920",
+      "bytes": 1015
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-08.md",
+      "title": "BOOT-P0-08 \u2014 Ownership and review governance",
+      "status": "External review pending",
+      "sha256": "4c09d9259bc4bd237ac0d45081fc51411a4a6f35919b0ab23f1d8b11fa5a9d97",
+      "bytes": 1441
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-09.md",
+      "title": "BOOT-P0-09 \u2014 Local development baseline",
+      "status": "Execution complete",
+      "sha256": "a9244f8c010b836bb5c1adb7e21189719e271c68845c527d31de0c21bce9c4c3",
+      "bytes": 1017
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-10.md",
+      "title": "BOOT-P0-10 \u2014 Normative architecture queue",
+      "status": "Execution complete",
+      "sha256": "8df338e9c312a7ab52139279cd97360bfada6989e5cb31f116662ff8d325bb6b",
+      "bytes": 1025
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-11.md",
+      "title": "BOOT-P0-11 \u2014 First vertical-slice specification",
+      "status": "Execution complete",
+      "sha256": "7480dd8c32edf4bc2125c8c0ce732a204306d783e4ef67cb78220e2f96d4bc5f",
+      "bytes": 1062
+    },
+    {
+      "path": "docs/work-packages/BOOT-P0-12.md",
+      "title": "BOOT-P0-12 \u2014 Bootstrap exit gate",
+      "status": "Authority review pending",
+      "sha256": "afea5ad46c8afc00e7a29ebaff1ce22e25c9c3077ce056ac374e215970130d89",
+      "bytes": 1256
+    },
+    {
+      "path": "docs/work-packages/BOOTSTRAP-GATES.md",
+      "title": "Bootstrap Gates",
+      "status": "",
+      "sha256": "919d9ed1801825dff8687784d696a9fbb2eab859e31ed0c9ededc8cd989a4f2e",
+      "bytes": 1253
+    },
+    {
+      "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
+      "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
+      "status": "",
+      "sha256": "0e701a27c2c11021e5f5143edc7864353c181fbed1ef101fc5677f18f3641e77",
+      "bytes": 1531
+    },
+    {
+      "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+      "title": "Work-Package Register",
+      "status": "",
+      "sha256": "942e4cf11c34f12fb9674d472d3bfa27e01d7f7fd42639853aea452e51869a74",
+      "bytes": 1668
+    }
+  ]
+}

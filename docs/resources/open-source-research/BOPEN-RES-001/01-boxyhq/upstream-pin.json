@@ -1,0 +1,13 @@
+{
+  "repository": "boxyhq/saas-starter-kit",
+  "clone_url": "https://github.com/boxyhq/saas-starter-kit.git",
+  "default_branch": "main",
+  "pinned_commit": "abc9b686823cbfb4973c79bc36fea37a3244be6c",
+  "reference_release": "v1.6.0",
+  "package_version": "1.6.0",
+  "observed_latest_commit_date": "2026-05-08T22:28:06Z",
+  "observed_license": "Apache-2.0",
+  "baseline_date": "2026-07-12",
+  "repository_public": true,
+  "repository_archived": false
+}

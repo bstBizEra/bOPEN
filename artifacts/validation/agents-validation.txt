@@ -1,0 +1,24 @@
+﻿# EVD-BOOT-001 - AGENTS hierarchy validation
+
+Generated: 2026-07-13T01:40:00+07:00
+Work package: BOOT-P0-02
+Command: python tools/validate_repository.py
+
+AGENTS files:
+- .github/AGENTS.md
+- AGENTS.md
+- apps/AGENTS.md
+- contracts/AGENTS.md
+- docs/AGENTS.md
+- docs/resources/open-source-research/AGENTS.md
+- infrastructure/AGENTS.md
+- packages/AGENTS.md
+- research/AGENTS.md
+- sdk/AGENTS.md
+- services/AGENTS.md
+- tests/AGENTS.md
+- tools/AGENTS.md
+
+Validation output:
+bOPEN repository validation: PASS
+Checked 26 mandatory paths and governance invariants.

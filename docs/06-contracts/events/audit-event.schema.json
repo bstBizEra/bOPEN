@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/audit-event/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Audit Event",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "event_version",
+    "occurred_at",
+    "principal_id",
+    "tenant_id",
+    "resource_type",
+    "resource_id",
+    "action",
+    "result",
+    "correlation_id"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "const": "platform.audit.authorization.v1"
+    },
+    "event_version": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "string"
+    },
+    "platform_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "context_id": {
+      "type": "string"
+    },
+    "principal_id": {
+      "type": "string"
+    },
+    "actor_type": {
+      "type": "string"
+    },
+    "resource_type": {
+      "type": "string"
+    },
+    "resource_id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "result": {
+      "enum": [
+        "ALLOW",
+        "DENY"
+      ]
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "correlation_id": {
+      "type": "string"
+    },
+    "causation_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

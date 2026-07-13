@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""Validate the Phase 0 dependency and supply-chain control baseline."""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+ACTION_USE = re.compile(r"^\s*-\s+uses:\s+([^\s#]+)", re.MULTILINE)
+
+
+def check_workflow_text(workflow: str, relative: str) -> list[str]:
+    """Validate least privilege and immutable external action references."""
+    errors: list[str] = []
+    if "permissions:\n  contents: read" not in workflow:
+        errors.append(f"{relative} must use read-only contents permission")
+    if "write-all" in workflow or "contents: write" in workflow:
+        errors.append(f"{relative} must not request write permission")
+    for use in ACTION_USE.findall(workflow):
+        if use.startswith("./"):
+            continue
+        action, separator, reference = use.rpartition("@")
+        if not separator or not action or re.fullmatch(r"[0-9a-fA-F]{40}", reference) is None:
+            errors.append(f"{relative} action must be pinned to a full commit SHA: {use}")
+    return errors
+
+
+def check_baseline(root: Path = ROOT) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    required = (
+        "LICENSE",
+        "NOTICE",
+        "pnpm-lock.yaml",
+        ".github/CODEOWNERS",
+        ".github/dependabot.yml",
+        ".github/workflows/bootstrap-governance.yml",
+        ".gitea/workflows/governance.yml",
+        "docs/07-security/supply-chain/dependency-policy.md",
+        "docs/08-engineering/dependency-policy.md",
+    )
+    for relative in required:
+        if not (root / relative).is_file():
+            errors.append(f"missing required supply-chain control: {relative}")
+
+    package_path = root / "package.json"
+    if package_path.is_file():
+        package = json.loads(package_path.read_text(encoding="utf-8"))
+        if package.get("private") is not True:
+            errors.append("package.json must remain private during bootstrap")
+    else:
+        errors.append("missing package.json")
+
+    dependabot_path = root / ".github/dependabot.yml"
+    if dependabot_path.is_file():
+        dependabot = dependabot_path.read_text(encoding="utf-8")
+        for ecosystem in ("github-actions", "npm"):
+            if f"package-ecosystem: {ecosystem}" not in dependabot:
+                errors.append(f"dependabot does not cover {ecosystem}")
+
+    workflow_paths = (
+        ".github/workflows/bootstrap-governance.yml",
+        ".gitea/workflows/governance.yml",
+    )
+    for relative in workflow_paths:
+        workflow_path = root / relative
+        if workflow_path.is_file():
+            errors.extend(check_workflow_text(workflow_path.read_text(encoding="utf-8"), relative))
+
+    codeowners_path = root / ".github/CODEOWNERS"
+    if codeowners_path.is_file() and "@bopen/" in codeowners_path.read_text(encoding="utf-8"):
+        warnings.append("CODEOWNERS identities remain pending external repository activation")
+
+    return errors, warnings
+
+
+def main() -> int:
+    errors, warnings = check_baseline()
+    for warning in warnings:
+        print(f"Supply-chain warning: {warning}")
+    if errors:
+        print("Supply-chain baseline: FAIL")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print("Supply-chain baseline: PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
