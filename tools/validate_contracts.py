@@ -110,7 +110,11 @@ def validate_tenancy_schema(data: dict, rel: Path, name: str) -> list[str]:
             errors.append(f"ACTIVE CONTEXT IDENTITY FIELDS MISSING: {rel}")
         source_definition = properties.get("validation_source", {})
         sources = source_definition.get("enum", []) if isinstance(source_definition, dict) else []
-        if not isinstance(sources, list) or set(sources) != TRUSTED_CONTEXT_SOURCES:
+        if (
+            not isinstance(sources, list)
+            or not all(isinstance(source, str) for source in sources)
+            or set(sources) != TRUSTED_CONTEXT_SOURCES
+        ):
             errors.append(f"ACTIVE CONTEXT MUST BE SERVER VALIDATED: {rel}")
 
     if name == "tenant-ownership.schema.json":
@@ -346,7 +350,8 @@ def validate_multitenant_readiness_fixture(
         "MTD-009": "MEMBERSHIP_EXPIRED",
     }
     for scenario_id, reason in expected_reasons.items():
-        if by_id[scenario_id].get("authorization_decision", {}).get("reason_code") != reason:
+        decision = by_id[scenario_id].get("authorization_decision")
+        if not isinstance(decision, dict) or decision.get("reason_code") != reason:
             errors.append(f"MULTITENANT DENIAL REASON INVALID {rel}: {scenario_id}")
 
     if resolved.get("MTD-002", {}).get("membership") is not None or resolved.get("MTD-002", {}).get("active_context") is not None:
@@ -371,15 +376,19 @@ def validate_multitenant_readiness_fixture(
     ):
         errors.append(f"MEMBERSHIP TENANT MISMATCH SCENARIO INVALID: {rel}")
 
-    cross_tenant_layers = {
-        by_id[scenario_id].get("enforcement_layer")
-        for scenario_id in ("MTD-006", "MTD-007")
-        if isinstance(resolved.get(scenario_id, {}).get("active_context"), dict)
-        and isinstance(resolved.get(scenario_id, {}).get("resource_ownership"), dict)
-        and resolved[scenario_id]["active_context"].get("tenant_id")
-        != resolved[scenario_id]["resource_ownership"].get("tenant_id")
-        and by_id[scenario_id].get("authorization_decision", {}).get("decision") == "DENY"
-    }
+    cross_tenant_layers = set()
+    for scenario_id in ("MTD-006", "MTD-007"):
+        active_context = resolved.get(scenario_id, {}).get("active_context")
+        ownership = resolved.get(scenario_id, {}).get("resource_ownership")
+        decision = by_id[scenario_id].get("authorization_decision")
+        if (
+            isinstance(active_context, dict)
+            and isinstance(ownership, dict)
+            and isinstance(decision, dict)
+            and active_context.get("tenant_id") != ownership.get("tenant_id")
+            and decision.get("decision") == "DENY"
+        ):
+            cross_tenant_layers.add(by_id[scenario_id].get("enforcement_layer"))
     if cross_tenant_layers != {"api", "database"}:
         errors.append(f"API AND DATABASE CROSS-TENANT DENIAL REQUIRED: {rel}")
 
@@ -400,7 +409,8 @@ def validate_multitenant_readiness_fixture(
             "resource_type": ownership.get("resource_type"),
             "resource_id": ownership.get("resource_id"),
         }
-        scope = scenario.get("authorization_decision", {}).get("evaluated_scope", {})
+        decision = scenario.get("authorization_decision")
+        scope = decision.get("evaluated_scope", {}) if isinstance(decision, dict) else {}
         audit = scenario.get("audit_event", {})
         if any(scenario["context"].get(key) != value for key, value in expected_context.items()):
             errors.append(f"CROSS-TENANT CONTEXT CLAIMS MUST MATCH {rel}: {scenario_id}")
@@ -431,6 +441,53 @@ def validate_multitenant_readiness_fixture(
         > evaluated_at
     ):
         errors.append(f"EXPIRED MEMBERSHIP SCENARIO INVALID: {rel}")
+
+    for scenario_id in ("MTD-008", "MTD-009"):
+        scenario = by_id[scenario_id]
+        membership = resolved.get(scenario_id, {}).get("membership")
+        active_context = resolved.get(scenario_id, {}).get("active_context")
+        ownership = resolved.get(scenario_id, {}).get("resource_ownership")
+        if not all(isinstance(item, dict) for item in (membership, active_context, ownership)):
+            errors.append(f"EXPIRY CONTRACT COMPOSITION MISSING {rel}: {scenario_id}")
+            continue
+        if (
+            membership.get("state") != "active"
+            or active_context.get("membership_id") != membership.get("membership_id")
+            or active_context.get("principal_id") != membership.get("principal_id")
+            or active_context.get("tenant_id") != membership.get("tenant_id")
+            or ownership.get("tenant_id") != active_context.get("tenant_id")
+        ):
+            errors.append(f"EXPIRY CONTRACT COMPOSITION INVALID {rel}: {scenario_id}")
+        expected_context = {
+            "principal_id": active_context.get("principal_id"),
+            "tenant_id": active_context.get("tenant_id"),
+            "membership_id": membership.get("membership_id"),
+            "membership_state": membership.get("state"),
+            "validation_source": active_context.get("validation_source"),
+        }
+        expected_resource = {
+            "tenant_id": ownership.get("tenant_id"),
+            "resource_type": ownership.get("resource_type"),
+            "resource_id": ownership.get("resource_id"),
+        }
+        audit = scenario.get("audit_event")
+        context_claims = scenario.get("context")
+        resource_claims = scenario.get("resource")
+        if not isinstance(context_claims, dict) or any(
+            context_claims.get(key) != value for key, value in expected_context.items()
+        ):
+            errors.append(f"EXPIRY CONTEXT CLAIMS MUST MATCH {rel}: {scenario_id}")
+        if not isinstance(resource_claims, dict) or any(
+            resource_claims.get(key) != value for key, value in expected_resource.items()
+        ):
+            errors.append(f"EXPIRY RESOURCE CLAIMS MUST MATCH {rel}: {scenario_id}")
+        if not isinstance(audit, dict) or (
+            audit.get("tenant_id") != active_context.get("tenant_id")
+            or audit.get("context_id") != active_context.get("context_id")
+            or audit.get("resource_type") != ownership.get("resource_type")
+            or audit.get("resource_id") != ownership.get("resource_id")
+        ):
+            errors.append(f"EXPIRY AUDIT ATTRIBUTION INVALID {rel}: {scenario_id}")
 
     return errors
 

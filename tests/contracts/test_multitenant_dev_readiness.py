@@ -125,6 +125,12 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
         )
         self.assertTrue(any("MUST BE SERVER VALIDATED" in error for error in errors))
 
+        context["properties"]["validation_source"]["enum"] = [{"bad": "shape"}]
+        errors = validate_tenancy_schema(
+            context, Path("active-context.schema.json"), "active-context.schema.json"
+        )
+        self.assertTrue(any("MUST BE SERVER VALIDATED" in error for error in errors))
+
     def test_validator_rejects_missing_database_denial(self):
         fixture = copy.deepcopy(self.fixture)
         fixture["scenarios"][6]["authorization_decision"]["decision"] = "ALLOW"
@@ -258,6 +264,22 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             "MEMBERSHIP_EXPIRED",
         )
 
+    def test_validator_rejects_contradictory_expiry_composition(self):
+        mutations = (
+            (7, "membership", "membership-alpha-suspended"),
+            (7, "resource_ownership", "document-beta-001"),
+            (8, "active_context", "context-alpha-owner"),
+            (8, "resource_ownership", "document-beta-001"),
+        )
+        for scenario_index, ref_name, ref_value in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][scenario_index]["instance_refs"][ref_name] = ref_value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(scenario=fixture["scenarios"][scenario_index]["id"], ref=ref_name):
+                self.assertTrue(any("EXPIRY" in error for error in errors))
+
     def test_validator_requires_timezone_aware_rfc3339_datetime(self):
         membership_schema = json.loads(
             (CONTRACT_ROOT / "tenancy/membership.schema.json").read_text(encoding="utf-8")
@@ -333,6 +355,14 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
                 fixture, Path("multitenant-dev-readiness.acceptance.json")
             )
         )
+        for scenario_index in (1, 5):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][scenario_index]["authorization_decision"] = None
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(scenario=fixture["scenarios"][scenario_index]["id"]):
+                self.assertTrue(errors)
         fixture = copy.deepcopy(self.fixture)
         fixture["scenarios"][0]["instance_refs"]["membership"] = ["bad-ref"]
         self.assertTrue(
