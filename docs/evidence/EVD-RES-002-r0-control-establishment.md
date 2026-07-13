@@ -55,7 +55,7 @@ An initial diagnostic with Node `v24.12.0` and npm `11.6.2` failed because npm 1
 | unit tests | 0 | 0 | PASS, 1 suite / 4 tests |
 | Next.js production build | 0 | 0 | PASS |
 
-Both final upstream trees remained clean. No `.env` file was created. Both raw evidence stores passed the bOPEN credential-pattern scan, and normalized provenance and baseline results matched.
+Both final upstream trees remained clean. No `.env` file was created. Both raw evidence stores contain normalized bOPEN credential-scan receipts with scanner hash, scope, file count, zero findings and `PASS`. Their network receipts record an isolated npm user configuration, no credential values, cleared ambient npm credential-variable names, and `registry.npmjs.org` as the only package-lock host. Normalized provenance and baseline results matched.
 
 ## External raw evidence custody
 
@@ -66,10 +66,10 @@ Raw source and logs are intentionally not committed. They remain under:
 
 Evidence-manifest SHA-256 values:
 
-- ENGIN: `912018130b40ac4469e1e191013358bfd4023ce96c61bf2edb1ca08b1375712e`
-- REV: `a2a7612cf1b6a4a454105a2aa9caf25ed50a2e8eb0633eeb116ee580792e3ff8`
+- ENGIN: `be57788e963a8b5f002793e75b38ed7dff58074158c48c804d2f01b811957a05`
+- REV: `40ab72e2380e1ed6b7028f2487d384ae6a1e45a73885a3c38e2e2fd8148e1350`
 
-Each manifest covers 24 raw evidence files. Wall-clock timestamps, operator IDs and raw build text are not expected to hash identically; normalized contract fields and exit matrices do.
+Each BOM-free manifest covers 27 raw evidence files and is generated and verified by tracked tooling. Wall-clock timestamps, operator IDs and raw build text are not expected to hash identically; normalized contract fields and exit matrices do.
 
 ## Gate decision
 

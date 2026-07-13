@@ -1,8 +1,13 @@
 """Governance checks for BOPEN-RES-001 Research Sprint R0 controls."""
 
 import json
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
+
+from tools.validate_research_r0 import validate_paths, validate_provenance
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -43,7 +48,91 @@ class ResearchR0ControlTests(unittest.TestCase):
             '"build-ci"',
         ):
             self.assertIn(command, script)
-        self.assertIn('"check-format" "npm.cmd" @("run", "check-format") 1', script)
+        self.assertIn(
+            '"check-format" "npx.cmd" @("--yes", "npm@$NpmVersion", "run", "check-format") 1',
+            script,
+        )
+
+    def test_path_validator_rejects_worktree_and_root_escape(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            approved = base / "approved"
+            repository = base / "repository"
+            approved.mkdir()
+            repository.mkdir()
+            self.assertEqual(
+                validate_paths(
+                    approved / "run/upstream",
+                    approved / "run/evidence",
+                    approved,
+                    repository,
+                ),
+                [],
+            )
+            escaped = validate_paths(base / "outside", approved / "evidence", approved, repository)
+            self.assertTrue(any("escapes" in error for error in escaped))
+            entered = validate_paths(repository / "upstream", approved / "evidence", approved, repository)
+            self.assertTrue(any("worktree" in error for error in entered))
+
+    def test_provenance_validator_rejects_every_identity_mutation(self):
+        pin = json.loads((ROOT / "research/sources/boxyhq-upstream-pin.json").read_text())
+        record = {
+            "source_id": pin["source_id"],
+            "repository": pin["repository_url"],
+            "pinned_commit": pin["commit"],
+            "actual_commit": pin["commit"],
+            "license_sha256": pin["license_sha256"],
+            "lockfile": pin["lockfile"],
+            "lock_sha256": pin["lock_sha256"],
+            "credential_prompting": "disabled",
+        }
+        self.assertEqual(validate_provenance(record, pin), [])
+        for key in record:
+            mutated = dict(record)
+            mutated[key] = "wrong"
+            with self.subTest(key=key):
+                self.assertTrue(validate_provenance(mutated, pin))
+
+    def test_baseline_runner_enforces_boundary_pin_and_pinned_npm(self):
+        script = (RESEARCH / "scripts/run-boxyhq-baseline.ps1").read_text()
+        for marker in (
+            "validate_research_r0.py",
+            "verify-upstream-pin.ps1",
+            "NPM_CONFIG_USERCONFIG",
+            "registry.npmjs.org",
+            "node_modules/prisma/build/index.js",
+        ):
+            self.assertIn(marker, script)
+        self.assertNotIn('"check-lint" "npm.cmd"', script)
+
+    def test_external_secret_scan_writes_normalized_receipt(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "evidence.txt").write_text("synthetic evidence", encoding="utf-8")
+            receipt = root / "secret-scan-receipt.json"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/check_secrets.py"),
+                    "--root",
+                    str(root),
+                    "--receipt",
+                    str(receipt),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0)
+            data = json.loads(receipt.read_text(encoding="utf-8"))
+            self.assertEqual(data["status"], "PASS")
+            self.assertEqual(data["finding_count"], 0)
+
+    def test_evidence_finalizer_is_tracked_and_verifies_file_set(self):
+        script = (RESEARCH / "scripts/finalize-research-evidence.ps1").read_text()
+        self.assertIn("secret-scan-receipt.json", script)
+        self.assertIn("evidence-manifest.json", script)
+        self.assertIn("Compare-Object", script)
 
     def test_decision_keeps_upstream_source_outside_worktree(self):
         decision = (ROOT / "docs/decisions/DEC-0009.md").read_text()

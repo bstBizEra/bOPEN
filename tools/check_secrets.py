@@ -3,6 +3,9 @@
 
 from __future__ import annotations
 
+import argparse
+import hashlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -67,7 +70,25 @@ def scan_repository(root: Path = ROOT) -> list[str]:
 
 
 def main() -> int:
-    violations = scan_repository()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--receipt", type=Path)
+    args = parser.parse_args()
+    scan_root = args.root.resolve()
+    files = candidate_files(scan_root)
+    violations = scan_repository(scan_root)
+    if args.receipt:
+        receipt = {
+            "schema_version": "1.0",
+            "scanner": "tools/check_secrets.py",
+            "scanner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "scope": str(scan_root),
+            "files_scanned": len(files),
+            "finding_count": len(violations),
+            "status": "PASS" if not violations else "FAIL",
+        }
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
+        args.receipt.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     if violations:
         print("Secret scan: FAIL")
         for violation in violations:

@@ -1,20 +1,20 @@
 # Exit Gates and Evidence Requirements
 
 ## G0
-- [ ] Sponsor and research lead assigned.
-- [ ] Security and license reviewers assigned.
-- [ ] Isolated workspace approved.
+- [x] Sponsor and research lead assigned. See EVD-RES-002.
+- [x] Security and license reviewers assigned. SecB legal interpretation remains a recorded condition.
+- [x] Isolated workspace approved under DEC-0009.
 
 ## G1
-- [ ] Commit SHA verified.
-- [ ] License file checksum recorded.
-- [ ] Upstream archived/public status recorded.
-- [ ] Acquisition/lineage note recorded.
+- [x] Commit SHA verified independently by ENGIN and REV.
+- [x] License file checksum recorded and matched twice.
+- [x] Upstream archived/public status recorded with observation date.
+- [x] Acquisition/lineage note recorded as provenance context only.
 
 ## G2
-- [ ] Clone reproducible.
-- [ ] Build/test logs captured.
-- [ ] Environment and lock checksums captured.
+- [x] Clone reproducible in separate ENGIN and REV roots.
+- [x] Build/test logs captured in external raw evidence stores.
+- [x] Environment and lock checksums captured and normalized in EVD-RES-002.
 
 ## G3
 - [ ] Self-registration trace E3/E4.

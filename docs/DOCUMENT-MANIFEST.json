@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-13",
-  "count": 232,
+  "count": 233,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -916,8 +916,8 @@
       "path": "docs/decisions/DEC-0009.md",
       "title": "DEC-0009 - External ephemeral research workspace",
       "status": "Approved",
-      "sha256": "7a7b9b4c62f1659053cf691bf51822f94ff3de941e3d925daee03e2882b65bf9",
-      "bytes": 1587
+      "sha256": "98ee6308d8f69f825523debf364b9b9c2463af881ab44d32e1951c8c18ad1c92",
+      "bytes": 1755
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1014,8 +1014,8 @@
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
-      "sha256": "9570d82243e1a0ab0584e277870f8006c0513bda7be6762cf4850a04a03272d2",
-      "bytes": 4079
+      "sha256": "b627ecc82055d09aea9fb41d9c492fc00029d11e0d8fe6d88ed02084f8983ecf",
+      "bytes": 4396
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1154,8 +1154,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/clone-bootstrap.md",
       "title": "Clone Bootstrap",
       "status": "",
-      "sha256": "2a86ba736f4f04e28a45afce07787ac194d1a576a811cdcd8f5d127f25465ce2",
-      "bytes": 1335
+      "sha256": "99f87226ed48b7600dbd407d38a239f2d13e66a6750a9667376b3d99b6e5f819",
+      "bytes": 1794
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/context-resolution-analysis.md",
@@ -1266,8 +1266,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/exit-gates.md",
       "title": "Exit Gates and Evidence Requirements",
       "status": "",
-      "sha256": "f0b836fd3d31f5627a021f2bd25e5a9679f16bc331270bd97149c9417d1bc400",
-      "bytes": 1815
+      "sha256": "fa6f2356786f863538f19f0d37c37290363f250d81172999971692fe2993a39e",
+      "bytes": 2095
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/implementation-handoff.md",
@@ -1343,8 +1343,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "8fb862c01a8c2e12a075524d22d7638ce4a0b8b74d7831461ea4ee8e35011b1f",
-      "bytes": 9036
+      "sha256": "1355d07bdfed5fe7c5cd89fa5ee70b82b5da878c35c7f77fd2b57d736e52c312",
+      "bytes": 9214
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1399,15 +1399,22 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.sh",
       "title": "",
       "status": "",
-      "sha256": "4d316c9ee526c495037d5ea65eb5366df6fdb4b749643e745aa2f658dc7957ee",
-      "bytes": 3397
+      "sha256": "bc891e8f2494374a2e05ea5c94d28f9092f584b2fc1ee4c2b114c8ffc0993cb6",
+      "bytes": 4261
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/finalize-research-evidence.ps1",
+      "title": "",
+      "status": "",
+      "sha256": "3e9338f056f775c3e4d5f56895fc189a2ef63fac71ee0c2abe047b8bef072bd3",
+      "bytes": 2494
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-baseline.ps1",
       "title": "",
       "status": "",
-      "sha256": "d3fbf06d3fbd4971ac415ee60a4eb2ef0896203ca4fe3133043b921cffd17d0c",
-      "bytes": 2776
+      "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042",
+      "bytes": 5390
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.ps1",
@@ -1420,8 +1427,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.sh",
       "title": "",
       "status": "",
-      "sha256": "6bf6dbd44a4ce54551ade52269e0e27c8c889e89f78b2e5857bd3534e3d24dc0",
-      "bytes": 1428
+      "sha256": "f9b4894667bfd32c80fefe4e463f7b1ddc00f1aa5397da6c7bf6c59bf7e4ba74",
+      "bytes": 1596
     },
     {
       "path": "docs/resources/open-source-research/README.md",

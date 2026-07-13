@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+[ "${BASH_VERSINFO[0]}" -ge 4 ] || { echo "Bash 4 or newer is required" >&2; exit 2; }
+command -v sha256sum >/dev/null || { echo "sha256sum is required" >&2; exit 2; }
 TARGET="${1:?Provide upstream clone path}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PIN_CONTRACT="$(cd "$SCRIPT_DIR/../../../../.." && pwd)/research/sources/boxyhq-upstream-pin.json"

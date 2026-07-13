@@ -62,11 +62,6 @@
       "bytes": 2654
     },
     {
-      "path": "01-boxyhq/README.md",
-      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
-      "bytes": 706
-    },
-    {
       "path": "01-boxyhq/authorization-analysis.md",
       "sha256": "cb79b031cae434f4c0b55a6eadb1b11508349a734c0bb40bcc0b61145fb9b2e2",
       "bytes": 1224
@@ -78,8 +73,8 @@
     },
     {
       "path": "01-boxyhq/clone-bootstrap.md",
-      "sha256": "2a86ba736f4f04e28a45afce07787ac194d1a576a811cdcd8f5d127f25465ce2",
-      "bytes": 1335
+      "sha256": "99f87226ed48b7600dbd407d38a239f2d13e66a6750a9667376b3d99b6e5f819",
+      "bytes": 1794
     },
     {
       "path": "01-boxyhq/context-resolution-analysis.md",
@@ -115,6 +110,11 @@
       "path": "01-boxyhq/lifecycle-map.md",
       "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
       "bytes": 2681
+    },
+    {
+      "path": "01-boxyhq/README.md",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
     },
     {
       "path": "01-boxyhq/repository-structure-study.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "02-execution/exit-gates.md",
-      "sha256": "f0b836fd3d31f5627a021f2bd25e5a9679f16bc331270bd97149c9417d1bc400",
-      "bytes": 1815
+      "sha256": "fa6f2356786f863538f19f0d37c37290363f250d81172999971692fe2993a39e",
+      "bytes": 2095
     },
     {
       "path": "02-execution/implementation-handoff.md",
@@ -243,13 +243,18 @@
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.sh",
-      "sha256": "4d316c9ee526c495037d5ea65eb5366df6fdb4b749643e745aa2f658dc7957ee",
-      "bytes": 3397
+      "sha256": "bc891e8f2494374a2e05ea5c94d28f9092f584b2fc1ee4c2b114c8ffc0993cb6",
+      "bytes": 4261
+    },
+    {
+      "path": "scripts/finalize-research-evidence.ps1",
+      "sha256": "3e9338f056f775c3e4d5f56895fc189a2ef63fac71ee0c2abe047b8bef072bd3",
+      "bytes": 2494
     },
     {
       "path": "scripts/run-boxyhq-baseline.ps1",
-      "sha256": "d3fbf06d3fbd4971ac415ee60a4eb2ef0896203ca4fe3133043b921cffd17d0c",
-      "bytes": 2776
+      "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042",
+      "bytes": 5390
     },
     {
       "path": "scripts/verify-upstream-pin.ps1",
@@ -258,8 +263,8 @@
     },
     {
       "path": "scripts/verify-upstream-pin.sh",
-      "sha256": "6bf6dbd44a4ce54551ade52269e0e27c8c889e89f78b2e5857bd3534e3d24dc0",
-      "bytes": 1428
+      "sha256": "f9b4894667bfd32c80fefe4e463f7b1ddc00f1aa5397da6c7bf6c59bf7e4ba74",
+      "bytes": 1596
     }
   ]
 }
