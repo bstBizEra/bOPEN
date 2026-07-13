@@ -432,13 +432,22 @@ def validate_multitenant_readiness_fixture(
 
     expired_context = resolved.get("MTD-008", {}).get("active_context")
     expired_membership = resolved.get("MTD-009", {}).get("membership")
-    if not isinstance(expired_context, dict) or evaluated_at is None or (
-        (parse_rfc3339_datetime(expired_context.get("expires_at")) or evaluated_at) > evaluated_at
-    ):
+    expired_context_at = (
+        parse_rfc3339_datetime(expired_context.get("expires_at"))
+        if isinstance(expired_context, dict)
+        else None
+    )
+    if expired_context_at is None or evaluated_at is None or expired_context_at > evaluated_at:
         errors.append(f"EXPIRED CONTEXT SCENARIO INVALID: {rel}")
-    if not isinstance(expired_membership, dict) or evaluated_at is None or (
-        (parse_rfc3339_datetime(expired_membership.get("valid_until")) or evaluated_at)
-        > evaluated_at
+    expired_membership_at = (
+        parse_rfc3339_datetime(expired_membership.get("valid_until"))
+        if isinstance(expired_membership, dict)
+        else None
+    )
+    if (
+        expired_membership_at is None
+        or evaluated_at is None
+        or expired_membership_at > evaluated_at
     ):
         errors.append(f"EXPIRED MEMBERSHIP SCENARIO INVALID: {rel}")
 
@@ -452,12 +461,38 @@ def validate_multitenant_readiness_fixture(
             continue
         if (
             membership.get("state") != "active"
+            or active_context.get("status") != "active"
             or active_context.get("membership_id") != membership.get("membership_id")
             or active_context.get("principal_id") != membership.get("principal_id")
             or active_context.get("tenant_id") != membership.get("tenant_id")
             or ownership.get("tenant_id") != active_context.get("tenant_id")
         ):
             errors.append(f"EXPIRY CONTRACT COMPOSITION INVALID {rel}: {scenario_id}")
+        context_issued_at = parse_rfc3339_datetime(active_context.get("issued_at"))
+        context_expires_at = parse_rfc3339_datetime(active_context.get("expires_at"))
+        membership_valid_until = membership.get("valid_until")
+        membership_expires_at = (
+            parse_rfc3339_datetime(membership_valid_until)
+            if membership_valid_until is not None
+            else None
+        )
+        if scenario_id == "MTD-008" and (
+            membership_valid_until is not None
+            and (
+                membership_expires_at is None
+                or evaluated_at is None
+                or membership_expires_at <= evaluated_at
+            )
+        ):
+            errors.append(f"EXPIRY DENIAL CAUSE AMBIGUOUS {rel}: {scenario_id}")
+        if scenario_id == "MTD-009" and (
+            context_issued_at is None
+            or context_expires_at is None
+            or evaluated_at is None
+            or context_issued_at > evaluated_at
+            or evaluated_at >= context_expires_at
+        ):
+            errors.append(f"EXPIRY DENIAL CAUSE AMBIGUOUS {rel}: {scenario_id}")
         expected_context = {
             "principal_id": active_context.get("principal_id"),
             "tenant_id": active_context.get("tenant_id"),
@@ -471,6 +506,8 @@ def validate_multitenant_readiness_fixture(
             "resource_id": ownership.get("resource_id"),
         }
         audit = scenario.get("audit_event")
+        decision = scenario.get("authorization_decision")
+        scope = decision.get("evaluated_scope") if isinstance(decision, dict) else None
         context_claims = scenario.get("context")
         resource_claims = scenario.get("resource")
         if not isinstance(context_claims, dict) or any(
@@ -482,12 +519,23 @@ def validate_multitenant_readiness_fixture(
         ):
             errors.append(f"EXPIRY RESOURCE CLAIMS MUST MATCH {rel}: {scenario_id}")
         if not isinstance(audit, dict) or (
+            audit.get("principal_id") != active_context.get("principal_id")
+            or
             audit.get("tenant_id") != active_context.get("tenant_id")
             or audit.get("context_id") != active_context.get("context_id")
             or audit.get("resource_type") != ownership.get("resource_type")
             or audit.get("resource_id") != ownership.get("resource_id")
         ):
             errors.append(f"EXPIRY AUDIT ATTRIBUTION INVALID {rel}: {scenario_id}")
+        expected_scope = {"active_tenant_id": active_context.get("tenant_id")}
+        if scenario_id == "MTD-008":
+            expected_scope["context_expires_at"] = active_context.get("expires_at")
+        else:
+            expected_scope["membership_valid_until"] = membership.get("valid_until")
+        if not isinstance(scope, dict) or any(
+            scope.get(key) != value for key, value in expected_scope.items()
+        ):
+            errors.append(f"EXPIRY EVALUATED SCOPE MUST MATCH {rel}: {scenario_id}")
 
     return errors
 
@@ -520,6 +568,10 @@ def validate_acceptance_fixture(data: dict, rel: Path) -> list[str]:
 
         decision = scenario.get("authorization_decision")
         audit_event = scenario.get("audit_event")
+        if not isinstance(decision, dict):
+            errors.append(f"AUTHORIZATION DECISION MUST BE OBJECT: {prefix}")
+        if not isinstance(audit_event, dict):
+            errors.append(f"AUDIT EVENT MUST BE OBJECT: {prefix}")
         if not isinstance(decision, dict) or not isinstance(audit_event, dict):
             continue
 

@@ -280,6 +280,59 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             with self.subTest(scenario=fixture["scenarios"][scenario_index]["id"], ref=ref_name):
                 self.assertTrue(any("EXPIRY" in error for error in errors))
 
+        fixture = copy.deepcopy(self.fixture)
+        scenario = fixture["scenarios"][8]
+        scenario["instance_refs"]["membership"] = "membership-alpha-owner"
+        scenario["instance_refs"]["active_context"] = "context-alpha-owner"
+        scenario["context"].update(
+            {
+                "principal_id": "principal-alpha-owner",
+                "membership_id": "membership-alpha-owner",
+            }
+        )
+        scenario["audit_event"].update(
+            {
+                "principal_id": "principal-alpha-owner",
+                "context_id": "context-alpha-owner",
+            }
+        )
+        scenario["authorization_decision"]["evaluated_scope"]["membership_valid_until"] = None
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("EXPIRED MEMBERSHIP SCENARIO INVALID" in error for error in errors))
+
+    def test_validator_binds_expiry_scope_status_cause_and_audit_principal(self):
+        mutations = (
+            (7, "authorization_decision", "evaluated_scope", {"active_tenant_id": "tenant-alpha", "context_expires_at": "2099-01-01T00:00:00Z"}, "EVALUATED SCOPE"),
+            (8, "authorization_decision", "evaluated_scope", {"active_tenant_id": "tenant-alpha", "membership_valid_until": "2099-01-01T00:00:00Z"}, "EVALUATED SCOPE"),
+            (7, "audit_event", "principal_id", "principal-other", "AUDIT ATTRIBUTION"),
+        )
+        for index, section, key, value, expected in mutations:
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][index][section][key] = value
+            errors = validate_multitenant_readiness_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(scenario=fixture["scenarios"][index]["id"], key=key):
+                self.assertTrue(any(expected in error for error in errors))
+
+        fixture = copy.deepcopy(self.fixture)
+        fixture["instances"]["active_contexts"]["context-alpha-expired"]["status"] = "revoked"
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("COMPOSITION INVALID" in error for error in errors))
+
+        fixture = copy.deepcopy(self.fixture)
+        fixture["instances"]["active_contexts"]["context-alpha-expired-membership"]["expires_at"] = (
+            "2026-07-13T03:17:00+07:00"
+        )
+        errors = validate_multitenant_readiness_fixture(
+            fixture, Path("multitenant-dev-readiness.acceptance.json")
+        )
+        self.assertTrue(any("DENIAL CAUSE AMBIGUOUS" in error for error in errors))
+
     def test_validator_requires_timezone_aware_rfc3339_datetime(self):
         membership_schema = json.loads(
             (CONTRACT_ROOT / "tenancy/membership.schema.json").read_text(encoding="utf-8")
@@ -333,6 +386,16 @@ class MultiTenantDevReadinessTests(unittest.TestCase):
             )
             with self.subTest(key=key):
                 self.assertTrue(any(expected in error for error in errors))
+
+    def test_acceptance_validator_rejects_missing_decision_or_audit_objects(self):
+        for key in ("authorization_decision", "audit_event"):
+            fixture = copy.deepcopy(self.fixture)
+            fixture["scenarios"][0][key] = None
+            errors = validate_acceptance_fixture(
+                fixture, Path("multitenant-dev-readiness.acceptance.json")
+            )
+            with self.subTest(key=key):
+                self.assertTrue(any("MUST BE OBJECT" in error for error in errors))
 
     def test_validator_fails_closed_on_malformed_shapes(self):
         fixture_mutations = (
