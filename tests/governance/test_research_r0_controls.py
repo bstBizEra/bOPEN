@@ -1,6 +1,7 @@
 """Governance checks for BOPEN-RES-001 Research Sprint R0 controls."""
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -128,11 +129,71 @@ class ResearchR0ControlTests(unittest.TestCase):
             self.assertEqual(data["status"], "PASS")
             self.assertEqual(data["finding_count"], 0)
 
+    def test_external_secret_scan_rejects_credential_in_log(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "raw-command.log").write_text(
+                "api_" + "key=" + "ABCDEFGHIJKLMNOPQRST", encoding="utf-8"
+            )
+            receipt = root / "secret-scan-receipt.json"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/check_secrets.py"),
+                    "--root",
+                    str(root),
+                    "--receipt",
+                    str(receipt),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 1)
+            data = json.loads(receipt.read_text(encoding="utf-8"))
+            self.assertEqual(data["status"], "FAIL")
+            self.assertEqual(data["files_scanned"], 1)
+            self.assertEqual(data["finding_count"], 1)
+
     def test_evidence_finalizer_is_tracked_and_verifies_file_set(self):
         script = (RESEARCH / "scripts/finalize-research-evidence.ps1").read_text()
         self.assertIn("secret-scan-receipt.json", script)
         self.assertIn("evidence-manifest.json", script)
         self.assertIn("Compare-Object", script)
+        self.assertIn("-Recurse", script)
+        self.assertIn("Substring($RootPrefix.Length)", script)
+
+    @unittest.skipUnless(sys.platform == "win32", "Windows R0 operator harness")
+    def test_evidence_finalizer_rejects_nested_file_tamper(self):
+        powershell = shutil.which("powershell.exe") or shutil.which("powershell")
+        self.assertIsNotNone(powershell)
+        approved_root = Path(r"C:\laragon\www\bopen-research")
+        approved_root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=approved_root) as temporary:
+            run_root = Path(temporary)
+            evidence = run_root / "evidence"
+            nested = evidence / "nested"
+            nested.mkdir(parents=True)
+            (nested / "baseline.log").write_text("synthetic output", encoding="utf-8")
+            command = [
+                powershell,
+                "-NoProfile",
+                "-File",
+                str(RESEARCH / "scripts/finalize-research-evidence.ps1"),
+                "-EvidenceRoot",
+                str(evidence),
+                "-OperatorId",
+                "TEST-R0",
+            ]
+            generated = subprocess.run(command, check=False, capture_output=True, text=True)
+            self.assertEqual(generated.returncode, 0, generated.stderr)
+            manifest = json.loads((evidence / "evidence-manifest.json").read_text())
+            self.assertIn("nested/baseline.log", [item["name"] for item in manifest["files"]])
+            (nested / "tamper.log").write_text("late addition", encoding="utf-8")
+            verified = subprocess.run(
+                [*command, "-Verify"], check=False, capture_output=True, text=True
+            )
+            self.assertNotEqual(verified.returncode, 0)
 
     def test_decision_keeps_upstream_source_outside_worktree(self):
         decision = (ROOT / "docs/decisions/DEC-0009.md").read_text()

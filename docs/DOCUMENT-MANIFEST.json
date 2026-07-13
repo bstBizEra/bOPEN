@@ -1014,8 +1014,8 @@
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
-      "sha256": "b627ecc82055d09aea9fb41d9c492fc00029d11e0d8fe6d88ed02084f8983ecf",
-      "bytes": 4396
+      "sha256": "f2391009186747933e35a6bfb20ed1ada598cc9bafdcc0485d3a0cf177126b2e",
+      "bytes": 4522
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -1343,8 +1343,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "1355d07bdfed5fe7c5cd89fa5ee70b82b5da878c35c7f77fd2b57d736e52c312",
-      "bytes": 9214
+      "sha256": "ba96c15e1745fecfdfe439b2ccb5cb030441b92d488f901f2ead7c170c28344e",
+      "bytes": 8944
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1399,15 +1399,15 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.sh",
       "title": "",
       "status": "",
-      "sha256": "bc891e8f2494374a2e05ea5c94d28f9092f584b2fc1ee4c2b114c8ffc0993cb6",
-      "bytes": 4261
+      "sha256": "fe122ffd0b34d8f0f5319a1870ed95595060996482c4d514b71bd84d44b498ce",
+      "bytes": 4130
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/finalize-research-evidence.ps1",
       "title": "",
       "status": "",
-      "sha256": "3e9338f056f775c3e4d5f56895fc189a2ef63fac71ee0c2abe047b8bef072bd3",
-      "bytes": 2494
+      "sha256": "b20597de7947685f5d54deed405d2d1da8bd56ecd786fb826a5c36efd9b51b26",
+      "bytes": 2643
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-baseline.ps1",

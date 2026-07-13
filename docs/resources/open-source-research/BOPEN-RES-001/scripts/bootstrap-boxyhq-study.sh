@@ -14,13 +14,8 @@ APPROVED_ROOT="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))
 WORKSPACE_ROOT="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$WORKSPACE_ROOT")"
 TARGET="$WORKSPACE_ROOT/01-boxyhq/upstream"
 EVIDENCE="$WORKSPACE_ROOT/evidence"
-case "$WORKSPACE_ROOT" in
-  "$APPROVED_ROOT"|"$APPROVED_ROOT"/*) ;;
-  *) echo "Workspace escapes BOPEN_RESEARCH_APPROVED_ROOT" >&2; exit 2 ;;
-esac
-case "$WORKSPACE_ROOT" in
-  "$REPO_ROOT"/*) echo "Physical upstream clones must remain outside the bOPEN worktree" >&2; exit 2 ;;
-esac
+python3 "$REPO_ROOT/tools/validate_research_r0.py" paths \
+  --target "$TARGET" --evidence-root "$EVIDENCE" --approved-root "$APPROVED_ROOT" || exit 2
 [ ! -e "$TARGET" ] || { echo "Target already exists: $TARGET" >&2; exit 2; }
 
 readarray -t CONTRACT < <(python3 - "$PIN_CONTRACT" <<'PY'

@@ -62,6 +62,11 @@
       "bytes": 2654
     },
     {
+      "path": "01-boxyhq/README.md",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
+    },
+    {
       "path": "01-boxyhq/authorization-analysis.md",
       "sha256": "cb79b031cae434f4c0b55a6eadb1b11508349a734c0bb40bcc0b61145fb9b2e2",
       "bytes": 1224
@@ -110,11 +115,6 @@
       "path": "01-boxyhq/lifecycle-map.md",
       "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
       "bytes": 2681
-    },
-    {
-      "path": "01-boxyhq/README.md",
-      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
-      "bytes": 706
     },
     {
       "path": "01-boxyhq/repository-structure-study.md",
@@ -243,13 +243,13 @@
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.sh",
-      "sha256": "bc891e8f2494374a2e05ea5c94d28f9092f584b2fc1ee4c2b114c8ffc0993cb6",
-      "bytes": 4261
+      "sha256": "fe122ffd0b34d8f0f5319a1870ed95595060996482c4d514b71bd84d44b498ce",
+      "bytes": 4130
     },
     {
       "path": "scripts/finalize-research-evidence.ps1",
-      "sha256": "3e9338f056f775c3e4d5f56895fc189a2ef63fac71ee0c2abe047b8bef072bd3",
-      "bytes": 2494
+      "sha256": "b20597de7947685f5d54deed405d2d1da8bd56ecd786fb826a5c36efd9b51b26",
+      "bytes": 2643
     },
     {
       "path": "scripts/run-boxyhq-baseline.ps1",

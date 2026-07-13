@@ -66,10 +66,10 @@ Raw source and logs are intentionally not committed. They remain under:
 
 Evidence-manifest SHA-256 values:
 
-- ENGIN: `be57788e963a8b5f002793e75b38ed7dff58074158c48c804d2f01b811957a05`
-- REV: `40ab72e2380e1ed6b7028f2487d384ae6a1e45a73885a3c38e2e2fd8148e1350`
+- ENGIN: `7192b7b603346bb3be6b87fc2bcb86080cb3e1cbde972d278b8873c5c728a47f`
+- REV: `3d18c5ef23549ab345959122b75b61a4a16ac0eb071390701ae9306ce9003122`
 
-Each BOM-free manifest covers 27 raw evidence files and is generated and verified by tracked tooling. Wall-clock timestamps, operator IDs and raw build text are not expected to hash identically; normalized contract fields and exit matrices do.
+Each BOM-free manifest covers 27 raw evidence files and is generated and verified by tracked tooling. The normalized secret-scan receipt covers every manifested payload, including all raw `.log` files, plus the manifest itself. Wall-clock timestamps, operator IDs and raw build text are not expected to hash identically; normalized contract fields and exit matrices do.
 
 ## Gate decision
 

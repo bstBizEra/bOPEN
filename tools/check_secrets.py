@@ -17,6 +17,7 @@ TEXT_SUFFIXES = {
     "",
     ".env",
     ".json",
+    ".log",
     ".md",
     ".ps1",
     ".py",

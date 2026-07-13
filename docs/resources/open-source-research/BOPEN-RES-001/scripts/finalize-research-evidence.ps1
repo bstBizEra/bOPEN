@@ -13,23 +13,29 @@ $EvidenceRoot = [IO.Path]::GetFullPath($EvidenceRoot)
 if ($LASTEXITCODE -ne 0) { throw "Evidence path validation failed" }
 $ManifestPath = Join-Path $EvidenceRoot "evidence-manifest.json"
 
+function Get-EvidenceRecords {
+  $RootPrefix = $EvidenceRoot.TrimEnd("\", "/")
+  @(
+    Get-ChildItem $EvidenceRoot -File -Recurse |
+      Where-Object FullName -ne $ManifestPath |
+      ForEach-Object {
+        $RelativeName = $_.FullName.Substring($RootPrefix.Length).TrimStart("\", "/").Replace("\", "/")
+        [ordered]@{
+          name = $RelativeName
+          bytes = $_.Length
+          sha256 = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+        }
+      } |
+      Sort-Object name
+  )
+}
+
 if (-not $Verify) {
   $SecretReceipt = Join-Path $EvidenceRoot "secret-scan-receipt.json"
   & python (Join-Path $RepositoryRoot "tools\check_secrets.py") `
     --root $EvidenceRoot --receipt $SecretReceipt
   if ($LASTEXITCODE -ne 0) { throw "Evidence secret scan failed" }
-  $Records = @(
-    Get-ChildItem $EvidenceRoot -File |
-      Where-Object Name -ne "evidence-manifest.json" |
-      Sort-Object Name |
-      ForEach-Object {
-        [ordered]@{
-          name = $_.Name
-          bytes = $_.Length
-          sha256 = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
-        }
-      }
-  )
+  $Records = Get-EvidenceRecords
   $Json = [ordered]@{
     schema_version = "1.0"
     operator_id = $OperatorId
@@ -44,9 +50,8 @@ $Manifest = Get-Content $ManifestPath -Raw | ConvertFrom-Json
 if ($Manifest.operator_id -ne $OperatorId) { throw "Evidence operator mismatch" }
 $ExpectedNames = @($Manifest.files | ForEach-Object name | Sort-Object)
 $ActualNames = @(
-  Get-ChildItem $EvidenceRoot -File |
-    Where-Object Name -ne "evidence-manifest.json" |
-    ForEach-Object Name |
+  Get-EvidenceRecords |
+    ForEach-Object name |
     Sort-Object
 )
 if ((Compare-Object $ExpectedNames $ActualNames).Count -ne 0) { throw "Evidence file set mismatch" }
