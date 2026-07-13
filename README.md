@@ -21,6 +21,8 @@ It is **not** approval to implement the production platform kernel. Production i
 
 `BOPEN-RES-001` Research Sprint R0 has executed RES-P0-01 through RES-P0-03 with two isolated operators. G0-G2 pass with recorded conditions; R1 lifecycle research is next, while G3-G7 and production implementation remain closed.
 
+Research Sprint R1 has now executed the static RES-P0-04 through RES-P0-07 trace. Repository orientation is complete at E2; identity, membership and invitation runtime acceptance remains incomplete. G3-G7 and production implementation remain closed pending the isolated synthetic G3 runtime pack documented in EVD-RES-003.
+
 ## Governing lifecycle
 
 ```text

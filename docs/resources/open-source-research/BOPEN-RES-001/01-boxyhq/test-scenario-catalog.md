@@ -22,3 +22,17 @@
 | BOX-T18 | Subscription becomes inactive | Actual access effect documented |
 | BOX-T19 | SCIM deactivates member | Membership/session consequences documented |
 | BOX-T20 | Webhook/audit provider unavailable | Failure behavior and transaction outcome documented |
+
+## R1 execution classification - 2026-07-13
+
+Static inspection found 42 `test`, `setup` or `teardown` declarations in 9 Git-tracked TypeScript files. R1 did not load or execute upstream code. Therefore all scenarios above remain E0/E2 leads until a controlled database-backed run produces E3 evidence.
+
+Highest-priority missing declarations or runtime probes are:
+
+- verification and password-reset expiry/replay/failure;
+- login lockout threshold and concurrency;
+- JWT revocation after credential change;
+- cross-user session deletion and cross-team member identifiers;
+- last-owner removal/demotion and concurrent owner changes;
+- invitation expiry, revocation, replay, concurrent acceptance and accept-versus-revoke;
+- event/audit payload, ordering, correlation and integration failure behavior.

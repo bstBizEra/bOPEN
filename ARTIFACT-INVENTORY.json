@@ -2,8 +2,8 @@
   "artifact": "BOPEN-BOOT-001-full-pack",
   "version": "1.1",
   "generated": "2026-07-13",
-  "file_count_including_inventory": 310,
-  "inventory_entries": 309,
+  "file_count_including_inventory": 315,
+  "inventory_entries": 314,
   "files": [
     {
       "path": ".editorconfig",
@@ -117,8 +117,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2678,
-      "sha256": "fbf4572a6df0d96b5d233d6e3204fa136b39f12850ca9ba336a947ffdf5b1747"
+      "bytes": 3002,
+      "sha256": "12738f812b0d3b0d38927b03128f3894001446f3314d9be819fd4a6929069248"
     },
     {
       "path": "SECURITY.md",
@@ -762,13 +762,13 @@
     },
     {
       "path": "docs/DOCUMENT-MANIFEST.json",
-      "bytes": 59114,
-      "sha256": "95d406531bff640f878b1ce3a7cb8837c17e33851c5d44047e32265ddb68394a"
+      "bytes": 59712,
+      "sha256": "671691deabe122db9e7b17b73fded7d16b43e0a67e9c498c3b4981ac75199e86"
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
-      "bytes": 987,
-      "sha256": "95829cbadd64a34167909ef56a2da7b980116a440b80d0541b58dffa3c529f0c"
+      "bytes": 1137,
+      "sha256": "a471bdff45fb368b759927e4bac66f3d8019125613a4396791cd7957a8f67a69"
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -782,8 +782,8 @@
     },
     {
       "path": "docs/TRACEABILITY-MATRIX.md",
-      "bytes": 2952,
-      "sha256": "2768f82c3e84a0c9257b284500849e421a55a95fec3a1055f81d6ede6c927837"
+      "bytes": 3122,
+      "sha256": "c0fafdc5e3f8c13a162872bd233b4cd5662727f4b3e590fe209a26a433327835"
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -916,6 +916,11 @@
       "sha256": "f2391009186747933e35a6bfb20ed1ada598cc9bafdcc0485d3a0cf177126b2e"
     },
     {
+      "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
+      "bytes": 7338,
+      "sha256": "b57ae167b0519b20a92066eaf29710cbca87d2dd8e16671592d867166b3909c9"
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "bytes": 2349,
       "sha256": "460901f6b397ec99f59870e9789c496b7ed1b49c7adb1984ec5794bc1ada7101"
@@ -1027,8 +1032,8 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
-      "bytes": 1564,
-      "sha256": "217b57861dfb84d2824dd2618126b6be989a6f032197fa313bcf6e82b174b844"
+      "bytes": 2595,
+      "sha256": "3644c60a046db602d38b3ce13cccac67481e2cfbaab52f1db9962c66cacf8515"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
@@ -1037,18 +1042,18 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/identity-principal-analysis.md",
-      "bytes": 1048,
-      "sha256": "731e59b39251c256fd7c627c50bc08f2def2afe4ee2e9b72b339bb5fd983f36b"
+      "bytes": 2033,
+      "sha256": "301e381184b3a589932154479da5ceec9d47a77a7653c8cf34ee3554e1246921"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/lifecycle-map.md",
-      "bytes": 2681,
-      "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4"
+      "bytes": 3468,
+      "sha256": "8df8c3416abe7b2c14b36714d217cb7f884299602150e0fd9017b573189e6b4a"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
-      "bytes": 1414,
-      "sha256": "b8cdd053deb956b681eb3f8df7d3f10591aad186f44a9364df4c4c6a8835bcfd"
+      "bytes": 3019,
+      "sha256": "4a88c694d1b57b511cd3cafff2427bb6ff4d235da49b0a079f29941b10f05953"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/security-review-checklist.md",
@@ -1057,13 +1062,13 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/tenant-membership-analysis.md",
-      "bytes": 1149,
-      "sha256": "bb02b95087bed81ed45324d1e4c546b24a8b919b198f662814b484aa69660abd"
+      "bytes": 2094,
+      "sha256": "509b779bb25a8acb1a90dc92a8cf1a2d270376e0747d2199b88bf29088825fa6"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/test-scenario-catalog.md",
-      "bytes": 1563,
-      "sha256": "805712738805e7a258a76bf52f8d7ca4b7ca7546b76fcb283c8c1d973bf0eef1"
+      "bytes": 2364,
+      "sha256": "071508bcdd2ab79e5c5c5f742992c91994698d30f16b73ae68b404398831dd88"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/upstream-pin.json",
@@ -1102,8 +1107,8 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/work-package-register.md",
-      "bytes": 4576,
-      "sha256": "eb432eeb1b249dc4a29003a7d3d6af4c8856c699a6a342b41674b0c5965f0c8d"
+      "bytes": 5427,
+      "sha256": "9ef0e132baccc8b1fa8298ab093ba5d1a644f61469e3d48834a4c961f2eb3275"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/architecture-decision-template.md",
@@ -1137,8 +1142,8 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
-      "bytes": 8944,
-      "sha256": "ba96c15e1745fecfdfe439b2ccb5cb030441b92d488f901f2ead7c170c28344e"
+      "bytes": 9110,
+      "sha256": "d6d18c43b63286f05bd63780be355dbb9075a1a7823a2218da141cbf83bac14b"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1167,8 +1172,8 @@
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
-      "bytes": 2012,
-      "sha256": "d1b68c9d0753314c20121c177eeab06cb27fbb39aee16b0f650f7af4b06d724a"
+      "bytes": 2853,
+      "sha256": "d4d52657b8ba792ebd25f68dc52ab4ae81dfb634f2beaa35505400d1b6426479"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
@@ -1189,6 +1194,11 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-baseline.ps1",
       "bytes": 5390,
       "sha256": "8bc2da40f3b5376fc0cfc2f0040049853ab4a06fd7bc45e37bbf7029245b5042"
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/run-boxyhq-r1-trace.ps1",
+      "bytes": 1500,
+      "sha256": "cc900c69eed15d2e9e7a57d44bcc40b49f4ef43b25b733a75633efb6786d600a"
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/verify-upstream-pin.ps1",
@@ -1396,6 +1406,11 @@
       "sha256": "a152f4b9e83d5503df77d6d0134bff0f613d2117c19f78794f15210a658ec62d"
     },
     {
+      "path": "research/sources/boxyhq-r1-trace-contract.json",
+      "bytes": 15323,
+      "sha256": "467b8f26728c7c55973bb835194c7ff44e61d4e30b3008eff21d05f52c557b66"
+    },
+    {
       "path": "research/sources/boxyhq-upstream-pin.json",
       "bytes": 670,
       "sha256": "a6d0b64bad1bca63b3ee64b8c08e3320ecc3ccdf77b3daf7b59267703f9bc382"
@@ -1481,6 +1496,11 @@
       "sha256": "448f05ff482c45b4e4456ff0dc913a28673174347734c3dd2b44d2a235eee81f"
     },
     {
+      "path": "tests/governance/test_research_r1_controls.py",
+      "bytes": 5086,
+      "sha256": "154296d26c67bec14102983490481a0f0c536df40d860e94ab0d563831e1b912"
+    },
+    {
       "path": "tests/governance/test_security_controls.py",
       "bytes": 1823,
       "sha256": "d14c87bd6e8a03b659dfb782f5f61a3a230a19689f9bcd50b4a5378786ccd2ba"
@@ -1544,6 +1564,11 @@
       "path": "tools/validate_research_r0.py",
       "bytes": 3446,
       "sha256": "b66be5d9abbbf17be584c1487772358ffcfd428fab3a3d73d85c7d3dc9ae0a7b"
+    },
+    {
+      "path": "tools/validate_research_r1.py",
+      "bytes": 11322,
+      "sha256": "958977f29653f0572b6f703c2329bc52d61d8de6b96d0869875f109fd5f81aac"
     },
     {
       "path": "turbo.json",

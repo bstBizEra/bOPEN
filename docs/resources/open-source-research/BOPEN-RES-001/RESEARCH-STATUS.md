@@ -33,3 +33,15 @@
 ## Next controlled action
 
 Begin Sprint R1 with `RES-P0-04` through `RES-P0-07`: repository orientation, identity/principal, tenant/membership and invitation lifecycle traces. Preserve G3 as open until positive and negative runtime evidence is reviewed.
+
+## R1 update - 2026-07-13
+
+**Status:** `R1 STATIC TRACE EXECUTED / G3 OPEN`
+
+- RES-P0-04 is complete at E2 with a machine-verified path inventory.
+- RES-P0-05 and RES-P0-06 traces are complete, but runtime acceptance remains partial.
+- RES-P0-07 trace is complete, but its end-to-end, event/audit, replay and concurrency acceptance is not satisfied.
+- Two external operators reproduced 57 case-specific evidence records, including 47 observations and 10 gap anchors, plus 42 static test declarations in 9 tracked files without executing upstream code.
+- EVD-RES-003 records the identity, owner-invariant, invitation-state and event/audit findings.
+
+**Next controlled action:** design the isolated synthetic G3 runtime pack. Do not start RES-P0-08 or production implementation until the missing R1 runtime evidence is executed and reviewed.
