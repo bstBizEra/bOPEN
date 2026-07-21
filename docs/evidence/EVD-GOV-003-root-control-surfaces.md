@@ -86,3 +86,23 @@ Executed results:
 Reason: execute every in-scope maker check and preserve the preflight manifest conflict rather than weakening or rewriting an earlier snapshot. Benefit of the old phase: the existing check detects documentation drift and fails closed. Expected outcome: independent review can distinguish a fully passing GOV-P0-03 package/test surface from the still-unresolved DEC-0012 manifest-option design.
 
 The manifest failure is a residual repository-wide validation blocker, not a skipped or passing check. It does not alter the Draft, Inactive or non-effective status of this package.
+
+## Append-only exact-byte rework record — 2026-07-22
+
+**Source:** Independent checker `REQUEST_CHANGES` against commit `651951f229f6f72c4ebab35a2458ebd9a4216583`
+**Agent ID:** `/root/gov_p0_03_preflight`
+**Disposition:** Rework in progress; successor exact commit and tree pending
+
+The checker demonstrated that the first validator normalized CRLF and CR bytes before package-manifest hashing and used Python text-mode subprocess decoding before append-only Git-blob comparison. Those transformations allowed a line-ending-only byte mutation to compare as equivalent even though the repository bytes changed.
+
+The successor validator hashes `Path.read_bytes()` directly, reads historical blobs through binary `git cat-file blob`, and applies prefix validation to the unmodified byte sequences. New negative tests require a CRLF-only package mutation to stale the manifest and prove that rewriting a committed CRLF blob to LF fails byte-prefix validation.
+
+Reason: exact-byte integrity is required for an append-only control and package evidence binding. Benefit of the prior phase: the first validator established exact paths, metadata, authority-state and atomic-genesis checks, allowing the remaining byte-normalization flaw to be isolated. Expected outcome: platform or checkout newline transformations cannot conceal a manifest change or historical rewrite.
+
+This rework has no authority effect and does not accept GOV-P0-03, resolve DEC-0012 manifest options, pass a gate, authorize merge, release, runtime or production implementation.
+
+## Append-only exact-byte maker verification — 2026-07-22
+
+The successor maker candidate passed the exact-byte package validator, 13/13 focused GOV-P0-03 tests and 160/160 full repository tests. Repository validation passed 27 mandatory paths/invariants; contract validation passed 19 machine-readable contracts; program-control validation passed seven draft registers; both deterministic program reports were current; clean-room, secret, supply-chain and `git diff --check` checks passed.
+
+The new negative tests reproduced both checker cases: converting a manifest-bound file from LF to CRLF makes the package manifest stale, and rewriting a committed CRLF blob to LF is observed byte-for-byte and rejected as truncation plus prefix rewriting. These are maker results only. A fresh different-agent review must bind the successor exact commit and tree.
