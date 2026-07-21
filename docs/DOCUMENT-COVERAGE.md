@@ -15,3 +15,7 @@
 | Operations | Bootstrap runbooks | Future operational artifacts | Initial | Environment-specific approval |
 | Program goals and measurement | Supplied Program Goal v0.2 | BOPEN-GOAL-001 | Draft controlled intake | Product/Architecture approval + per-gate evidence |
 | Program delivery controls | Bootstrap governance plus GOV-P0-01 candidate | BOPEN-GOV-001 | Draft registers and fail-closed validators | Engineering/Product/Architecture approval |
+| Human authority envelopes | GOV-P0-02 proposal | PG-G0-AUTH-001/PG-G0-GATE-001/DEC-0012 | Draft, exact-bound and non-effective | Attributable human acceptance + approved authority successor |
+| Required root instruction surfaces | Replacement AGENTS requirements | DEC-0012 Proposed | Missing/unresolved | Product/Architecture/Engineering decision |
+
+GOV-P0-02 uses a versioned manifest snapshot because literal append-only handling of the canonical generated manifest is unresolved by DEC-0012.

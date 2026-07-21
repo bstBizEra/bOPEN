@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/governance/pg-g0-authority-docket/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN PG-G0 Authority Docket",
+  "type": "object",
+  "required": [
+    "$schema", "docket_id", "version", "status", "owner_authority",
+    "updated_at", "expires_at", "repository_binding", "governing_artifacts",
+    "authority_source", "technical_review", "decision_requests", "state",
+    "state_history", "effective_outcome", "non_authority_flags", "blockers"
+  ],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/governance/pg-g0-authority-docket/0.1.0-draft"},
+    "docket_id": {"type": "string", "pattern": "^PG-G0-AUTH-[0-9]{3}$"},
+    "version": {"const": "0.1.0-draft"},
+    "status": {"const": "draft"},
+    "owner_authority": {"const": "Engineering Authority"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "repository_binding": {"$ref": "#/$defs/repositoryBinding"},
+    "governing_artifacts": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/artifactBinding"}
+    },
+    "authority_source": {"$ref": "#/$defs/authoritySource"},
+    "technical_review": {"$ref": "#/$defs/technicalReview"},
+    "decision_requests": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/decisionRequest"}
+    },
+    "state": {"enum": ["DRAFT", "TECHNICAL_REVIEW", "PENDING_HUMAN_DECISIONS", "READY_FOR_FINAL_DISPOSITION", "DISPOSED", "WITHDRAWN", "EXPIRED", "SUPERSEDED"]},
+    "state_history": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/stateHistory"}
+    },
+    "effective_outcome": {"$ref": "#/$defs/effectiveOutcome"},
+    "non_authority_flags": {"$ref": "#/$defs/nonAuthorityFlags"},
+    "blockers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "repositoryBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commit_sha", "tree_sha", "branch", "repository_ref"],
+      "properties": {
+        "commit_sha": {"$ref": "#/$defs/sha"}, "tree_sha": {"$ref": "#/$defs/sha"},
+        "branch": {"type": "string", "minLength": 1}, "repository_ref": {"const": "bstBizEra/bopen"}
+      }
+    },
+    "artifactBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifact_id", "version", "status", "artifact_ref", "sha256"],
+      "properties": {
+        "artifact_id": {"type": "string", "minLength": 1}, "version": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1}, "artifact_ref": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authoritySource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["matrix_id", "artifact_ref", "version", "status", "sha256", "effective"],
+      "properties": {
+        "matrix_id": {"const": "PG-REG-AUTHORITY-001"}, "artifact_ref": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1}, "status": {"enum": ["draft", "approved"]},
+        "sha256": {"$ref": "#/$defs/sha256"}, "effective": {"type": "boolean"}
+      }
+    },
+    "actor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actor_kind", "identity_ref", "role", "registration_ref", "session_ref"],
+      "properties": {
+        "actor_kind": {"enum": ["HUMAN", "AGENT"]}, "identity_ref": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1}, "registration_ref": {"type": ["string", "null"]},
+        "session_ref": {"type": ["string", "null"]}
+      }
+    },
+    "technicalReview": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_commit_sha", "candidate_tree_sha", "maker", "checker", "independence_asserted", "verdict", "reviewed_at", "evidence_refs"],
+      "properties": {
+        "candidate_commit_sha": {"$ref": "#/$defs/sha"}, "candidate_tree_sha": {"$ref": "#/$defs/sha"},
+        "maker": {"$ref": "#/$defs/actor"}, "checker": {"oneOf": [{"$ref": "#/$defs/actor"}, {"type": "null"}]},
+        "independence_asserted": {"type": "boolean"},
+        "verdict": {"enum": ["PENDING", "ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"]},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "subject": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifact_id", "version", "artifact_ref", "sha256", "commit_sha", "tree_sha"],
+      "properties": {
+        "artifact_id": {"type": "string", "minLength": 1}, "version": {"type": "string", "minLength": 1},
+        "artifact_ref": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"},
+        "commit_sha": {"$ref": "#/$defs/sha"}, "tree_sha": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "authorityActor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actor_kind", "human_identity_ref", "authority_role", "authority_mode", "delegation_ref"],
+      "properties": {
+        "actor_kind": {"const": "HUMAN"}, "human_identity_ref": {"type": "string", "minLength": 1},
+        "authority_role": {"type": "string", "minLength": 1}, "authority_mode": {"enum": ["DIRECT", "DELEGATED"]},
+        "delegation_ref": {"type": ["string", "null"]}
+      }
+    },
+    "concurrence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_role", "required", "source_refs", "bound_commit_sha", "bound_tree_sha", "authority_actor", "disposition", "decided_at", "expires_at", "evidence_refs"],
+      "properties": {
+        "authority_role": {"type": "string", "minLength": 1}, "required": {"const": true},
+        "source_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "bound_commit_sha": {"$ref": "#/$defs/sha"}, "bound_tree_sha": {"$ref": "#/$defs/sha"},
+        "authority_actor": {"oneOf": [{"$ref": "#/$defs/authorityActor"}, {"type": "null"}]},
+        "disposition": {"enum": ["PENDING", "CONCUR", "NONCONCUR", "DEFER", "WITHDRAW", "EXPIRE"]},
+        "decided_at": {"type": ["string", "null"], "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "finalDisposition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "decided_at", "reason_code", "decision_ref", "evidence_refs", "effective"],
+      "properties": {
+        "value": {"enum": ["PENDING", "APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"]},
+        "decided_at": {"type": ["string", "null"], "format": "date-time"}, "reason_code": {"type": "string", "minLength": 1},
+        "decision_ref": {"type": ["string", "null"]},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "effective": {"type": "boolean"}
+      }
+    },
+    "decisionRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision_id", "action_id", "subject", "prepared_by", "checked_by", "accountable_authority_role", "final_decision_role", "final_authority_actor", "required_concurrences", "expires_at", "final_disposition"],
+      "properties": {
+        "decision_id": {"type": "string", "pattern": "^PG-G0-DEC-[0-9]{3}$"}, "action_id": {"type": "string", "minLength": 1},
+        "subject": {"$ref": "#/$defs/subject"}, "prepared_by": {"$ref": "#/$defs/actor"},
+        "checked_by": {"oneOf": [{"$ref": "#/$defs/actor"}, {"type": "null"}]},
+        "accountable_authority_role": {"type": "string", "minLength": 1}, "final_decision_role": {"type": "string", "minLength": 1},
+        "final_authority_actor": {"oneOf": [{"$ref": "#/$defs/authorityActor"}, {"type": "null"}]},
+        "required_concurrences": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/concurrence"}},
+        "expires_at": {"type": "string", "format": "date-time"}, "final_disposition": {"$ref": "#/$defs/finalDisposition"}
+      }
+    },
+    "stateHistory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sequence", "from", "to", "changed_at", "changed_by", "reason_code", "commit_sha", "tree_sha", "evidence_refs"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1}, "from": {"type": ["string", "null"]}, "to": {"type": "string", "minLength": 1},
+        "changed_at": {"type": "string", "format": "date-time"}, "changed_by": {"$ref": "#/$defs/actor"},
+        "reason_code": {"type": "string", "minLength": 1}, "commit_sha": {"$ref": "#/$defs/sha"}, "tree_sha": {"$ref": "#/$defs/sha"},
+        "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "effectiveOutcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["program_goal_approved", "governance_baseline_approved", "work_package_accepted", "evidence_accepted", "ready_for_pg_g0_gate_decision"],
+      "properties": {
+        "program_goal_approved": {"const": false}, "governance_baseline_approved": {"const": false},
+        "work_package_accepted": {"const": false}, "evidence_accepted": {"const": false},
+        "ready_for_pg_g0_gate_decision": {"const": false}
+      }
+    },
+    "nonAuthorityFlags": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pg_g0_passed", "production_implementation_authorized", "merge_authorized", "release_authorized", "runtime_activation_authorized", "module_certified", "skill_promoted"],
+      "properties": {
+        "pg_g0_passed": {"const": false}, "production_implementation_authorized": {"const": false},
+        "merge_authorized": {"const": false}, "release_authorized": {"const": false},
+        "runtime_activation_authorized": {"const": false}, "module_certified": {"const": false}, "skill_promoted": {"const": false}
+      }
+    }
+  },
+  "additionalProperties": false
+}

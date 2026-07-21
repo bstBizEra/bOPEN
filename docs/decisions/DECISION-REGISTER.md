@@ -12,3 +12,6 @@
 | DEC-0008 | Enforce protected working branches in private bGitea and use GitHub for stable reviewed publication | Approved | Engineering Authority |
 | DEC-0009 | Keep physical upstream clones and raw evidence in an approved external ephemeral workspace | Approved | bOPEN Architecture Authority |
 | DEC-0010 | Adopt Program Goal v0.2 and namespaced lifecycle model | Proposed | Product/Architecture Authorities |
+| DEC-0012 | Reconcile required instruction paths and generated manifests | Proposed | Product/Architecture/Engineering Authorities |
+
+DEC-0011 is reserved by the independent RES-G3 proposal branch and is intentionally not reused here.

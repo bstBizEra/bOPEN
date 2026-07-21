@@ -1,0 +1,233 @@
+"""Fail-closed tests for the proposed PG-G0 authority docket."""
+
+from __future__ import annotations
+
+import json
+import shutil
+import tempfile
+import unittest
+from datetime import datetime, timezone
+from pathlib import Path
+from unittest.mock import patch
+
+from tools.generate_document_manifest import build_manifest
+from tools.validate_pg_g0_authority_docket import (
+    AUTHORITY_MATRIX_PATH,
+    DOCKET_PATH,
+    ROOT,
+    SCHEMA_PATH,
+    build_readiness_report,
+    check_report,
+    format_report,
+    validate_pg_g0_authority_docket,
+)
+
+
+AS_OF = datetime(2026, 7, 22, 0, 0, 0, tzinfo=timezone.utc)
+EXPECTED_TREE = "f336976981c9b7e95c96ec8289589e53c1ac506c"
+
+
+class PgG0AuthorityDocketTests(unittest.TestCase):
+    def make_root(self, temporary: str) -> Path:
+        root = Path(temporary)
+        docket = json.loads((ROOT / DOCKET_PATH).read_text(encoding="utf-8"))
+        paths = {DOCKET_PATH, SCHEMA_PATH, AUTHORITY_MATRIX_PATH}
+        paths.update(Path(item["artifact_ref"]) for item in docket["governing_artifacts"])
+        for relative in paths:
+            target = root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / relative, target)
+        return root
+
+    @staticmethod
+    def load_docket(root: Path) -> dict:
+        return json.loads((root / DOCKET_PATH).read_text(encoding="utf-8"))
+
+    @staticmethod
+    def save_docket(root: Path, docket: dict) -> None:
+        (root / DOCKET_PATH).write_text(json.dumps(docket, indent=2) + "\n", encoding="utf-8")
+
+    def validate(self, root: Path) -> list[str]:
+        with patch("tools.validate_pg_g0_authority_docket.resolve_tree", return_value=EXPECTED_TREE):
+            return validate_pg_g0_authority_docket(root, AS_OF)
+
+    def test_repository_docket_is_valid_but_not_ready(self):
+        self.assertEqual(validate_pg_g0_authority_docket(ROOT, AS_OF), [])
+        report = build_readiness_report(ROOT, AS_OF)
+        self.assertEqual(report["status"], "NOT_READY")
+        self.assertFalse(report["ready_for_human_gate_decision"])
+        self.assertFalse(report["pg_g0_passed"])
+        self.assertFalse(report["production_implementation_authorized"])
+        self.assertGreaterEqual(len(report["blockers"]), 10)
+
+    def test_missing_docket_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            (root / DOCKET_PATH).unlink()
+            errors = self.validate(root)
+        self.assertIn("authority docket missing", errors)
+
+    def test_missing_or_duplicate_decision_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"] = docket["decision_requests"][:-1]
+            self.save_docket(root, docket)
+            missing_errors = self.validate(root)
+            docket["decision_requests"].append(docket["decision_requests"][0])
+            self.save_docket(root, docket)
+            duplicate_errors = self.validate(root)
+        self.assertTrue(any("decision set" in item for item in missing_errors))
+        self.assertTrue(any("decision set" in item for item in duplicate_errors))
+
+    def test_unknown_top_level_field_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["uncontrolled_approval"] = True
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("unknown fields" in item and "uncontrolled_approval" in item for item in errors))
+
+    def test_malformed_commit_and_wrong_tree_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["repository_binding"]["commit_sha"] = "not-a-sha"
+            self.save_docket(root, docket)
+            with patch(
+                "tools.validate_pg_g0_authority_docket.resolve_tree",
+                side_effect=lambda _root, commit: EXPECTED_TREE if len(commit) == 40 else None,
+            ):
+                malformed = validate_pg_g0_authority_docket(root, AS_OF)
+            docket = self.load_docket(root)
+            docket["repository_binding"]["commit_sha"] = "c893062c197e74c15214e5ce1c425b9e9ed8002f"
+            docket["repository_binding"]["tree_sha"] = "0" * 40
+            self.save_docket(root, docket)
+            wrong_tree = self.validate(root)
+        self.assertTrue(any("commit does not resolve" in item for item in malformed))
+        self.assertTrue(any("commit/tree mismatch" in item for item in wrong_tree))
+
+    def test_stale_artifact_hash_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            path = root / "docs/decisions/DEC-0010.md"
+            path.write_text(path.read_text(encoding="utf-8") + "\nstale mutation\n", encoding="utf-8")
+            errors = self.validate(root)
+        self.assertTrue(any("sha256 mismatch" in item and "DEC-0010" in item for item in errors))
+
+    def test_agent_cannot_be_final_human_authority(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            decision = docket["decision_requests"][0]
+            decision["final_authority_actor"] = {
+                "actor_kind": "AGENT",
+                "human_identity_ref": "AGT-ARCHI",
+                "authority_role": "Architecture Authority",
+                "authority_mode": "DIRECT",
+                "delegation_ref": None,
+            }
+            decision["checked_by"] = decision["prepared_by"]
+            decision["final_disposition"] = {
+                "value": "APPROVE", "decided_at": "2026-07-22T00:00:00Z",
+                "reason_code": "AGENT_SELF_APPROVAL", "decision_ref": "invalid",
+                "evidence_refs": ["invalid"], "effective": True,
+            }
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("final authority must be human" in item for item in errors))
+        self.assertTrue(any("draft authority source" in item for item in errors))
+
+    def test_pending_decision_cannot_claim_effect(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][1]["final_disposition"]["effective"] = True
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("pending disposition claims effect" in item for item in errors))
+
+    def test_pending_concurrence_cannot_claim_actor(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            concurrence = docket["decision_requests"][0]["required_concurrences"][0]
+            concurrence["authority_actor"] = {
+                "actor_kind": "HUMAN", "human_identity_ref": "human:example",
+                "authority_role": "Security Authority", "authority_mode": "DIRECT", "delegation_ref": None,
+            }
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("pending Security Authority concurrence claims authority" in item for item in errors))
+
+    def test_self_reviewed_technical_acceptance_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            review = docket["technical_review"]
+            review["checker"] = review["maker"]
+            review["verdict"] = "ACCEPT_EXACT_SHA"
+            review["independence_asserted"] = True
+            review["reviewed_at"] = "2026-07-21T20:30:00+07:00"
+            review["evidence_refs"] = ["docs/evidence/EVD-GOV-001-program-g0-controls.md"]
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("maker and checker must differ" in item for item in errors))
+
+    def test_expired_docket_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            with patch("tools.validate_pg_g0_authority_docket.resolve_tree", return_value=EXPECTED_TREE):
+                errors = validate_pg_g0_authority_docket(
+                    root, datetime(2026, 8, 22, tzinfo=timezone.utc)
+                )
+        self.assertIn("authority docket expired", errors)
+
+    def test_missing_instruction_surface_must_be_disclosed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["blockers"] = [item.replace("Roadmap.md", "roadmap") for item in docket["blockers"]]
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertIn("missing controlled path must be disclosed: Roadmap.md", errors)
+
+    def test_non_authority_flags_must_all_remain_false(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["non_authority_flags"]["production_implementation_authorized"] = True
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertIn("draft authority docket cannot grant authority", errors)
+
+    def test_report_integrity_detects_missing_and_stale_output(self):
+        expected = format_report(build_readiness_report(ROOT, AS_OF))
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "report.json"
+            self.assertTrue(any("missing" in item for item in check_report(path, expected)))
+            path.write_text("{}\n", encoding="utf-8")
+            self.assertTrue(any("stale" in item for item in check_report(path, expected)))
+            path.write_text(expected, encoding="utf-8")
+            self.assertEqual(check_report(path, expected), [])
+
+    def test_committed_readiness_report_is_current(self):
+        expected = format_report(build_readiness_report(ROOT))
+        report_path = ROOT / "artifacts/validation/program-g0-authority-readiness.json"
+        self.assertEqual(check_report(report_path, expected), [])
+
+    def test_versioned_manifest_excludes_canonical_and_its_own_output(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "docs/manifests").mkdir(parents=True)
+            (root / "docs/example.md").write_text("# Example\n", encoding="utf-8")
+            (root / "docs/DOCUMENT-MANIFEST.json").write_text("{}\n", encoding="utf-8")
+            output = Path("docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json")
+            (root / output).write_text("{}\n", encoding="utf-8")
+            manifest = build_manifest(output, root)
+        self.assertEqual([item["path"] for item in manifest["documents"]], ["docs/example.md"])
+
+
+if __name__ == "__main__":
+    unittest.main()

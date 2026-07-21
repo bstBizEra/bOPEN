@@ -15,3 +15,10 @@
 | BOPEN-SEC-001 | Draft shell | No | Threat model and security baseline |
 | BOPEN-GOAL-001 | Draft v0.2 controlled intake | No | Product/Architecture review through DEC-0010 |
 | BOPEN-GOV-001 | Draft program-control baseline | No | Engineering/Product/Architecture review; PG-G0 remains NOT_READY |
+| PG-G0-AUTH-001 | Draft authority docket; all decision requests pending | No | Human Engineering acceptance of GOV-P0-02, then attributable authority routing |
+| PG-G0-GATE-001 | Draft gate-decision contract; ineffective | No | Approved successor authority matrix must name governance/register/gate actions |
+| DEC-0012 | Proposed instruction-surface and manifest decision | No | Product/Architecture/Engineering disposition with applicable Security/Data concurrence |
+
+## Instruction-surface reconciliation note — 2026-07-21
+
+Reason: replacement instructions require five exact root control paths that do not exist at the bound base. Benefit of the old phase: the existing `docs/` hierarchy preserves stable bootstrap IDs and Git evidence. Expected outcome: DEC-0012 designates approved equivalents or authorizes exact-path creation. Until then, alignment remains `UNRESOLVED`, not passed.

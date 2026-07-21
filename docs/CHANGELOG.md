@@ -114,3 +114,11 @@
 ## 2026-07-12 — v1.0
 
 - Created BOPEN-BOOT-001 full AGENTS.md and documentation bootstrap pack.
+
+## Append-only entry — 2026-07-21 — GOV-P0-02 authority-docket proposal
+
+- Added a draft exact-bound PG-G0 authority docket using only actions present in the live draft authority matrix.
+- Added fail-closed human-identity, concurrence, Git/tree, artifact-hash, expiry and non-authority validation.
+- Proposed DEC-0012 for five missing root instruction paths and generated-manifest handling.
+- Preserved missing governance/register/gate actions, technology checker dates and every human disposition as blockers.
+- Kept PG-G0 NOT_READY and production implementation unauthorized.

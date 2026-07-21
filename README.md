@@ -62,3 +62,7 @@ PLATFORM
 ## License status
 
 No open-source license is granted by this bootstrap pack. See [`LICENSE`](LICENSE) and [`docs/00-governance/license-strategy.md`](docs/00-governance/license-strategy.md).
+
+## PG-G0 authority-docket proposal
+
+[`GOV-P0-02`](docs/work-packages/GOV-P0-02.md) and [`PG-G0-AUTH-001`](docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md) are proposal-only controls. They expose pending human decisions and missing authority actions; they do not accept a work package, pass PG-G0, authorize merge/runtime/release, or open production implementation.

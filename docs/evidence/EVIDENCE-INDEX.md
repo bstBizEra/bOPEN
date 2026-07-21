@@ -17,3 +17,8 @@
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |
 | EVD-RES-002 | RES-P0-01/02/03 | R0 workspace, provenance, license and two-operator reproduction | `docs/evidence/EVD-RES-002-r0-control-establishment.md` | G0-G2 pass with conditions |
 | EVD-GOV-001 | GOV-P0-01 | Program Goal v0.2 source-completeness, draft registers and fail-closed PG-G0 readiness | `docs/evidence/EVD-GOV-001-program-g0-controls.md` | Draft; checker pending; PG-G0 NOT_READY |
+| EVD-GOV-002 | GOV-P0-02 | Draft human-authority docket, exact bindings and fail-closed negative tests | `docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md` | Draft maker evidence; exact-SHA checker and human acceptance pending |
+
+## Append-only EVD-GOV-001 status supersession — 2026-07-21
+
+Reason: the original index row preserves its pre-review checker-pending state. Benefit of the old phase: it accurately recorded the first indexed state. Expected outcome: this appended note records that exact-SHA technical checks exist through GOV-P0-01 head `c893062c197e74c15214e5ce1c425b9e9ed8002f`, while Human Engineering, Product and Architecture dispositions and PG-G0 remain pending. The historical row is not rewritten.

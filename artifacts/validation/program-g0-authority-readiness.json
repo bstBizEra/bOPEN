@@ -1,0 +1,27 @@
+{
+  "blockers": [
+    "BOPEN-GOV-001 and the authority matrix are draft and ineffective",
+    "DEC-0004, DEC-0005, ADR-0005 and ADR-0009 lack named checkers and due dates",
+    "GOV-P0-01 and DEC-0010 remain proposed and BOOT-B7 remains pending",
+    "PG-G0-DEC-001 remains ineffective",
+    "PG-G0-DEC-002 remains ineffective",
+    "PG-G0-DEC-003 remains ineffective",
+    "PG-G0-DEC-004 remains ineffective",
+    "PG-G0-DEC-005 remains ineffective",
+    "Roadmap.md, Master_Standards.md, Progress_Log.md, Backlog.md and Recap_Today.md are absent and no equivalents are approved",
+    "attributable Product, Architecture, Security, Data and Engineering human authority identities are absent",
+    "authority source is not effective",
+    "exact-SHA technical review is not accepted",
+    "technical review of this exact docket candidate is pending",
+    "the authority matrix has no action for approving BOPEN-GOV-001",
+    "the authority matrix has no action for approving the seven program registers",
+    "the authority matrix has no action for passing PG-G0",
+    "the prose and machine authority sources conflict on ACCEPT_WORK_ITEM concurrence"
+  ],
+  "docket_id": "PG-G0-AUTH-001",
+  "pg_g0_passed": false,
+  "production_implementation_authorized": false,
+  "ready_for_human_gate_decision": false,
+  "status": "NOT_READY",
+  "validation_errors": []
+}

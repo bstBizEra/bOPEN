@@ -17,3 +17,4 @@
 | RES-P0-01/02/03 | Research R0 control establishment | Execution complete; G0-G2 pass with conditions | Establish isolated workspaces, verify provenance/license integrity and reproduce the pinned baseline twice. |
 | GOV-P0-01 | Program Goal v0.2 controlled baseline and G0 measurement contract | Proposed; draft work only | Create a complete, fail-closed review candidate without passing PG-G0 or authorizing runtime implementation. |
 | BOOT-P0-12 | Bootstrap exit gate | Authority review pending | Review B0–B7 and approve next execution phase. |
+| GOV-P0-02 | PG-G0 authority docket and approval envelope | Proposed; not accepted | Route only live mapped human decisions, expose missing authority actions and keep PG-G0 NOT_READY. |

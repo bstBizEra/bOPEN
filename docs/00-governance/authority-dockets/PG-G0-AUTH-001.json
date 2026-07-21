@@ -1,0 +1,160 @@
+{
+  "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.1.0-draft",
+  "docket_id": "PG-G0-AUTH-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Engineering Authority",
+  "updated_at": "2026-07-21T20:25:00+07:00",
+  "expires_at": "2026-08-21T00:00:00+07:00",
+  "repository_binding": {
+    "commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
+    "tree_sha": "f336976981c9b7e95c96ec8289589e53c1ac506c",
+    "branch": "codex/GOV-P0-01-program-goal-v02",
+    "repository_ref": "bstBizEra/bopen"
+  },
+  "governing_artifacts": [
+    {"artifact_id":"BOPEN-GOV-001","version":"0.1","status":"Draft","artifact_ref":"docs/00-governance/BOPEN-GOV-001-DRAFT.md","sha256":"53f13da99eda57f7c6c9cd817f40666287c6dd774805d26f666f96648a1f422e"},
+    {"artifact_id":"BOPEN-GOAL-001","version":"0.2","status":"Draft","artifact_ref":"docs/01-product/BOPEN-GOAL-001-DRAFT.md","sha256":"31cd060b393c77e637e7e841280d87c0e9d358f616950c1745e70a1303a0857c"},
+    {"artifact_id":"DEC-0010","version":"0.1","status":"Proposed","artifact_ref":"docs/decisions/DEC-0010.md","sha256":"0df762a9dcafd3580c24662ca851507853a00f869eb86ef09e4950067ae205cd"},
+    {"artifact_id":"GOV-P0-01","version":"0.1","status":"Proposed","artifact_ref":"docs/work-packages/GOV-P0-01.md","sha256":"9c1f69b16e5dc48969f5ea88288114da4f78fe39816ef9d91d05d62a4a65eaf6"},
+    {"artifact_id":"EVD-GOV-001","version":"0.1","status":"Draft","artifact_ref":"docs/evidence/EVD-GOV-001-program-g0-controls.md","sha256":"29c965c3a629449e7722ecdad15cbafb2beed6ec6693e7a40d747a17d1adff8f"},
+    {"artifact_id":"DEC-0007","version":"0.1","status":"Proposed","artifact_ref":"docs/decisions/DEC-0007.md","sha256":"105dc30d8c5c013d90d91964efa5bf32e9da1e0d11199c800d1d248c2a2c1f6c"}
+  ],
+  "authority_source": {
+    "matrix_id": "PG-REG-AUTHORITY-001",
+    "artifact_ref": "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+    "version": "0.1.0-draft",
+    "status": "draft",
+    "sha256": "96336276e061512878140727111d1eb37c5db0b42a52e021b1112a2f4bbe40ab",
+    "effective": false
+  },
+  "technical_review": {
+    "candidate_commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
+    "candidate_tree_sha": "f336976981c9b7e95c96ec8289589e53c1ac506c",
+    "maker": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-01 maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+    "checker": null,
+    "independence_asserted": false,
+    "verdict": "PENDING",
+    "reviewed_at": null,
+    "evidence_refs": []
+  },
+  "decision_requests": [
+    {
+      "decision_id": "PG-G0-DEC-001",
+      "action_id": "APPROVE_ARCHITECTURE",
+      "subject": {"artifact_id":"DEC-0007","version":"0.1","artifact_ref":"docs/decisions/DEC-0007.md","sha256":"105dc30d8c5c013d90d91964efa5bf32e9da1e0d11199c800d1d248c2a2c1f6c","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+      "checked_by": null,
+      "accountable_authority_role": "Architecture Authority",
+      "final_decision_role": "Architecture Authority",
+      "final_authority_actor": null,
+      "required_concurrences": [
+        {"authority_role":"Security Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
+        {"authority_role":"Data Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]}
+      ],
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY","decision_ref":null,"evidence_refs":[],"effective":false}
+    },
+    {
+      "decision_id": "PG-G0-DEC-002",
+      "action_id": "ACCEPT_WORK_ITEM",
+      "subject": {"artifact_id":"GOV-P0-01","version":"0.1","artifact_ref":"docs/work-packages/GOV-P0-01.md","sha256":"9c1f69b16e5dc48969f5ea88288114da4f78fe39816ef9d91d05d62a4a65eaf6","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+      "checked_by": null,
+      "accountable_authority_role": "Engineering Authority",
+      "final_decision_role": "Engineering Authority",
+      "final_authority_actor": null,
+      "required_concurrences": [],
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY_AND_CONCURRENCE_RULE_RECONCILIATION","decision_ref":null,"evidence_refs":[],"effective":false}
+    },
+    {
+      "decision_id": "PG-G0-DEC-003",
+      "action_id": "APPROVE_ARCHITECTURE",
+      "subject": {"artifact_id":"DEC-0010","version":"0.1","artifact_ref":"docs/decisions/DEC-0010.md","sha256":"0df762a9dcafd3580c24662ca851507853a00f869eb86ef09e4950067ae205cd","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Requirements Agent","registration_ref":null,"session_ref":null},
+      "checked_by": null,
+      "accountable_authority_role": "Architecture Authority",
+      "final_decision_role": "Architecture Authority",
+      "final_authority_actor": null,
+      "required_concurrences": [
+        {"authority_role":"Security Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json","docs/decisions/DEC-0010.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
+        {"authority_role":"Data Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json","docs/decisions/DEC-0010.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]}
+      ],
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY","decision_ref":null,"evidence_refs":[],"effective":false}
+    },
+    {
+      "decision_id": "PG-G0-DEC-004",
+      "action_id": "APPROVE_GOAL",
+      "subject": {"artifact_id":"BOPEN-GOAL-001","version":"0.2","artifact_ref":"docs/01-product/BOPEN-GOAL-001-DRAFT.md","sha256":"31cd060b393c77e637e7e841280d87c0e9d358f616950c1745e70a1303a0857c","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Requirements Agent","registration_ref":null,"session_ref":null},
+      "checked_by": null,
+      "accountable_authority_role": "Product Authority",
+      "final_decision_role": "Product Authority",
+      "final_authority_actor": null,
+      "required_concurrences": [
+        {"authority_role":"Architecture Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json","docs/00-governance/BOPEN-GOV-001-DRAFT.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
+        {"authority_role":"Security Authority","required":true,"source_refs":["docs/01-product/BOPEN-GOAL-001-DRAFT.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
+        {"authority_role":"Data Authority","required":true,"source_refs":["docs/01-product/BOPEN-GOAL-001-DRAFT.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]}
+      ],
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY","decision_ref":null,"evidence_refs":[],"effective":false}
+    },
+    {
+      "decision_id": "PG-G0-DEC-005",
+      "action_id": "ACCEPT_EVIDENCE",
+      "subject": {"artifact_id":"EVD-GOV-001","version":"0.1","artifact_ref":"docs/evidence/EVD-GOV-001-program-g0-controls.md","sha256":"29c965c3a629449e7722ecdad15cbafb2beed6ec6693e7a40d747a17d1adff8f","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"QA & Evidence Agent","registration_ref":null,"session_ref":null},
+      "checked_by": null,
+      "accountable_authority_role": "Engineering Authority",
+      "final_decision_role": "Engineering Authority",
+      "final_authority_actor": null,
+      "required_concurrences": [],
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY","decision_ref":null,"evidence_refs":[],"effective":false}
+    }
+  ],
+  "state": "DRAFT",
+  "state_history": [
+    {
+      "sequence": 1,
+      "from": null,
+      "to": "DRAFT",
+      "changed_at": "2026-07-21T20:25:00+07:00",
+      "changed_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+      "reason_code": "PROPOSAL_CREATED_WITHOUT_AUTHORITY_EFFECT",
+      "commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
+      "tree_sha": "f336976981c9b7e95c96ec8289589e53c1ac506c",
+      "evidence_refs": ["docs/evidence/EVD-GOV-001-program-g0-controls.md"]
+    }
+  ],
+  "effective_outcome": {
+    "program_goal_approved": false,
+    "governance_baseline_approved": false,
+    "work_package_accepted": false,
+    "evidence_accepted": false,
+    "ready_for_pg_g0_gate_decision": false
+  },
+  "non_authority_flags": {
+    "pg_g0_passed": false,
+    "production_implementation_authorized": false,
+    "merge_authorized": false,
+    "release_authorized": false,
+    "runtime_activation_authorized": false,
+    "module_certified": false,
+    "skill_promoted": false
+  },
+  "blockers": [
+    "BOPEN-GOV-001 and the authority matrix are draft and ineffective",
+    "technical review of this exact docket candidate is pending",
+    "attributable Product, Architecture, Security, Data and Engineering human authority identities are absent",
+    "the authority matrix has no action for approving BOPEN-GOV-001",
+    "the authority matrix has no action for approving the seven program registers",
+    "the authority matrix has no action for passing PG-G0",
+    "DEC-0004, DEC-0005, ADR-0005 and ADR-0009 lack named checkers and due dates",
+    "Roadmap.md, Master_Standards.md, Progress_Log.md, Backlog.md and Recap_Today.md are absent and no equivalents are approved",
+    "GOV-P0-01 and DEC-0010 remain proposed and BOOT-B7 remains pending",
+    "the prose and machine authority sources conflict on ACCEPT_WORK_ITEM concurrence"
+  ]
+}

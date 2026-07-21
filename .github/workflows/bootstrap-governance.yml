@@ -24,6 +24,10 @@ jobs:
         run: python tools/validate_program_controls.py
       - name: Verify deterministic Program G0 readiness report
         run: python tools/report_program_g0.py --check
+      - name: Verify draft PG-G0 authority docket and report
+        run: python tools/validate_pg_g0_authority_docket.py --check
+      - name: Verify GOV-P0-02 versioned document manifest
+        run: python tools/generate_document_manifest.py --output docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json --check
       - name: Validate clean-room boundary
         run: python tools/check_clean_room.py
       - name: Scan repository for secrets

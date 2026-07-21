@@ -27,3 +27,6 @@
 | GOAL-PG-G0 Program governance bootstrap | BOPEN-GOAL-001/BOPEN-GOV-001 | program-control registers/report_program_g0.py | GOV-P0-01 | EVD-GOV-001 | NOT_READY |
 | GOAL-PG-P0..P4/C0 Program lifecycle gates | BOPEN-GOAL-001 | program-lifecycle-crosswalk/DEC-0010 | GOV-P0-01 and future accepted packages | Future independent evidence | NOT_READY |
 | GOAL-MR-01..08 Measurement integrity rules | BOPEN-GOAL-001/BOPEN-GOV-001 | program-control validator | GOV-P0-01 | EVD-GOV-001 | Draft controls |
+| REQ-GOV-003 Attributable human approval envelopes | BOPEN-GOV-001 Draft | pg-g0-authority-docket schema/validator | GOV-P0-02 Proposed | EVD-GOV-002 | Draft; all human decisions pending |
+| REQ-GOV-004 Exact instruction-path authority | DEC-0012 Proposed | PG-G0 authority docket blockers | GOV-P0-02 Proposed | EVD-GOV-002 | UNRESOLVED; no equivalence inferred |
+| GOAL-PG-G0 Human authority routing | BOPEN-GOAL-001/BOPEN-GOV-001 Drafts | PG-G0-AUTH-001/PG-G0-GATE-001 Drafts | GOV-P0-02 Proposed | EVD-GOV-002 | NOT_READY; no gate action in effective matrix |
