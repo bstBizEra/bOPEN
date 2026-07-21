@@ -4,7 +4,7 @@
   "version": "0.1.0-draft",
   "status": "draft",
   "owner_authority": "Engineering Authority",
-  "updated_at": "2026-07-21T20:25:00+07:00",
+  "updated_at": "2026-07-21T20:45:00+07:00",
   "expires_at": "2026-08-21T00:00:00+07:00",
   "repository_binding": {
     "commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
@@ -29,9 +29,9 @@
     "effective": false
   },
   "technical_review": {
-    "candidate_commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
-    "candidate_tree_sha": "f336976981c9b7e95c96ec8289589e53c1ac506c",
-    "maker": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-01 maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+    "candidate_commit_sha": null,
+    "candidate_tree_sha": null,
+    "maker": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
     "checker": null,
     "independence_asserted": false,
     "verdict": "PENDING",
@@ -43,7 +43,7 @@
       "decision_id": "PG-G0-DEC-001",
       "action_id": "APPROVE_ARCHITECTURE",
       "subject": {"artifact_id":"DEC-0007","version":"0.1","artifact_ref":"docs/decisions/DEC-0007.md","sha256":"105dc30d8c5c013d90d91964efa5bf32e9da1e0d11199c800d1d248c2a2c1f6c","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
-      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Orchestrator Agent","registration_ref":null,"session_ref":null},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Architecture Agent","registration_ref":null,"session_ref":null},
       "checked_by": null,
       "accountable_authority_role": "Architecture Authority",
       "final_decision_role": "Architecture Authority",
@@ -64,7 +64,9 @@
       "accountable_authority_role": "Engineering Authority",
       "final_decision_role": "Engineering Authority",
       "final_authority_actor": null,
-      "required_concurrences": [],
+      "required_concurrences": [
+        {"authority_role":"Product Authority","required":true,"source_refs":["docs/00-governance/BOPEN-GOV-001-DRAFT.md","docs/work-packages/GOV-P0-01.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]}
+      ],
       "expires_at": "2026-08-21T00:00:00+07:00",
       "final_disposition": {"value":"PENDING","decided_at":null,"reason_code":"PENDING_HUMAN_AUTHORITY_AND_CONCURRENCE_RULE_RECONCILIATION","decision_ref":null,"evidence_refs":[],"effective":false}
     },
@@ -72,12 +74,13 @@
       "decision_id": "PG-G0-DEC-003",
       "action_id": "APPROVE_ARCHITECTURE",
       "subject": {"artifact_id":"DEC-0010","version":"0.1","artifact_ref":"docs/decisions/DEC-0010.md","sha256":"0df762a9dcafd3580c24662ca851507853a00f869eb86ef09e4950067ae205cd","commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c"},
-      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Requirements Agent","registration_ref":null,"session_ref":null},
+      "prepared_by": {"actor_kind":"AGENT","identity_ref":"Codex root GOV-P0-02 proposal maker","role":"Architecture Agent","registration_ref":null,"session_ref":null},
       "checked_by": null,
       "accountable_authority_role": "Architecture Authority",
       "final_decision_role": "Architecture Authority",
       "final_authority_actor": null,
       "required_concurrences": [
+        {"authority_role":"Product Authority","required":true,"source_refs":["docs/00-governance/BOPEN-GOV-001-DRAFT.md","docs/decisions/DEC-0010.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
         {"authority_role":"Security Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json","docs/decisions/DEC-0010.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]},
         {"authority_role":"Data Authority","required":true,"source_refs":["docs/00-governance/registers/AUTHORITY-MATRIX.json","docs/decisions/DEC-0010.md"],"bound_commit_sha":"c893062c197e74c15214e5ce1c425b9e9ed8002f","bound_tree_sha":"f336976981c9b7e95c96ec8289589e53c1ac506c","authority_actor":null,"disposition":"PENDING","decided_at":null,"expires_at":null,"evidence_refs":[]}
       ],

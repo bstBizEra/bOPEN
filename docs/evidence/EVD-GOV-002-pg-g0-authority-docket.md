@@ -46,3 +46,27 @@ No credentials, personal identity values, production data, upstream source, runt
 ## Independent verdict
 
 Pending exact maker SHA. Technical acceptance cannot approve GOV-P0-02, any authority request, PG-G0, merge, release, runtime or production implementation.
+
+## Append-only documentation-review rework note — 2026-07-21
+
+Reason: exact-SHA documentation review requested explicit declaration of three changed support paths and an instruction-precedence constraint on DEC-0012 option 3. Benefit of the old phase: the first maker candidate already preserved missing paths, pending authorities and all non-authority flags fail closed. Expected outcome: the successor maker candidate states its exact documentation-support scope and confirms that only a new explicit user-level instruction can amend the replacement instructions.
+
+This note records pending rework only. It does not change the maker check counts above, supply a checker verdict, accept GOV-P0-02, resolve DEC-0012 or change any gate or implementation authority.
+
+## Append-only hardened-maker verification note — 2026-07-21
+
+Reason: the three exact-SHA reviewers identified bypasses in nested-field enforcement, commit-bound artifact verification, actor separation, terminal dispositions, chronology, expiry, concurrence handling and state transitions. Benefit of the old phase: the initial 16-test baseline proved the draft docket remained structurally `NOT_READY` and exposed the precise adversarial gaps without granting authority. Expected outcome: the successor maker candidate rejects those probes while preserving every authority and production flag as false.
+
+Successor maker checks:
+
+- dedicated authority-docket suite: 26/26 passed;
+- full suite: 129/129 passed;
+- repository validator: PASS, 27 mandatory paths/invariants;
+- contract validator: PASS, 18 machine-readable contracts;
+- program-control validator: PASS, seven draft registers;
+- deterministic Program G0 and authority-docket reports: current;
+- versioned manifest: current, 257 records;
+- clean-room, secret and supply-chain checks: PASS;
+- `git diff --check`: PASS.
+
+These are maker results only. Independent acceptance must bind a successor exact commit and tree; this note does not accept GOV-P0-02, approve any decision, pass PG-G0, authorize merge, or authorize runtime or production implementation.

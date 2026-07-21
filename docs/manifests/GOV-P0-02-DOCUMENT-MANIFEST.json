@@ -34,8 +34,8 @@
       "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
       "title": "",
       "status": "",
-      "sha256": "0d5ab1a62685cd1954436de83ab003a853dd43c6e91faacf66dbf9763777ed89",
-      "bytes": 12061
+      "sha256": "f9700019fbbc5f04ae9a174d10b48ccac493ad6a4a8b1fc0b0b57b0ed2d040dd",
+      "bytes": 12759
     },
     {
       "path": "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
@@ -1028,8 +1028,8 @@
       "path": "docs/decisions/DEC-0012.md",
       "title": "DEC-0012 \u2014 Reconcile Required Instruction Paths and Generated Manifests",
       "status": "Proposed",
-      "sha256": "9bbbb209bc267ab8490509f6befeb7d6a5616d6897023d1d351462b03beeedde",
-      "bytes": 1840
+      "sha256": "1ae2ab7caac542269ee65a648b868273315e379912612e5cf9f988d623e45a2a",
+      "bytes": 2598
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1133,8 +1133,8 @@
       "path": "docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md",
       "title": "EVD-GOV-002 \u2014 PG-G0 Authority Docket Technical Evidence",
       "status": "Draft maker evidence; exact-SHA review pending",
-      "sha256": "165842c33b26801fea80ca21dca7f416930f2be24057bee0f652f20106deed40",
-      "bytes": 2454
+      "sha256": "9675876329de848fb2ac4b7b2d55da0780015a709bb673c749cabf660ba05d49",
+      "bytes": 4540
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
@@ -1791,8 +1791,8 @@
       "path": "docs/work-packages/GOV-P0-02.md",
       "title": "GOV-P0-02 \u2014 PG-G0 Authority Docket and Approval Envelope",
       "status": "Proposed; not accepted",
-      "sha256": "7454d7bdb5cef3ebda8813b5a7573eacadd9445f8aa2db5c9786a6af931d84d4",
-      "bytes": 4968
+      "sha256": "2f614ce7b6f16ea0669155465b792f89bbb7fb46d5f857f4d8fda61f2aa2bf19",
+      "bytes": 5982
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

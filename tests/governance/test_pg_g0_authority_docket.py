@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import shutil
 import tempfile
 import unittest
@@ -47,8 +48,33 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
     def save_docket(root: Path, docket: dict) -> None:
         (root / DOCKET_PATH).write_text(json.dumps(docket, indent=2) + "\n", encoding="utf-8")
 
+    @staticmethod
+    def authority_actor(identity: str, role: str, *, kind: str = "HUMAN") -> dict:
+        return {
+            "actor_kind": kind,
+            "human_identity_ref": identity,
+            "identity_provider": "gitea",
+            "identity_subject": identity,
+            "authority_role": role,
+            "role_binding_ref": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
+            "authority_mode": "DIRECT",
+            "delegation_ref": None,
+            "delegation_binding": None,
+        }
+
     def validate(self, root: Path) -> list[str]:
-        with patch("tools.validate_pg_g0_authority_docket.resolve_tree", return_value=EXPECTED_TREE):
+        def committed_file(_root: Path, _commit: str, relative: str):
+            source = ROOT / relative
+            return source.read_bytes() if source.is_file() else None
+
+        with (
+            patch("tools.validate_pg_g0_authority_docket.resolve_tree", return_value=EXPECTED_TREE),
+            patch("tools.validate_pg_g0_authority_docket.resolve_head", return_value="f" * 40),
+            patch("tools.validate_pg_g0_authority_docket.is_ancestor", return_value=True),
+            patch("tools.validate_pg_g0_authority_docket.read_file_at_commit", side_effect=committed_file),
+            patch("tools.validate_pg_g0_authority_docket.is_tracked_path", side_effect=lambda test_root, relative: (test_root / relative).is_file()),
+            patch("tools.validate_pg_g0_authority_docket.commit_datetime", return_value=datetime(2026, 7, 21, 0, 0, tzinfo=timezone.utc)),
+        ):
             return validate_pg_g0_authority_docket(root, AS_OF)
 
     def test_repository_docket_is_valid_but_not_ready(self):
@@ -87,7 +113,16 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             docket["uncontrolled_approval"] = True
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertTrue(any("unknown fields" in item and "uncontrolled_approval" in item for item in errors))
+        self.assertTrue(any("unknown field" in item and "uncontrolled_approval" in item for item in errors))
+
+    def test_unknown_nested_decision_field_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][0]["uncontrolled_approval"] = True
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("unknown field" in item and "uncontrolled_approval" in item for item in errors))
 
     def test_malformed_commit_and_wrong_tree_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -114,7 +149,34 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             path = root / "docs/decisions/DEC-0010.md"
             path.write_text(path.read_text(encoding="utf-8") + "\nstale mutation\n", encoding="utf-8")
             errors = self.validate(root)
-        self.assertTrue(any("sha256 mismatch" in item and "DEC-0010" in item for item in errors))
+        self.assertTrue(any("artifact drift" in item and "DEC-0010" in item for item in errors))
+
+    def test_post_bound_mutation_cannot_be_hidden_by_rewriting_docket_hashes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            target = root / "docs/decisions/DEC-0010.md"
+            target.write_text(target.read_text(encoding="utf-8") + "\npost-bound mutation\n", encoding="utf-8")
+            digest = hashlib.sha256(target.read_bytes()).hexdigest()
+            docket = self.load_docket(root)
+            for artifact in docket["governing_artifacts"]:
+                if artifact["artifact_id"] == "DEC-0010":
+                    artifact["sha256"] = digest
+            for decision in docket["decision_requests"]:
+                if decision["subject"]["artifact_id"] == "DEC-0010":
+                    decision["subject"]["sha256"] = digest
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("bound commit sha256 mismatch" in item and "DEC-0010" in item for item in errors))
+
+    def test_subject_must_match_exact_governing_artifact_map(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][2]["subject"]["artifact_ref"] = "docs/decisions/DEC-0007.md"
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("subject artifact/path mismatch" in item for item in errors))
+        self.assertTrue(any("exactly match governing artifact" in item for item in errors))
 
     def test_agent_cannot_be_final_human_authority(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -124,9 +186,13 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             decision["final_authority_actor"] = {
                 "actor_kind": "AGENT",
                 "human_identity_ref": "AGT-ARCHI",
+                "identity_provider": "gitea",
+                "identity_subject": "AGT-ARCHI",
                 "authority_role": "Architecture Authority",
+                "role_binding_ref": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
                 "authority_mode": "DIRECT",
                 "delegation_ref": None,
+                "delegation_binding": None,
             }
             decision["checked_by"] = decision["prepared_by"]
             decision["final_disposition"] = {
@@ -167,6 +233,8 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             docket = self.load_docket(root)
             review = docket["technical_review"]
             review["checker"] = review["maker"]
+            review["candidate_commit_sha"] = docket["repository_binding"]["commit_sha"]
+            review["candidate_tree_sha"] = docket["repository_binding"]["tree_sha"]
             review["verdict"] = "ACCEPT_EXACT_SHA"
             review["independence_asserted"] = True
             review["reviewed_at"] = "2026-07-21T20:30:00+07:00"
@@ -174,6 +242,119 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertTrue(any("maker and checker must differ" in item for item in errors))
+
+    def test_normalized_technical_identities_cannot_bypass_self_review(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            review = docket["technical_review"]
+            review["maker"]["identity_ref"] = "  Same   Agent "
+            review["checker"] = {
+                **review["maker"],
+                "identity_ref": "same agent",
+            }
+            review["candidate_commit_sha"] = docket["repository_binding"]["commit_sha"]
+            review["candidate_tree_sha"] = docket["repository_binding"]["tree_sha"]
+            review["verdict"] = "ACCEPT_EXACT_SHA"
+            review["independence_asserted"] = True
+            review["reviewed_at"] = "2026-07-21T20:30:00+07:00"
+            review["evidence_refs"] = ["docs/evidence/EVD-GOV-001-program-g0-controls.md"]
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("maker and checker must differ" in item for item in errors))
+
+    def test_future_review_and_missing_evidence_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            review = docket["technical_review"]
+            review["candidate_commit_sha"] = docket["repository_binding"]["commit_sha"]
+            review["candidate_tree_sha"] = docket["repository_binding"]["tree_sha"]
+            review["checker"] = {
+                "actor_kind": "AGENT", "identity_ref": "independent-checker",
+                "role": "QA & Evidence Agent", "registration_ref": None, "session_ref": None,
+            }
+            review["verdict"] = "ACCEPT_EXACT_SHA"
+            review["independence_asserted"] = True
+            review["reviewed_at"] = "2027-07-22T00:00:00Z"
+            review["evidence_refs"] = ["does/not/exist.md"]
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("reviewed_at chronology invalid" in item for item in errors))
+        self.assertTrue(any("evidence missing" in item for item in errors))
+
+    def test_expired_decision_request_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][0]["expires_at"] = "2026-07-21T12:00:00Z"
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("PG-G0-DEC-001 expired" in item for item in errors))
+
+    def test_terminal_reject_still_requires_human_independence_and_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            decision = docket["decision_requests"][1]
+            decision["checked_by"] = decision["prepared_by"]
+            decision["final_authority_actor"] = self.authority_actor(
+                decision["prepared_by"]["identity_ref"], "Engineering Authority", kind="AGENT"
+            )
+            decision["final_disposition"] = {
+                "value": "REJECT", "decided_at": None, "reason_code": "REJECTED",
+                "decision_ref": None, "evidence_refs": [], "effective": False,
+            }
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("final authority must be human" in item for item in errors))
+        self.assertTrue(any("maker, checker and final authority must be distinct" in item for item in errors))
+        self.assertTrue(any("requires evidence" in item for item in errors))
+
+    def test_nonconcur_requires_attributable_human_time_expiry_and_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            concurrence = docket["decision_requests"][0]["required_concurrences"][0]
+            concurrence["disposition"] = "NONCONCUR"
+            concurrence["authority_actor"] = self.authority_actor("AGT-SEC", "Security Authority", kind="AGENT")
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("final authority must be human" in item for item in errors))
+        self.assertTrue(any("requires decided_at and expires_at" in item for item in errors))
+        self.assertTrue(any("requires evidence" in item for item in errors))
+
+    def test_matrix_self_approval_safeguard_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            matrix_path = root / AUTHORITY_MATRIX_PATH
+            matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+            matrix["entries"][0]["self_approval_allowed"] = True
+            matrix_path.write_text(json.dumps(matrix, indent=2) + "\n", encoding="utf-8")
+            digest = hashlib.sha256(matrix_path.read_bytes()).hexdigest()
+            docket = self.load_docket(root)
+            docket["authority_source"]["sha256"] = digest
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("action safeguards invalid" in item for item in errors))
+
+    def test_invalid_state_transition_and_future_history_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            first = docket["state_history"][0]
+            docket["state_history"].append({
+                **first,
+                "sequence": 2,
+                "from": "DRAFT",
+                "to": "DISPOSED",
+                "changed_at": "2027-07-22T00:00:00Z",
+            })
+            docket["state"] = "DISPOSED"
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("transition DRAFT->DISPOSED invalid" in item for item in errors))
+        self.assertTrue(any("chronology invalid" in item for item in errors))
 
     def test_expired_docket_fails_closed(self):
         with tempfile.TemporaryDirectory() as temporary:

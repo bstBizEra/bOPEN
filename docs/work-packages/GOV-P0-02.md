@@ -75,3 +75,9 @@ Reason: GOV-P0-01 exposed source-complete controls but no attributable approval 
 ## Completion record
 
 Maker draft implementation and local validation are complete. Exact-SHA technical checker verdict and Human Engineering Authority acceptance remain pending. This proposed package cannot accept itself.
+
+## Append-only allowed-path clarification — 2026-07-21
+
+Reason: exact-SHA review found that the original bounded-path statement described package and CI validation surfaces generically but did not explicitly name three files changed to route the proposal and preserve its generated evidence: `.gitignore`, `README.md`, and `tools/generate_document_manifest.py`. Benefit of the old phase: the original statement constrained work to governance documents, contracts, validation and evidence and correctly prohibited every runtime and production zone. Expected outcome: the proposal's declared scope now matches the exact candidate diff without broadening authority beyond documentation, deterministic manifest handling and validation.
+
+The three additional allowed paths are exactly `.gitignore`, `README.md`, and `tools/generate_document_manifest.py`. This clarification does not accept GOV-P0-02, authorize further root-file changes, or change any human, gate, merge, release, runtime or production disposition.
