@@ -60,3 +60,15 @@ No upstream source, production data, credentials, runtime code, migrations or in
 ## Decision
 
 Pending independent technical checker verdict and separate Product/Architecture/Engineering Authority decisions. This evidence cannot approve its own work package or the program goal.
+
+## Append-only normalization note — 2026-07-21
+
+**Evidence ID:** EVD-GOV-001
+**Normalization parent SHA:** `c59c87472c5d515e0e586e3a6fcbdb19943705d9`
+**Normalization parent tree:** `e42c75e2580a6c21c8b7f07397ab6c669fb2e14a`
+
+Reason: the original draft omitted the machine-readable `Evidence ID` marker and retained pre-verification pending language after the exact-SHA checker receipts were recorded. Benefit of the old phase: it preserved the original draft intake history and the first independently accepted maker SHA. Expected outcome of this normalization: deterministic readiness evaluates the real remaining human/governance blockers rather than a document-marker omission.
+
+The pending-checker sentence in the original Decision section records its pre-verification state and is superseded for technical evidence only by the accepted exact-SHA receipts. The independent checker accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` and then accepted receipt SHA `c59c87472c5d515e0e586e3a6fcbdb19943705d9`. Human Engineering, Product and Architecture Authority dispositions remain pending. `PG-G0` remains `NOT_READY`; merge, release, runtime and production implementation remain unauthorized.
+
+Unresolved governance conflict: the replacement repository instructions reference `Master_Standards.md`, `Progress_Log.md`, `Backlog.md` and `Recap_Today.md`, but those exact controlled paths do not exist in this candidate tree. This normalization does not invent replacements or claim alignment; GOV-P0-02 acceptance must designate authoritative equivalents or explicitly authorize controlled creation.

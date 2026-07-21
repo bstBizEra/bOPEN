@@ -74,3 +74,9 @@ Maker repair and independent exact-SHA technical verification are complete. Huma
 ## Evidence-completion note — 2026-07-21
 
 Post-candidate audit found that the deterministic readiness report was locally generated but ignored by Git. The bounded maker repair requires that report to be tracked and reproducible from a fresh archive, adds a fail-closed equality check to both CI surfaces, and preserves `PG-G0 NOT_READY`. Exact-SHA checker review and human acceptance remain pending.
+
+## Append-only completion clarification — 2026-07-21
+
+Reason: the preceding evidence-completion note retained its pre-review pending sentence after exact-SHA technical review completed. Benefit of the old phase: it accurately preserved the state before review. Expected outcome: distinguish completed technical verification from still-pending human acceptance without rewriting the historical entry.
+
+The exact-SHA checker accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` and receipt SHA `c59c87472c5d515e0e586e3a6fcbdb19943705d9`. This clarification does not change `Status: Proposed` or `Accepted by/at: Pending`; GOV-P0-01, DEC-0010, BOPEN-GOAL-001, BOPEN-GOV-001 and `PG-G0` remain ineffective pending attributable human authority decisions.
