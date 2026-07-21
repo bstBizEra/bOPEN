@@ -1,0 +1,56 @@
+{
+  "$schema": "bopen://schemas/qualification/common/offline-catalog/0.1.0-draft",
+  "catalog_id": "QUAL-P0-00-SCHEMA-CATALOG",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "work_package_id": "QUAL-P0-00",
+  "updated_at": "2026-07-21T00:00:00+07:00",
+  "imports": [],
+  "entries": [
+    {
+      "schema_id": "bopen://schemas/qualification/common/checker-receipt/0.1.0-draft",
+      "path": "contracts/qualification/common/checker-receipt.schema.json",
+      "sha256": "35b656f56e76f34ad8f992d4926192c6c5efa72c388741d502c06c3e5a870e1b"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft",
+      "path": "contracts/qualification/common/digest-binding.schema.json",
+      "sha256": "d67689150142815934fa169be708c4f5688f39454f5f03f264b117d4d0340ab2"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/environment-binding/0.1.0-draft",
+      "path": "contracts/qualification/common/environment-binding.schema.json",
+      "sha256": "67a04dbf860cedeb9d24497bad144b5a5f5aaf0c9191925c17d003bea86ef3f3"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/normalized-path/0.1.0-draft",
+      "path": "contracts/qualification/common/normalized-path.schema.json",
+      "sha256": "dbf6551a444cbaad531fe9c937a0ee30527495196959d6ef35636d0490bb0d53"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/offline-catalog/0.1.0-draft",
+      "path": "contracts/qualification/common/offline-catalog.schema.json",
+      "sha256": "48ea14b132e319a02ad035a85947d7bd9037597766dc2ee0f416f949392075e8"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/provenance/0.1.0-draft",
+      "path": "contracts/qualification/common/provenance.schema.json",
+      "sha256": "235daca8e4f0c87cab5c4a1f07e0ad56cb80c322f33294387c55538fc7ec9426"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/qualification-envelope/0.1.0-draft",
+      "path": "contracts/qualification/common/qualification-envelope.schema.json",
+      "sha256": "8cb69bb4842eaaf7d8d295f8015b60a1fe0254b9b2e2fad0ccf4305e3757fc8c"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/redaction/0.1.0-draft",
+      "path": "contracts/qualification/common/redaction.schema.json",
+      "sha256": "c7cf9779492eeadfa7ae89c19093ac0b16806796b70c06dc6829ca1619e2d697"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft",
+      "path": "contracts/qualification/common/repository-binding.schema.json",
+      "sha256": "a72a0ed223212c316af94168cf10f6b5c3610334fd1248da14335bca5d5a2f9b"
+    }
+  ]
+}

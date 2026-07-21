@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/redaction/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Qualification Redaction Record",
+  "type": "object",
+  "required": ["policy_id", "credential_mode", "redacted_fields", "secret_scan_result", "production_credentials_present", "scanner_ref"],
+  "properties": {
+    "policy_id": {"type": "string", "minLength": 1},
+    "credential_mode": {"enum": ["NONE", "SYNTHETIC_EPHEMERAL"]},
+    "redacted_fields": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "secret_scan_result": {"enum": ["PASS", "FAIL", "NOT_RUN"]},
+    "production_credentials_present": {"const": false},
+    "scanner_ref": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

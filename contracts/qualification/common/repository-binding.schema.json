@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Exact Repository Binding",
+  "type": "object",
+  "required": ["repository_ref", "commit_sha", "tree_sha", "branch_ref", "dirty"],
+  "properties": {
+    "repository_ref": {"const": "bstBizEra/bopen"},
+    "commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "tree_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "branch_ref": {"type": "string", "minLength": 1},
+    "dirty": {"const": false}
+  },
+  "additionalProperties": false
+}

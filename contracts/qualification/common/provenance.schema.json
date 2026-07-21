@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/provenance/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Qualification Provenance",
+  "type": "object",
+  "required": ["generated_by", "checked_by", "tools", "source_refs", "created_at"],
+  "properties": {
+    "generated_by": {"$ref": "#/$defs/actor"},
+    "checked_by": {"oneOf": [{"$ref": "#/$defs/actor"}, {"type": "null"}]},
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["tool_id", "version", "sha256"],
+        "properties": {
+          "tool_id": {"type": "string", "minLength": 1},
+          "version": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "actor": {
+      "type": "object",
+      "required": ["actor_kind", "identity_ref", "role", "registration_ref", "session_ref"],
+      "properties": {
+        "actor_kind": {"enum": ["HUMAN", "AGENT"]},
+        "identity_ref": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "registration_ref": {"type": "string", "minLength": 1},
+        "session_ref": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/checker-receipt/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Qualification Technical Checker Receipt",
+  "type": "object",
+  "required": [
+    "$schema", "checker_receipt_id", "version", "status", "work_package_id",
+    "qualification_run_id", "reviewed_subject_binding", "reviewed_evidence_binding",
+    "storage_parent_binding", "scorecard_binding", "inventory_binding",
+    "environment_binding", "maker", "checker", "independence_asserted", "checks",
+    "findings", "coverage_verdicts", "specialist_domains", "scope_complete",
+    "unresolved_high_or_critical_count", "verdict", "reason_codes", "reviewed_at",
+    "receipt_payload_sha256", "non_authority_flags"
+  ],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/qualification/common/checker-receipt/0.1.0-draft"},
+    "checker_receipt_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]+-RECEIPT-[0-9]{3}$"},
+    "version": {"const": "0.1.0-draft"},
+    "status": {"const": "draft"},
+    "work_package_id": {"type": "string", "pattern": "^[A-Z]+-P[0-9]+-[0-9]{2}$"},
+    "qualification_run_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]+-RUN-[0-9]{3}$"},
+    "reviewed_subject_binding": {"$ref": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft"},
+    "reviewed_evidence_binding": {"$ref": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft"},
+    "storage_parent_binding": {"$ref": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft"},
+    "scorecard_binding": {"$ref": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft"},
+    "inventory_binding": {"$ref": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft"},
+    "environment_binding": {"$ref": "bopen://schemas/qualification/common/environment-binding/0.1.0-draft"},
+    "maker": {"$ref": "bopen://schemas/qualification/common/provenance/0.1.0-draft#/$defs/actor"},
+    "checker": {"$ref": "bopen://schemas/qualification/common/provenance/0.1.0-draft#/$defs/actor"},
+    "independence_asserted": {"type": "boolean"},
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["check_id", "required", "result", "evidence_refs", "reason_code"],
+        "properties": {
+          "check_id": {"type": "string", "minLength": 1},
+          "required": {"type": "boolean"},
+          "result": {"enum": ["PASS", "FAIL", "NOT_RUN", "INDETERMINATE"]},
+          "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "reason_code": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["finding_id", "severity", "summary", "evidence_refs"],
+        "properties": {
+          "finding_id": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL", "BLOCKING"]},
+          "summary": {"type": "string", "minLength": 1},
+          "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage_verdicts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["requirement_id", "verdict", "evidence_refs"],
+        "properties": {
+          "requirement_id": {"type": "string", "pattern": "^PG-[A-Z0-9-]+$"},
+          "verdict": {"enum": ["PASS", "FAIL", "NOT_COVERED", "INDETERMINATE"]},
+          "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "specialist_domains": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "scope_complete": {"type": "boolean"},
+    "unresolved_high_or_critical_count": {"type": "integer", "minimum": 0},
+    "verdict": {"enum": ["PENDING", "ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"]},
+    "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+    "receipt_payload_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "non_authority_flags": {"$ref": "bopen://schemas/qualification/common/qualification-envelope/0.1.0-draft#/$defs/nonAuthorityFlags"}
+  },
+  "additionalProperties": false
+}

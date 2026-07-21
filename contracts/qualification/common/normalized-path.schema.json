@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/normalized-path/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Normalized Repository-Relative Path",
+  "type": "string",
+  "minLength": 1,
+  "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*//)(?!.*(?:^|/)\\.\\.?(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$"
+}
