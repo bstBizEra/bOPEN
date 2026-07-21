@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/identity/external-identity-binding-projection/0.1.0-draft",
+  "status": "draft",
+  "title": "Synthetic External Identity Binding Qualification Projection",
+  "description": "Synthetic qualification-only projection; not a runtime identity record or account-link authorization.",
+  "type": "object",
+  "required": ["$schema", "record_id", "version", "status", "work_package_id", "qualification_id", "qualification_only", "synthetic_data_only", "qualification_envelope", "identity_binding_id", "provider_connection_id", "principal_id", "identity_key", "binding_status", "source_assertion_ref", "source_link_ref", "claim_authority", "correlation_id", "audit_event_ref", "determinism", "downstream_effects"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/qualification/identity/external-identity-binding-projection/0.1.0-draft"},
+    "record_id": {"type": "string", "pattern": "^IDQ-BIND-[0-9]{3}$"}, "version": {"const": "0.1.0-draft"}, "status": {"const": "draft"}, "work_package_id": {"const": "QUAL-P0-02"}, "qualification_id": {"const": "DEC-0005-QUAL-001"}, "qualification_only": {"const": true}, "synthetic_data_only": {"const": true},
+    "qualification_envelope": {"$ref": "bopen://schemas/qualification/common/qualification-envelope/0.1.0-draft"},
+    "identity_binding_id": {"type": "string", "pattern": "^IDQ-IDENTITY-[A-Z0-9-]+$"}, "provider_connection_id": {"type": "string", "pattern": "^IDQ-CONNECTION-[A-Z0-9-]+$"}, "principal_id": {"type": "string", "pattern": "^synthetic-principal-[a-z0-9-]+$"},
+    "identity_key": {"$ref": "#/$defs/identityKey"},
+    "binding_status": {"enum": ["SYNTHETIC_ACTIVE", "SYNTHETIC_DISABLED", "SYNTHETIC_REVOKED"]},
+    "source_assertion_ref": {"type": "string", "pattern": "^IDQ-ASSERT-[0-9]{3}$"}, "source_link_ref": {"type": ["string", "null"], "pattern": "^IDQ-LINK-[0-9]{3}$"},
+    "claim_authority": {"$ref": "#/$defs/claimAuthority"}, "correlation_id": {"type": "string", "minLength": 1}, "audit_event_ref": {"type": "string", "minLength": 1}, "determinism": {"$ref": "#/$defs/determinism"}, "downstream_effects": {"$ref": "#/$defs/downstreamEffects"}
+  },
+  "$defs": {
+    "identityKey": {"type": "object", "required": ["issuer_uri", "subject", "canonicalization", "issuer_subject_sha256"], "properties": {"issuer_uri": {"type": "string", "pattern": "^https://"}, "subject": {"type": "string", "minLength": 1, "maxLength": 255}, "canonicalization": {"const": "RFC8785_EXACT_ISSUER_AND_SUBJECT"}, "issuer_subject_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "claimAuthority": {"type": "object", "required": ["email_linking_authorized", "domain_linking_authorized", "group_linking_authorized", "role_linking_authorized", "tenant_authority_authorized"], "properties": {"email_linking_authorized": {"const": false}, "domain_linking_authorized": {"const": false}, "group_linking_authorized": {"const": false}, "role_linking_authorized": {"const": false}, "tenant_authority_authorized": {"const": false}}, "additionalProperties": false},
+    "determinism": {"type": "object", "required": ["seed", "clock", "simulator_sha256"], "properties": {"seed": {"type": "integer", "minimum": 0}, "clock": {"type": "string", "format": "date-time"}, "simulator_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "downstreamEffects": {"type": "object", "required": ["principal_runtime", "tenant", "membership", "role", "permission", "entitlement", "active_context", "release", "runtime_activation"], "properties": {"principal_runtime": {"const": "NONE"}, "tenant": {"const": "NONE"}, "membership": {"const": "NONE"}, "role": {"const": "NONE"}, "permission": {"const": "NONE"}, "entitlement": {"const": "NONE"}, "active_context": {"const": "NONE"}, "release": {"const": "NONE"}, "runtime_activation": {"const": "NONE"}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}
