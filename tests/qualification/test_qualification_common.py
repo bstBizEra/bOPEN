@@ -16,10 +16,14 @@ from tools.validate_qualification_common import (
     NON_AUTHORITY_FLAGS,
     ROOT,
     canonical_payload_sha256,
+    build_package_manifest,
+    exact_file_bytes,
     normalized_path,
+    resolve_json_pointer,
     validate_catalog_graph,
     validate_checker_receipt,
     validate_common_package,
+    validate_direct_parent_chain,
     validate_qualification_envelope,
 )
 
@@ -86,6 +90,44 @@ class QualificationCommonTests(unittest.TestCase):
         self.assertTrue(any("network schema ref prohibited" in error for error in errors))
         self.assertTrue(any("offline schema ref unresolved" in error for error in errors))
 
+    def test_local_json_pointer_missing_target_and_cycles_are_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target = root / "contracts/qualification/common"
+            shutil.copytree(ROOT / "contracts/qualification/common", target)
+            schema_path = target / "repository-binding.schema.json"
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            schema["properties"]["branch_ref"] = {"$ref": "#/$defs/missing"}
+            schema_path.write_text(json.dumps(schema, indent=2) + "\n", encoding="utf-8", newline="\n")
+            catalog_path = target / "QUAL-P0-00-SCHEMA-CATALOG.json"
+            catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+            for entry in catalog["entries"]:
+                if entry["path"].endswith("repository-binding.schema.json"):
+                    entry["sha256"] = sha256(schema_path)
+            catalog_path.write_text(json.dumps(catalog, indent=2) + "\n", encoding="utf-8", newline="\n")
+            _, missing_errors = validate_catalog_graph(root, Path("contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json"))
+
+            schema["$defs"] = {
+                "a": {"$ref": "#/$defs/b"},
+                "b": {"$ref": "#/$defs/a"},
+            }
+            schema["properties"]["branch_ref"] = {"$ref": "#/$defs/a"}
+            schema_path.write_text(json.dumps(schema, indent=2) + "\n", encoding="utf-8", newline="\n")
+            for entry in catalog["entries"]:
+                if entry["path"].endswith("repository-binding.schema.json"):
+                    entry["sha256"] = sha256(schema_path)
+            catalog_path.write_text(json.dumps(catalog, indent=2) + "\n", encoding="utf-8", newline="\n")
+            _, cycle_errors = validate_catalog_graph(root, Path("contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json"))
+
+        self.assertTrue(any("JSON Pointer unresolved" in error for error in missing_errors))
+        self.assertTrue(any("schema reference cycle" in error for error in cycle_errors))
+
+    def test_json_pointer_escape_and_array_rules_are_exact(self):
+        document = {"a/b": {"~key": ["zero", "one"]}}
+        self.assertEqual(resolve_json_pointer(document, "/a~1b/~0key/1"), "one")
+        self.assertIsNot(resolve_json_pointer(document, "/a~2b"), document)
+        self.assertIsNot(resolve_json_pointer(document, "/a~1b/~0key/01"), document)
+
     def test_unknown_catalog_field_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -97,6 +139,25 @@ class QualificationCommonTests(unittest.TestCase):
             catalog_path.write_text(json.dumps(catalog, indent=2) + "\n", encoding="utf-8", newline="\n")
             _, errors = validate_catalog_graph(root, Path("contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json"))
         self.assertTrue(any("unknown field: authority" in error for error in errors))
+
+    def test_package_manifest_hashes_exact_crlf_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            from tools.validate_qualification_common import PACKAGE_PATHS
+
+            for relative in PACKAGE_PATHS:
+                source = ROOT / relative
+                destination = root / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
+            target = root / "docs/work-packages/QUAL-P0-00.md"
+            target.write_bytes(target.read_bytes().replace(b"\n", b"\r\n"))
+            manifest = build_package_manifest(root)
+            record = next(item for item in manifest["records"] if item["path"] == "docs/work-packages/QUAL-P0-00.md")
+            raw = target.read_bytes()
+            self.assertEqual(exact_file_bytes(target), raw)
+            self.assertEqual(record["bytes"], len(raw))
+            self.assertEqual(record["sha256"], hashlib.sha256(raw).hexdigest())
 
     def _make_repo(self, root: Path) -> tuple[str, str, dict, dict]:
         run_git(root, "init")
@@ -334,6 +395,11 @@ class QualificationCommonTests(unittest.TestCase):
             c_commit = run_git(root, "rev-parse", "HEAD")
             self.assertEqual(validate_checker_receipt(receipt, root, c_commit, receipt_path), [])
 
+            self.assertIn(
+                "terminal receipt requires external storage commit and path",
+                validate_checker_receipt(receipt, root),
+            )
+
             changed = copy.deepcopy(receipt)
             changed["checker"] = copy.deepcopy(changed["maker"])
             changed["receipt_payload_sha256"] = canonical_payload_sha256(changed, "receipt_payload_sha256")
@@ -370,6 +436,51 @@ class QualificationCommonTests(unittest.TestCase):
             run_git(root, "commit", "-m", "invalid receipt C")
             errors = validate_checker_receipt(receipt, root, run_git(root, "rev-parse", "HEAD"), path)
         self.assertTrue(any("must add only" in item for item in errors))
+
+    def test_a_b_c_chain_rejects_merge_evidence_and_merge_receipt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            a_commit, _, _, _ = self._make_repo(root)
+            primary = run_git(root, "branch", "--show-current")
+            run_git(root, "checkout", "-b", "side-b")
+            write(root / "side-b.txt", "side\n")
+            run_git(root, "add", "side-b.txt")
+            run_git(root, "commit", "-m", "side B")
+            run_git(root, "checkout", primary)
+            write(root / "evidence-b.txt", "evidence\n")
+            run_git(root, "add", "evidence-b.txt")
+            run_git(root, "commit", "-m", "linear evidence")
+            run_git(root, "merge", "--no-ff", "side-b", "-m", "merge evidence B")
+            merge_b = run_git(root, "rev-parse", "HEAD")
+            write(root / "receipt-c.txt", "receipt\n")
+            run_git(root, "add", "receipt-c.txt")
+            run_git(root, "commit", "-m", "receipt C")
+            c_commit = run_git(root, "rev-parse", "HEAD")
+            merge_b_errors = validate_direct_parent_chain(root, a_commit, merge_b, c_commit)
+
+        self.assertTrue(any("evidence must have exactly one parent" in item for item in merge_b_errors))
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            a_commit, _, _, _ = self._make_repo(root)
+            primary = run_git(root, "branch", "--show-current")
+            write(root / "evidence-b.txt", "evidence\n")
+            run_git(root, "add", "evidence-b.txt")
+            run_git(root, "commit", "-m", "evidence B")
+            b_commit = run_git(root, "rev-parse", "HEAD")
+            run_git(root, "checkout", "-b", "side-c")
+            write(root / "side-c.txt", "side\n")
+            run_git(root, "add", "side-c.txt")
+            run_git(root, "commit", "-m", "side C")
+            run_git(root, "checkout", primary)
+            write(root / "receipt-c.txt", "receipt\n")
+            run_git(root, "add", "receipt-c.txt")
+            run_git(root, "commit", "-m", "linear receipt")
+            run_git(root, "merge", "--no-ff", "side-c", "-m", "merge receipt C")
+            merge_c = run_git(root, "rev-parse", "HEAD")
+            merge_c_errors = validate_direct_parent_chain(root, a_commit, b_commit, merge_c)
+
+        self.assertTrue(any("receipt must have exactly one parent" in item for item in merge_c_errors))
 
 
 if __name__ == "__main__":

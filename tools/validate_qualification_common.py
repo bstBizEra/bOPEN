@@ -17,6 +17,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
+from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -169,6 +170,100 @@ def iter_refs(value: Any) -> Iterable[str]:
             yield from iter_refs(nested)
 
 
+_MISSING = object()
+
+
+def resolve_json_pointer(document: Any, fragment: str) -> Any:
+    """Resolve a URI-fragment JSON Pointer without permissive fallback."""
+
+    pointer = unquote(fragment)
+    if pointer == "":
+        return document
+    if not pointer.startswith("/"):
+        return _MISSING
+    current = document
+    for raw_token in pointer[1:].split("/"):
+        if re.search(r"~(?![01])", raw_token):
+            return _MISSING
+        token = raw_token.replace("~1", "/").replace("~0", "~")
+        if isinstance(current, dict):
+            if token not in current:
+                return _MISSING
+            current = current[token]
+        elif isinstance(current, list):
+            if not token.isdigit() or (len(token) > 1 and token.startswith("0")):
+                return _MISSING
+            index = int(token)
+            if index >= len(current):
+                return _MISSING
+            current = current[index]
+        else:
+            return _MISSING
+    return current
+
+
+def validate_schema_references(
+    schemas: dict[str, dict[str, Any]],
+) -> list[str]:
+    """Validate closed offline refs, local pointers and acyclic ref expansion."""
+
+    errors: list[str] = []
+    complete: set[tuple[str, str]] = set()
+    active: list[tuple[str, str]] = []
+
+    def resolve(current_id: str, ref: str) -> tuple[tuple[str, str], Any] | None:
+        if ref.startswith("http://") or ref.startswith("https://"):
+            errors.append(f"network schema ref prohibited: {ref}")
+            return None
+        if ref.startswith("#"):
+            target_id, fragment = current_id, ref[1:]
+        else:
+            target_id, separator, fragment = ref.partition("#")
+            if SCHEMA_REF.fullmatch(target_id) is None or target_id not in schemas:
+                errors.append(f"offline schema ref unresolved: {ref}")
+                return None
+            if not separator:
+                fragment = ""
+        target = resolve_json_pointer(schemas[target_id], fragment)
+        if target is _MISSING:
+            errors.append(f"schema JSON Pointer unresolved: {ref}")
+            return None
+        return (target_id, unquote(fragment)), target
+
+    def visit(key: tuple[str, str], node: Any) -> None:
+        if key in active:
+            start = active.index(key)
+            cycle = active[start:] + [key]
+            rendered = " -> ".join(f"{schema_id}#{fragment}" for schema_id, fragment in cycle)
+            errors.append(f"schema reference cycle: {rendered}")
+            return
+        if key in complete:
+            return
+        active.append(key)
+
+        def walk(value: Any) -> None:
+            if isinstance(value, dict):
+                ref = value.get("$ref")
+                if isinstance(ref, str):
+                    target = resolve(key[0], ref)
+                    if target is not None:
+                        visit(*target)
+                for name, nested in value.items():
+                    if name != "$ref":
+                        walk(nested)
+            elif isinstance(value, list):
+                for nested in value:
+                    walk(nested)
+
+        walk(node)
+        active.pop()
+        complete.add(key)
+
+    for schema_id, schema in sorted(schemas.items()):
+        visit((schema_id, ""), schema)
+    return sorted(set(errors))
+
+
 def validate_closed_objects(value: Any, label: str = "schema") -> list[str]:
     errors: list[str] = []
     if isinstance(value, dict):
@@ -261,6 +356,7 @@ def validate_catalog_graph(
 
     load(catalog_path)
 
+    schemas: dict[str, dict[str, Any]] = {}
     for schema_id, schema_path in sorted(resolved.items()):
         try:
             schema = read_json(schema_path)
@@ -277,14 +373,9 @@ def validate_catalog_graph(
         if schema.get("status") != "draft":
             errors.append(f"schema must remain draft: {schema_path.relative_to(root)}")
         errors.extend(validate_closed_objects(schema, str(schema_path.relative_to(root))))
-        for ref in iter_refs(schema):
-            if ref.startswith("#"):
-                continue
-            base = ref.split("#", 1)[0]
-            if base.startswith("http://") or base.startswith("https://"):
-                errors.append(f"network schema ref prohibited: {ref}")
-            elif base not in resolved:
-                errors.append(f"offline schema ref unresolved: {ref}")
+        schemas[schema_id] = schema
+
+    errors.extend(validate_schema_references(schemas))
 
     return resolved, sorted(set(errors))
 
@@ -301,6 +392,29 @@ def git_bytes(root: Path, *args: str) -> bytes | None:
         ["git", "-C", str(root), *args], capture_output=True, check=False
     )
     return process.stdout if process.returncode == 0 else None
+
+
+def git_parents(root: Path, commit: str) -> list[str] | None:
+    line = git_output(root, "rev-list", "--parents", "-n", "1", commit)
+    if line is None:
+        return None
+    fields = line.split()
+    if not fields or fields[0] != commit:
+        return None
+    return fields[1:]
+
+
+def validate_direct_parent_chain(root: Path, subject: str, evidence: str, receipt: str) -> list[str]:
+    """Require an exact single-parent A subject -> B evidence -> C receipt chain."""
+
+    errors: list[str] = []
+    evidence_parents = git_parents(root, evidence)
+    receipt_parents = git_parents(root, receipt)
+    if evidence_parents != [subject]:
+        errors.append("A->B lineage invalid: evidence must have exactly one parent equal to subject")
+    if receipt_parents != [evidence]:
+        errors.append("B->C lineage invalid: receipt must have exactly one parent equal to evidence")
+    return errors
 
 
 def validate_repository_binding(binding: Any, root: Path, label: str) -> list[str]:
@@ -626,6 +740,8 @@ def validate_checker_receipt(
     terminal = verdict in {"ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"}
     if terminal and (data.get("independence_asserted") is not True or parse_datetime(data.get("reviewed_at")) is None):
         errors.append("terminal receipt requires independent checker and reviewed_at")
+    if terminal and (receipt_storage_commit is None or receipt_path is None):
+        errors.append("terminal receipt requires external storage commit and path")
     if verdict == "PENDING" and data.get("reviewed_at") is not None:
         errors.append("pending receipt cannot claim reviewed_at")
     reasons = data.get("reason_codes")
@@ -654,10 +770,8 @@ def validate_checker_receipt(
             subject = data.get("reviewed_subject_binding")
             evidence_sha = evidence.get("commit_sha")
             subject_sha = subject.get("commit_sha") if isinstance(subject, dict) else None
-            if git_output(root, "rev-parse", f"{evidence_sha}^") != subject_sha:
-                errors.append("A->B lineage invalid: evidence must be direct child of subject")
-            if git_output(root, "rev-parse", f"{receipt_storage_commit}^") != evidence_sha:
-                errors.append("B->C lineage invalid: receipt must be direct child of evidence")
+            if all(isinstance(value, str) and SHA1.fullmatch(value) for value in (subject_sha, evidence_sha, receipt_storage_commit)):
+                errors.extend(validate_direct_parent_chain(root, subject_sha, evidence_sha, receipt_storage_commit))
             if receipt_path is None or not normalized_path(receipt_path) or not receipt_path.endswith("checker-receipt.json"):
                 errors.append("receipt storage path invalid")
             else:
@@ -672,12 +786,10 @@ def validate_checker_receipt(
     return sorted(set(errors))
 
 
-def canonical_document_bytes(path: Path) -> bytes:
-    data = path.read_bytes()
-    if path.suffix.lower() not in {".md", ".json", ".py"}:
-        return data
-    text = data.decode("utf-8")
-    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+def exact_file_bytes(path: Path) -> bytes:
+    """Return exact repository bytes; package integrity never normalizes text."""
+
+    return path.read_bytes()
 
 
 def build_package_manifest(root: Path = ROOT) -> dict[str, Any]:
@@ -686,7 +798,7 @@ def build_package_manifest(root: Path = ROOT) -> dict[str, Any]:
         path = resolve_repo_path(root, relative)
         if path is None or not path.is_file():
             raise FileNotFoundError(relative)
-        data = canonical_document_bytes(path)
+        data = exact_file_bytes(path)
         records.append({"path": relative, "sha256": sha256_bytes(data), "bytes": len(data)})
     return {
         "manifest_id": "QUAL-P0-00-PACKAGE-MANIFEST",

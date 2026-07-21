@@ -3,6 +3,7 @@
   "$id": "bopen://schemas/qualification/common/checker-receipt/0.1.0-draft",
   "status": "draft",
   "title": "bOPEN Qualification Technical Checker Receipt",
+  "$comment": "A terminal receipt is valid only when the validator is given the external receipt storage commit C and normalized receipt path. C is intentionally not serialized here: the receipt binds subject A and evidence/storage-parent B so it cannot self-bind its containing commit.",
   "type": "object",
   "required": [
     "$schema", "checker_receipt_id", "version", "status", "work_package_id",
