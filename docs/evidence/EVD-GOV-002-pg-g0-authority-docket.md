@@ -87,3 +87,11 @@ Second successor maker checks:
 - `git diff --check`: PASS.
 
 The absent approved authority identity registry is an explicit blocker. These maker checks have no authority effect and require a fresh non-maker exact-SHA review.
+
+## Append-only trust-root verification note — 2026-07-21
+
+Reason: the second successor still trusted a repository-authored registry that merely declared itself approved and did not authenticate a delegation grantor. Benefit of the prior phase: identity and delegation records were already hash-, commit-, scope- and time-bound, making the remaining root-of-trust defect narrow and reproducible. Expected outcome: human authority receipts now fail unless the authority source is approved and effective, the identity registry is an approved governed artifact bound to the exact repository input, and any delegation grantor is an approved active registry identity with explicit delegation authority and scope.
+
+The focused suite remains 37/37 and the full suite remains 140/140 after replacing the former self-authored-registry positive expectation with a fail-closed trust-root expectation. Matrix action class, status, expiry policy and concurrence semantics are now matched to the expected action contract. All baseline decisions remain pending and all authority flags remain false.
+
+This is maker evidence only and requires another fresh non-maker exact-SHA review.

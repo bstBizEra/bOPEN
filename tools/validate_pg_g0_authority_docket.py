@@ -37,6 +37,15 @@ EXPECTED_SUBJECT_REFS = {
     "BOPEN-GOAL-001": "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
     "EVD-GOV-001": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
 }
+EXPECTED_ACTION_CONFIG = {
+    "APPROVE_ARCHITECTURE": ("architecture_approval", False, {"Security Authority", "Data Authority"}),
+    "ACCEPT_WORK_ITEM": ("work_item_acceptance", True, set()),
+    "APPROVE_GOAL": ("normative_goal_approval", False, {"Architecture Authority"}),
+    "ACCEPT_EVIDENCE": ("evidence_acceptance", False, set()),
+    "CERTIFY_MODULE": ("module_certification", False, {"Product Authority", "Security Authority"}),
+    "PROMOTE_SKILL": ("skill_promotion", True, set()),
+    "AUTHORIZE_RELEASE": ("release_authorization", True, {"Security Authority", "Product Authority"}),
+}
 MISSING_CONTROL_PATHS = (
     "Roadmap.md",
     "Master_Standards.md",
@@ -372,12 +381,31 @@ def _find_record(document: object, record_id: str) -> dict[str, Any] | None:
     return matches[0] if len(matches) == 1 else None
 
 
+def _find_identity_record(document: object, human_identity_ref: object) -> dict[str, Any] | None:
+    if not isinstance(document, dict):
+        return None
+    entries = document.get("entries")
+    if not isinstance(entries, list):
+        return None
+    expected = normalized_identity(human_identity_ref)
+    matches = [
+        item for item in entries
+        if isinstance(item, dict)
+        and normalized_identity(item.get("human_identity_ref")) == expected
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
 def validate_role_binding(
     root: Path,
     actor: dict[str, Any],
     label: str,
     required_role: str,
     as_of: datetime,
+    authority_source: dict[str, Any],
+    governing_artifacts: dict[str, dict[str, Any]],
+    repository_commit_sha: str,
+    repository_tree_sha: str,
 ) -> list[str]:
     errors: list[str] = []
     relative, record_id, ref_errors = _split_fragment_ref(actor.get("role_binding_ref"), f"{label} role_binding_ref")
@@ -387,9 +415,24 @@ def validate_role_binding(
         errors.append(f"{label} role binding must use the approved identity registry path")
     if actor.get("role_binding_status") != "approved":
         errors.append(f"{label} role binding status must be approved")
+    if authority_source.get("status") != "approved" or authority_source.get("effective") is not True:
+        errors.append(f"{label} requires an approved effective authority source")
+    registry_binding = next(
+        (
+            item for item in governing_artifacts.values()
+            if item.get("artifact_ref") == expected_path
+        ),
+        None,
+    )
+    if registry_binding is None or str(registry_binding.get("status", "")).casefold() != "approved":
+        errors.append(f"{label} identity registry must be an approved governing artifact")
     commit_sha = str(actor.get("role_binding_commit_sha", ""))
     tree_sha = str(actor.get("role_binding_tree_sha", ""))
     digest = actor.get("role_binding_sha256")
+    if commit_sha != repository_commit_sha or tree_sha != repository_tree_sha:
+        errors.append(f"{label} role binding must match repository binding commit/tree")
+    if registry_binding is not None and digest != registry_binding.get("sha256"):
+        errors.append(f"{label} role binding digest must match governing artifact")
     head = resolve_head(root)
     if resolve_tree(root, commit_sha) != tree_sha:
         errors.append(f"{label} role binding commit/tree mismatch")
@@ -449,6 +492,10 @@ def validate_authority_actor(
     as_of: datetime,
     action_id: str,
     subject_ref: str,
+    authority_source: dict[str, Any],
+    governing_artifacts: dict[str, dict[str, Any]],
+    repository_commit_sha: str,
+    repository_tree_sha: str,
 ) -> list[str]:
     actor_schema = schema.get("$defs", {}).get("authorityActor", {})
     expected = set(actor_schema.get("required", [])) if isinstance(actor_schema, dict) else set()
@@ -468,7 +515,17 @@ def validate_authority_actor(
         if field in expected and not non_placeholder(actor.get(field)):
             errors.append(f"{label} {field} is required")
     if "role_binding_ref" in expected:
-        errors.extend(validate_role_binding(root, actor, label, required_role, as_of))
+        errors.extend(validate_role_binding(
+            root,
+            actor,
+            label,
+            required_role,
+            as_of,
+            authority_source,
+            governing_artifacts,
+            repository_commit_sha,
+            repository_tree_sha,
+        ))
     delegation_ref = actor.get("delegation_ref")
     delegation = actor.get("delegation_binding")
     if authority_mode == "DIRECT":
@@ -532,6 +589,32 @@ def validate_authority_actor(
                 )
                 if record is None or any(record.get(field) != delegation.get(field) for field in match_fields):
                     errors.append(f"{label} delegation record does not match binding")
+            registry_ref = str(actor.get("role_binding_ref", "")).split("#", 1)[0]
+            registry_bytes = read_file_at_commit(root, str(actor.get("role_binding_commit_sha", "")), registry_ref) if registry_ref else None
+            try:
+                registry_document = json.loads(registry_bytes.decode("utf-8")) if registry_bytes is not None else None
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                registry_document = None
+            grantor = _find_identity_record(registry_document, delegation.get("grantor_human_identity_ref"))
+            if grantor is None or str(grantor.get("status", "")).casefold() != "approved":
+                errors.append(f"{label} delegation grantor is not an approved identity")
+            else:
+                grantor_roles = grantor.get("authority_roles")
+                grantor_role_matches = required_role in grantor_roles if isinstance(grantor_roles, list) else grantor.get("authority_role") == required_role
+                if not grantor_role_matches or grantor.get("can_delegate") is not True:
+                    errors.append(f"{label} delegation grantor lacks role or delegation authority")
+                grantor_actions = grantor.get("delegation_action_ids", grantor.get("action_ids"))
+                if isinstance(grantor_actions, list) and action_id not in grantor_actions:
+                    errors.append(f"{label} delegation grantor action scope missing")
+                grantor_subjects = grantor.get("delegation_subject_refs", grantor.get("subject_refs"))
+                if isinstance(grantor_subjects, list) and subject_ref not in grantor_subjects:
+                    errors.append(f"{label} delegation grantor subject scope missing")
+                valid_from = parse_datetime(grantor.get("valid_from")) if grantor.get("valid_from") is not None else None
+                expires = parse_datetime(grantor.get("expires_at")) if grantor.get("expires_at") is not None else None
+                if valid_from is not None and valid_from > as_of:
+                    errors.append(f"{label} delegation grantor is not yet active")
+                if expires is not None and as_of >= expires:
+                    errors.append(f"{label} delegation grantor expired")
             errors.extend(validate_evidence_refs(root, delegation.get("evidence_refs"), f"{label} delegation", required=True))
     return errors
 
@@ -668,13 +751,16 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             "artifact_ref": source.get("artifact_ref"),
             "sha256": source.get("sha256"),
         }, "authority source", commit_sha))
-        if source.get("status") != "draft" or source.get("effective") is not False:
-            errors.append("draft docket authority source must remain ineffective")
+        source_pair = (source.get("status"), source.get("effective"))
+        if source_pair not in {("draft", False), ("approved", True)}:
+            errors.append("authority source status/effectiveness mismatch")
 
     matrix_entries = matrix.get("entries")
     if matrix.get("register_id") != "PG-REG-AUTHORITY-001" or not isinstance(matrix_entries, list):
         errors.append("authority matrix identity or entries invalid")
         matrix_entries = []
+    if isinstance(source, dict) and matrix.get("status") != source.get("status"):
+        errors.append("authority matrix status must match authority source")
     matrix_actions: dict[str, dict[str, Any]] = {}
     for index, item in enumerate(matrix_entries):
         if not isinstance(item, dict):
@@ -687,7 +773,12 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         matrix_actions[action_id] = item
         if item.get("self_approval_allowed") is not False or item.get("evidence_required") is not True:
             errors.append(f"authority matrix action safeguards invalid: {action_id}")
-        if not non_placeholder(item.get("action_class")):
+        action_config = EXPECTED_ACTION_CONFIG.get(action_id)
+        if item.get("status") not in {"draft", "approved"}:
+            errors.append(f"authority matrix action {action_id} status invalid")
+        elif isinstance(source, dict) and item.get("status") != source.get("status"):
+            errors.append(f"authority matrix action {action_id} status mismatches source")
+        if action_config is not None and item.get("action_class") != action_config[0]:
             errors.append(f"authority matrix action {action_id} action_class invalid")
         for field in ("accountable_human_authority", "final_decision_role"):
             if not non_placeholder(item.get(field)):
@@ -698,6 +789,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"authority matrix action {action_id} {field} invalid")
         if not isinstance(item.get("expiry_required"), bool):
             errors.append(f"authority matrix action {action_id} expiry_required invalid")
+        elif action_config is not None and item.get("expiry_required") is not action_config[1]:
+            errors.append(f"authority matrix action {action_id} expiry_required mismatches expected policy")
+        if action_config is not None and set(item.get("required_concurrence", [])) != action_config[2]:
+            errors.append(f"authority matrix action {action_id} required_concurrence mismatches expected policy")
 
     review = docket.get("technical_review")
     review_keys = {"candidate_commit_sha", "candidate_tree_sha", "maker", "checker", "independence_asserted", "verdict", "reviewed_at", "evidence_refs"}
@@ -825,6 +920,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                     as_of=as_of,
                     action_id=action_id,
                     subject_ref=EXPECTED_SUBJECT_REFS[artifact_id],
+                    authority_source=source,
+                    governing_artifacts=artifact_map,
+                    repository_commit_sha=commit_sha,
+                    repository_tree_sha=tree_sha,
                 ))
                 identity = actor_identity(concurrence.get("authority_actor"))
                 if not identity or identity == prepared_identity or identity in concurrence_identities:
@@ -862,6 +961,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 as_of=as_of,
                 action_id=action_id,
                 subject_ref=EXPECTED_SUBJECT_REFS[artifact_id],
+                authority_source=source,
+                governing_artifacts=artifact_map,
+                repository_commit_sha=commit_sha,
+                repository_tree_sha=tree_sha,
             ))
             errors.extend(validate_actor(decision.get("checked_by"), f"{decision_id} checker"))
             if action is not None and isinstance(decision.get("checked_by"), dict):

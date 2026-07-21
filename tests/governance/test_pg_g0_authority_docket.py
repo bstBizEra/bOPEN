@@ -412,7 +412,7 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         self.assertTrue(any("maker, checker and final authority must be distinct" in item for item in errors))
         self.assertTrue(any("requires evidence" in item for item in errors))
 
-    def test_all_terminal_dispositions_are_complete_but_ineffective_under_draft_source(self):
+    def test_all_terminal_dispositions_remain_ineffective_without_approved_trust_root(self):
         for value in ("APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"):
             with self.subTest(value=value), tempfile.TemporaryDirectory() as temporary:
                 root = self.make_root(temporary)
@@ -440,7 +440,15 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
                 }
                 self.save_docket(root, docket)
                 errors = self.validate(root)
-            self.assertEqual(errors, [], f"{value}: {errors}")
+            self.assertTrue(
+                any("requires an approved effective authority source" in item for item in errors),
+                f"{value}: {errors}",
+            )
+            self.assertTrue(
+                any("identity registry must be an approved governing artifact" in item for item in errors),
+                f"{value}: {errors}",
+            )
+            self.assertFalse(any("terminal receipt incomplete" in item for item in errors), errors)
 
     def test_fabricated_identity_binding_fails_without_approved_registry_record(self):
         with tempfile.TemporaryDirectory() as temporary:
