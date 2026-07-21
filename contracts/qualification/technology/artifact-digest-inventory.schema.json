@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/technology/artifact-digest-inventory/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Technology Qualification Artifact Digest Inventory",
+  "type": "object",
+  "required": ["$schema", "inventory_id", "version", "status", "work_package_id", "qualification_run_id", "generated_at", "raw_bytes", "records", "non_authority_flags"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/qualification/technology/artifact-digest-inventory/0.1.0-draft"},
+    "inventory_id": {"type": "string", "pattern": "^TECH-INV-[0-9]{3}$"},
+    "version": {"const": "0.1.0-draft"},
+    "status": {"const": "draft"},
+    "work_package_id": {"const": "TECH-P0-01"},
+    "qualification_run_id": {"type": "string", "pattern": "^TECH-RUN-[0-9]{3}$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "raw_bytes": {"const": true},
+    "records": {"type": "array", "minItems": 1, "items": {"$ref": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft"}},
+    "non_authority_flags": {"$ref": "bopen://schemas/qualification/common/qualification-envelope/0.1.0-draft#/$defs/nonAuthorityFlags"}
+  },
+  "additionalProperties": false
+}
