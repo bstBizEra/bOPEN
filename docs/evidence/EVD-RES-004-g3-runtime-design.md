@@ -50,7 +50,7 @@ Maker validation on 2026-07-21 produced:
 | Full `tests/test_*.py` discovery | PASS; 96 tests |
 | Readiness report | `DESIGN_READY_FOR_AUTHORITY_REVIEW`; runtime/G3/production false |
 
-The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `860a0aac25259eda5c256c763bf6f5960b12dca17b76cdf1ecba3cb502dcccd0`. Exact-commit independent checker disposition remains required before publication or acceptance.
+The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `e55fd524ee7a00419e49c5e6a1ff8bba8778315d4070b23e419cd003b8f866d4`. Exact-commit independent checker disposition remains required before publication or acceptance.
 
 ## Gate decision
 

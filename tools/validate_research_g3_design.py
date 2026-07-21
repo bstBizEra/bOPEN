@@ -332,8 +332,15 @@ def validate_inventory_integrity(data: dict) -> list[str]:
         actual = load_contract(ARTIFACT_INVENTORY)
     except ValueError as exc:
         return [f"research artifact inventory invalid: {exc}"]
-    if actual != build_research_inventory(data):
-        return ["research artifact inventory is stale or incomplete"]
+    expected = build_research_inventory(data)
+    if actual != expected:
+        actual_map = {item.get("path"): item for item in actual.get("files", []) if isinstance(item, dict)}
+        expected_map = {item.get("path"): item for item in expected.get("files", []) if isinstance(item, dict)}
+        missing = sorted(expected_map.keys() - actual_map.keys())
+        unexpected = sorted(actual_map.keys() - expected_map.keys())
+        mismatched = sorted(path for path in actual_map.keys() & expected_map.keys() if actual_map[path] != expected_map[path])
+        details = f"missing={missing[:10]}; unexpected={unexpected[:10]}; mismatched={mismatched[:10]}"
+        return [f"research artifact inventory is stale or incomplete: {details}"]
     return []
 
 
