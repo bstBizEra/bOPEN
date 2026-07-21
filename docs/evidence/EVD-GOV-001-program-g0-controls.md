@@ -72,3 +72,12 @@ Reason: the original draft omitted the machine-readable `Evidence ID` marker and
 The pending-checker sentence in the original Decision section records its pre-verification state and is superseded for technical evidence only by the accepted exact-SHA receipts. The independent checker accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` and then accepted receipt SHA `c59c87472c5d515e0e586e3a6fcbdb19943705d9`. Human Engineering, Product and Architecture Authority dispositions remain pending. `PG-G0` remains `NOT_READY`; merge, release, runtime and production implementation remain unauthorized.
 
 Unresolved governance conflict: the replacement repository instructions reference `Master_Standards.md`, `Progress_Log.md`, `Backlog.md` and `Recap_Today.md`, but those exact controlled paths do not exist in this candidate tree. This normalization does not invent replacements or claim alignment; GOV-P0-02 acceptance must designate authoritative equivalents or explicitly authorize controlled creation.
+
+## Append-only normalization checker receipt — 2026-07-21
+
+**Normalization maker SHA:** `034ead332450da61a1518ffa76645b59e94704dd`
+**Normalization maker tree:** `112aec932b9e3bcd004530cb17cb0404dd3b531c`
+**Normalization checker:** Codex PG-G0 authority-docket checker
+**Normalization verdict:** ACCEPT_EXACT_SHA
+
+The independent checker verified the exact four-file scope, append-only controlled-document changes, deterministic report equality, empty `independent_evidence_errors`, 103/103 tests, 27-path repository validation, 17 contracts, seven draft registers, clean-room, secret and supply-chain checks. The report remains `NOT_READY`, authority-review readiness remains false, production authorization remains false, and 28 substantive blockers remain.

@@ -80,3 +80,5 @@ Post-candidate audit found that the deterministic readiness report was locally g
 Reason: the preceding evidence-completion note retained its pre-review pending sentence after exact-SHA technical review completed. Benefit of the old phase: it accurately preserved the state before review. Expected outcome: distinguish completed technical verification from still-pending human acceptance without rewriting the historical entry.
 
 The exact-SHA checker accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` and receipt SHA `c59c87472c5d515e0e586e3a6fcbdb19943705d9`. This clarification does not change `Status: Proposed` or `Accepted by/at: Pending`; GOV-P0-01, DEC-0010, BOPEN-GOAL-001, BOPEN-GOV-001 and `PG-G0` remain ineffective pending attributable human authority decisions.
+
+The PG-G0 authority-docket checker subsequently accepted append-only normalization maker SHA `034ead332450da61a1518ffa76645b59e94704dd`. This technical receipt removes only the obsolete evidence-marker blocker; it does not accept this work package or change any human authority disposition.
