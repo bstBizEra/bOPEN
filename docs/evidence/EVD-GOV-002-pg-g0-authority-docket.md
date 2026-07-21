@@ -98,7 +98,8 @@ This is maker evidence only and requires another fresh non-maker exact-SHA revie
 
 ## Independent exact-SHA technical receipts — 2026-07-21
 
-Candidate commit: `99192c9532f04052cd81c51b1f4f925b18a53fb5`  
+Candidate commit: `99192c9532f04052cd81c51b1f4f925b18a53fb5`
+
 Candidate tree: `7e2ecc3dac9ca20ab9249dd057945888de4f9c5f`
 
 - `/root/fresh_schema_acceptance`: `ACCEPT_EXACT_SHA` after independently reproducing the fabricated-registry and invented-delegation-grantor rejection probes, matrix semantic mutations, exact candidate binding, terminal disposition, state immutability, subject, concurrence, chronology and nested-field checks. Focused suite 37/37 and repository validation passed.
