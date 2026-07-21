@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,6 +15,7 @@ from tools.validate_root_control_surfaces import (
     ROOT,
     ROOT_SURFACES,
     build_package_manifest,
+    read_git_blob,
     validate_append_only_bytes,
     validate_exact_root_names,
     validate_root_control_surfaces,
@@ -128,6 +130,41 @@ class RootControlSurfaceTests(unittest.TestCase):
             path.write_text(path.read_text(encoding="utf-8") + "\nnew event\n", encoding="utf-8")
             errors = validate_root_control_surfaces(root, check_git=False)
         self.assertIn("ROOT CONTROL PACKAGE MANIFEST STALE", errors)
+
+    def test_crlf_only_package_mutation_stales_manifest(self):
+        temporary, root = self.make_fixture()
+        with temporary:
+            path = root / "Roadmap.md"
+            path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+            errors = validate_root_control_surfaces(root, check_git=False)
+        self.assertIn("ROOT CONTROL PACKAGE MANIFEST STALE", errors)
+
+    def test_git_blob_reader_preserves_line_endings_and_rewrite_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "GOV-P0-03 Test"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "gov-p0-03@example.invalid"], cwd=root, check=True)
+            subprocess.run(["git", "config", "core.autocrlf", "false"], cwd=root, check=True)
+            path = root / "control.md"
+            path.write_bytes(b"line-one\r\n")
+            subprocess.run(["git", "add", "control.md"], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "crlf"], cwd=root, check=True)
+            before_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, text=True, capture_output=True, check=True
+            ).stdout.strip()
+            path.write_bytes(b"line-one\n")
+            subprocess.run(["git", "add", "control.md"], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "lf"], cwd=root, check=True)
+            after_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, text=True, capture_output=True, check=True
+            ).stdout.strip()
+            before = read_git_blob(root, f"{before_commit}:control.md")
+            after = read_git_blob(root, f"{after_commit}:control.md")
+
+        self.assertEqual(before, b"line-one\r\n")
+        self.assertEqual(after, b"line-one\n")
+        self.assertIn("ROOT CONTROL PREFIX REWRITTEN", validate_append_only_bytes(before, after))
 
 
 if __name__ == "__main__":

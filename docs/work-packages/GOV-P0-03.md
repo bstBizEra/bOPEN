@@ -99,3 +99,9 @@ Reason: exact root instruction paths were missing and similarly named controlled
 Maker implementation is complete within the exact allowed path set. Focused tests pass 11/11 and the full suite passes 158/158. Repository, contract, program-control, deterministic-report, clean-room, secret, supply-chain and diff checks pass. The historical GOV-P0-02 document-manifest check remains fail-closed and stale because DEC-0012 manifest handling is outside this option-1-only package and the prior snapshot may not be overwritten.
 
 Independent exact-SHA technical review remains required. This note does not accept GOV-P0-03 or authorize any gate, merge, release, runtime or production action.
+
+## Append-only exact-byte checker rework — 2026-07-22
+
+Independent review rejected the first maker commit because newline normalization allowed distinct raw bytes to share a package-manifest digest and text-mode Git output concealed line-ending-only history rewrites. The bounded successor replaces both comparisons with raw-byte operations and adds dedicated negative tests for CRLF manifest drift and CRLF-to-LF append-only rewriting.
+
+Reason: manifest and append-only controls must bind repository bytes exactly. Benefit of the prior phase: all non-byte governance invariants and atomic genesis behavior already passed. Expected outcome: a successor exact-SHA checker can reproduce fail-closed byte integrity without broadening package scope or authority.

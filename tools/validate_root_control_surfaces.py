@@ -57,17 +57,13 @@ FIELD_PATTERN = re.compile(r"^\*\*([^*]+):\*\*\s*(.*?)\s*$", re.MULTILINE)
 CHECKBOX_PATTERN = re.compile(r"^\s*[-*]\s+\[[ xX]\]", re.MULTILINE)
 
 
-def canonical_bytes(path: Path) -> bytes:
-    data = path.read_bytes()
-    try:
-        text = data.decode("utf-8")
-    except UnicodeDecodeError:
-        return data
-    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+def exact_file_bytes(path: Path) -> bytes:
+    """Return exact on-disk bytes; integrity bindings must not normalize content."""
+    return path.read_bytes()
 
 
 def manifest_record(path: Path, root: Path) -> dict[str, object]:
-    data = canonical_bytes(path)
+    data = exact_file_bytes(path)
     return {
         "path": path.relative_to(root).as_posix(),
         "sha256": hashlib.sha256(data).hexdigest(),
@@ -118,11 +114,12 @@ def validate_exact_root_names(names: list[str]) -> list[str]:
 def validate_append_only_bytes(previous: bytes | None, candidate: bytes) -> list[str]:
     if previous is None:
         return []
+    errors: list[str] = []
     if len(candidate) < len(previous):
-        return ["ROOT CONTROL TRUNCATED"]
+        errors.append("ROOT CONTROL TRUNCATED")
     if not candidate.startswith(previous):
-        return ["ROOT CONTROL PREFIX REWRITTEN"]
-    return []
+        errors.append("ROOT CONTROL PREFIX REWRITTEN")
+    return errors
 
 
 def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -134,6 +131,18 @@ def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
         stderr=subprocess.PIPE,
         check=False,
     )
+
+
+def read_git_blob(root: Path, object_spec: str) -> bytes | None:
+    """Read a Git blob without text decoding or universal-newline translation."""
+    result = subprocess.run(
+        ["git", "cat-file", "blob", object_spec],
+        cwd=root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    return result.stdout if result.returncode == 0 else None
 
 
 def validate_git_history(root: Path) -> list[str]:
@@ -181,14 +190,12 @@ def validate_git_history(root: Path) -> list[str]:
             if not parents:
                 errors.append(f"ROOT CONTROL HISTORY PARENT MISSING: {rel} {commit}")
                 continue
-            before = run_git(root, "show", f"{parents[0]}:{rel}")
-            after = run_git(root, "show", f"{commit}:{rel}")
-            if before.returncode != 0 or after.returncode != 0:
+            before = read_git_blob(root, f"{parents[0]}:{rel}")
+            after = read_git_blob(root, f"{commit}:{rel}")
+            if before is None or after is None:
                 errors.append(f"ROOT CONTROL HISTORY BLOB MISSING: {rel} {commit}")
                 continue
-            for issue in validate_append_only_bytes(
-                before.stdout.encode("utf-8"), after.stdout.encode("utf-8")
-            ):
+            for issue in validate_append_only_bytes(before, after):
                 errors.append(f"{issue}: {rel} {commit}")
     return errors
 
