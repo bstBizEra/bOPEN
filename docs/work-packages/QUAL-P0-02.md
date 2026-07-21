@@ -63,3 +63,11 @@ JSON Schema cannot execute OIDC or prove Git lineage. The semantic validator cov
 ## Extend-only change note
 
 Reason: identity strategy needs bounded evidence before selection. Benefit of QUAL-P0-00: it provides reusable exact-binding and checker semantics. Expected outcome: DEC-0005 receives independently reproducible technical input without pre-authorizing a provider or production implementation.
+
+## Append-only REQUEST_CHANGES rework — 2026-07-22
+
+The first A-subject commit `e4b421f79e8f02f60985d995b2221be921b508de` received `REQUEST_CHANGES` because eight individually valid record schemas did not define a complete run suite or cross-record graph. The successor adds a ninth Draft schema, `qualification-run-suite.observation`, and requires one nested common run ID, one candidate ID, an exact provider set, complete record/case references, correlation/audit bindings and exact issuer-plus-subject digest verification.
+
+Mandatory negative coverage is set equality, not a count-only claim: missing, unknown, duplicate or skipped cases deny. Provider issuers preserve exact bytes and permit a valid trailing slash; slash/no-slash issuer keys and case-different subject keys must remain distinct. The semantic validator now rejects mixed run, candidate and correlation values, dangling references and wrong digests.
+
+Reason: close the independent graph-integrity and normalization findings. Benefit of the first candidate: it established the synthetic, non-runtime and fail-closed field vocabulary. Expected outcome: the successor A subject can support a coherent later B evidence bundle without expanding into execution, provider selection or runtime implementation.
