@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/governance/root-control-surface/0.1.0-draft",
+  "title": "bOPEN Draft Root Control Surface Record",
+  "description": "Draft extracted-record contract for a non-effective append-only root control surface.",
+  "status": "draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "version",
+    "status",
+    "lifecycle",
+    "owner",
+    "issued",
+    "decision_reference",
+    "work_package",
+    "evidence_reference",
+    "source",
+    "agent_id",
+    "base_commit",
+    "base_tree",
+    "append_only",
+    "authority"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "enum": [
+        "GOV-P0-03-ROOT-ROADMAP",
+        "GOV-P0-03-ROOT-STANDARDS",
+        "GOV-P0-03-ROOT-PROGRESS",
+        "GOV-P0-03-ROOT-BACKLOG",
+        "GOV-P0-03-ROOT-RECAP"
+      ]
+    },
+    "version": {"const": "0.1"},
+    "status": {"const": "Draft"},
+    "lifecycle": {"const": "Inactive"},
+    "owner": {"type": "string", "minLength": 1},
+    "issued": {"type": "string", "format": "date"},
+    "decision_reference": {"type": "string", "pattern": "^DEC-0012 option 1"},
+    "work_package": {"type": "string", "pattern": "^GOV-P0-03"},
+    "evidence_reference": {"const": "EVD-GOV-003"},
+    "source": {"type": "string", "minLength": 1},
+    "agent_id": {"type": "string", "minLength": 1},
+    "base_commit": {"const": "82ed6b38b118aab14a9961c5d75a33e515cb136a"},
+    "base_tree": {"const": "cad6b595fb74a70cc706a78d45778e15524aebd9"},
+    "append_only": {"const": true},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pg_g0_passed", "production_implementation_authorized", "merge_authorized", "release_authorized"],
+      "properties": {
+        "pg_g0_passed": {"const": false},
+        "production_implementation_authorized": {"const": false},
+        "merge_authorized": {"const": false},
+        "release_authorized": {"const": false}
+      }
+    }
+  }
+}
