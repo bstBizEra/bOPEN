@@ -1,0 +1,37 @@
+{
+  "$schema": "bopen://schemas/qualification/common/offline-catalog/0.1.0-draft",
+  "catalog_id": "TECH-P0-01-SCHEMA-CATALOG",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "work_package_id": "TECH-P0-01",
+  "updated_at": "2026-07-22T00:00:00+07:00",
+  "imports": [
+    {
+      "catalog_id": "QUAL-P0-00-SCHEMA-CATALOG",
+      "path": "contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json",
+      "sha256": "803500ff8dd12e17531872482875dcf67fa8f617de45c11318a55ba8ed8b8450"
+    }
+  ],
+  "entries": [
+    {
+      "schema_id": "bopen://schemas/qualification/technology/artifact-digest-inventory/0.1.0-draft",
+      "path": "contracts/qualification/technology/artifact-digest-inventory.schema.json",
+      "sha256": "fcc5cfcd3bef63dbd9b2605796172941c54517b093d28b505af25ec1060c6867"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/technology/candidate-scorecard/0.1.0-draft",
+      "path": "contracts/qualification/technology/candidate-scorecard.schema.json",
+      "sha256": "787c7d3d7677f3f72371ad6e6393f684e6946a57bcdd19c580d4a0d9b25049c4"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/technology/case-result/0.1.0-draft",
+      "path": "contracts/qualification/technology/case-result.schema.json",
+      "sha256": "326f765ddcda2c43e31fd076fcf2d6696d0c90b187a396fed5516192e67506d3"
+    },
+    {
+      "schema_id": "bopen://schemas/qualification/technology/command-evidence/0.1.0-draft",
+      "path": "contracts/qualification/technology/command-evidence.schema.json",
+      "sha256": "4a45f4e37c10b870f37e9de814473876804ac6b3284d2651e6ec299abe9180eb"
+    }
+  ]
+}

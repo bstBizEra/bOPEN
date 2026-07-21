@@ -1,0 +1,58 @@
+{
+  "manifest_id": "TECH-P0-01-PACKAGE-MANIFEST",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "work_package_id": "TECH-P0-01",
+  "generated_at": "2026-07-22T00:00:00+07:00",
+  "generation_base": {
+    "commit_sha": "a2fc4b1f907b17911ffbd3cb8e0992b806c90bb6",
+    "tree_sha": "a5a63d2fb882939f176139c9f276a8d44faaf6d9"
+  },
+  "records": [
+    {
+      "path": "contracts/qualification/technology/TECH-P0-01-SCHEMA-CATALOG.json",
+      "sha256": "f748abffcec308abfc54181c5700879923b4e62fa620e2070bf2b8bd537c3caa",
+      "bytes": 1610
+    },
+    {
+      "path": "contracts/qualification/technology/artifact-digest-inventory.schema.json",
+      "sha256": "fcc5cfcd3bef63dbd9b2605796172941c54517b093d28b505af25ec1060c6867",
+      "bytes": 1248
+    },
+    {
+      "path": "contracts/qualification/technology/candidate-scorecard.schema.json",
+      "sha256": "787c7d3d7677f3f72371ad6e6393f684e6946a57bcdd19c580d4a0d9b25049c4",
+      "bytes": 4125
+    },
+    {
+      "path": "contracts/qualification/technology/case-result.schema.json",
+      "sha256": "326f765ddcda2c43e31fd076fcf2d6696d0c90b187a396fed5516192e67506d3",
+      "bytes": 1949
+    },
+    {
+      "path": "contracts/qualification/technology/command-evidence.schema.json",
+      "sha256": "4a45f4e37c10b870f37e9de814473876804ac6b3284d2651e6ec299abe9180eb",
+      "bytes": 2040
+    },
+    {
+      "path": "docs/evidence/EVD-TECH-001-technology-qualification.md",
+      "sha256": "80ed234938ad741c44bb34507cb828d34e9eb758a2f0fb5452b46ea2b0e3435b",
+      "bytes": 4043
+    },
+    {
+      "path": "docs/work-packages/TECH-P0-01.md",
+      "sha256": "8a0c754852b098720fe73fafa5763f1729220892227276b948f88f0f8a48af15",
+      "bytes": 5229
+    },
+    {
+      "path": "tests/qualification/test_technology_qualification.py",
+      "sha256": "f5e183651ee63d5146c2e48e9d7769b52802c71bd55d9e6bbdef48c6004546c6",
+      "bytes": 12140
+    },
+    {
+      "path": "tools/validate_technology_qualification.py",
+      "sha256": "7da244330ce5b63c3d2717f36b5bce698cdf5cc395f919408ef61c096e446bce",
+      "bytes": 18061
+    }
+  ]
+}
