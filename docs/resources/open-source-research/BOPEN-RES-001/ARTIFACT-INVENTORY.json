@@ -1,5 +1,5 @@
 {
-  "generated_on": "2026-07-13",
+  "generated_on": "2026-07-21",
   "files": [
     {
       "path": "00-governance/clean-room-boundary.md",
@@ -62,11 +62,6 @@
       "bytes": 2654
     },
     {
-      "path": "01-boxyhq/README.md",
-      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
-      "bytes": 706
-    },
-    {
       "path": "01-boxyhq/authorization-analysis.md",
       "sha256": "cb79b031cae434f4c0b55a6eadb1b11508349a734c0bb40bcc0b61145fb9b2e2",
       "bytes": 1224
@@ -98,8 +93,8 @@
     },
     {
       "path": "01-boxyhq/evidence-index.md",
-      "sha256": "3644c60a046db602d38b3ce13cccac67481e2cfbaab52f1db9962c66cacf8515",
-      "bytes": 2595
+      "sha256": "d9572466492711206c8cda5a7a8346e305cde8725346511a17d57882c8a16341",
+      "bytes": 3070
     },
     {
       "path": "01-boxyhq/gaps-and-non-goals.md",
@@ -115,6 +110,11 @@
       "path": "01-boxyhq/lifecycle-map.md",
       "sha256": "8df8c3416abe7b2c14b36714d217cb7f884299602150e0fd9017b573189e6b4a",
       "bytes": 3468
+    },
+    {
+      "path": "01-boxyhq/README.md",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
     },
     {
       "path": "01-boxyhq/repository-structure-study.md",
@@ -153,8 +153,13 @@
     },
     {
       "path": "02-execution/exit-gates.md",
-      "sha256": "fa6f2356786f863538f19f0d37c37290363f250d81172999971692fe2993a39e",
-      "bytes": 2095
+      "sha256": "06365d5e3214fa70ab34edb5ccbfed7a7f91b0f22b4af38092c350c4118f3a6a",
+      "bytes": 2728
+    },
+    {
+      "path": "02-execution/g3-runtime-pack-design.md",
+      "sha256": "e03d9359bc00cb2a9118d903ccdf8c1d5982a1b002b0482a1c0cdcde749c2805",
+      "bytes": 6229
     },
     {
       "path": "02-execution/implementation-handoff.md",
@@ -173,8 +178,8 @@
     },
     {
       "path": "02-execution/work-package-register.md",
-      "sha256": "9ef0e132baccc8b1fa8298ab093ba5d1a644f61469e3d48834a4c961f2eb3275",
-      "bytes": 5427
+      "sha256": "675dbd9be848fc0f5f6c2f37705febb71827d28f191637937a8a7166d9476a7d",
+      "bytes": 6025
     },
     {
       "path": "03-templates/architecture-decision-template.md",
@@ -213,8 +218,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "1e62eaf22e64420bb883f744daf13bd22b9eb4597eb166a206818a432fe336fe",
-      "bytes": 886
+      "sha256": "37f7baae62195fe5ee74703cc15ef56f9f9aea6ace000aa179a25a62b97f15c3",
+      "bytes": 1323
     },
     {
       "path": "README.md",
@@ -228,13 +233,13 @@
     },
     {
       "path": "RESEARCH-MANIFEST.json",
-      "sha256": "4ffc4eac5e82435f17be019f1ba6da5e272107ddce32fcd0773f35c136f4e0c9",
-      "bytes": 1273
+      "sha256": "134f825c3642f24a00fe34d2fc771aee9ad488ed6c4cfc11c48d24ad1f0ad895",
+      "bytes": 1500
     },
     {
       "path": "RESEARCH-STATUS.md",
-      "sha256": "d4d52657b8ba792ebd25f68dc52ab4ae81dfb634f2beaa35505400d1b6426479",
-      "bytes": 2853
+      "sha256": "ad704a43fe7c06fd4a60ce45a2bf3dddb0cbbe5a36cf57f65c1cf4ec993e00f6",
+      "bytes": 3773
     },
     {
       "path": "scripts/bootstrap-boxyhq-study.ps1",

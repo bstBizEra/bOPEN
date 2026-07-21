@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-13",
-  "count": 235,
+  "generated": "2026-07-21",
+  "count": 238,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -888,8 +888,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "2867f90286839ce4af64370ac504afa32fe563d0f81c018bcdb721ae48676c4e",
-      "bytes": 6151
+      "sha256": "27524db8cbbb21dddad9907d6648888987380605306cfa479deb81518a4b5960",
+      "bytes": 6673
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -920,11 +920,18 @@
       "bytes": 1755
     },
     {
+      "path": "docs/decisions/DEC-0011.md",
+      "title": "DEC-0011 - Authorize the isolated G3 synthetic runtime study",
+      "status": "Proposed; not effective",
+      "sha256": "1c5ae92d1ed6d0eb358282db43f463050e8154737b803544a8098c0650d2a73c",
+      "bytes": 2506
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "2ab006aa92320bdc98ce4f40d513e98d2bc2f923c9980bfa96626545bd72b410",
-      "bytes": 1122
+      "sha256": "30f209cf6a2fb5781b46b7e108d30e7319ffe2132d622edae81f09c36c574983",
+      "bytes": 1250
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -937,8 +944,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "a471bdff45fb368b759927e4bac66f3d8019125613a4396791cd7957a8f67a69",
-      "bytes": 1137
+      "sha256": "5773d5aebf43052066d899be7cdcae2276dafbcb054d818f35bcbf5077ab0596",
+      "bytes": 1305
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1025,11 +1032,18 @@
       "bytes": 7338
     },
     {
+      "path": "docs/evidence/EVD-RES-004-g3-runtime-design.md",
+      "title": "EVD-RES-004 - G3 Synthetic Runtime Pack Design",
+      "status": "Design evidence; authority review required; G3 open",
+      "sha256": "617c662a2d90343e761bfad934626bacef9f0814c8afed6615636581ed920622",
+      "bytes": 3878
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "460901f6b397ec99f59870e9789c496b7ed1b49c7adb1984ec5794bc1ada7101",
-      "bytes": 2349
+      "sha256": "bb0925dfb902fe6e83de106118a8122722ea010110eaf57946ba7d9b1166fbd9",
+      "bytes": 2761
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1189,8 +1203,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/evidence-index.md",
       "title": "Initial Evidence Index",
       "status": "",
-      "sha256": "3644c60a046db602d38b3ce13cccac67481e2cfbaab52f1db9962c66cacf8515",
-      "bytes": 2595
+      "sha256": "d9572466492711206c8cda5a7a8346e305cde8725346511a17d57882c8a16341",
+      "bytes": 3070
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/gaps-and-non-goals.md",
@@ -1273,8 +1287,15 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/exit-gates.md",
       "title": "Exit Gates and Evidence Requirements",
       "status": "",
-      "sha256": "fa6f2356786f863538f19f0d37c37290363f250d81172999971692fe2993a39e",
-      "bytes": 2095
+      "sha256": "06365d5e3214fa70ab34edb5ccbfed7a7f91b0f22b4af38092c350c4118f3a6a",
+      "bytes": 2728
+    },
+    {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/g3-runtime-pack-design.md",
+      "title": "G3 Synthetic Runtime Pack Design",
+      "status": "Design ready for authority review; execution not authorized",
+      "sha256": "e03d9359bc00cb2a9118d903ccdf8c1d5982a1b002b0482a1c0cdcde749c2805",
+      "bytes": 6229
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/implementation-handoff.md",
@@ -1301,8 +1322,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/02-execution/work-package-register.md",
       "title": "Work Package Register",
       "status": "",
-      "sha256": "9ef0e132baccc8b1fa8298ab093ba5d1a644f61469e3d48834a4c961f2eb3275",
-      "bytes": 5427
+      "sha256": "675dbd9be848fc0f5f6c2f37705febb71827d28f191637937a8a7166d9476a7d",
+      "bytes": 6025
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/03-templates/architecture-decision-template.md",
@@ -1350,8 +1371,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/ARTIFACT-INVENTORY.json",
       "title": "",
       "status": "",
-      "sha256": "d6d18c43b63286f05bd63780be355dbb9075a1a7823a2218da141cbf83bac14b",
-      "bytes": 9110
+      "sha256": "caa212d3259792ec36368272a40d2173a89830e87b57b13da0155ea44e96541c",
+      "bytes": 9284
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
@@ -1364,8 +1385,8 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/CHANGELOG.md",
       "title": "Changelog",
       "status": "",
-      "sha256": "1e62eaf22e64420bb883f744daf13bd22b9eb4597eb166a206818a432fe336fe",
-      "bytes": 886
+      "sha256": "37f7baae62195fe5ee74703cc15ef56f9f9aea6ace000aa179a25a62b97f15c3",
+      "bytes": 1323
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/README.md",
@@ -1385,15 +1406,15 @@
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "4ffc4eac5e82435f17be019f1ba6da5e272107ddce32fcd0773f35c136f4e0c9",
-      "bytes": 1273
+      "sha256": "134f825c3642f24a00fe34d2fc771aee9ad488ed6c4cfc11c48d24ad1f0ad895",
+      "bytes": 1500
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/RESEARCH-STATUS.md",
       "title": "Research Status",
       "status": "`R1 STATIC TRACE EXECUTED / G3 OPEN`",
-      "sha256": "d4d52657b8ba792ebd25f68dc52ab4ae81dfb634f2beaa35505400d1b6426479",
-      "bytes": 2853
+      "sha256": "ad704a43fe7c06fd4a60ce45a2bf3dddb0cbbe5a36cf57f65c1cf4ec993e00f6",
+      "bytes": 3773
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/scripts/bootstrap-boxyhq-study.ps1",
@@ -1532,8 +1553,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "c0fafdc5e3f8c13a162872bd233b4cd5662727f4b3e590fe209a26a433327835",
-      "bytes": 3122
+      "sha256": "d4f04a8d6829f7e8ba4e8976cd122a657b491664b3fd61185561fb071378781e",
+      "bytes": 3329
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

@@ -11,3 +11,4 @@
 | DEC-0007 | Review BOOT-P0 completion evidence and decide B7 exit | Pending | bOPEN Architecture Authority |
 | DEC-0008 | Enforce protected working branches in private bGitea and use GitHub for stable reviewed publication | Approved | Engineering Authority |
 | DEC-0009 | Keep physical upstream clones and raw evidence in an approved external ephemeral workspace | Approved | bOPEN Architecture Authority |
+| DEC-0011 | Authorize a bounded isolated G3 synthetic runtime study | Proposed; not effective | bOPEN Architecture Authority |

@@ -13,6 +13,17 @@ required=[
 'docs/02-requirements/BOPEN-REQ-001-DRAFT.md','docs/03-architecture/BOPEN-ARCH-001-DRAFT.md',
 'docs/04-platform/BOPEN-TENANT-001-DRAFT.md','docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md',
 'docs/04-platform/BOPEN-ENT-001-DRAFT.md','docs/04-platform/BOPEN-MOD-001-DRAFT.md','docs/07-security/BOPEN-SEC-001-DRAFT.md']
+required += [
+'docs/decisions/DEC-0011.md',
+'docs/evidence/EVD-RES-004-g3-runtime-design.md',
+'docs/resources/open-source-research/BOPEN-RES-001/02-execution/g3-runtime-pack-design.md',
+'research/sources/boxyhq-g3-runtime-design.schema.json',
+'research/sources/boxyhq-g3-runtime-design.json',
+'tools/validate_research_g3_design.py',
+'tools/report_research_g3_design.py',
+'tools/generate_research_artifact_inventory.py',
+'tests/governance/test_research_g3_design_controls.py',
+]
 for rel in required:
     if not (ROOT/rel).exists(): errors.append(f'MISSING: {rel}')
 

@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-21 - G3 synthetic runtime design
+
+- Added a non-executing G3 design contract for the missing identity, tenant/membership and invitation runtime evidence.
+- Added fail-closed authority, isolation, immutable dependency, synthetic-data, secure-oracle, evidence-retention and cleanup requirements.
+- Added DEC-0011 as a proposed, ineffective runtime authorization decision.
+- Added EVD-RES-004 and deterministic validation/report controls while preserving G3 as open and production implementation as unauthorized.
+
 ## 2026-07-13 - research R0 control establishment
 
 - Approved DEC-0009 to keep physical upstream clones and raw evidence outside the bOPEN worktree.

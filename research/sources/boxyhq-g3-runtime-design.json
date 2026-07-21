@@ -1,0 +1,727 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "BOX-R3-G3-DESIGN-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner": "bCodex Maker",
+  "issued_at": "2026-07-21",
+  "work_packages": ["RES-P0-05", "RES-P0-06", "RES-P0-07", "RES-G3"],
+  "authority": {
+    "research_design_authorized": true,
+    "runtime_execution_authorized": false,
+    "implementation_authority": false,
+    "production_authority": false,
+    "gate_promotion_authority": false
+  },
+  "source_binding": {
+    "source_id": "SRC-BOX-001",
+    "repository": "boxyhq/saas-starter-kit",
+    "repository_url": "https://github.com/boxyhq/saas-starter-kit.git",
+    "commit": "abc9b686823cbfb4973c79bc36fea37a3244be6c",
+    "reference_release": "v1.6.0",
+    "license": "Apache-2.0",
+    "license_sha256": "f9f9a6236f9f12c14ce7294a58575c19fc16bb1c24dcdc91e2ae868b2b21a41a",
+    "lockfile": "package-lock.json",
+    "lock_sha256": "b8ec0535883a6bb186a6a633979a497b12f110463da86ae0122ddd3426d219e8",
+    "r1_contract_path": "research/sources/boxyhq-r1-trace-contract.json",
+    "r1_contract_sha256": "467b8f26728c7c55973bb835194c7ff44e61d4e30b3008eff21d05f52c557b66"
+  },
+  "research_references": [
+    {
+      "id": "BOPEN-RES-001",
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/BOPEN-RES-001.md",
+      "version": "1.0",
+      "status": "Approved for research execution",
+      "purpose": "Research authority, evidence levels, work packages and G3 definition."
+    },
+    {
+      "id": "EVD-RES-003",
+      "path": "docs/evidence/EVD-RES-003-r1-lifecycle-trace.md",
+      "version": "1.1",
+      "status": "Accepted research evidence; G3 open",
+      "purpose": "E2 findings, open runtime gaps and required G3 runtime pack."
+    },
+    {
+      "id": "BOX-R1-TRACE",
+      "path": "research/sources/boxyhq-r1-trace-contract.json",
+      "version": "unversioned",
+      "status": "research-observation-only",
+      "purpose": "Pinned case-by-layer source evidence R1-E001 through R1-E057."
+    },
+    {
+      "id": "DEC-0009",
+      "path": "docs/decisions/DEC-0009.md",
+      "version": "unversioned",
+      "status": "Approved",
+      "purpose": "External research root, clean-room and sanitized evidence controls."
+    }
+  ],
+  "gate_state": {
+    "gate": "G3",
+    "status": "OPEN",
+    "runtime_executed": false,
+    "g3_pass": false,
+    "decision": "DEFERRED",
+    "reason": "This artifact defines a future synthetic runtime study only; no runtime case has been executed or independently reproduced."
+  },
+  "evidence_model": {
+    "levels": [
+      {
+        "level": "E2",
+        "definition": "Pinned source-code, schema or static test observation.",
+        "required_receipts": ["source path and locator", "source SHA-256", "R1 evidence ID"]
+      },
+      {
+        "level": "E3",
+        "definition": "One deterministic isolated database-backed runtime probe at the exact pin.",
+        "required_receipts": ["request and response", "before and after database assertions", "substitute captures", "source, build and environment hashes"]
+      },
+      {
+        "level": "E4",
+        "definition": "E2 and E3 triangulated with an independent fresh-database reproduction by a second operator.",
+        "required_receipts": ["two distinct operator manifests", "normalized result comparison", "checker verdict", "divergence disposition"]
+      }
+    ],
+    "minimum_per_mandatory_case": "E3",
+    "independent_target": "E4",
+    "measurement_rules": [
+      "A secure oracle is a comparison target and never a claim about unexecuted upstream behavior.",
+      "Observed upstream decision, reason, status and conformance remain null until execution.",
+      "Skipped, missing, stale, self-checked or hash-mismatched cases do not count.",
+      "An evidenced upstream defect may close research trace coverage but must remain a finding for G5 and G6.",
+      "Every E4 result requires two distinct operators and fresh databases."
+    ]
+  },
+  "reason_codes": [
+    {"code": "REGISTRATION_CREATED", "decision": "ALLOW", "meaning": "Registration and required initial relations completed."},
+    {"code": "IDENTITY_VERIFIED", "decision": "ALLOW", "meaning": "Verification completed and token was consumed."},
+    {"code": "AUTHENTICATED", "decision": "ALLOW", "meaning": "Credential authentication succeeded."},
+    {"code": "PASSWORD_RESET", "decision": "ALLOW", "meaning": "Password reset completed and token was consumed."},
+    {"code": "SESSION_ACTIVE", "decision": "ALLOW", "meaning": "Session is valid and owned by the actor."},
+    {"code": "SESSION_DELETED", "decision": "ALLOW", "meaning": "Owned session was removed."},
+    {"code": "ACCOUNT_LINKED", "decision": "ALLOW", "meaning": "Provider account was linked exactly once."},
+    {"code": "ACCOUNT_UNLINKED", "decision": "ALLOW", "meaning": "A non-last authentication method was unlinked."},
+    {"code": "API_KEY_CREATED", "decision": "ALLOW", "meaning": "API key management record was created safely."},
+    {"code": "API_KEY_ACCEPTED", "decision": "ALLOW", "meaning": "API key was accepted by an observed authentication boundary."},
+    {"code": "TENANT_CREATED", "decision": "ALLOW", "meaning": "Team-like tenant and owner membership were created."},
+    {"code": "TENANT_UPDATED", "decision": "ALLOW", "meaning": "Authorized team update completed."},
+    {"code": "TENANT_DELETED", "decision": "ALLOW", "meaning": "Authorized team deletion completed."},
+    {"code": "MEMBERSHIP_LISTED", "decision": "ALLOW", "meaning": "Authorized team membership list was returned."},
+    {"code": "MEMBERSHIP_UPDATED", "decision": "ALLOW", "meaning": "Authorized membership role update completed."},
+    {"code": "MEMBERSHIP_REMOVED", "decision": "ALLOW", "meaning": "Authorized membership removal or leave completed."},
+    {"code": "INVITE_CREATED", "decision": "ALLOW", "meaning": "Invitation was created once."},
+    {"code": "INVITE_FETCHED", "decision": "ALLOW", "meaning": "Valid invitation was fetched with minimum disclosure."},
+    {"code": "INVITE_ACCEPTED", "decision": "ALLOW", "meaning": "Invitation produced one membership transition."},
+    {"code": "INVITE_REVOKED", "decision": "ALLOW", "meaning": "Invitation was revoked once."},
+    {"code": "INPUT_INVALID", "decision": "DENY", "meaning": "Input failed validation before mutation."},
+    {"code": "CAPTCHA_INVALID", "decision": "DENY", "meaning": "CAPTCHA substitute rejected the request."},
+    {"code": "EMAIL_CONFLICT", "decision": "DENY", "meaning": "Canonical identity email conflicts with an existing account."},
+    {"code": "CREDENTIAL_INVALID", "decision": "DENY", "meaning": "Credential authentication failed without account enumeration."},
+    {"code": "ACCOUNT_LOCKED", "decision": "DENY", "meaning": "Account lock policy denied authentication."},
+    {"code": "TOKEN_INVALID", "decision": "DENY", "meaning": "Token was unknown or malformed."},
+    {"code": "TOKEN_EXPIRED", "decision": "DENY", "meaning": "Token expired under the deterministic clock."},
+    {"code": "TOKEN_CONSUMED", "decision": "DENY", "meaning": "Token was already used."},
+    {"code": "SESSION_INVALID", "decision": "DENY", "meaning": "Session was absent, forged or stale."},
+    {"code": "SESSION_EXPIRED", "decision": "DENY", "meaning": "Session expired under the deterministic clock."},
+    {"code": "SESSION_REVOKED", "decision": "DENY", "meaning": "Security transition invalidated the session."},
+    {"code": "SESSION_NOT_OWNED", "decision": "DENY", "meaning": "Actor attempted to manage another principal's session."},
+    {"code": "ACCOUNT_LINK_CONFLICT", "decision": "DENY", "meaning": "Provider account ownership or email linking conflicts."},
+    {"code": "LAST_AUTH_METHOD", "decision": "DENY", "meaning": "Unlink would remove the last authentication method."},
+    {"code": "API_KEY_INVALID", "decision": "DENY", "meaning": "API key was unknown or malformed."},
+    {"code": "API_KEY_EXPIRED", "decision": "DENY", "meaning": "API key expired."},
+    {"code": "API_KEY_REVOKED", "decision": "DENY", "meaning": "API key was revoked."},
+    {"code": "API_KEY_SCOPE_DENIED", "decision": "DENY", "meaning": "API key lacked tenant or capability scope."},
+    {"code": "ROLE_FORBIDDEN", "decision": "DENY", "meaning": "Actor role does not permit the action."},
+    {"code": "CROSS_TENANT_REFERENCE", "decision": "DENY", "meaning": "Actor or resource belongs to another team boundary."},
+    {"code": "LAST_OWNER_REQUIRED", "decision": "DENY", "meaning": "Mutation would remove the last owner."},
+    {"code": "MEMBERSHIP_CONFLICT", "decision": "DENY", "meaning": "Membership uniqueness or state conflicts."},
+    {"code": "INVITE_INVALID", "decision": "DENY", "meaning": "Invitation was unknown or malformed."},
+    {"code": "INVITE_EXPIRED", "decision": "DENY", "meaning": "Invitation expired."},
+    {"code": "INVITE_ALREADY_REVOKED", "decision": "DENY", "meaning": "Invitation was already revoked before the attempted action."},
+    {"code": "INVITE_CONSUMED", "decision": "DENY", "meaning": "Invitation was already consumed."},
+    {"code": "INVITE_EMAIL_MISMATCH", "decision": "DENY", "meaning": "Authenticated email does not match the invitation."},
+    {"code": "INVITE_DOMAIN_DENIED", "decision": "DENY", "meaning": "Authenticated email domain is not allowed."},
+    {"code": "RACE_LOST", "decision": "DENY", "meaning": "Another transaction won the lifecycle race."},
+    {"code": "DEPENDENCY_FAILURE", "decision": "ERROR_ROLLED_BACK", "meaning": "Injected dependency failure leaves no partial database state."},
+    {"code": "EVENT_FAILURE", "decision": "ERROR_ROLLED_BACK", "meaning": "Event failure follows the declared rollback or durable retry rule."},
+    {"code": "AUDIT_FAILURE", "decision": "ERROR_ROLLED_BACK", "meaning": "Audit failure follows the declared rollback or durable retry rule."},
+    {"code": "PARTIAL_MUTATION", "decision": "ERROR_PARTIAL", "meaning": "Observed upstream state is partially committed and requires a finding."},
+    {"code": "API_KEY_NO_AUTH_CALLSITE", "decision": "UNOBSERVABLE", "meaning": "No upstream API-key authentication caller is available to exercise."}
+  ],
+  "substitutes": [
+    {"id": "SUB-POSTGRES", "kind": "database", "purpose": "Fresh synthetic database for state and constraint probes.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["schema hash", "seed hash", "before and after normalized queries"], "failure_modes": ["statement failure", "commit failure", "connection loss"]},
+    {"id": "SUB-CLOCK", "kind": "deterministic clock", "purpose": "Expiry boundaries and repeatable races.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["initial instant", "advance log"], "failure_modes": ["exact expiry boundary"]},
+    {"id": "SUB-TOKEN", "kind": "deterministic random and token source", "purpose": "Repeatable synthetic token creation without recording usable secrets.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["seed hash", "redacted token digest"], "failure_modes": ["collision"]},
+    {"id": "SUB-MAIL", "kind": "mail sink", "purpose": "Capture verification, reset and invitation mail.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["recipient hash", "template", "correlation", "cardinality"], "failure_modes": ["delivery reject", "timeout"]},
+    {"id": "SUB-CAPTCHA", "kind": "CAPTCHA verifier", "purpose": "Deterministic accept and reject paths.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["decision", "correlation"], "failure_modes": ["reject", "timeout"]},
+    {"id": "SUB-OAUTH", "kind": "OAuth OIDC provider", "purpose": "Synthetic linked-account collisions and unlink behavior.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["synthetic subject", "provider", "callback correlation"], "failure_modes": ["duplicate subject", "email collision", "callback failure"]},
+    {"id": "SUB-SVIX", "kind": "webhook and application capture", "purpose": "Capture webhook application setup and lifecycle event delivery.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["payload hash", "ordering", "correlation", "cardinality"], "failure_modes": ["disabled", "reject", "timeout"]},
+    {"id": "SUB-RETRACED", "kind": "audit capture", "purpose": "Capture actor, team, target, outcome and correlation.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["payload hash", "ordering", "correlation", "cardinality"], "failure_modes": ["disabled", "reject", "timeout"]},
+    {"id": "SUB-SESSION", "kind": "NextAuth database and JWT session configurations", "purpose": "Exercise both session variants with immutable configuration.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["configuration hash", "session digest", "revocation result"], "failure_modes": ["expired", "forged", "stale"]},
+    {"id": "SUB-BARRIER", "kind": "concurrency coordinator", "purpose": "Release two or more workers at a recorded barrier.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["worker IDs", "barrier instant", "completion order"], "failure_modes": ["same-token", "accept-versus-revoke", "owner mutation race"]},
+    {"id": "SUB-FAULT", "kind": "fault injection boundary", "purpose": "Inject phase-specific database and integration failures without modifying upstream source.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["fault phase", "fault correlation", "pre and post snapshot"], "failure_modes": ["database phase", "event phase", "audit phase"]},
+    {"id": "SUB-HTTP", "kind": "request driver", "purpose": "Capture API and browser-visible outcomes against the local application.", "local_only": true, "network_access": "deny-except-declared-local-substitutes", "digest_status": "pending-authority", "immutable_runtime_required": true, "capture_requirements": ["method and route", "redacted request", "status", "redacted response"], "failure_modes": ["timeout", "connection failure"]}
+  ],
+  "database_design": {
+    "engine": "PostgreSQL",
+    "version_status": "pending-authority",
+    "image_digest_status": "pending-authority",
+    "fresh_database_per_run": true,
+    "synthetic_seed_only": true,
+    "deterministic_seed": true,
+    "before_after_snapshots": true,
+    "isolation_controls": ["unique database name per operator and run", "no production connectivity", "two teams and two principals for cross-team probes", "normalized primary and foreign key assertions"],
+    "fault_injection": ["phase-specific failure without upstream source modification", "rollback or partial-state classification", "recorded transaction and worker ordering"]
+  },
+  "case_families": [
+    {
+      "family_id": "G3-ID-REG-VALIDATION",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "registration validation and canonical identity", "mandatory": true, "evidence_target": "E3",
+      "source_evidence_ids": ["R1-E001", "R1-E002", "R1-E003", "R1-E004", "R1-E005", "R1-E006", "R1-E007"],
+      "stable_case_ids": ["ID-REG-01", "ID-REG-02", "ID-REG-03A", "ID-REG-03B", "ID-REG-04"],
+      "secure_oracles": [
+        {"case_id": "ID-REG-01", "decision": "ALLOW", "reason_code": "REGISTRATION_CREATED", "scenario": "Seed ID-REG-01 with unique normalized email, valid password, unique team slug and accepted CAPTCHA.", "action": "Execute the registration validation and canonical identity boundary once for ID-REG-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-01 is ALLOW with reason REGISTRATION_CREATED.", "Exactly one intended committed state transition is attributable to ID-REG-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-REG-01 satisfy the explicit G3-ID-REG-VALIDATION assertion profile or record a named absence finding."]},
+        {"case_id": "ID-REG-02", "decision": "DENY", "reason_code": "INPUT_INVALID", "scenario": "Seed ID-REG-02 with malformed email, password and team fields.", "action": "Execute the registration validation and canonical identity boundary once for ID-REG-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-02 is DENY with reason INPUT_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-REG-02.", "Session, event and audit receipts for ID-REG-02 satisfy G3-ID-REG-VALIDATION assertions or record a named absence."]},
+        {"case_id": "ID-REG-03A", "decision": "DENY", "reason_code": "EMAIL_CONFLICT", "scenario": "Seed ID-REG-03A with existing account with the exact stored email.", "action": "Execute the registration validation and canonical identity boundary once for ID-REG-03A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-03A is DENY with reason EMAIL_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-REG-03A.", "Session, event and audit receipts for ID-REG-03A satisfy G3-ID-REG-VALIDATION assertions or record a named absence."]},
+        {"case_id": "ID-REG-03B", "decision": "DENY", "reason_code": "EMAIL_CONFLICT", "scenario": "Seed ID-REG-03B with existing email with case and whitespace variation.", "action": "Execute the registration validation and canonical identity boundary once for ID-REG-03B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-03B is DENY with reason EMAIL_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-REG-03B.", "Session, event and audit receipts for ID-REG-03B satisfy G3-ID-REG-VALIDATION assertions or record a named absence."]},
+        {"case_id": "ID-REG-04", "decision": "DENY", "reason_code": "CAPTCHA_INVALID", "scenario": "Seed ID-REG-04 with valid registration with CAPTCHA rejected.", "action": "Execute the registration validation and canonical identity boundary once for ID-REG-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-04 is DENY with reason CAPTCHA_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-REG-04.", "Session, event and audit receipts for ID-REG-04 satisfy G3-ID-REG-VALIDATION assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-TOKEN", "SUB-MAIL", "SUB-CAPTCHA", "SUB-SVIX", "SUB-HTTP"],
+      "concurrency_control": "single worker; duplicate and canonical-equivalent inputs use independent fresh seeds",
+      "fault_control": "none; dependency phase failures are isolated in G3-ID-REG-ATOMICITY",
+      "assertions": {
+        "database": ["valid case creates exactly one User, Team and OWNER TeamMember; denied cases create none"],
+        "api": ["capture validation, duplicate and CAPTCHA status/error envelopes without account enumeration"],
+        "session": ["no authenticated session is accepted before the configured verification rule"],
+        "event": ["valid case captures expected webhook application and metric/mail cardinality; denied cases emit none"],
+        "audit": ["record presence or absence of registration actor, outcome and correlation without treating absence as conformance"]
+      }
+    },
+    {
+      "family_id": "G3-ID-REG-ATOMICITY",
+      "work_packages": ["RES-P0-05", "RES-P0-06", "RES-G3"], "lifecycle": "registration, team and owner atomicity", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E002", "R1-E005", "R1-E006", "R1-E033", "R1-E035", "R1-E039"],
+      "stable_case_ids": ["ID-REG-05A", "ID-REG-05B", "ID-REG-05C", "ID-REG-06"],
+      "secure_oracles": [
+        {"case_id": "ID-REG-05A", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-REG-05A with failure before Team insertion.", "action": "Execute the registration, team and owner atomicity boundary once for ID-REG-05A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-05A is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-REG-05A equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-REG-05A satisfy G3-ID-REG-ATOMICITY assertions or record a named absence."]},
+        {"case_id": "ID-REG-05B", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-REG-05B with failure during OWNER membership insertion.", "action": "Execute the registration, team and owner atomicity boundary once for ID-REG-05B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-05B is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-REG-05B equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-REG-05B satisfy G3-ID-REG-ATOMICITY assertions or record a named absence."]},
+        {"case_id": "ID-REG-05C", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-REG-05C with webhook application setup rejection.", "action": "Execute the registration, team and owner atomicity boundary once for ID-REG-05C and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-05C is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-REG-05C equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-REG-05C satisfy G3-ID-REG-ATOMICITY assertions or record a named absence."]},
+        {"case_id": "ID-REG-06", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-REG-06 with verification-mail delivery rejection.", "action": "Execute the registration, team and owner atomicity boundary once for ID-REG-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-REG-06 is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-REG-06 equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-REG-06 satisfy G3-ID-REG-ATOMICITY assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-MAIL", "SUB-SVIX", "SUB-FAULT", "SUB-HTTP"],
+      "concurrency_control": "single worker per injected phase; fresh database for every phase",
+      "fault_control": "inject Team create, OWNER membership create, webhook application and mail delivery failures separately",
+      "assertions": {
+        "database": ["compare User, Team and TeamMember before and after each phase; classify rollback versus partial mutation"],
+        "api": ["capture exact failure envelope and retry behavior"],
+        "session": ["no session may reference a partial or failed registration"],
+        "event": ["no success event is accepted for a rolled-back lifecycle; record partial external effects"],
+        "audit": ["failure outcome and correlation are captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-ID-VERIFICATION",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "email verification and resend", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E016", "R1-E017", "R1-E018", "R1-E019"],
+      "stable_case_ids": ["ID-VER-01", "ID-VER-02", "ID-VER-03", "ID-VER-04", "ID-VER-05", "ID-VER-06A", "ID-VER-06B", "ID-VER-07A", "ID-VER-07B"],
+      "secure_oracles": [
+        {"case_id": "ID-VER-01", "decision": "ALLOW", "reason_code": "IDENTITY_VERIFIED", "scenario": "Seed ID-VER-01 with valid unused token.", "action": "Execute the email verification and resend boundary once for ID-VER-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-01 is ALLOW with reason IDENTITY_VERIFIED.", "Exactly one intended committed state transition is attributable to ID-VER-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-VER-01 satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-02", "decision": "DENY", "reason_code": "TOKEN_INVALID", "scenario": "Seed ID-VER-02 with unknown token.", "action": "Execute the email verification and resend boundary once for ID-VER-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-02 is DENY with reason TOKEN_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-VER-02.", "Session, event and audit receipts for ID-VER-02 satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-03", "decision": "DENY", "reason_code": "TOKEN_EXPIRED", "scenario": "Seed ID-VER-03 with expired token.", "action": "Execute the email verification and resend boundary once for ID-VER-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-03 is DENY with reason TOKEN_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-VER-03.", "Session, event and audit receipts for ID-VER-03 satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-04", "decision": "DENY", "reason_code": "TOKEN_CONSUMED", "scenario": "Seed ID-VER-04 with consumed-token replay.", "action": "Execute the email verification and resend boundary once for ID-VER-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-04 is DENY with reason TOKEN_CONSUMED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-VER-04.", "Session, event and audit receipts for ID-VER-04 satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-05", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed ID-VER-05 with two workers sharing one token.", "action": "Execute the email verification and resend boundary once for ID-VER-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-05 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-VER-05.", "Session, event and audit receipts for ID-VER-05 satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-06A", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-VER-06A with user update succeeds but token deletion fails.", "action": "Execute the email verification and resend boundary once for ID-VER-06A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-06A is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-VER-06A equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-VER-06A satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-06B", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-VER-06B with token deletion succeeds but user update fails.", "action": "Execute the email verification and resend boundary once for ID-VER-06B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-06B is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-VER-06B equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-VER-06B satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-07A", "decision": "ALLOW", "reason_code": "IDENTITY_VERIFIED", "scenario": "Seed ID-VER-07A with resend for existing unverified account.", "action": "Execute the email verification and resend boundary once for ID-VER-07A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-07A is ALLOW with reason IDENTITY_VERIFIED.", "Exactly one intended committed state transition is attributable to ID-VER-07A; no duplicate success transition is present.", "Session, event and audit receipts for ID-VER-07A satisfy G3-ID-VERIFICATION assertions or record a named absence."]},
+        {"case_id": "ID-VER-07B", "decision": "DENY", "reason_code": "TOKEN_INVALID", "scenario": "Seed ID-VER-07B with resend for nonexistent account.", "action": "Execute the email verification and resend boundary once for ID-VER-07B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-VER-07B is DENY with reason TOKEN_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-VER-07B.", "Session, event and audit receipts for ID-VER-07B satisfy G3-ID-VERIFICATION assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-TOKEN", "SUB-MAIL", "SUB-BARRIER", "SUB-FAULT", "SUB-HTTP"],
+      "concurrency_control": "two workers verify the same token at one barrier; exactly one terminal transition",
+      "fault_control": "fail user update and token deletion independently to expose settled-parallel partial state",
+      "assertions": {
+        "database": ["verifiedAt and token consumption are atomic; invalid, expired and replay cases do not mutate User"],
+        "api": ["resend existing and missing accounts use a non-enumerating envelope"],
+        "session": ["verification state is reflected consistently in subsequent authentication"],
+        "event": ["mail and verification side effects occur at most once with correlation"],
+        "audit": ["verification success, denial and partial failures are attributable or recorded as gaps"]
+      }
+    },
+    {
+      "family_id": "G3-ID-AUTH-LOCKOUT",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "credential login and lockout", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E008", "R1-E011", "R1-E012", "R1-E014", "R1-E015", "R1-E024", "R1-E025", "R1-E057"],
+      "stable_case_ids": ["ID-AUTH-01", "ID-AUTH-02", "ID-LOCK-01", "ID-LOCK-02", "ID-LOCK-03", "ID-LOCK-04", "ID-LOCK-05", "ID-LOCK-06"],
+      "secure_oracles": [
+        {"case_id": "ID-AUTH-01", "decision": "ALLOW", "reason_code": "AUTHENTICATED", "scenario": "Seed ID-AUTH-01 with correct credential and accepted CAPTCHA.", "action": "Execute the credential login and lockout boundary once for ID-AUTH-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-AUTH-01 is ALLOW with reason AUTHENTICATED.", "Exactly one intended committed state transition is attributable to ID-AUTH-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-AUTH-01 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-AUTH-02", "decision": "DENY", "reason_code": "CREDENTIAL_INVALID", "scenario": "Seed ID-AUTH-02 with wrong password and nonexistent-user variants.", "action": "Execute the credential login and lockout boundary once for ID-AUTH-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-AUTH-02 is DENY with reason CREDENTIAL_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-AUTH-02.", "Session, event and audit receipts for ID-AUTH-02 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-01", "decision": "DENY", "reason_code": "CREDENTIAL_INVALID", "scenario": "Seed ID-LOCK-01 with failure below lock threshold.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-01 is DENY with reason CREDENTIAL_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LOCK-01.", "Session, event and audit receipts for ID-LOCK-01 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-02", "decision": "DENY", "reason_code": "ACCOUNT_LOCKED", "scenario": "Seed ID-LOCK-02 with failure reaching lock threshold.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-02 is DENY with reason ACCOUNT_LOCKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LOCK-02.", "Session, event and audit receipts for ID-LOCK-02 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-03", "decision": "DENY", "reason_code": "ACCOUNT_LOCKED", "scenario": "Seed ID-LOCK-03 with correct password while locked.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-03 is DENY with reason ACCOUNT_LOCKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LOCK-03.", "Session, event and audit receipts for ID-LOCK-03 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-04", "decision": "ALLOW", "reason_code": "AUTHENTICATED", "scenario": "Seed ID-LOCK-04 with correct password after unlock time.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-04 is ALLOW with reason AUTHENTICATED.", "Exactly one intended committed state transition is attributable to ID-LOCK-04; no duplicate success transition is present.", "Session, event and audit receipts for ID-LOCK-04 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-05", "decision": "DENY", "reason_code": "ACCOUNT_LOCKED", "scenario": "Seed ID-LOCK-05 with concurrent failures at threshold.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-05 is DENY with reason ACCOUNT_LOCKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LOCK-05.", "Session, event and audit receipts for ID-LOCK-05 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]},
+        {"case_id": "ID-LOCK-06", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed ID-LOCK-06 with successful and failed login racing.", "action": "Execute the credential login and lockout boundary once for ID-LOCK-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LOCK-06 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LOCK-06.", "Session, event and audit receipts for ID-LOCK-06 satisfy G3-ID-AUTH-LOCKOUT assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-CAPTCHA", "SUB-SESSION", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "barrier-synchronize threshold failures and a success-versus-failure pair",
+      "fault_control": "no dependency injection; clock and ordering are controlled",
+      "assertions": {
+        "database": ["attempt count, lockedAt and successful-reset state are deterministic with no lost update"],
+        "api": ["wrong and nonexistent credentials have the same external denial shape"],
+        "session": ["successful authentication creates one valid session; denied attempts create none"],
+        "event": ["authentication metrics preserve outcome and correlation without secrets"],
+        "audit": ["lock transition and unlock outcome are attributable or absence is a finding"]
+      }
+    },
+    {
+      "family_id": "G3-ID-PASSWORD-RESET",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "password reset request and consumption", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E020", "R1-E021", "R1-E022", "R1-E023"],
+      "stable_case_ids": ["ID-RESET-01A", "ID-RESET-01B", "ID-RESET-02", "ID-RESET-03", "ID-RESET-04", "ID-RESET-05", "ID-RESET-06", "ID-RESET-07A", "ID-RESET-07B"],
+      "secure_oracles": [
+        {"case_id": "ID-RESET-01A", "decision": "ALLOW", "reason_code": "PASSWORD_RESET", "scenario": "Seed ID-RESET-01A with request for existing account.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-01A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-01A is ALLOW with reason PASSWORD_RESET.", "Exactly one intended committed state transition is attributable to ID-RESET-01A; no duplicate success transition is present.", "Session, event and audit receipts for ID-RESET-01A satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-01B", "decision": "DENY", "reason_code": "TOKEN_INVALID", "scenario": "Seed ID-RESET-01B with request for nonexistent account.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-01B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-01B is DENY with reason TOKEN_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-01B.", "Session, event and audit receipts for ID-RESET-01B satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-02", "decision": "DENY", "reason_code": "TOKEN_CONSUMED", "scenario": "Seed ID-RESET-02 with second request with a live token.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-02 is DENY with reason TOKEN_CONSUMED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-02.", "Session, event and audit receipts for ID-RESET-02 satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-03", "decision": "ALLOW", "reason_code": "PASSWORD_RESET", "scenario": "Seed ID-RESET-03 with valid unused reset token.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-03 is ALLOW with reason PASSWORD_RESET.", "Exactly one intended committed state transition is attributable to ID-RESET-03; no duplicate success transition is present.", "Session, event and audit receipts for ID-RESET-03 satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-04", "decision": "DENY", "reason_code": "TOKEN_EXPIRED", "scenario": "Seed ID-RESET-04 with expired reset token.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-04 is DENY with reason TOKEN_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-04.", "Session, event and audit receipts for ID-RESET-04 satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-05", "decision": "DENY", "reason_code": "TOKEN_CONSUMED", "scenario": "Seed ID-RESET-05 with consumed reset-token replay.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-05 is DENY with reason TOKEN_CONSUMED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-05.", "Session, event and audit receipts for ID-RESET-05 satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-06", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed ID-RESET-06 with fault between password update and token consumption.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-06 is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for ID-RESET-06 equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for ID-RESET-06 satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-07A", "decision": "DENY", "reason_code": "SESSION_REVOKED", "scenario": "Seed ID-RESET-07A with old database session after reset.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-07A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-07A is DENY with reason SESSION_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-07A.", "Session, event and audit receipts for ID-RESET-07A satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]},
+        {"case_id": "ID-RESET-07B", "decision": "DENY", "reason_code": "SESSION_REVOKED", "scenario": "Seed ID-RESET-07B with old JWT session after reset.", "action": "Execute the password reset request and consumption boundary once for ID-RESET-07B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-RESET-07B is DENY with reason SESSION_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-RESET-07B.", "Session, event and audit receipts for ID-RESET-07B satisfy G3-ID-PASSWORD-RESET assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-TOKEN", "SUB-MAIL", "SUB-SESSION", "SUB-FAULT", "SUB-HTTP"],
+      "concurrency_control": "repeat requests and token replay use fixed ordering and fresh seeds",
+      "fault_control": "fail password update and token consumption phases independently; capture error-shape mapping",
+      "assertions": {
+        "database": ["request enumeration, live-token cardinality, password change and token consumption are measured"],
+        "api": ["existing and nonexistent account requests use an equivalent envelope; malformed errors are recorded"],
+        "session": ["old database and JWT sessions are independently tested after reset"],
+        "event": ["mail cardinality and correlation are captured without raw tokens"],
+        "audit": ["request and reset outcomes are attributable or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-ID-SESSION",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "session creation, ownership, expiry and deletion", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E004", "R1-E009", "R1-E010", "R1-E013", "R1-E014", "R1-E015"],
+      "stable_case_ids": ["ID-SES-01", "ID-SES-02", "ID-SES-03", "ID-SES-04", "ID-SES-05"],
+      "secure_oracles": [
+        {"case_id": "ID-SES-01", "decision": "ALLOW", "reason_code": "SESSION_ACTIVE", "scenario": "Seed ID-SES-01 with valid owned session.", "action": "Execute the session creation, ownership, expiry and deletion boundary once for ID-SES-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-SES-01 is ALLOW with reason SESSION_ACTIVE.", "Exactly one intended committed state transition is attributable to ID-SES-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-SES-01 satisfy G3-ID-SESSION assertions or record a named absence."]},
+        {"case_id": "ID-SES-02", "decision": "ALLOW", "reason_code": "SESSION_DELETED", "scenario": "Seed ID-SES-02 with owner deleting own session.", "action": "Execute the session creation, ownership, expiry and deletion boundary once for ID-SES-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-SES-02 is ALLOW with reason SESSION_DELETED.", "Exactly one intended committed state transition is attributable to ID-SES-02; no duplicate success transition is present.", "Session, event and audit receipts for ID-SES-02 satisfy G3-ID-SESSION assertions or record a named absence."]},
+        {"case_id": "ID-SES-03", "decision": "DENY", "reason_code": "SESSION_NOT_OWNED", "scenario": "Seed ID-SES-03 with actor deleting another user's session.", "action": "Execute the session creation, ownership, expiry and deletion boundary once for ID-SES-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-SES-03 is DENY with reason SESSION_NOT_OWNED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-SES-03.", "Session, event and audit receipts for ID-SES-03 satisfy G3-ID-SESSION assertions or record a named absence."]},
+        {"case_id": "ID-SES-04", "decision": "DENY", "reason_code": "SESSION_EXPIRED", "scenario": "Seed ID-SES-04 with expired session.", "action": "Execute the session creation, ownership, expiry and deletion boundary once for ID-SES-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-SES-04 is DENY with reason SESSION_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-SES-04.", "Session, event and audit receipts for ID-SES-04 satisfy G3-ID-SESSION assertions or record a named absence."]},
+        {"case_id": "ID-SES-05", "decision": "DENY", "reason_code": "SESSION_INVALID", "scenario": "Seed ID-SES-05 with forged or stale session.", "action": "Execute the session creation, ownership, expiry and deletion boundary once for ID-SES-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-SES-05 is DENY with reason SESSION_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-SES-05.", "Session, event and audit receipts for ID-SES-05 satisfy G3-ID-SESSION assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-SESSION", "SUB-HTTP"],
+      "concurrency_control": "single worker with separate database and JWT configurations",
+      "fault_control": "forged, stale and expired session inputs only",
+      "assertions": {
+        "database": ["database session create/delete cardinality and ownership are asserted"],
+        "api": ["foreign, expired and forged sessions are denied without information leakage"],
+        "session": ["deletion produces immediate denial in the applicable session mode"],
+        "event": ["session management event presence and cardinality are recorded"],
+        "audit": ["actor and target session correlation is captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-ID-LINKED-ACCOUNT",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "OAuth linked-account ownership and unlink", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E004", "R1-E012", "R1-E015"],
+      "stable_case_ids": ["ID-LINK-01", "ID-LINK-02", "ID-LINK-03", "ID-LINK-04", "ID-LINK-05", "ID-LINK-06", "ID-LINK-07"],
+      "secure_oracles": [
+        {"case_id": "ID-LINK-01", "decision": "ALLOW", "reason_code": "ACCOUNT_LINKED", "scenario": "Seed ID-LINK-01 with new OAuth subject for one user.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-01 is ALLOW with reason ACCOUNT_LINKED.", "Exactly one intended committed state transition is attributable to ID-LINK-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-LINK-01 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-02", "decision": "ALLOW", "reason_code": "ACCOUNT_LINKED", "scenario": "Seed ID-LINK-02 with same-user callback replay.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-02 is ALLOW with reason ACCOUNT_LINKED.", "Exactly one intended committed state transition is attributable to ID-LINK-02; no duplicate success transition is present.", "Session, event and audit receipts for ID-LINK-02 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-03", "decision": "DENY", "reason_code": "ACCOUNT_LINK_CONFLICT", "scenario": "Seed ID-LINK-03 with provider email collision.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-03 is DENY with reason ACCOUNT_LINK_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LINK-03.", "Session, event and audit receipts for ID-LINK-03 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-04", "decision": "DENY", "reason_code": "ACCOUNT_LINK_CONFLICT", "scenario": "Seed ID-LINK-04 with provider subject owned by another user.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-04 is DENY with reason ACCOUNT_LINK_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LINK-04.", "Session, event and audit receipts for ID-LINK-04 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-05", "decision": "ALLOW", "reason_code": "ACCOUNT_UNLINKED", "scenario": "Seed ID-LINK-05 with unlink non-last method.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-05 is ALLOW with reason ACCOUNT_UNLINKED.", "Exactly one intended committed state transition is attributable to ID-LINK-05; no duplicate success transition is present.", "Session, event and audit receipts for ID-LINK-05 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-06", "decision": "DENY", "reason_code": "LAST_AUTH_METHOD", "scenario": "Seed ID-LINK-06 with unlink last method.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-06 is DENY with reason LAST_AUTH_METHOD.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LINK-06.", "Session, event and audit receipts for ID-LINK-06 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]},
+        {"case_id": "ID-LINK-07", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed ID-LINK-07 with two users racing for one subject.", "action": "Execute the OAuth linked-account ownership and unlink boundary once for ID-LINK-07 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-LINK-07 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-LINK-07.", "Session, event and audit receipts for ID-LINK-07 satisfy G3-ID-LINKED-ACCOUNT assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-OAUTH", "SUB-SESSION", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "two users attempt the same provider subject at one barrier",
+      "fault_control": "provider callback collision and unlink-last-method cases",
+      "assertions": {
+        "database": ["provider subject has at most one User owner and replay creates no duplicate Account"],
+        "api": ["email and provider conflicts deny linking without disclosing another account"],
+        "session": ["link and unlink results are reflected consistently in authentication"],
+        "event": ["account-link event presence and cardinality are recorded"],
+        "audit": ["actor, provider and outcome are captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-ID-API-KEY",
+      "work_packages": ["RES-P0-05", "RES-G3"], "lifecycle": "API-key management and observable authentication boundary", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E004", "R1-E026", "R1-E027", "R1-E028", "R1-E029", "R1-E030"],
+      "stable_case_ids": ["ID-KEY-01", "ID-KEY-02", "ID-KEY-03", "ID-KEY-04", "ID-KEY-05", "ID-KEY-06", "ID-KEY-07", "ID-KEY-08", "ID-KEY-09"],
+      "secure_oracles": [
+        {"case_id": "ID-KEY-01", "decision": "ALLOW", "reason_code": "API_KEY_CREATED", "scenario": "Seed ID-KEY-01 with authorized key creation.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-01 is ALLOW with reason API_KEY_CREATED.", "Exactly one intended committed state transition is attributable to ID-KEY-01; no duplicate success transition is present.", "Session, event and audit receipts for ID-KEY-01 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-02", "decision": "UNOBSERVABLE", "reason_code": "API_KEY_NO_AUTH_CALLSITE", "scenario": "Seed ID-KEY-02 with candidate key at searched auth boundary.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-02 is UNOBSERVABLE with reason API_KEY_NO_AUTH_CALLSITE.", "No callable upstream authentication boundary is found for ID-KEY-02; management observations remain separate.", "Session, event and audit receipts for ID-KEY-02 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-03", "decision": "DENY", "reason_code": "API_KEY_INVALID", "scenario": "Seed ID-KEY-03 with unknown key digest.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-03 is DENY with reason API_KEY_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-03.", "Session, event and audit receipts for ID-KEY-03 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-04", "decision": "DENY", "reason_code": "API_KEY_EXPIRED", "scenario": "Seed ID-KEY-04 with expired key.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-04 is DENY with reason API_KEY_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-04.", "Session, event and audit receipts for ID-KEY-04 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-05", "decision": "DENY", "reason_code": "API_KEY_REVOKED", "scenario": "Seed ID-KEY-05 with revoked key.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-05 is DENY with reason API_KEY_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-05.", "Session, event and audit receipts for ID-KEY-05 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-06", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed ID-KEY-06 with team-A key against team-B resource.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-06 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-06.", "Session, event and audit receipts for ID-KEY-06 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-07", "decision": "DENY", "reason_code": "API_KEY_SCOPE_DENIED", "scenario": "Seed ID-KEY-07 with key lacking scope.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-07 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-07 is DENY with reason API_KEY_SCOPE_DENIED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-07.", "Session, event and audit receipts for ID-KEY-07 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-08", "decision": "DENY", "reason_code": "API_KEY_REVOKED", "scenario": "Seed ID-KEY-08 with old key after rotation.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-08 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-08 is DENY with reason API_KEY_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-08.", "Session, event and audit receipts for ID-KEY-08 satisfy G3-ID-API-KEY assertions or record a named absence."]},
+        {"case_id": "ID-KEY-09", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed ID-KEY-09 with use racing revoke.", "action": "Execute the API-key management and observable authentication boundary boundary once for ID-KEY-09 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for ID-KEY-09 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to ID-KEY-09.", "Session, event and audit receipts for ID-KEY-09 satisfy G3-ID-API-KEY assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-TOKEN", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "use-versus-revoke is barrier-synchronized if an authentication caller is found",
+      "fault_control": "invalid, expired, revoked, wrong-team and insufficient-scope inputs",
+      "assertions": {
+        "database": ["raw secret is returned once, only a digest is stored, and revoke/rotate state is measured"],
+        "api": ["management routes are exercised; authentication use is UNOBSERVABLE when no call site exists"],
+        "session": ["API key is not treated as a human session or generic principal without evidence"],
+        "event": ["key lifecycle event and last-used behavior are recorded as present, absent or unobservable"],
+        "audit": ["actor, team, key identifier and outcome are captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-TENANT-CREATE",
+      "work_packages": ["RES-P0-06", "RES-G3"], "lifecycle": "team creation and initial owner", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E033", "R1-E035", "R1-E038", "R1-E039"],
+      "stable_case_ids": ["TEN-CREATE-01", "TEN-CREATE-02A", "TEN-CREATE-02B", "TEN-CREATE-03A", "TEN-CREATE-03B", "TEN-CREATE-03C"],
+      "secure_oracles": [
+        {"case_id": "TEN-CREATE-01", "decision": "ALLOW", "reason_code": "TENANT_CREATED", "scenario": "Seed TEN-CREATE-01 with valid team and OWNER.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-01 is ALLOW with reason TENANT_CREATED.", "Exactly one intended committed state transition is attributable to TEN-CREATE-01; no duplicate success transition is present.", "Session, event and audit receipts for TEN-CREATE-01 satisfy G3-TENANT-CREATE assertions or record a named absence."]},
+        {"case_id": "TEN-CREATE-02A", "decision": "DENY", "reason_code": "INPUT_INVALID", "scenario": "Seed TEN-CREATE-02A with invalid team fields.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-02A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-02A is DENY with reason INPUT_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-CREATE-02A.", "Session, event and audit receipts for TEN-CREATE-02A satisfy G3-TENANT-CREATE assertions or record a named absence."]},
+        {"case_id": "TEN-CREATE-02B", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed TEN-CREATE-02B with duplicate team slug.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-02B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-02B is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-CREATE-02B.", "Session, event and audit receipts for TEN-CREATE-02B satisfy G3-TENANT-CREATE assertions or record a named absence."]},
+        {"case_id": "TEN-CREATE-03A", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed TEN-CREATE-03A with Team insert failure.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-03A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-03A is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for TEN-CREATE-03A equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for TEN-CREATE-03A satisfy G3-TENANT-CREATE assertions or record a named absence."]},
+        {"case_id": "TEN-CREATE-03B", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed TEN-CREATE-03B with OWNER insert failure.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-03B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-03B is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for TEN-CREATE-03B equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for TEN-CREATE-03B satisfy G3-TENANT-CREATE assertions or record a named absence."]},
+        {"case_id": "TEN-CREATE-03C", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed TEN-CREATE-03C with webhook setup failure.", "action": "Execute the team creation and initial owner boundary once for TEN-CREATE-03C and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-CREATE-03C is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for TEN-CREATE-03C equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for TEN-CREATE-03C satisfy G3-TENANT-CREATE assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SVIX", "SUB-FAULT", "SUB-HTTP"],
+      "concurrency_control": "single worker per failure phase with fresh database",
+      "fault_control": "inject Team, OWNER TeamMember and webhook application failures",
+      "assertions": {
+        "database": ["valid case creates one Team and one OWNER; invalid and failed cases prove rollback or classify partial state"],
+        "api": ["invalid and duplicate identifiers fail without mutation"],
+        "session": ["actor context does not switch to a failed or partial team"],
+        "event": ["webhook application and team creation effects are correlated and not duplicated"],
+        "audit": ["team and owner creation actor/outcome are captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-TENANT-UPDATE-DELETE",
+      "work_packages": ["RES-P0-06", "RES-G3"], "lifecycle": "team update and delete authorization", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E031", "R1-E032", "R1-E034", "R1-E035", "R1-E036", "R1-E037", "R1-E038"],
+      "stable_case_ids": ["TEN-UPD-01", "TEN-UPD-02", "TEN-UPD-03", "TEN-UPD-04", "TEN-DEL-01", "TEN-DEL-02", "TEN-DEL-03"],
+      "secure_oracles": [
+        {"case_id": "TEN-UPD-01", "decision": "ALLOW", "reason_code": "TENANT_UPDATED", "scenario": "Seed TEN-UPD-01 with OWNER own-team update.", "action": "Execute the team update and delete authorization boundary once for TEN-UPD-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-UPD-01 is ALLOW with reason TENANT_UPDATED.", "Exactly one intended committed state transition is attributable to TEN-UPD-01; no duplicate success transition is present.", "Session, event and audit receipts for TEN-UPD-01 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-UPD-02", "decision": "ALLOW", "reason_code": "TENANT_UPDATED", "scenario": "Seed TEN-UPD-02 with ADMIN own-team update.", "action": "Execute the team update and delete authorization boundary once for TEN-UPD-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-UPD-02 is ALLOW with reason TENANT_UPDATED.", "Exactly one intended committed state transition is attributable to TEN-UPD-02; no duplicate success transition is present.", "Session, event and audit receipts for TEN-UPD-02 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-UPD-03", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed TEN-UPD-03 with MEMBER update attempt.", "action": "Execute the team update and delete authorization boundary once for TEN-UPD-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-UPD-03 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-UPD-03.", "Session, event and audit receipts for TEN-UPD-03 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-UPD-04", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed TEN-UPD-04 with team-A actor updating team B.", "action": "Execute the team update and delete authorization boundary once for TEN-UPD-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-UPD-04 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-UPD-04.", "Session, event and audit receipts for TEN-UPD-04 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-DEL-01", "decision": "ALLOW", "reason_code": "TENANT_DELETED", "scenario": "Seed TEN-DEL-01 with OWNER team deletion.", "action": "Execute the team update and delete authorization boundary once for TEN-DEL-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-DEL-01 is ALLOW with reason TENANT_DELETED.", "Exactly one intended committed state transition is attributable to TEN-DEL-01; no duplicate success transition is present.", "Session, event and audit receipts for TEN-DEL-01 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-DEL-02", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed TEN-DEL-02 with MEMBER deletion attempt.", "action": "Execute the team update and delete authorization boundary once for TEN-DEL-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-DEL-02 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-DEL-02.", "Session, event and audit receipts for TEN-DEL-02 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]},
+        {"case_id": "TEN-DEL-03", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed TEN-DEL-03 with team-A actor deleting team B.", "action": "Execute the team update and delete authorization boundary once for TEN-DEL-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for TEN-DEL-03 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to TEN-DEL-03.", "Session, event and audit receipts for TEN-DEL-03 satisfy G3-TENANT-UPDATE-DELETE assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-HTTP"],
+      "concurrency_control": "single worker; cross-team cases seed two teams and guessed identifiers",
+      "fault_control": "role and cross-team denial inputs",
+      "assertions": {
+        "database": ["only the authorized target Team changes; cross-team and forbidden cases leave both teams unchanged"],
+        "api": ["owner, admin, member and foreign-team outcomes are captured separately"],
+        "session": ["deleted team context and existing sessions are observed without claiming G4 completion"],
+        "event": ["team.update and team.delete payload, ordering, correlation and cardinality are captured"],
+        "audit": ["actor, team, target, outcome and correlation are captured for allow and deny cases"]
+      }
+    },
+    {
+      "family_id": "G3-MEMBERSHIP-LIST-CONSTRAINTS",
+      "work_packages": ["RES-P0-06", "RES-G3"], "lifecycle": "membership listing and database constraints", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E004", "R1-E035", "R1-E040", "R1-E041", "R1-E044"],
+      "stable_case_ids": ["MEM-LIST-01", "MEM-LIST-02", "MEM-DB-01", "MEM-DB-02"],
+      "secure_oracles": [
+        {"case_id": "MEM-LIST-01", "decision": "ALLOW", "reason_code": "MEMBERSHIP_LISTED", "scenario": "Seed MEM-LIST-01 with own-team membership list.", "action": "Execute the membership listing and database constraints boundary once for MEM-LIST-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LIST-01 is ALLOW with reason MEMBERSHIP_LISTED.", "Exactly one intended committed state transition is attributable to MEM-LIST-01; no duplicate success transition is present.", "Session, event and audit receipts for MEM-LIST-01 satisfy G3-MEMBERSHIP-LIST-CONSTRAINTS assertions or record a named absence."]},
+        {"case_id": "MEM-LIST-02", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed MEM-LIST-02 with foreign-team guessed list.", "action": "Execute the membership listing and database constraints boundary once for MEM-LIST-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LIST-02 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-LIST-02.", "Session, event and audit receipts for MEM-LIST-02 satisfy G3-MEMBERSHIP-LIST-CONSTRAINTS assertions or record a named absence."]},
+        {"case_id": "MEM-DB-01", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed MEM-DB-01 with duplicate teamId/userId insert.", "action": "Execute the membership listing and database constraints boundary once for MEM-DB-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-DB-01 is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-DB-01.", "Session, event and audit receipts for MEM-DB-01 satisfy G3-MEMBERSHIP-LIST-CONSTRAINTS assertions or record a named absence."]},
+        {"case_id": "MEM-DB-02", "decision": "ALLOW", "reason_code": "MEMBERSHIP_LISTED", "scenario": "Seed MEM-DB-02 with same user in two teams.", "action": "Execute the membership listing and database constraints boundary once for MEM-DB-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-DB-02 is ALLOW with reason MEMBERSHIP_LISTED.", "Exactly one intended committed state transition is attributable to MEM-DB-02; no duplicate success transition is present.", "Session, event and audit receipts for MEM-DB-02 satisfy G3-MEMBERSHIP-LIST-CONSTRAINTS assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SESSION", "SUB-HTTP"],
+      "concurrency_control": "single worker; two teams, two users and deterministic guessed member IDs",
+      "fault_control": "duplicate TeamMember insert and cross-team reference",
+      "assertions": {
+        "database": ["unique teamId/userId relation is enforced while the same User may hold independent memberships in two teams"],
+        "api": ["own-team list returns only scoped rows; foreign guessed IDs disclose no protected member data"],
+        "session": ["active actor identity and team are fixed for each request"],
+        "event": ["list and constraint probes emit no mutation events"],
+        "audit": ["cross-team denial audit presence is captured without claiming G4 pass"]
+      }
+    },
+    {
+      "family_id": "G3-MEMBERSHIP-ROLE-OWNER",
+      "work_packages": ["RES-P0-06", "RES-G3"], "lifecycle": "role update and owner invariant", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E040", "R1-E041", "R1-E042", "R1-E043", "R1-E045"],
+      "stable_case_ids": ["MEM-ROLE-01", "MEM-ROLE-02", "MEM-ROLE-03", "MEM-ROLE-04", "MEM-ROLE-05"],
+      "secure_oracles": [
+        {"case_id": "MEM-ROLE-01", "decision": "ALLOW", "reason_code": "MEMBERSHIP_UPDATED", "scenario": "Seed MEM-ROLE-01 with authorized non-owner role update.", "action": "Execute the role update and owner invariant boundary once for MEM-ROLE-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-ROLE-01 is ALLOW with reason MEMBERSHIP_UPDATED.", "Exactly one intended committed state transition is attributable to MEM-ROLE-01; no duplicate success transition is present.", "Session, event and audit receipts for MEM-ROLE-01 satisfy G3-MEMBERSHIP-ROLE-OWNER assertions or record a named absence."]},
+        {"case_id": "MEM-ROLE-02", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed MEM-ROLE-02 with MEMBER role-update attempt.", "action": "Execute the role update and owner invariant boundary once for MEM-ROLE-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-ROLE-02 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-ROLE-02.", "Session, event and audit receipts for MEM-ROLE-02 satisfy G3-MEMBERSHIP-ROLE-OWNER assertions or record a named absence."]},
+        {"case_id": "MEM-ROLE-03", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed MEM-ROLE-03 with foreign-team member target.", "action": "Execute the role update and owner invariant boundary once for MEM-ROLE-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-ROLE-03 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-ROLE-03.", "Session, event and audit receipts for MEM-ROLE-03 satisfy G3-MEMBERSHIP-ROLE-OWNER assertions or record a named absence."]},
+        {"case_id": "MEM-ROLE-04", "decision": "DENY", "reason_code": "LAST_OWNER_REQUIRED", "scenario": "Seed MEM-ROLE-04 with sole OWNER demotion.", "action": "Execute the role update and owner invariant boundary once for MEM-ROLE-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-ROLE-04 is DENY with reason LAST_OWNER_REQUIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-ROLE-04.", "Session, event and audit receipts for MEM-ROLE-04 satisfy G3-MEMBERSHIP-ROLE-OWNER assertions or record a named absence."]},
+        {"case_id": "MEM-ROLE-05", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed MEM-ROLE-05 with two OWNERs racing to demote.", "action": "Execute the role update and owner invariant boundary once for MEM-ROLE-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-ROLE-05 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-ROLE-05.", "Session, event and audit receipts for MEM-ROLE-05 satisfy G3-MEMBERSHIP-ROLE-OWNER assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "two owners demote concurrently at one barrier; final owner count must remain at least one",
+      "fault_control": "sole-owner and cross-team target cases",
+      "assertions": {
+        "database": ["role distribution remains scoped and owner count never reaches zero under secure oracle"],
+        "api": ["authorized, forbidden, foreign-team and sole-owner outcomes are distinct and deterministic"],
+        "session": ["role change effect on existing session is observed and recorded"],
+        "event": ["member.update is emitted at most once per committed mutation with correlation"],
+        "audit": ["actor, target member, old/new role, outcome and correlation are captured"]
+      }
+    },
+    {
+      "family_id": "G3-MEMBERSHIP-REMOVE-LEAVE",
+      "work_packages": ["RES-P0-06", "RES-G3"], "lifecycle": "member removal, leave and immediate denial", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E035", "R1-E040", "R1-E041", "R1-E043", "R1-E044", "R1-E045"],
+      "stable_case_ids": ["MEM-RM-01", "MEM-RM-02", "MEM-RM-03", "MEM-RM-04", "MEM-RM-05", "MEM-LEAVE-01", "MEM-LEAVE-02", "MEM-LEAVE-03", "MEM-LEAVE-04", "MEM-SESSION-01"],
+      "secure_oracles": [
+        {"case_id": "MEM-RM-01", "decision": "ALLOW", "reason_code": "MEMBERSHIP_REMOVED", "scenario": "Seed MEM-RM-01 with authorized non-owner removal.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-RM-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-RM-01 is ALLOW with reason MEMBERSHIP_REMOVED.", "Exactly one intended committed state transition is attributable to MEM-RM-01; no duplicate success transition is present.", "Session, event and audit receipts for MEM-RM-01 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-RM-02", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed MEM-RM-02 with MEMBER removal attempt.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-RM-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-RM-02 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-RM-02.", "Session, event and audit receipts for MEM-RM-02 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-RM-03", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed MEM-RM-03 with foreign-team removal target.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-RM-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-RM-03 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-RM-03.", "Session, event and audit receipts for MEM-RM-03 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-RM-04", "decision": "DENY", "reason_code": "LAST_OWNER_REQUIRED", "scenario": "Seed MEM-RM-04 with sole OWNER removal.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-RM-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-RM-04 is DENY with reason LAST_OWNER_REQUIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-RM-04.", "Session, event and audit receipts for MEM-RM-04 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-RM-05", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed MEM-RM-05 with concurrent same-member removal.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-RM-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-RM-05 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-RM-05.", "Session, event and audit receipts for MEM-RM-05 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-LEAVE-01", "decision": "ALLOW", "reason_code": "MEMBERSHIP_REMOVED", "scenario": "Seed MEM-LEAVE-01 with MEMBER leave.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-LEAVE-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LEAVE-01 is ALLOW with reason MEMBERSHIP_REMOVED.", "Exactly one intended committed state transition is attributable to MEM-LEAVE-01; no duplicate success transition is present.", "Session, event and audit receipts for MEM-LEAVE-01 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-LEAVE-02", "decision": "ALLOW", "reason_code": "MEMBERSHIP_REMOVED", "scenario": "Seed MEM-LEAVE-02 with non-last OWNER leave.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-LEAVE-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LEAVE-02 is ALLOW with reason MEMBERSHIP_REMOVED.", "Exactly one intended committed state transition is attributable to MEM-LEAVE-02; no duplicate success transition is present.", "Session, event and audit receipts for MEM-LEAVE-02 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-LEAVE-03", "decision": "DENY", "reason_code": "LAST_OWNER_REQUIRED", "scenario": "Seed MEM-LEAVE-03 with sole OWNER leave.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-LEAVE-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LEAVE-03 is DENY with reason LAST_OWNER_REQUIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-LEAVE-03.", "Session, event and audit receipts for MEM-LEAVE-03 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-LEAVE-04", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed MEM-LEAVE-04 with two OWNER leave/remove race.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-LEAVE-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-LEAVE-04 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-LEAVE-04.", "Session, event and audit receipts for MEM-LEAVE-04 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]},
+        {"case_id": "MEM-SESSION-01", "decision": "DENY", "reason_code": "SESSION_REVOKED", "scenario": "Seed MEM-SESSION-01 with removed member reusing old sessions.", "action": "Execute the member removal, leave and immediate denial boundary once for MEM-SESSION-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for MEM-SESSION-01 is DENY with reason SESSION_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to MEM-SESSION-01.", "Session, event and audit receipts for MEM-SESSION-01 satisfy G3-MEMBERSHIP-REMOVE-LEAVE assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "same-member double removal and two-owner leave/remove races use recorded barriers",
+      "fault_control": "sole-owner, forbidden role and guessed foreign-member cases",
+      "assertions": {
+        "database": ["membership cardinality and owner count are asserted after every mutation and race"],
+        "api": ["second mutation is idempotent/not-found or race-lost without cross-team disclosure"],
+        "session": ["removed member reuse of database and JWT sessions is probed immediately; result does not alone pass G4"],
+        "event": ["member.removed is emitted at most once with team and target correlation"],
+        "audit": ["remove and leave actor, target, outcome and correlation are captured"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-CREATE",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "email and domain-link invitation creation", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E046", "R1-E050", "R1-E051", "R1-E052", "R1-E053"],
+      "stable_case_ids": ["INV-EMAIL-01", "INV-EMAIL-02", "INV-EMAIL-03", "INV-EMAIL-04", "INV-EMAIL-05", "INV-EMAIL-06", "INV-LINK-01", "INV-LINK-02"],
+      "secure_oracles": [
+        {"case_id": "INV-EMAIL-01", "decision": "ALLOW", "reason_code": "INVITE_CREATED", "scenario": "Seed INV-EMAIL-01 with valid email invite.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-01 is ALLOW with reason INVITE_CREATED.", "Exactly one intended committed state transition is attributable to INV-EMAIL-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-EMAIL-01 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-EMAIL-02", "decision": "DENY", "reason_code": "INPUT_INVALID", "scenario": "Seed INV-EMAIL-02 with malformed email or role.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-02 is DENY with reason INPUT_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-EMAIL-02.", "Session, event and audit receipts for INV-EMAIL-02 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-EMAIL-03", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed INV-EMAIL-03 with duplicate pending invite.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-03 is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-EMAIL-03.", "Session, event and audit receipts for INV-EMAIL-03 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-EMAIL-04", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed INV-EMAIL-04 with invite for existing member.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-04 is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-EMAIL-04.", "Session, event and audit receipts for INV-EMAIL-04 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-EMAIL-05", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed INV-EMAIL-05 with forbidden inviter.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-05 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-EMAIL-05.", "Session, event and audit receipts for INV-EMAIL-05 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-EMAIL-06", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed INV-EMAIL-06 with cross-team invite.", "action": "Execute the email and domain-link invitation creation boundary once for INV-EMAIL-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EMAIL-06 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-EMAIL-06.", "Session, event and audit receipts for INV-EMAIL-06 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-LINK-01", "decision": "ALLOW", "reason_code": "INVITE_CREATED", "scenario": "Seed INV-LINK-01 with valid allowed-domain link.", "action": "Execute the email and domain-link invitation creation boundary once for INV-LINK-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-LINK-01 is ALLOW with reason INVITE_CREATED.", "Exactly one intended committed state transition is attributable to INV-LINK-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-LINK-01 satisfy G3-INVITE-CREATE assertions or record a named absence."]},
+        {"case_id": "INV-LINK-02", "decision": "DENY", "reason_code": "INPUT_INVALID", "scenario": "Seed INV-LINK-02 with malformed domain link.", "action": "Execute the email and domain-link invitation creation boundary once for INV-LINK-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-LINK-02 is DENY with reason INPUT_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-LINK-02.", "Session, event and audit receipts for INV-LINK-02 satisfy G3-INVITE-CREATE assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-TOKEN", "SUB-MAIL", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-HTTP"],
+      "concurrency_control": "single worker; duplicate and existing-member states are deterministic seeds",
+      "fault_control": "invalid role/email/domain, forbidden actor and cross-team slug",
+      "assertions": {
+        "database": ["allowed case creates one Invitation with expiry; denied cases create none"],
+        "api": ["email and domain-link validation and authorization outcomes are captured"],
+        "session": ["inviting actor identity and team context remain fixed"],
+        "event": ["invitation.created and mail payload/cardinality/order/correlation are captured"],
+        "audit": ["invitation creation allow and deny outcomes are captured or absence becomes a finding"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-FETCH",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "invitation fetch and disclosure", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E047", "R1-E049", "R1-E051", "R1-E054", "R1-E055"],
+      "stable_case_ids": ["INV-FETCH-01", "INV-FETCH-02", "INV-FETCH-03", "INV-FETCH-04"],
+      "secure_oracles": [
+        {"case_id": "INV-FETCH-01", "decision": "ALLOW", "reason_code": "INVITE_FETCHED", "scenario": "Seed INV-FETCH-01 with valid active token.", "action": "Execute the invitation fetch and disclosure boundary once for INV-FETCH-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FETCH-01 is ALLOW with reason INVITE_FETCHED.", "Exactly one intended committed state transition is attributable to INV-FETCH-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-FETCH-01 satisfy G3-INVITE-FETCH assertions or record a named absence."]},
+        {"case_id": "INV-FETCH-02", "decision": "DENY", "reason_code": "INVITE_INVALID", "scenario": "Seed INV-FETCH-02 with unknown token.", "action": "Execute the invitation fetch and disclosure boundary once for INV-FETCH-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FETCH-02 is DENY with reason INVITE_INVALID.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-FETCH-02.", "Session, event and audit receipts for INV-FETCH-02 satisfy G3-INVITE-FETCH assertions or record a named absence."]},
+        {"case_id": "INV-FETCH-03", "decision": "DENY", "reason_code": "INVITE_EXPIRED", "scenario": "Seed INV-FETCH-03 with expired token.", "action": "Execute the invitation fetch and disclosure boundary once for INV-FETCH-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FETCH-03 is DENY with reason INVITE_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-FETCH-03.", "Session, event and audit receipts for INV-FETCH-03 satisfy G3-INVITE-FETCH assertions or record a named absence."]},
+        {"case_id": "INV-FETCH-04", "decision": "DENY", "reason_code": "INVITE_ALREADY_REVOKED", "scenario": "Seed INV-FETCH-04 with revoked token.", "action": "Execute the invitation fetch and disclosure boundary once for INV-FETCH-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FETCH-04 is DENY with reason INVITE_ALREADY_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-FETCH-04.", "Session, event and audit receipts for INV-FETCH-04 satisfy G3-INVITE-FETCH assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-HTTP"],
+      "concurrency_control": "single worker with fixed clock",
+      "fault_control": "invalid, expired and revoked tokens",
+      "assertions": {
+        "database": ["fetch never changes invitation or membership state"],
+        "api": ["valid response is minimum necessary; invalid, expired and revoked envelopes do not leak protected differences"],
+        "session": ["authenticated and unauthenticated fetch variants are recorded where routes permit"],
+        "event": ["fetch emits no mutation event"],
+        "audit": ["fetch audit presence and sensitive-field treatment are recorded"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-ACCEPT",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "email and link invitation acceptance", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E047", "R1-E050", "R1-E051", "R1-E052", "R1-E053", "R1-E055", "R1-E056"],
+      "stable_case_ids": ["INV-ACC-01", "INV-ACC-02", "INV-ACC-03", "INV-ACC-04", "INV-ACC-05", "INV-ACC-06", "INV-ACC-07", "INV-ACC-08"],
+      "secure_oracles": [
+        {"case_id": "INV-ACC-01", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-ACC-01 with new matching user accepts email invite.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-01 is ALLOW with reason INVITE_ACCEPTED.", "Exactly one intended committed state transition is attributable to INV-ACC-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-ACC-01 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-02", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-ACC-02 with existing matching user accepts email invite.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-02 is ALLOW with reason INVITE_ACCEPTED.", "Exactly one intended committed state transition is attributable to INV-ACC-02; no duplicate success transition is present.", "Session, event and audit receipts for INV-ACC-02 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-03", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-ACC-03 with allowed-domain user accepts link.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-03 is ALLOW with reason INVITE_ACCEPTED.", "Exactly one intended committed state transition is attributable to INV-ACC-03; no duplicate success transition is present.", "Session, event and audit receipts for INV-ACC-03 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-04", "decision": "DENY", "reason_code": "INVITE_EMAIL_MISMATCH", "scenario": "Seed INV-ACC-04 with email mismatch.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-04 is DENY with reason INVITE_EMAIL_MISMATCH.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-ACC-04.", "Session, event and audit receipts for INV-ACC-04 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-05", "decision": "DENY", "reason_code": "INVITE_DOMAIN_DENIED", "scenario": "Seed INV-ACC-05 with domain mismatch.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-05 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-05 is DENY with reason INVITE_DOMAIN_DENIED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-ACC-05.", "Session, event and audit receipts for INV-ACC-05 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-06", "decision": "DENY", "reason_code": "INVITE_EXPIRED", "scenario": "Seed INV-ACC-06 with expired invite.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-06 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-06 is DENY with reason INVITE_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-ACC-06.", "Session, event and audit receipts for INV-ACC-06 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-07", "decision": "DENY", "reason_code": "INVITE_ALREADY_REVOKED", "scenario": "Seed INV-ACC-07 with revoked invite.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-07 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-07 is DENY with reason INVITE_ALREADY_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-ACC-07.", "Session, event and audit receipts for INV-ACC-07 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]},
+        {"case_id": "INV-ACC-08", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed INV-ACC-08 with already-member role conflict.", "action": "Execute the email and link invitation acceptance boundary once for INV-ACC-08 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-ACC-08 is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-ACC-08.", "Session, event and audit receipts for INV-ACC-08 satisfy G3-INVITE-ACCEPT assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-HTTP"],
+      "concurrency_control": "single worker; replay and race acceptance use dedicated families",
+      "fault_control": "email mismatch, domain deny, expiry, revocation and pre-existing membership",
+      "assertions": {
+        "database": ["allowed case creates or upserts one TeamMember and reaches one terminal invitation state without privilege escalation"],
+        "api": ["new user, existing user, link, mismatch, expired and revoked outcomes are captured"],
+        "session": ["authenticated identity used for email/domain comparison is recorded"],
+        "event": ["member.created is emitted exactly once for a committed new membership"],
+        "audit": ["acceptance actor, invitation, team, membership, outcome and correlation are captured"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-REPLAY-CONCURRENCY",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "invitation replay and acceptance races", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E050", "R1-E051", "R1-E052", "R1-E056"],
+      "stable_case_ids": ["INV-REPLAY-01", "INV-REPLAY-02", "INV-CONC-01A", "INV-CONC-01B", "INV-RACE-01", "INV-RACE-02", "INV-RACE-03"],
+      "secure_oracles": [
+        {"case_id": "INV-REPLAY-01", "decision": "DENY", "reason_code": "INVITE_CONSUMED", "scenario": "Seed INV-REPLAY-01 with email replay.", "action": "Execute the invitation replay and acceptance races boundary once for INV-REPLAY-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REPLAY-01 is DENY with reason INVITE_CONSUMED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-REPLAY-01.", "Session, event and audit receipts for INV-REPLAY-01 satisfy G3-INVITE-REPLAY-CONCURRENCY assertions or record a named absence."]},
+        {"case_id": "INV-REPLAY-02", "decision": "DENY", "reason_code": "INVITE_CONSUMED", "scenario": "Seed INV-REPLAY-02 with link replay.", "action": "Execute the invitation replay and acceptance races boundary once for INV-REPLAY-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REPLAY-02 is DENY with reason INVITE_CONSUMED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-REPLAY-02.", "Session, event and audit receipts for INV-REPLAY-02 satisfy G3-INVITE-REPLAY-CONCURRENCY assertions or record a named absence."]},
+        {"case_id": "INV-CONC-01A", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-CONC-01A with worker A released first and wins.", "action": "Execute the invitation replay and acceptance races boundary once for INV-CONC-01A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-CONC-01A is ALLOW with reason INVITE_ACCEPTED.", "Worker A commits exactly one membership and one terminal invitation transition before worker B proceeds.", "Exactly one member.created success event and one correlated acceptance audit are attributable to the winner."]},
+        {"case_id": "INV-CONC-01B", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed INV-CONC-01B with worker B released after winner commits.", "action": "Execute the invitation replay and acceptance races boundary once for INV-CONC-01B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-CONC-01B is DENY with reason RACE_LOST.", "Worker B commits no additional membership or invitation transition after worker A wins.", "No second member.created success event is attributable to the loser; shared race ordering is captured."]},
+        {"case_id": "INV-RACE-01", "decision": "DENY", "reason_code": "RACE_LOST", "scenario": "Seed INV-RACE-01 with accept racing revoke.", "action": "Execute the invitation replay and acceptance races boundary once for INV-RACE-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-RACE-01 is DENY with reason RACE_LOST.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-RACE-01.", "Session, event and audit receipts for INV-RACE-01 satisfy G3-INVITE-REPLAY-CONCURRENCY assertions or record a named absence."]},
+        {"case_id": "INV-RACE-02", "decision": "DENY", "reason_code": "INVITE_EXPIRED", "scenario": "Seed INV-RACE-02 with accept at exact expiry.", "action": "Execute the invitation replay and acceptance races boundary once for INV-RACE-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-RACE-02 is DENY with reason INVITE_EXPIRED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-RACE-02.", "Session, event and audit receipts for INV-RACE-02 satisfy G3-INVITE-REPLAY-CONCURRENCY assertions or record a named absence."]},
+        {"case_id": "INV-RACE-03", "decision": "DENY", "reason_code": "MEMBERSHIP_CONFLICT", "scenario": "Seed INV-RACE-03 with accept racing role update.", "action": "Execute the invitation replay and acceptance races boundary once for INV-RACE-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-RACE-03 is DENY with reason MEMBERSHIP_CONFLICT.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-RACE-03.", "Session, event and audit receipts for INV-RACE-03 satisfy G3-INVITE-REPLAY-CONCURRENCY assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-CLOCK", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-BARRIER", "SUB-HTTP"],
+      "concurrency_control": "two workers accept the same email or link token; accept-versus-revoke and exact-expiry barriers record winner ordering",
+      "fault_control": "sequential replay, pre-existing membership and exact expiry boundary",
+      "assertions": {
+        "database": ["one membership and one terminal invitation outcome exist after every replay or race"],
+        "api": ["one winner and deterministic consumed, expired or race-lost outcomes are captured"],
+        "session": ["both workers use recorded identities and team context"],
+        "event": ["member.created and invitation.removed cardinality never exceeds committed transitions"],
+        "audit": ["winner, loser, ordering and shared correlation are captured"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-REVOKE",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "invitation revocation", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E003", "R1-E004", "R1-E048", "R1-E050", "R1-E051", "R1-E052", "R1-E056"],
+      "stable_case_ids": ["INV-REV-01", "INV-REV-02", "INV-REV-03", "INV-REV-04"],
+      "secure_oracles": [
+        {"case_id": "INV-REV-01", "decision": "ALLOW", "reason_code": "INVITE_REVOKED", "scenario": "Seed INV-REV-01 with authorized revoke.", "action": "Execute the invitation revocation boundary once for INV-REV-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REV-01 is ALLOW with reason INVITE_REVOKED.", "Exactly one intended committed state transition is attributable to INV-REV-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-REV-01 satisfy G3-INVITE-REVOKE assertions or record a named absence."]},
+        {"case_id": "INV-REV-02", "decision": "DENY", "reason_code": "INVITE_ALREADY_REVOKED", "scenario": "Seed INV-REV-02 with repeated revoke.", "action": "Execute the invitation revocation boundary once for INV-REV-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REV-02 is DENY with reason INVITE_ALREADY_REVOKED.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-REV-02.", "Session, event and audit receipts for INV-REV-02 satisfy G3-INVITE-REVOKE assertions or record a named absence."]},
+        {"case_id": "INV-REV-03", "decision": "DENY", "reason_code": "ROLE_FORBIDDEN", "scenario": "Seed INV-REV-03 with forbidden revoke.", "action": "Execute the invitation revocation boundary once for INV-REV-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REV-03 is DENY with reason ROLE_FORBIDDEN.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-REV-03.", "Session, event and audit receipts for INV-REV-03 satisfy G3-INVITE-REVOKE assertions or record a named absence."]},
+        {"case_id": "INV-REV-04", "decision": "DENY", "reason_code": "CROSS_TENANT_REFERENCE", "scenario": "Seed INV-REV-04 with cross-team revoke.", "action": "Execute the invitation revocation boundary once for INV-REV-04 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-REV-04 is DENY with reason CROSS_TENANT_REFERENCE.", "No unauthorized committed state mutation or duplicate success event is attributable to INV-REV-04.", "Session, event and audit receipts for INV-REV-04 satisfy G3-INVITE-REVOKE assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SESSION", "SUB-SVIX", "SUB-RETRACED", "SUB-HTTP"],
+      "concurrency_control": "single worker; accept-versus-revoke is covered separately",
+      "fault_control": "repeat revoke, forbidden actor and cross-team token",
+      "assertions": {
+        "database": ["authorized revoke reaches one terminal state; repeated and denied revokes do not mutate membership"],
+        "api": ["authorized, repeated, forbidden and foreign-team outcomes are captured"],
+        "session": ["revoking actor identity and team context are fixed"],
+        "event": ["invitation.removed occurs at most once with correlation"],
+        "audit": ["revocation actor, invitation, team and outcome are captured"]
+      }
+    },
+    {
+      "family_id": "G3-INVITE-FAULT-EVENT-AUDIT",
+      "work_packages": ["RES-P0-07", "RES-G3"], "lifecycle": "invitation failure, event and audit boundaries", "mandatory": true, "evidence_target": "E4",
+      "source_evidence_ids": ["R1-E050", "R1-E051", "R1-E052", "R1-E056"],
+      "stable_case_ids": ["INV-FAULT-01A", "INV-FAULT-01B", "INV-FAULT-01C", "INV-EVT-01", "INV-AUD-01", "INV-AUD-02", "INV-AUD-03"],
+      "secure_oracles": [
+        {"case_id": "INV-FAULT-01A", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed INV-FAULT-01A with membership-upsert failure.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-FAULT-01A and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FAULT-01A is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for INV-FAULT-01A equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for INV-FAULT-01A satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-FAULT-01B", "decision": "ERROR_ROLLED_BACK", "reason_code": "EVENT_FAILURE", "scenario": "Seed INV-FAULT-01B with Svix member.created rejection.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-FAULT-01B and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FAULT-01B is ERROR_ROLLED_BACK with reason EVENT_FAILURE.", "The after-state for INV-FAULT-01B equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for INV-FAULT-01B satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-FAULT-01C", "decision": "ERROR_ROLLED_BACK", "reason_code": "DEPENDENCY_FAILURE", "scenario": "Seed INV-FAULT-01C with invitation-consumption failure.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-FAULT-01C and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-FAULT-01C is ERROR_ROLLED_BACK with reason DEPENDENCY_FAILURE.", "The after-state for INV-FAULT-01C equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for INV-FAULT-01C satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-EVT-01", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-EVT-01 with successful event capture.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-EVT-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-EVT-01 is ALLOW with reason INVITE_ACCEPTED.", "Exactly one intended committed state transition is attributable to INV-EVT-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-EVT-01 satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-AUD-01", "decision": "ALLOW", "reason_code": "INVITE_ACCEPTED", "scenario": "Seed INV-AUD-01 with successful audit capture.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-AUD-01 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-AUD-01 is ALLOW with reason INVITE_ACCEPTED.", "Exactly one intended committed state transition is attributable to INV-AUD-01; no duplicate success transition is present.", "Session, event and audit receipts for INV-AUD-01 satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-AUD-02", "decision": "ERROR_ROLLED_BACK", "reason_code": "EVENT_FAILURE", "scenario": "Seed INV-AUD-02 with Svix disabled or failed.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-AUD-02 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-AUD-02 is ERROR_ROLLED_BACK with reason EVENT_FAILURE.", "The after-state for INV-AUD-02 equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for INV-AUD-02 satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]},
+        {"case_id": "INV-AUD-03", "decision": "ERROR_ROLLED_BACK", "reason_code": "AUDIT_FAILURE", "scenario": "Seed INV-AUD-03 with Retraced disabled or failed.", "action": "Execute the invitation failure, event and audit boundaries boundary once for INV-AUD-03 and capture its correlated API, database, session, event and audit receipts.", "expected_observations": ["The normalized API observation for INV-AUD-03 is ERROR_ROLLED_BACK with reason AUDIT_FAILURE.", "The after-state for INV-AUD-03 equals its before-state at the protected boundary, with no success event.", "Session, event and audit receipts for INV-AUD-03 satisfy G3-INVITE-FAULT-EVENT-AUDIT assertions or record a named absence."]}
+      ],
+      "observed_upstream": {"executed": false, "decision": null, "reason_code": null, "http_status": null, "conformance": "NOT_EXECUTED", "receipt_sha256": null},
+      "required_substitutes": ["SUB-POSTGRES", "SUB-SVIX", "SUB-RETRACED", "SUB-FAULT", "SUB-HTTP"],
+      "concurrency_control": "single worker for each fault phase; fresh database and correlation ID per phase",
+      "fault_control": "fail membership upsert, event delivery, invitation deletion, disabled/rejecting Svix and disabled/rejecting Retraced",
+      "assertions": {
+        "database": ["each fault records rollback or exact partial User, TeamMember and Invitation state"],
+        "api": ["failure status and retry behavior are captured without masking partial mutation"],
+        "session": ["actor identity remains fixed and no new session is created by acceptance"],
+        "event": ["payload, ordering relative to commit, correlation, cardinality and failure behavior are mandatory"],
+        "audit": ["payload, actor, team, target, outcome, ordering, correlation, cardinality and failure behavior are mandatory"]
+      }
+    }
+  ],
+  "evidence_artifacts": [
+    {"artifact_id": "ART-RUN-MANIFEST", "kind": "operator run manifest", "required": true, "path_template": "<evidence-root>/<operator-id>/run-manifest.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-ENV-MANIFEST", "kind": "immutable environment and substitute manifest", "required": true, "path_template": "<evidence-root>/<operator-id>/environment.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-CASE-RECEIPTS", "kind": "normalized per-case request, response and assertion receipts", "required": true, "path_template": "<evidence-root>/<operator-id>/cases/<case-id>.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-DB-ASSERTIONS", "kind": "normalized before and after database assertions", "required": true, "path_template": "<evidence-root>/<operator-id>/database/<case-id>.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-INTEGRATION-CAPTURES", "kind": "mail, event and audit substitute captures", "required": true, "path_template": "<evidence-root>/<operator-id>/integrations/<case-id>.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-SECRET-SCAN", "kind": "secret scan receipt", "required": true, "path_template": "<evidence-root>/<operator-id>/secret-scan.json", "sha256_required": true, "contains_secrets": false},
+    {"artifact_id": "ART-E4-COMPARISON", "kind": "two-operator normalized comparison and checker verdict", "required": true, "path_template": "<evidence-root>/comparison/e4-comparison.json", "sha256_required": true, "contains_secrets": false}
+  ],
+  "independent_reproduction": {
+    "operator_count": 2,
+    "distinct_operator_ids": true,
+    "fresh_database_per_operator": true,
+    "same_source_and_build": true,
+    "comparison_fields": ["case ID census", "source/build/environment hashes", "observed decision and reason", "HTTP class", "normalized database assertions", "session result", "event/audit cardinality and ordering", "conformance classification"],
+    "divergence_action": "STOP_AND_REVIEW",
+    "self_acceptance_prohibited": true
+  },
+  "safety": {
+    "synthetic_data_only": true,
+    "production_credentials_prohibited": true,
+    "upstream_mutation_prohibited": true,
+    "bopen_production_mutation_prohibited": true,
+    "external_network_prohibited": true,
+    "secret_scan_required": true,
+    "redaction_required": true,
+    "mutable_dependencies_prohibited": true
+  },
+  "retention": {
+    "raw_evidence_location": "C:\\laragon\\www\\bopen-research\\<operator-run>",
+    "repository_storage": "prohibited",
+    "retention_period_status": "pending-authority",
+    "deletion_requires_authority": true,
+    "sanitized_receipts_only": true
+  },
+  "stop_conditions": [
+    "Stop before execution because this draft grants no runtime authority.",
+    "Stop if the checkout origin, exact commit, license hash, lock hash or R1 contract hash differs.",
+    "Stop if any image, dependency, action or substitute is mutable, unpinned or lacks approved digest authority.",
+    "Stop if the external research root, local-only network policy or fresh synthetic database cannot be proven.",
+    "Stop if a production credential, real personal data or undeclared external endpoint is detected.",
+    "Stop if fault injection requires modification of upstream source or production bOPEN code.",
+    "Stop if maker and checker identities are equal, a mandatory case is skipped, or operator results diverge.",
+    "Stop and record a finding when an observed upstream result cannot be normalized without concealing partial state."
+  ],
+  "execution_prerequisites": [
+    {"id": "PRE-RUNTIME-AUTH", "description": "Accepted runtime-execution work package naming maker, checker, scope, expiry, evidence root and rollback.", "status": "pending-authority", "blocking": true},
+    {"id": "PRE-DEPENDENCY-PINS", "description": "Approved immutable digests for PostgreSQL, application build, package toolchain and every substitute.", "status": "pending-authority", "blocking": true},
+    {"id": "PRE-HARNESS-REVIEW", "description": "Independent review of the later runner and fault-injection harness without weakening this contract.", "status": "pending-authority", "blocking": true},
+    {"id": "PRE-CASE-VALIDATOR", "description": "Fail-closed validator proves exact case census, oracle separation, assertions and E3/E4 receipts.", "status": "pending-evidence", "blocking": true},
+    {"id": "PRE-NETWORK-PROOF", "description": "Evidence that only declared local substitutes are reachable and production endpoints are denied.", "status": "pending-evidence", "blocking": true},
+    {"id": "PRE-RETENTION-DECISION", "description": "Authority assigns evidence retention, encryption, access and disposal rules.", "status": "pending-authority", "blocking": true},
+    {"id": "PRE-LEGAL-CONDITION", "description": "Research execution remains within approved source/license conditions and grants no redistribution authority.", "status": "pending-authority", "blocking": true}
+  ],
+  "residual_gaps": [
+    {"id": "GAP-NO-RUNTIME", "description": "No case in this design has been executed.", "disposition": "Execute only under a later accepted runtime work package and independently reproduce.", "blocks_g3_pass": true},
+    {"id": "GAP-API-KEY-CALLSITE", "description": "R1 found no API-key authentication/use call site; management records do not prove a machine-principal lifecycle.", "disposition": "Record UNOBSERVABLE at G3 if absence is confirmed; carry the architectural gap to RES-P0-11 and G5/G6.", "blocks_g3_pass": false},
+    {"id": "GAP-JWT-REVOCATION", "description": "R1 reports JWT sessions are not revoked by password change/reset.", "disposition": "Reproduce as E4 and retain as a security finding for RES-P0-12 and G5/G6.", "blocks_g3_pass": false},
+    {"id": "GAP-INVITE-STATE", "description": "Invitation status, consumption version and transaction/outbox semantics are absent or implicit.", "disposition": "Reproduce replay, race and partial-state behavior at E4 and carry to architecture synthesis.", "blocks_g3_pass": false},
+    {"id": "GAP-LATER-GATES", "description": "Full context/authorization, SAML/SCIM, generalized audit/API-key, security disposition and clean-room handoff belong to G4-G7 packages.", "disposition": "Do not infer G4-G7 completion from G3 evidence.", "blocks_g3_pass": false},
+    {"id": "GAP-PROGRAM-GOAL", "description": "Program Goal v0.2 is a supplied design-tightening input but is not approved normative authority at the bound repository base.", "disposition": "Preserve reproducibility, no-skip, cross-team and independent-evidence controls without claiming Program Goal approval.", "blocks_g3_pass": false}
+  ]
+}

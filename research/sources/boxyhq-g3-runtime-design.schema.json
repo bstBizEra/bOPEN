@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.local/schemas/research/boxyhq-g3-runtime-design.schema.json",
+  "title": "BoxyHQ G3 Runtime Research Design Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "contract_id", "version", "status", "owner", "issued_at",
+    "work_packages", "authority", "source_binding", "research_references", "gate_state",
+    "evidence_model", "reason_codes", "substitutes", "database_design", "case_families",
+    "evidence_artifacts", "independent_reproduction", "safety", "retention",
+    "stop_conditions", "execution_prerequisites", "residual_gaps"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "contract_id": {"const": "BOX-R3-G3-DESIGN-001"},
+    "version": {"const": "0.1.0-draft"},
+    "status": {"const": "draft"},
+    "owner": {"type": "string", "minLength": 1},
+    "issued_at": {"type": "string", "format": "date"},
+    "work_packages": {
+      "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+      "prefixItems": [
+        {"const": "RES-P0-05"}, {"const": "RES-P0-06"},
+        {"const": "RES-P0-07"}, {"const": "RES-G3"}
+      ],
+      "items": false
+    },
+    "authority": {"$ref": "#/$defs/authority"},
+    "source_binding": {"$ref": "#/$defs/sourceBinding"},
+    "research_references": {
+      "type": "array", "minItems": 3, "items": {"$ref": "#/$defs/reference"}
+    },
+    "gate_state": {"$ref": "#/$defs/gateState"},
+    "evidence_model": {"$ref": "#/$defs/evidenceModel"},
+    "reason_codes": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reasonCode"}
+    },
+    "substitutes": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/substitute"}
+    },
+    "database_design": {"$ref": "#/$defs/databaseDesign"},
+    "case_families": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/caseFamily"}
+    },
+    "evidence_artifacts": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidenceArtifact"}
+    },
+    "independent_reproduction": {"$ref": "#/$defs/reproduction"},
+    "safety": {"$ref": "#/$defs/safety"},
+    "retention": {"$ref": "#/$defs/retention"},
+    "stop_conditions": {
+      "type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}
+    },
+    "execution_prerequisites": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/prerequisite"}
+    },
+    "residual_gaps": {
+      "type": "array", "minItems": 1, "items": {"$ref": "#/$defs/gap"}
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array", "items": {"type": "string", "minLength": 1}
+    },
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["research_design_authorized", "runtime_execution_authorized", "implementation_authority", "production_authority", "gate_promotion_authority"],
+      "properties": {
+        "research_design_authorized": {"const": true},
+        "runtime_execution_authorized": {"const": false},
+        "implementation_authority": {"const": false},
+        "production_authority": {"const": false},
+        "gate_promotion_authority": {"const": false}
+      }
+    },
+    "sourceBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "repository", "repository_url", "commit", "reference_release", "license", "license_sha256", "lockfile", "lock_sha256", "r1_contract_path", "r1_contract_sha256"],
+      "properties": {
+        "source_id": {"const": "SRC-BOX-001"},
+        "repository": {"const": "boxyhq/saas-starter-kit"},
+        "repository_url": {"const": "https://github.com/boxyhq/saas-starter-kit.git"},
+        "commit": {"const": "abc9b686823cbfb4973c79bc36fea37a3244be6c"},
+        "reference_release": {"const": "v1.6.0"},
+        "license": {"const": "Apache-2.0"},
+        "license_sha256": {"const": "f9f9a6236f9f12c14ce7294a58575c19fc16bb1c24dcdc91e2ae868b2b21a41a"},
+        "lockfile": {"const": "package-lock.json"},
+        "lock_sha256": {"const": "b8ec0535883a6bb186a6a633979a497b12f110463da86ae0122ddd3426d219e8"},
+        "r1_contract_path": {"const": "research/sources/boxyhq-r1-trace-contract.json"},
+        "r1_contract_sha256": {"pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "path", "version", "status", "purpose"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1}
+      }
+    },
+    "gateState": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gate", "status", "runtime_executed", "g3_pass", "decision", "reason"],
+      "properties": {
+        "gate": {"const": "G3"}, "status": {"const": "OPEN"},
+        "runtime_executed": {"const": false}, "g3_pass": {"const": false},
+        "decision": {"const": "DEFERRED"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "evidenceLevel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["level", "definition", "required_receipts"],
+      "properties": {
+        "level": {"enum": ["E2", "E3", "E4"]},
+        "definition": {"type": "string", "minLength": 1},
+        "required_receipts": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "evidenceModel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["levels", "minimum_per_mandatory_case", "independent_target", "measurement_rules"],
+      "properties": {
+        "levels": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/evidenceLevel"}},
+        "minimum_per_mandatory_case": {"const": "E3"},
+        "independent_target": {"const": "E4"},
+        "measurement_rules": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "reasonCode": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "decision", "meaning"],
+      "properties": {
+        "code": {"pattern": "^[A-Z][A-Z0-9_]+$"},
+        "decision": {"enum": ["ALLOW", "DENY", "ERROR_ROLLED_BACK", "ERROR_PARTIAL", "UNOBSERVABLE"]},
+        "meaning": {"type": "string", "minLength": 1}
+      }
+    },
+    "substitute": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "purpose", "local_only", "network_access", "digest_status", "immutable_runtime_required", "capture_requirements", "failure_modes"],
+      "properties": {
+        "id": {"pattern": "^SUB-[A-Z0-9-]+$"}, "kind": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1}, "local_only": {"const": true},
+        "network_access": {"const": "deny-except-declared-local-substitutes"},
+        "digest_status": {"enum": ["pending-authority", "pinned"]},
+        "immutable_runtime_required": {"const": true},
+        "capture_requirements": {"$ref": "#/$defs/stringArray"},
+        "failure_modes": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "databaseDesign": {
+      "type": "object", "additionalProperties": false,
+      "required": ["engine", "version_status", "image_digest_status", "fresh_database_per_run", "synthetic_seed_only", "deterministic_seed", "before_after_snapshots", "isolation_controls", "fault_injection"],
+      "properties": {
+        "engine": {"const": "PostgreSQL"},
+        "version_status": {"const": "pending-authority"},
+        "image_digest_status": {"const": "pending-authority"},
+        "fresh_database_per_run": {"const": true}, "synthetic_seed_only": {"const": true},
+        "deterministic_seed": {"const": true}, "before_after_snapshots": {"const": true},
+        "isolation_controls": {"$ref": "#/$defs/stringArray"},
+        "fault_injection": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "oracle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["case_id", "decision", "reason_code", "scenario", "action", "expected_observations"],
+      "properties": {
+        "case_id": {"pattern": "^[A-Z0-9-]+$"},
+        "decision": {"enum": ["ALLOW", "DENY", "ERROR_ROLLED_BACK", "ERROR_PARTIAL", "UNOBSERVABLE"]},
+        "reason_code": {"pattern": "^[A-Z][A-Z0-9_]+$"},
+        "scenario": {"type": "string", "minLength": 1},
+        "action": {"type": "string", "minLength": 1},
+        "expected_observations": {
+          "type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "assertions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["database", "api", "session", "event", "audit"],
+      "properties": {
+        "database": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "api": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "session": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "event": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "audit": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "caseFamily": {
+      "type": "object", "additionalProperties": false,
+      "required": ["family_id", "work_packages", "lifecycle", "mandatory", "evidence_target", "source_evidence_ids", "stable_case_ids", "secure_oracles", "observed_upstream", "required_substitutes", "concurrency_control", "fault_control", "assertions"],
+      "properties": {
+        "family_id": {"pattern": "^[A-Z0-9-]+$"},
+        "work_packages": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["RES-P0-05", "RES-P0-06", "RES-P0-07", "RES-G3"]}},
+        "lifecycle": {"type": "string", "minLength": 1}, "mandatory": {"const": true},
+        "evidence_target": {"enum": ["E3", "E4"]},
+        "source_evidence_ids": {"type": "array", "minItems": 1, "items": {"pattern": "^R1-E[0-9]{3}$"}},
+        "stable_case_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"pattern": "^[A-Z0-9-]+$"}},
+        "secure_oracles": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/oracle"}},
+        "observed_upstream": {"$ref": "#/$defs/observed"},
+        "required_substitutes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"pattern": "^SUB-[A-Z0-9-]+$"}},
+        "concurrency_control": {"type": "string", "minLength": 1},
+        "fault_control": {"type": "string", "minLength": 1},
+        "assertions": {"$ref": "#/$defs/assertions"}
+      }
+    },
+    "observed": {
+      "type": "object", "additionalProperties": false,
+      "required": ["executed", "decision", "reason_code", "http_status", "conformance", "receipt_sha256"],
+      "properties": {
+        "executed": {"const": false}, "decision": {"const": null},
+        "reason_code": {"const": null}, "http_status": {"const": null},
+        "conformance": {"const": "NOT_EXECUTED"}, "receipt_sha256": {"const": null}
+      }
+    },
+    "evidenceArtifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifact_id", "kind", "required", "path_template", "sha256_required", "contains_secrets"],
+      "properties": {
+        "artifact_id": {"pattern": "^ART-[A-Z0-9-]+$"}, "kind": {"type": "string", "minLength": 1},
+        "required": {"const": true}, "path_template": {"type": "string", "minLength": 1},
+        "sha256_required": {"const": true}, "contains_secrets": {"const": false}
+      }
+    },
+    "reproduction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operator_count", "distinct_operator_ids", "fresh_database_per_operator", "same_source_and_build", "comparison_fields", "divergence_action", "self_acceptance_prohibited"],
+      "properties": {
+        "operator_count": {"const": 2}, "distinct_operator_ids": {"const": true},
+        "fresh_database_per_operator": {"const": true}, "same_source_and_build": {"const": true},
+        "comparison_fields": {"$ref": "#/$defs/stringArray"},
+        "divergence_action": {"const": "STOP_AND_REVIEW"}, "self_acceptance_prohibited": {"const": true}
+      }
+    },
+    "safety": {
+      "type": "object", "additionalProperties": false,
+      "required": ["synthetic_data_only", "production_credentials_prohibited", "upstream_mutation_prohibited", "bopen_production_mutation_prohibited", "external_network_prohibited", "secret_scan_required", "redaction_required", "mutable_dependencies_prohibited"],
+      "properties": {
+        "synthetic_data_only": {"const": true}, "production_credentials_prohibited": {"const": true},
+        "upstream_mutation_prohibited": {"const": true}, "bopen_production_mutation_prohibited": {"const": true},
+        "external_network_prohibited": {"const": true}, "secret_scan_required": {"const": true},
+        "redaction_required": {"const": true}, "mutable_dependencies_prohibited": {"const": true}
+      }
+    },
+    "retention": {
+      "type": "object", "additionalProperties": false,
+      "required": ["raw_evidence_location", "repository_storage", "retention_period_status", "deletion_requires_authority", "sanitized_receipts_only"],
+      "properties": {
+        "raw_evidence_location": {"const": "C:\\laragon\\www\\bopen-research\\<operator-run>"},
+        "repository_storage": {"const": "prohibited"}, "retention_period_status": {"const": "pending-authority"},
+        "deletion_requires_authority": {"const": true}, "sanitized_receipts_only": {"const": true}
+      }
+    },
+    "prerequisite": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "description", "status", "blocking"],
+      "properties": {
+        "id": {"pattern": "^PRE-[A-Z0-9-]+$"}, "description": {"type": "string", "minLength": 1},
+        "status": {"enum": ["pending-authority", "pending-evidence", "satisfied"]}, "blocking": {"const": true}
+      }
+    },
+    "gap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "description", "disposition", "blocks_g3_pass"],
+      "properties": {
+        "id": {"pattern": "^GAP-[A-Z0-9-]+$"}, "description": {"type": "string", "minLength": 1},
+        "disposition": {"type": "string", "minLength": 1}, "blocks_g3_pass": {"type": "boolean"}
+      }
+    }
+  }
+}

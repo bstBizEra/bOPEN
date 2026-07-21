@@ -63,6 +63,16 @@ The R0 result authorizes planning for RES-P0-04 through RES-P0-07 only. It does 
 
 G3 remains open. R1 static declaration inventory is E2 and does not authorize RES-P0-08 implementation, production adoption or any clean-room handoff.
 
+### G3 design receipt - 2026-07-21
+
+| Package | Design status | Evidence boundary |
+|---|---|---|
+| RES-P0-05 | Mandatory identity runtime cases specified | Design/E2 only; no runtime evidence |
+| RES-P0-06 | Mandatory tenant and membership runtime cases specified | Design/E2 only; no runtime evidence |
+| RES-P0-07 | Mandatory invitation, replay, race, event and audit cases specified | Design/E2 only; no runtime evidence |
+
+The G3 pack is ready for authority review only. DEC-0011 is proposed and not effective; runtime execution, E3/E4 evidence, G3 passage and RES-P0-08 remain unauthorized.
+
 ## RES-P0-08 — Context and authorization trace
 
 **Tasks:** trace team slug/session resolution, access guards, permission checks and cross-team negatives.  

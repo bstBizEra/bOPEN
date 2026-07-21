@@ -16,3 +16,5 @@
 | EVD-DEV-001 | DEV-P0-01 | Multi-tenant membership, context, ownership, and cross-tenant denial contract validation | `docs/evidence/EVD-DEV-001-multitenant-readiness.md` | Generated; authority review pending |
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |
 | EVD-RES-002 | RES-P0-01/02/03 | R0 workspace, provenance, license and two-operator reproduction | `docs/evidence/EVD-RES-002-r0-control-establishment.md` | G0-G2 pass with conditions |
+| EVD-RES-003 | RES-P0-04/05/06/07 | R1 static identity, tenant/membership and invitation lifecycle trace | `docs/evidence/EVD-RES-003-r1-lifecycle-trace.md` | Accepted E2 research evidence; G3 open |
+| EVD-RES-004 | RES-P0-05/06/07 | Non-executing G3 synthetic runtime pack design and readiness controls | `docs/evidence/EVD-RES-004-g3-runtime-design.md` | Design evidence; authority review required; G3 open |
