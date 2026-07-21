@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/identity/qualification-run-suite-observation/0.1.0-draft",
+  "status": "draft",
+  "title": "Synthetic Identity Qualification Run Suite Observation",
+  "description": "Synthetic qualification-only graph binding for one candidate and run; not a runtime contract, execution record, provider approval or checker receipt.",
+  "type": "object",
+  "required": ["$schema", "record_id", "version", "status", "work_package_id", "qualification_id", "candidate_id", "qualification_run_id", "qualification_only", "synthetic_data_only", "qualification_envelope", "provider_connection_refs", "case_ids", "record_refs", "correlation_bindings", "identity_key_distinctions", "coverage_summary", "correlation_id", "audit_event_ref", "determinism", "downstream_effects"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/qualification/identity/qualification-run-suite-observation/0.1.0-draft"},
+    "record_id": {"type": "string", "pattern": "^IDQ-SUITE-[0-9]{3}$"},
+    "version": {"const": "0.1.0-draft"},
+    "status": {"const": "draft"},
+    "work_package_id": {"const": "QUAL-P0-02"},
+    "qualification_id": {"const": "DEC-0005-QUAL-001"},
+    "candidate_id": {"type": "string", "pattern": "^IDQ-CANDIDATE-[A-Z0-9-]+$"},
+    "qualification_run_id": {"type": "string", "pattern": "^IDQ-RUN-[0-9]{3}$"},
+    "qualification_only": {"const": true},
+    "synthetic_data_only": {"const": true},
+    "qualification_envelope": {"$ref": "bopen://schemas/qualification/common/qualification-envelope/0.1.0-draft"},
+    "provider_connection_refs": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-CONNECTION-[A-Z0-9-]+$"}},
+    "case_ids": {"type": "array", "minItems": 36, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-T[0-9]{3}$"}},
+    "record_refs": {
+      "type": "object",
+      "required": ["provider_connection_observations", "external_identity_binding_projections", "auth_assertion_observations", "principal_session_projections", "assurance_evidence_observations", "account_link_state_projections", "test_case_result_observations", "migration_evidence_observations"],
+      "properties": {
+        "provider_connection_observations": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-PC-[0-9]{3}$"}},
+        "external_identity_binding_projections": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-BIND-[0-9]{3}$"}},
+        "auth_assertion_observations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-ASSERT-[0-9]{3}$"}},
+        "principal_session_projections": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-SESSION-[0-9]{3}$"}},
+        "assurance_evidence_observations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-ASSURANCE-[0-9]{3}$"}},
+        "account_link_state_projections": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-LINK-[0-9]{3}$"}},
+        "test_case_result_observations": {"type": "array", "minItems": 36, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-CASE-[0-9]{3}$"}},
+        "migration_evidence_observations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-MIG-[0-9]{3}$"}}
+      },
+      "additionalProperties": false
+    },
+    "correlation_bindings": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["correlation_id", "record_refs", "audit_event_refs"],
+        "properties": {
+          "correlation_id": {"type": "string", "minLength": 1},
+          "record_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^IDQ-(?:PC|BIND|ASSERT|SESSION|ASSURANCE|LINK|CASE|MIG)-[0-9]{3}$"}},
+          "audit_event_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "identity_key_distinctions": {
+      "type": "array", "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["distinction_kind", "left", "right", "expected_distinct"],
+        "properties": {
+          "distinction_kind": {"enum": ["ISSUER_TRAILING_SLASH", "SUBJECT_CASE"]},
+          "left": {"$ref": "#/$defs/identityKey"},
+          "right": {"$ref": "#/$defs/identityKey"},
+          "expected_distinct": {"const": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage_summary": {
+      "type": "object",
+      "required": ["mandatory_category_count", "observed_category_count", "missing_category_count", "duplicate_category_count", "skipped_case_count"],
+      "properties": {
+        "mandatory_category_count": {"const": 36},
+        "observed_category_count": {"const": 36},
+        "missing_category_count": {"const": 0},
+        "duplicate_category_count": {"const": 0},
+        "skipped_case_count": {"const": 0}
+      },
+      "additionalProperties": false
+    },
+    "correlation_id": {"type": "string", "minLength": 1},
+    "audit_event_ref": {"type": "string", "minLength": 1},
+    "determinism": {"$ref": "#/$defs/determinism"},
+    "downstream_effects": {"$ref": "#/$defs/downstreamEffects"}
+  },
+  "$defs": {
+    "identityKey": {"type": "object", "required": ["issuer_uri", "subject", "canonicalization", "issuer_subject_sha256"], "properties": {"issuer_uri": {"type": "string", "pattern": "^https://[A-Za-z0-9.-]+(?::[0-9]+)?(?:/[A-Za-z0-9._~!$&'()*+,;=:@%-]*)*$"}, "subject": {"type": "string", "minLength": 1, "maxLength": 255}, "canonicalization": {"const": "RFC8785_EXACT_ISSUER_AND_SUBJECT"}, "issuer_subject_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "determinism": {"type": "object", "required": ["seed", "clock", "simulator_sha256"], "properties": {"seed": {"type": "integer", "minimum": 0}, "clock": {"type": "string", "format": "date-time"}, "simulator_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "downstreamEffects": {"type": "object", "required": ["principal_runtime", "tenant", "membership", "role", "permission", "entitlement", "active_context", "release", "runtime_activation"], "properties": {"principal_runtime": {"const": "NONE"}, "tenant": {"const": "NONE"}, "membership": {"const": "NONE"}, "role": {"const": "NONE"}, "permission": {"const": "NONE"}, "entitlement": {"const": "NONE"}, "active_context": {"const": "NONE"}, "release": {"const": "NONE"}, "runtime_activation": {"const": "NONE"}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

@@ -39,6 +39,7 @@ SCHEMA_FILES = {
     "migration-evidence.observation.schema.json": "bopen://schemas/qualification/identity/migration-evidence-observation/0.1.0-draft",
     "principal-session.projection.schema.json": "bopen://schemas/qualification/identity/principal-session-projection/0.1.0-draft",
     "provider-connection.observation.schema.json": "bopen://schemas/qualification/identity/provider-connection-observation/0.1.0-draft",
+    "qualification-run-suite.observation.schema.json": "bopen://schemas/qualification/identity/qualification-run-suite-observation/0.1.0-draft",
     "test-case-result.observation.schema.json": "bopen://schemas/qualification/identity/test-case-result-observation/0.1.0-draft",
 }
 
@@ -54,7 +55,7 @@ PACKAGE_PATHS = (
 
 COMMON_REQUIRED = {
     "$schema", "record_id", "version", "status", "work_package_id",
-    "qualification_id", "qualification_only", "synthetic_data_only",
+    "qualification_id", "candidate_id", "qualification_only", "synthetic_data_only",
     "qualification_envelope", "correlation_id", "audit_event_ref",
     "determinism", "downstream_effects",
 }
@@ -84,6 +85,18 @@ PROHIBITED_ACCEPTANCE_FIELDS = {
 
 def canonical_json_bytes(data: Any) -> bytes:
     return (json.dumps(data, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def identity_key_sha256(issuer_uri: str, subject: str) -> str:
+    """Digest exact UTF-8 issuer/subject values without normalization."""
+
+    payload = json.dumps(
+        {"issuer": issuer_uri, "subject": subject},
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def build_manifest(root: Path = ROOT) -> dict[str, Any]:
@@ -198,7 +211,7 @@ def validate_semantics(schemas: dict[str, dict[str, Any]]) -> list[str]:
     if provider["properties"].get("credential_material_present") != {"const": False}:
         errors.append("provider schema must prohibit credential material")
 
-    for name in ("external-identity-binding.projection.schema.json", "auth-assertion.observation.schema.json", "account-link-state.projection.schema.json"):
+    for name in ("external-identity-binding.projection.schema.json", "auth-assertion.observation.schema.json", "account-link-state.projection.schema.json", "qualification-run-suite.observation.schema.json"):
         canonicalization = schemas[name].get("$defs", {}).get("identityKey", {}).get("properties", {}).get("canonicalization")
         if canonicalization != {"const": "RFC8785_EXACT_ISSUER_AND_SUBJECT"}:
             errors.append(f"{name} identity key canonicalization drift")
@@ -236,7 +249,238 @@ def validate_semantics(schemas: dict[str, dict[str, Any]]) -> list[str]:
         errors.append("test observations cannot carry acceptance fields: " + ", ".join(sorted(forbidden)))
     if testcase["properties"].get("skipped") != {"const": False}:
         errors.append("skipped cases must not count as qualification results")
+    suite = schemas["qualification-run-suite.observation.schema.json"]
+    coverage = suite["properties"].get("coverage_summary", {}).get("properties", {})
+    for field, expected in {
+        "mandatory_category_count": len(NEGATIVE_CATEGORIES),
+        "observed_category_count": len(NEGATIVE_CATEGORIES),
+        "missing_category_count": 0,
+        "duplicate_category_count": 0,
+        "skipped_case_count": 0,
+    }.items():
+        if coverage.get(field) != {"const": expected}:
+            errors.append(f"suite coverage summary fail-open: {field}")
     return errors
+
+
+RECORD_GROUPS = {
+    "provider_connection_observations", "external_identity_binding_projections",
+    "auth_assertion_observations", "principal_session_projections",
+    "assurance_evidence_observations", "account_link_state_projections",
+    "test_case_result_observations", "migration_evidence_observations",
+}
+
+
+def _validate_identity_key(value: Any, label: str) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(value, dict):
+        return [f"{label} identity key missing"]
+    issuer = value.get("issuer_uri")
+    subject = value.get("subject")
+    digest = value.get("issuer_subject_sha256")
+    if not isinstance(issuer, str) or not issuer.startswith("https://") or "?" in issuer or "#" in issuer:
+        errors.append(f"{label} issuer_uri invalid")
+    if not isinstance(subject, str) or not subject:
+        errors.append(f"{label} subject invalid")
+    if isinstance(issuer, str) and isinstance(subject, str):
+        if digest != identity_key_sha256(issuer, subject):
+            errors.append(f"{label} exact issuer+subject digest mismatch")
+    if value.get("canonicalization") != "RFC8785_EXACT_ISSUER_AND_SUBJECT":
+        errors.append(f"{label} canonicalization invalid")
+    return errors
+
+
+def validate_suite_graph(suite: Any, records: Any) -> list[str]:
+    """Validate one synthetic run/candidate graph without executing qualification."""
+
+    errors: list[str] = []
+    if not isinstance(suite, dict) or not isinstance(records, dict):
+        return ["suite and records must be objects"]
+    if set(records) != RECORD_GROUPS:
+        errors.append("suite record groups incomplete or unknown")
+        return errors
+    refs = suite.get("record_refs")
+    if not isinstance(refs, dict) or set(refs) != RECORD_GROUPS:
+        errors.append("suite record_refs incomplete or unknown")
+        return errors
+    run_id = suite.get("qualification_run_id")
+    candidate_id = suite.get("candidate_id")
+    for field, expected in {
+        "work_package_id": "QUAL-P0-02",
+        "qualification_id": "DEC-0005-QUAL-001",
+        "qualification_only": True,
+        "synthetic_data_only": True,
+    }.items():
+        if suite.get(field) != expected:
+            errors.append(f"suite {field} mismatch")
+    envelope = suite.get("qualification_envelope")
+    if not isinstance(envelope, dict) or envelope.get("qualification_run_id") != run_id:
+        errors.append("suite envelope/run mismatch")
+
+    flattened: dict[str, dict[str, Any]] = {}
+    for group in sorted(RECORD_GROUPS):
+        items = records.get(group)
+        expected_refs = refs.get(group)
+        if not isinstance(items, list) or not isinstance(expected_refs, list):
+            errors.append(f"suite group invalid: {group}")
+            continue
+        ids = [item.get("record_id") for item in items if isinstance(item, dict)]
+        if len(ids) != len(items) or len(ids) != len(set(ids)):
+            errors.append(f"suite group duplicate or malformed record IDs: {group}")
+        if len(expected_refs) != len(set(expected_refs)):
+            errors.append(f"suite duplicate record refs: {group}")
+        if set(ids) != set(expected_refs) or len(ids) != len(expected_refs):
+            errors.append(f"suite dangling or missing record refs: {group}")
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            record_id = item.get("record_id")
+            if record_id in flattened:
+                errors.append(f"suite duplicate record ID across groups: {record_id}")
+            elif isinstance(record_id, str):
+                flattened[record_id] = item
+            item_envelope = item.get("qualification_envelope")
+            if not isinstance(item_envelope, dict) or item_envelope.get("qualification_run_id") != run_id:
+                errors.append(f"mixed qualification run: {record_id}")
+            if item.get("candidate_id") != candidate_id:
+                errors.append(f"mixed candidate: {record_id}")
+            for field, expected in {
+                "work_package_id": "QUAL-P0-02",
+                "qualification_id": "DEC-0005-QUAL-001",
+                "qualification_only": True,
+                "synthetic_data_only": True,
+            }.items():
+                if item.get(field) != expected:
+                    errors.append(f"record {field} mismatch: {record_id}")
+
+    providers = records["provider_connection_observations"]
+    provider_ids = {item.get("provider_connection_id") for item in providers}
+    suite_provider_ids = suite.get("provider_connection_refs")
+    if not isinstance(suite_provider_ids, list) or len(suite_provider_ids) != len(set(suite_provider_ids)) or set(suite_provider_ids) != provider_ids:
+        errors.append("suite provider set mismatch")
+    issuers = [item.get("issuer_uri") for item in providers]
+    if len(issuers) != len(set(issuers)):
+        errors.append("provider issuer values must be exact and unique")
+
+    assertions = {item.get("assertion_id") for item in records["auth_assertion_observations"]}
+    bindings = {item.get("identity_binding_id") for item in records["external_identity_binding_projections"]}
+    assurance = {item.get("assurance_evidence_id") for item in records["assurance_evidence_observations"]}
+    sessions = {item.get("session_projection_id") for item in records["principal_session_projections"]}
+    links = {item.get("link_event_id") for item in records["account_link_state_projections"]}
+
+    for item in records["auth_assertion_observations"]:
+        if item.get("provider_connection_id") not in provider_ids:
+            errors.append(f"dangling assertion provider ref: {item.get('record_id')}")
+        errors.extend(_validate_identity_key(item.get("identity_key"), str(item.get("record_id"))))
+    for item in records["external_identity_binding_projections"]:
+        if item.get("provider_connection_id") not in provider_ids:
+            errors.append(f"dangling binding provider ref: {item.get('record_id')}")
+        if item.get("source_assertion_ref") not in assertions:
+            errors.append(f"dangling binding assertion ref: {item.get('record_id')}")
+        if item.get("source_link_ref") is not None and item.get("source_link_ref") not in links:
+            errors.append(f"dangling binding link ref: {item.get('record_id')}")
+        errors.extend(_validate_identity_key(item.get("identity_key"), str(item.get("record_id"))))
+    for item in records["assurance_evidence_observations"]:
+        if item.get("assertion_ref") not in assertions:
+            errors.append(f"dangling assurance assertion ref: {item.get('record_id')}")
+    for item in records["principal_session_projections"]:
+        if item.get("identity_binding_ref") not in bindings or item.get("assertion_ref") not in assertions or item.get("assurance_ref") not in assurance:
+            errors.append(f"dangling session ref: {item.get('record_id')}")
+    for item in records["account_link_state_projections"]:
+        if any(ref not in assertions for ref in item.get("proof_assertion_refs", [])):
+            errors.append(f"dangling link assertion ref: {item.get('record_id')}")
+        if item.get("proof_session_ref") is not None and item.get("proof_session_ref") not in sessions:
+            errors.append(f"dangling link session ref: {item.get('record_id')}")
+        errors.extend(_validate_identity_key(item.get("identity_key"), str(item.get("record_id"))))
+    for item in records["migration_evidence_observations"]:
+        if item.get("source_connection_ref") not in provider_ids or item.get("target_connection_ref") not in provider_ids:
+            errors.append(f"dangling migration provider ref: {item.get('record_id')}")
+
+    cases = records["test_case_result_observations"]
+    case_ids = [item.get("case_id") for item in cases]
+    categories = [item.get("category") for item in cases]
+    suite_case_ids = suite.get("case_ids")
+    if not isinstance(suite_case_ids, list) or len(suite_case_ids) != len(set(suite_case_ids)) or set(suite_case_ids) != set(case_ids) or len(suite_case_ids) != len(case_ids):
+        errors.append("suite case IDs missing, duplicate or dangling")
+    if len(categories) != len(set(categories)):
+        errors.append("duplicate mandatory negative category")
+    missing_categories = NEGATIVE_CATEGORIES - set(categories)
+    unknown_categories = set(categories) - NEGATIVE_CATEGORIES
+    if missing_categories or unknown_categories or len(categories) != len(NEGATIVE_CATEGORIES):
+        errors.append("mandatory negative category coverage incomplete")
+    if any(item.get("skipped") is not False for item in cases):
+        errors.append("skipped mandatory negative case denied")
+    expected_coverage = {
+        "mandatory_category_count": len(NEGATIVE_CATEGORIES),
+        "observed_category_count": len(NEGATIVE_CATEGORIES),
+        "missing_category_count": 0,
+        "duplicate_category_count": 0,
+        "skipped_case_count": 0,
+    }
+    if suite.get("coverage_summary") != expected_coverage:
+        errors.append("suite coverage summary does not match mandatory case set")
+
+    seen_correlated: list[str] = []
+    bindings_value = suite.get("correlation_bindings")
+    if not isinstance(bindings_value, list):
+        errors.append("correlation bindings missing")
+        bindings_value = []
+    suite_correlation_bound = False
+    for binding in bindings_value:
+        if not isinstance(binding, dict):
+            errors.append("correlation binding malformed")
+            continue
+        correlation_id = binding.get("correlation_id")
+        record_refs = binding.get("record_refs", [])
+        audit_refs = binding.get("audit_event_refs", [])
+        if correlation_id == suite.get("correlation_id") and suite.get("audit_event_ref") in audit_refs:
+            suite_correlation_bound = True
+        for record_ref in record_refs:
+            record = flattened.get(record_ref)
+            if record is None:
+                errors.append(f"correlation binding dangling record ref: {record_ref}")
+                continue
+            seen_correlated.append(record_ref)
+            if record.get("correlation_id") != correlation_id:
+                errors.append(f"mixed correlation: {record_ref}")
+            if record.get("audit_event_ref") not in audit_refs:
+                errors.append(f"audit/correlation binding missing: {record_ref}")
+    if len(seen_correlated) != len(set(seen_correlated)) or set(seen_correlated) != set(flattened):
+        errors.append("records must have exactly one correlation binding")
+    if not suite_correlation_bound:
+        errors.append("suite correlation/audit relationship missing")
+
+    distinctions = suite.get("identity_key_distinctions")
+    kinds: set[str] = set()
+    if not isinstance(distinctions, list):
+        errors.append("identity key distinctions missing")
+        distinctions = []
+    for index, distinction in enumerate(distinctions):
+        if not isinstance(distinction, dict):
+            errors.append(f"identity distinction malformed: {index}")
+            continue
+        kind = distinction.get("distinction_kind")
+        kinds.add(kind)
+        left = distinction.get("left")
+        right = distinction.get("right")
+        errors.extend(_validate_identity_key(left, f"distinction {index} left"))
+        errors.extend(_validate_identity_key(right, f"distinction {index} right"))
+        if not isinstance(left, dict) or not isinstance(right, dict):
+            continue
+        if distinction.get("expected_distinct") is not True or left.get("issuer_subject_sha256") == right.get("issuer_subject_sha256"):
+            errors.append(f"identity distinction collapsed: {kind}")
+        if kind == "ISSUER_TRAILING_SLASH":
+            issuers_pair = {left.get("issuer_uri"), right.get("issuer_uri")}
+            bases = {value[:-1] if isinstance(value, str) and value.endswith("/") else value for value in issuers_pair}
+            if left.get("subject") != right.get("subject") or len(issuers_pair) != 2 or len(bases) != 1:
+                errors.append("trailing-slash issuer distinction invalid")
+        elif kind == "SUBJECT_CASE":
+            left_subject, right_subject = left.get("subject"), right.get("subject")
+            if left.get("issuer_uri") != right.get("issuer_uri") or not isinstance(left_subject, str) or not isinstance(right_subject, str) or left_subject == right_subject or left_subject.casefold() != right_subject.casefold():
+                errors.append("subject-case distinction invalid")
+    if kinds != {"ISSUER_TRAILING_SLASH", "SUBJECT_CASE"}:
+        errors.append("slash and subject-case distinctions both required")
+    return sorted(set(errors))
 
 
 def validate_catalog(root: Path = ROOT) -> tuple[dict[str, dict[str, Any]], list[str]]:

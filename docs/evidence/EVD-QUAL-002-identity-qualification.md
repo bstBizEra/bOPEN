@@ -62,3 +62,29 @@ Reason: preserve reproducible producer results without turning them into indepen
 - aggregate `npm run validate`: stops at the historical `docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json` because the shared snapshot does not include the newly authorized package documents.
 
 The aggregate disposition is `HOLD_FOR_QUAL_INTEG_001`, not a QUAL-P0-02 schema or security failure. Updating the shared manifest, indexes, CI or package scripts is prohibited in this lane. These results are maker evidence only; no provider approval, qualification execution, PG-G0 passage, merge, release or runtime authority is asserted.
+
+## Append-only independent review rework — 2026-07-22
+
+**Reviewed commit:** `e4b421f79e8f02f60985d995b2221be921b508de`
+**Reviewed tree:** `cb06a1ae95e778ce3fc9e9b30385e262a322181d`
+**Disposition:** `REQUEST_CHANGES`
+
+Independent review required a suite-level contract binding one run, candidate/provider set, case inventory, record graph and correlation/audit relationships. It also required semantic reference closure, exact issuer-plus-subject digest checks, set-complete negative coverage and evidence that trailing-slash issuer values and subject case remain byte-significant.
+
+Reason: independent records could be combined across runs or candidates, and schema patterns alone did not prove reference closure or exact digest behavior. Benefit of the first candidate: offline catalogs, synthetic-only constraints, claim-authority denial, lifecycle fields and non-authority effects were already sound. Expected outcome: the successor validator rejects mixed graphs, dangling references, incomplete/duplicate/skipped coverage, normalization and digest substitution before execution evidence exists.
+
+## Successor maker verification — 2026-07-22
+
+Reason: record the bounded rework results without treating them as checker acceptance. Benefit of the REQUEST_CHANGES record: it identifies the exact graph-integrity and byte-preservation obligations. Expected outcome: a fresh checker can reproduce all suite and adversarial checks against the successor SHA.
+
+- focused QUAL-P0-02 suite: 20 passed, 0 failed, 0 skipped;
+- full repository suite: 179 passed, 0 failures, 0 errors, 0 skipped;
+- identity catalog/semantic validator: pass, 9 schemas including the run suite;
+- imported QUAL-P0-00 catalog/manifest: pass, 9 common schemas;
+- contract validator: pass, 38 machine-readable contracts;
+- repository, program-control, Program G0 and PG-G0 authority report checks: pass without asserting gate passage;
+- clean-room, secret, supply-chain, Python compilation and exact-diff checks: pass;
+- adversarial suite coverage: mixed run/candidate/correlation, dangling cross-record refs, missing/duplicate/skipped categories, duplicate case/record/correlation membership, valid trailing-slash issuer distinction, subject-case distinction and wrong exact-key digest;
+- raw-byte QUAL-P0-02 package manifest: refreshed after this append-only evidence record.
+
+Aggregate shared-manifest routing remains `HOLD_FOR_QUAL_INTEG_001`. No qualification execution, provider approval, runtime implementation, merge, release or activation is authorized by these maker results.
