@@ -58,3 +58,7 @@ codex-motor
 ## Decision
 
 Proceed to human/authority review for B7 readiness only. Production implementation remains blocked until BOPEN-RES-001 G7, approved normative artifacts, B7 approval and an accepted implementation work package are complete.
+
+## Readiness reconciliation - 2026-07-21
+
+EVD-BOOT-011 now records completion of the BOOT-P0-01 and BOOT-P0-08 external-control prerequisites through protected Gitea PR #1. The regenerated deterministic report therefore states `ready_for_authority_review`, with B7 still `Pending execution review` and production implementation authorization still `false`.

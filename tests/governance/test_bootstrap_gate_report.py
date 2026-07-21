@@ -6,19 +6,16 @@ from tools.report_bootstrap_gates import build_report, format_report
 
 
 class BootstrapGateReportTests(unittest.TestCase):
-    def test_repository_report_requires_review_and_blocks_production_implementation(self):
+    def test_repository_report_is_ready_for_authority_review_and_blocks_production(self):
         report = build_report()
 
-        self.assertEqual(report["bootstrap_review_state"], "incomplete")
-        self.assertFalse(report["b7_review_ready"])
+        self.assertEqual(report["bootstrap_review_state"], "ready_for_authority_review")
+        self.assertTrue(report["b7_review_ready"])
         self.assertFalse(report["production_implementation_authorized"])
         self.assertEqual(report["b7_status"], "Pending execution review")
-        self.assertGreaterEqual(len(report["blockers"]), 1)
+        self.assertEqual(report["blockers"], ["B7 exit gate is not approved."])
         self.assertEqual(report["pending_evidence"], [])
-        self.assertEqual(
-            [item["ID"] for item in report["execution_pending_packages"]],
-            ["BOOT-P0-01", "BOOT-P0-08"],
-        )
+        self.assertEqual(report["execution_pending_packages"], [])
 
     def test_report_flags_pending_evidence_and_no_implementation_authority(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -74,7 +71,7 @@ class BootstrapGateReportTests(unittest.TestCase):
     def test_markdown_report_is_non_authorizing(self):
         report = format_report(
             {
-                "bootstrap_review_state": "review_required",
+                "bootstrap_review_state": "ready_for_authority_review",
                 "b7_review_ready": True,
                 "production_implementation_authorized": False,
                 "gate_count": 8,

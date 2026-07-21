@@ -1,5 +1,12 @@
 # Documentation Changelog
 
+## 2026-07-21 - BOOT-P0-12 external-control reconciliation
+
+- Reconciled BOOT-P0-01 and BOOT-P0-08 with the protected Gitea PR #1 merge and current `main` protection observation.
+- Updated EVD-BOOT-011 without changing the historical activation record.
+- Moved deterministic bootstrap readiness to `ready_for_authority_review` while preserving B7 as pending and production implementation authority as false.
+- Kept DEC-0007 proposed for the bOPEN Architecture Authority.
+
 ## 2026-07-13 - research R0 control establishment
 
 - Approved DEC-0009 to keep physical upstream clones and raw evidence outside the bOPEN worktree.

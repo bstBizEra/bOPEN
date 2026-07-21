@@ -1,6 +1,6 @@
 # BOOT-P0-08 — Ownership and review governance
 
-**Status:** External review pending
+**Status:** Execution complete
 **Owner:** Engineering Authority
 **Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
 **Phase:** Bootstrap P0
@@ -34,8 +34,8 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` and `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md` plus the pending protected-review receipt.
+`docs/evidence/EVD-BOOT-009-bootstrap-self-review.md` and `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md` plus the protected Gitea PR #1 merge receipt.
 
-## Residual activation
+## External-control reconciliation
 
-Gitea owner identities, separated role teams, CODEOWNERS paths, required Reviewer approval, merge restriction, direct-push denial, and administrator compliance are configured and observed. Completion still requires a passing Gitea governance context, activation of that exact required context, Reviewer approval, and protected merge evidence.
+Gitea owner identities, separated role teams, CODEOWNERS paths, required Reviewer approval, merge restriction, direct-push denial, exact required governance context, and protected PR #1 merge are configured and observed in EVD-BOOT-011. BOOT-P0-08 execution is complete. B7 remains a separate bOPEN Architecture Authority decision.

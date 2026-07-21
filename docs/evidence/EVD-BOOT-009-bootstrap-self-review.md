@@ -56,3 +56,7 @@ Self-review by BST Codex Motor. External repository evidence requires Engineerin
 ## Decision
 
 Do not approve B7 yet. Complete BOOT-P0-01 and BOOT-P0-08 external activation, approve DEC-0006, rerun this evidence set, and submit DEC-0007 for authority approval.
+
+## Subsequent external-control closure - 2026-07-21
+
+The BOOT-P0-01 and BOOT-P0-08 conditions identified by this historical self-review were subsequently closed through the protected Gitea PR #1 merge recorded in EVD-BOOT-011. BOOT-P0-12 is now ready to be submitted for the DEC-0007 authority decision. This update does not itself approve B7 or authorize production implementation.

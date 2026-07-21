@@ -38,4 +38,4 @@ EVD-BOOT-007, EVD-BOOT-008, `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md
 
 ## Current readiness artifact
 
-`artifacts/validation/bootstrap-gate-readiness.md` records the current BOOT-P0-12 readiness state. The report currently identifies B7 as review-required and does not authorize production platform kernel implementation.
+`artifacts/validation/bootstrap-gate-readiness.md` records the current BOOT-P0-12 readiness state. Following the EVD-BOOT-011 external-control reconciliation, the report identifies B7 as `ready_for_authority_review`. B7 remains pending, and the report does not authorize production platform kernel implementation.

@@ -64,3 +64,26 @@ Gitea pull request #1 and the required successful governance context are active.
 ## Decision
 
 Proceed only with independent review of the final branch SHA and protected merge. Production kernel implementation remains unauthorized until the separate BOPEN-RES-001 G7 and normative approval conditions pass.
+
+## External-control reconciliation - 2026-07-21
+
+**Observation source:** Coordinator-supplied read-only Gitea MCP observations for `bst-sa/bopen`
+
+**Reconciled repository head:** `632866d0f3b9fa0b401692f8cf5f56fa638171dc`
+
+**Reconciliation agent:** Codex Maker, BOOT-P0-12 external-control reconciliation
+
+The pending external review described above subsequently completed. Gitea PR #1, titled `[BOOT-P0-01/08] Activate protected bGitea review path`, is closed and merged. Its merge commit is `af3fdaa38d04992991b43a2bf36f4aff640f0472`, and that commit is an ancestor of the reconciled `main` head.
+
+The current protected-branch observation for `main` records:
+
+| Control | Reconciled observation |
+|---|---|
+| Direct push | Disabled |
+| Merge whitelist | Enabled |
+| Required approvals | One |
+| Required status check | Enabled |
+| Exact required context | `Bootstrap Governance / validate (pull_request)` |
+| Current `main` | `632866d0f3b9fa0b401692f8cf5f56fa638171dc` |
+
+This reconciliation supersedes only the earlier statements that independent review and protected merge were still pending. It closes the BOOT-P0-01 and BOOT-P0-08 execution prerequisites and makes BOOT-P0-12 ready for authority review. The bOPEN Architecture Authority has not approved B7, DEC-0007 remains proposed, BOPEN-RES-001 G7 remains separate, and production platform kernel implementation remains unauthorized.

@@ -1,6 +1,6 @@
 # BOOT-P0-01 — Repository initialization and protections
 
-**Status:** External review pending
+**Status:** Execution complete
 **Owner:** Engineering Authority
 **Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
 **Phase:** Bootstrap P0
@@ -36,6 +36,6 @@ Production platform business logic and unapproved architecture decisions.
 
 `docs/evidence/EVD-BOOT-004-source-control-start.md`, `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`, and `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md`.
 
-## Residual activation
+## External-control reconciliation
 
-The private bGitea repository, credential-free `origin`, fenced teams, runner, and initial protected branch settings are observed. Completion still requires the first Gitea pull-request workflow, required status context activation, Reviewer approval, and protected merge evidence.
+EVD-BOOT-011 records the private bGitea repository, credential-free `origin`, fenced teams, runner, protected `main`, exact required status context, Reviewer approval, and protected merge of Gitea PR #1. BOOT-P0-01 execution is complete. B7 remains a separate bOPEN Architecture Authority decision.
