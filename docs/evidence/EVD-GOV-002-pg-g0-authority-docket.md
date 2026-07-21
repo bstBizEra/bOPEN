@@ -95,3 +95,13 @@ Reason: the second successor still trusted a repository-authored registry that m
 The focused suite remains 37/37 and the full suite remains 140/140 after replacing the former self-authored-registry positive expectation with a fail-closed trust-root expectation. Matrix action class, status, expiry policy and concurrence semantics are now matched to the expected action contract. All baseline decisions remain pending and all authority flags remain false.
 
 This is maker evidence only and requires another fresh non-maker exact-SHA review.
+
+## Independent exact-SHA technical receipts — 2026-07-21
+
+Candidate commit: `99192c9532f04052cd81c51b1f4f925b18a53fb5`  
+Candidate tree: `7e2ecc3dac9ca20ab9249dd057945888de4f9c5f`
+
+- `/root/fresh_schema_acceptance`: `ACCEPT_EXACT_SHA` after independently reproducing the fabricated-registry and invented-delegation-grantor rejection probes, matrix semantic mutations, exact candidate binding, terminal disposition, state immutability, subject, concurrence, chronology and nested-field checks. Focused suite 37/37 and repository validation passed.
+- `/root/second_fresh_traceability`: `ACCEPT_EXACT_SHA` after independently verifying clean exact ancestry, bounded scope, append-only evidence, 37/37 focused tests, 140/140 full tests, all repository validators, both deterministic reports and the 257-record manifest.
+
+Both receipts are technical evidence only. They do not authenticate a human authority, accept GOV-P0-02, approve any artifact or decision, pass PG-G0, authorize merge, release, runtime, deployment or production implementation.

@@ -81,3 +81,9 @@ Maker draft implementation and local validation are complete. Exact-SHA technica
 Reason: exact-SHA review found that the original bounded-path statement described package and CI validation surfaces generically but did not explicitly name three files changed to route the proposal and preserve its generated evidence: `.gitignore`, `README.md`, and `tools/generate_document_manifest.py`. Benefit of the old phase: the original statement constrained work to governance documents, contracts, validation and evidence and correctly prohibited every runtime and production zone. Expected outcome: the proposal's declared scope now matches the exact candidate diff without broadening authority beyond documentation, deterministic manifest handling and validation.
 
 The three additional allowed paths are exactly `.gitignore`, `README.md`, and `tools/generate_document_manifest.py`. This clarification does not accept GOV-P0-02, authorize further root-file changes, or change any human, gate, merge, release, runtime or production disposition.
+
+## Append-only technical checker receipt — 2026-07-21
+
+Two independent non-maker checkers returned `ACCEPT_EXACT_SHA` for commit `99192c9532f04052cd81c51b1f4f925b18a53fb5`, tree `7e2ecc3dac9ca20ab9249dd057945888de4f9c5f`: `/root/fresh_schema_acceptance` for authority/schema adversarial behavior and `/root/second_fresh_traceability` for traceability/evidence consistency. The focused suite passed 37/37, the full suite passed 140/140, and the repository validation chain passed.
+
+This satisfies the technical exact-SHA checker criterion only. GOV-P0-02 remains Proposed and unaccepted; Human Engineering Authority disposition, PG-G0, merge, release, runtime and production implementation all remain unauthorized.
