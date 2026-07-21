@@ -1,0 +1,236 @@
+{
+  "$schema": "bopen://schemas/governance/pg-g0-current-tree-readiness/0.1.0-draft",
+  "projection_id": "PG-G0-CURRENT-TREE-READINESS-001",
+  "version": "0.1.0-draft",
+  "status": "NOT_READY",
+  "generated_at": "2026-07-22T00:00:00+07:00",
+  "historical_view": {
+    "artifact_ref": "artifacts/validation/program-g0-authority-readiness.json",
+    "artifact_sha256": "d444da84d8ed06c5bc1852f0c581d1ba63a27962d3f56e402dcc3e2b5dbe242a",
+    "artifact_bytes": 1451,
+    "docket_ref": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
+    "docket_sha256": "255fd6ae1b88de89b5a89d9575c5e97b4417115b4985a18426414b8003773795",
+    "docket_bytes": 12851,
+    "bound_commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
+    "bound_tree_sha": "f336976981c9b7e95c96ec8289589e53c1ac506c",
+    "blocker_count": 18
+  },
+  "current_tree": {
+    "repository_ref": "bstBizEra/bopen",
+    "evaluation_commit_sha": "4a98cb45748ded2b209786bcb9242664aa0795aa",
+    "evaluation_tree_sha": "8900b871e1f436d5ee21919764a31f955f42d5bf",
+    "evaluation_commit_is_ancestor": true,
+    "root_controls_valid": true,
+    "root_control_errors": []
+  },
+  "blocker_assessments": [
+    {
+      "blocker_id": "PG-G0-HIST-001",
+      "original_text": "BOPEN-GOV-001 and the authority matrix are draft and ineffective",
+      "original_sha256": "6b60d5707f5368928fefc53b6ef5394323adfd349b1a51342c9dab9fb3cd228a",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-002",
+      "original_text": "DEC-0004, DEC-0005, ADR-0005 and ADR-0009 lack named checkers and due dates",
+      "original_sha256": "b3f750372045da14df74427be5d6ee985c9da606133fa2b7186339a5f1be028a",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-003",
+      "original_text": "GOV-P0-01 and DEC-0010 remain proposed and BOOT-B7 remains pending",
+      "original_sha256": "1ede0883b3889815c869bc3c3c8fdc93fad3c3699ddedf608a70bf10d459bae4",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-004",
+      "original_text": "PG-G0-DEC-001 remains ineffective",
+      "original_sha256": "b5558efdebfdb469acd1d4b1f2a034dd323a60de9386989687ccf579877d4d7b",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-005",
+      "original_text": "PG-G0-DEC-002 remains ineffective",
+      "original_sha256": "b0fccfb5ba638447e5a5cd0b8560904057cbe940a980e9794af0da792a64fcc0",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-006",
+      "original_text": "PG-G0-DEC-003 remains ineffective",
+      "original_sha256": "f9b235f9eda657f2a9ea820b87e56f50502bf69dbcbf62dec9be06a53744a0ca",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-007",
+      "original_text": "PG-G0-DEC-004 remains ineffective",
+      "original_sha256": "d6dceb6a81779767ba355e12508eb39482f3a48d35990fd426157dd39460faa6",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-008",
+      "original_text": "PG-G0-DEC-005 remains ineffective",
+      "original_sha256": "6c6f454168f7e3795178946b80cf55400e57e9f62fd48a8193469512c491aa71",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-009",
+      "original_text": "Roadmap.md, Master_Standards.md, Progress_Log.md, Backlog.md and Recap_Today.md are absent and no equivalents are approved",
+      "original_sha256": "42505be835807dce077ea94770472e6cfba0266e7a6adf8b8a77234496dca446",
+      "classification": "RESOLVED_TECHNICALLY_IN_CURRENT_TREE",
+      "current_observation": "The five exact current-tree root controls pass bounded regular-file and metadata checks.",
+      "machine_evidence_refs": [
+        "Roadmap.md",
+        "Master_Standards.md",
+        "Progress_Log.md",
+        "Backlog.md",
+        "Recap_Today.md",
+        "tools/validate_root_control_surfaces.py"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-010",
+      "original_text": "an approved authority identity registry with hash-bound human role records is absent",
+      "original_sha256": "2f0debcdeff148863b4cd6e85bd6dcc0925e8e4e7eaafd6e9523b3aeb1b72af0",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-011",
+      "original_text": "attributable Product, Architecture, Security, Data and Engineering human authority identities are absent",
+      "original_sha256": "67d2480189b0a5a3e206e351a0042dcfc15c1cf8f32ebb7a52bd71fef349cebd",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-012",
+      "original_text": "authority source is not effective",
+      "original_sha256": "66e97cffc0b47747cd654542ec66331281de0b78578cea78f2dd4322424e9b1e",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-013",
+      "original_text": "exact-SHA technical review is not accepted",
+      "original_sha256": "bc0aef373766b0d8f69f8773b27ef02c3f4fd566d326022c4b0b923c84f3b1ba",
+      "classification": "STILL_ACTIVE",
+      "current_observation": "No structured independent exact-SHA review receipt is bound to the historical docket; CI or PR text is not authority.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-014",
+      "original_text": "technical review of this exact docket candidate is pending",
+      "original_sha256": "100e408395b440fa2e116f291d680a5c8955980f56c64f945beece083072d684",
+      "classification": "STILL_ACTIVE",
+      "current_observation": "No structured independent exact-SHA review receipt is bound to the historical docket; CI or PR text is not authority.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-015",
+      "original_text": "the authority matrix has no action for approving BOPEN-GOV-001",
+      "original_sha256": "e8dcabaa9647f0339ca2e9c43c50a2f875fddf4d3676b787e2ae1afc6f029adc",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-016",
+      "original_text": "the authority matrix has no action for approving the seven program registers",
+      "original_sha256": "dc32042f5c5429820a0141c4560f762ba09099462acae5c2f0c1d8f8bf3e238b",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-017",
+      "original_text": "the authority matrix has no action for passing PG-G0",
+      "original_sha256": "81ce2527b537b265770121afee7a80d9d83fa19ca589f25ab590acd151617f71",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    },
+    {
+      "blocker_id": "PG-G0-HIST-018",
+      "original_text": "the prose and machine authority sources conflict on ACCEPT_WORK_ITEM concurrence",
+      "original_sha256": "b23dcf08d9a1ffcfcaa40fa5e77294d983a0fba096329ee4ae382668391b7856",
+      "classification": "HUMAN_DISPOSITION_REQUIRED",
+      "current_observation": "This blocker requires attributable human disposition or an effective authority source and cannot be machine-resolved.",
+      "machine_evidence_refs": [
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ]
+    }
+  ],
+  "summary": {
+    "historical_blockers": 18,
+    "still_active": 2,
+    "resolved_technically_in_current_tree": 1,
+    "human_disposition_required": 15,
+    "not_reevaluable": 0,
+    "active_blockers": 17,
+    "ready_for_human_gate_decision": false
+  },
+  "authority": {
+    "pg_g0_passed": false,
+    "ready_for_human_gate_decision": false,
+    "governance_baseline_approved": false,
+    "work_package_accepted": false,
+    "technology_approved": false,
+    "identity_provider_approved": false,
+    "qualification_executed": false,
+    "merge_authorized": false,
+    "release_authorized": false,
+    "runtime_activation_authorized": false,
+    "production_implementation_authorized": false
+  },
+  "limitation": "This deterministic projection records current-tree technical observations only. It does not amend historical evidence, accept a review, supply human authority, pass PG-G0, authorize qualification, merge, release, runtime activation, or production implementation."
+}

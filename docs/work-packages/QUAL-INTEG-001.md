@@ -86,3 +86,11 @@ Independent review identified two blockers: write-capable manifest commands coul
 ### Append-only rework 001 maker completion â€” 2026-07-22
 
 Both requested blockers are technically closed in the maker candidate: protected manifest writes fail closed, index history is verified as exact binary append-only, all 10 new adversarial tests pass, governance is 154/154 and the complete suite is 240/240. `npm run validate` and security checks pass. Status remains Draft, Inactive and REQUEST_CHANGES pending independent successor review; no merge, release, runtime or production authority is created.
+
+### Append-only REQUEST_CHANGES rework 002 - current-tree readiness projection - 2026-07-22
+
+The historical `PG-G0-AUTH-001` docket and `program-g0-authority-readiness.json` remain immutable evidence about their bound commit. This bounded successor adds a separate current-tree projection that can classify a blocker as technically resolved only when deterministic current-tree checks succeed. It does not rewrite a historical blocker, infer authority from CI or pull-request prose, or auto-resolve a human disposition.
+
+The projection is closed-schema and fail-closed: unknown blockers remain active; absent, wrong-case, symlinked or malformed root controls keep the root-control blocker active; human authority, trust-root, decision and authority-matrix blockers require human disposition; exact-SHA technical review requires a structured independent receipt. All gate, qualification, merge, release, runtime and production authority flags remain false. Independent review of the successor exact commit/tree remains required.
+
+The generated projection is explicitly retained by the narrow validation-artifact exception in `.gitignore`. `REWORK-003` records the pre-final snapshot and `REWORK-004` is the final create-once aggregate after that exception and required-path registry were added; both are append-only indexed records.

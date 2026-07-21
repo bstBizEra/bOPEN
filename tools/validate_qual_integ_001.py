@@ -45,6 +45,7 @@ WORKFLOW_REQUIRED = (
     "tools/validate_program_controls.py",
     "tools/report_program_g0.py --check",
     "tools/validate_pg_g0_authority_docket.py --check",
+    "tools/report_pg_g0_current_tree_readiness.py --check",
     "tools/generate_document_manifest.py --check-index",
     "tools/validate_root_control_surfaces.py --check",
     "tools/validate_qualification_common.py --check --check-manifest",
@@ -73,12 +74,18 @@ REPOSITORY_VALIDATOR_REQUIRED = (
     "docs/manifests/QUAL-INTEG-001-AGGREGATE-MANIFEST.json",
     "docs/manifests/QUAL-INTEG-001-REWORK-001-AGGREGATE-MANIFEST.json",
     "docs/manifests/QUAL-INTEG-001-REWORK-002-AGGREGATE-MANIFEST.json",
+    "docs/manifests/QUAL-INTEG-001-REWORK-003-AGGREGATE-MANIFEST.json",
+    "docs/manifests/QUAL-INTEG-001-REWORK-004-AGGREGATE-MANIFEST.json",
     "docs/manifests/MANIFEST-INDEX.jsonl",
     "docs/work-packages/QUAL-INTEG-001.md",
     "docs/evidence/EVD-QUAL-INTEG-001-review-candidate.md",
     "tools/validate_qual_integ_001.py",
     "tests/governance/test_qual_integ_001.py",
     "artifacts/validation/qual-integ-001-rework-001-readiness.json",
+    "contracts/governance/pg-g0-current-tree-readiness.schema.json",
+    "tools/report_pg_g0_current_tree_readiness.py",
+    "tests/governance/test_pg_g0_current_tree_readiness.py",
+    "artifacts/validation/pg-g0-current-tree-readiness-001.json",
 )
 
 

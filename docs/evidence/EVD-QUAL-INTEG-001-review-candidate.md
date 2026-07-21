@@ -97,3 +97,18 @@ No credentials, personal data, upstream source, runtime execution, application/s
 ## Independent verdict
 
 Pending exact final commit and tree. Technical acceptance cannot authorize merge, technology selection, gate passage, release, runtime or production implementation.
+
+### Append-only current-tree readiness projection evidence - 2026-07-22
+
+**Source:** QUAL-INTEG-001 REQUEST_CHANGES rework instruction
+**Agent ID:** `/root/gov_p0_03_preflight`
+
+- Historical evidence preservation: `PG-G0-AUTH-001.json` remains 12,851 bytes with SHA-256 `255fd6ae1b88de89b5a89d9575c5e97b4417115b4985a18426414b8003773795`; `program-g0-authority-readiness.json` remains 1,451 bytes with SHA-256 `d444da84d8ed06c5bc1852f0c581d1ba63a27962d3f56e402dcc3e2b5dbe242a`.
+- Bound/current distinction: the historical docket remains bound to commit/tree `c893062c197e74c15214e5ce1c425b9e9ed8002f` / `f336976981c9b7e95c96ec8289589e53c1ac506c`; the technical projection evaluates authorized base commit/tree `4a98cb45748ded2b209786bcb9242664aa0795aa` / `8900b871e1f436d5ee21919764a31f955f42d5bf` and verifies that commit remains an ancestor of the candidate.
+- Projection result: 18 historical blockers retained in original order; 1 classified `RESOLVED_TECHNICALLY_IN_CURRENT_TREE`; 17 remain active. Human dispositions are never machine-resolved, unknown blockers default active, and CI/PR prose is not authority evidence.
+- Focused negative suite: 10/10 PASS, covering missing, wrong-case, symlink and malformed root controls; human-only blockers; unknown blockers; CI/PR non-authority; all-false authority flags; false readiness while human blockers remain; and closed object boundaries.
+- Complete suite: 250/250 PASS. Contract validation: 45 machine-readable contracts PASS. Repository and QUAL integration validators: PASS. `npm run validate`: PASS. Clean-room, secret, supply-chain and `git diff --check`: PASS.
+
+These are maker technical results only. Qualification was not executed, no technology or identity provider was approved, and no gate, merge, release, runtime activation or production implementation was authorized.
+
+The current projection is retained through an exact `.gitignore` exception. The create-once `REWORK-003` pre-final aggregate and final `REWORK-004` aggregate are separately indexed; neither prior snapshot nor any existing index line was rewritten.

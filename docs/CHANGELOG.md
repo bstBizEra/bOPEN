@@ -152,3 +152,10 @@
 - Added binary Git-history prefix validation for the append-only manifest index.
 - Added 10 adversarial write/history tests and raised the full validated floor from 230 to 240.
 - Preserved every prior manifest/index byte and all non-authority states.
+
+## Append-only entry - 2026-07-22 - QUAL-INTEG-001 current-tree readiness projection
+
+- Preserved the historical PG-G0 docket, blocker report, canonical manifests and indexed snapshots byte-for-byte.
+- Added a closed-schema deterministic projection separating historical bound-commit evidence from bounded current-tree technical observations.
+- Added 10 fail-closed negative tests for root-control integrity, human-only blockers, unknown blockers, CI/PR non-authority, false readiness and closed object shapes.
+- Retained 17 active blockers and every authority, qualification, gate, merge, release, runtime and production flag as false.

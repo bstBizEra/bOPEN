@@ -4,7 +4,7 @@
   "private": true,
   "description": "Governed bootstrap for the bOPEN platform kernel",
   "scripts": {
-    "validate": "python tools/validate_repository.py && python tools/validate_contracts.py && python tools/validate_program_controls.py && python tools/report_program_g0.py --check && python tools/validate_pg_g0_authority_docket.py --check && python tools/validate_root_control_surfaces.py --check && python tools/validate_qualification_common.py --check --check-manifest && python tools/validate_technology_qualification.py --check --check-manifest && python tools/validate_identity_qualification.py --check && python tools/validate_research_g3_design.py && python tools/generate_document_manifest.py --check-index && python tools/validate_qual_integ_001.py && python tools/report_qual_integ_001.py --check && python tools/check_clean_room.py && python tools/check_secrets.py && python tools/check_supply_chain.py",
+    "validate": "python tools/validate_repository.py && python tools/validate_contracts.py && python tools/validate_program_controls.py && python tools/report_program_g0.py --check && python tools/validate_pg_g0_authority_docket.py --check && python tools/report_pg_g0_current_tree_readiness.py --check && python tools/validate_root_control_surfaces.py --check && python tools/validate_qualification_common.py --check --check-manifest && python tools/validate_technology_qualification.py --check --check-manifest && python tools/validate_identity_qualification.py --check && python tools/validate_research_g3_design.py && python tools/generate_document_manifest.py --check-index && python tools/validate_qual_integ_001.py && python tools/report_qual_integ_001.py --check && python tools/check_clean_room.py && python tools/check_secrets.py && python tools/check_supply_chain.py",
     "check:clean-room": "python tools/check_clean_room.py",
     "check:secrets": "python tools/check_secrets.py",
     "check:supply-chain": "python tools/check_supply_chain.py",
@@ -16,6 +16,8 @@
     "check:program-g0": "python tools/report_program_g0.py --check",
     "check:program-g0-authority": "python tools/validate_pg_g0_authority_docket.py --check",
     "report:program-g0-authority": "python tools/validate_pg_g0_authority_docket.py --write",
+    "check:pg-g0-current-tree-readiness": "python tools/report_pg_g0_current_tree_readiness.py --check",
+    "report:pg-g0-current-tree-readiness": "python tools/report_pg_g0_current_tree_readiness.py --write",
     "validate:research-g3-design": "python tools/validate_research_g3_design.py",
     "report:research-g3-design": "python tools/report_research_g3_design.py",
     "research:inventory": "python tools/generate_research_artifact_inventory.py",
