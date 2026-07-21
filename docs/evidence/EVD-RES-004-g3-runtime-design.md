@@ -43,14 +43,14 @@ Maker validation on 2026-07-21 produced:
 | `python tools/validate_repository.py` | PASS; 35 mandatory paths and governance invariants |
 | `python tools/validate_contracts.py` | PASS; 9 machine-readable contract files |
 | `python tools/validate_research_g3_design.py` | PASS; 19 mandatory families and 126 stable cases |
-| Focused G3 negative tests | PASS; 16 tests |
+| Focused G3 negative tests | PASS; 17 tests |
 | `python tools/check_clean_room.py` | PASS |
 | `python tools/check_secrets.py` | PASS |
 | `python tools/check_supply_chain.py` | PASS |
-| Full `tests/test_*.py` discovery | PASS; 95 tests |
+| Full `tests/test_*.py` discovery | PASS; 96 tests |
 | Readiness report | `DESIGN_READY_FOR_AUTHORITY_REVIEW`; runtime/G3/production false |
 
-The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `37c7d3e26df9b593a354cc1e95887e989048e0a2030c3696dd2598f15288040d`. Exact-commit independent checker disposition remains required before publication or acceptance.
+The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `860a0aac25259eda5c256c763bf6f5960b12dca17b76cdf1ecba3cb502dcccd0`. Exact-commit independent checker disposition remains required before publication or acceptance.
 
 ## Gate decision
 
@@ -63,6 +63,10 @@ No container, database, upstream process, external service, runtime probe, or ra
 Independent checker `/root/kernel_readiness_audit` reviewed exact maker SHA `e323ef9b6241cd6166389cfd12a593bc88d143bc` and returned `ACCEPT_EXACT_SHA` for the non-executing G3 design package. The checker independently reproduced 16/16 focused controls, 95/95 full tests, repository/contracts/clean-room/secrets/supply-chain checks, the 55-record research inventory, exact report hashes, and rejection of all nine previously reproduced fail-open mutations.
 
 The acceptance is design-only. DEC-0011 remains proposed and ineffective; E3/E4 runtime evidence is absent; G3, RES-P0-08, clean-room handoff, and production implementation remain unauthorized.
+
+## CI portability repair - 2026-07-21
+
+Gitea Actions run 50/job 79 reproduced a stale-inventory failure on Linux because the original inventory hashed Windows working-tree line endings. The bounded repair normalizes controlled text files to LF before hashing, adds a cross-platform stability test, and retains exact content sensitivity. No test or security control was weakened.
 
 ## Residual risks and required decisions
 
