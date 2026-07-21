@@ -30,3 +30,4 @@ research/upstream/*
 # generated validation evidence
 artifacts/validation/*
 !artifacts/validation/README.md
+!artifacts/validation/program-g0-readiness.md

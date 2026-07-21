@@ -70,3 +70,7 @@ Risk: lifecycle aliases are mistaken for approved renames or draft registers for
 ## Completion record
 
 Pending maker completion, exact-SHA checker verdict and human acceptance. This proposed record does not accept itself.
+
+## Evidence-completion note — 2026-07-21
+
+Post-candidate audit found that the deterministic readiness report was locally generated but ignored by Git. The bounded maker repair requires that report to be tracked and reproducible from a fresh archive, adds a fail-closed equality check to both CI surfaces, and preserves `PG-G0 NOT_READY`. Exact-SHA checker review and human acceptance remain pending.

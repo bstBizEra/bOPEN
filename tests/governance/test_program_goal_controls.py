@@ -12,6 +12,7 @@ from tools.report_program_g0 import (
     REGISTER_IDS,
     build_report,
     certified_module_enablement_rate,
+    check_report,
     format_report,
     is_module_certified,
     validate_catalog,
@@ -40,6 +41,20 @@ class ProgramGoalControlTests(unittest.TestCase):
             self.catalog["source"]["sha256"],
             "e9ef66ba78ebc656dd613b835fabd568bff50ac2932ab07278b91526ac2125c0",
         )
+
+    def test_committed_readiness_report_matches_deterministic_output(self):
+        expected = format_report(build_report(ROOT))
+        report_path = ROOT / "artifacts/validation/program-g0-readiness.md"
+        self.assertEqual(check_report(report_path, expected), [])
+
+    def test_missing_or_stale_readiness_report_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            report_path = Path(temporary) / "program-g0-readiness.md"
+            missing_errors = check_report(report_path, "expected\n")
+            self.assertTrue(any("missing" in item for item in missing_errors))
+            report_path.write_text("stale\n", encoding="utf-8")
+            stale_errors = check_report(report_path, "expected\n")
+            self.assertTrue(any("stale" in item for item in stale_errors))
 
     def test_required_type_and_id_families_are_complete(self):
         type_counts = {}

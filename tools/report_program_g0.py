@@ -31,6 +31,7 @@ REGISTER_PATHS = {
 WORK_ITEM_TEMPLATE = Path("docs/templates/work-package-template.md")
 EVIDENCE_TEMPLATE = Path("docs/templates/evidence-template.md")
 INDEPENDENT_EVIDENCE = Path("docs/evidence/EVD-GOV-001-program-g0-controls.md")
+DEFAULT_REPORT_PATH = Path("artifacts/validation/program-g0-readiness.md")
 
 ALLOWED_COVERAGE = {
     "evidenced",
@@ -579,11 +580,50 @@ def format_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def check_report(path: Path, expected: str) -> list[str]:
+    """Fail closed when the committed readiness report is missing or stale."""
+    try:
+        actual = path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return [f"program G0 readiness report missing: {path}"]
+    except OSError as exc:
+        return [f"program G0 readiness report unreadable: {path}: {exc}"]
+    if actual != expected:
+        return [
+            "program G0 readiness report is stale; regenerate with "
+            "python tools/report_program_g0.py --write"
+        ]
+    return []
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--write", type=Path, help="Write the deterministic report.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--write",
+        nargs="?",
+        const=DEFAULT_REPORT_PATH,
+        type=Path,
+        help="Write the deterministic report (default: committed artifact path).",
+    )
+    mode.add_argument(
+        "--check",
+        nargs="?",
+        const=DEFAULT_REPORT_PATH,
+        type=Path,
+        help="Verify that the committed report exists and is current.",
+    )
     args = parser.parse_args(argv)
     report = format_report(build_report())
+    if args.check:
+        output = args.check if args.check.is_absolute() else ROOT / args.check
+        errors = check_report(output, report)
+        if errors:
+            for error in errors:
+                print(f"ERROR: {error}", file=sys.stderr)
+            return 1
+        print(f"Program G0 readiness report current: {output}")
+        return 0
     if args.write:
         output = args.write if args.write.is_absolute() else ROOT / args.write
         output.parent.mkdir(parents=True, exist_ok=True)

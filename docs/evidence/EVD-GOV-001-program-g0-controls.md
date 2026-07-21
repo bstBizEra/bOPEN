@@ -34,14 +34,19 @@ Current bootstrap, draft-contract and synthetic-fixture evidence may be mapped o
 ## Commands and artifacts
 
 - `python tools/validate_program_controls.py` — exit 0; seven draft registers passed structural and fail-closed semantic validation.
-- `python -m unittest discover -s tests -p 'test_*.py'` — 97/97 passed before final manifest regeneration.
+- `python -m unittest discover -s tests -p 'test_*.py'` — 103/103 passed after adding deterministic-report integrity tests.
 - `python tools/validate_repository.py` — exit 0.
 - `python tools/validate_contracts.py` — exit 0; 17 machine-readable contracts checked.
 - Clean-room, secret and supply-chain checks — exit 0.
-- `artifacts/validation/program-g0-readiness.md` — generated with `PG-G0 NOT_READY`.
+- `python tools/report_program_g0.py --check` — exit 0; the committed artifact exactly matches deterministic generation.
+- `artifacts/validation/program-g0-readiness.md` — tracked and generated with `PG-G0 NOT_READY`.
 - `docs/DOCUMENT-MANIFEST.json` — regenerated with 250 records before final checker review.
 
 Final candidate commit/tree SHA, regenerated counts and checker disposition remain pending.
+
+## Evidence completion repair — 2026-07-21
+
+The maker repaired the review-blocking artifact gap identified after the initial candidate. The readiness report is now explicitly allow-listed from the generated-artifact ignore rule, committed for fresh-archive inspection, and checked for exact deterministic equality by both CI workflows and the package validation command. Missing or hand-edited report files fail closed. This repair does not change any register, decision, gate, or authority state.
 
 ## Security and clean-room declaration
 
