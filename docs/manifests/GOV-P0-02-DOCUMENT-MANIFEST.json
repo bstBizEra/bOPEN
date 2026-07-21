@@ -1133,8 +1133,8 @@
       "path": "docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md",
       "title": "EVD-GOV-002 \u2014 PG-G0 Authority Docket Technical Evidence",
       "status": "Draft maker evidence; exact-SHA review pending",
-      "sha256": "95369503bd485a198c74144239c662d52856a3a77fc0ff40760fab0ea3300b3c",
-      "bytes": 8130
+      "sha256": "d069b7d7139da12a02347a644f95ceb5363e3ec0f11261b79815c80270973bf6",
+      "bytes": 8946
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",

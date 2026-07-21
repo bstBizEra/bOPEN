@@ -106,3 +106,9 @@ Candidate tree: `7e2ecc3dac9ca20ab9249dd057945888de4f9c5f`
 - `/root/second_fresh_traceability`: `ACCEPT_EXACT_SHA` after independently verifying clean exact ancestry, bounded scope, append-only evidence, 37/37 focused tests, 140/140 full tests, all repository validators, both deterministic reports and the 257-record manifest.
 
 Both receipts are technical evidence only. They do not authenticate a human authority, accept GOV-P0-02, approve any artifact or decision, pass PG-G0, authorize merge, release, runtime, deployment or production implementation.
+
+## Append-only CI portability repair note — 2026-07-21
+
+Reason: Gitea Actions run 57/job 86 reproduced a stale authority-readiness report because the default one-commit checkout could not resolve the docket's historical governed-input binding. A local depth-one clone reproduced the same failure. Benefit of the prior phase: the validator failed closed instead of silently skipping commit ancestry and bound-content checks. Expected outcome: both mirrored governance workflows fetch complete history (`fetch-depth: 0`) so exact commit/tree and ancestor validation runs consistently on Windows and Linux.
+
+No check is removed, skipped or weakened. This workflow-only portability correction requires a new CI run and exact-SHA receipt review and has no approval, gate, merge, release, runtime or production effect.
