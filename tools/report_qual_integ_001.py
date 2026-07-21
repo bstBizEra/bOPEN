@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = Path("artifacts/validation/qual-integ-001-readiness.json")
+OUTPUT = Path("artifacts/validation/qual-integ-001-rework-001-readiness.json")
 
 
 def count_integration_tests() -> int:
@@ -24,8 +24,8 @@ def build_report(root: Path = ROOT) -> dict:
     baseline = {"contracts": 41, "governance": 136, "qualification": 45, "full": 222}
     added = count_integration_tests()
     return {
-        "report_id": "QUAL-INTEG-001-READINESS",
-        "version": "0.1",
+        "report_id": "QUAL-INTEG-001-REWORK-001-READINESS",
+        "version": "0.2",
         "status": "READY_FOR_INDEPENDENT_TECHNICAL_REVIEW",
         "lifecycle": "inactive",
         "generated": "2026-07-22",
@@ -39,6 +39,8 @@ def build_report(root: Path = ROOT) -> dict:
             "source_replay_equivalent": True,
             "package_bytes_preserved": True,
             "historical_manifests_immutable": True,
+            "manifest_writes_fail_closed": True,
+            "manifest_index_history_append_only": True,
             "validation_dag_union_present": True,
             "conflict_markers_absent": True,
         },
@@ -69,6 +71,9 @@ def main() -> int:
     output = ROOT / OUTPUT
     expected = rendered_report(ROOT)
     if args.write:
+        if output.exists() or output.is_symlink():
+            print(f"QUAL-INTEG-001 readiness report: FAIL (immutable output exists: {OUTPUT})")
+            return 1
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(expected, encoding="utf-8", newline="\n")
         print(f"Wrote deterministic QUAL-INTEG-001 readiness report: {OUTPUT}")

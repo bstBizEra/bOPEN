@@ -34,3 +34,4 @@ artifacts/validation/*
 !artifacts/validation/program-g0-authority-readiness.json
 !artifacts/validation/research-g3-design-readiness.md
 !artifacts/validation/qual-integ-001-readiness.json
+!artifacts/validation/qual-integ-001-rework-001-readiness.json

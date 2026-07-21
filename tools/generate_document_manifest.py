@@ -15,6 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = Path("docs/DOCUMENT-MANIFEST.json")
 DEFAULT_INDEX = Path("docs/manifests/MANIFEST-INDEX.jsonl")
+MANIFEST_DIRECTORY = Path("docs/manifests")
+VERSIONED_MANIFEST_NAME = re.compile(r"^[A-Z0-9][A-Z0-9._-]*-MANIFEST\.json$")
 TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml"}
 INDEX_COMMON_KEYS = {
     "id", "sequence", "previous_entry_sha256", "mode", "path", "bytes", "sha256"
@@ -98,7 +100,7 @@ def build_aggregate_manifest(
     exclusions: tuple[str, ...] = (),
 ) -> dict:
     output_rel = output.as_posix() if not output.is_absolute() else output.relative_to(root).as_posix()
-    excluded = set(exclusions) | {output_rel}
+    excluded = set(exclusions) | {output_rel, DEFAULT_INDEX.as_posix()}
     records = []
     for path in repository_paths(root):
         rel = path.relative_to(root).as_posix()
@@ -124,27 +126,33 @@ def build_aggregate_manifest(
     }
 
 
-def load_manifest_index(index_path: Path, root: Path = ROOT) -> tuple[list[dict], list[str]]:
-    path = index_path if index_path.is_absolute() else root / index_path
+def load_manifest_index_bytes(
+    raw: bytes,
+    *,
+    root: Path = ROOT,
+    label: str = "MANIFEST INDEX",
+) -> tuple[list[dict], list[str]]:
     errors: list[str] = []
     try:
-        raw = path.read_bytes()
         text = raw.decode("utf-8")
     except Exception as exc:
-        return [], [f"MANIFEST INDEX INVALID: {exc}"]
+        return [], [f"{label} INVALID: {exc}"]
     if raw.startswith(b"\xef\xbb\xbf") or b"\r" in raw:
-        errors.append("MANIFEST INDEX MUST USE UTF-8 WITHOUT BOM AND LF")
+        errors.append(f"{label} MUST USE UTF-8 WITHOUT BOM AND LF")
+    if raw and not raw.endswith(b"\n"):
+        errors.append(f"{label} MUST END WITH LF")
     entries: list[dict] = []
     for number, line in enumerate(text.splitlines(), start=1):
         if not line.strip():
+            errors.append(f"{label} LINE {number} MUST NOT BE BLANK")
             continue
         try:
             entry = json.loads(line)
         except Exception as exc:
-            errors.append(f"MANIFEST INDEX LINE {number} INVALID: {exc}")
+            errors.append(f"{label} LINE {number} INVALID: {exc}")
             continue
         if not isinstance(entry, dict):
-            errors.append(f"MANIFEST INDEX LINE {number} MUST BE OBJECT")
+            errors.append(f"{label} LINE {number} MUST BE OBJECT")
             continue
         entries.append(entry)
     ids = [entry.get("id") for entry in entries]
@@ -182,6 +190,130 @@ def load_manifest_index(index_path: Path, root: Path = ROOT) -> tuple[list[dict]
         canonical = json.dumps(entry, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
         previous_digest = hashlib.sha256(canonical).hexdigest()
     return entries, errors
+
+
+def load_manifest_index(index_path: Path, root: Path = ROOT) -> tuple[list[dict], list[str]]:
+    path = index_path if index_path.is_absolute() else root / index_path
+    try:
+        raw = path.read_bytes()
+    except Exception as exc:
+        return [], [f"MANIFEST INDEX INVALID: {exc}"]
+    return load_manifest_index_bytes(raw, root=root)
+
+
+def _validate_index_successor(prior: bytes, successor: bytes, label: str, root: Path) -> list[str]:
+    errors: list[str] = []
+    if len(successor) <= len(prior):
+        errors.append(f"MANIFEST INDEX HISTORY TRUNCATED OR NOT APPENDED: {label}")
+    elif not successor.startswith(prior):
+        errors.append(f"MANIFEST INDEX HISTORY PREFIX MUTATED: {label}")
+    else:
+        appended = successor[len(prior):]
+        if not appended or appended.startswith(b"\n"):
+            errors.append(f"MANIFEST INDEX HISTORY APPEND MUST START WITH JSON: {label}")
+        try:
+            appended_text = appended.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            errors.append(f"MANIFEST INDEX HISTORY APPEND INVALID UTF-8 {label}: {exc}")
+        else:
+            if b"\r" in appended or not appended.endswith(b"\n"):
+                errors.append(f"MANIFEST INDEX HISTORY APPEND MUST USE LF: {label}")
+            for number, line in enumerate(appended_text.splitlines(), start=1):
+                try:
+                    value = json.loads(line)
+                except Exception as exc:
+                    errors.append(f"MANIFEST INDEX HISTORY APPEND LINE {number} INVALID {label}: {exc}")
+                else:
+                    if not isinstance(value, dict):
+                        errors.append(f"MANIFEST INDEX HISTORY APPEND LINE {number} MUST BE OBJECT: {label}")
+    _, successor_errors = load_manifest_index_bytes(
+        successor, root=root, label=f"MANIFEST INDEX HISTORY {label}"
+    )
+    errors.extend(successor_errors)
+    return errors
+
+
+def validate_manifest_index_history(
+    index_path: Path = DEFAULT_INDEX,
+    root: Path = ROOT,
+) -> list[str]:
+    """Require every committed/current index version to be a raw-byte append."""
+
+    try:
+        rel = (
+            index_path.relative_to(root).as_posix()
+            if index_path.is_absolute()
+            else index_path.as_posix()
+        )
+    except ValueError:
+        return ["MANIFEST INDEX HISTORY PATH OUTSIDE REPOSITORY"]
+    history = git_output(root, "log", "--format=%H", "--reverse", "--", rel)
+    if history is None:
+        return ["MANIFEST INDEX HISTORY UNAVAILABLE"]
+    commits = [line.decode("ascii") for line in history.splitlines() if line]
+    if not commits:
+        return ["MANIFEST INDEX HISTORY GENESIS MISSING"]
+    errors: list[str] = []
+    genesis = commits[0]
+    if git_output(root, "rev-parse", f"{genesis}^:{rel}") is not None:
+        errors.append("MANIFEST INDEX HISTORY GENESIS INVALID")
+    blobs: list[tuple[str, bytes]] = []
+    for commit in commits:
+        blob = git_output(root, "cat-file", "blob", f"{commit}:{rel}")
+        if blob is None:
+            errors.append(f"MANIFEST INDEX HISTORY BLOB MISSING: {commit}")
+            continue
+        _, blob_errors = load_manifest_index_bytes(
+            blob, root=root, label=f"MANIFEST INDEX HISTORY {commit}"
+        )
+        errors.extend(blob_errors)
+        blobs.append((commit, blob))
+    for (prior_commit, prior), (commit, successor) in zip(blobs, blobs[1:]):
+        errors.extend(_validate_index_successor(prior, successor, f"{prior_commit}..{commit}", root))
+    try:
+        current = (root / rel).read_bytes()
+    except OSError as exc:
+        errors.append(f"MANIFEST INDEX HISTORY CURRENT FILE UNAVAILABLE: {exc}")
+    else:
+        if blobs and current != blobs[-1][1]:
+            errors.extend(_validate_index_successor(blobs[-1][1], current, "HEAD..WORKTREE", root))
+    return sorted(set(errors))
+
+
+def validate_new_snapshot_output(
+    output: Path,
+    *,
+    index_path: Path = DEFAULT_INDEX,
+    root: Path = ROOT,
+) -> list[str]:
+    """Refuse canonical, historical, indexed, existing or unversioned writes."""
+
+    errors: list[str] = []
+    try:
+        absolute = output if output.is_absolute() else root / output
+        rel = absolute.resolve().relative_to(root.resolve()).as_posix()
+    except (OSError, ValueError):
+        return ["MANIFEST WRITE TARGET OUTSIDE REPOSITORY"]
+    candidate = Path(rel)
+    if output.is_absolute() or ".." in output.parts or output.as_posix() != rel:
+        errors.append("MANIFEST WRITE TARGET MUST BE NORMALIZED REPOSITORY-RELATIVE PATH")
+    if candidate.parent != MANIFEST_DIRECTORY:
+        errors.append("MANIFEST WRITE TARGET MUST BE DIRECTLY UNDER docs/manifests")
+    if not VERSIONED_MANIFEST_NAME.fullmatch(candidate.name):
+        errors.append("MANIFEST WRITE TARGET MUST HAVE VERSIONED *-MANIFEST.json NAME")
+    if candidate == DEFAULT_OUTPUT or candidate == DEFAULT_INDEX:
+        errors.append("MANIFEST WRITE TARGET IS PROTECTED")
+    target = root / candidate
+    if target.exists() or target.is_symlink():
+        errors.append("MANIFEST WRITE TARGET MUST NOT ALREADY EXIST")
+    if target.parent.is_symlink():
+        errors.append("MANIFEST WRITE TARGET DIRECTORY MUST NOT BE SYMLINK")
+    entries, index_errors = load_manifest_index(index_path, root)
+    if index_errors:
+        errors.append("MANIFEST WRITE REFUSED BECAUSE INDEX IS INVALID")
+    if any(entry.get("path") == rel for entry in entries):
+        errors.append("MANIFEST WRITE TARGET IS ALREADY INDEXED")
+    return sorted(set(errors))
 
 
 def validate_manifest_entry(entry: dict, root: Path = ROOT) -> list[str]:
@@ -228,9 +360,30 @@ def validate_manifest_entry(entry: dict, root: Path = ROOT) -> list[str]:
             except Exception as exc:
                 errors.append(f"MANIFEST INDEX AGGREGATE JSON INVALID {rel}: {exc}")
             else:
-                expected = build_aggregate_manifest(Path(rel), root=root, exclusions=tuple(exclusions))
-                if actual != expected:
-                    errors.append(f"MANIFEST INDEX AGGREGATE STALE: {rel}")
+                expected_keys = {
+                    "manifest_id", "version", "status", "lifecycle", "generated",
+                    "exclusions", "count", "files",
+                }
+                if not isinstance(actual, dict) or set(actual) != expected_keys:
+                    errors.append(f"MANIFEST INDEX AGGREGATE SHAPE INVALID: {rel}")
+                else:
+                    files = actual.get("files")
+                    paths = [record.get("path") for record in files] if isinstance(files, list) else []
+                    if actual.get("count") != len(paths) or paths != sorted(set(paths)):
+                        errors.append(f"MANIFEST INDEX AGGREGATE FILE ORDER/COUNT INVALID: {rel}")
+                    if actual.get("exclusions") != sorted(set(exclusions) | {rel}):
+                        errors.append(f"MANIFEST INDEX AGGREGATE EXCLUSIONS MISMATCH: {rel}")
+                    for record in files if isinstance(files, list) else []:
+                        if set(record) != {"path", "sha256", "bytes"}:
+                            errors.append(f"MANIFEST INDEX AGGREGATE RECORD SHAPE INVALID: {rel}")
+                            break
+                        digest = record.get("sha256")
+                        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+                            errors.append(f"MANIFEST INDEX AGGREGATE RECORD DIGEST INVALID: {rel}")
+                            break
+                        if not isinstance(record.get("bytes"), int) or record["bytes"] < 0:
+                            errors.append(f"MANIFEST INDEX AGGREGATE RECORD BYTES INVALID: {rel}")
+                            break
     elif mode != "current_exact_file":
         errors.append(f"MANIFEST INDEX MODE UNKNOWN: {mode}")
     return errors
@@ -238,6 +391,7 @@ def validate_manifest_entry(entry: dict, root: Path = ROOT) -> list[str]:
 
 def validate_manifest_index(index_path: Path = DEFAULT_INDEX, root: Path = ROOT) -> list[str]:
     entries, errors = load_manifest_index(index_path, root)
+    errors.extend(validate_manifest_index_history(index_path, root))
     for entry in entries:
         errors.extend(validate_manifest_entry(entry, root))
     return errors
@@ -253,20 +407,20 @@ def main() -> int:
     parser.add_argument("--exclude", action="append", default=[], help="Repository-relative aggregate exclusion.")
     args = parser.parse_args()
     if args.check_index:
-        errors = validate_manifest_index(args.index)
+        errors = validate_manifest_index(args.index, ROOT)
         if errors:
             print("ERROR: manifest index validation failed")
             for error in errors:
                 print(f"- {error}")
             return 1
-        entries, _ = load_manifest_index(args.index)
+        entries, _ = load_manifest_index(args.index, ROOT)
         print(f"Manifest index valid: {args.index} ({len(entries)} immutable/current bindings)")
         return 0
     output = args.output if args.output.is_absolute() else ROOT / args.output
-    entries, index_errors = load_manifest_index(args.index)
+    entries, index_errors = load_manifest_index(args.index, ROOT)
     indexed = next((entry for entry in entries if entry.get("path") == args.output.as_posix()), None)
     if args.check and not index_errors and indexed is not None:
-        errors = validate_manifest_entry(indexed)
+        errors = validate_manifest_entry(indexed, ROOT)
         if errors:
             print(f"ERROR: indexed manifest invalid: {output}")
             for error in errors:
@@ -274,10 +428,20 @@ def main() -> int:
             return 1
         print(f"Immutable/indexed manifest valid: {output}")
         return 0
+    if not args.check:
+        if not args.aggregate:
+            print("ERROR: manifest writes require explicit --aggregate new-snapshot mode")
+            return 1
+        write_errors = validate_new_snapshot_output(args.output, index_path=args.index, root=ROOT)
+        if write_errors:
+            print("ERROR: immutable manifest write refused")
+            for error in write_errors:
+                print(f"- {error}")
+            return 1
     manifest = (
-        build_aggregate_manifest(args.output, exclusions=tuple(args.exclude))
+        build_aggregate_manifest(args.output, root=ROOT, exclusions=tuple(args.exclude))
         if args.aggregate
-        else build_manifest(args.output)
+        else build_manifest(args.output, ROOT)
     )
     rendered = json.dumps(manifest, indent=2) + "\n"
     if args.check:

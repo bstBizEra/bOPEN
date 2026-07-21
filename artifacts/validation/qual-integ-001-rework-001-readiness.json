@@ -1,0 +1,38 @@
+{
+  "report_id": "QUAL-INTEG-001-REWORK-001-READINESS",
+  "version": "0.2",
+  "status": "READY_FOR_INDEPENDENT_TECHNICAL_REVIEW",
+  "lifecycle": "inactive",
+  "generated": "2026-07-22",
+  "work_package_id": "QUAL-INTEG-001",
+  "base_commit": "82ed6b38b118aab14a9961c5d75a33e515cb136a",
+  "composition_head": "43f0b8b84c5bcd3ad8f6a713a44aadd722bb9c78",
+  "pre_integration_test_floor": {
+    "contracts": 41,
+    "governance": 136,
+    "qualification": 45,
+    "full": 222
+  },
+  "integration_tests_added": 18,
+  "expected_full_test_floor": 240,
+  "required_outcomes": {
+    "source_replay_equivalent": true,
+    "package_bytes_preserved": true,
+    "historical_manifests_immutable": true,
+    "manifest_writes_fail_closed": true,
+    "manifest_index_history_append_only": true,
+    "validation_dag_union_present": true,
+    "conflict_markers_absent": true
+  },
+  "authority": {
+    "technology_approved": false,
+    "identity_provider_approved": false,
+    "qualification_executed": false,
+    "gate_passed": false,
+    "merge_authorized": false,
+    "release_authorized": false,
+    "runtime_authorized": false,
+    "production_implementation_authorized": false
+  },
+  "limitation": "Maker readiness is technical evidence only; independent exact-SHA review and every human authority decision remain pending."
+}

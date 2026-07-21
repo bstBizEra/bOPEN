@@ -144,3 +144,11 @@
 - Preserved canonical and historical manifests as immutable Git-object-bound bytes and introduced a separately named aggregate snapshot and append-only index.
 - Reconciled shared validation, workflow and documentation surfaces by semantic union while retaining every fail-closed non-authority control.
 - Kept technology/provider selection, qualification execution, gate passage, merge, release, runtime and production implementation unauthorized.
+
+## Append-only entry â€” 2026-07-22 â€” QUAL-INTEG-001 immutable-manifest rework
+
+- Removed package commands capable of overwriting canonical or historical manifests.
+- Restricted manifest writes to explicit create-once aggregate snapshots at new versioned paths.
+- Added binary Git-history prefix validation for the append-only manifest index.
+- Added 10 adversarial write/history tests and raised the full validated floor from 230 to 240.
+- Preserved every prior manifest/index byte and all non-authority states.

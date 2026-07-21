@@ -71,11 +71,14 @@ REPOSITORY_VALIDATOR_REQUIRED = (
     "docs/manifests/RES-P0-05-DOCUMENT-MANIFEST.json",
     "docs/manifests/QUAL-INTEG-001-INTEGRATION-MANIFEST.json",
     "docs/manifests/QUAL-INTEG-001-AGGREGATE-MANIFEST.json",
+    "docs/manifests/QUAL-INTEG-001-REWORK-001-AGGREGATE-MANIFEST.json",
+    "docs/manifests/QUAL-INTEG-001-REWORK-002-AGGREGATE-MANIFEST.json",
     "docs/manifests/MANIFEST-INDEX.jsonl",
     "docs/work-packages/QUAL-INTEG-001.md",
     "docs/evidence/EVD-QUAL-INTEG-001-review-candidate.md",
     "tools/validate_qual_integ_001.py",
     "tests/governance/test_qual_integ_001.py",
+    "artifacts/validation/qual-integ-001-rework-001-readiness.json",
 )
 
 

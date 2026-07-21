@@ -68,6 +68,28 @@ Pending final maker execution. No unexecuted test or review is represented as pa
 
 This is maker evidence for independent exact-SHA review. It does not accept the package or authorize technology/provider selection, qualification execution, gate passage, merge, release, runtime, deployment or production implementation.
 
+### Append-only REQUEST_CHANGES rework 001 record â€” 2026-07-22
+
+**Source:** QUAL-INTEG-001 independent review REQUEST_CHANGES instruction
+**Agent ID:** `/root/gov_p0_03_preflight`
+
+Blocker 1 is addressed by create-once manifest writes: no write is possible without explicit `--aggregate`; canonical, existing, historical and indexed targets are denied; only a previously nonexistent normalized versioned path directly under `docs/manifests/` is eligible. The two package scripts that exposed canonical and GOV-P0-02 overwrite commands were removed. Check modes remain read-only.
+
+Blocker 2 is addressed by binary Git-object history validation. The validator locates index genesis, reads every committed blob without text conversion, requires each successor and pending worktree version to contain the prior blob as an exact prefix, and requires the suffix to contain valid LF-only JSONL objects. Adversarial temporary-repository tests cover valid append, truncation, prior-line mutation, reorder, CRLF and malformed append rejection.
+
+Final successor aggregate, readiness record, test totals, validation results and exact commit/tree are recorded by the rework completion record below. This rework does not modify any prior manifest or authority state.
+
+### Append-only rework 001 maker completion â€” 2026-07-22
+
+- Create-once generator adversarial tests: 4/4 PASS for canonical, indexed historical, existing target and missing-`--aggregate` refusal.
+- Binary index-history adversarial tests: 6/6 PASS for valid append acceptance and truncation, mutation, reorder, CRLF and malformed append rejection.
+- Manifest index: PASS with the original 10 lines preserved as an exact raw-byte prefix and two precheck records appended.
+- Contracts: 41/41 PASS. Qualification: 45/45 PASS. Governance: 154/154 PASS. Complete suite: 240/240 PASS.
+- `npm run validate`: PASS across repository, contracts, program controls, reports, root/common/technology/identity packages, G3 design, manifest history, integration validation, clean-room, secret and supply-chain checks.
+- `git diff --check`: PASS. No research report/inventory writer, runtime, merge or push was executed.
+
+The final rework aggregate is a new create-once `REWORK-002` snapshot appended to the index after this evidence. Independent exact-SHA review remains required; all authority and activation flags remain false.
+
 ## Security and clean-room declaration
 
 No credentials, personal data, upstream source, runtime execution, application/service/package/infrastructure change, migration, deployment or production activation is introduced by this integration package.

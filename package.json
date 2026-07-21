@@ -26,9 +26,7 @@
     "validate:qual-integ-001": "python tools/validate_qual_integ_001.py",
     "check:qual-integ-001": "python tools/report_qual_integ_001.py --check",
     "report:qual-integ-001": "python tools/report_qual_integ_001.py --write",
-    "docs:manifest:index": "python tools/generate_document_manifest.py --check-index",
-    "docs:manifest": "python tools/generate_document_manifest.py",
-    "docs:manifest:gov-p0-02": "python tools/generate_document_manifest.py --output docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json"
+    "docs:manifest:index": "python tools/generate_document_manifest.py --check-index"
   },
   "engines": {
     "node": ">=22",

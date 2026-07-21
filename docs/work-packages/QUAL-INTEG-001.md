@@ -78,3 +78,11 @@ Maker validation and independent exact-SHA review are pending. This Draft candid
 ### Append-only maker completion record â€” 2026-07-22T01:32:30+07:00
 
 Maker validation completed with a 230/230 full-suite result and all aggregate/package/security checks passing. Independent exact-SHA review remains pending. Status remains Draft and Inactive; this record creates no acceptance, merge, gate, release, runtime or production authority.
+
+### Append-only REQUEST_CHANGES rework 001 â€” 2026-07-22
+
+Independent review identified two blockers: write-capable manifest commands could overwrite protected paths, and index validation did not prove raw-byte append-only behavior across Git history. The authorized rework is limited to create-once generator controls, binary Git-history validation, adversarial tests and successor integration evidence. Existing canonical, historical, aggregate, integration and readiness snapshots remain untouched. Acceptance still requires independent review of the successor exact SHA/tree; all authority flags remain false.
+
+### Append-only rework 001 maker completion â€” 2026-07-22
+
+Both requested blockers are technically closed in the maker candidate: protected manifest writes fail closed, index history is verified as exact binary append-only, all 10 new adversarial tests pass, governance is 154/154 and the complete suite is 240/240. `npm run validate` and security checks pass. Status remains Draft, Inactive and REQUEST_CHANGES pending independent successor review; no merge, release, runtime or production authority is created.

@@ -40,6 +40,9 @@ required += [
 'docs/manifests/MANIFEST-INDEX.jsonl','tools/generate_document_manifest.py',
 'tools/validate_qual_integ_001.py','tools/report_qual_integ_001.py',
 'tests/governance/test_qual_integ_001.py','artifacts/validation/qual-integ-001-readiness.json',
+'docs/manifests/QUAL-INTEG-001-REWORK-001-AGGREGATE-MANIFEST.json',
+'docs/manifests/QUAL-INTEG-001-REWORK-002-AGGREGATE-MANIFEST.json',
+'artifacts/validation/qual-integ-001-rework-001-readiness.json',
 ]
 for rel in required:
     if not (ROOT/rel).exists(): errors.append(f'MISSING: {rel}')
