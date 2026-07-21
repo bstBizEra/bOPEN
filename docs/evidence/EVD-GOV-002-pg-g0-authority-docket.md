@@ -112,3 +112,11 @@ Both receipts are technical evidence only. They do not authenticate a human auth
 Reason: Gitea Actions run 57/job 86 reproduced a stale authority-readiness report because the default one-commit checkout could not resolve the docket's historical governed-input binding. A local depth-one clone reproduced the same failure. Benefit of the prior phase: the validator failed closed instead of silently skipping commit ancestry and bound-content checks. Expected outcome: both mirrored governance workflows fetch complete history (`fetch-depth: 0`) so exact commit/tree and ancestor validation runs consistently on Windows and Linux.
 
 No check is removed, skipped or weakened. This workflow-only portability correction requires a new CI run and exact-SHA receipt review and has no approval, gate, merge, release, runtime or production effect.
+
+## Append-only manifest portability repair note — 2026-07-21
+
+Reason: after historical commit resolution passed in Gitea Actions run 58/job 87, the versioned manifest still differed because Windows working-tree CRLF bytes and Linux LF bytes produced different text-document digests. Benefit of the prior phase: CI progressed to the next deterministic boundary and exposed the platform-specific hash input without bypassing it. Expected outcome: governed UTF-8 Markdown, JSON and YAML are hashed and sized after canonical LF normalization, while binary and invalid UTF-8 content remains byte-exact.
+
+A regression test proves CRLF and LF forms of the same governed text document produce identical manifest records. No validation, permission or security control is weakened, and no authority state changes.
+
+Post-repair maker checks: focused suite 38/38, full suite 141/141, repository validation PASS, and the normalized 257-record manifest is current. These results remain maker evidence pending exact-SHA review and protected CI confirmation.

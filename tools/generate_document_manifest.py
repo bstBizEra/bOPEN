@@ -13,6 +13,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = Path("docs/DOCUMENT-MANIFEST.json")
+TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml"}
+
+
+def canonical_document_bytes(path: Path) -> tuple[bytes, str]:
+    """Return platform-independent bytes for governed UTF-8 text documents."""
+    data = path.read_bytes()
+    if path.suffix not in TEXT_SUFFIXES:
+        return data, ""
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data, ""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return normalized.encode("utf-8"), normalized
 
 
 def build_manifest(output: Path, root: Path = ROOT) -> dict:
@@ -21,8 +35,7 @@ def build_manifest(output: Path, root: Path = ROOT) -> dict:
     for path in sorted((root / "docs").rglob("*")):
         if not path.is_file() or path.name == "DOCUMENT-MANIFEST.json" or path.resolve() == resolved_output.resolve():
             continue
-        data = path.read_bytes()
-        text = data.decode("utf-8", "replace") if path.suffix in {".md", ".json", ".yaml", ".yml"} else ""
+        data, text = canonical_document_bytes(path)
         title = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
         match = re.search(r"\*\*Status:\*\*\s*([^\n]+)", text)
         records.append(

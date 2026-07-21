@@ -693,6 +693,18 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             manifest = build_manifest(output, root)
         self.assertEqual([item["path"] for item in manifest["documents"]], ["docs/example.md"])
 
+    def test_versioned_manifest_normalizes_text_line_endings(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "docs/manifests").mkdir(parents=True)
+            document = root / "docs/example.md"
+            output = Path("docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json")
+            document.write_bytes(b"# Example\r\n\r\n**Status:** Draft\r\n")
+            windows_record = build_manifest(output, root)["documents"][0]
+            document.write_bytes(b"# Example\n\n**Status:** Draft\n")
+            unix_record = build_manifest(output, root)["documents"][0]
+        self.assertEqual(windows_record, unix_record)
+
 
 if __name__ == "__main__":
     unittest.main()
