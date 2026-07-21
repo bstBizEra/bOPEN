@@ -70,3 +70,20 @@ Successor maker checks:
 - `git diff --check`: PASS.
 
 These are maker results only. Independent acceptance must bind a successor exact commit and tree; this note does not accept GOV-P0-02, approve any decision, pass PG-G0, authorize merge, or authorize runtime or production implementation.
+
+## Append-only second hardened-maker verification note — 2026-07-21
+
+Reason: fresh non-maker review rejected the first successor because identity and delegation records were forgeable, technical review still targeted the governed-input base, terminal draft receipts were contradictory, and terminal state transitions were mutable. Benefit of the prior phase: it established commit-bound governed artifacts, exact subject maps, expanded negative coverage and honest `NOT_READY` reporting. Expected outcome: the next successor requires an approved hash-and-commit-bound identity registry, correlates delegation records, separates exact candidate review from governed inputs, permits complete but ineffective draft dispositions, and makes terminal states immutable.
+
+Second successor maker checks:
+
+- dedicated authority-docket suite: 37/37 passed;
+- full suite: 140/140 passed;
+- repository validator: PASS, 27 mandatory paths/invariants;
+- contract validator: PASS, 18 machine-readable contracts;
+- program-control validator: PASS, seven draft registers;
+- deterministic reports and the 257-record versioned manifest: current;
+- clean-room, secret and supply-chain checks: PASS;
+- `git diff --check`: PASS.
+
+The absent approved authority identity registry is an explicit blocker. These maker checks have no authority effect and require a fresh non-maker exact-SHA review.

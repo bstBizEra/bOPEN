@@ -4,7 +4,7 @@
   "version": "0.1.0-draft",
   "status": "draft",
   "owner_authority": "Engineering Authority",
-  "updated_at": "2026-07-21T20:45:00+07:00",
+  "updated_at": "2026-07-21T20:59:00+07:00",
   "expires_at": "2026-08-21T00:00:00+07:00",
   "repository_binding": {
     "commit_sha": "c893062c197e74c15214e5ce1c425b9e9ed8002f",
@@ -152,6 +152,7 @@
     "BOPEN-GOV-001 and the authority matrix are draft and ineffective",
     "technical review of this exact docket candidate is pending",
     "attributable Product, Architecture, Security, Data and Engineering human authority identities are absent",
+    "an approved authority identity registry with hash-bound human role records is absent",
     "the authority matrix has no action for approving BOPEN-GOV-001",
     "the authority matrix has no action for approving the seven program registers",
     "the authority matrix has no action for passing PG-G0",

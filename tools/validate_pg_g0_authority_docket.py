@@ -66,11 +66,11 @@ TERMINAL_REVIEWS = {"ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"}
 STATE_TRANSITIONS = {
     "DRAFT": {"TECHNICAL_REVIEW", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "TECHNICAL_REVIEW": {"PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
-    "PENDING_HUMAN_DECISIONS": {"READY_FOR_FINAL_DISPOSITION", "DISPOSED", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
-    "READY_FOR_FINAL_DISPOSITION": {"DISPOSED", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
-    "DISPOSED": {"SUPERSEDED"},
-    "WITHDRAWN": {"SUPERSEDED"},
-    "EXPIRED": {"SUPERSEDED"},
+    "PENDING_HUMAN_DECISIONS": {"READY_FOR_FINAL_DISPOSITION", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
+    "READY_FOR_FINAL_DISPOSITION": {"DISPOSED"},
+    "DISPOSED": set(),
+    "WITHDRAWN": set(),
+    "EXPIRED": set(),
     "SUPERSEDED": set(),
 }
 
@@ -205,6 +205,8 @@ def validate_schema_instance(
     if isinstance(value, list):
         if len(value) < schema.get("minItems", 0):
             errors.append(f"{label} array too short")
+        if "maxItems" in schema and len(value) > schema["maxItems"]:
+            errors.append(f"{label} array too long")
         if schema.get("uniqueItems"):
             normalized = [json.dumps(item, sort_keys=True) for item in value]
             if len(normalized) != len(set(normalized)):
@@ -312,6 +314,24 @@ def validate_evidence_refs(root: Path, refs: object, label: str, *, required: bo
     return errors
 
 
+def validate_evidence_binding(root: Path, refs: object, label: str, commit_sha: str) -> list[str]:
+    errors = validate_evidence_refs(root, refs, label, required=True)
+    if not isinstance(refs, list):
+        return errors
+    bound = False
+    for item in refs:
+        path, _ = safe_relative_path(root, item, f"{label} evidence")
+        if path is not None and path.is_file():
+            try:
+                if commit_sha in path.read_text(encoding="utf-8"):
+                    bound = True
+            except (OSError, UnicodeDecodeError):
+                continue
+    if not bound:
+        errors.append(f"{label} evidence must contain exact candidate SHA {commit_sha}")
+    return errors
+
+
 def validate_actor(actor: object, label: str, *, human_only: bool = False) -> list[str]:
     expected = {"actor_kind", "identity_ref", "role", "registration_ref", "session_ref"}
     errors = exact_keys(actor, expected, label)
@@ -323,6 +343,99 @@ def validate_actor(actor: object, label: str, *, human_only: bool = False) -> li
         errors.append(f"{label} must be a human")
     if not non_placeholder(actor.get("identity_ref")) or not non_placeholder(actor.get("role")):
         errors.append(f"{label} identity and role are required")
+    return errors
+
+
+def _split_fragment_ref(value: object, label: str) -> tuple[str | None, str | None, list[str]]:
+    if not isinstance(value, str) or value.count("#") != 1:
+        return None, None, [f"{label} must contain one record fragment"]
+    relative, record_id = value.split("#", 1)
+    if not relative or not record_id:
+        return None, None, [f"{label} path and record id are required"]
+    return relative, record_id, []
+
+
+def _find_record(document: object, record_id: str) -> dict[str, Any] | None:
+    if not isinstance(document, dict):
+        return None
+    candidates = document.get("entries")
+    if not isinstance(candidates, list):
+        candidates = [document]
+    matches = [
+        item for item in candidates
+        if isinstance(item, dict)
+        and record_id in {
+            item.get("record_id"), item.get("identity_id"),
+            item.get("authority_identity_id"), item.get("delegation_id"),
+        }
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+def validate_role_binding(
+    root: Path,
+    actor: dict[str, Any],
+    label: str,
+    required_role: str,
+    as_of: datetime,
+) -> list[str]:
+    errors: list[str] = []
+    relative, record_id, ref_errors = _split_fragment_ref(actor.get("role_binding_ref"), f"{label} role_binding_ref")
+    errors.extend(ref_errors)
+    expected_path = "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
+    if relative is not None and relative != expected_path:
+        errors.append(f"{label} role binding must use the approved identity registry path")
+    if actor.get("role_binding_status") != "approved":
+        errors.append(f"{label} role binding status must be approved")
+    commit_sha = str(actor.get("role_binding_commit_sha", ""))
+    tree_sha = str(actor.get("role_binding_tree_sha", ""))
+    digest = actor.get("role_binding_sha256")
+    head = resolve_head(root)
+    if resolve_tree(root, commit_sha) != tree_sha:
+        errors.append(f"{label} role binding commit/tree mismatch")
+    if head is None or not is_ancestor(root, commit_sha, head):
+        errors.append(f"{label} role binding commit must be an ancestor of HEAD")
+    if relative is None:
+        return errors
+    path, path_errors = safe_relative_path(root, relative, f"{label} role binding path")
+    errors.extend(path_errors)
+    committed = read_file_at_commit(root, commit_sha, relative)
+    if committed is None:
+        errors.append(f"{label} approved identity registry absent at bound commit")
+        return errors
+    if not isinstance(digest, str) or SHA256_PATTERN.fullmatch(digest) is None or bytes_sha256(committed) != digest:
+        errors.append(f"{label} role binding sha256 mismatch")
+    if path is None or not path.is_file() or not is_tracked_path(root, relative):
+        errors.append(f"{label} approved identity registry missing or untracked")
+        return errors
+    if file_sha256(path) != digest:
+        errors.append(f"{label} current identity registry drift")
+    try:
+        registry = json.loads(committed.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        errors.append(f"{label} approved identity registry invalid")
+        return errors
+    if not isinstance(registry, dict) or str(registry.get("status", "")).casefold() != "approved":
+        errors.append(f"{label} identity registry is not approved")
+    record = _find_record(registry, str(record_id))
+    if record is None or str(record.get("status", "")).casefold() != "approved":
+        errors.append(f"{label} approved identity record missing")
+        return errors
+    roles = record.get("authority_roles")
+    role_matches = required_role in roles if isinstance(roles, list) else record.get("authority_role") == required_role
+    expected_pairs = {
+        "human_identity_ref": actor.get("human_identity_ref"),
+        "identity_provider": actor.get("identity_provider"),
+        "identity_subject": actor.get("identity_subject"),
+    }
+    if any(normalized_identity(record.get(key)) != normalized_identity(value) for key, value in expected_pairs.items()) or not role_matches:
+        errors.append(f"{label} identity registry record does not match actor")
+    valid_from = parse_datetime(record.get("valid_from")) if record.get("valid_from") is not None else None
+    expires = parse_datetime(record.get("expires_at")) if record.get("expires_at") is not None else None
+    if valid_from is not None and valid_from > as_of:
+        errors.append(f"{label} identity role binding is not yet valid")
+    if expires is not None and as_of >= expires:
+        errors.append(f"{label} identity role binding expired")
     return errors
 
 
@@ -354,9 +467,8 @@ def validate_authority_actor(
     for field in ("identity_provider", "identity_subject", "role_binding_ref"):
         if field in expected and not non_placeholder(actor.get(field)):
             errors.append(f"{label} {field} is required")
-    role_binding_ref = actor.get("role_binding_ref")
     if "role_binding_ref" in expected:
-        errors.extend(validate_evidence_refs(root, [role_binding_ref], f"{label} role binding", required=True))
+        errors.extend(validate_role_binding(root, actor, label, required_role, as_of))
     delegation_ref = actor.get("delegation_ref")
     delegation = actor.get("delegation_binding")
     if authority_mode == "DIRECT":
@@ -379,6 +491,9 @@ def validate_authority_actor(
                 errors.append(f"{label} delegation action scope missing")
             if subject_ref not in delegation.get("subject_refs", []):
                 errors.append(f"{label} delegation subject scope missing")
+            expected_delegation_ref = f"{delegation.get('artifact_ref')}#{delegation.get('delegation_id')}"
+            if delegation_ref != expected_delegation_ref:
+                errors.append(f"{label} delegation_ref does not match binding")
             valid_from = parse_datetime(delegation.get("valid_from"))
             delegated_expiry = parse_datetime(delegation.get("expires_at"))
             if valid_from is None or delegated_expiry is None or not (valid_from <= as_of < delegated_expiry):
@@ -389,11 +504,34 @@ def validate_authority_actor(
             artifact_path, path_errors = safe_relative_path(root, artifact_ref, f"{label} delegation artifact_ref")
             errors.extend(path_errors)
             artifact_digest = delegation.get("artifact_sha256")
+            delegation_commit = str(delegation.get("commit_sha", ""))
+            delegation_tree = str(delegation.get("tree_sha", ""))
+            head = resolve_head(root)
+            if resolve_tree(root, delegation_commit) != delegation_tree:
+                errors.append(f"{label} delegation commit/tree mismatch")
+            if head is None or not is_ancestor(root, delegation_commit, head):
+                errors.append(f"{label} delegation commit must be an ancestor of HEAD")
+            committed = read_file_at_commit(root, delegation_commit, str(artifact_ref)) if artifact_ref else None
+            if committed is None or not isinstance(artifact_digest, str) or SHA256_PATTERN.fullmatch(artifact_digest) is None or bytes_sha256(committed) != artifact_digest:
+                errors.append(f"{label} delegation bound artifact sha256 mismatch")
             if artifact_path is not None:
                 if not artifact_path.is_file() or not is_tracked_path(root, str(artifact_ref)):
                     errors.append(f"{label} delegation artifact missing or untracked")
                 elif not isinstance(artifact_digest, str) or SHA256_PATTERN.fullmatch(artifact_digest) is None or file_sha256(artifact_path) != artifact_digest:
                     errors.append(f"{label} delegation artifact sha256 mismatch")
+                record_bytes = committed if committed is not None else artifact_path.read_bytes()
+                try:
+                    delegation_document = json.loads(record_bytes.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError):
+                    delegation_document = None
+                record = _find_record(delegation_document, str(delegation.get("delegation_id")))
+                match_fields = (
+                    "grantor_human_identity_ref", "delegate_human_identity_ref",
+                    "authority_role", "action_ids", "subject_refs", "valid_from",
+                    "expires_at", "revoked_at", "evidence_refs",
+                )
+                if record is None or any(record.get(field) != delegation.get(field) for field in match_fields):
+                    errors.append(f"{label} delegation record does not match binding")
             errors.extend(validate_evidence_refs(root, delegation.get("evidence_refs"), f"{label} delegation", required=True))
     return errors
 
@@ -549,9 +687,17 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         matrix_actions[action_id] = item
         if item.get("self_approval_allowed") is not False or item.get("evidence_required") is not True:
             errors.append(f"authority matrix action safeguards invalid: {action_id}")
+        if not non_placeholder(item.get("action_class")):
+            errors.append(f"authority matrix action {action_id} action_class invalid")
         for field in ("accountable_human_authority", "final_decision_role"):
             if not non_placeholder(item.get(field)):
                 errors.append(f"authority matrix action {action_id} {field} invalid")
+        for field in ("permitted_maker_roles", "permitted_checker_roles", "required_concurrence"):
+            values = item.get(field)
+            if not isinstance(values, list) or len(values) != len(set(str(value) for value in values)) or any(not non_placeholder(value) for value in values):
+                errors.append(f"authority matrix action {action_id} {field} invalid")
+        if not isinstance(item.get("expiry_required"), bool):
+            errors.append(f"authority matrix action {action_id} expiry_required invalid")
 
     review = docket.get("technical_review")
     review_keys = {"candidate_commit_sha", "candidate_tree_sha", "maker", "checker", "independence_asserted", "verdict", "reviewed_at", "evidence_refs"}
@@ -565,20 +711,27 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             if review.get("checker") is not None or review.get("reviewed_at") is not None or review.get("independence_asserted") is not False or review.get("evidence_refs"):
                 errors.append("pending technical review cannot claim checker, independence, time or evidence")
         elif verdict in TERMINAL_REVIEWS:
-            if review.get("candidate_commit_sha") != commit_sha or review.get("candidate_tree_sha") != tree_sha:
-                errors.append("technical review candidate must match repository binding")
+            candidate_sha = str(review.get("candidate_commit_sha", ""))
+            candidate_tree = str(review.get("candidate_tree_sha", ""))
+            head_sha = resolve_head(root)
+            if candidate_sha == commit_sha:
+                errors.append("technical review candidate must not equal repository binding")
+            if resolve_tree(root, candidate_sha) != candidate_tree:
+                errors.append("technical review candidate commit/tree mismatch")
+            if head_sha is None or not is_ancestor(root, commit_sha, candidate_sha) or not is_ancestor(root, candidate_sha, head_sha):
+                errors.append("technical review candidate must be between repository binding and HEAD")
             errors.extend(validate_actor(review.get("checker"), "technical review checker"))
             checker_identity = actor_identity(review.get("checker"))
             maker_identity = actor_identity(review.get("maker"))
             if not checker_identity or checker_identity == maker_identity:
                 errors.append("technical review maker and checker must differ")
             reviewed_at = parse_datetime(review.get("reviewed_at"))
-            candidate_time = commit_datetime(root, commit_sha)
+            candidate_time = commit_datetime(root, candidate_sha)
             if reviewed_at is None or reviewed_at > as_of or (candidate_time is not None and reviewed_at < candidate_time):
                 errors.append("technical review reviewed_at chronology invalid")
             if verdict == "ACCEPT_EXACT_SHA" and review.get("independence_asserted") is not True:
                 errors.append("accepted technical review requires independence")
-            errors.extend(validate_evidence_refs(root, review.get("evidence_refs"), "technical review", required=True))
+            errors.extend(validate_evidence_binding(root, review.get("evidence_refs"), "technical review", candidate_sha))
         else:
             errors.append("technical review verdict invalid")
 
@@ -639,8 +792,6 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append(f"{decision_id} expires_at invalid")
         elif decision_expiry > expires_at if expires_at is not None else False:
             errors.append(f"{decision_id} expiry exceeds docket expiry")
-        elif as_of >= decision_expiry:
-            errors.append(f"{decision_id} expired")
 
         concurrences = decision.get("required_concurrences")
         if not isinstance(concurrences, list):
@@ -649,6 +800,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         actual_roles = [item.get("authority_role") for item in concurrences if isinstance(item, dict)]
         if set(actual_roles) != concurrence_roles or len(actual_roles) != len(concurrence_roles):
             errors.append(f"{decision_id} concurrence roles invalid")
+        if action is not None and not set(action.get("required_concurrence", [])).issubset(set(actual_roles)):
+            errors.append(f"{decision_id} misses authority-matrix concurrence")
         concurrence_identities: set[str] = set()
         for concurrence in concurrences:
             if not isinstance(concurrence, dict):
@@ -697,6 +850,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"{decision_id} pending decision claims final/checker actor")
             if final.get("effective") is not False or final.get("decided_at") is not None or final.get("decision_ref") is not None or final.get("evidence_refs"):
                 errors.append(f"{decision_id} pending disposition claims effect")
+            if decision_expiry is not None and as_of >= decision_expiry:
+                errors.append(f"{decision_id} expired")
         elif value in TERMINAL_DECISIONS:
             errors.extend(validate_authority_actor(
                 decision.get("final_authority_actor"),
@@ -719,11 +874,9 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"{decision_id} maker, checker and final authority must be distinct")
             if authority_identity in concurrence_identities or checker_identity in concurrence_identities:
                 errors.append(f"{decision_id} final/checker actors must differ from concurrence actors")
-            if source.get("effective") is not True or action is None or action.get("status") != "approved" or matrix.get("status") != "approved":
-                errors.append(f"{decision_id} cannot be effective under a draft authority source")
             decided = parse_datetime(final.get("decided_at"))
             errors.extend(_validate_current_window(decided, decision_expiry, as_of, f"{decision_id} final disposition", str(value)))
-            if final.get("effective") is not True or not non_placeholder(final.get("decision_ref")):
+            if final.get("effective") is not False or not non_placeholder(final.get("decision_ref")):
                 errors.append(f"{decision_id} terminal receipt incomplete")
             errors.extend(validate_evidence_refs(root, final.get("evidence_refs"), f"{decision_id} final disposition", required=True))
             if value == "APPROVE" and any(item.get("disposition") != "CONCUR" for item in concurrences if isinstance(item, dict)):

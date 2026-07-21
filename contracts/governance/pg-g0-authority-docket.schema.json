@@ -128,16 +128,19 @@
     },
     "delegationBinding": {
       "type": "object", "additionalProperties": false,
+      "$comment": "commit_sha/tree_sha bind artifact_ref; delegation_ref must equal artifact_ref plus '#' plus delegation_id and the delegate, role, action, subject, validity and revocation fields must all match the referenced record.",
       "required": [
-        "delegation_id", "artifact_ref", "artifact_sha256",
+        "delegation_id", "artifact_ref", "artifact_sha256", "commit_sha", "tree_sha",
         "grantor_human_identity_ref", "delegate_human_identity_ref",
         "authority_role", "action_ids", "subject_refs", "valid_from",
         "expires_at", "revoked_at", "evidence_refs"
       ],
       "properties": {
-        "delegation_id": {"type": "string", "minLength": 1},
-        "artifact_ref": {"type": "string", "minLength": 1},
+        "delegation_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]+$"},
+        "artifact_ref": {"type": "string", "pattern": "^docs/00-governance/delegations/[A-Za-z0-9][A-Za-z0-9._/-]*\\.json$"},
         "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "commit_sha": {"$ref": "#/$defs/sha"},
+        "tree_sha": {"$ref": "#/$defs/sha"},
         "grantor_human_identity_ref": {"type": "string", "minLength": 1},
         "delegate_human_identity_ref": {"type": "string", "minLength": 1},
         "authority_role": {"type": "string", "minLength": 1},
@@ -151,20 +154,32 @@
     },
     "authorityActor": {
       "type": "object", "additionalProperties": false,
+      "$comment": "role_binding_ref must resolve to the approved registry record identified by identity_subject at the bound commit/tree and sha256; human_identity_ref, provider subject and role must match that record.",
       "required": [
         "actor_kind", "human_identity_ref", "identity_provider",
         "identity_subject", "authority_role", "role_binding_ref",
+        "role_binding_sha256", "role_binding_commit_sha",
+        "role_binding_tree_sha", "role_binding_status",
         "authority_mode", "delegation_ref", "delegation_binding"
       ],
       "properties": {
         "actor_kind": {"const": "HUMAN"},
         "human_identity_ref": {"type": "string", "minLength": 1},
-        "identity_provider": {"type": "string", "minLength": 1},
-        "identity_subject": {"type": "string", "minLength": 1},
+        "identity_provider": {"const": "bopen-authority-identity-registry"},
+        "identity_subject": {"type": "string", "pattern": "^HUMAN-[A-Z0-9][A-Z0-9_-]*$"},
         "authority_role": {"type": "string", "minLength": 1},
-        "role_binding_ref": {"type": "string", "minLength": 1},
+        "role_binding_ref": {"type": "string", "pattern": "^docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER\\.json#[A-Z0-9][A-Z0-9_-]*$"},
+        "role_binding_sha256": {"$ref": "#/$defs/sha256"},
+        "role_binding_commit_sha": {"$ref": "#/$defs/sha"},
+        "role_binding_tree_sha": {"$ref": "#/$defs/sha"},
+        "role_binding_status": {"const": "approved"},
         "authority_mode": {"enum": ["DIRECT", "DELEGATED"]},
-        "delegation_ref": {"type": ["string", "null"]},
+        "delegation_ref": {
+          "oneOf": [
+            {"type": "string", "pattern": "^docs/00-governance/delegations/[A-Za-z0-9][A-Za-z0-9._/-]*\\.json#[A-Z][A-Z0-9_-]+$"},
+            {"type": "null"}
+          ]
+        },
         "delegation_binding": {"oneOf": [{"$ref": "#/$defs/delegationBinding"}, {"type": "null"}]}
       },
       "allOf": [
@@ -206,7 +221,34 @@
         "decision_ref": {"type": ["string", "null"]},
         "evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "effective": {"const": false}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"value": {"const": "PENDING"}}, "required": ["value"]},
+          "then": {
+            "properties": {
+              "decided_at": {"type": "null"},
+              "decision_ref": {"type": "null"},
+              "evidence_refs": {"maxItems": 0},
+              "effective": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"value": {"enum": ["APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"]}},
+            "required": ["value"]
+          },
+          "then": {
+            "properties": {
+              "decided_at": {"type": "string", "format": "date-time"},
+              "decision_ref": {"type": "string", "minLength": 1},
+              "evidence_refs": {"minItems": 1},
+              "effective": {"const": false}
+            }
+          }
+        }
+      ]
     },
     "decisionRequest": {
       "type": "object", "additionalProperties": false,
@@ -219,7 +261,38 @@
         "final_authority_actor": {"oneOf": [{"$ref": "#/$defs/authorityActor"}, {"type": "null"}]},
         "required_concurrences": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/concurrence"}},
         "expires_at": {"type": "string", "format": "date-time"}, "final_disposition": {"$ref": "#/$defs/finalDisposition"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "final_disposition": {
+                "properties": {"value": {"const": "PENDING"}},
+                "required": ["value"]
+              }
+            },
+            "required": ["final_disposition"]
+          },
+          "then": {"properties": {"checked_by": {"type": "null"}, "final_authority_actor": {"type": "null"}}}
+        },
+        {
+          "if": {
+            "properties": {
+              "final_disposition": {
+                "properties": {"value": {"enum": ["APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"]}},
+                "required": ["value"]
+              }
+            },
+            "required": ["final_disposition"]
+          },
+          "then": {
+            "properties": {
+              "checked_by": {"$ref": "#/$defs/actor"},
+              "final_authority_actor": {"$ref": "#/$defs/authorityActor"}
+            }
+          }
+        }
+      ]
     },
     "stateHistory": {
       "type": "object", "additionalProperties": false,
