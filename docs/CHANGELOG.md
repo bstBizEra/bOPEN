@@ -159,3 +159,10 @@
 - Added a closed-schema deterministic projection separating historical bound-commit evidence from bounded current-tree technical observations.
 - Added 10 fail-closed negative tests for root-control integrity, human-only blockers, unknown blockers, CI/PR non-authority, false readiness and closed object shapes.
 - Retained 17 active blockers and every authority, qualification, gate, merge, release, runtime and production flag as false.
+
+## Append-only entry - 2026-07-22 - QUAL-INTEG-001 exact-object readiness successor
+
+- Retained the rejected `001` current-tree projection as immutable `REQUEST_CHANGES` evidence and removed it from the active validation DAG.
+- Added versioned successor `002`, which reads every subject input from exact commit/tree Git objects and records descendant carrier provenance separately.
+- Added 11 adversarial tests proving checkout/descendant independence and fail-closed behavior for invalid paths, modes, trees, refs and objects.
+- Preserved 18 historical blockers, 17 active blockers and all authority, qualification, gate, merge, release, runtime and production flags as false.

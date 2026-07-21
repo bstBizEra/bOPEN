@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/governance/pg-g0-bound-tree-readiness/0.2.0-draft",
+  "status": "draft",
+  "title": "bOPEN PG-G0 exact bound-tree readiness successor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "projection_id", "version", "status", "generated_at", "historical_view", "subject_tree", "carrier_provenance", "blocker_assessments", "summary", "authority", "limitation"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/governance/pg-g0-bound-tree-readiness/0.2.0-draft"},
+    "projection_id": {"const": "PG-G0-BOUND-TREE-READINESS-002"},
+    "version": {"const": "0.2.0-draft"}, "status": {"const": "NOT_READY"},
+    "generated_at": {"const": "2026-07-22T00:00:00+07:00"},
+    "historical_view": {"$ref": "#/$defs/historicalView"},
+    "subject_tree": {"$ref": "#/$defs/subjectTree"},
+    "carrier_provenance": {"$ref": "#/$defs/carrier"},
+    "blocker_assessments": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/blocker"}},
+    "summary": {"$ref": "#/$defs/summary"}, "authority": {"$ref": "#/$defs/authority"},
+    "limitation": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "boundInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "mode", "type", "blob_oid", "bytes", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1}, "mode": {"const": "100644"}, "type": {"const": "blob"},
+        "blob_oid": {"$ref": "#/$defs/sha"}, "bytes": {"type": "integer", "minimum": 1}, "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "historicalView": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_readiness_input", "docket_input", "docket_bound_commit_sha", "docket_bound_tree_sha", "blocker_count", "rejected_projection_ref", "rejected_projection_status"],
+      "properties": {
+        "authority_readiness_input": {"$ref": "#/$defs/boundInput"}, "docket_input": {"$ref": "#/$defs/boundInput"},
+        "docket_bound_commit_sha": {"$ref": "#/$defs/sha"}, "docket_bound_tree_sha": {"$ref": "#/$defs/sha"},
+        "blocker_count": {"type": "integer", "minimum": 1},
+        "rejected_projection_ref": {"const": "artifacts/validation/pg-g0-current-tree-readiness-001.json"},
+        "rejected_projection_status": {"const": "REJECTED_REQUEST_CHANGES"}
+      }
+    },
+    "rootControl": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "mode", "type", "blob_oid", "bytes", "sha256", "metadata_valid"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1}, "mode": {"const": "100644"}, "type": {"const": "blob"},
+        "blob_oid": {"$ref": "#/$defs/sha"}, "bytes": {"type": "integer", "minimum": 1}, "sha256": {"$ref": "#/$defs/sha256"},
+        "metadata_valid": {"const": true}
+      }
+    },
+    "subjectTree": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_ref", "commit_sha", "tree_sha", "commit_object_verified", "tree_object_verified", "root_controls_valid", "root_control_errors", "root_controls"],
+      "properties": {
+        "repository_ref": {"const": "bstBizEra/bopen"}, "commit_sha": {"$ref": "#/$defs/sha"}, "tree_sha": {"$ref": "#/$defs/sha"},
+        "commit_object_verified": {"const": true}, "tree_object_verified": {"const": true}, "root_controls_valid": {"const": true},
+        "root_control_errors": {"type": "array", "maxItems": 0},
+        "root_controls": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"$ref": "#/$defs/rootControl"}}
+      }
+    },
+    "carrier": {
+      "type": "object", "additionalProperties": false,
+      "required": ["base_commit_sha", "base_tree_sha", "subject_is_ancestor_of_carrier", "carrier_is_ancestor_of_head", "live_worktree_bytes_used"],
+      "properties": {
+        "base_commit_sha": {"$ref": "#/$defs/sha"}, "base_tree_sha": {"$ref": "#/$defs/sha"},
+        "subject_is_ancestor_of_carrier": {"const": true}, "carrier_is_ancestor_of_head": {"const": true},
+        "live_worktree_bytes_used": {"const": false}
+      }
+    },
+    "blocker": {
+      "type": "object", "additionalProperties": false,
+      "required": ["blocker_id", "original_text", "original_sha256", "classification", "current_observation", "machine_evidence_refs"],
+      "properties": {
+        "blocker_id": {"type": "string", "pattern": "^PG-G0-HIST-[0-9]{3}$"}, "original_text": {"type": "string", "minLength": 1},
+        "original_sha256": {"$ref": "#/$defs/sha256"},
+        "classification": {"enum": ["STILL_ACTIVE", "RESOLVED_TECHNICALLY_IN_SUBJECT_TREE", "HUMAN_DISPOSITION_REQUIRED", "NOT_REEVALUABLE"]},
+        "current_observation": {"type": "string", "minLength": 1},
+        "machine_evidence_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["historical_blockers", "still_active", "resolved_technically_in_subject_tree", "human_disposition_required", "not_reevaluable", "active_blockers", "ready_for_human_gate_decision"],
+      "properties": {
+        "historical_blockers": {"type": "integer", "minimum": 1}, "still_active": {"type": "integer", "minimum": 0},
+        "resolved_technically_in_subject_tree": {"type": "integer", "minimum": 0}, "human_disposition_required": {"type": "integer", "minimum": 0},
+        "not_reevaluable": {"type": "integer", "minimum": 0}, "active_blockers": {"type": "integer", "minimum": 1},
+        "ready_for_human_gate_decision": {"const": false}
+      }
+    },
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pg_g0_passed", "ready_for_human_gate_decision", "governance_baseline_approved", "work_package_accepted", "technology_approved", "identity_provider_approved", "qualification_executed", "merge_authorized", "release_authorized", "runtime_activation_authorized", "production_implementation_authorized"],
+      "properties": {
+        "pg_g0_passed": {"const": false}, "ready_for_human_gate_decision": {"const": false}, "governance_baseline_approved": {"const": false},
+        "work_package_accepted": {"const": false}, "technology_approved": {"const": false}, "identity_provider_approved": {"const": false},
+        "qualification_executed": {"const": false}, "merge_authorized": {"const": false}, "release_authorized": {"const": false},
+        "runtime_activation_authorized": {"const": false}, "production_implementation_authorized": {"const": false}
+      }
+    }
+  }
+}

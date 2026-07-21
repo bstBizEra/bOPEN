@@ -28,8 +28,8 @@ jobs:
         run: python tools/report_program_g0.py --check
       - name: Verify draft PG-G0 authority docket and report
         run: python tools/validate_pg_g0_authority_docket.py --check
-      - name: Verify fail-closed PG-G0 current-tree readiness projection
-        run: python tools/report_pg_g0_current_tree_readiness.py --check
+      - name: Verify exact-object-bound PG-G0 readiness successor
+        run: python tools/report_pg_g0_bound_tree_readiness.py --check
       - name: Validate draft root control surfaces
         run: python tools/validate_root_control_surfaces.py --check
       - name: Validate common qualification contracts

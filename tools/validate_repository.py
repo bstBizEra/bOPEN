@@ -44,11 +44,16 @@ required += [
 'docs/manifests/QUAL-INTEG-001-REWORK-002-AGGREGATE-MANIFEST.json',
 'docs/manifests/QUAL-INTEG-001-REWORK-003-AGGREGATE-MANIFEST.json',
 'docs/manifests/QUAL-INTEG-001-REWORK-004-AGGREGATE-MANIFEST.json',
+'docs/manifests/QUAL-INTEG-001-REWORK-005-AGGREGATE-MANIFEST.json',
 'artifacts/validation/qual-integ-001-rework-001-readiness.json',
 'contracts/governance/pg-g0-current-tree-readiness.schema.json',
 'tools/report_pg_g0_current_tree_readiness.py',
 'tests/governance/test_pg_g0_current_tree_readiness.py',
 'artifacts/validation/pg-g0-current-tree-readiness-001.json',
+'contracts/governance/pg-g0-bound-tree-readiness-002.schema.json',
+'tools/report_pg_g0_bound_tree_readiness.py',
+'tests/governance/test_pg_g0_bound_tree_readiness.py',
+'artifacts/validation/pg-g0-bound-tree-readiness-002.json',
 ]
 for rel in required:
     if not (ROOT/rel).exists(): errors.append(f'MISSING: {rel}')
@@ -78,7 +83,7 @@ for p in (ROOT/'docs/06-contracts').rglob('*.json'):
 # QUAL-INTEG-001 shared validation surfaces must preserve the complete accepted DAG.
 validation_tokens = [
     'validate_root_control_surfaces.py', 'validate_qualification_common.py',
-    'report_pg_g0_current_tree_readiness.py --check',
+    'report_pg_g0_bound_tree_readiness.py --check',
     'validate_technology_qualification.py', 'validate_identity_qualification.py',
     'validate_research_g3_design.py', 'generate_document_manifest.py --check-index',
     'validate_qual_integ_001.py', 'report_qual_integ_001.py --check',

@@ -112,3 +112,17 @@ Pending exact final commit and tree. Technical acceptance cannot authorize merge
 These are maker technical results only. Qualification was not executed, no technology or identity provider was approved, and no gate, merge, release, runtime activation or production implementation was authorized.
 
 The current projection is retained through an exact `.gitignore` exception. The create-once `REWORK-003` pre-final aggregate and final `REWORK-004` aggregate are separately indexed; neither prior snapshot nor any existing index line was rewritten.
+
+### Append-only exact subject-tree successor evidence - 2026-07-22
+
+**Source:** Independent `REQUEST_CHANGES` on successor `bb64ba60345539d5f592d0b99d066240d813d7ae`
+**Agent ID:** `/root/gov_p0_03_preflight`
+
+- Rejected artifact preservation: `pg-g0-current-tree-readiness-001.json` remains 11,988 bytes with SHA-256 `985870998a86336f91c873c82531cfe10d65759cb15e7bd16061435c1d623fc6`; its status is explicitly `REJECTED_REQUEST_CHANGES` and active validation no longer invokes its checker.
+- Exact-object evaluation: subject commit/tree availability and identity are verified; historical readiness, docket and five root controls are loaded only as bound Git blobs. Each root record captures exact path, mode, type, blob OID, raw byte length, SHA-256 and metadata validity.
+- Carrier separation: `bb64ba60345539d5f592d0b99d066240d813d7ae` / `832cf238be3721d1efaa3b7526c9f297738d60fa` is recorded as descendant carrier provenance; `live_worktree_bytes_used` is false.
+- Adversarial successor suite: 11/11 PASS. Live-checkout and committed-descendant mutations cannot alter the subject-bound projection. Exact fixture commits with missing, wrong-case, malformed or mode-`120000` roots stay active. Wrong tree, missing object and non-commit object inputs fail closed.
+- Projection result: 18 blockers retained in original order, 17 active, one `RESOLVED_TECHNICALLY_IN_SUBJECT_TREE`; all authority flags and human-gate readiness remain false.
+- Verification: complete suite 261/261 PASS; 46 machine-readable contracts PASS; repository 76 mandatory paths PASS; QUAL integration, `npm run validate`, clean-room, secret, supply-chain and `git diff --check` PASS.
+
+This remains maker evidence for a new exact-SHA independent review. It does not execute qualification, approve technology or identity providers, pass a gate, merge, release, deploy, activate runtime or authorize production implementation.
