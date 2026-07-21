@@ -122,3 +122,11 @@
 - Proposed DEC-0012 for five missing root instruction paths and generated-manifest handling.
 - Preserved missing governance/register/gate actions, technology checker dates and every human disposition as blockers.
 - Kept PG-G0 NOT_READY and production implementation unauthorized.
+
+## Append-only entry — 2026-07-21 — GOV-P0-02 authority-record hardening
+
+- Required explicit action, subject, validity, revocation and evidence controls for bound authority identity records.
+- Required grantors to carry explicit delegation-specific action and subject scopes.
+- Bound identity and delegation evidence existence to the referenced commit.
+- Added negative tests for omitted scopes, malformed scope types, revoked identities, malformed validity and missing historical evidence.
+- Preserved all authority and implementation outcomes as false pending external human authority.

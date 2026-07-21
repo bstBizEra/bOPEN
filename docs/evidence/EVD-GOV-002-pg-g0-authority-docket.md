@@ -126,3 +126,11 @@ Post-repair maker checks: focused suite 38/38, full suite 141/141, repository va
 Reason: Gitea Actions run 59/job 88 still reported a stale manifest after content normalization because native `Path` ordering is case-insensitive on Windows and case-sensitive on Linux. Benefit of the prior phase: clean LF checkout reproduction proved record content was stable and narrowed the remaining drift to array ordering. Expected outcome: document paths are sorted by their explicit repository-relative POSIX string, producing identical case-sensitive ordering on every platform.
 
 A mixed-case path regression test is added. Post-repair maker counts are focused 39/39 and full 142/142; all authority and implementation flags remain false.
+
+## Append-only authority-record fail-closed rework note — 2026-07-21
+
+Reason: fresh independent review of final candidate `4487c25f435645e4c9ca636379f7e29b5ce6f77b` reproduced a fail-open path where an approved delegation grantor could omit both action and subject scopes, and approved delegate or grantor identity records could remain usable with missing, malformed or revoked validity state. Benefit of the prior phase: commit-, tree-, digest-, role- and delegation-bound checks narrowed the defect to external identity-record scope, lifecycle and evidence enforcement. Expected outcome: identity records now require explicit action and subject bounds, a current validity interval, explicit null revocation state and evidence present at the bound commit; delegation grantors require separate explicit delegation scopes and the same lifecycle and evidence controls.
+
+Regression coverage rejects omitted grantor scopes, non-array delegation scopes, revoked delegate and grantor records, malformed or missing validity, missing evidence and evidence absent at the bound commit. This is rework evidence only. It does not establish an authority identity registry, authenticate a human, accept GOV-P0-02, approve any decision, pass PG-G0, authorize merge, release, runtime or production implementation.
+
+Post-rework maker checks: dedicated authority-docket suite 44/44 and full suite 147/147 passed. Deterministic reports, the versioned manifest and remaining repository checks must still be current at the final candidate SHA; fresh independent exact-SHA review remains mandatory.

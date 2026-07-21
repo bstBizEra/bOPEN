@@ -341,6 +341,25 @@ def validate_evidence_binding(root: Path, refs: object, label: str, commit_sha: 
     return errors
 
 
+def validate_evidence_at_commit(
+    root: Path,
+    refs: object,
+    label: str,
+    commit_sha: str,
+) -> list[str]:
+    errors = validate_evidence_refs(root, refs, label, required=True)
+    if not isinstance(refs, list):
+        return errors
+    for item in refs:
+        path, path_errors = safe_relative_path(root, item, f"{label} evidence")
+        if path_errors or path is None:
+            continue
+        relative = path.relative_to(root).as_posix()
+        if read_file_at_commit(root, commit_sha, relative) is None:
+            errors.append(f"{label} evidence absent at bound commit: {relative}")
+    return errors
+
+
 def validate_actor(actor: object, label: str, *, human_only: bool = False) -> list[str]:
     expected = {"actor_kind", "identity_ref", "role", "registration_ref", "session_ref"}
     errors = exact_keys(actor, expected, label)
@@ -406,6 +425,8 @@ def validate_role_binding(
     governing_artifacts: dict[str, dict[str, Any]],
     repository_commit_sha: str,
     repository_tree_sha: str,
+    action_id: str,
+    subject_ref: str,
 ) -> list[str]:
     errors: list[str] = []
     relative, record_id, ref_errors = _split_fragment_ref(actor.get("role_binding_ref"), f"{label} role_binding_ref")
@@ -473,12 +494,24 @@ def validate_role_binding(
     }
     if any(normalized_identity(record.get(key)) != normalized_identity(value) for key, value in expected_pairs.items()) or not role_matches:
         errors.append(f"{label} identity registry record does not match actor")
-    valid_from = parse_datetime(record.get("valid_from")) if record.get("valid_from") is not None else None
-    expires = parse_datetime(record.get("expires_at")) if record.get("expires_at") is not None else None
-    if valid_from is not None and valid_from > as_of:
-        errors.append(f"{label} identity role binding is not yet valid")
-    if expires is not None and as_of >= expires:
-        errors.append(f"{label} identity role binding expired")
+    actions = record.get("action_ids")
+    subjects = record.get("subject_refs")
+    if not isinstance(actions, list) or action_id not in actions:
+        errors.append(f"{label} identity role binding action scope missing")
+    if not isinstance(subjects, list) or subject_ref not in subjects:
+        errors.append(f"{label} identity role binding subject scope missing")
+    valid_from = parse_datetime(record.get("valid_from"))
+    expires = parse_datetime(record.get("expires_at"))
+    if valid_from is None or expires is None or not (valid_from <= as_of < expires):
+        errors.append(f"{label} identity role binding is not currently effective")
+    if "revoked_at" not in record or record.get("revoked_at") is not None:
+        errors.append(f"{label} identity role binding is revoked or lacks revocation state")
+    errors.extend(validate_evidence_at_commit(
+        root,
+        record.get("evidence_refs"),
+        f"{label} identity role binding",
+        commit_sha,
+    ))
     return errors
 
 
@@ -525,6 +558,8 @@ def validate_authority_actor(
             governing_artifacts,
             repository_commit_sha,
             repository_tree_sha,
+            action_id,
+            subject_ref,
         ))
     delegation_ref = actor.get("delegation_ref")
     delegation = actor.get("delegation_binding")
@@ -544,9 +579,11 @@ def validate_authority_actor(
                 errors.append(f"{label} delegation delegate identity mismatch")
             if normalized_identity(delegation.get("grantor_human_identity_ref")) in {"", normalized_identity(actor.get("human_identity_ref"))}:
                 errors.append(f"{label} delegation grantor must be a different human")
-            if action_id not in delegation.get("action_ids", []):
+            delegation_actions = delegation.get("action_ids")
+            if not isinstance(delegation_actions, list) or action_id not in delegation_actions:
                 errors.append(f"{label} delegation action scope missing")
-            if subject_ref not in delegation.get("subject_refs", []):
+            delegation_subjects = delegation.get("subject_refs")
+            if not isinstance(delegation_subjects, list) or subject_ref not in delegation_subjects:
                 errors.append(f"{label} delegation subject scope missing")
             expected_delegation_ref = f"{delegation.get('artifact_ref')}#{delegation.get('delegation_id')}"
             if delegation_ref != expected_delegation_ref:
@@ -603,19 +640,30 @@ def validate_authority_actor(
                 grantor_role_matches = required_role in grantor_roles if isinstance(grantor_roles, list) else grantor.get("authority_role") == required_role
                 if not grantor_role_matches or grantor.get("can_delegate") is not True:
                     errors.append(f"{label} delegation grantor lacks role or delegation authority")
-                grantor_actions = grantor.get("delegation_action_ids", grantor.get("action_ids"))
-                if isinstance(grantor_actions, list) and action_id not in grantor_actions:
+                grantor_actions = grantor.get("delegation_action_ids")
+                if not isinstance(grantor_actions, list) or action_id not in grantor_actions:
                     errors.append(f"{label} delegation grantor action scope missing")
-                grantor_subjects = grantor.get("delegation_subject_refs", grantor.get("subject_refs"))
-                if isinstance(grantor_subjects, list) and subject_ref not in grantor_subjects:
+                grantor_subjects = grantor.get("delegation_subject_refs")
+                if not isinstance(grantor_subjects, list) or subject_ref not in grantor_subjects:
                     errors.append(f"{label} delegation grantor subject scope missing")
-                valid_from = parse_datetime(grantor.get("valid_from")) if grantor.get("valid_from") is not None else None
-                expires = parse_datetime(grantor.get("expires_at")) if grantor.get("expires_at") is not None else None
-                if valid_from is not None and valid_from > as_of:
-                    errors.append(f"{label} delegation grantor is not yet active")
-                if expires is not None and as_of >= expires:
-                    errors.append(f"{label} delegation grantor expired")
-            errors.extend(validate_evidence_refs(root, delegation.get("evidence_refs"), f"{label} delegation", required=True))
+                valid_from = parse_datetime(grantor.get("valid_from"))
+                expires = parse_datetime(grantor.get("expires_at"))
+                if valid_from is None or expires is None or not (valid_from <= as_of < expires):
+                    errors.append(f"{label} delegation grantor is not currently effective")
+                if "revoked_at" not in grantor or grantor.get("revoked_at") is not None:
+                    errors.append(f"{label} delegation grantor is revoked or lacks revocation state")
+                errors.extend(validate_evidence_at_commit(
+                    root,
+                    grantor.get("evidence_refs"),
+                    f"{label} delegation grantor",
+                    str(actor.get("role_binding_commit_sha", "")),
+                ))
+            errors.extend(validate_evidence_at_commit(
+                root,
+                delegation.get("evidence_refs"),
+                f"{label} delegation",
+                delegation_commit,
+            ))
     return errors
 
 

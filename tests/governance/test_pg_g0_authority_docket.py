@@ -66,8 +66,18 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             "delegation_binding": None,
         }
 
-    def validate(self, root: Path, *, ancestor: bool = True) -> list[str]:
+    def validate(
+        self,
+        root: Path,
+        *,
+        ancestor: bool = True,
+        missing_committed_paths: set[str] | None = None,
+    ) -> list[str]:
+        missing_committed_paths = missing_committed_paths or set()
+
         def committed_file(test_root: Path, _commit: str, relative: str):
+            if relative in missing_committed_paths:
+                return None
             source = ROOT / relative
             if not source.is_file():
                 source = test_root / relative
@@ -96,6 +106,12 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
                 "identity_provider": "bopen-authority-identity-registry",
                 "identity_subject": subject,
                 "authority_roles": [role],
+                "action_ids": ["ACCEPT_EVIDENCE"],
+                "subject_refs": ["docs/evidence/EVD-GOV-001-program-g0-controls.md"],
+                "valid_from": "2026-07-21T00:00:00Z",
+                "expires_at": "2026-08-01T00:00:00Z",
+                "revoked_at": None,
+                "evidence_refs": ["docs/evidence/EVD-GOV-001-program-g0-controls.md"],
             }],
         }
         path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
@@ -104,6 +120,76 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         actor["role_binding_ref"] = f"{relative.as_posix()}#{subject}"
         actor["role_binding_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
         return actor
+
+    def install_delegated_actor(self, root: Path) -> tuple[dict, Path, Path]:
+        subject_ref = "docs/evidence/EVD-GOV-001-program-g0-controls.md"
+        actor = self.install_identity_registry(
+            root, "human:delegate", "HUMAN-DELEGATE", "Engineering Authority"
+        )
+        registry_path = root / "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        registry["entries"].append({
+            "identity_id": "HUMAN-GRANTOR",
+            "status": "approved",
+            "human_identity_ref": "human:grantor",
+            "identity_provider": "bopen-authority-identity-registry",
+            "identity_subject": "HUMAN-GRANTOR",
+            "authority_roles": ["Engineering Authority"],
+            "can_delegate": True,
+            "delegation_action_ids": ["ACCEPT_EVIDENCE"],
+            "delegation_subject_refs": [subject_ref],
+            "valid_from": "2026-07-21T00:00:00Z",
+            "expires_at": "2026-08-01T00:00:00Z",
+            "revoked_at": None,
+            "evidence_refs": [subject_ref],
+        })
+        registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+        actor["role_binding_sha256"] = hashlib.sha256(registry_path.read_bytes()).hexdigest()
+
+        delegation_path = root / "docs/00-governance/delegations/engineering.json"
+        delegation_path.parent.mkdir(parents=True, exist_ok=True)
+        record = {
+            "delegation_id": "DELEGATION-001",
+            "grantor_human_identity_ref": "human:grantor",
+            "delegate_human_identity_ref": "human:delegate",
+            "authority_role": "Engineering Authority",
+            "action_ids": ["ACCEPT_EVIDENCE"],
+            "subject_refs": [subject_ref],
+            "valid_from": "2026-07-21T00:00:00Z",
+            "expires_at": "2026-08-01T00:00:00Z",
+            "revoked_at": None,
+            "evidence_refs": [subject_ref],
+        }
+        delegation_path.write_text(json.dumps({"entries": [record]}, indent=2) + "\n", encoding="utf-8")
+        actor.update({
+            "authority_mode": "DELEGATED",
+            "delegation_ref": "docs/00-governance/delegations/engineering.json#DELEGATION-001",
+            "delegation_binding": {
+                "delegation_id": "DELEGATION-001",
+                "artifact_ref": "docs/00-governance/delegations/engineering.json",
+                "artifact_sha256": hashlib.sha256(delegation_path.read_bytes()).hexdigest(),
+                "commit_sha": "a" * 40,
+                "tree_sha": EXPECTED_TREE,
+                **record,
+            },
+        })
+        return actor, registry_path, delegation_path
+
+    def install_actor_on_evidence_decision(self, root: Path, actor: dict) -> None:
+        docket = self.load_docket(root)
+        decision = docket["decision_requests"][4]
+        decision["checked_by"] = {
+            "actor_kind": "AGENT", "identity_ref": "checker", "role": "QA & Evidence Agent",
+            "registration_ref": None, "session_ref": None,
+        }
+        decision["final_authority_actor"] = actor
+        decision["final_disposition"] = {
+            "value": "REJECT", "decided_at": "2026-07-21T15:00:00Z",
+            "reason_code": "REJECT", "decision_ref": "AUTH-REJECT",
+            "evidence_refs": ["docs/evidence/EVD-GOV-001-program-g0-controls.md"],
+            "effective": False,
+        }
+        self.save_docket(root, docket)
 
     def test_repository_docket_is_valid_but_not_ready(self):
         self.assertEqual(validate_pg_g0_authority_docket(ROOT, AS_OF), [])
@@ -554,6 +640,89 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         self.assertTrue(any("delegation subject scope missing" in item for item in errors))
         self.assertTrue(any("delegation bound artifact sha256 mismatch" in item for item in errors))
         self.assertTrue(any("delegation record does not match binding" in item for item in errors))
+
+    def test_delegation_grantor_requires_explicit_action_and_subject_scopes(self):
+        for malformed in (False, True):
+            with self.subTest(malformed=malformed), tempfile.TemporaryDirectory() as temporary:
+                root = self.make_root(temporary)
+                actor, registry_path, _ = self.install_delegated_actor(root)
+                registry = json.loads(registry_path.read_text(encoding="utf-8"))
+                grantor = registry["entries"][1]
+                if malformed:
+                    grantor["delegation_action_ids"] = None
+                    grantor["delegation_subject_refs"] = 7
+                else:
+                    grantor.pop("delegation_action_ids")
+                    grantor.pop("delegation_subject_refs")
+                registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+                actor["role_binding_sha256"] = hashlib.sha256(registry_path.read_bytes()).hexdigest()
+                self.install_actor_on_evidence_decision(root, actor)
+                errors = self.validate(root)
+            self.assertTrue(any("delegation grantor action scope missing" in item for item in errors), errors)
+            self.assertTrue(any("delegation grantor subject scope missing" in item for item in errors), errors)
+
+    def test_revoked_delegate_and_grantor_identities_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            actor, registry_path, _ = self.install_delegated_actor(root)
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            registry["entries"][0]["revoked_at"] = "2026-07-21T12:00:00Z"
+            registry["entries"][1]["revoked_at"] = "2026-07-21T12:00:00Z"
+            registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+            actor["role_binding_sha256"] = hashlib.sha256(registry_path.read_bytes()).hexdigest()
+            self.install_actor_on_evidence_decision(root, actor)
+            errors = self.validate(root)
+        self.assertTrue(any("identity role binding is revoked" in item for item in errors), errors)
+        self.assertTrue(any("delegation grantor is revoked" in item for item in errors), errors)
+
+    def test_identity_validity_and_evidence_are_mandatory_and_well_formed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            actor, registry_path, _ = self.install_delegated_actor(root)
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            delegate, grantor = registry["entries"]
+            delegate["valid_from"] = "not-a-date"
+            delegate.pop("expires_at")
+            delegate.pop("revoked_at")
+            delegate.pop("evidence_refs")
+            grantor["valid_from"] = "not-a-date"
+            grantor.pop("expires_at")
+            grantor.pop("revoked_at")
+            grantor.pop("evidence_refs")
+            registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+            actor["role_binding_sha256"] = hashlib.sha256(registry_path.read_bytes()).hexdigest()
+            self.install_actor_on_evidence_decision(root, actor)
+            errors = self.validate(root)
+        self.assertTrue(any("identity role binding is not currently effective" in item for item in errors), errors)
+        self.assertTrue(any("identity role binding must be an array" in item for item in errors), errors)
+        self.assertTrue(any("identity role binding is revoked or lacks revocation state" in item for item in errors), errors)
+        self.assertTrue(any("delegation grantor is not currently effective" in item for item in errors), errors)
+        self.assertTrue(any("delegation grantor must be an array" in item for item in errors), errors)
+        self.assertTrue(any("delegation grantor is revoked or lacks revocation state" in item for item in errors), errors)
+
+    def test_delegation_scope_types_fail_closed_without_exceptions(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            actor, _, _ = self.install_delegated_actor(root)
+            actor["delegation_binding"]["action_ids"] = None
+            actor["delegation_binding"]["subject_refs"] = 7
+            self.install_actor_on_evidence_decision(root, actor)
+            errors = self.validate(root)
+        self.assertTrue(any("delegation action scope missing" in item for item in errors), errors)
+        self.assertTrue(any("delegation subject scope missing" in item for item in errors), errors)
+
+    def test_identity_evidence_must_exist_at_bound_commit(self):
+        evidence_ref = "docs/evidence/EVD-GOV-001-program-g0-controls.md"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            actor = self.install_identity_registry(
+                root, "human:engineering", "HUMAN-ENGINEERING", "Engineering Authority"
+            )
+            self.install_actor_on_evidence_decision(root, actor)
+            errors = self.validate(root, missing_committed_paths={evidence_ref})
+        self.assertTrue(any(
+            "identity role binding evidence absent at bound commit" in item for item in errors
+        ), errors)
 
     def test_nonconcur_requires_attributable_human_time_expiry_and_evidence(self):
         with tempfile.TemporaryDirectory() as temporary:
