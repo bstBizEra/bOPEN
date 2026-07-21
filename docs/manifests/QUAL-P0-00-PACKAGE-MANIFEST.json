@@ -11,13 +11,13 @@
   "records": [
     {
       "path": "contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json",
-      "sha256": "6d5bf16df5d9e5f5c54eb23dd1c4b624067e7afbd2ece6553f2ad1b91e33bef4",
+      "sha256": "803500ff8dd12e17531872482875dcf67fa8f617de45c11318a55ba8ed8b8450",
       "bytes": 2629
     },
     {
       "path": "contracts/qualification/common/checker-receipt.schema.json",
-      "sha256": "35b656f56e76f34ad8f992d4926192c6c5efa72c388741d502c06c3e5a870e1b",
-      "bytes": 4662
+      "sha256": "cbcf35f007901ee463624b7fc4f2cb10ed4da824cb098c63edcc1442d8b55ce1",
+      "bytes": 4951
     },
     {
       "path": "contracts/qualification/common/digest-binding.schema.json",
@@ -61,13 +61,13 @@
     },
     {
       "path": "docs/evidence/EVD-QUAL-001-qualification-common.md",
-      "sha256": "cc6247531be3d1d0c8c7e300036a88cf81d91bedfed3c1c4a70e73a6fcdf2ec2",
-      "bytes": 4772
+      "sha256": "73964dca9c2a7a637ca658baaf4f2de9be9473bf4af7dcab1ab65abc2cc8c979",
+      "bytes": 7368
     },
     {
       "path": "docs/work-packages/QUAL-P0-00.md",
-      "sha256": "53270d48a05851c0d5ec8c4ad6f0eb528680aa2cc6497cdcbc491116b82c1028",
-      "bytes": 5573
+      "sha256": "42a5310ba195df775829fd820dc9870bf6c3e2ba350a294115e56a926bce69d8",
+      "bytes": 6890
     },
     {
       "path": "tests/qualification/__init__.py",
@@ -76,13 +76,13 @@
     },
     {
       "path": "tests/qualification/test_qualification_common.py",
-      "sha256": "8b22fa32a3462566fc0b7ae504fbc1f64cbf30ca3b8ec75e9815dec23a40f4ab",
-      "bytes": 17816
+      "sha256": "ca33643cfa46953933df431a9d2b8d05379424d833f6126478bdaa1a6e60df93",
+      "bytes": 23984
     },
     {
       "path": "tools/validate_qualification_common.py",
-      "sha256": "6201f8c8e95a5edef1957ec688524702f9bbe4204ad79f1c1d4ce8b0cf64bf4e",
-      "bytes": 39514
+      "sha256": "d8c03ec0fb51bf83cac9ecadb1fb82069ef8f51b310442910c598b1a3413e0bd",
+      "bytes": 43443
     }
   ]
 }

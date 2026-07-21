@@ -10,7 +10,7 @@
     {
       "schema_id": "bopen://schemas/qualification/common/checker-receipt/0.1.0-draft",
       "path": "contracts/qualification/common/checker-receipt.schema.json",
-      "sha256": "35b656f56e76f34ad8f992d4926192c6c5efa72c388741d502c06c3e5a870e1b"
+      "sha256": "cbcf35f007901ee463624b7fc4f2cb10ed4da824cb098c63edcc1442d8b55ce1"
     },
     {
       "schema_id": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft",
