@@ -32,3 +32,4 @@ artifacts/validation/*
 !artifacts/validation/README.md
 !artifacts/validation/program-g0-readiness.md
 !artifacts/validation/program-g0-authority-readiness.json
+!artifacts/validation/research-g3-design-readiness.md

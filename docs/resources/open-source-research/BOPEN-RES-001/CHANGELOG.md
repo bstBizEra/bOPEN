@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.2 - 2026-07-21
+
+- Added the non-executing G3 synthetic runtime pack design and machine-readable contract.
+- Specified mandatory identity, tenant/membership and invitation lifecycle cases with secure-oracle separation.
+- Added fail-closed validation, negative tests and a readiness report capped at design review.
+- Proposed DEC-0011 while preserving runtime execution, G3, RES-P0-08 and production implementation as unauthorized.
+
 ## v1.1 - 2026-07-13
 
 - Executed RES-P0-01 through RES-P0-03 in two isolated external operator workspaces.

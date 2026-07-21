@@ -1,7 +1,7 @@
 {
   "artifact_id": "BOPEN-RES-001",
   "title": "bOPEN Open-Source Platform Kernel Research, Clone Governance & Clean-Room Study Plan",
-  "version": "1.0",
+  "version": "1.2",
   "status": "approved-for-research-execution",
   "issued_on": "2026-07-12",
   "primary_target": {
@@ -51,5 +51,12 @@
     "RES-P0-14"
   ],
   "implementation_policy": "clean-room",
+  "g3_design": {
+    "status": "design-ready-for-authority-review",
+    "decision": "DEC-0011-proposed-not-effective",
+    "runtime_executed": false,
+    "g3_pass": false,
+    "production_implementation_authorized": false
+  },
   "production_adoption_authorized": false
 }

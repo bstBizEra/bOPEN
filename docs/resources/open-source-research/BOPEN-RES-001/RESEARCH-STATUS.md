@@ -45,3 +45,14 @@ Begin Sprint R1 with `RES-P0-04` through `RES-P0-07`: repository orientation, id
 - EVD-RES-003 records the identity, owner-invariant, invitation-state and event/audit findings.
 
 **Next controlled action:** design the isolated synthetic G3 runtime pack. Do not start RES-P0-08 or production implementation until the missing R1 runtime evidence is executed and reviewed.
+
+## G3 design update - 2026-07-21
+
+**Status:** `DESIGN READY FOR AUTHORITY REVIEW / G3 OPEN / RUNTIME NOT AUTHORIZED`
+
+- The design contract defines isolated synthetic services, exact-pin binding, secure-oracle separation, mandatory lifecycle cases, two-operator E3/E4 evidence, retention and cleanup controls.
+- The validator and negative tests reject missing cases, mutable or external dependencies, real data, merged oracle/observation fields and any runtime/G3/production success claim.
+- DEC-0011 remains proposed and ineffective. Exact runtime dependencies, image digests, network policy, paths, retention and named operators remain pending.
+- No upstream code, process, container, database, network interception or runtime probe was executed.
+
+**Next controlled action:** independent review of the exact design commit, followed by Architecture/Security/License authority disposition of DEC-0011. G3 remains open.

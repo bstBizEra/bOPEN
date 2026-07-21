@@ -14,6 +14,7 @@
 | REQ-RES-001 Clean-room separation | BOPEN-RES-001 | ADR-0002 | RES-P0-01/14 | Source/evidence registers | In progress |
 | REQ-RES-002 R0 controlled reproduction | BOPEN-RES-001 | DEC-0009/pin contract/research scripts | RES-P0-01/02/03 | EVD-RES-002 | G0-G2 pass with conditions |
 | REQ-RES-003 R1 core relationship trace | BOPEN-RES-001 | DEC-0009/R1 trace contract and runner | RES-P0-04/05/06/07 | EVD-RES-003 | RES-P0-04 complete at E2; G3 open |
+| REQ-RES-004 G3 synthetic runtime design | BOPEN-RES-001 | DEC-0009/DEC-0011 proposed/G3 design contract | RES-P0-05/06/07 | EVD-RES-004 | Design ready for authority review; runtime unauthorized; G3 open |
 | REQ-TEN-001 Tenant boundary | BOPEN-TENANT-001 | Pending | Future | Pending | Draft |
 | REQ-TEN-002 Multi-tenant DEV readiness | BOPEN-TENANT-001/BOPEN-AUTHZ-001/BOPEN-SEC-001 | membership/active-context/tenant-ownership schemas | DEV-P0-01 | EVD-DEV-001 | Draft contracts validated |
 | REQ-MEM-001 First-class membership | BOPEN-TENANT-001 | ADR-0006/membership schema | DEV-P0-01 | EVD-DEV-001 | Draft contract validated |

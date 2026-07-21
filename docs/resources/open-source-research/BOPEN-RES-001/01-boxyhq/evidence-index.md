@@ -27,3 +27,11 @@
 | BOX-E-018 | E0 | G3 runtime pack | Database-backed positive/negative lifecycle behavior. | Open |
 
 EVD-RES-003 contains the reviewed R1 synthesis and external manifest hashes.
+
+## G3 design addition - 2026-07-21
+
+| Evidence ID | Class | Source | Observation | Status |
+|---|---|---|---|---|
+| BOX-E-019 | E2 design | G3 design contract, validator and readiness report | Mandatory database-backed lifecycle probes and fail-closed execution prerequisites are specified without executing upstream code. | Design controlled; runtime open |
+
+EVD-RES-004 records design validation only. BOX-E-018 remains without E3/E4 runtime evidence and G3 remains open.

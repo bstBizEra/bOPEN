@@ -51,3 +51,16 @@
 | G2 | PASS WITH CONDITIONS | Two operators reproduce the declared baseline. npm 10.9.2 is required because npm 11 rejects the lock; upstream format check exits 1 while lint, types, four unit tests and build pass. |
 
 G3 through G7 remain open. No implementation handoff is authorized.
+
+## G3 design checkpoint - 2026-07-21
+
+- [x] Non-executing synthetic runtime design contract created.
+- [x] Mandatory identity, membership and invitation case inventory made machine-verifiable.
+- [x] Secure oracle separated from observed upstream behavior.
+- [x] Report semantics capped at `DESIGN_READY_FOR_AUTHORITY_REVIEW`.
+- [ ] DEC-0011 runtime authorization approved and effective.
+- [ ] Exact dependencies, images, paths, networks, retention and operators bound.
+- [ ] ENGIN E3 runtime evidence captured.
+- [ ] Independent REV E4 reproduction accepted.
+
+This checkpoint does not alter the three unchecked G3 gate items above.

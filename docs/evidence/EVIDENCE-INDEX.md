@@ -16,6 +16,8 @@
 | EVD-DEV-001 | DEV-P0-01 | Multi-tenant membership, context, ownership, and cross-tenant denial contract validation | `docs/evidence/EVD-DEV-001-multitenant-readiness.md` | Generated; authority review pending |
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |
 | EVD-RES-002 | RES-P0-01/02/03 | R0 workspace, provenance, license and two-operator reproduction | `docs/evidence/EVD-RES-002-r0-control-establishment.md` | G0-G2 pass with conditions |
+| EVD-RES-003 | RES-P0-04/05/06/07 | R1 static identity, tenant/membership and invitation lifecycle trace | `docs/evidence/EVD-RES-003-r1-lifecycle-trace.md` | Accepted E2 research evidence; G3 open |
+| EVD-RES-004 | RES-P0-05/06/07 | Non-executing G3 synthetic runtime pack design and readiness controls | `docs/evidence/EVD-RES-004-g3-runtime-design.md` | Design evidence; authority review required; G3 open |
 | EVD-GOV-001 | GOV-P0-01 | Program Goal v0.2 source-completeness, draft registers and fail-closed PG-G0 readiness | `docs/evidence/EVD-GOV-001-program-g0-controls.md` | Draft; checker pending; PG-G0 NOT_READY |
 | EVD-GOV-002 | GOV-P0-02 | Draft human-authority docket, exact bindings and fail-closed negative tests | `docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md` | Draft maker evidence; exact-SHA checker and human acceptance pending |
 
