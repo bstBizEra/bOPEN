@@ -32,7 +32,11 @@ def canonical_document_bytes(path: Path) -> tuple[bytes, str]:
 def build_manifest(output: Path, root: Path = ROOT) -> dict:
     records = []
     resolved_output = output if output.is_absolute() else root / output
-    for path in sorted((root / "docs").rglob("*")):
+    document_paths = sorted(
+        (root / "docs").rglob("*"),
+        key=lambda candidate: candidate.relative_to(root).as_posix(),
+    )
+    for path in document_paths:
         if not path.is_file() or path.name == "DOCUMENT-MANIFEST.json" or path.resolve() == resolved_output.resolve():
             continue
         data, text = canonical_document_bytes(path)

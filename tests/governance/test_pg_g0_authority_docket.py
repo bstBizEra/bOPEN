@@ -705,6 +705,16 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             unix_record = build_manifest(output, root)["documents"][0]
         self.assertEqual(windows_record, unix_record)
 
+    def test_versioned_manifest_uses_platform_independent_path_order(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "docs/manifests").mkdir(parents=True)
+            (root / "docs/a.md").write_text("# Lower\n", encoding="utf-8")
+            (root / "docs/B.md").write_text("# Upper\n", encoding="utf-8")
+            output = Path("docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json")
+            paths = [item["path"] for item in build_manifest(output, root)["documents"]]
+        self.assertEqual(paths, ["docs/B.md", "docs/a.md"])
+
 
 if __name__ == "__main__":
     unittest.main()

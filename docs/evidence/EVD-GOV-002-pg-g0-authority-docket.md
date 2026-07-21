@@ -120,3 +120,9 @@ Reason: after historical commit resolution passed in Gitea Actions run 58/job 87
 A regression test proves CRLF and LF forms of the same governed text document produce identical manifest records. No validation, permission or security control is weakened, and no authority state changes.
 
 Post-repair maker checks: focused suite 38/38, full suite 141/141, repository validation PASS, and the normalized 257-record manifest is current. These results remain maker evidence pending exact-SHA review and protected CI confirmation.
+
+## Append-only manifest ordering repair note — 2026-07-21
+
+Reason: Gitea Actions run 59/job 88 still reported a stale manifest after content normalization because native `Path` ordering is case-insensitive on Windows and case-sensitive on Linux. Benefit of the prior phase: clean LF checkout reproduction proved record content was stable and narrowed the remaining drift to array ordering. Expected outcome: document paths are sorted by their explicit repository-relative POSIX string, producing identical case-sensitive ordering on every platform.
+
+A mixed-case path regression test is added. Post-repair maker counts are focused 39/39 and full 142/142; all authority and implementation flags remain false.
