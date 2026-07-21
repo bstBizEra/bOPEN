@@ -1,0 +1,73 @@
+{
+  "package_id": "GOV-P0-03",
+  "version": "0.1",
+  "status": "draft",
+  "lifecycle": "inactive",
+  "generated": "2026-07-21",
+  "base_commit": "82ed6b38b118aab14a9961c5d75a33e515cb136a",
+  "base_tree": "cad6b595fb74a70cc706a78d45778e15524aebd9",
+  "authority": {
+    "pg_g0_passed": false,
+    "production_implementation_authorized": false,
+    "merge_authorized": false,
+    "release_authorized": false
+  },
+  "count": 11,
+  "files": [
+    {
+      "path": "Backlog.md",
+      "sha256": "eb3f2b1761f59212d700b85b88e37d03c9bf6025141cfa729d1706e37144da67",
+      "bytes": 2507
+    },
+    {
+      "path": "Master_Standards.md",
+      "sha256": "b1d837a156e68bd2cab0359804b4294c855f52187fd2d3f1eaf3f6cbfe8ede06",
+      "bytes": 3070
+    },
+    {
+      "path": "Progress_Log.md",
+      "sha256": "4a6a71304d376e14df8e00ae848da95caa88da56813f258c5b885db0aecd11fe",
+      "bytes": 2612
+    },
+    {
+      "path": "Recap_Today.md",
+      "sha256": "e753681eef38d5361128d3b31021debe17417445d7b19b2178d6991dcfd999e7",
+      "bytes": 2601
+    },
+    {
+      "path": "Roadmap.md",
+      "sha256": "9039fe3a2d1f77cd8a30c050bbcb2d0c29031ce979ecef380c307f548802f1a8",
+      "bytes": 2805
+    },
+    {
+      "path": "contracts/governance/root-control-surface.schema.json",
+      "sha256": "4dedc1c94cc4c6736ddb2a5cb775e877058b71ba5424f9f16e4d4d98a3eaf6d5",
+      "bytes": 2048
+    },
+    {
+      "path": "docs/decisions/DEC-0012.md",
+      "sha256": "09f235ba00320960ce7e3d0bb06960db908b192a68dbca92f5abdfe6999199d6",
+      "bytes": 3891
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
+      "sha256": "993aa20a766c629f92a2624a472d2c206a0527d6303b1462b84cf5b95de7388d",
+      "bytes": 5112
+    },
+    {
+      "path": "docs/work-packages/GOV-P0-03.md",
+      "sha256": "abafff7be6451f3069dbc14af6f476d6df751069826569f23c39f6ad8fbb5ef6",
+      "bytes": 6068
+    },
+    {
+      "path": "tests/governance/test_root_control_surfaces.py",
+      "sha256": "d1c6a10daec3ff80d13a43555923b393b8dbe82dbc0226b5f90b3d771df855ec",
+      "bytes": 5432
+    },
+    {
+      "path": "tools/validate_root_control_surfaces.py",
+      "sha256": "2531d41d469fcc420785687e92eb6b834c5b7da434be06ea886ff904072cebb8",
+      "bytes": 12501
+    }
+  ]
+}

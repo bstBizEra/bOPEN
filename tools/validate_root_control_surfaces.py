@@ -1,0 +1,309 @@
+#!/usr/bin/env python3
+"""Validate the Draft and Inactive GOV-P0-03 root control surfaces."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+BASE_COMMIT = "82ed6b38b118aab14a9961c5d75a33e515cb136a"
+BASE_TREE = "cad6b595fb74a70cc706a78d45778e15524aebd9"
+ROOT_SURFACES = {
+    "Roadmap.md": "GOV-P0-03-ROOT-ROADMAP",
+    "Master_Standards.md": "GOV-P0-03-ROOT-STANDARDS",
+    "Progress_Log.md": "GOV-P0-03-ROOT-PROGRESS",
+    "Backlog.md": "GOV-P0-03-ROOT-BACKLOG",
+    "Recap_Today.md": "GOV-P0-03-ROOT-RECAP",
+}
+PACKAGE_PATHS = (
+    *ROOT_SURFACES,
+    "contracts/governance/root-control-surface.schema.json",
+    "docs/decisions/DEC-0012.md",
+    "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
+    "docs/work-packages/GOV-P0-03.md",
+    "tests/governance/test_root_control_surfaces.py",
+    "tools/validate_root_control_surfaces.py",
+)
+MANIFEST_PATH = "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json"
+CONFIG_PATHS = (
+    "/opt/bizera-smartthink/config/agents.yaml",
+    "/opt/bizera-smartthink/config/routing.yaml",
+    "/opt/bizera-smartthink/config/system.yaml",
+)
+REQUIRED_FIELDS = {
+    "Version": "0.1",
+    "Status": "Draft",
+    "Lifecycle": "Inactive",
+    "Decision reference": "DEC-0012 option 1 user-level drafting authorization",
+    "Evidence reference": "EVD-GOV-003",
+    "Agent ID": "/root/gov_p0_03_preflight",
+    "Base commit": BASE_COMMIT,
+    "Base tree": BASE_TREE,
+    "Append-only": "true",
+    "PG-G0 passed": "false",
+    "Production implementation authorized": "false",
+    "Merge authorized": "false",
+    "Release authorized": "false",
+}
+FIELD_PATTERN = re.compile(r"^\*\*([^*]+):\*\*\s*(.*?)\s*$", re.MULTILINE)
+CHECKBOX_PATTERN = re.compile(r"^\s*[-*]\s+\[[ xX]\]", re.MULTILINE)
+
+
+def canonical_bytes(path: Path) -> bytes:
+    data = path.read_bytes()
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data
+    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+
+
+def manifest_record(path: Path, root: Path) -> dict[str, object]:
+    data = canonical_bytes(path)
+    return {
+        "path": path.relative_to(root).as_posix(),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "bytes": len(data),
+    }
+
+
+def build_package_manifest(root: Path = ROOT) -> dict[str, object]:
+    records = [manifest_record(root / rel, root) for rel in sorted(PACKAGE_PATHS)]
+    return {
+        "package_id": "GOV-P0-03",
+        "version": "0.1",
+        "status": "draft",
+        "lifecycle": "inactive",
+        "generated": "2026-07-21",
+        "base_commit": BASE_COMMIT,
+        "base_tree": BASE_TREE,
+        "authority": {
+            "pg_g0_passed": False,
+            "production_implementation_authorized": False,
+            "merge_authorized": False,
+            "release_authorized": False,
+        },
+        "count": len(records),
+        "files": records,
+    }
+
+
+def parse_fields(text: str) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for key, value in FIELD_PATTERN.findall(text):
+        fields.setdefault(key.strip(), value.strip())
+    return fields
+
+
+def validate_exact_root_names(names: list[str]) -> list[str]:
+    errors: list[str] = []
+    lower_to_actual: dict[str, list[str]] = {}
+    for name in names:
+        lower_to_actual.setdefault(name.lower(), []).append(name)
+    for expected in ROOT_SURFACES:
+        actual = lower_to_actual.get(expected.lower(), [])
+        if actual != [expected]:
+            errors.append(f"ROOT CONTROL EXACT NAME INVALID: {expected} -> {actual}")
+    return errors
+
+
+def validate_append_only_bytes(previous: bytes | None, candidate: bytes) -> list[str]:
+    if previous is None:
+        return []
+    if len(candidate) < len(previous):
+        return ["ROOT CONTROL TRUNCATED"]
+    if not candidate.startswith(previous):
+        return ["ROOT CONTROL PREFIX REWRITTEN"]
+    return []
+
+
+def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=root,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+
+def validate_git_history(root: Path) -> list[str]:
+    errors: list[str] = []
+    if run_git(root, "rev-parse", "--is-inside-work-tree").returncode != 0:
+        return ["GIT WORKTREE REQUIRED FOR APPEND-ONLY VALIDATION"]
+    base_tree = run_git(root, "show", "-s", "--format=%T", BASE_COMMIT)
+    if base_tree.returncode != 0 or base_tree.stdout.strip() != BASE_TREE:
+        errors.append("ROOT CONTROL BASE TREE MISMATCH")
+        return errors
+    if run_git(root, "merge-base", "--is-ancestor", BASE_COMMIT, "HEAD").returncode != 0:
+        errors.append("ROOT CONTROL BASE IS NOT HEAD ANCESTOR")
+
+    tracked: list[str] = []
+    untracked: list[str] = []
+    for rel in ROOT_SURFACES:
+        if run_git(root, "cat-file", "-e", f"{BASE_COMMIT}:{rel}").returncode == 0:
+            errors.append(f"ROOT CONTROL unexpectedly exists at authorized base: {rel}")
+        if run_git(root, "ls-files", "--error-unmatch", "--", rel).returncode == 0:
+            tracked.append(rel)
+        else:
+            untracked.append(rel)
+    if tracked and untracked:
+        errors.append("ROOT CONTROL GENESIS PARTIALLY TRACKED")
+        return errors
+    if untracked:
+        return errors
+
+    additions: dict[str, str] = {}
+    for rel in ROOT_SURFACES:
+        result = run_git(root, "log", "--diff-filter=A", "--format=%H", "--", rel)
+        commits = [line for line in result.stdout.splitlines() if line]
+        if len(commits) != 1:
+            errors.append(f"ROOT CONTROL GENESIS COMMIT INVALID: {rel}")
+            continue
+        additions[rel] = commits[0]
+    if additions and len(set(additions.values())) != 1:
+        errors.append("ROOT CONTROLS NOT CREATED IN ONE ATOMIC COMMIT")
+        return errors
+
+    for rel, addition in additions.items():
+        history = run_git(root, "rev-list", "--reverse", f"{addition}..HEAD", "--", rel)
+        for commit in [line for line in history.stdout.splitlines() if line]:
+            parents = run_git(root, "show", "-s", "--format=%P", commit).stdout.split()
+            if not parents:
+                errors.append(f"ROOT CONTROL HISTORY PARENT MISSING: {rel} {commit}")
+                continue
+            before = run_git(root, "show", f"{parents[0]}:{rel}")
+            after = run_git(root, "show", f"{commit}:{rel}")
+            if before.returncode != 0 or after.returncode != 0:
+                errors.append(f"ROOT CONTROL HISTORY BLOB MISSING: {rel} {commit}")
+                continue
+            for issue in validate_append_only_bytes(
+                before.stdout.encode("utf-8"), after.stdout.encode("utf-8")
+            ):
+                errors.append(f"{issue}: {rel} {commit}")
+    return errors
+
+
+def validate_root_control_surfaces(
+    root: Path = ROOT, *, check_git: bool = True
+) -> list[str]:
+    errors: list[str] = []
+    root_names = [item.name for item in root.iterdir() if item.is_file() or item.is_symlink()]
+    errors.extend(validate_exact_root_names(root_names))
+
+    expected_links = tuple(ROOT_SURFACES) + ("README.md",)
+    seen_ids: set[str] = set()
+    for rel, expected_id in ROOT_SURFACES.items():
+        path = root / rel
+        if not path.exists():
+            errors.append(f"ROOT CONTROL MISSING: {rel}")
+            continue
+        if path.is_symlink() or not path.is_file():
+            errors.append(f"ROOT CONTROL MUST BE REGULAR FILE: {rel}")
+            continue
+        data = path.read_bytes()
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError:
+            errors.append(f"ROOT CONTROL MUST BE UTF-8: {rel}")
+            continue
+        if data.startswith(b"\xef\xbb\xbf") or "\r" in text:
+            errors.append(f"ROOT CONTROL MUST USE UTF-8 WITHOUT BOM AND LF: {rel}")
+        fields = parse_fields(text)
+        if fields.get("Document ID") != expected_id:
+            errors.append(f"ROOT CONTROL DOCUMENT ID INVALID: {rel}")
+        elif expected_id in seen_ids:
+            errors.append(f"ROOT CONTROL DOCUMENT ID DUPLICATE: {expected_id}")
+        else:
+            seen_ids.add(expected_id)
+        for key, value in REQUIRED_FIELDS.items():
+            if fields.get(key) != value:
+                errors.append(f"ROOT CONTROL FIELD INVALID {rel}: {key}")
+        if not fields.get("Owner") or not fields.get("Issued") or not fields.get("Source"):
+            errors.append(f"ROOT CONTROL PROVENANCE INCOMPLETE: {rel}")
+        if not fields.get("Governing artifacts") or not fields.get("Dependent artifacts"):
+            errors.append(f"ROOT CONTROL TRACEABILITY INCOMPLETE: {rel}")
+        for linked in expected_links:
+            if f"]({linked})" not in text:
+                errors.append(f"ROOT CONTROL LINK MISSING {rel}: {linked}")
+        for config_path in CONFIG_PATHS:
+            if config_path not in text:
+                errors.append(f"ROOT CONTROL CONFIG REFERENCE MISSING {rel}: {config_path}")
+        if "UNRESOLVED_EXTERNAL_DEPENDENCY" not in text:
+            errors.append(f"ROOT CONTROL CONFIG STATE MISSING: {rel}")
+        if "Reason:" not in text or "Benefit of old phase:" not in text or "Expected outcome:" not in text:
+            errors.append(f"ROOT CONTROL EXTEND-ONLY NOTE INCOMPLETE: {rel}")
+
+    roadmap = (root / "Roadmap.md").read_text(encoding="utf-8") if (root / "Roadmap.md").is_file() else ""
+    for token in ("PROGRAM / PG-G0", "NOT_READY", "BOOT / B7", "PENDING", "PRODUCTION", "UNAUTHORIZED"):
+        if token not in roadmap:
+            errors.append(f"ROOT ROADMAP BOUNDED STATE MISSING: {token}")
+    standards = (root / "Master_Standards.md").read_text(encoding="utf-8") if (root / "Master_Standards.md").is_file() else ""
+    if "locator and precedence map" not in standards:
+        errors.append("ROOT STANDARDS LOCATOR DECLARATION MISSING")
+    for rel in ("Progress_Log.md", "Backlog.md", "Recap_Today.md"):
+        path = root / rel
+        text = path.read_text(encoding="utf-8") if path.is_file() else ""
+        if "## Event GOV-P0-03-" not in text:
+            errors.append(f"ROOT LEDGER GENESIS EVENT MISSING: {rel}")
+        if CHECKBOX_PATTERN.search(text):
+            errors.append(f"ROOT LEDGER MUTABLE CHECKBOX PROHIBITED: {rel}")
+
+    schema_path = root / "contracts/governance/root-control-surface.schema.json"
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"ROOT CONTROL SCHEMA INVALID: {exc}")
+    else:
+        if schema.get("status") != "draft" or schema.get("additionalProperties") is not False:
+            errors.append("ROOT CONTROL SCHEMA MUST BE DRAFT AND FAIL CLOSED")
+        enum = schema.get("properties", {}).get("document_id", {}).get("enum", [])
+        if set(enum) != set(ROOT_SURFACES.values()):
+            errors.append("ROOT CONTROL SCHEMA DOCUMENT IDS INVALID")
+
+    manifest_path = root / MANIFEST_PATH
+    try:
+        actual_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"ROOT CONTROL PACKAGE MANIFEST INVALID: {exc}")
+    else:
+        missing_manifest_sources = [rel for rel in PACKAGE_PATHS if not (root / rel).is_file()]
+        if missing_manifest_sources:
+            for rel in missing_manifest_sources:
+                errors.append(f"ROOT CONTROL PACKAGE MANIFEST SOURCE MISSING: {rel}")
+        else:
+            expected_manifest = build_package_manifest(root)
+            if actual_manifest != expected_manifest:
+                errors.append("ROOT CONTROL PACKAGE MANIFEST STALE")
+
+    if check_git:
+        errors.extend(validate_git_history(root))
+    return errors
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="Validate without modifying files.")
+    parser.parse_args()
+    errors = validate_root_control_surfaces()
+    if errors:
+        print("bOPEN root control surface validation: FAIL")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+    print("bOPEN root control surface validation: PASS")
+    print(f"Checked {len(ROOT_SURFACES)} root controls and {len(PACKAGE_PATHS)} manifest-bound package files.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
