@@ -12,7 +12,7 @@
 
 **Schema SHA-256:** `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`
 
-**Validator SHA-256:** `860a0aac25259eda5c256c763bf6f5960b12dca17b76cdf1ecba3cb502dcccd0`
+**Validator SHA-256:** `e55fd524ee7a00419e49c5e6a1ff8bba8778315d4070b23e419cd003b8f866d4`
 
 ## Census
 
