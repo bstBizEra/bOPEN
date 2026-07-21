@@ -1,0 +1,327 @@
+{
+  "artifact": "BOPEN-GOVERNANCE-AGENT-PACK-001",
+  "version": "0.1",
+  "generated_date": "2026-07-19",
+  "files": [
+    {
+      "path": ".agents/skills/bopen-ci-repair/SKILL.md",
+      "bytes": 415,
+      "sha256": "293f109a2763075d8ba07b535854738da7c6b893531ccabe8227554f31f2c5d3"
+    },
+    {
+      "path": ".agents/skills/bopen-doc-sync/SKILL.md",
+      "bytes": 397,
+      "sha256": "1e3e4254e4e99eca06d58e7f374037c400fdab13c3e2694ed6f5d5da9d56093c"
+    },
+    {
+      "path": ".agents/skills/bopen-evidence-envelope/SKILL.md",
+      "bytes": 407,
+      "sha256": "0f4e3c04204ae9eb980ea0e760752490d5350277ff0ccf89038763af062a5d2f"
+    },
+    {
+      "path": ".agents/skills/bopen-governance-check/SKILL.md",
+      "bytes": 557,
+      "sha256": "8bf5ecca7b294a379240d8c00377369ab9ca65de8fed0806e001bf81a3f9f221"
+    },
+    {
+      "path": ".agents/skills/bopen-module-contract/SKILL.md",
+      "bytes": 504,
+      "sha256": "6cc768d2979d545e52253bcab5d7c17a7581f143166bf273b7120f7bb9a5a052"
+    },
+    {
+      "path": ".agents/skills/bopen-portal-verification/SKILL.md",
+      "bytes": 460,
+      "sha256": "5acdd773af49edc3bb76b9442e101fed2bd28b4df42f1ec127498552aace0b85"
+    },
+    {
+      "path": ".agents/skills/bopen-release-readiness/SKILL.md",
+      "bytes": 456,
+      "sha256": "28b41390dafdec678915f61696f0432893199f0c7cfda3ef27916fc4c6b8d1f8"
+    },
+    {
+      "path": ".agents/skills/bopen-requirement-to-work-item/SKILL.md",
+      "bytes": 484,
+      "sha256": "252d6b37d610ca198fe833dfa74ded251878bc55e10b16018aca2aa02adfb047"
+    },
+    {
+      "path": ".agents/skills/bopen-tenant-isolation-review/SKILL.md",
+      "bytes": 520,
+      "sha256": "9737ba997f0a71deb78eb002ed64fc5afad0608c916339c66b36da3e5bfad3ed"
+    },
+    {
+      "path": ".agents/skills/bopen-threat-model/SKILL.md",
+      "bytes": 419,
+      "sha256": "f1124a20d64db3b3b64c67485ff318e203e3b4be2ceef24ddbf1bae6051578ba"
+    },
+    {
+      "path": ".agents/workflows/conformance-review.md",
+      "bytes": 332,
+      "sha256": "693224ac38113ed908be9854b354ecd8597f2764637f01e71278d35d0ed62480"
+    },
+    {
+      "path": ".agents/workflows/module-cycle.md",
+      "bytes": 388,
+      "sha256": "70178479f2300e81847160477aed3faf83c5ba05308e25e84121f8503d7b4377"
+    },
+    {
+      "path": ".agents/workflows/start-governed-work.md",
+      "bytes": 412,
+      "sha256": "6196b0bd59b75ac55b4461db4f824517dd658205f567a7c01660cac70adc5334"
+    },
+    {
+      "path": ".claude/agents/evidence-auditor.md",
+      "bytes": 272,
+      "sha256": "727695be6ac0e93f07c56db0bb98621b51c6d317ba568a226411c41c40173532"
+    },
+    {
+      "path": ".claude/agents/platform-architect.md",
+      "bytes": 316,
+      "sha256": "f00ef2d7b2f43b01aa82396b9130d5441fdf965a2be546f1ff70294ba6d17c99"
+    },
+    {
+      "path": ".claude/agents/requirements-analyst.md",
+      "bytes": 289,
+      "sha256": "1979ef20e45da7867953419990b5db345a441cc8271fa816b5742ff3549113a7"
+    },
+    {
+      "path": ".claude/agents/tenant-isolation-verifier.md",
+      "bytes": 312,
+      "sha256": "c4242f53be37d297c0c141ec4499bf2bcc46b4d9c762e6dead3ee7341a004225"
+    },
+    {
+      "path": ".claude/rules/module-boundaries.md",
+      "bytes": 230,
+      "sha256": "a4beda183f8e1364fcfee9f75ddddb502d4137715671856c5336a7a521fe1e1e"
+    },
+    {
+      "path": ".claude/rules/security.md",
+      "bytes": 307,
+      "sha256": "f6531f64379ac91b692e3e7dfbca242ba590e2e30a4f5fad546372f0129406a8"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "bytes": 462,
+      "sha256": "7930efb3e11d83fd39d839b8489148ba549a1689d3616e5c0bc6875b60549895"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 7475,
+      "sha256": "f6c6728769a6ea7e334c2a3a54455fac3feec73a1961eb968c7a7b83a137bc83"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 1037,
+      "sha256": "d43a53e3e527ba4fbe46c6849de86d3537d6d6a0acaba610fdead89d0de6d63b"
+    },
+    {
+      "path": "DESIGN.md",
+      "bytes": 655,
+      "sha256": "5d078fb397435ec305eb9b60093ad56a448e92fd0b90f5ea466153b004188c4c"
+    },
+    {
+      "path": "GOALS.md",
+      "bytes": 2732,
+      "sha256": "9f77f01eab78c3aa7bf8b62120ae9b531a2987de4b0d7a8b4e8f94f82c14e306"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "bytes": 560,
+      "sha256": "306991a70e5655cfc3c5566682bd83e05c2e7c59c888b5d9b8e61dccf0a78f67"
+    },
+    {
+      "path": "LOOP.md",
+      "bytes": 1979,
+      "sha256": "4cd9d6605af0723e0c69e79c7066770fb792fee1f735ef7191d89824245c68f8"
+    },
+    {
+      "path": "MODULES.md",
+      "bytes": 1631,
+      "sha256": "d67a42d1668b37a2f3e0b8d296b4ae0fdb16896595c17f0313e08c46f839c853"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2932,
+      "sha256": "daaf10484f34de5ca1e160b09ed8152cc6d7c27d6cebc449721f7703c4505db0"
+    },
+    {
+      "path": "REFERENCES.md",
+      "bytes": 799,
+      "sha256": "a5652d1cd1fe49d5228c6b2f767822bc46af265e71ae65b155c7aa95c7162585"
+    },
+    {
+      "path": "SCHEDULE.md",
+      "bytes": 2266,
+      "sha256": "92d71e81319afe9cc0f4049e1ba650acc7fc11b3686ef7ee53ffe7b1fa367f15"
+    },
+    {
+      "path": "SKILLS.md",
+      "bytes": 1870,
+      "sha256": "556a304aca56ade507fed52e39caae4d8bcaed450b4f2fe9a1781d1b2810efec"
+    },
+    {
+      "path": "TECHNOLOGY.md",
+      "bytes": 757,
+      "sha256": "224a5728b5eb36ac4b06690a5aa54902dba5a7dba5bddc5b006afd24fbcad2d2"
+    },
+    {
+      "path": "agents.md",
+      "bytes": 954,
+      "sha256": "57ac49c5d38b139cce188ca15235472a9a5178ec2cc97b6ed2524b4a6fc1a691"
+    },
+    {
+      "path": "docs/00-governance/AUTHORITY-MATRIX.md",
+      "bytes": 1142,
+      "sha256": "4606895b3b61625406b703b611f12f79ba1f3d71c1d871da09074b782e9f8089"
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-001_v0.1.md",
+      "bytes": 6104,
+      "sha256": "51ec694cf0a1cf34fa8e9e0dde4dd2877a45ae2e42db34f62b1d26602a855391"
+    },
+    {
+      "path": "docs/00-governance/DECISION-PROTOCOL.md",
+      "bytes": 408,
+      "sha256": "4eac79abe2d719a9cc020eb387bad977a127576e4604c05f117449bb44b0a31a"
+    },
+    {
+      "path": "docs/01-program/BOPEN-GOAL-001_v0.1.md",
+      "bytes": 2732,
+      "sha256": "9f77f01eab78c3aa7bf8b62120ae9b531a2987de4b0d7a8b4e8f94f82c14e306"
+    },
+    {
+      "path": "docs/01-program/BOPEN-SCHEDULE-001_v0.1.md",
+      "bytes": 2266,
+      "sha256": "92d71e81319afe9cc0f4049e1ba650acc7fc11b3686ef7ee53ffe7b1fa367f15"
+    },
+    {
+      "path": "docs/01-program/ROADMAP.md",
+      "bytes": 994,
+      "sha256": "325ff0fdb72682ba39e91133206704793bbc813a9433b4f95d2cb044d15690af"
+    },
+    {
+      "path": "docs/02-agents/BOPEN-AGENT-001_v0.1.md",
+      "bytes": 2505,
+      "sha256": "095ab1a2c86e779cc2206a6ce3cef0128d696070ecadf6e95537f26a361ac78d"
+    },
+    {
+      "path": "docs/02-agents/HANDOFF-CONTRACT.md",
+      "bytes": 452,
+      "sha256": "e59129f3d82f708a6d06eeb261dc7a4e7f16d715f13041b02373dc684d9099cb"
+    },
+    {
+      "path": "docs/02-agents/HARNESS-MATRIX.md",
+      "bytes": 1599,
+      "sha256": "8ef1ef11626fa78f223cb6db6ba4496e512b29508caa99d513a24ce69ca84e85"
+    },
+    {
+      "path": "docs/02-agents/ROLE-CATALOG.md",
+      "bytes": 1294,
+      "sha256": "eed2a0a15bedf5fdbef59e797f53cf5f7338732b0d01d4181b0342772a20c23a"
+    },
+    {
+      "path": "docs/02-agents/WORKTREE-POLICY.md",
+      "bytes": 486,
+      "sha256": "0d9ea8bf32af4794b0a47c1d467e6c9af6cc984b310849b17cb67d3606d7d7bb"
+    },
+    {
+      "path": "docs/03-loop/BOPEN-LOOP-001_v0.1.md",
+      "bytes": 1979,
+      "sha256": "4cd9d6605af0723e0c69e79c7066770fb792fee1f735ef7191d89824245c68f8"
+    },
+    {
+      "path": "docs/03-loop/PROFESSIONAL-JUDGMENT-PROTOCOL.md",
+      "bytes": 374,
+      "sha256": "a62d75680fe277700c1790cb4f7db1efd1a890664f75cd97dd3377d9d1e68854"
+    },
+    {
+      "path": "docs/04-skills/BOPEN-SKILL-001_v0.1.md",
+      "bytes": 1870,
+      "sha256": "556a304aca56ade507fed52e39caae4d8bcaed450b4f2fe9a1781d1b2810efec"
+    },
+    {
+      "path": "docs/05-modules/MODULE-ALLOCATION.md",
+      "bytes": 1631,
+      "sha256": "d67a42d1668b37a2f3e0b8d296b4ae0fdb16896595c17f0313e08c46f839c853"
+    },
+    {
+      "path": "docs/05-modules/MODULE-CONTRACT.md",
+      "bytes": 330,
+      "sha256": "7bb04e03a301b06b5a7c202204f204e18673d71799c17640ac792ac6b32e9faf"
+    },
+    {
+      "path": "docs/05-modules/MODULE-REGISTRY.md",
+      "bytes": 815,
+      "sha256": "765af5fc49d0c07a5994e483344950b1e92a1a79d346ab52e08acf549be9e977"
+    },
+    {
+      "path": "docs/06-evidence/EVIDENCE-ENVELOPE.md",
+      "bytes": 830,
+      "sha256": "21f464a5628cc420305752b6732b012dafc89e953e3b930effd8387ab9b3e35e"
+    },
+    {
+      "path": "docs/06-evidence/VERIFICATION-MATRIX.md",
+      "bytes": 697,
+      "sha256": "481d206cb20c2b7ee43988251c5b73f6d735205d4f2e1542698bae0f582cbc30"
+    },
+    {
+      "path": "docs/07-technology/BOPEN-TECH-001_v0.1.md",
+      "bytes": 1102,
+      "sha256": "0a6ff5ee6df02a830f890876b0982ec3c19075e1b6322c68e416ccaeaae45199"
+    },
+    {
+      "path": "docs/08-design/BOPEN-DESIGN-001_v0.1.md",
+      "bytes": 1219,
+      "sha256": "9b128cb755e2f52d9a232d7dbb493173594018c40aa1a049a60f8cb7cb7c3e00"
+    },
+    {
+      "path": "docs/09-operations/OPERATING-CADENCE.md",
+      "bytes": 544,
+      "sha256": "5a42bf43b8ffd147e33401c28ac753aa6799d3dbb7352d18911e7e34ba2f8717"
+    },
+    {
+      "path": "docs/09-operations/SESSION-RUNBOOK.md",
+      "bytes": 690,
+      "sha256": "fc5f131ebb6e15ccd68caad7df91468f5b9cb6c846b2d5c33f3db678d7ebd2a4"
+    },
+    {
+      "path": "docs/registers/agent-registry.json",
+      "bytes": 802,
+      "sha256": "3a0a6b8dd88987705903a272ba0bb3c938ce5680f89586f092be1fbde9623532"
+    },
+    {
+      "path": "docs/registers/goal-register.json",
+      "bytes": 1126,
+      "sha256": "67200adaeebe280ebadbdaffd9ce6e4db6e803ba016e245978e982b4d503f2fa"
+    },
+    {
+      "path": "docs/registers/module-assignment.json",
+      "bytes": 1139,
+      "sha256": "41671b81b0810a454d09f3754822e884cb2a528e85aebbe18a6a9f2356ecea73"
+    },
+    {
+      "path": "docs/registers/schedule-register.json",
+      "bytes": 1099,
+      "sha256": "35f88e8d4e445ffe75caef8f5a4be22c9fee39f01ea272049658ae3c70a3eb7a"
+    },
+    {
+      "path": "docs/registers/skill-registry.json",
+      "bytes": 1409,
+      "sha256": "ccd138fd40a1a6b7ea13445c54f1ae64732337ca39b8c12266cc670732cdfc2d"
+    },
+    {
+      "path": "templates/ADR.md",
+      "bytes": 293,
+      "sha256": "f9327b8bde2c9f2102bce5169013fbf6deaa74eef46a48e40b35cbcd05214a31"
+    },
+    {
+      "path": "templates/WORK-ITEM.md",
+      "bytes": 443,
+      "sha256": "7ebdd3ad344980efd57b4da8d5c127774b4fa22066ec152f4c05abae83b814dd"
+    },
+    {
+      "path": "templates/module.yaml",
+      "bytes": 537,
+      "sha256": "16f67553b879a9fa506a7898c497f73122d0df1156a2d982b195e089a467e7d3"
+    }
+  ]
+}

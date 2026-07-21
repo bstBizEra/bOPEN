@@ -1,0 +1,55 @@
+{
+  "artifact": "BOPEN-SCHEDULE-REGISTER-001",
+  "timezone": "Asia/Bangkok",
+  "start": "2026-07-20",
+  "stages": [
+    {
+      "id": "G0",
+      "start": "2026-07-20",
+      "end": "2026-08-02",
+      "gate": "Governance bootstrap"
+    },
+    {
+      "id": "P0",
+      "start": "2026-08-03",
+      "end": "2026-08-30",
+      "gate": "Platform skeleton"
+    },
+    {
+      "id": "P1",
+      "start": "2026-08-31",
+      "end": "2026-10-11",
+      "gate": "Core multi-tenant kernel"
+    },
+    {
+      "id": "P2",
+      "start": "2026-10-12",
+      "end": "2026-11-22",
+      "gate": "Module platform"
+    },
+    {
+      "id": "P3",
+      "start": "2026-11-23",
+      "end": "2027-01-03",
+      "gate": "Business foundation"
+    },
+    {
+      "id": "P4",
+      "start": "2027-01-04",
+      "end": "2027-02-14",
+      "gate": "bPro reference"
+    },
+    {
+      "id": "C0",
+      "start": "2027-02-15",
+      "end": "2027-02-28",
+      "gate": "Independent conformance"
+    },
+    {
+      "id": "R0",
+      "start": "2027-03-01",
+      "end": "2027-03-07",
+      "gate": "Pilot decision"
+    }
+  ]
+}

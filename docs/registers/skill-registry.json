@@ -1,0 +1,67 @@
+{
+  "artifact": "BOPEN-SKILL-REGISTRY-001",
+  "version": "0.1",
+  "status": "PROPOSED",
+  "skills": [
+    {
+      "id": "bopen-governance-check",
+      "owner": "Governance",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-requirement-to-work-item",
+      "owner": "Product/Architecture",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-module-contract",
+      "owner": "Architecture",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-tenant-isolation-review",
+      "owner": "Security",
+      "risk": "high",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-evidence-envelope",
+      "owner": "Conformance",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-release-readiness",
+      "owner": "Release",
+      "risk": "high",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-portal-verification",
+      "owner": "Design/Test",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-doc-sync",
+      "owner": "Documentation",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-threat-model",
+      "owner": "Security",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-ci-repair",
+      "owner": "Delivery",
+      "risk": "medium",
+      "state": "candidate"
+    }
+  ]
+}
