@@ -31,3 +31,8 @@
 | REQ-GOV-003 Attributable human approval envelopes | BOPEN-GOV-001 Draft | pg-g0-authority-docket schema/validator | GOV-P0-02 Proposed | EVD-GOV-002 | Draft; all human decisions pending |
 | REQ-GOV-004 Exact instruction-path authority | DEC-0012 Proposed | PG-G0 authority docket blockers | GOV-P0-02 Proposed | EVD-GOV-002 | UNRESOLVED; no equivalence inferred |
 | GOAL-PG-G0 Human authority routing | BOPEN-GOAL-001/BOPEN-GOV-001 Drafts | PG-G0-AUTH-001/PG-G0-GATE-001 Drafts | GOV-P0-02 Proposed | EVD-GOV-002 | NOT_READY; no gate action in effective matrix |
+| REQ-GOV-005 Machine-readable authority boundaries | BOPEN-GOV-001 Draft | GOV-P0-03 authority schemas/validator | GOV-P0-03 Draft | EVD-GOV-003 | Draft; no authority effective |
+| REQ-QUAL-001 Common qualification evidence envelope | BOPEN-GOV-001 Draft | QUAL-P0-00 catalogs/schemas/validator | QUAL-P0-00 Draft | EVD-QUAL-001 | Draft; qualification not executed |
+| REQ-QUAL-002 Technology qualification isolation | BOPEN-ARCH-001/BOPEN-SEC-001 Drafts | TECH-P0-01 catalogs/schemas/validator | TECH-P0-01 Draft | EVD-TECH-001 | Draft; technology unselected |
+| REQ-QUAL-003 Identity qualification isolation | BOPEN-AUTHZ-001/BOPEN-SEC-001 Drafts | QUAL-P0-02 catalogs/schemas/validator | QUAL-P0-02 Draft | EVD-QUAL-002 | Draft; provider unselected and downstream effects NONE |
+| REQ-INTEG-001 Exact review-candidate composition | DEC-0012 Proposed | immutable manifest index/aggregate validator | QUAL-INTEG-001 Draft | EVD-QUAL-INTEG-001 | Draft non-merge candidate; independent review pending |

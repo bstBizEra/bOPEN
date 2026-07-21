@@ -19,3 +19,5 @@
 | Required root instruction surfaces | Replacement AGENTS requirements | DEC-0012 Proposed | Missing/unresolved | Product/Architecture/Engineering decision |
 
 GOV-P0-02 uses a versioned manifest snapshot because literal append-only handling of the canonical generated manifest is unresolved by DEC-0012.
+
+Append-only supersession note (2026-07-22): QUAL-INTEG-001 does not rewrite the canonical or any historical snapshot. It records immutable source Git-object bindings in `docs/manifests/MANIFEST-INDEX.jsonl` and creates a separately named current aggregate snapshot for independent review. DEC-0012 remains proposed and ineffective.

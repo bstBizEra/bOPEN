@@ -137,3 +137,10 @@
 - Bound identity and delegation evidence existence to the referenced commit.
 - Added negative tests for omitted scopes, malformed scope types, revoked identities, malformed validity and missing historical evidence.
 - Preserved all authority and implementation outcomes as false pending external human authority.
+
+## Append-only entry â€” 2026-07-22 â€” QUAL-INTEG-001 review candidate
+
+- Composed exact GOV-P0-03, QUAL-P0-00, TECH-P0-01 and QUAL-P0-02 proposal chains and reconstructed RES-P0-05 in an isolated review branch.
+- Preserved canonical and historical manifests as immutable Git-object-bound bytes and introduced a separately named aggregate snapshot and append-only index.
+- Reconciled shared validation, workflow and documentation surfaces by semantic union while retaining every fail-closed non-authority control.
+- Kept technology/provider selection, qualification execution, gate passage, merge, release, runtime and production implementation unauthorized.

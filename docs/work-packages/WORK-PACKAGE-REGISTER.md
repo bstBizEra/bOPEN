@@ -18,3 +18,8 @@
 | GOV-P0-01 | Program Goal v0.2 controlled baseline and G0 measurement contract | Proposed; draft work only | Create a complete, fail-closed review candidate without passing PG-G0 or authorizing runtime implementation. |
 | BOOT-P0-12 | Bootstrap exit gate | Authority review pending | Review B0–B7 and approve next execution phase. |
 | GOV-P0-02 | PG-G0 authority docket and approval envelope | Proposed; not accepted | Route only live mapped human decisions, expose missing authority actions and keep PG-G0 NOT_READY. |
+| GOV-P0-03 | Machine-readable authority records and fail-closed governance checks | Draft; not accepted | Define attributable authority evidence without making any authority effective. |
+| QUAL-P0-00 | Common qualification evidence contracts | Draft; not accepted | Define shared synthetic-only, raw-byte and non-authority qualification controls. |
+| TECH-P0-01 | Technology qualification contract pack | Draft; not accepted | Define isolated technology scorecards and evidence; no technology selected. |
+| QUAL-P0-02 | Identity qualification contract pack | Draft; not accepted | Define synthetic identity observations with no provider or downstream runtime effect. |
+| QUAL-INTEG-001 | Non-merge aggregate review candidate | Draft; independent review pending | Compose exact accepted proposal chains with immutable snapshots and no gate effect. |

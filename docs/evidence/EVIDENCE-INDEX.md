@@ -24,3 +24,9 @@
 ## Append-only EVD-GOV-001 status supersession — 2026-07-21
 
 Reason: the original index row preserves its pre-review checker-pending state. Benefit of the old phase: it accurately recorded the first indexed state. Expected outcome: this appended note records that exact-SHA technical checks exist through GOV-P0-01 head `c893062c197e74c15214e5ce1c425b9e9ed8002f`, while Human Engineering, Product and Architecture dispositions and PG-G0 remain pending. The historical row is not rewritten.
+
+| EVD-GOV-003 | GOV-P0-03 | Draft root control-surface and fail-closed validator | `docs/evidence/EVD-GOV-003-root-control-surfaces.md` | Draft maker evidence; independent review pending |
+| EVD-QUAL-001 | QUAL-P0-00 | Common qualification evidence contracts | `docs/evidence/EVD-QUAL-001-qualification-common.md` | Draft maker evidence; qualification not executed |
+| EVD-TECH-001 | TECH-P0-01 | Technology qualification contract pack | `docs/evidence/EVD-TECH-001-technology-qualification.md` | Draft maker evidence; technology unselected |
+| EVD-QUAL-002 | QUAL-P0-02 | Synthetic identity qualification contract pack | `docs/evidence/EVD-QUAL-002-identity-qualification.md` | Draft maker evidence; provider unselected |
+| EVD-QUAL-INTEG-001 | QUAL-INTEG-001 | Exact composition, conflict ledger and aggregate validation | `docs/evidence/EVD-QUAL-INTEG-001-review-candidate.md` | Draft maker evidence; independent exact-SHA review pending |

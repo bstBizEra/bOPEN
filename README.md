@@ -66,3 +66,7 @@ No open-source license is granted by this bootstrap pack. See [`LICENSE`](LICENS
 ## PG-G0 authority-docket proposal
 
 [`GOV-P0-02`](docs/work-packages/GOV-P0-02.md) and [`PG-G0-AUTH-001`](docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md) are proposal-only controls. They expose pending human decisions and missing authority actions; they do not accept a work package, pass PG-G0, authorize merge/runtime/release, or open production implementation.
+
+## QUAL-INTEG-001 review candidate
+
+[`QUAL-INTEG-001`](docs/work-packages/QUAL-INTEG-001.md) composes the accepted proposal chains and reconstructed RES-P0-05 design into an isolated, non-merge review candidate. Its aggregate manifest, immutable manifest index, validators and maker evidence support independent exact-SHA review only. Technology and identity remain unselected, all gates remain closed, and merge, release, runtime and production implementation remain unauthorized.

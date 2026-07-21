@@ -28,10 +28,22 @@ jobs:
         run: python tools/report_program_g0.py --check
       - name: Verify draft PG-G0 authority docket and report
         run: python tools/validate_pg_g0_authority_docket.py --check
-      - name: Verify GOV-P0-02 versioned document manifest
-        run: python tools/generate_document_manifest.py --output docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json --check
+      - name: Validate draft root control surfaces
+        run: python tools/validate_root_control_surfaces.py --check
+      - name: Validate common qualification contracts
+        run: python tools/validate_qualification_common.py --check --check-manifest
+      - name: Validate technology qualification contracts
+        run: python tools/validate_technology_qualification.py --check --check-manifest
+      - name: Validate identity qualification contracts
+        run: python tools/validate_identity_qualification.py --check
       - name: Validate G3 research design
         run: python tools/validate_research_g3_design.py
+      - name: Verify immutable and aggregate manifest index
+        run: python tools/generate_document_manifest.py --check-index
+      - name: Validate QUAL-INTEG-001 composition
+        run: python tools/validate_qual_integ_001.py
+      - name: Verify deterministic QUAL-INTEG-001 readiness report
+        run: python tools/report_qual_integ_001.py --check
       - name: Validate clean-room boundary
         run: python tools/check_clean_room.py
       - name: Scan repository for secrets

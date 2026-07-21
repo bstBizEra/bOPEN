@@ -14,3 +14,5 @@
 | DEC-0010 | Adopt Program Goal v0.2 and namespaced lifecycle model | Proposed | Product/Architecture Authorities |
 | DEC-0011 | Authorize a bounded isolated G3 synthetic runtime study | Proposed; not effective | bOPEN Architecture Authority |
 | DEC-0012 | Reconcile required instruction paths and generated manifests | Proposed | Product/Architecture/Engineering Authorities |
+
+Append-only implementation note (2026-07-22): QUAL-INTEG-001 applies DEC-0012 option 1 only as a draft, non-effective review-candidate convention: historical manifests are immutable and a new namespaced aggregate is generated. This does not approve DEC-0012 or authorize merge, release, runtime or production implementation.

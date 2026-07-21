@@ -19,6 +19,11 @@
 | PG-G0-AUTH-001 | Draft authority docket; all decision requests pending | No | Human Engineering acceptance of GOV-P0-02, then attributable authority routing |
 | PG-G0-GATE-001 | Draft gate-decision contract; ineffective | No | Approved successor authority matrix must name governance/register/gate actions |
 | DEC-0012 | Proposed instruction-surface and manifest decision | No | Product/Architecture/Engineering disposition with applicable Security/Data concurrence |
+| GOV-P0-03 | Draft machine-readable governance authority schema | No | Independent exact-SHA technical review; no human authority inferred |
+| QUAL-P0-00 | Draft common qualification contracts | No | Independent exact-SHA technical review; no qualification executed |
+| TECH-P0-01 | Draft technology qualification contracts | No | Independent exact-SHA technical review; no technology selected |
+| QUAL-P0-02 | Draft synthetic identity qualification contracts | No | Independent exact-SHA technical review; no provider selected or runtime authorized |
+| QUAL-INTEG-001 | Draft non-merge aggregate review candidate | No | Independent exact-SHA aggregate review; merge and every gate remain unauthorized |
 
 ## Instruction-surface reconciliation note — 2026-07-21
 

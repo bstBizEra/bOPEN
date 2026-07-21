@@ -17,3 +17,5 @@
 | PG-G0-AUTH-001 | PG-G0 Authority Docket | Draft control contract | Draft; all decisions ineffective | Engineering Authority |
 | PG-G0-GATE-001 | PG-G0 Gate Decision Contract | Draft control contract | Draft; no gate authority | Product/Engineering Authorities |
 | DEC-0012 | Required instruction paths and generated manifests | Decision request | Proposed | Product/Architecture/Engineering Authorities |
+| QUAL-INTEG-001-INTEGRATION | Exact source-to-replay composition binding | Draft control manifest | Draft; inactive; non-merge | Engineering Authority |
+| QUAL-INTEG-001-AGGREGATE | Current review-candidate raw-byte inventory | Draft evidence manifest | Draft; inactive; independent review pending | Engineering Authority |

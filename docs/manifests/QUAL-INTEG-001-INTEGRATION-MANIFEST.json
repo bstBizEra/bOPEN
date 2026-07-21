@@ -1,0 +1,75 @@
+{
+  "manifest_id": "QUAL-INTEG-001-INTEGRATION",
+  "version": "0.1",
+  "status": "draft",
+  "lifecycle": "inactive",
+  "generated": "2026-07-22",
+  "base_commit": "82ed6b38b118aab14a9961c5d75a33e515cb136a",
+  "base_tree": "cad6b595fb74a70cc706a78d45778e15524aebd9",
+  "composition_head": "43f0b8b84c5bcd3ad8f6a713a44aadd722bb9c78",
+  "authority": {
+    "technology_approved": false,
+    "qualification_executed": false,
+    "gate_passed": false,
+    "merge_authorized": false,
+    "release_authorized": false,
+    "production_implementation_authorized": false
+  },
+  "source_chains": [
+    {
+      "package": "GOV-P0-03",
+      "lineage": "PR8 child",
+      "mappings": [
+        {"source": "651951f229f6f72c4ebab35a2458ebd9a4216583", "replay": "17d2185ec79d244196b77afd381aec38478b4ec1", "source_patch_id": "58416279fb9243486694da9db88e8755d88920d2", "replay_patch_id": "58416279fb9243486694da9db88e8755d88920d2", "scope": "full"},
+        {"source": "a29ec1d8ab28d38621dc4db176b7b2abf2ea44cb", "replay": "c09b7ebd966c295a035adc0bc60712e7c16f5414", "source_patch_id": "c2c18901769f591379693ddc4680e6909ef0949f", "replay_patch_id": "c2c18901769f591379693ddc4680e6909ef0949f", "scope": "full"}
+      ]
+    },
+    {
+      "package": "QUAL-P0-00",
+      "lineage": "PR8 child and common qualification parent",
+      "mappings": [
+        {"source": "2e3faf6c6b310f60b5aa763fe3f29886307f3c41", "replay": "54c607d691450f8ca36e7b9ba7db845b5b68bf71", "source_patch_id": "f1b52b11c950ad542da54732fbb1fc34e2a35855", "replay_patch_id": "f1b52b11c950ad542da54732fbb1fc34e2a35855", "scope": "full"},
+        {"source": "a2fc4b1f907b17911ffbd3cb8e0992b806c90bb6", "replay": "fc7d89638c20852a9f28681d40e07439704d98e0", "source_patch_id": "f25810dcfc9b9fe6fd5ab8c1fb02926c26f2dbab", "replay_patch_id": "f25810dcfc9b9fe6fd5ab8c1fb02926c26f2dbab", "scope": "full"}
+      ]
+    },
+    {
+      "package": "TECH-P0-01",
+      "lineage": "sibling child of source QUAL-P0-00 a2fc4b1",
+      "mappings": [
+        {"source": "1673684b977b2a74a87ee1ffbe044c407e4cbd0e", "replay": "cb1cf091af27d507c831253a79d7d64c7929cb51", "source_patch_id": "dcc303987c18ae3d32f51bc3939dac62a5038edf", "replay_patch_id": "dcc303987c18ae3d32f51bc3939dac62a5038edf", "scope": "full"},
+        {"source": "7b11f9da913a65041dd4a8ac245d39ca10f27b02", "replay": "005acd571af0551e89aaa55f4f26702f0c686518", "source_patch_id": "1939f68c26361b2782cc3c16454ea09abce0145c", "replay_patch_id": "1939f68c26361b2782cc3c16454ea09abce0145c", "scope": "full"}
+      ]
+    },
+    {
+      "package": "QUAL-P0-02",
+      "lineage": "sibling child of source QUAL-P0-00 a2fc4b1; replayed after TECH without changing source dependency",
+      "mappings": [
+        {"source": "e4b421f79e8f02f60985d995b2221be921b508de", "replay": "0e2da4eb4f61b18b0a51fb5ed3836f6d765e938c", "source_patch_id": "02e1d724b3fe4977d79013e4e561fa839cf8c1f9", "replay_patch_id": "02e1d724b3fe4977d79013e4e561fa839cf8c1f9", "scope": "full"},
+        {"source": "74daac85d1ce4c08371c7bae787bc2de91c00bf9", "replay": "cd14f6e83c6383a8d743d980c114ae6a09a3f8b8", "source_patch_id": "6d494c9de73ddf61bfb6fafad7fc400fd10ee39f", "replay_patch_id": "6d494c9de73ddf61bfb6fafad7fc400fd10ee39f", "scope": "full"}
+      ]
+    },
+    {
+      "package": "RES-P0-05",
+      "lineage": "PR7 chain reconstructed after accepted package composition",
+      "mappings": [
+        {"source": "8bc3e2ac8d24aa8b1a02aec6c4cce576665b1ed9", "replay": "b8915bac71f85ecc1d352f79e7c0a3f741b47f48", "source_patch_id": "8ad45d94e466203166677be2ddf7d5bb35a6a5c5", "replay_patch_id": "8ad45d94e466203166677be2ddf7d5bb35a6a5c5", "scope": "exclude_ten_shared_paths"},
+        {"source": "952e9b382ce30952602d68b2316b450d0bfbebeb", "replay": "c85985489d82e45850ca7b6e2c99c6bed9676513", "source_patch_id": "5aeedea81175313dcc0d1f69bbdcb9afef910f39", "replay_patch_id": "5aeedea81175313dcc0d1f69bbdcb9afef910f39", "scope": "exclude_historical_canonical_manifest"},
+        {"source": "f501cdca59f370a87d083a7a8c5868025bc7a798", "replay": "ac071ce224572e1b01314f1adbfc1b3a2b8fd48d", "source_patch_id": "d87fec54a42d8482c7beaf8ac20ff67b736fea62", "replay_patch_id": "d87fec54a42d8482c7beaf8ac20ff67b736fea62", "scope": "exclude_historical_canonical_manifest"},
+        {"source": "4b1cb217f183c0b983a935f45317cabe82bb6fac", "replay": "43f0b8b84c5bcd3ad8f6a713a44aadd722bb9c78", "source_patch_id": "fa62cf31c7d4f10555a529cca39c7dc185869c29", "replay_patch_id": "fa62cf31c7d4f10555a529cca39c7dc185869c29", "scope": "exclude_historical_canonical_manifest"}
+      ]
+    }
+  ],
+  "shared_paths": [
+    ".gitea/workflows/governance.yml",
+    ".github/workflows/bootstrap-governance.yml",
+    ".gitignore",
+    "docs/CHANGELOG.md",
+    "docs/DOCUMENT-MANIFEST.json",
+    "docs/DOCUMENT-STATUS.md",
+    "docs/TRACEABILITY-MATRIX.md",
+    "docs/decisions/DECISION-REGISTER.md",
+    "docs/evidence/EVIDENCE-INDEX.md",
+    "package.json"
+  ],
+  "pre_integration_test_floor": {"contracts": 41, "governance": 136, "qualification": 45, "full": 222}
+}
