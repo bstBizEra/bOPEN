@@ -1,0 +1,25 @@
+{
+  "$schema": "bopen://schemas/qualification/common/offline-catalog/0.1.0-draft",
+  "catalog_id": "QUAL-P0-02-SCHEMA-CATALOG",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "work_package_id": "QUAL-P0-02",
+  "updated_at": "2026-07-22T00:00:00+07:00",
+  "imports": [
+    {
+      "catalog_id": "QUAL-P0-00-SCHEMA-CATALOG",
+      "path": "contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json",
+      "sha256": "803500ff8dd12e17531872482875dcf67fa8f617de45c11318a55ba8ed8b8450"
+    }
+  ],
+  "entries": [
+    {"schema_id": "bopen://schemas/qualification/identity/account-link-state-projection/0.1.0-draft", "path": "contracts/qualification/identity/account-link-state.projection.schema.json", "sha256": "1963f2b51cdb391ebdad951a58bd8a5f3c0b09ab8fcf187d226d37f4ee76c7da"},
+    {"schema_id": "bopen://schemas/qualification/identity/assurance-evidence-observation/0.1.0-draft", "path": "contracts/qualification/identity/assurance-evidence.observation.schema.json", "sha256": "b7f93b116c5493de220946dd354da606a867fa15d7a41db22b553ed9eca3280a"},
+    {"schema_id": "bopen://schemas/qualification/identity/auth-assertion-observation/0.1.0-draft", "path": "contracts/qualification/identity/auth-assertion.observation.schema.json", "sha256": "c8afd569015c56dea85be62c190fae0f304e0d7de3ee9439ad97c21f3cadd7ad"},
+    {"schema_id": "bopen://schemas/qualification/identity/external-identity-binding-projection/0.1.0-draft", "path": "contracts/qualification/identity/external-identity-binding.projection.schema.json", "sha256": "040a9eeeb17ffb59ee7844e4e72d935d008fe746a38708f988966de8d46416ac"},
+    {"schema_id": "bopen://schemas/qualification/identity/migration-evidence-observation/0.1.0-draft", "path": "contracts/qualification/identity/migration-evidence.observation.schema.json", "sha256": "300dd9aa473d9a67724b955e9c01d3600a80051fd32ed94f17801af7a3dc4e99"},
+    {"schema_id": "bopen://schemas/qualification/identity/principal-session-projection/0.1.0-draft", "path": "contracts/qualification/identity/principal-session.projection.schema.json", "sha256": "b790529ea114eaac61e6162a904a1ff1b097d10d7951191c77959bbf6ce4d17f"},
+    {"schema_id": "bopen://schemas/qualification/identity/provider-connection-observation/0.1.0-draft", "path": "contracts/qualification/identity/provider-connection.observation.schema.json", "sha256": "5ec83e5e98ed0728a673b078b3806fff1046f0d62a716cad2418cffbf280c9f2"},
+    {"schema_id": "bopen://schemas/qualification/identity/test-case-result-observation/0.1.0-draft", "path": "contracts/qualification/identity/test-case-result.observation.schema.json", "sha256": "a653c79e218dd658c7a6655f1b2ce24134f318256202d81fd20b29d3d16691f7"}
+  ]
+}
