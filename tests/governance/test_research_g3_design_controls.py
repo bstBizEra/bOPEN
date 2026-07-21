@@ -125,6 +125,12 @@ class ResearchG3DesignControlsTests(unittest.TestCase):
             finally:
                 VALIDATOR.ARTIFACT_INVENTORY = original
 
+    def test_inventory_is_cross_platform_line_ending_stable(self) -> None:
+        inventory = VALIDATOR.build_research_inventory(self.contract)
+        design_record = next(item for item in inventory["files"] if item["path"] == "02-execution/g3-runtime-pack-design.md")
+        raw = (VALIDATOR.RESEARCH_ROOT / design_record["path"]).read_bytes().replace(b"\r\n", b"\n")
+        self.assertEqual(len(raw), design_record["bytes"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -317,6 +317,8 @@ def build_research_inventory(data: dict) -> dict:
         if not path.is_file() or path == ARTIFACT_INVENTORY:
             continue
         raw = path.read_bytes()
+        if path.suffix.lower() in {".md", ".json", ".yaml", ".yml", ".ps1", ".sh", ".txt"}:
+            raw = raw.replace(b"\r\n", b"\n")
         files.append({
             "path": path.relative_to(RESEARCH_ROOT).as_posix(),
             "sha256": hashlib.sha256(raw).hexdigest(),
