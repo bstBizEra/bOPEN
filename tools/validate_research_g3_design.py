@@ -313,7 +313,8 @@ def validate_report_integrity(data: dict) -> list[str]:
 
 def build_research_inventory(data: dict) -> dict:
     files = []
-    for path in sorted(RESEARCH_ROOT.rglob("*")):
+    paths = sorted(RESEARCH_ROOT.rglob("*"), key=lambda item: item.relative_to(RESEARCH_ROOT).as_posix().casefold())
+    for path in paths:
         if not path.is_file() or path == ARTIFACT_INVENTORY:
             continue
         raw = path.read_bytes()

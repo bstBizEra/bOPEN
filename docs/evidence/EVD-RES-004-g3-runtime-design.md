@@ -50,7 +50,7 @@ Maker validation on 2026-07-21 produced:
 | Full `tests/test_*.py` discovery | PASS; 96 tests |
 | Readiness report | `DESIGN_READY_FOR_AUTHORITY_REVIEW`; runtime/G3/production false |
 
-The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `e55fd524ee7a00419e49c5e6a1ff8bba8778315d4070b23e419cd003b8f866d4`. Exact-commit independent checker disposition remains required before publication or acceptance.
+The generated readiness report binds contract SHA-256 `489003f4ae0c6400fc3d8a98625ded20b00ff53b63b02871cf75d915139bca32`, schema SHA-256 `a73e256ca407503b06d4a657d2b938ba905818eca031ecb0d283820a7d100130`, and validator SHA-256 `1a37be7d2df0668deeb5984224e29b823fdef0f48ae447dc6e5413f1671413ae`. Exact-commit independent checker disposition remains required before publication or acceptance.
 
 ## Gate decision
 
@@ -66,7 +66,7 @@ The acceptance is design-only. DEC-0011 remains proposed and ineffective; E3/E4 
 
 ## CI portability repair - 2026-07-21
 
-Gitea Actions run 50/job 79 reproduced a stale-inventory failure on Linux because the original inventory hashed Windows working-tree line endings. The bounded repair normalizes controlled text files to LF before hashing, adds a cross-platform stability test, and retains exact content sensitivity. No test or security control was weakened.
+Gitea Actions runs 50-52 reproduced stale-inventory failures on Linux. The first bounded repair normalized controlled text files to LF; diagnostic output then proved every path and hash matched but record ordering differed by operating-system `Path` semantics. The final repair sorts case-folded POSIX paths, adds cross-platform ordering and line-ending assertions, and retains exact content sensitivity. No test or security control was weakened.
 
 ## Residual risks and required decisions
 
