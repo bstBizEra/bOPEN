@@ -97,7 +97,7 @@ def program_goal_ids(root: Path = ROOT) -> set[str]:
     return set(identifiers)
 
 
-def validate_case_result(data: Any) -> list[str]:
+def validate_case_result(data: Any, root: Path | None = None) -> list[str]:
     required = {
         "$schema", "case_id", "version", "status", "work_package_id",
         "qualification_run_id", "candidate_id", "category", "mandatory", "result",
@@ -127,13 +127,22 @@ def validate_case_result(data: Any) -> list[str]:
         errors.append(f"{category} requires command and artifact evidence")
     if not isinstance(data.get("limitation"), str) or not data["limitation"].strip():
         errors.append("case coverage limitation required")
+    for index, reference in enumerate(data.get("command_evidence_refs", [])):
+        if not normalized_path(reference):
+            errors.append(f"case command evidence ref {index} invalid")
+    for index, binding in enumerate(data.get("artifact_refs", [])):
+        if root is None:
+            if not isinstance(binding, dict):
+                errors.append(f"case artifact ref {index} malformed")
+        else:
+            errors.extend(validate_digest_binding(binding, root, f"case artifact ref {index}"))
     return sorted(set(errors))
 
 
-def validate_command_evidence(data: Any) -> list[str]:
+def validate_command_evidence(data: Any, root: Path | None = None) -> list[str]:
     required = {
         "$schema", "command_evidence_id", "version", "status", "work_package_id",
-        "qualification_run_id", "case_id", "argv", "working_directory", "started_at",
+        "qualification_run_id", "candidate_id", "case_id", "argv", "working_directory", "started_at",
         "completed_at", "exit_code", "stdout_artifact", "stderr_artifact",
         "environment_manifest", "secret_scan_passed", "synthetic_data_only",
         "deterministic_replay", "non_authority_flags",
@@ -152,6 +161,9 @@ def validate_command_evidence(data: Any) -> list[str]:
         if data.get(field) is not True:
             errors.append(f"command evidence {field} must be true")
     errors.extend(validate_false_flags(data.get("non_authority_flags"), "command evidence flags"))
+    if root is not None:
+        for field in ("stdout_artifact", "stderr_artifact", "environment_manifest"):
+            errors.extend(validate_digest_binding(data.get(field), root, f"command evidence {field}"))
     return sorted(set(errors))
 
 
@@ -195,7 +207,18 @@ def validate_inventory(data: Any, root: Path = ROOT) -> list[str]:
     return sorted(set(errors))
 
 
-def validate_scorecard(data: Any, cases: list[dict[str, Any]], root: Path = ROOT) -> list[str]:
+def _binding_key(binding: Any) -> str | None:
+    if not isinstance(binding, dict):
+        return None
+    return json.dumps(binding, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def validate_scorecard(
+    data: Any,
+    cases: list[dict[str, Any]],
+    root: Path = ROOT,
+    inventory: Any | None = None,
+) -> list[str]:
     required = {
         "$schema", "scorecard_id", "version", "status", "work_package_id",
         "qualification_run_id", "candidate_id", "candidate_name", "vendor_disposition",
@@ -222,12 +245,13 @@ def validate_scorecard(data: Any, cases: list[dict[str, Any]], root: Path = ROOT
     if not isinstance(goal, dict) or goal.get("path") != PROGRAM_GOAL.as_posix() or goal.get("sha256") != expected_goal_sha:
         errors.append("scorecard Program Goal binding drift")
 
+    expected_goal_ids = program_goal_ids(root)
     coverage = data.get("program_goal_coverage")
     if not isinstance(coverage, list):
         errors.append("scorecard Program Goal coverage missing")
     else:
         ids = [item.get("requirement_id") for item in coverage if isinstance(item, dict)]
-        expected = program_goal_ids(root)
+        expected = expected_goal_ids
         if len(ids) != len(coverage) or len(ids) != len(set(ids)):
             errors.append("Program Goal coverage IDs must be unique")
         if set(ids) != expected:
@@ -243,19 +267,72 @@ def validate_scorecard(data: Any, cases: list[dict[str, Any]], root: Path = ROOT
         errors.append("case IDs must be unique")
     if isinstance(coverage, list):
         for item in coverage:
-            for case_id in item.get("case_ids", []) if isinstance(item, dict) else []:
+            item_case_ids = item.get("case_ids", []) if isinstance(item, dict) else []
+            for case_id in item_case_ids:
                 if case_id not in case_by_id:
                     errors.append(f"Program Goal coverage references unknown case: {case_id}")
+            if isinstance(item, dict) and item.get("coverage_level") == "DIRECT":
+                requirement_id = item.get("requirement_id")
+                if not any(
+                    requirement_id in case_by_id.get(case_id, {}).get("requirement_ids", [])
+                    for case_id in item_case_ids
+                ):
+                    errors.append(f"DIRECT coverage lacks a relevant case: {requirement_id}")
     categories = {item.get("category") for item in cases if isinstance(item, dict)}
     missing_categories = REQUIRED_CASE_CATEGORIES - categories
     if missing_categories:
         errors.append("required qualification case categories missing: " + ", ".join(sorted(missing_categories)))
     for case in cases:
-        errors.extend(validate_case_result(case))
+        errors.extend(validate_case_result(case, root))
         if case.get("qualification_run_id") != data.get("qualification_run_id") or case.get("candidate_id") != data.get("candidate_id"):
             errors.append("case run/candidate binding mismatch")
-        if not set(case.get("requirement_ids", [])).issubset(program_goal_ids(root)):
+        if not set(case.get("requirement_ids", [])).issubset(expected_goal_ids):
             errors.append(f"case references unknown Program Goal item: {case.get('case_id')}")
+
+    inventory_records: dict[str, dict[str, Any]] = {}
+    if inventory is None:
+        errors.append("scorecard evidence inventory required")
+    else:
+        errors.extend(validate_inventory(inventory, root))
+        if isinstance(inventory, dict):
+            if inventory.get("qualification_run_id") != data.get("qualification_run_id"):
+                errors.append("inventory run binding mismatch")
+            for record in inventory.get("records", []):
+                if isinstance(record, dict) and isinstance(record.get("path"), str):
+                    inventory_records[record["path"]] = record
+
+    def reconcile(binding: Any, label: str) -> None:
+        if not isinstance(binding, dict) or not isinstance(binding.get("path"), str):
+            errors.append(f"{label} malformed or missing artifact binding")
+            return
+        inventory_binding = inventory_records.get(binding["path"])
+        if inventory_binding is None or _binding_key(inventory_binding) != _binding_key(binding):
+            errors.append(f"{label} not reconciled with inventory")
+
+    for case in cases:
+        case_id = case.get("case_id")
+        for index, binding in enumerate(case.get("artifact_refs", [])):
+            reconcile(binding, f"case {case_id} artifact {index}")
+        for command_ref in case.get("command_evidence_refs", []):
+            command_path = resolve_repo_path(root, command_ref)
+            if command_path is None or not command_path.is_file():
+                errors.append(f"case {case_id} command evidence missing or invalid: {command_ref}")
+                continue
+            try:
+                command = read_json(command_path)
+            except (OSError, json.JSONDecodeError) as exc:
+                errors.append(f"case {case_id} command evidence unreadable: {command_ref}: {exc}")
+                continue
+            errors.extend(validate_command_evidence(command, root))
+            if not isinstance(command, dict) or (
+                command.get("qualification_run_id") != data.get("qualification_run_id")
+                or command.get("candidate_id") != data.get("candidate_id")
+                or command.get("case_id") != case_id
+            ):
+                errors.append(f"case {case_id} command evidence binding mismatch: {command_ref}")
+            if isinstance(command, dict):
+                for field in ("stdout_artifact", "stderr_artifact", "environment_manifest"):
+                    reconcile(command.get(field), f"command {command_ref} {field}")
 
     mandatory = data.get("mandatory_criteria")
     weighted = data.get("weighted_criteria")

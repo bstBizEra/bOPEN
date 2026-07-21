@@ -61,3 +61,15 @@ Reason: record reproducible producer checks without converting them into indepen
 - aggregate `npm run validate`: `BLOCKED_UNTIL_QUAL_INTEG_001` at the stale historical `docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json`.
 
 The aggregate blocker is not a TECH-P0-01 schema or test failure, but it is also not waived or described as passing. Updating that shared snapshot is prohibited here. The final successor SHA/tree still requires an independent checker.
+
+## Append-only checker rework evidence — 2026-07-22
+
+**Reviewed maker commit:** `1673684b977b2a74a87ee1ffbe044c407e4cbd0e`
+**Reviewed maker tree:** `66af315b644208d24dda8e3f1ea51c1fbdb3fce7`
+**Disposition:** `REQUEST_CHANGES`
+
+The successor resolves every command evidence reference as a normalized existing repository-bounded path, validates the referenced command document, and requires exact qualification-run, candidate and case bindings. Case and command artifact digest bindings are validated against raw files and must exactly match a supplied validated inventory record. DIRECT Program Goal coverage must cite a case whose `requirement_ids` contains that exact requirement.
+
+Adversarial coverage now includes traversal, missing command documents, malformed or missing artifact bindings, run/candidate/case mismatch, inventory mismatch and irrelevant DIRECT cases. The focused successor suite passes 13/13. The unchanged repository baseline plus the expanded suite totals 172 tests; direct repository, contract, program-control, report, clean-room, secret, supply-chain, compilation and diff checks pass.
+
+Aggregate `npm run validate` remains `BLOCKED_UNTIL_QUAL_INTEG_001` at the historical shared manifest. These maker results do not establish independent acceptance or any technology, gate, merge, release or runtime authority.
