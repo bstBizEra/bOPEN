@@ -4,7 +4,7 @@
   "status": "draft",
   "title": "bOPEN Technology Qualification Command Evidence",
   "type": "object",
-  "required": ["$schema", "command_evidence_id", "version", "status", "work_package_id", "qualification_run_id", "case_id", "argv", "working_directory", "started_at", "completed_at", "exit_code", "stdout_artifact", "stderr_artifact", "environment_manifest", "secret_scan_passed", "synthetic_data_only", "deterministic_replay", "non_authority_flags"],
+  "required": ["$schema", "command_evidence_id", "version", "status", "work_package_id", "qualification_run_id", "candidate_id", "case_id", "argv", "working_directory", "started_at", "completed_at", "exit_code", "stdout_artifact", "stderr_artifact", "environment_manifest", "secret_scan_passed", "synthetic_data_only", "deterministic_replay", "non_authority_flags"],
   "properties": {
     "$schema": {"const": "bopen://schemas/qualification/technology/command-evidence/0.1.0-draft"},
     "command_evidence_id": {"type": "string", "pattern": "^TECH-CMD-[0-9]{3}$"},
@@ -12,6 +12,7 @@
     "status": {"const": "draft"},
     "work_package_id": {"const": "TECH-P0-01"},
     "qualification_run_id": {"type": "string", "pattern": "^TECH-RUN-[0-9]{3}$"},
+    "candidate_id": {"type": "string", "pattern": "^TECH-CAND-[0-9]{3}$"},
     "case_id": {"type": "string", "pattern": "^TECH-CASE-[0-9]{3}$"},
     "argv": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
     "working_directory": {"$ref": "bopen://schemas/qualification/common/normalized-path/0.1.0-draft"},

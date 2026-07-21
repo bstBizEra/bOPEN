@@ -73,3 +73,11 @@ Reason: technology comparisons require a single reproducible proposal grammar be
 Maker implementation and package-local verification are complete. Focused tests pass 10/10 and full repository test discovery passes 169/169. Independent exact-SHA technical review and attributable Human Engineering Authority acceptance remain required. This package cannot qualify a technology or accept itself.
 
 Aggregate `npm run validate` is `BLOCKED_UNTIL_QUAL_INTEG_001` at the integration-owned historical `docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json`. That shared snapshot is prohibited in this lane; the result is not waived or reported as aggregate acceptance.
+
+## Append-only checker rework — 2026-07-22
+
+The first maker commit `1673684b977b2a74a87ee1ffbe044c407e4cbd0e` received `REQUEST_CHANGES`. Its scorecard validator required command and artifact references to be present but did not resolve the command documents, bind them to the run/candidate/case, reconcile artifact bindings with the supplied inventory, or prove that a DIRECT mapping cited a case containing the exact requirement.
+
+Reason: presence-only references could permit unrelated, missing or path-escaped evidence to support a proposal. Benefit of the first candidate: offline catalogs, mandatory-case ordering, complete Program Goal enumeration and non-authority controls were already established. Expected outcome: the successor treats scorecard, cases, commands, artifacts and inventory as one closed evidence graph and rejects irrelevant DIRECT coverage.
+
+This rework remains contract-only. It creates no qualification run, candidate score, vendor choice, stack approval/freeze or authority effect.

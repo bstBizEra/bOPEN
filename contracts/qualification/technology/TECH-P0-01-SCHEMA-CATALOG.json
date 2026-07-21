@@ -31,7 +31,7 @@
     {
       "schema_id": "bopen://schemas/qualification/technology/command-evidence/0.1.0-draft",
       "path": "contracts/qualification/technology/command-evidence.schema.json",
-      "sha256": "4a45f4e37c10b870f37e9de814473876804ac6b3284d2651e6ec299abe9180eb"
+      "sha256": "ba64c1ad4f8331d971e98deab2c0088e4e92c62bd39f6c82d5c4fa894015ca54"
     }
   ]
 }

@@ -11,7 +11,7 @@
   "records": [
     {
       "path": "contracts/qualification/technology/TECH-P0-01-SCHEMA-CATALOG.json",
-      "sha256": "f748abffcec308abfc54181c5700879923b4e62fa620e2070bf2b8bd537c3caa",
+      "sha256": "9f1b521c81d37d76889db0b0daaf1b42bbb5d9301e33bb4d5f54a34a3b7b0d56",
       "bytes": 1610
     },
     {
@@ -31,28 +31,28 @@
     },
     {
       "path": "contracts/qualification/technology/command-evidence.schema.json",
-      "sha256": "4a45f4e37c10b870f37e9de814473876804ac6b3284d2651e6ec299abe9180eb",
-      "bytes": 2040
+      "sha256": "ba64c1ad4f8331d971e98deab2c0088e4e92c62bd39f6c82d5c4fa894015ca54",
+      "bytes": 2131
     },
     {
       "path": "docs/evidence/EVD-TECH-001-technology-qualification.md",
-      "sha256": "80ed234938ad741c44bb34507cb828d34e9eb758a2f0fb5452b46ea2b0e3435b",
-      "bytes": 4043
+      "sha256": "2d93ade14792704b7b12cb5bb935923d7fd93fda961543767adf33c0010aeaf4",
+      "bytes": 5384
     },
     {
       "path": "docs/work-packages/TECH-P0-01.md",
-      "sha256": "8a0c754852b098720fe73fafa5763f1729220892227276b948f88f0f8a48af15",
-      "bytes": 5229
+      "sha256": "b0889499d1aa6aede53c541b09b24207e584087822927cd5ed4519c45092d796",
+      "bytes": 6244
     },
     {
       "path": "tests/qualification/test_technology_qualification.py",
-      "sha256": "f5e183651ee63d5146c2e48e9d7769b52802c71bd55d9e6bbdef48c6004546c6",
-      "bytes": 12140
+      "sha256": "0b2fb8c3ea9edafa82151c1a66baa24b267f3d2ffc481873e8e6b607ed0ef181",
+      "bytes": 20217
     },
     {
       "path": "tools/validate_technology_qualification.py",
-      "sha256": "7da244330ce5b63c3d2717f36b5bce698cdf5cc395f919408ef61c096e446bce",
-      "bytes": 18061
+      "sha256": "77a40065b1a205c1fdc0baf697c312876f72435233baa0352093db5a50a4bf8f",
+      "bytes": 22127
     }
   ]
 }
