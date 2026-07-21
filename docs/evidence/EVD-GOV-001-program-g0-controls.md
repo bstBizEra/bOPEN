@@ -8,7 +8,10 @@
 **Source/base commit:** `bc623b0d851f44713d9ba7cb7650f08bb4f072c5`
 **Source attachment SHA-256:** `e9ef66ba78ebc656dd613b835fabd568bff50ac2932ab07278b91526ac2125c0`
 **Maker:** Codex root with bounded subagent makers
-**Independent checker:** Pending exact-SHA review
+**Independent checker:** Codex kernel-readiness checker
+**Exact SHA:** `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e`
+**Checker:** Codex kernel-readiness checker
+**Verdict:** ACCEPT
 
 ## Procedure
 
@@ -42,11 +45,13 @@ Current bootstrap, draft-contract and synthetic-fixture evidence may be mapped o
 - `artifacts/validation/program-g0-readiness.md` — tracked and generated with `PG-G0 NOT_READY`.
 - `docs/DOCUMENT-MANIFEST.json` — regenerated with 250 records before final checker review.
 
-Final candidate commit/tree SHA, regenerated counts and checker disposition remain pending.
+The independent checker accepted maker commit `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` with tree `fa1f9ab109ea1a255f7c4998b63af419ae96dfed`. The fresh-archive SHA-256 was `72cc7d00ad877a24a49eabf57bebd13c2707e0f4648f1d1a2aa8c6c8664a6ceb`. This acceptance is technical evidence only and does not approve GOV-P0-01, Program G0, merge, release, runtime, or production implementation.
 
 ## Evidence completion repair — 2026-07-21
 
 The maker repaired the review-blocking artifact gap identified after the initial candidate. The readiness report is now explicitly allow-listed from the generated-artifact ignore rule, committed for fresh-archive inspection, and checked for exact deterministic equality by both CI workflows and the package validation command. Missing or hand-edited report files fail closed. This repair does not change any register, decision, gate, or authority state.
+
+Independent verification of the exact maker SHA passed 27-path repository validation, 17 contract checks, seven draft-register checks, clean-room, secret and supply-chain controls, 103 full-suite tests, 62 governance tests and 41 contract tests. Missing and stale report probes both exited non-zero as required.
 
 ## Security and clean-room declaration
 

@@ -38,9 +38,6 @@
 - technology register approved_at is required
 - technology register approval_ref is required
 - independent evidence Evidence ID must be EVD-GOV-001
-- independent evidence Verdict must be ACCEPT
-- independent evidence requires maker and checker
-- independent evidence requires a 40-character Exact SHA
 
 ## Decision
 

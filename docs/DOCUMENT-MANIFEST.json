@@ -1098,8 +1098,8 @@
       "path": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
       "title": "EVD-GOV-001 \u2014 Program Goal v0.2 Draft Intake and G0 Control Evidence",
       "status": "Draft",
-      "sha256": "552ac6939dca46d07a35a7ad9ba9671eb3ca04977413f74525efac878049ab31",
-      "bytes": 3736
+      "sha256": "69ded9b71969ab1e88f96fd98b8b8d9219bb020ef5015ba52435566ca62bb26f",
+      "bytes": 4468
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
@@ -1742,8 +1742,8 @@
       "path": "docs/work-packages/GOV-P0-01.md",
       "title": "GOV-P0-01 \u2014 Program Goal v0.2 Controlled Baseline and G0 Measurement Contract",
       "status": "Proposed",
-      "sha256": "83b504fe35a938f0233703355c655b9389f33ab87b72fb8fdf07c1bbc4a5dad3",
-      "bytes": 4017
+      "sha256": "7b9108cc0ab4ca5e072311559439d13408f081c3d4dd06c9228978910c8ef7b7",
+      "bytes": 4140
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

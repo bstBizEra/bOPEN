@@ -9,7 +9,7 @@
 **Dependencies:** BOOT-P0-12/DEC-0007 authority review; Product/Architecture review of DEC-0010
 **Governing artifacts:** BOPEN-BOOT-001; supplied Program Goal v0.2
 **Maker:** Codex root plus bounded register/catalog makers
-**Independent checker:** Pending exact-SHA assignment
+**Independent checker:** Codex kernel-readiness checker; accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e`
 **Worktree:** `C:\laragon\www\bopen-worktrees\gov-p0-01-program-goal-v02`
 **Branch:** `codex/GOV-P0-01-program-goal-v02`
 **Base commit:** `bc623b0d851f44713d9ba7cb7650f08bb4f072c5`
@@ -69,7 +69,7 @@ Risk: lifecycle aliases are mistaken for approved renames or draft registers for
 
 ## Completion record
 
-Pending maker completion, exact-SHA checker verdict and human acceptance. This proposed record does not accept itself.
+Maker repair and independent exact-SHA technical verification are complete. Human Engineering Authority acceptance remains pending. This proposed record does not accept itself.
 
 ## Evidence-completion note — 2026-07-21
 
