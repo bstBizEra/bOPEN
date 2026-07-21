@@ -1,0 +1,9 @@
+{
+  "$schema": "bopen://schemas/governance/skill-register/0.1.0-draft",
+  "register_id": "PG-REG-SKILL-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Engineering Authority",
+  "updated_at": "2026-07-21T00:00:00+07:00",
+  "entries": []
+}

@@ -1,0 +1,3108 @@
+{
+  "id": "bopen.program-goal.requirements.v0.2",
+  "title": "bOPEN Program Goal and Measurable Outcomes v0.2 Requirement Catalog",
+  "version": "0.2",
+  "status": "draft",
+  "work_package": "GOV-P0-01",
+  "implementation_authority": false,
+  "gate_promotion_authority": false,
+  "release_authority": false,
+  "source": {
+    "title": "bOPEN Program Goal and Measurable Outcomes v0.2",
+    "source_kind": "owner_supplied_program_goal",
+    "sha256": "e9ef66ba78ebc656dd613b835fabd568bff50ac2932ab07278b91526ac2125c0",
+    "repository_base": "bc623b0d851f44713d9ba7cb7650f08bb4f072c5"
+  },
+  "coverage_classifications": [
+    "evidenced",
+    "draft_only",
+    "placeholder",
+    "missing",
+    "future_evidence"
+  ],
+  "items": [
+    {
+      "id": "PG-GOAL-OBJ",
+      "type": "program_objective",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Establish a secure, reusable, governed multi-tenant business platform kernel for multiple BST products, capabilities, and industry modules without rebuilding common platform foundations.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/vision.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-ISOLATION",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain strong tenant isolation.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-DOMAIN-BOUNDARIES",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain modular domain boundaries.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-SECURITY-GOVERNANCE",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain consistent security and governance.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-PRODUCT-COMPOSITION",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain controlled product composition.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-MODULE-DELIVERY",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain repeatable module delivery.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-OPERATIONAL-RELIABILITY",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain measurable operational reliability.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-PRINCIPLE-ACCOUNTABILITY",
+      "type": "program_principle",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Maintain traceable human and agent accountability.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/principles.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-01",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Governed Goal",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-02",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Approved Requirement",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-03",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Architecture Decision",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-04",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Authorized Work Item",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-05",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Isolated Implementation",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-06",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Independent Verification",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-07",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Evidence",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-08",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Controlled Release",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-09",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Operational Outcome",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-10",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Verified Learning",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GOAL-OPERATING-MODEL-11",
+      "type": "operating_model_stage",
+      "source_section": "1. Program Goal",
+      "normalized_statement": "Reusable Capability",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-OBJ",
+      "type": "north_star_objective",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "By P4, demonstrate that a new multi-tenant product or module can be registered, specified, implemented, verified, activated, and operated without rebuilding the platform kernel or weakening tenant isolation.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/roadmap.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-FORMULA",
+      "type": "formula",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Certified Module Enablement Rate equals modules reaching pilot through the standard bOPEN module lifecycle divided by total modules submitted for pilot, multiplied by 100.",
+      "target": "(certified_pilot_modules / submitted_pilot_modules) * 100",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-TARGET-P2",
+      "type": "phase_target",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Certified Module Enablement Rate target for P2.",
+      "target": "At least 1 certified platform module",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-TARGET-P3",
+      "type": "phase_target",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Certified Module Enablement Rate target for P3.",
+      "target": "At least 3 certified shared foundation modules",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-TARGET-P4",
+      "type": "phase_target",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Certified Module Enablement Rate target for P4.",
+      "target": "At least 1 complete product composition and 5 certified modules",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-TARGET-POST-P4",
+      "type": "phase_target",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Certified Module Enablement Rate target for Post-P4.",
+      "target": "≥90% of eligible modules reach pilot without platform-kernel modification",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-APPROVED-CONTRACT",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has an approved module contract.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-CAPABILITIES-DEPENDENCIES",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module declares capabilities and dependencies.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-TENANT-ISOLATION",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has verified tenant isolation.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-PERMISSIONS-ENTITLEMENTS",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has registered permissions and entitlements.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-COMPLETE-TESTS",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has complete tests.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-EVIDENCE",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has evidence.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-RUNBOOK",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has an operational runbook.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-NS-CERT-INDEPENDENT-ACCEPTANCE",
+      "type": "module_certification_condition",
+      "source_section": "2. North Star Outcome",
+      "normalized_statement": "Module has independent acceptance.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O1-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Ensure every material change is authorized, traceable, independently reviewed, and supported by reproducible evidence.",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Work items are linked to approved requirements.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Material work items have an assigned maker and checker.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O1-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Work items execute in registered branches or worktrees.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/08-engineering/branching.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O1-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Accepted work items have evidence envelopes.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Architecture-impacting changes are linked to an ADR.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/adr"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Unauthorized changes to protected branches.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "EVD-BOOT-011"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Expired exceptions remaining active.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/exceptions/EXCEPTION-REGISTER.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O1-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Releases have attributable human authorization.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O1-SC",
+      "type": "success_condition",
+      "source_section": "3. Strategic Outcomes / Outcome 1",
+      "normalized_statement": "Implementation completion requires traceability, independent verification, and evidence; code or passing tests alone are insufficient.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Prevent one tenant from accessing, modifying, referencing, or inferring another tenant's protected data or resources.",
+      "target": null,
+      "owner_authority": "Security Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Tenant-aware tables have an approved tenant key.",
+      "target": "100%",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Tenant-aware tables are protected by verified RLS or stronger isolation.",
+      "target": "100%",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O2-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Cross-tenant read negative tests pass.",
+      "target": "100% pass",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Cross-tenant write negative tests pass.",
+      "target": "100% pass",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O2-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Cross-tenant resource-reference tests pass.",
+      "target": "100% pass",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Background-job tenant-context tests pass.",
+      "target": "100% pass",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O2-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Cache, file, search, and export isolation tests pass.",
+      "target": "100% pass",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O2-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Missing or invalid tenant-context tests deny.",
+      "target": "100% deny",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O2-IND-09",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Critical or high unresolved isolation findings at release.",
+      "target": "0",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O2-IND-10",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "Confirmed cross-tenant production incidents.",
+      "target": "0",
+      "owner_authority": "Security Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-O2-SC",
+      "type": "success_condition",
+      "source_section": "3. Strategic Outcomes / Outcome 2",
+      "normalized_statement": "A release is blocked when a mandatory tenant-isolation control fails, is skipped without approval, or lacks reproducible evidence.",
+      "target": true,
+      "owner_authority": "Security Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/07-security/tenant-isolation/isolation-test-standard.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Implement shared platform capabilities once and make them reusable by all BST products.",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/03-architecture/bounded-contexts.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-PRINCIPAL-IDENTITY",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Principal and identity",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/04-platform/principal",
+        "docs/04-platform/identity"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-TENANT",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Tenant",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-MEMBERSHIP",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Membership",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-ACTIVE-CONTEXT",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Active tenant context",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-AUTHORIZATION",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Authorization",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-AUTHZ-001-DRAFT",
+        "docs/06-contracts/policies/authorization-decision.schema.json"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-ENTITLEMENT",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Entitlement",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-ENT-001-DRAFT"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-PRODUCT-MODULE-REGISTRY",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Product and module registry",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-EVENTS-OUTBOX",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Events and transactional outbox",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/04-platform/events/event-and-audit.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-AUDIT",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Audit",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/06-contracts/events/audit-event.schema.json"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-FILES",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Files",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-NOTIFICATIONS",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Notifications",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/03-architecture/bounded-contexts.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-INTEGRATION",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Integration",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-OBSERVABILITY",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Observability",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-CAP-OPERATIONAL-CONTROLS",
+      "type": "platform_capability",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Operational controls",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Products use the canonical principal model.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Products use first-class tenant membership.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Products use the common authorization layer.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Products use the common audit and event foundation.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Duplicate tenant identity implementations.",
+      "target": "0",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Duplicate platform authorization engines.",
+      "target": "0",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O3-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Industry-specific logic introduced into the platform kernel without approval.",
+      "target": "0 unapproved",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "AGENTS.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Shared capabilities have defined owners and contracts.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/ARTIFACT-REGISTER.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O3-SC",
+      "type": "success_condition",
+      "source_section": "3. Strategic Outcomes / Outcome 3",
+      "normalized_statement": "Product teams extend bOPEN through modules and registered interfaces instead of modifying the kernel for product-specific behavior.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/01-product/product-boundary.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Reduce the time, risk, and variability required to deliver new modules.",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Modules have complete module.yaml manifests.",
+      "target": {
+        "P2": "100%",
+        "Post-P4": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O4-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Modules have documented APIs and events.",
+      "target": {
+        "P2": "100%",
+        "Post-P4": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O4-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Modules have registered permissions and entitlements.",
+      "target": {
+        "P2": "100%",
+        "Post-P4": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Modules pass automated contract validation.",
+      "target": {
+        "P2": "≥90%",
+        "Post-P4": "≥98%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "tools/validate_contracts.py"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O4-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Median registration-to-authorized-build time.",
+      "target": {
+        "P2": "≤10 business days",
+        "Post-P4": "≤5 business days"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Median authorized-build-to-pilot time.",
+      "target": {
+        "P2": "Baseline established",
+        "Post-P4": "≤30 calendar days"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Modules require unrelated kernel modifications.",
+      "target": {
+        "P2": "≤20%",
+        "Post-P4": "≤10%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Reusable scaffolding coverage.",
+      "target": {
+        "P2": "≥60%",
+        "Post-P4": "≥85%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-REGISTERED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Registered",
+      "target": 1,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-SPECIFIED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Specified",
+      "target": 2,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-CONTRACTED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Contracted",
+      "target": 3,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-AUTHORIZED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Authorized",
+      "target": 4,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-IMPLEMENTED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Implemented",
+      "target": 5,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-VERIFIED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Verified",
+      "target": 6,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-ENTITLED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Entitled",
+      "target": 7,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-ENABLED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Enabled",
+      "target": 8,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-LC-PILOTED",
+      "type": "module_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "Piloted",
+      "target": 9,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O4-SC",
+      "type": "success_condition",
+      "source_section": "3. Strategic Outcomes / Outcome 4",
+      "normalized_statement": "One repeatable delivery pipeline governs every module from registration through pilot.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Use bPro to prove the platform through a complete real product workflow.",
+      "target": null,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/10-products/bpro/product-composition.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-01",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Authenticate user",
+      "target": 1,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-02",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Identify available memberships",
+      "target": 2,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-03",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Select active tenant",
+      "target": 3,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-04",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Validate membership",
+      "target": 4,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-05",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Validate module entitlement",
+      "target": 5,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-06",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Enter bPro",
+      "target": 6,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/10-products/bpro/product-composition.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-07",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Create tenant-owned project resource",
+      "target": 7,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-08",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Authorize resource action",
+      "target": 8,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-09",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Emit domain event",
+      "target": 9,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-10",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Write audit record",
+      "target": 10,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-11",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Execute background processing",
+      "target": 11,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-12",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Retrieve tenant-scoped result",
+      "target": 12,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-FLOW-13",
+      "type": "reference_flow_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Verify another tenant cannot access the result",
+      "target": 13,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O5-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Complete reference flow is successfully executed.",
+      "target": "100%",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Reference-flow requirements have automated tests.",
+      "target": "100%",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Tenant-isolation cases for the reference flow pass.",
+      "target": "100% pass",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Material actions have audit coverage.",
+      "target": "100%",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Outbox delivery completes without data inconsistency.",
+      "target": "100% in conformance tests",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Portal restricted and not-entitled states are implemented.",
+      "target": "100%",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O5-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "Critical reference-flow defects at P4 exit.",
+      "target": "0",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-O5-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "High-severity unresolved defects at pilot decision.",
+      "target": "0",
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-O5-SC",
+      "type": "success_condition",
+      "source_section": "3. Strategic Outcomes / Outcome 5",
+      "normalized_statement": "bPro proves the platform contract without product-specific shortcuts.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/10-products/bpro/product-composition.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Ensure bOPEN can be monitored, supported, restored, and safely rolled back.",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Critical services are instrumented.",
+      "target": {
+        "P0/P1": "100%",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Required logs, traces, and metrics are available.",
+      "target": {
+        "P0/P1": "100%",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Successful automated backup rate.",
+      "target": {
+        "P0/P1": "≥99%",
+        "Pilot": "≥99.5%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Restoration tests occur.",
+      "target": {
+        "P0/P1": "At least monthly",
+        "Pilot": "At least monthly"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Restoration-test pass rate.",
+      "target": {
+        "P0/P1": "100%",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Release rollback procedure is verified.",
+      "target": {
+        "P0/P1": "100% of releases",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Critical alert ownership is assigned.",
+      "target": {
+        "P0/P1": "100%",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Critical incident runbooks are complete.",
+      "target": {
+        "P0/P1": "100%",
+        "Pilot": "100%"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-IND-09",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Unresolved critical vulnerabilities at release.",
+      "target": {
+        "P0/P1": "0",
+        "Pilot": "0"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "tools/check_supply_chain.py"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O6-IND-10",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Unresolved high vulnerabilities without approved treatment.",
+      "target": {
+        "P0/P1": "0",
+        "Pilot": "0"
+      },
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-AVAILABILITY",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Availability during controlled pilot.",
+      "target": "≥99.5%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-AUTH-SUCCESS",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Successful authenticated request rate.",
+      "target": "≥99.5%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-P95-LATENCY",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "P95 interactive API latency for standard non-analytical operations.",
+      "target": "≤500 ms",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-AUDIT-PERSISTENCE",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Audit-event persistence.",
+      "target": "≥99.99%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-RPO",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Recovery point objective during P0.",
+      "target": "≤24 hours",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-SLO-RTO",
+      "type": "service_level_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Recovery time objective during P0.",
+      "target": "≤8 hours",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O6-REBASELINE",
+      "type": "measurement_policy",
+      "source_section": "3. Strategic Outcomes / Outcome 6",
+      "normalized_statement": "Revise initial service targets using measured production and pilot evidence.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Use approved agent harnesses to increase delivery capacity without fragmenting authority or compromising quality.",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/00-governance/agent-governance.md",
+        "docs/00-governance/agent-role-catalog.md",
+        "docs/06-contracts/agents/agent-tool-contract.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Active agents are recorded in the agent registry.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agent tasks have bounded repository scope.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agent sessions are linked to work-item IDs.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Material agent changes are independently reviewed.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "EVD-BOOT-011"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O7-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Structured handoffs meet the handoff contract.",
+      "target": "≥95%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agent-produced claims are supported by evidence.",
+      "target": "100%",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O7-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agents receive plaintext production credentials.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "tools/check_secrets.py"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O7-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agents independently authorize their own release.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/00-governance/agent-governance.md",
+        "docs/00-governance/agent-role-catalog.md",
+        "docs/06-contracts/agents/agent-tool-contract.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O7-IND-09",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Conflicting concurrent mutations to the same controlled files.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-IND-10",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Agent-caused unauthorized production changes.",
+      "target": "0",
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "AGENTS.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-ACCEPTED-WORK",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Accepted work completed per delivery cycle",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-FIRST-PASS",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "First-pass review acceptance rate",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-MAJOR-REWORK",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Percentage of agent-generated changes requiring major rework",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-HANDOFF-REVIEW-TIME",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Median handoff-to-review time",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-PARALLEL-CONFLICT",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Parallel workstreams completed without integration conflict",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-HUMAN-TIME-SAVED",
+      "type": "productivity_indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Human review time saved without reducing control coverage",
+      "target": null,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O7-PROD-GUARDRAIL",
+      "type": "measurement_policy",
+      "source_section": "3. Strategic Outcomes / Outcome 7",
+      "normalized_statement": "Do not measure productivity only by generated code volume.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-OBJ",
+      "type": "outcome_objective",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Convert verified implementation and operational experience into durable institutional knowledge.",
+      "target": null,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-01",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Material failures have evidence envelopes.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-O8-IND-02",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "High-impact failures have root-cause analysis.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/09-operations/incident-management.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-03",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Verified lessons are linked to corrective actions.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-04",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Promoted skills have sandbox and evaluation evidence.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-05",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Skills have named owners and review dates.",
+      "target": "100%",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-06",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Expired or failing skills remaining active.",
+      "target": "0",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-07",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Repeated defects with previously verified root causes.",
+      "target": "Decreasing",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-IND-08",
+      "type": "indicator",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Reuse of approved patterns and skills.",
+      "target": "Increasing each phase",
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-01",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Evidence",
+      "target": 1,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-02",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Reproduction",
+      "target": 2,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-03",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Root Cause",
+      "target": 3,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-04",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Verified Lesson",
+      "target": 4,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-05",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Knowledge",
+      "target": 5,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-06",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Test, ADR, Runbook, or Skill",
+      "target": 6,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-07",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Evaluation",
+      "target": 7,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-LC-08",
+      "type": "learning_lifecycle_stage",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Controlled Promotion",
+      "target": 8,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-O8-MEMORY-GUARDRAIL",
+      "type": "governance_policy",
+      "source_section": "3. Strategic Outcomes / Outcome 8",
+      "normalized_statement": "Raw model memory, session summaries, and unsupported agent conclusions do not become governing knowledge automatically.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-G0-CONTROLLING-GOVERNANCE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / G0",
+      "normalized_statement": "Controlling governance is approved.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-G0-REGISTERS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / G0",
+      "normalized_statement": "Agent, goal, module, skill, and schedule registers are established.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-G0-AUTHORITY-MATRIX",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / G0",
+      "normalized_statement": "The authority matrix is approved.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "GOVERNANCE.md",
+        "docs/00-governance/raci.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-G0-TECHNOLOGY-DECISIONS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / G0",
+      "normalized_statement": "Technology decisions are assigned.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/decisions/DECISION-REGISTER.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-G0-TEMPLATES",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / G0",
+      "normalized_statement": "Work-item and evidence templates are operational.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/templates/work-package-template.md",
+        "docs/templates/evidence-template.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-REPOSITORY-CI",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "Repository and CI controls are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        ".gitea/workflows/governance.yml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-PRINCIPAL-TENANT",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "A principal and tenant skeleton is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-ACTIVE-CONTEXT",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "An active tenant context proof is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-POSTGRES-RLS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "A PostgreSQL RLS proof is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-MODULE-REGISTRY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "A module registry skeleton is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-AUDIT-OUTBOX",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "Audit and outbox foundations are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/04-platform/events/event-and-audit.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P0-EVIDENCE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P0",
+      "normalized_statement": "Complete evidence exists for every P0 work package.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "BOPEN-BOOT-001",
+        "docs/TRACEABILITY-MATRIX.md",
+        "docs/work-packages/WORK-PACKAGE-REGISTER.md",
+        "docs/evidence/EVIDENCE-INDEX.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-GLOBAL-PRINCIPAL",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "A global principal is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/04-platform/principal"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-TENANT-MEMBERSHIP-LIFECYCLE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Tenant and membership lifecycles are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-TENANT-SWITCHING",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Secure tenant switching is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/04-platform/context/active-context.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-AUTHZ-ENTITLEMENT",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Authorization and entitlements are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-AUTHZ-001-DRAFT",
+        "BOPEN-ENT-001-DRAFT"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-CROSS-TENANT-TESTS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Cross-tenant negative testing is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-TENANT-001-DRAFT",
+        "docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json",
+        "EVD-DEV-001"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-BACKGROUND-PROCESSING",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Tenant-aware background processing is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P1-SUPPORT-ACCESS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P1",
+      "normalized_statement": "Support-access governance is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "docs/07-security/authorization/privileged-access.md"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-MODULE-REGISTRATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "Module registration is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-REGISTRIES",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "Capability, permission, and entitlement registries are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-DEPENDENCY-VALIDATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "Module dependency validation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "BOPEN-MOD-001-DRAFT",
+        "docs/06-contracts/modules/module-manifest.schema.json",
+        "docs/06-contracts/modules/module-manifest.example.yaml"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-ENABLEMENT-LIFECYCLE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "The module enablement lifecycle is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-EVENT-INTERFACE-CONTRACTS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "Event and interface contracts are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "docs/06-contracts/events/event-envelope.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-GATE-P2-CERTIFIED-MODULE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P2",
+      "normalized_statement": "At least one certified module is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-PARTY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Party foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-ORGANIZATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Organization foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-LOCATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Location foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-DOCUMENT",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Document foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-ASSET",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Asset foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-MONEY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Money foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-MEASUREMENT",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Measurement foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "placeholder",
+      "evidence_refs": [
+        "BOPEN-PARTY-001-DRAFT",
+        "docs/05-foundation"
+      ],
+      "disposition": "requires_controlled_contract_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-CLASSIFICATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "A shared reusable Classification foundation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P3-APPROVAL-NOTIFICATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P3",
+      "normalized_statement": "Shared reusable Approval and notification foundations are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P4-BPRO-FLOW",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "The complete bPro reference flow is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [
+        "docs/10-products/bpro/product-composition.md"
+      ],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P4-REUSABLE-MODULES",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "Multiple reusable modules are demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P4-PORTAL-COMPOSITION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "Portal composition is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-P4-TENANT-ISOLATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "Tenant isolation is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-GATE-P4-RECOVERY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "Recovery is demonstrated.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [
+        "docs/09-operations/observability.md",
+        "docs/09-operations/backup-recovery.md",
+        "docs/09-operations/incident-management.md",
+        "docs/08-engineering/release-management.md"
+      ],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-GATE-P4-INDEPENDENT-CONFORMANCE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / P4",
+      "normalized_statement": "Independent conformance evidence is delivered.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-GOVERNANCE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers governance.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-ARCHITECTURE",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers architecture.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-TENANT-ISOLATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers tenant isolation.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-AUTHORIZATION",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers authorization.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-SECURITY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers security.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-AUDIT-OUTBOX",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers audit and outbox.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-RECOVERY",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers recovery.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-SUPPLY-CHAIN",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers supply chain.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-OPERATIONAL-READINESS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers operational readiness.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-GATE-C0-EVIDENCE-COMPLETENESS",
+      "type": "phase_gate_clause",
+      "source_section": "4. Phase-Level Outcome Gates / C0",
+      "normalized_statement": "Independent conformance covers evidence completeness.",
+      "target": true,
+      "owner_authority": "Architecture Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-01-EVIDENCE",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "A control counts as passed only when reproducible evidence exists.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "AGENTS.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-MEASURE-02-NO-SKIP-PASS",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "Skipped tests do not count as passed.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "draft_only",
+      "evidence_refs": [
+        "AGENTS.md"
+      ],
+      "disposition": "requires_approval_implementation_and_reproducible_evidence"
+    },
+    {
+      "id": "PG-MEASURE-03-NO-PARTIAL-CERTIFICATION",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "Partially implemented modules do not count as certified.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-04-INDEPENDENT-VERIFICATION",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "An agent-generated report is not independent verification when the same agent implemented the change.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-05-MANDATORY-GATE",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "A release delivered on time but failing a mandatory gate is unsuccessful.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-06-PRODUCTIVITY-GUARDRAIL",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "Productivity improvements do not reduce test, security, evidence, or review coverage.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-07-REBASELINE-ON-EVIDENCE",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "Targets are re-baselined when actual measurement shows the estimate is unrealistic.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-MEASURE-08-CONTROL-PRESERVING-REBASELINE",
+      "type": "measurement_rule",
+      "source_section": "5. Measurement Rules",
+      "normalized_statement": "Every re-baseline preserves the intended control outcome and is formally recorded.",
+      "target": true,
+      "owner_authority": "Engineering Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-FINAL-LESS-DUPLICATION",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with less duplicated platform development.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-FASTER-ONBOARDING",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with faster controlled module onboarding.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-VERIFIED-ISOLATION",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with verified tenant isolation.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-SECURITY-AUTHORIZATION",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with consistent security and authorization.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-TRACEABILITY-EVIDENCE",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with complete traceability and evidence.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-RELIABLE-OPERATIONS",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with reliable operations and recovery.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-REUSABLE-CAPABILITY",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Deliver products and modules with reusable architecture, knowledge, and skills.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    },
+    {
+      "id": "PG-FINAL-NOT-SOURCE-CODE",
+      "type": "final_success_guardrail",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Program success is not merely completion of bOPEN source code.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "missing",
+      "evidence_refs": [],
+      "disposition": "create_controlled_artifact_measurement_source_and_evidence"
+    },
+    {
+      "id": "PG-FINAL-OPERATING-CAPABILITY",
+      "type": "final_success_clause",
+      "source_section": "6. Final Success Definition",
+      "normalized_statement": "Establish a repeatable digital-product operating capability for safely governing multiple industry platforms at increasing scale.",
+      "target": true,
+      "owner_authority": "Product Authority",
+      "coverage_classification": "future_evidence",
+      "evidence_refs": [],
+      "disposition": "collect_after_authorized_runtime_or_pilot"
+    }
+  ]
+}

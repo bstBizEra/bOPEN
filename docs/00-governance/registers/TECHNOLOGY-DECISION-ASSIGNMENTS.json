@@ -1,0 +1,14 @@
+{
+  "$schema": "bopen://schemas/governance/technology-decision-assignment/0.1.0-draft",
+  "register_id": "PG-REG-TECH-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Architecture Authority",
+  "updated_at": "2026-07-21T00:00:00+07:00",
+  "entries": [
+    {"assignment_id":"TECH-001","decision_id":"DEC-0004","subject":"Production technology stack","status":"PENDING_OWNER_ASSIGNED","owner_authority":"Architecture Authority","checker_authorities":[],"required_before_phase":"PG-P0","due_at":null,"evidence_refs":["docs/decisions/DECISION-REGISTER.md"],"blockers":["independent checker and due date not assigned"]},
+    {"assignment_id":"TECH-002","decision_id":"DEC-0005","subject":"Identity provider and integration strategy","status":"PENDING_OWNER_ASSIGNED","owner_authority":"Security/Architecture Authorities","checker_authorities":[],"required_before_phase":"PG-P0","due_at":null,"evidence_refs":["docs/decisions/DECISION-REGISTER.md"],"blockers":["independent checker and due date not assigned"]},
+    {"assignment_id":"TECH-003","decision_id":"ADR-0005","subject":"Pooled PostgreSQL and row-level security candidate","status":"PENDING_OWNER_ASSIGNED","owner_authority":"Architecture Authority","checker_authorities":[],"required_before_phase":"PG-P0","due_at":null,"evidence_refs":["docs/adr/ADR-0005.md"],"blockers":["independent checker and due date not assigned"]},
+    {"assignment_id":"TECH-004","decision_id":"ADR-0009","subject":"Modular-monolith runtime topology candidate","status":"PENDING_OWNER_ASSIGNED","owner_authority":"Architecture Authority","checker_authorities":[],"required_before_phase":"PG-P0","due_at":null,"evidence_refs":["docs/adr/ADR-0009.md"],"blockers":["independent checker and due date not assigned"]}
+  ]
+}

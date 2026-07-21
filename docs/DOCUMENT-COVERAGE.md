@@ -13,3 +13,5 @@
 | Party foundation | Concept baseline | BOPEN-PARTY-001 | Draft | Approval |
 | Security | Initial control set | BOPEN-SEC-001 | Draft | Threat review |
 | Operations | Bootstrap runbooks | Future operational artifacts | Initial | Environment-specific approval |
+| Program goals and measurement | Supplied Program Goal v0.2 | BOPEN-GOAL-001 | Draft controlled intake | Product/Architecture approval + per-gate evidence |
+| Program delivery controls | Bootstrap governance plus GOV-P0-01 candidate | BOPEN-GOV-001 | Draft registers and fail-closed validators | Engineering/Product/Architecture approval |

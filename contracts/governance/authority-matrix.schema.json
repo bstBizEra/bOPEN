@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/governance/authority-matrix/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Authority Matrix",
+  "type": "object",
+  "required": ["$schema", "register_id", "version", "status", "owner_authority", "updated_at", "entries"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/governance/authority-matrix/0.1.0-draft"},
+    "register_id": {"type": "string", "pattern": "^PG-REG-AUTHORITY-[0-9]{3}$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-draft)?$"},
+    "status": {"enum": ["draft", "approved"]},
+    "owner_authority": {"type": "string", "minLength": 1},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "approved_by": {"type": ["string", "null"], "minLength": 1},
+    "approved_at": {"type": ["string", "null"], "format": "date-time"},
+    "approval_ref": {"type": ["string", "null"], "minLength": 1},
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["action_id", "action_class", "status", "accountable_human_authority", "permitted_maker_roles", "permitted_checker_roles", "required_concurrence", "final_decision_role", "self_approval_allowed", "evidence_required", "expiry_required"],
+        "properties": {
+          "action_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"},
+          "action_class": {"type": "string", "minLength": 1},
+          "status": {"enum": ["draft", "approved"]},
+          "accountable_human_authority": {"type": "string", "minLength": 1},
+          "permitted_maker_roles": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "permitted_checker_roles": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "required_concurrence": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "final_decision_role": {"type": "string", "minLength": 1},
+          "self_approval_allowed": {"const": false},
+          "evidence_required": {"const": true},
+          "expiry_required": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

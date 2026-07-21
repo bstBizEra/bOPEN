@@ -1,0 +1,24 @@
+{
+  "$schema": "bopen://schemas/governance/goal-register/0.1.0-draft",
+  "register_id": "PG-REG-GOAL-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Product Authority",
+  "updated_at": "2026-07-21T00:00:00+07:00",
+  "entries": [
+    {
+      "goal_id": "BOPEN-GOAL-001",
+      "version": "0.2-draft",
+      "title": "bOPEN Program Goal and Measurable Outcomes",
+      "status": "Draft",
+      "owner_authority": "Product Authority",
+      "artifact_ref": "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
+      "phase_ids": ["PG-G0", "PG-P0", "PG-P1", "PG-P2", "PG-P3", "PG-P4", "PG-C0"],
+      "metric_ids": ["CERTIFIED_MODULE_ENABLEMENT_RATE"],
+      "approval_ref": null,
+      "approved_at": null,
+      "review_due_at": null,
+      "implementation_authority": false
+    }
+  ]
+}

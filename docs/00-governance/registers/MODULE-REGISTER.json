@@ -1,0 +1,9 @@
+{
+  "$schema": "bopen://schemas/governance/module-register/0.1.0-draft",
+  "register_id": "PG-REG-MODULE-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Architecture Authority",
+  "updated_at": "2026-07-21T00:00:00+07:00",
+  "entries": []
+}

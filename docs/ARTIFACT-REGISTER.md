@@ -12,3 +12,5 @@
 | BOPEN-MOD-001 | Product, Module & Capability Contracts | Normative | Draft | Architecture Authority |
 | BOPEN-PARTY-001 | Party, Person, Organization & Business Relationship Model | Normative | Draft | Data Authority |
 | BOPEN-SEC-001 | Application Security & Software Supply Chain | Normative | Draft | Security Authority |
+| BOPEN-GOAL-001 | bOPEN Program Goal and Measurable Outcomes v0.2 | Draft normative | Draft; no implementation authority | Product Authority |
+| BOPEN-GOV-001 | Program Authority and Delivery-Control Baseline | Draft normative | Draft; no gate authority | Engineering Authority |

@@ -16,3 +16,4 @@
 | EVD-DEV-001 | DEV-P0-01 | Multi-tenant membership, context, ownership, and cross-tenant denial contract validation | `docs/evidence/EVD-DEV-001-multitenant-readiness.md` | Generated; authority review pending |
 | EVD-RES-001 | RES-P0-02 | BoxyHQ provenance and license | BOPEN-RES-001 resources | Existing baseline |
 | EVD-RES-002 | RES-P0-01/02/03 | R0 workspace, provenance, license and two-operator reproduction | `docs/evidence/EVD-RES-002-r0-control-establishment.md` | G0-G2 pass with conditions |
+| EVD-GOV-001 | GOV-P0-01 | Program Goal v0.2 source-completeness, draft registers and fail-closed PG-G0 readiness | `docs/evidence/EVD-GOV-001-program-g0-controls.md` | Draft; checker pending; PG-G0 NOT_READY |

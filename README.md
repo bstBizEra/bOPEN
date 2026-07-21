@@ -4,6 +4,8 @@ This repository bootstrap pack establishes the governed foundation for bOPEN: a 
 
 ## Current authorization boundary
 
+Program Goal v0.2 is controlled as [`BOPEN-GOAL-001`](docs/01-product/BOPEN-GOAL-001-DRAFT.md) under proposed work package [`GOV-P0-01`](docs/work-packages/GOV-P0-01.md). The goal, program authority baseline, lifecycle crosswalk and registers are drafts; `PG-G0` is `NOT_READY` and they provide no implementation or release authority.
+
 This pack is approved for:
 
 - repository and documentation bootstrap;

@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"bopen://schemas/governance/agent-register/0.1.0-draft",
+  "status":"draft",
+  "title":"bOPEN Agent Register",
+  "type":"object",
+  "required":["$schema","register_id","version","status","owner_authority","updated_at","entries"],
+  "properties":{
+    "$schema":{"const":"bopen://schemas/governance/agent-register/0.1.0-draft"},
+    "register_id":{"type":"string","pattern":"^PG-REG-AGENT-[0-9]{3}$"},
+    "version":{"type":"string","pattern":"^[0-9]+\\.[0-9]+\\.[0-9]+(?:-draft)?$"},
+    "status":{"enum":["draft","approved"]},
+    "owner_authority":{"type":"string","minLength":1},
+    "updated_at":{"type":"string","format":"date-time"},
+    "approved_by":{"type":["string","null"],"minLength":1},
+    "approved_at":{"type":["string","null"],"format":"date-time"},
+    "approval_ref":{"type":["string","null"],"minLength":1},
+    "entries":{"type":"array","items":{"type":"object","required":["agent_id","display_name","harness","role_id","status","owner_authority","allowed_scope_paths","prohibited_authorities","credential_mode","registered_at","review_due_at","expires_at","maker_work_item_ids","checker_work_item_ids"],"properties":{"agent_id":{"type":"string","pattern":"^AGT-[A-Z0-9_-]+$"},"display_name":{"type":"string","minLength":1},"harness":{"type":"string","minLength":1},"role_id":{"type":"string","minLength":1},"status":{"enum":["PROPOSED","ACTIVE","SUSPENDED","RETIRED"]},"owner_authority":{"type":"string","minLength":1},"allowed_scope_paths":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},"prohibited_authorities":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},"credential_mode":{"enum":["NONE","SECRET_REFERENCE_ONLY"]},"registered_at":{"type":"string","format":"date-time"},"review_due_at":{"type":["string","null"],"format":"date-time"},"expires_at":{"type":["string","null"],"format":"date-time"},"maker_work_item_ids":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},"checker_work_item_ids":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}},"additionalProperties":false}}
+  },
+  "additionalProperties":false
+}

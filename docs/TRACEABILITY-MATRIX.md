@@ -22,3 +22,8 @@
 | REQ-ISO-001 API and database tenant isolation | BOPEN-TENANT-001/BOPEN-SEC-001 | tenant-ownership schema/readiness fixture | DEV-P0-01 | EVD-DEV-001 | Negative fixture validated |
 | REQ-ENT-001 Entitlement separation | BOPEN-ENT-001 | Pending decision contract | Future | Pending | Draft |
 | REQ-MOD-001 Versioned capability registry | BOPEN-MOD-001 | module-manifest.schema.json | BOOT-P0-10 | Contract validation | Draft |
+| GOAL-NS-001 Certified Module Enablement Rate and certification conditions | BOPEN-GOAL-001 | program-goal.requirements.json/DEC-0010 | GOV-P0-01 | EVD-GOV-001 | Draft; no certified modules |
+| GOAL-OUT-01..08 Strategic outcome catalog | BOPEN-GOAL-001 | program-goal.requirements.json | GOV-P0-01 | EVD-GOV-001 | Draft; outcomes not achieved |
+| GOAL-PG-G0 Program governance bootstrap | BOPEN-GOAL-001/BOPEN-GOV-001 | program-control registers/report_program_g0.py | GOV-P0-01 | EVD-GOV-001 | NOT_READY |
+| GOAL-PG-P0..P4/C0 Program lifecycle gates | BOPEN-GOAL-001 | program-lifecycle-crosswalk/DEC-0010 | GOV-P0-01 and future accepted packages | Future independent evidence | NOT_READY |
+| GOAL-MR-01..08 Measurement integrity rules | BOPEN-GOAL-001/BOPEN-GOV-001 | program-control validator | GOV-P0-01 | EVD-GOV-001 | Draft controls |

@@ -22,6 +22,8 @@
 
 ## Navigation
 
+Program-control registers: [`00-governance/registers/`](00-governance/registers/) (draft; non-authorizing).
+
 - [`00-governance/`](00-governance/) — document, agent and decision governance
 - [`01-product/`](01-product/) — product vision and ecosystem boundaries
 - [`02-requirements/`](02-requirements/) — product requirements

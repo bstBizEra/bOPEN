@@ -11,3 +11,4 @@
 | DEC-0007 | Review BOOT-P0 completion evidence and decide B7 exit | Pending | bOPEN Architecture Authority |
 | DEC-0008 | Enforce protected working branches in private bGitea and use GitHub for stable reviewed publication | Approved | Engineering Authority |
 | DEC-0009 | Keep physical upstream clones and raw evidence in an approved external ephemeral workspace | Approved | bOPEN Architecture Authority |
+| DEC-0010 | Adopt Program Goal v0.2 and namespaced lifecycle model | Proposed | Product/Architecture Authorities |

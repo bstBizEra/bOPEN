@@ -13,3 +13,5 @@
 | BOPEN-MOD-001 | Draft shell | No | Define capability/module contracts |
 | BOPEN-PARTY-001 | Draft shell | No | Define common party model |
 | BOPEN-SEC-001 | Draft shell | No | Threat model and security baseline |
+| BOPEN-GOAL-001 | Draft v0.2 controlled intake | No | Product/Architecture review through DEC-0010 |
+| BOPEN-GOV-001 | Draft program-control baseline | No | Engineering/Product/Architecture review; PG-G0 remains NOT_READY |

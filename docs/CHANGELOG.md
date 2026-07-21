@@ -1,5 +1,13 @@
 # Documentation Changelog
 
+## 2026-07-21 - GOV-P0-01 Program Goal v0.2 controlled draft
+
+- Converted the supplied Program Goal v0.2 into BOPEN-GOAL-001 with a source hash and explicit non-authorizing status.
+- Added BOPEN-GOV-001, DEC-0010 and namespaced program/roadmap/bootstrap/research lifecycle aliases to prevent gate-status leakage.
+- Established draft program registers, a source-complete requirement catalog and fail-closed program-control validation.
+- Extended work-item, evidence and handoff templates with maker/checker, session, worktree, SHA, scope and authority separation fields.
+- Kept PG-G0 NOT_READY, B7/DEC-0007 pending, RES-G3-G7 open and production implementation unauthorized.
+
 ## 2026-07-21 - BOOT-P0-12 external-control reconciliation
 
 - Reconciled BOOT-P0-01 and BOOT-P0-08 with the protected Gitea PR #1 merge and current `main` protection observation.

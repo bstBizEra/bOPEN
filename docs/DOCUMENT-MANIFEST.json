@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-21",
-  "count": 235,
+  "count": 250,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -27,8 +27,15 @@
       "path": "docs/00-governance/artifact-numbering.md",
       "title": "Artifact Numbering",
       "status": "",
-      "sha256": "ee77a910213462d2425eb1255551f4206c02cb2ac2bde5dfd91fce3020144039",
-      "bytes": 249
+      "sha256": "e6a896dce0d5d8786a210974f7318737283bfcfdaf40323811d42839eeaac21a",
+      "bytes": 524
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
+      "title": "BOPEN-GOV-001 \u2014 Program Authority and Delivery-Control Baseline",
+      "status": "Draft",
+      "sha256": "53f13da99eda57f7c6c9cd817f40666287c6dd774805d26f666f96648a1f422e",
+      "bytes": 4325
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -73,11 +80,74 @@
       "bytes": 321
     },
     {
+      "path": "docs/00-governance/registers/AGENT-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "9b91b61a846d5f20bec4489681591ad5f005debd7ff94f798f3aa4287600202c",
+      "bytes": 267
+    },
+    {
+      "path": "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+      "title": "",
+      "status": "",
+      "sha256": "96336276e061512878140727111d1eb37c5db0b42a52e021b1112a2f4bbe40ab",
+      "bytes": 3378
+    },
+    {
+      "path": "docs/00-governance/registers/GOAL-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "af1008f1b4c3f42b684bdf860bf7fd6bd3310528163240b0bcf77f0cb1a86b45",
+      "bytes": 804
+    },
+    {
+      "path": "docs/00-governance/registers/MODULE-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "9c3e77752d7aeaf9a535f552d15719c66fba591f822eadeabd21400500930cb0",
+      "bytes": 270
+    },
+    {
+      "path": "docs/00-governance/registers/README.md",
+      "title": "PG-GOV-REG-001 - Program governance registers",
+      "status": "Draft",
+      "sha256": "1432c682580d5570a665f2f41f20fac4cb5e0be48fcb2be3c7a1204a962dbe81",
+      "bytes": 1067
+    },
+    {
+      "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "4232b66aff2eaf16fb26dd9286c7d41bc0632dfa0d485733e12c1f9fac29a0ef",
+      "bytes": 2170
+    },
+    {
+      "path": "docs/00-governance/registers/SKILL-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "28575ce02c54a897b3f1f9d235524362806fe74760b650a82b4bc3604304ba23",
+      "bytes": 267
+    },
+    {
+      "path": "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+      "title": "",
+      "status": "",
+      "sha256": "9c453920137c0ebd07eec92842078eee8f9da89071fabbc4429b7147df9f2faf",
+      "bytes": 1776
+    },
+    {
       "path": "docs/00-governance/source-governance.md",
       "title": "Source Governance",
       "status": "",
       "sha256": "7e2f877817bdd47db2399c6c6b3f02be8099c61135f5fe1b2f68d4c1df75a961",
       "bytes": 242
+    },
+    {
+      "path": "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
+      "title": "BOPEN-GOAL-001 \u2014 bOPEN Program Goal and Measurable Outcomes",
+      "status": "Draft",
+      "sha256": "31cd060b393c77e637e7e841280d87c0e9d358f616950c1745e70a1303a0857c",
+      "bytes": 14188
     },
     {
       "path": "docs/01-product/ecosystem-map.md",
@@ -99,6 +169,13 @@
       "status": "",
       "sha256": "790bf3addcf21f0e6458782808503df5c5b50ea13bc0a4e56175bdc47ea16b56",
       "bytes": 346
+    },
+    {
+      "path": "docs/01-product/program-lifecycle-crosswalk.md",
+      "title": "Program Lifecycle Namespace and Crosswalk",
+      "status": "Draft",
+      "sha256": "959c4c9caa142cc511e8705cbfa193dce75a0ff936b464be11064a79c0a448ba",
+      "bytes": 3227
     },
     {
       "path": "docs/01-product/roadmap.md",
@@ -881,15 +958,15 @@
       "path": "docs/ARTIFACT-REGISTER.md",
       "title": "Artifact Register",
       "status": "",
-      "sha256": "2fc40f41fc20dc5c438870282067a8f2a07ccf566a43a4f341295a6e10f26ba3",
-      "bytes": 1317
+      "sha256": "7ef75658aa55c56cb59bb543742cb390d10cc45c0793ce9d1f5c3569601add77",
+      "bytes": 1598
     },
     {
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "0f267ba4d96d4a08f04f686d9434ad7679b9e56deaaeef86ca9b090074b4b7a7",
-      "bytes": 6623
+      "sha256": "4fb575355f0de320c06782d8151a0e7b4eb914982916d267e7edcbee5a460adc",
+      "bytes": 7298
     },
     {
       "path": "docs/decisions/DEC-0006.md",
@@ -920,25 +997,32 @@
       "bytes": 1755
     },
     {
+      "path": "docs/decisions/DEC-0010.md",
+      "title": "DEC-0010 \u2014 Adopt Program Goal v0.2 and Namespaced Lifecycle Model",
+      "status": "Proposed",
+      "sha256": "0df762a9dcafd3580c24662ca851507853a00f869eb86ef09e4950067ae205cd",
+      "bytes": 2055
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "2ab006aa92320bdc98ce4f40d513e98d2bc2f923c9980bfa96626545bd72b410",
-      "bytes": 1122
+      "sha256": "69546196e03d0e1b9a4df83a677dfcf14ebaa0fc423ca361c690f93b79eb4137",
+      "bytes": 1238
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "1e96637b53013e5b6b5d235e77cf61489e5332a118802249f84c49f8f5a1bfc2",
-      "bytes": 1154
+      "sha256": "bb04f872e0ef08581eac17084457c9d3276e250b89bc45335f141802d14674ee",
+      "bytes": 1495
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "0364413e451cfa3c8c24b4b438ba2a9439cc64ba400796a0b7c99f918889910b",
-      "bytes": 1185
+      "sha256": "3514af32d69012072c67b3f7a61046a33995bc474ebaa3ef1486eb8a5fe5b503",
+      "bytes": 1410
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1011,6 +1095,13 @@
       "bytes": 5013
     },
     {
+      "path": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
+      "title": "EVD-GOV-001 \u2014 Program Goal v0.2 Draft Intake and G0 Control Evidence",
+      "status": "Draft",
+      "sha256": "133cd2e2b55dfc554bd8db4d871924e4b4be6e5fc6537cbe57ef0272828d6ef6",
+      "bytes": 3083
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1028,8 +1119,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "832c69b24cf20b2403d68ce2f9aaec631b7d9e48354d63ccfb8a085cb0c728ee",
-      "bytes": 2387
+      "sha256": "159520da83f5d624697df3d4732b987db319057f3cadb9c5fc6f7c274112df7b",
+      "bytes": 2599
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1049,8 +1140,8 @@
       "path": "docs/README.md",
       "title": "bOPEN Documentation System",
       "status": "",
-      "sha256": "70fc7f482a52af549042a53fcd2bccddf542c3fc0311c4a389b3255c40474ef1",
-      "bytes": 1829
+      "sha256": "5b5c9f142daedd82fd300d64b4fd4cc727dc5e7b5bf55c4426030b167dfeef9a",
+      "bytes": 1938
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
@@ -1483,8 +1574,8 @@
       "path": "docs/templates/evidence-template.md",
       "title": "<EVIDENCE-ID> \u2014 <Title>",
       "status": "",
-      "sha256": "1d3c40a835fac211354e85f4dae7de1d7552d07e073813ad989ca04afdda9fd0",
-      "bytes": 190
+      "sha256": "b1fea2b427eee9eecbe5f05d6a43ff7d4b9ab3b4324b20cb4af6f4b0bbc2deed",
+      "bytes": 746
     },
     {
       "path": "docs/templates/exception-template.md",
@@ -1492,6 +1583,13 @@
       "status": "",
       "sha256": "311b549fd8ad4558110f76beb60e9019dc6c2439e7162620719d777e811454af",
       "bytes": 174
+    },
+    {
+      "path": "docs/templates/handoff-template.md",
+      "title": "Controlled Work Handoff",
+      "status": "Draft template",
+      "sha256": "de71365cb7ed3b5fa9df710c196c979b74ac9096c8d72854533105c5762f05a0",
+      "bytes": 607
     },
     {
       "path": "docs/templates/requirement-template.md",
@@ -1525,15 +1623,15 @@
       "path": "docs/templates/work-package-template.md",
       "title": "<WORK-PACKAGE-ID> \u2014 <Title>",
       "status": "Proposed",
-      "sha256": "61344b903295a43cc3a05468cf1c367b1c4b5cb98b10ce8bf7c241049b081dd6",
-      "bytes": 260
+      "sha256": "9920d82d42f8433613970d033c9aecebfda3a00f228f38051ebf450a7b1aa223",
+      "bytes": 861
     },
     {
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "8e2fa8a5ab480b6dea2b9e187daa0822adcf849b2f1a4fe47772f4e5a7b3abe9",
-      "bytes": 3196
+      "sha256": "1fea90de484b8e50a4b2178b6c02ceea3f9a4b264449dcdb074a78553d3b9e64",
+      "bytes": 4038
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1641,11 +1739,18 @@
       "bytes": 1712
     },
     {
+      "path": "docs/work-packages/GOV-P0-01.md",
+      "title": "GOV-P0-01 \u2014 Program Goal v0.2 Controlled Baseline and G0 Measurement Contract",
+      "status": "Proposed",
+      "sha256": "d82f66c76d4e1ca33e1b5a00d7caac5ffb6fadd68e4ba96c85db52ba773dcd0a",
+      "bytes": 3614
+    },
+    {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "cdce8ed1c212cbf90f859ff39258664bfb747aa3ef8971b7ebf37c709505c354",
-      "bytes": 2158
+      "sha256": "2bd983667fac5dc3be802b0e164910f0d7958632f8a85d8f18933e5a6a75adc5",
+      "bytes": 2379
     }
   ]
 }
