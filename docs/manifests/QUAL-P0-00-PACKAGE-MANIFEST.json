@@ -1,0 +1,88 @@
+{
+  "manifest_id": "QUAL-P0-00-PACKAGE-MANIFEST",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "work_package_id": "QUAL-P0-00",
+  "generated_at": "2026-07-21T00:00:00+07:00",
+  "generation_base": {
+    "commit_sha": "82ed6b38b118aab14a9961c5d75a33e515cb136a",
+    "tree_sha": "cad6b595fb74a70cc706a78d45778e15524aebd9"
+  },
+  "records": [
+    {
+      "path": "contracts/qualification/common/QUAL-P0-00-SCHEMA-CATALOG.json",
+      "sha256": "6d5bf16df5d9e5f5c54eb23dd1c4b624067e7afbd2ece6553f2ad1b91e33bef4",
+      "bytes": 2629
+    },
+    {
+      "path": "contracts/qualification/common/checker-receipt.schema.json",
+      "sha256": "35b656f56e76f34ad8f992d4926192c6c5efa72c388741d502c06c3e5a870e1b",
+      "bytes": 4662
+    },
+    {
+      "path": "contracts/qualification/common/digest-binding.schema.json",
+      "sha256": "d67689150142815934fa169be708c4f5688f39454f5f03f264b117d4d0340ab2",
+      "bytes": 1010
+    },
+    {
+      "path": "contracts/qualification/common/environment-binding.schema.json",
+      "sha256": "67a04dbf860cedeb9d24497bad144b5a5f5aaf0c9191925c17d003bea86ef3f3",
+      "bytes": 1829
+    },
+    {
+      "path": "contracts/qualification/common/normalized-path.schema.json",
+      "sha256": "dbf6551a444cbaad531fe9c937a0ee30527495196959d6ef35636d0490bb0d53",
+      "bytes": 365
+    },
+    {
+      "path": "contracts/qualification/common/offline-catalog.schema.json",
+      "sha256": "48ea14b132e319a02ad035a85947d7bd9037597766dc2ee0f416f949392075e8",
+      "bytes": 1763
+    },
+    {
+      "path": "contracts/qualification/common/provenance.schema.json",
+      "sha256": "235daca8e4f0c87cab5c4a1f07e0ad56cb80c322f33294387c55538fc7ec9426",
+      "bytes": 1629
+    },
+    {
+      "path": "contracts/qualification/common/qualification-envelope.schema.json",
+      "sha256": "8cb69bb4842eaaf7d8d295f8015b60a1fe0254b9b2e2fad0ccf4305e3757fc8c",
+      "bytes": 7728
+    },
+    {
+      "path": "contracts/qualification/common/redaction.schema.json",
+      "sha256": "c7cf9779492eeadfa7ae89c19093ac0b16806796b70c06dc6829ca1619e2d697",
+      "bytes": 847
+    },
+    {
+      "path": "contracts/qualification/common/repository-binding.schema.json",
+      "sha256": "a72a0ed223212c316af94168cf10f6b5c3610334fd1248da14335bca5d5a2f9b",
+      "bytes": 637
+    },
+    {
+      "path": "docs/evidence/EVD-QUAL-001-qualification-common.md",
+      "sha256": "cc6247531be3d1d0c8c7e300036a88cf81d91bedfed3c1c4a70e73a6fcdf2ec2",
+      "bytes": 4772
+    },
+    {
+      "path": "docs/work-packages/QUAL-P0-00.md",
+      "sha256": "53270d48a05851c0d5ec8c4ad6f0eb528680aa2cc6497cdcbc491116b82c1028",
+      "bytes": 5573
+    },
+    {
+      "path": "tests/qualification/__init__.py",
+      "sha256": "c9b7643dcb68625b5d15f556ddce199feabe3d898a096c6363f034ef0c254091",
+      "bytes": 44
+    },
+    {
+      "path": "tests/qualification/test_qualification_common.py",
+      "sha256": "8b22fa32a3462566fc0b7ae504fbc1f64cbf30ca3b8ec75e9815dec23a40f4ab",
+      "bytes": 17816
+    },
+    {
+      "path": "tools/validate_qualification_common.py",
+      "sha256": "6201f8c8e95a5edef1957ec688524702f9bbe4204ad79f1c1d4ce8b0cf64bf4e",
+      "bytes": 39514
+    }
+  ]
+}

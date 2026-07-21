@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/qualification/common/digest-binding/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Immutable Artifact Digest Binding",
+  "type": "object",
+  "required": ["artifact_id", "path", "sha256", "byte_length", "media_type", "canonicalization", "source_repository_binding"],
+  "properties": {
+    "artifact_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9._-]+$"},
+    "path": {"$ref": "bopen://schemas/qualification/common/normalized-path/0.1.0-draft"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "byte_length": {"type": "integer", "minimum": 0},
+    "media_type": {"type": "string", "minLength": 1},
+    "canonicalization": {"enum": ["RAW_BYTES", "LF_UTF8", "CANONICAL_JSON"]},
+    "source_repository_binding": {
+      "oneOf": [
+        {"$ref": "bopen://schemas/qualification/common/repository-binding/0.1.0-draft"},
+        {"type": "null"}
+      ]
+    }
+  },
+  "additionalProperties": false
+}
