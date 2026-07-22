@@ -66,3 +66,7 @@ No open-source license is granted by this bootstrap pack. See [`LICENSE`](LICENS
 ## PG-G0 authority-docket proposal
 
 [`GOV-P0-02`](docs/work-packages/GOV-P0-02.md) and [`PG-G0-AUTH-001`](docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md) are proposal-only controls. They expose pending human decisions and missing authority actions; they do not accept a work package, pass PG-G0, authorize merge/runtime/release, or open production implementation.
+
+## GOV-P0-04 corrective-candidate review
+
+[`EVD-GOV-006`](docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md) records independent technical `ACCEPT_EXACT_SHA` for candidate `d7d8699326345bb1a2f027e4027fb90d18649022`. The earlier EVD-GOV-005 `REJECT` for `203ed05162dccb2729d4c39e25050817384c3b4b` remains immutable. Neither receipt grants human approval, activation, PG-G0 passage, merge, release, deployment or production authority.

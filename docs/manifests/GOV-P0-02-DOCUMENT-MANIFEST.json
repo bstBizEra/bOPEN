@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-22",
-  "count": 266,
+  "count": 267,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-IDENTITY-REGISTER-DRAFT.json",
@@ -937,8 +937,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "5ba55d0b1f56604c8ddddc69047b95ffb3ca2f42c59f02c7a065348298ef5c09",
-      "bytes": 8475
+      "sha256": "46d82be1ca842aae7ab1e2695bb7878da975eedcda212056466690fccc83f683",
+      "bytes": 8985
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1200,6 +1200,13 @@
       "bytes": 3692
     },
     {
+      "path": "docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md",
+      "title": "EVD-GOV-006 \u2014 Independent Review of GOV-P0-04 Corrective Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "d8415433cd381c3a6e370ecc41d2be966bfcae765c11b97da8aa07f1a2885639",
+      "bytes": 6714
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1217,8 +1224,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "68eea29a98c7c9029b069d0d4fd9ecd25c78592e0cc9419c8d9a761db4c3a9fd",
-      "bytes": 3325
+      "sha256": "9bf2e51bf7b520af6ab36521f9622371a5f1664bce8435cccfbe56f0d41e3389",
+      "bytes": 3569
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1231,7 +1238,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "6ceb7d5c11fbbbae5397a56dd0c64e14d2e81cb02304f4a6fa5da7c681ab8040",
+      "sha256": "c418c3cb5cec63a39648180a853f1b10105361514c16e77c2e2fb532db131b99",
       "bytes": 2243
     },
     {
@@ -1854,8 +1861,8 @@
       "path": "docs/work-packages/GOV-P0-04.md",
       "title": "GOV-P0-04 \u2014 Authority Identity Surfaces, Matrix v0.2 Proposal and Operator Decision Packet",
       "status": "Proposed; not accepted",
-      "sha256": "d15cda399af5c93194fcb35526b993b8651d8f127c27d031a0cf4842102d452b",
-      "bytes": 4944
+      "sha256": "bb2333ef9393227f333446bfbb1101d55f30460e48dc2497e878861057608fb5",
+      "bytes": 5763
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

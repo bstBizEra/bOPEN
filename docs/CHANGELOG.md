@@ -130,3 +130,9 @@
 - Bound identity and delegation evidence existence to the referenced commit.
 - Added negative tests for omitted scopes, malformed scope types, revoked identities, malformed validity and missing historical evidence.
 - Preserved all authority and implementation outcomes as false pending external human authority.
+
+## Append-only entry — 2026-07-22 — GOV-P0-04 corrective-candidate review
+
+- Issued EVD-GOV-006 as independent `ACCEPT_EXACT_SHA` evidence for candidate `d7d8699326345bb1a2f027e4027fb90d18649022` after all focused, full and repository checks passed.
+- Preserved EVD-GOV-005 as an immutable `REJECT` for predecessor `203ed05162dccb2729d4c39e25050817384c3b4b`.
+- Kept GOV-P0-04 proposed, PG-G0 not ready and every activation, merge, release, deployment and production outcome false pending human authority.

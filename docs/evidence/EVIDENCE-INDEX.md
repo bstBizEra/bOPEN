@@ -18,6 +18,7 @@
 | EVD-RES-002 | RES-P0-01/02/03 | R0 workspace, provenance, license and two-operator reproduction | `docs/evidence/EVD-RES-002-r0-control-establishment.md` | G0-G2 pass with conditions |
 | EVD-GOV-001 | GOV-P0-01 | Program Goal v0.2 source-completeness, draft registers and fail-closed PG-G0 readiness | `docs/evidence/EVD-GOV-001-program-g0-controls.md` | Draft; checker pending; PG-G0 NOT_READY |
 | EVD-GOV-002 | GOV-P0-02 | Draft human-authority docket, exact bindings and fail-closed negative tests | `docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md` | Draft maker evidence; exact-SHA checker and human acceptance pending |
+| EVD-GOV-006 | GOV-P0-04 | Independent exact-SHA review of the corrective authority-identity candidate | `docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md` | `ACCEPT_EXACT_SHA` for `d7d8699`; human authority review pending |
 
 ## Append-only EVD-GOV-001 status supersession — 2026-07-21
 
