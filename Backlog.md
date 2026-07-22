@@ -54,3 +54,18 @@ This backlog uses immutable state events. It intentionally contains no mutable t
 **Expected outcome:** GOV-P0-03 yields a bounded technical candidate for independent review while all authority and gate states remain false.
 
 Future state changes must be appended as new events; this event must not be edited, checked off or deleted.
+
+## Event GOV-P0-04-BACKLOG-0001
+
+**Timestamp:** 2026-07-22T23:09:16+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** User-authorized independent exact-SHA review
+**Work package:** GOV-P0-04
+**Roadmap:** Roadmap.md / PROGRAM-PG-G0 NOT_READY / RM-0 ACTIVE_WITH_LIMITS
+**Progress event:** GOV-P0-04-PROGRESS-0001
+**Recap event:** GOV-P0-04-RECAP-0001
+**Evidence:** EVD-GOV-006
+**State:** TECHNICAL_REVIEW_COMPLETE_HUMAN_DISPOSITION_PENDING
+**Reason:** Bind the corrected candidate’s reproducible review outcome to its exact commit and tree.
+**Benefit of old phase:** The rejected `203ed05` receipt remains immutable evidence rather than being overwritten.
+**Expected outcome:** Human review may proceed against `d7d8699` only; no technical receipt self-activates governance.

@@ -54,3 +54,19 @@ Progress is recorded as immutable events. A later event may supersede a prior st
 **Expected outcome:** The root paths become validated locators and ledgers without creating approval, gate, merge, release or production effect.
 
 Future events must be appended below this event and must include the same provenance and cross-link fields.
+
+## Event GOV-P0-04-PROGRESS-0001
+
+**Timestamp:** 2026-07-22T23:09:16+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** User-authorized independent exact-SHA review
+**Work package:** GOV-P0-04
+**Backlog event:** GOV-P0-04-BACKLOG-0001
+**Recap event:** GOV-P0-04-RECAP-0001
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY; ROADMAP/RM-0 ACTIVE_WITH_LIMITS
+**Evidence:** EVD-GOV-006
+**Status:** TECHNICAL_ACCEPT_EXACT_SHA
+**Exact candidate:** `d7d8699326345bb1a2f027e4027fb90d18649022` / tree `64d0b5891a7460067fc472772b49d505e21bc6d3`
+**Reason:** Re-review the corrected candidate without upgrading the immutable EVD-GOV-005 rejection.
+**Benefit of old phase:** EVD-GOV-005 preserved four precise fail-closed defects and forced a new candidate identity.
+**Expected outcome:** Human Engineering Authority can evaluate a reproducible technical receipt while every activation and gate outcome remains false.

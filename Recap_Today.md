@@ -54,3 +54,18 @@ Daily recaps are immutable dated events. Later corrections must be appended and 
 **Expected outcome:** Exact-path alignment becomes testable while GOV-P0-03, PG-G0, merge, release and production implementation remain unapproved.
 
 Future daily or corrective events must be appended below this event without replacing historical text.
+
+## Event GOV-P0-04-RECAP-0001
+
+**Timestamp:** 2026-07-22T23:09:16+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** User-authorized independent exact-SHA review
+**Work package:** GOV-P0-04
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY; ROADMAP/RM-0 ACTIVE_WITH_LIMITS
+**Progress event:** GOV-P0-04-PROGRESS-0001
+**Backlog event:** GOV-P0-04-BACKLOG-0001
+**Evidence:** EVD-GOV-006
+**Summary:** Independently accepted exact corrective candidate `d7d8699` after 12/12 focused authority-identity tests, 44/44 docket tests, 172/172 full tests, repository validation and exact-diff checks passed.
+**Reason:** Issue a new receipt while retaining the `203ed05` rejection unchanged.
+**Benefit of old phase:** The prior rejection supplied an auditable remediation baseline.
+**Expected outcome:** A human authority can separately decide the proposal without confusing technical acceptance with activation or PG-G0 passage.

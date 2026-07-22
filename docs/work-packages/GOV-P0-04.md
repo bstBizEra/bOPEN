@@ -63,3 +63,9 @@ The independent checker (BST-Codex-Motor) reviewed candidate `203ed05162dccb2729
 - **Allowed paths extended:** `tools/validate_authority_identity_register.py`, `tests/governance/test_authority_identity_register.py`, `package.json` (validate chain only), `docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json` (deterministic regeneration only).
 - Corrections per DEC-0013 append-only correction note: docket-compatible identity semantics, status-coupled approval provenance, DIRECT-only authority mode, refreshed manifest, `pnpm validate` green.
 - The `REJECT` receipt for `203ed05` stands; this corrective candidate carries a new SHA and requires a new independent exact-SHA review.
+
+## Independent corrective-candidate review — 2026-07-22
+
+BST-Codex-Motor independently reviewed exact candidate `d7d8699326345bb1a2f027e4027fb90d18649022` (tree `64d0b5891a7460067fc472772b49d505e21bc6d3`) and issued EVD-GOV-006 with verdict `ACCEPT_EXACT_SHA`. RF-001 through RF-004 are technically closed at that immutable SHA; 12/12 authority-identity tests, 44/44 docket tests, 172/172 full tests, `pnpm validate` and the exact-diff check passed. The EVD-GOV-005 `REJECT` for `203ed05` remains unchanged and is bound by review commit `45aae0a9f49c1402f8b976e39deaf8d2894d8be4`.
+
+This technical receipt does not accept this work package, approve DEC-0013, activate authority, pass PG-G0 or authorize merge, release, deployment or production implementation. Human Engineering Authority disposition remains pending.
