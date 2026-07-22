@@ -1,13 +1,34 @@
 {
-  "generated": "2026-07-21",
-  "count": 257,
+  "generated": "2026-07-22",
+  "count": 268,
   "documents": [
+    {
+      "path": "docs/00-governance/AUTHORITY-IDENTITY-REGISTER-DRAFT.json",
+      "title": "",
+      "status": "",
+      "sha256": "0f181be81e72232c6b4aa14e91cbab3e552f00c22a5b1cdcbdf3e3674d30743c",
+      "bytes": 2824
+    },
+    {
+      "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
+      "title": "",
+      "status": "",
+      "sha256": "14671ba675d47dd5aa992bc2b56c2d5dfb10cc6f39ffe48c9be72e8dd8338a24",
+      "bytes": 6452
+    },
     {
       "path": "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
       "title": "BOPEN-GOV-001 \u2014 Program Authority and Delivery-Control Baseline",
       "status": "Draft",
       "sha256": "53f13da99eda57f7c6c9cd817f40666287c6dd774805d26f666f96648a1f422e",
       "bytes": 4325
+    },
+    {
+      "path": "docs/00-governance/PG-G0-AUTH-001-V0.2-REBINDING-PLAN.md",
+      "title": "PG-G0-AUTH-001 v0.2 Rebinding Plan",
+      "status": "Draft; non-effective",
+      "sha256": "91ca730d1c9b74db957c7fc3d4b97db98b7e05fcc5d62815c272812b47c8790b",
+      "bytes": 7139
     },
     {
       "path": "docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md",
@@ -22,6 +43,13 @@
       "status": "Draft; ineffective",
       "sha256": "b45b1c100efda6cceff7b4472297271b9cc8f3d69a05a89b07bd9612a9d4cae9",
       "bytes": 1602
+    },
+    {
+      "path": "docs/00-governance/PG-G0-OPERATOR-DECISION-PACKET.md",
+      "title": "PG-G0 Operator Decision Packet",
+      "status": "Draft (advisory; grants nothing by itself)",
+      "sha256": "13260a3590001211765f41e992456c3f243ab964aa2a3858995f4e8b2b8f9330",
+      "bytes": 5875
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -916,8 +944,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "5ba55d0b1f56604c8ddddc69047b95ffb3ca2f42c59f02c7a065348298ef5c09",
-      "bytes": 8475
+      "sha256": "861e943a8b7620ed474c67011613c3d845c82f0f1ba98c66bb1ae5486d6f9fcc",
+      "bytes": 9094
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1063,8 +1091,15 @@
       "path": "docs/decisions/DEC-0012.md",
       "title": "DEC-0012 \u2014 Reconcile Required Instruction Paths and Generated Manifests",
       "status": "Proposed",
-      "sha256": "1ae2ab7caac542269ee65a648b868273315e379912612e5cf9f988d623e45a2a",
-      "bytes": 2598
+      "sha256": "09f235ba00320960ce7e3d0bb06960db908b192a68dbca92f5abdfe6999199d6",
+      "bytes": 3891
+    },
+    {
+      "path": "docs/decisions/DEC-0013.md",
+      "title": "DEC-0013 \u2014 Authority Matrix v0.2: Missing PG-G0 Actions, Concurrence Reconciliation and Identity Register Adoption",
+      "status": "Proposed",
+      "sha256": "7428ca3949a0e227ad6f8812f3fd2a73b916b51288bf390c08391da6dddbae4f",
+      "bytes": 3250
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1158,6 +1193,27 @@
       "bytes": 12283
     },
     {
+      "path": "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
+      "title": "EVD-GOV-003 \u2014 Exact Root Control Surface Evidence",
+      "status": "Draft maker evidence; independent review pending",
+      "sha256": "3fcb548b990cf6497008692b87813fe99d636ef30ee0e1b396230c6e409495f5",
+      "bytes": 7514
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-004-gov-p0-03-independent-verification.md",
+      "title": "EVD-GOV-004 \u2014 Independent Exact-SHA Verification of GOV-P0-03 Candidate",
+      "status": "Draft",
+      "sha256": "ff2fb11f02d80a61ddf5fd368c28a613a38e575393794bae7b71496569504bf9",
+      "bytes": 3692
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md",
+      "title": "EVD-GOV-005 \u2014 Independent Review of GOV-P0-04 Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "f6d14750289d6a4bf0fbcbe3817a89d95e869ccb7d0a43b93eb2914cf693b7a2",
+      "bytes": 5543
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1175,8 +1231,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "68eea29a98c7c9029b069d0d4fd9ecd25c78592e0cc9419c8d9a761db4c3a9fd",
-      "bytes": 3325
+      "sha256": "3dd992a619e5e48dab1da62c18cfe63dbe5e56888deaa61d0f187357afa0a3a3",
+      "bytes": 3558
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1184,6 +1240,13 @@
       "status": "Active bootstrap control",
       "sha256": "70a0d5200cdf0866bf3ddd3c5d0dacf64242f92fe96ba8c7bd4d797662095173",
       "bytes": 664
+    },
+    {
+      "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
+      "title": "",
+      "status": "",
+      "sha256": "8defcffcf5ad72135321e91a5df64c773f3689bb2640f3c130b098e4321832a8",
+      "bytes": 2243
     },
     {
       "path": "docs/manifests/README.md",
@@ -1793,6 +1856,20 @@
       "status": "Proposed; not accepted",
       "sha256": "24d439101326e672365d66128d4722eee08c197694d42da5ad4842db352aea2c",
       "bytes": 6699
+    },
+    {
+      "path": "docs/work-packages/GOV-P0-03.md",
+      "title": "GOV-P0-03 \u2014 Exact Root Control Surfaces",
+      "status": "Draft; authorized for drafting only; not accepted",
+      "sha256": "ef11b6365cc153ae5f9aa4c3e9495a83e98b3ca84fad45579edecc926de68259",
+      "bytes": 6830
+    },
+    {
+      "path": "docs/work-packages/GOV-P0-04.md",
+      "title": "GOV-P0-04 \u2014 Authority Identity Surfaces, Matrix v0.2 Proposal and Operator Decision Packet",
+      "status": "Proposed; not accepted",
+      "sha256": "6b88404238e1598d749f9c6117c096b8bf8da98c4c08584994db61a76967878f",
+      "bytes": 4654
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

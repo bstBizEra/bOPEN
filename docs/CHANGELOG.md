@@ -130,3 +130,11 @@
 - Bound identity and delegation evidence existence to the referenced commit.
 - Added negative tests for omitted scopes, malformed scope types, revoked identities, malformed validity and missing historical evidence.
 - Preserved all authority and implementation outcomes as false pending external human authority.
+
+## Append-only entry — 2026-07-22 — GOV-P0-04 exact-SHA review
+
+- Recorded EVD-GOV-005 with a technical `REJECT` verdict for exact candidate `203ed05`.
+- Preserved the passing 44-test focused and 160-test full-suite results while disclosing the failing required manifest check.
+- Identified identity-provider/subject, approval-provenance, evidence and delegation incompatibilities between the proposal and docket validator.
+- Repaired the docket test helper to prefer temporary fixtures and added a conflicting-repository-file regression case.
+- Drafted a non-effective PG-G0 authority-docket v0.2 rebinding plan.

@@ -55,3 +55,9 @@ Risk: the pending identity record or matrix proposal is mistaken for an effectiv
 ## Completion record
 
 Maker drafting complete. Independent checker verdict and Human Engineering Authority acceptance pending. This proposed record does not accept itself.
+
+## Codex independent review — 2026-07-22
+
+Independent checker `BST-Codex-Motor` reviewed exact commit `203ed05162dccb2729d4c39e25050817384c3b4b` (tree `24d100482b39d42bb99a84ccd97e63d647d763ad`) and recorded `REJECT` in EVD-GOV-005. The candidate fails the required repository validation because its versioned document manifest is stale, and its proposed authority identity fields, approval-state constraints, evidence requirements and delegation representation do not yet interoperate with the existing docket contract and validator.
+
+The checker separately repaired the disclosed temporary-fixture path preference and drafted a non-effective v0.2 rebinding plan. Those follow-up changes do not alter the immutable candidate verdict. GOV-P0-04 remains proposed and unaccepted; all authority, activation, PG-G0, merge, release, deployment and production outcomes remain false.

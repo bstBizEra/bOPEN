@@ -66,3 +66,7 @@ No open-source license is granted by this bootstrap pack. See [`LICENSE`](LICENS
 ## PG-G0 authority-docket proposal
 
 [`GOV-P0-02`](docs/work-packages/GOV-P0-02.md) and [`PG-G0-AUTH-001`](docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md) are proposal-only controls. They expose pending human decisions and missing authority actions; they do not accept a work package, pass PG-G0, authorize merge/runtime/release, or open production implementation.
+
+## GOV-P0-04 independent review
+
+Exact candidate `203ed05162dccb2729d4c39e25050817384c3b4b` has a technical `REJECT` receipt in [`EVD-GOV-005`](docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md). The separate [v0.2 rebinding plan](docs/00-governance/PG-G0-AUTH-001-V0.2-REBINDING-PLAN.md) is draft and non-effective. GOV-P0-04, DEC-0013, authority activation and PG-G0 remain pending.
