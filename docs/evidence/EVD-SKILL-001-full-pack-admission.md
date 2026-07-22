@@ -78,9 +78,9 @@ revision and a separate independently checked activation decision.
 
 | Review lane | Verdict | Scope |
 | --- | --- | --- |
-| Security and supply chain | SUPERSEDED_PENDING_REVIEW | The 0.1 review is superseded by the 0.2 remediation candidate |
+| Security and supply chain | APPROVE_NOT_EFFECTIVE | Exact candidate `2ada82141f9b003c19cbaa4015694d20f53be72a`; unsigned inactive candidate only |
 | Duplicate, overlap and routing | APPROVE_NOT_EFFECTIVE | Overlaps bounded for inactive candidate admission; activation precision remains unevaluated |
-| Validation and fail-closed behavior | PENDING_EXACT_COMMIT_REVIEW | Re-run against the committed 0.2 remediation candidate |
+| Validation and fail-closed behavior | APPROVE_NOT_EFFECTIVE | Exact candidate `2ada82141f9b003c19cbaa4015694d20f53be72a`; tree `371702b4ccd852597b37eaf762fd5d58a5ad6912` |
 
 These are independent technical advisory verdicts. They do not activate a skill,
 approve publication, pass a program gate, authorize merge or permit deployment.
@@ -115,3 +115,22 @@ The registry binds version `0.1.1` to package digest
 `ff954ce6bac850c6eb68c2d3166a7ab2a64c462853dff283a6ea6ca1fc6b4dff`.
 This remains candidate evidence and confers no activation, gate, merge, release,
 publication or deployment authority.
+
+### Exact-candidate verification
+
+- Implementation commit: `2ada82141f9b003c19cbaa4015694d20f53be72a`
+- Implementation tree: `371702b4ccd852597b37eaf762fd5d58a5ad6912`
+- Architecture package digest: `ff954ce6bac850c6eb68c2d3166a7ab2a64c462853dff283a6ea6ca1fc6b4dff`
+- Supply-chain tree digest: `81f5ed5a5553e9b2e545a1069c66080cd4560808738dd4c2094b473ddc5dff24`
+- Registry: PASS, 34 inactive candidates
+- Repository validation: PASS, 26 mandatory paths
+- Governance tests: PASS, 13/13
+- Architecture tests: PASS, 9/9
+- Architecture package validation: PASS, 37 checks, zero warnings or failures
+- Package runner: PASS, 22 suites, one validator and one 8-check static evaluation
+- Workflow resolution: expected DENY for all three workflows while dependencies remain inactive
+- Independent overlap/routing review: `APPROVE_NOT_EFFECTIVE`
+- Independent validation/supply-chain review: `APPROVE_NOT_EFFECTIVE`
+
+The detached checker worktree remained clean. These results support inactive
+candidate admission only and do not constitute an activation or release decision.
