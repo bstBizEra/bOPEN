@@ -69,3 +69,18 @@ Future daily or corrective events must be appended below this event without repl
 **Reason:** Issue a new receipt while retaining the `203ed05` rejection unchanged.
 **Benefit of old phase:** The prior rejection supplied an auditable remediation baseline.
 **Expected outcome:** A human authority can separately decide the proposal without confusing technical acceptance with activation or PG-G0 passage.
+
+## Event GOV-P0-04-REVIEW-RECAP-0001
+
+**Timestamp:** 2026-07-22T22:29:59+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Explicit user instruction to review exact candidate `203ed05`
+**Work package:** GOV-P0-04 (Proposed; not accepted)
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY
+**Progress event:** GOV-P0-04-REVIEW-PROGRESS-0001
+**Backlog event:** GOV-P0-04-REVIEW-BACKLOG-0001
+**Evidence:** docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md
+**Summary:** Recorded an exact-SHA `REJECT` for `203ed05`, repaired the disclosed test-fixture path preference, added a regression case and drafted the v0.2 docket rebinding sequence.
+**Reason:** The candidate's unit tests pass, but its repository manifest and authority identity contract are not acceptance-ready.
+**Benefit of old phase:** The draft packet provided a useful dependency-ordered operator surface and disclosed the fixture defect early.
+**Expected outcome:** The maker can issue a corrected candidate without conflating technical acceptance with human authority or PG-G0 passage.

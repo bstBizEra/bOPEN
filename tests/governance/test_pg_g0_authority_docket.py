@@ -20,6 +20,7 @@ from tools.validate_pg_g0_authority_docket import (
     build_readiness_report,
     check_report,
     format_report,
+    read_file_at_commit as read_repository_file_at_commit,
     validate_pg_g0_authority_docket,
 )
 
@@ -78,9 +79,10 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         def committed_file(test_root: Path, _commit: str, relative: str):
             if relative in missing_committed_paths:
                 return None
-            source = ROOT / relative
-            if not source.is_file():
-                source = test_root / relative
+            committed = read_repository_file_at_commit(ROOT, _commit, relative)
+            if committed is not None:
+                return committed
+            source = test_root / relative
             return source.read_bytes() if source.is_file() else None
 
         with (
@@ -199,6 +201,29 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         self.assertFalse(report["pg_g0_passed"])
         self.assertFalse(report["production_implementation_authorized"])
         self.assertGreaterEqual(len(report["blockers"]), 10)
+
+    def test_committed_file_mock_prefers_temp_fixture_over_repository_file(self):
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            tempfile.TemporaryDirectory() as repository,
+        ):
+            root = self.make_root(temporary)
+            actor = self.install_identity_registry(
+                root, "human:engineering", "HUMAN-ENGINEERING", "Engineering Authority"
+            )
+            self.install_actor_on_evidence_decision(root, actor)
+
+            repository_root = Path(repository)
+            decoy = repository_root / "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
+            decoy.parent.mkdir(parents=True, exist_ok=True)
+            decoy.write_text("not-json\n", encoding="utf-8")
+
+            with patch(f"{__name__}.ROOT", repository_root):
+                errors = self.validate(root)
+
+        self.assertFalse(
+            any("approved identity registry invalid" in item for item in errors), errors
+        )
 
     def test_missing_docket_fails_closed(self):
         with tempfile.TemporaryDirectory() as temporary:

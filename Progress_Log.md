@@ -70,3 +70,18 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Re-review the corrected candidate without upgrading the immutable EVD-GOV-005 rejection.
 **Benefit of old phase:** EVD-GOV-005 preserved four precise fail-closed defects and forced a new candidate identity.
 **Expected outcome:** Human Engineering Authority can evaluate a reproducible technical receipt while every activation and gate outcome remains false.
+
+## Event GOV-P0-04-REVIEW-PROGRESS-0001
+
+**Timestamp:** 2026-07-22T22:29:59+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Explicit user instruction to review exact candidate `203ed05`, fix the disclosed fixture defect and draft the docket v0.2 rebinding plan
+**Work package:** GOV-P0-04 (Proposed; not accepted)
+**Backlog event:** GOV-P0-04-REVIEW-BACKLOG-0001
+**Recap event:** GOV-P0-04-REVIEW-RECAP-0001
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY; documentation, tests and contract drafting only
+**Evidence:** docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md
+**Status:** EXACT_SHA_REJECT_WITH_BOUNDED_REPAIR
+**Reason:** Candidate `203ed05` fails the required manifest check and proposes identity semantics that cannot satisfy the current docket contract.
+**Benefit of old phase:** The candidate made missing authority surfaces and the fixture fragility explicit without activating them.
+**Expected outcome:** A corrected successor can be reviewed from a green validation baseline while this exact-SHA rejection remains immutable.

@@ -69,3 +69,21 @@ Future state changes must be appended as new events; this event must not be edit
 **Reason:** Bind the corrected candidate’s reproducible review outcome to its exact commit and tree.
 **Benefit of old phase:** The rejected `203ed05` receipt remains immutable evidence rather than being overwritten.
 **Expected outcome:** Human review may proceed against `d7d8699` only; no technical receipt self-activates governance.
+
+## Event GOV-P0-04-REVIEW-BACKLOG-0001
+
+**Timestamp:** 2026-07-22T22:29:59+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Explicit user instruction to review exact candidate `203ed05`
+**Work package:** GOV-P0-04 (Proposed; not accepted)
+**Roadmap:** Roadmap.md / PROGRAM-PG-G0 NOT_READY
+**Progress event:** GOV-P0-04-REVIEW-PROGRESS-0001
+**Recap event:** GOV-P0-04-REVIEW-RECAP-0001
+**README anchor:** README.md / GOV-P0-04 independent review
+**Config:** No global configuration value changed or inferred
+**State:** MAKER_CORRECTION_REQUIRED
+**Open corrections:** Align identity semantics and delegation shape; enforce approval provenance/evidence; refresh deterministic artifacts; obtain a new exact-SHA review.
+**Completed bounded follow-up:** Fixture resolution repair, regression test, EVD-GOV-005 receipt and non-effective docket v0.2 rebinding plan.
+**Reason:** Preserve a precise correction queue without treating technical repair as acceptance or activation.
+**Benefit of old phase:** Draft controls remained fail-closed and protected branches were untouched.
+**Expected outcome:** A new maker candidate can address the four EVD-GOV-005 findings independently of downstream gate decisions.
