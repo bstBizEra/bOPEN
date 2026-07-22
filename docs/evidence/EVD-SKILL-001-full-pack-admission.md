@@ -1,7 +1,7 @@
 # EVD-SKILL-001 — Full skills pack admission evidence
 
 **Document ID:** EVD-SKILL-001  
-**Version:** 0.1  
+**Version:** 0.2
 **Status:** Candidate evidence  
 **Owner:** bOPEN Skills Authority  
 **Updated:** 2026-07-22  
@@ -78,9 +78,9 @@ revision and a separate independently checked activation decision.
 
 | Review lane | Verdict | Scope |
 | --- | --- | --- |
-| Security and supply chain | APPROVE | Candidate admission only; no activation authority |
-| Duplicate, overlap and routing | APPROVE | Non-overlapping ownership and dependency routing |
-| Validation and fail-closed behavior | APPROVE | Candidate-only registry; forged activation denied |
+| Security and supply chain | SUPERSEDED_PENDING_REVIEW | The 0.1 review is superseded by the 0.2 remediation candidate |
+| Duplicate, overlap and routing | APPROVE_NOT_EFFECTIVE | Overlaps bounded for inactive candidate admission; activation precision remains unevaluated |
+| Validation and fail-closed behavior | PENDING_EXACT_COMMIT_REVIEW | Re-run against the committed 0.2 remediation candidate |
 
 These are independent technical advisory verdicts. They do not activate a skill,
 approve publication, pass a program gate, authorize merge or permit deployment.
@@ -94,3 +94,24 @@ approve publication, pass a program gate, authorize merge or permit deployment.
 - Model-level trigger and negative-trigger evaluation remains required before activation.
 - Existing legacy skills without package suites remain `package_validation: not_run`.
 - This candidate-admission validator categorically refuses activation or promotion. No skill may move from inactive candidate until a separate independently approved activation mechanism verifies an exact committed source and immutable decision evidence.
+
+## 0.2 remediation candidate
+
+The successor branch `codex/BOPEN-SKILL-P0-001-remediation-v2` updates
+`io.bizera.bopen.architecture` from candidate version `0.1.0` to `0.1.1`.
+The bounded remediation makes authority resolution fail closed, replaces
+approval-shaped output values with recommendation-only dispositions, removes
+wildcard Python and destructive Make declarations, contains generated outputs,
+blocks candidate release packaging, and enforces closed-world checksum coverage.
+
+The `0.1.1` candidate SBOM, provenance statement and release manifest now share
+the same version and bind a 60-file static inventory. Package validation rejects
+version drift, inventory omissions/additions, per-file hash or size drift, source
+tree digest drift and provenance-subject drift. The architecture suite contains
+9 unit tests, including a negative supply-chain drift test, and the package
+validator reports 37 passing checks.
+
+The registry binds version `0.1.1` to package digest
+`ff954ce6bac850c6eb68c2d3166a7ab2a64c462853dff283a6ea6ca1fc6b4dff`.
+This remains candidate evidence and confers no activation, gate, merge, release,
+publication or deployment authority.

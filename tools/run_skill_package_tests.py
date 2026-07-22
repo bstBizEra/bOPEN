@@ -39,9 +39,19 @@ def main() -> int:
 
     # The architecture evaluator must emit outside the immutable package tree.
     architecture_eval = SKILLS / "bopen-architecture" / "scripts" / "run_static_evals.py"
-    with tempfile.TemporaryDirectory(prefix="bopen-skill-eval-") as temporary:
-        output = Path(temporary) / "static-eval-report.json"
-        if not run([sys.executable, str(architecture_eval), "--output", str(output)], architecture_eval.parents[1]):
+    with tempfile.TemporaryDirectory(prefix="bopen-skill-eval-", dir=ROOT / ".agents") as temporary:
+        output_dir = Path(temporary)
+        if not run(
+            [
+                sys.executable,
+                str(architecture_eval),
+                "--output-dir",
+                str(output_dir),
+                "--output",
+                "static-eval-report.json",
+            ],
+            architecture_eval.parents[1],
+        ):
             failures.append("bopen-architecture: static evaluation")
 
     if failures:

@@ -14,6 +14,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+WORKSPACE = ROOT.parents[2].resolve()
 
 
 def run(command: list[str]) -> dict[str, object]:
@@ -29,16 +30,36 @@ def run(command: list[str]) -> dict[str, object]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, required=True,
-                        help="Report path outside the immutable skill package tree")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        required=True,
+        help="Existing, separately authorized output directory inside the workspace",
+    )
+    parser.add_argument("--output", type=Path, required=True, help="Relative report path beneath --output-dir")
     args = parser.parse_args()
-    output = args.output.resolve()
+    if args.output.is_absolute():
+        parser.error("--output must be relative to --output-dir")
+    if not args.output_dir.exists() or not args.output_dir.is_dir() or args.output_dir.is_symlink():
+        parser.error("--output-dir must be an existing, non-symlink directory")
+    output_dir = args.output_dir.resolve(strict=True)
     try:
-        output.relative_to(ROOT)
+        output_dir.relative_to(WORKSPACE)
+    except ValueError:
+        parser.error(f"--output-dir must remain inside the current workspace: {WORKSPACE}")
+    try:
+        output_dir.relative_to(ROOT)
     except ValueError:
         pass
     else:
-        parser.error("Evaluation output must be outside the hashed skill package tree")
+        parser.error("--output-dir must be outside the immutable skill package tree")
+    output = (output_dir / args.output).resolve()
+    try:
+        output.relative_to(output_dir)
+    except ValueError:
+        parser.error("--output escapes --output-dir")
+    if output.exists() or output.is_symlink():
+        parser.error(f"Refusing to overwrite existing output: {output}")
 
     checks: list[dict[str, object]] = []
     checks.append(run([sys.executable, "scripts/validate_package.py"]))
@@ -53,7 +74,8 @@ def main() -> int:
                 "--type", artifact_type,
                 "--id", "TEST-001",
                 "--title", "Static Evaluation Artifact",
-                "--output", str(artifact_output),
+                "--output-dir", str(tmp_path),
+                "--output", artifact_output.name,
             ])
             if result["pass"] and (not artifact_output.exists() or "TEST-001" not in artifact_output.read_text(encoding="utf-8")):
                 result["pass"] = False
@@ -80,7 +102,7 @@ def main() -> int:
     passed = sum(1 for c in checks if c["pass"])
     report = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "package": "io.bizera.bopen.architecture@0.1.0",
+        "package": "io.bizera.bopen.architecture@0.1.1",
         "evaluationType": "deterministic-static",
         "checksPassed": passed,
         "checksTotal": len(checks),
@@ -93,7 +115,8 @@ def main() -> int:
         "checks": checks,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    with output.open("x", encoding="utf-8") as handle:
+        handle.write(json.dumps(report, indent=2) + "\n")
     print(json.dumps({k: report[k] for k in ("status", "checksPassed", "checksTotal")}, indent=2))
     print(output)
     return 0 if report["status"] == "pass" else 1

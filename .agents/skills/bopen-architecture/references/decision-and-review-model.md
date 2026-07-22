@@ -30,11 +30,14 @@ Use a 1–5 score only when it clarifies tradeoffs. Do not let arithmetic replac
 
 ## Review verdicts
 
-- `APPROVE`: all mandatory controls pass with sufficient evidence.
-- `APPROVE WITH CONDITIONS`: no non-waivable control fails; conditions have owner, deadline, and verification.
-- `RETURN FOR REVISION`: material gaps need design changes.
-- `REJECT`: the option conflicts with the target architecture or creates unacceptable cost/risk.
-- `BLOCK`: tenant isolation, authorization, evidence integrity, or another non-waivable control fails.
+- `RECOMMEND_APPROVAL`: all mandatory controls pass with sufficient evidence.
+- `RECOMMEND_APPROVAL_WITH_CONDITIONS`: no non-waivable control fails; conditions have owner, deadline, and verification.
+- `RECOMMEND_RETURN_FOR_REVISION`: material gaps need design changes.
+- `RECOMMEND_REJECTION`: the option conflicts with the target architecture or creates unacceptable cost/risk.
+- `RECOMMEND_BLOCK`: tenant isolation, authorization, evidence integrity, or another non-waivable control fails.
+
+Every disposition is advisory. An effective decision requires a separate attributable
+authority record bound to the reviewed subject.
 
 ## Required review findings
 

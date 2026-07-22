@@ -18,7 +18,7 @@ spec:
     steps: 80
     toolCalls: 60
   failure:
-    onMissingAuthority: record-assumption-or-block
+    onMissingAuthority: block
     onAmbiguousTenantContext: block
     onNonWaivableControlFailure: block
     onMissingEvidence: do-not-claim-pass

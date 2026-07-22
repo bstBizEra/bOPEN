@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a deterministic ZIP release with inventory, provenance, and checksums."""
+"""Build a deterministic ZIP only from internally consistent approved records."""
 
 from __future__ import annotations
 
@@ -10,7 +10,11 @@ import sys
 import zipfile
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
+WORKSPACE = ROOT.parents[2].resolve()
+OUTPUT_ROOT = (ROOT.parents[1] / "skill-build-output" / ROOT.name).resolve()
 EXCLUDE_PARTS = {".git", ".venv", "__pycache__"}
 EXCLUDE_PREFIXES = ("evals/results/",)
 EXCLUDE_SUFFIXES = {".pyc", ".zip"}
@@ -50,7 +54,6 @@ def tree_digest(files: list[Path]) -> str:
 
 
 def deterministic_zip(output: Path) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
         raise FileExistsError(f"Refusing to overwrite existing release: {output}")
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
@@ -64,26 +67,42 @@ def deterministic_zip(output: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=ROOT / "dist" / "bopen-architecture-0.1.0.zip")
-    args = parser.parse_args()
-    args.output = args.output.resolve()
-    allowed_output = (ROOT / "dist").resolve()
+    parser.parse_args()
+
+    manifest = yaml.safe_load((ROOT / "bopen.skill.yaml").read_text(encoding="utf-8"))
+    status = manifest.get("metadata", {}).get("status")
+    stage = manifest.get("spec", {}).get("lifecycle", {}).get("stage")
+    source_revision = manifest.get("metadata", {}).get("sourceRevision")
+    if status not in {"approved", "published"} or stage not in {"approved", "published"}:
+        parser.error("Release packaging is disabled until independently approved lifecycle metadata is effective")
+    if not isinstance(source_revision, str) or source_revision.upper() in {
+        "UNBOUND",
+        "UNCOMMITTED-CANDIDATE",
+    }:
+        parser.error("Release packaging requires an immutable source revision")
+
     try:
-        args.output.relative_to(allowed_output)
+        OUTPUT_ROOT.relative_to(WORKSPACE)
     except ValueError:
-        parser.error(f"Output must remain inside {allowed_output}")
-    digest_file = args.output.with_suffix(args.output.suffix + ".sha256")
-    if args.output.exists() or digest_file.exists():
-        parser.error(f"Refusing to overwrite release output: {args.output} or {digest_file}")
+        parser.error(f"Release output root must remain inside {WORKSPACE}")
+    if OUTPUT_ROOT.exists() and (not OUTPUT_ROOT.is_dir() or OUTPUT_ROOT.is_symlink()):
+        parser.error(f"Unsafe release output root: {OUTPUT_ROOT}")
+
+    output = OUTPUT_ROOT / f"{ROOT.name}-{manifest['metadata']['version']}.zip"
+    digest_file = output.with_suffix(output.suffix + ".sha256")
+    if output.exists() or digest_file.exists():
+        parser.error(f"Refusing to overwrite release output: {output} or {digest_file}")
 
     initial = subprocess.run([sys.executable, str(ROOT / "scripts/validate_package.py")], cwd=ROOT)
     if initial.returncode != 0:
         return initial.returncode
 
-    deterministic_zip(args.output)
-    digest = sha256(args.output)
-    digest_file.write_text(f"{digest}  {args.output.name}\n", encoding="utf-8")
-    print(args.output.resolve())
+    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    deterministic_zip(output)
+    digest = sha256(output)
+    with digest_file.open("x", encoding="utf-8") as handle:
+        handle.write(f"{digest}  {output.name}\n")
+    print(output)
     print(digest_file.resolve())
     print(f"SHA-256: {digest}")
     return 0

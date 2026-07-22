@@ -31,7 +31,7 @@
                    {
                        "id":  "bopen-architecture",
                        "canonical_id":  "io.bizera.bopen.architecture",
-                       "version":  "0.1.0",
+                       "version":  "0.1.1",
                        "owner":  "bopen-architecture-authority",
                        "risk_class":  "SKR1",
                        "state":  "candidate",
@@ -40,9 +40,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-architecture",
-                       "package_sha256":  "8c050f6cfa58606992f344feace93b6b9caa44920d6c9a6304fa4992591834e3",
+                       "package_sha256":  "ff954ce6bac850c6eb68c2d3166a7ab2a64c462853dff283a6ea6ca1fc6b4dff",
                        "source":  "local-working-tree-snapshot",
-                       "source_revision":  "package-sha256:8c050f6cfa58606992f344feace93b6b9caa44920d6c9a6304fa4992591834e3",
+                       "source_revision":  "package-sha256:ff954ce6bac850c6eb68c2d3166a7ab2a64c462853dff283a6ea6ca1fc6b4dff",
                        "dependencies":  [
 
                                         ],

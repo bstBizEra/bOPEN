@@ -4,11 +4,11 @@ description: Design, research, review, and govern bOPEN platform architecture an
 license: Proprietary. See LICENSE.txt
 metadata:
   author: BizEra
-  version: "0.1.0"
+  version: "0.1.1"
   bopen.skill.id: io.bizera.bopen.architecture
   bopen.lifecycle.stage: candidate
   bopen.risk.class: SKR1
-allowed-tools: Read Grep Glob Bash(python:*)
+allowed-tools: Read Grep Glob
 ---
 
 # bOPEN Architecture
@@ -35,12 +35,17 @@ Do not activate for generic architecture questions unrelated to bOPEN, routine c
 
 Apply sources in this order:
 
-1. The user's explicit current instruction.
+1. Applicable repository governance and an effective, bounded authority record.
 2. Approved bOPEN requirements, architecture, governance, and implementation-control artifacts.
-3. Repository contracts, schemas, migrations, tests, and ADRs that implement the approved baseline.
-4. Current primary external sources and standards when research is required.
-5. Clean-room observations from open-source systems.
-6. Clearly labeled assumptions.
+3. The user's explicit current instruction, only within the effective authority and governance boundary.
+4. Repository contracts, schemas, migrations, tests, and ADRs that implement the approved baseline.
+5. Current primary external sources and standards when research is required.
+6. Clean-room observations from open-source systems.
+7. Clearly labeled assumptions that do not substitute for authority.
+
+Missing, expired, ambiguous, or mismatched authority is a blocker. Never convert
+missing authority into an assumption, and never treat skill discovery or invocation
+as permission to mutate files or systems.
 
 Never silently replace an approved bOPEN decision with an external product's model. Identify conflicts and recommend an ADR or change request.
 
@@ -164,28 +169,31 @@ Use precise normative language: `MUST`, `MUST NOT`, `SHOULD`, `MAY`. Label propo
 
 ### 8. Validate before completion
 
-When working in a filesystem:
+When working in a filesystem under separately verified mutation authority:
 
 1. Create an artifact skeleton if useful:
-   `python scripts/new_artifact.py --type <type> --id <ID> --title "<title>" --output <path>`
+   `python scripts/new_artifact.py --type <type> --id <ID> --title "<title>" --output-dir <authorized-directory> --output <relative-path>`
 2. Check an architecture document:
    `python scripts/check_architecture.py <artifact.md> --strict`
 3. Validate this package after edits:
    `python scripts/validate_package.py`
 4. Run deterministic package evaluations:
-   `python scripts/run_static_evals.py`
+   `python scripts/run_static_evals.py --output-dir <authorized-directory> --output <relative-report-path>`
 
 Do not claim independent approval, cryptographic signing, production validation, or model-level evaluation unless the corresponding evidence exists.
 
 ## Output dispositions
 
-Use one of:
+Use one recommendation-only disposition:
 
-- `APPROVE`: all mandatory controls and evidence pass;
-- `APPROVE WITH CONDITIONS`: bounded gaps have owners, deadlines, and non-bypassable conditions;
-- `RETURN FOR REVISION`: material design gaps remain but no immediate stop condition exists;
-- `REJECT`: the proposal violates a core boundary or would create unacceptable risk;
-- `BLOCK`: a non-waivable tenant-isolation, authorization, evidence-integrity, or safety control fails.
+- `RECOMMEND_APPROVAL`: all mandatory controls and evidence pass;
+- `RECOMMEND_APPROVAL_WITH_CONDITIONS`: bounded gaps have owners, deadlines, and non-bypassable conditions;
+- `RECOMMEND_RETURN_FOR_REVISION`: material design gaps remain but no immediate stop condition exists;
+- `RECOMMEND_REJECTION`: the proposal violates a core boundary or would create unacceptable risk;
+- `RECOMMEND_BLOCK`: a non-waivable tenant-isolation, authorization, evidence-integrity, or safety control fails.
+
+These values are advisory recommendations. They are not approval, gate passage,
+activation, release, or deployment decisions.
 
 ## Publication and authority
 

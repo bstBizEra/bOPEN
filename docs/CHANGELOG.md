@@ -1,5 +1,14 @@
 # Documentation Changelog
 
+## 2026-07-22 — BOPEN-SKILL-P0-001 remediation v2
+
+- Advanced `bopen-architecture` to inactive candidate version `0.1.1`.
+- Made helper outputs fail closed, non-overwriting and workspace-contained.
+- Replaced approval-shaped machine dispositions with recommendation-only values.
+- Added closed-world checksum validation and negative safety tests.
+- Bound the `0.1.1` SBOM, provenance and release inventory to the current candidate tree.
+- Corrected overlap evidence to distinguish bounded candidate routing from activation precision.
+
 ## 2026-07-22 — BOPEN-SKILL-P0-001 candidate admission
 
 - Installed and reconciled 34 repo-local skills for cross-harness discovery.

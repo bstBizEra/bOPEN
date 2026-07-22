@@ -2,7 +2,7 @@
 
 **Package:** `bopen-architecture`  
 **Canonical ID:** `io.bizera.bopen.architecture`  
-**Version:** `0.1.0`  
+**Version:** `0.1.1`
 **Lifecycle stage:** `candidate`
 **Distribution status:** internal candidate; not independently approved or signed
 
@@ -55,7 +55,8 @@ For user-level installation, copy it to:
 $HOME/.agents/skills/bopen-architecture/
 ```
 
-Invoke it explicitly as `$bopen-architecture`, or let a compatible client select it from the `SKILL.md` description.
+The candidate is inactive and advisory-only. Explicit mention may select it for
+evaluation or analysis, but selection does not authorize tools or mutation.
 
 ## Validate and test
 
@@ -63,7 +64,7 @@ Invoke it explicitly as `$bopen-architecture`, or let a compatible client select
 python -m pip install -r requirements.txt
 python scripts/validate_package.py
 python -m unittest discover -s tests -v
-python scripts/run_static_evals.py
+python scripts/run_static_evals.py --output-dir ../authorized-evidence --output static-eval-report.json
 ```
 
 Or:
@@ -71,7 +72,6 @@ Or:
 ```bash
 make validate
 make test
-make eval
 ```
 
 ## Create an architecture artifact
@@ -81,7 +81,8 @@ python scripts/new_artifact.py \
   --type architecture-design \
   --id BOPEN-ARCH-002 \
   --title "bOPEN Skills Registry Architecture" \
-  --output ./BOPEN-ARCH-002.md
+  --output-dir ../authorized-artifacts \
+  --output BOPEN-ARCH-002.md
 ```
 
 Check it against the baseline:
@@ -90,13 +91,15 @@ Check it against the baseline:
 python scripts/check_architecture.py ./BOPEN-ARCH-002.md --strict
 ```
 
-## Build a release archive
+## Release packaging
 
 ```bash
-python scripts/package_release.py --output ../bopen-architecture-0.1.0.zip
+python scripts/package_release.py
 ```
 
-The packager validates the package, creates provenance and an inventory manifest, writes `SHA256SUMS`, creates a deterministic ZIP, and writes a sibling `.sha256` file.
+The packager fails closed while lifecycle metadata is candidate or source-unbound.
+Only a separately authorized release process may make approved lifecycle metadata
+effective and invoke packaging. It never overwrites an existing output.
 
 ## Governance status
 

@@ -31,6 +31,13 @@ SECRET_PATTERNS = {
 }
 TEXT_SUFFIXES = {".md", ".txt", ".yaml", ".yml", ".json", ".py", ".toml", ".csv", ""}
 IGNORED_PARTS = {"__pycache__", ".git", ".venv", "evals/results"}
+CHECKSUM_EXCLUDED_PARTS = {"__pycache__", ".git", ".venv"}
+CHECKSUM_EXCLUDED_PREFIXES = ("evals/results/",)
+CHECKSUM_EXCLUDED_SUFFIXES = {".pyc", ".zip"}
+SUPPLY_CHAIN_DYNAMIC_FILES = {
+    "supply-chain/provenance.intoto.jsonl",
+    "supply-chain/release-manifest.json",
+}
 
 
 class Report:
@@ -285,11 +292,29 @@ def validate_paths_and_secrets(report: Report, root: Path) -> None:
         report.ok("No high-confidence embedded secret patterns detected")
 
 
+def expected_checksum_paths(root: Path) -> set[str]:
+    expected: set[str] = set()
+    for path in root.rglob("*"):
+        if not path.is_file() or path.is_symlink():
+            continue
+        relative = path.relative_to(root)
+        rel = relative.as_posix()
+        if any(part in CHECKSUM_EXCLUDED_PARTS for part in relative.parts):
+            continue
+        if rel.startswith(CHECKSUM_EXCLUDED_PREFIXES):
+            continue
+        if path.suffix in CHECKSUM_EXCLUDED_SUFFIXES or path.name in {".DS_Store", "SHA256SUMS"}:
+            continue
+        expected.add(rel)
+    return expected
+
+
 def validate_checksums(report: Report, root: Path) -> None:
     checksum_file = root / "SHA256SUMS"
     if not checksum_file.exists():
         report.warning("SHA256SUMS not present; run package_release.py for a release candidate")
         return
+    starting_errors = len(report.errors)
     listed: set[str] = set()
     for line_no, line in enumerate(checksum_file.read_text(encoding="utf-8").splitlines(), 1):
         if not line.strip():
@@ -299,16 +324,145 @@ def validate_checksums(report: Report, root: Path) -> None:
             report.error(f"Invalid SHA256SUMS line {line_no}")
             continue
         expected, rel = match.groups()
+        relative = Path(rel)
+        if relative.is_absolute() or "\\" in rel or any(part in {"", ".", ".."} for part in relative.parts):
+            report.error(f"Unsafe checksum path on line {line_no}: {rel}")
+            continue
+        if rel in listed:
+            report.error(f"Duplicate checksum target on line {line_no}: {rel}")
+            continue
         listed.add(rel)
-        path = root / rel
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root.resolve())
+        except ValueError:
+            report.error(f"Checksum target escapes package root: {rel}")
+            continue
         if not path.is_file():
             report.error(f"Checksum target missing: {rel}")
             continue
         actual = hashlib.sha256(path.read_bytes()).hexdigest()
         if actual != expected:
             report.error(f"Checksum mismatch: {rel}")
-    if not report.errors:
-        report.ok(f"Verified {len(listed)} checksums")
+
+    expected_paths = expected_checksum_paths(root)
+    for rel in sorted(expected_paths - listed):
+        report.error(f"Unlisted package file: {rel}")
+    for rel in sorted(listed - expected_paths):
+        report.error(f"Checksum entry is not a releasable package file: {rel}")
+
+    if len(report.errors) == starting_errors:
+        report.ok(f"Verified checksum closure for {len(listed)} package files")
+
+
+def validate_supply_chain(report: Report, root: Path) -> None:
+    starting_errors = len(report.errors)
+    try:
+        skill_manifest = load_yaml(root / "bopen.skill.yaml")
+        release_manifest = load_json(root / "supply-chain/release-manifest.json")
+        sbom = load_json(root / "supply-chain/sbom.spdx.json")
+        provenance_lines = [
+            line
+            for line in (root / "supply-chain/provenance.intoto.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        ]
+        if len(provenance_lines) != 1:
+            raise ValueError("provenance.intoto.jsonl must contain exactly one statement")
+        provenance = json.loads(provenance_lines[0])
+    except Exception as exc:
+        report.error(f"Cannot validate supply-chain records: {exc}")
+        return
+
+    metadata = skill_manifest.get("metadata", {}) if isinstance(skill_manifest, dict) else {}
+    package_version = str(metadata.get("version", ""))
+    package_id = str(metadata.get("id", ""))
+    package_name = str(metadata.get("name", ""))
+    lifecycle = str(metadata.get("status", ""))
+
+    expected_identity = {
+        "packageId": package_id,
+        "name": package_name,
+        "version": package_version,
+        "lifecycleStage": lifecycle,
+    }
+    for key, expected in expected_identity.items():
+        if str(release_manifest.get(key, "")) != expected:
+            report.error(f"Release manifest {key} mismatch: expected {expected}")
+
+    spdx_package = next(
+        (
+            item
+            for item in sbom.get("packages", [])
+            if isinstance(item, dict) and item.get("SPDXID") == "SPDXRef-Package-bopen-architecture"
+        ),
+        None,
+    )
+    if not isinstance(spdx_package, dict) or str(spdx_package.get("versionInfo", "")) != package_version:
+        report.error(f"SBOM package version mismatch: expected {package_version}")
+    if sbom.get("name") != f"{package_name}-skill-{package_version}":
+        report.error("SBOM document name does not match package name/version")
+    if f"/{package_version}/" not in str(sbom.get("documentNamespace", "")):
+        report.error("SBOM document namespace does not bind the package version")
+
+    build = provenance.get("predicate", {}).get("buildDefinition", {})
+    provenance_version = build.get("externalParameters", {}).get("version")
+    if str(provenance_version) != package_version:
+        report.error(f"Provenance version mismatch: expected {package_version}")
+
+    expected_paths = expected_checksum_paths(root) - SUPPLY_CHAIN_DYNAMIC_FILES
+    inventory = release_manifest.get("files")
+    if not isinstance(inventory, list):
+        report.error("Release manifest files must be an array")
+        inventory = []
+    inventory_by_path: dict[str, dict[str, Any]] = {}
+    for item in inventory:
+        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+            report.error("Release manifest contains an invalid file record")
+            continue
+        rel = item["path"]
+        if rel in inventory_by_path:
+            report.error(f"Release manifest contains duplicate path: {rel}")
+            continue
+        inventory_by_path[rel] = item
+
+    inventory_paths = set(inventory_by_path)
+    for rel in sorted(expected_paths - inventory_paths):
+        report.error(f"Release manifest missing package file: {rel}")
+    for rel in sorted(inventory_paths - expected_paths):
+        report.error(f"Release manifest contains unexpected package file: {rel}")
+
+    tree = hashlib.sha256()
+    for rel in sorted(expected_paths):
+        path = root / rel
+        data = path.read_bytes()
+        digest = hashlib.sha256(data).hexdigest()
+        record = inventory_by_path.get(rel, {})
+        if record.get("sha256") != digest:
+            report.error(f"Release manifest checksum mismatch: {rel}")
+        if record.get("size") != len(data):
+            report.error(f"Release manifest size mismatch: {rel}")
+        tree.update(rel.encode("utf-8"))
+        tree.update(b"\0")
+        tree.update(bytes.fromhex(digest))
+
+    source_tree_digest = tree.hexdigest()
+    if release_manifest.get("sourceTreeDigest") != source_tree_digest:
+        report.error("Release manifest sourceTreeDigest mismatch")
+    subjects = provenance.get("subject", [])
+    subject_digest = None
+    if isinstance(subjects, list) and len(subjects) == 1 and isinstance(subjects[0], dict):
+        subject_digest = subjects[0].get("digest", {}).get("sha256")
+    if subject_digest != source_tree_digest:
+        report.error("Provenance subject digest does not match release manifest tree")
+
+    expected_exclusions = ["SHA256SUMS", *sorted(SUPPLY_CHAIN_DYNAMIC_FILES)]
+    if release_manifest.get("inventoryExclusions") != expected_exclusions:
+        report.error("Release manifest inventoryExclusions mismatch")
+
+    if len(report.errors) == starting_errors:
+        report.ok(f"Supply-chain records bind version {package_version} and {len(expected_paths)} files")
 
 
 def main() -> int:
@@ -327,6 +481,7 @@ def main() -> int:
     validate_examples_and_evals(report, root)
     validate_links(report, root)
     validate_paths_and_secrets(report, root)
+    validate_supply_chain(report, root)
     validate_checksums(report, root)
 
     if args.json_output:

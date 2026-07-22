@@ -3,7 +3,7 @@ kind: Skill
 metadata:
   id: io.bizera.bopen.architecture
   name: bopen-architecture
-  version: 0.1.0
+  version: 0.1.1
   owner: bopen-architecture-authority
   classification: internal
   status: candidate

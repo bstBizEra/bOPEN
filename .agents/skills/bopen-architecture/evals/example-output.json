@@ -3,7 +3,7 @@
   "title": "bOPEN Skills Registry and Tenant Activation Architecture",
   "version": "0.1",
   "status": "candidate",
-  "disposition": "APPROVE WITH CONDITIONS",
+  "disposition": "RECOMMEND_APPROVAL_WITH_CONDITIONS",
   "executiveSummary": "Implement the registry as a bounded modular-monolith module, preserve immutable skill versions, and separate publication, tenant entitlement, enablement, agent binding, and per-tool authorization.",
   "scope": {
     "phase": "P0 pilot",

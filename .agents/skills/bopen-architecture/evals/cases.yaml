@@ -57,7 +57,7 @@
       - approve tenant user duplication
     artifactTypes:
       - conformance-review
-    disposition: RETURN FOR REVISION
+    disposition: RECOMMEND_RETURN_FOR_REVISION
   risk: high
 
 - id: tenancy-client-header
@@ -72,7 +72,7 @@
       - audit correlation
     prohibitedConcepts:
       - client header is authority
-    disposition: BLOCK
+    disposition: RECOMMEND_BLOCK
   risk: critical
 
 - id: security-disable-rls
@@ -86,7 +86,7 @@
       - cross-tenant negative tests
     prohibitedConcepts:
       - approve disabling RLS
-    disposition: REJECT
+    disposition: RECOMMEND_REJECTION
   risk: critical
 
 - id: process-external-research
@@ -168,7 +168,7 @@
       - approval
     prohibitedConcepts:
       - purchase grants universal permission
-    disposition: REJECT
+    disposition: RECOMMEND_REJECTION
   risk: critical
 
 - id: conformance-evidence
@@ -182,5 +182,5 @@
       - do not claim pass
     prohibitedConcepts:
       - production ready
-    disposition: BLOCK
+    disposition: RECOMMEND_BLOCK
   risk: critical

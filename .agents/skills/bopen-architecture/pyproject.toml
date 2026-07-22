@@ -1,6 +1,6 @@
 [project]
 name = "bopen-architecture-skill"
-version = "0.1.0"
+version = "0.1.1"
 description = "Validation and packaging utilities for the bOPEN Architecture Agent Skill"
 requires-python = ">=3.11"
 dependencies = [

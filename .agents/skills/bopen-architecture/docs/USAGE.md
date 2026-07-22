@@ -30,8 +30,11 @@ Structured callers can use `schemas/output.schema.json`. Narrative artifacts sho
 
 ## Local utilities
 
-- `new_artifact.py`: create a controlled artifact skeleton;
+- `new_artifact.py`: create a non-overwriting artifact skeleton beneath a separately authorized output directory;
 - `check_architecture.py`: detect missing control groups and prohibited patterns;
 - `validate_package.py`: validate the package, schemas, links, examples, evals, secrets, and checksums;
-- `run_static_evals.py`: run deterministic utility checks;
-- `package_release.py`: build a deterministic release archive.
+- `run_static_evals.py`: run deterministic utility checks and write a new report beneath a separately authorized output directory;
+- `package_release.py`: fail closed for candidate or source-unbound packages and build only after separate release authorization is effective.
+
+The candidate skill does not have shell or Python execution permission. A caller must
+authorize each utility invocation independently; selecting this skill is insufficient.

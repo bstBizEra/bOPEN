@@ -15,7 +15,9 @@ OBSERVED
   -> DEPRECATED | SUSPENDED | REVOKED
 ```
 
-This package is at `VALIDATED`: its structure and deterministic checks pass. It is not yet independently evaluated, approved, signed, or published.
+This package is a `CANDIDATE`: deterministic checks may pass, but that does not promote
+its lifecycle. It is inactive and has not been independently evaluated, approved,
+signed, or published.
 
 ## Promotion requirements
 

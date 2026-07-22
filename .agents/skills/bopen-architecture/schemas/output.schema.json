@@ -33,19 +33,16 @@
       "enum": [
         "draft",
         "candidate",
-        "review",
-        "approved",
-        "superseded",
-        "rejected"
+        "review"
       ]
     },
     "disposition": {
       "enum": [
-        "APPROVE",
-        "APPROVE WITH CONDITIONS",
-        "RETURN FOR REVISION",
-        "REJECT",
-        "BLOCK"
+        "RECOMMEND_APPROVAL",
+        "RECOMMEND_APPROVAL_WITH_CONDITIONS",
+        "RECOMMEND_RETURN_FOR_REVISION",
+        "RECOMMEND_REJECTION",
+        "RECOMMEND_BLOCK"
       ]
     },
     "executiveSummary": {

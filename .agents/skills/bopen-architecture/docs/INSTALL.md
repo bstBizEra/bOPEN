@@ -35,5 +35,5 @@ The skill's prose instructions remain usable without Python dependencies; the de
 ```bash
 python scripts/validate_package.py
 python -m unittest discover -s tests -v
-python scripts/run_static_evals.py
+python scripts/run_static_evals.py --output-dir ../authorized-evidence --output static-eval-report.json
 ```
