@@ -3,13 +3,6 @@
   "count": 270,
   "documents": [
     {
-      "path": "docs/00-governance/AUTHORITY-IDENTITY-REGISTER-DRAFT.json",
-      "title": "",
-      "status": "",
-      "sha256": "25ba05e8dcf16bf136f55c356ed5f30b5267955101d7061f075e0cf62e378041",
-      "bytes": 3053
-    },
-    {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
       "title": "",
       "status": "",
@@ -136,6 +129,13 @@
       "bytes": 267
     },
     {
+      "path": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json",
+      "title": "",
+      "status": "",
+      "sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+      "bytes": 3135
+    },
+    {
       "path": "docs/00-governance/registers/AUTHORITY-MATRIX.json",
       "title": "",
       "status": "",
@@ -188,8 +188,8 @@
       "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
       "title": "PG-G0 Signing Pass 1 \u2014 Operator Dispositions and Prepared Confirmations",
       "status": "Draft (partially disposed; remaining items pending explicit operator confirmation)",
-      "sha256": "e515cd18683d43efd3b91b778fd128fd954efeca4f7c6dca24e29b3f1064898b",
-      "bytes": 5547
+      "sha256": "2fe927e728c1be060a413b5be096007455cef81e4a3bb9028fddab316b924407",
+      "bytes": 7250
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -1098,8 +1098,8 @@
       "path": "docs/decisions/DEC-0012.md",
       "title": "DEC-0012 \u2014 Reconcile Required Instruction Paths and Generated Manifests",
       "status": "Proposed",
-      "sha256": "09f235ba00320960ce7e3d0bb06960db908b192a68dbca92f5abdfe6999199d6",
-      "bytes": 3891
+      "sha256": "10023fe43191d702a0703b30c820ce6ea572209165481054239eeca4f9c66325",
+      "bytes": 4658
     },
     {
       "path": "docs/decisions/DEC-0013.md",
@@ -1259,7 +1259,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "041852962d7cba83c059defecec8a9d5185fa1c85bbf0f4e2e271faae03a2ffa",
+      "sha256": "e5928ebe928b18d8cc999869cf7bc272ca170a0339b769ce85d65794c60f22d4",
       "bytes": 2243
     },
     {
@@ -1868,15 +1868,15 @@
       "path": "docs/work-packages/GOV-P0-02.md",
       "title": "GOV-P0-02 \u2014 PG-G0 Authority Docket and Approval Envelope",
       "status": "Proposed; not accepted",
-      "sha256": "24d439101326e672365d66128d4722eee08c197694d42da5ad4842db352aea2c",
-      "bytes": 6699
+      "sha256": "20fd63289022a51318b07ee9f4c531bed49e0ca401148df1a4a7c30e3c0840df",
+      "bytes": 7382
     },
     {
       "path": "docs/work-packages/GOV-P0-03.md",
       "title": "GOV-P0-03 \u2014 Exact Root Control Surfaces",
       "status": "Draft; authorized for drafting only; not accepted",
-      "sha256": "ef11b6365cc153ae5f9aa4c3e9495a83e98b3ca84fad45579edecc926de68259",
-      "bytes": 6830
+      "sha256": "1a42d342aea9ab91dbfb689e0263b83e46215c55100f6f25c1d1790505594d9d",
+      "bytes": 7711
     },
     {
       "path": "docs/work-packages/GOV-P0-04.md",

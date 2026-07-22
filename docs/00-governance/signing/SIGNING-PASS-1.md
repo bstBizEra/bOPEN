@@ -56,6 +56,21 @@ Confirm items individually or as numbered groups ("I confirm B1–B4"). On confi
 - **B8 — Sign PG-G0-DEC-001…005** (DEC-0007, GOV-P0-01, DEC-0010, BOPEN-GOAL-001 v0.2, EVD-GOV-001) as final authority with all concurrences, in the rebound docket.
 - **B9 — PASS_PG_G0** once the readiness report returns `ready_for_human_gate_decision: true`, with a fresh independent conformance receipt.
 
+## Append-only Batch 1 execution record — 2026-07-22
+
+**Source:** explicit operator confirmation ("Confirm all of Batch 1") recorded in the current Claude Code session, 2026-07-22.
+**Signed as:** HUMAN-OPERATOR-001 at 2026-07-22T23:35:00+07:00.
+**Technical precondition satisfied:** BST-Codex-Motor accepted corrective candidate `d7d8699` via EVD-GOV-006 (`ACCEPT_EXACT_SHA`, receipt commit `b738cd0`); the EVD-GOV-005 `REJECT` for `203ed05` remains bound at `45aae0a`. Both review branches are merged into this signing branch.
+
+| Item | Outcome |
+|---|---|
+| B1 | **Executed.** Identity register approved (v0.1.0) and moved to `registers/AUTHORITY-IDENTITY-REGISTER.json`; Codex's fixture repair is in this lineage. |
+| B4 (partial) | **Executed.** GOV-P0-02 and GOV-P0-03 accepted (append-only records in each work package). GOV-P0-01 and GOV-P0-04 acceptance remain batched with docket v0.2 (drift-bound artifacts). |
+| B6 | **Confirmed, deferred.** The GOV-P0-03 validator pins `Status: Draft` / `Lifecycle: Inactive` on the five root ledgers and enforces byte-prefix append-only history, so activation requires a reviewed validator/schema revision in the docket v0.2 batch. The operator's activation intent is recorded here and in the GOV-P0-03 acceptance note. DEC-0012 A1 disposition appended to `DEC-0012.md` with the package manifest rebound in the same commit. |
+| B7 | **No action needed.** Research G0 (with G1 and G2) already passed with conditions at the R0 gate decision of 2026-07-13 (EVD-RES-002, DEC-0009); the bootstrap-era status file predated this lineage. |
+
+Remaining for Batch 2 (atomic with docket v0.2): B2, B3, B4 (GOV-P0-01, GOV-P0-04), B5, B6 activation, then B8 and B9.
+
 ## Boundary
 
 This document prepares and records dispositions. It cannot approve its own Part B items; prepared values are ineffective until the operator's explicit confirmation is recorded. PG-G0 remains `NOT_READY`. Production kernel implementation remains separately gated regardless of PG-G0 passage.

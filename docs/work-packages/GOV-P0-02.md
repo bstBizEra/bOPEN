@@ -87,3 +87,13 @@ The three additional allowed paths are exactly `.gitignore`, `README.md`, and `t
 Two independent non-maker checkers returned `ACCEPT_EXACT_SHA` for commit `99192c9532f04052cd81c51b1f4f925b18a53fb5`, tree `7e2ecc3dac9ca20ab9249dd057945888de4f9c5f`: `/root/fresh_schema_acceptance` for authority/schema adversarial behavior and `/root/second_fresh_traceability` for traceability/evidence consistency. The focused suite passed 37/37, the full suite passed 140/140, and the repository validation chain passed.
 
 This satisfies the technical exact-SHA checker criterion only. GOV-P0-02 remains Proposed and unaccepted; Human Engineering Authority disposition, PG-G0, merge, release, runtime and production implementation all remain unauthorized.
+
+## Append-only acceptance record — 2026-07-22
+
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Accepted at:** 2026-07-22T23:35:00+07:00
+**Acceptance ref:** docs/00-governance/signing/SIGNING-PASS-1.md#B4
+**Concurrence:** Owning Artifact Authority — same operator per the approved identity register solo-operator independence disclosure
+**Technical basis:** exact-SHA checker receipts recorded in EVD-GOV-002
+
+Source: explicit operator confirmation recorded in the current Claude Code session (2026-07-22). This acceptance is a work-package disposition only; it approves no gate, no register content beyond its own record, and no production implementation.

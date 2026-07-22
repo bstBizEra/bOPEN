@@ -105,3 +105,13 @@ Independent exact-SHA technical review remains required. This note does not acce
 Independent review rejected the first maker commit because newline normalization allowed distinct raw bytes to share a package-manifest digest and text-mode Git output concealed line-ending-only history rewrites. The bounded successor replaces both comparisons with raw-byte operations and adds dedicated negative tests for CRLF manifest drift and CRLF-to-LF append-only rewriting.
 
 Reason: manifest and append-only controls must bind repository bytes exactly. Benefit of the prior phase: all non-byte governance invariants and atomic genesis behavior already passed. Expected outcome: a successor exact-SHA checker can reproduce fail-closed byte integrity without broadening package scope or authority.
+
+## Append-only acceptance record — 2026-07-22
+
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Accepted at:** 2026-07-22T23:35:00+07:00
+**Acceptance ref:** docs/00-governance/signing/SIGNING-PASS-1.md#B4
+**Concurrence:** Owning Artifact Authority — same operator per the approved identity register solo-operator independence disclosure
+**Technical basis:** independent exact-SHA receipt EVD-GOV-004 (Claude) for candidate a29ec1d8ab28d38621dc4db176b7b2abf2ea44cb
+
+Source: explicit operator confirmation recorded in the current Claude Code session (2026-07-22). Root-ledger activation (packet item B6) is confirmed by the operator but deferred: the GOV-P0-03 validator pins Status Draft / Lifecycle Inactive, so activation requires a reviewed validator revision in the docket v0.2 batch. This acceptance approves no gate and no production implementation.

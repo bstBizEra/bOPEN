@@ -25,9 +25,29 @@ from tools.validate_authority_identity_register import (  # noqa: E402
 
 
 class AuthorityIdentityRegisterTests(unittest.TestCase):
+    @staticmethod
+    def load_live_register() -> dict:
+        source = ROOT / BOUND_PATH
+        if not source.is_file():
+            source = ROOT / DRAFT_PATH
+        return json.loads(source.read_text(encoding="utf-8"))
+
+    @classmethod
+    def draft_baseline(cls) -> dict:
+        register = cls.load_live_register()
+        register["status"] = "draft"
+        if not register["version"].endswith("-draft"):
+            register["version"] += "-draft"
+        register["approved_by"] = None
+        register["approved_at"] = None
+        register["approval_ref"] = None
+        for entry in register["entries"]:
+            entry["status"] = "pending"
+        return register
+
     def make_root(self, temporary: str) -> Path:
         root = Path(temporary)
-        register = json.loads((ROOT / DRAFT_PATH).read_text(encoding="utf-8"))
+        register = self.draft_baseline()
         referenced = set()
         for entry in register["entries"]:
             referenced.update(entry["subject_refs"])
@@ -57,6 +77,9 @@ class AuthorityIdentityRegisterTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             self.assertEqual(validate_authority_identity_register(root), [])
+
+    def test_live_repository_register_passes(self):
+        self.assertEqual(validate_authority_identity_register(ROOT), [])
 
     def test_missing_register_fails_closed(self):
         with tempfile.TemporaryDirectory() as temporary:

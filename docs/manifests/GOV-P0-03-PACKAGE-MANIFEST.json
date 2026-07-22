@@ -46,8 +46,8 @@
     },
     {
       "path": "docs/decisions/DEC-0012.md",
-      "sha256": "09f235ba00320960ce7e3d0bb06960db908b192a68dbca92f5abdfe6999199d6",
-      "bytes": 3891
+      "sha256": "10023fe43191d702a0703b30c820ce6ea572209165481054239eeca4f9c66325",
+      "bytes": 4658
     },
     {
       "path": "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
@@ -56,8 +56,8 @@
     },
     {
       "path": "docs/work-packages/GOV-P0-03.md",
-      "sha256": "ef11b6365cc153ae5f9aa4c3e9495a83e98b3ca84fad45579edecc926de68259",
-      "bytes": 6830
+      "sha256": "1a42d342aea9ab91dbfb689e0263b83e46215c55100f6f25c1d1790505594d9d",
+      "bytes": 7711
     },
     {
       "path": "tests/governance/test_root_control_surfaces.py",
