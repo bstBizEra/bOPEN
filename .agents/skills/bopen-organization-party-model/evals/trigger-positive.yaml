@@ -1,0 +1,14 @@
+skill: bopen-organization-party-model
+prompts:
+- id: positive-01
+  prompt: Model customer and supplier as Party roles
+  shouldActivate: true
+- id: positive-02
+  prompt: Design a holding-group graph
+  shouldActivate: true
+- id: positive-03
+  prompt: Review Tenant versus Legal Entity
+  shouldActivate: true
+- id: positive-04
+  prompt: Link Party Person to a Principal
+  shouldActivate: true

@@ -1,0 +1,43 @@
+skill: bopen-postgres-rls-isolation
+cases:
+- id: bopen-postgres-rls-isolation-core-01
+  prompt: Review PostgreSQL RLS migrations
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - ENABLE ROW LEVEL SECURITY
+    - WITH CHECK
+    - default deny
+    - BYPASSRLS
+    - cross-tenant
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-postgres-rls-isolation-core-02
+  prompt: Design policies for Tenant projects
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-postgres-rls-isolation-core-03
+  prompt: Check runtime-role bypass
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

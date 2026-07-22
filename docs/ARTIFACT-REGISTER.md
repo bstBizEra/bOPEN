@@ -12,3 +12,5 @@
 | BOPEN-MOD-001 | Product, Module & Capability Contracts | Normative | Draft | Architecture Authority |
 | BOPEN-PARTY-001 | Party, Person, Organization & Business Relationship Model | Normative | Draft | Data Authority |
 | BOPEN-SEC-001 | Application Security & Software Supply Chain | Normative | Draft | Security Authority |
+| BOPEN-SKILL-REGISTRY-001 | Cross-harness skill registry | Controlled register | Proposed, inactive candidates | Skills Authority |
+| EVD-SKILL-001 | Full skills pack admission evidence | Evidence | Candidate | Skills Authority |

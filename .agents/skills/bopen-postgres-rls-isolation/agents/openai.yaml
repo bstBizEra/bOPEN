@@ -1,0 +1,5 @@
+display_name: bOPEN PostgreSQL RLS Isolation
+short_description: Make Tenant isolation enforceable at the database layer with default deny least-privilege roles
+  and repeatable negative evidence.
+default_prompt: Use $bopen-postgres-rls-isolation to produce a governed evidence-backed result.
+allow_implicit_invocation: false

@@ -1,0 +1,14 @@
+skill: bopen-threat-model
+prompts:
+- id: negative-01
+  prompt: Exploit a production target
+  shouldActivate: false
+- id: negative-02
+  prompt: Invent vulnerabilities
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a product roadmap
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a Tenant invitation
+  shouldActivate: false

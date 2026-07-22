@@ -1,0 +1,43 @@
+skill: bopen-authorization-policy
+cases:
+- id: bopen-authorization-policy-core-01
+  prompt: Design authorization for project approvers
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - deny by default
+    - reason code
+    - Permission
+    - Entitlement
+    - resource
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-authorization-policy-core-02
+  prompt: Review support grants
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-authorization-policy-core-03
+  prompt: Create stable deny codes
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

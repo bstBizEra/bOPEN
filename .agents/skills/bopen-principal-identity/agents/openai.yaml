@@ -1,0 +1,5 @@
+display_name: bOPEN Principal and Identity
+short_description: Preserve one global Principal model while separating authentication identity from Party records
+  and tenant membership.
+default_prompt: Use $bopen-principal-identity to produce a governed evidence-backed result.
+allow_implicit_invocation: false

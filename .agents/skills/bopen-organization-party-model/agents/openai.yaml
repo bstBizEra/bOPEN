@@ -1,0 +1,5 @@
+display_name: bOPEN Organization and Party Model
+short_description: Prevent authentication users and tenant boundaries from being overloaded as real-world business
+  entities.
+default_prompt: Use $bopen-organization-party-model to produce a governed evidence-backed result.
+allow_implicit_invocation: false

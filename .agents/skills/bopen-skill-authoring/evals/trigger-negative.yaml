@@ -1,0 +1,14 @@
+skill: bopen-skill-authoring
+prompts:
+- id: negative-01
+  prompt: Give this skill admin permissions
+  shouldActivate: false
+- id: negative-02
+  prompt: Publish this unreviewed zip to every tenant
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a brochure
+  shouldActivate: false
+- id: negative-04
+  prompt: Reset a password
+  shouldActivate: false

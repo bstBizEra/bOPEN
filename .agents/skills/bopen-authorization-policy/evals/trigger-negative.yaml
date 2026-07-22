@@ -1,0 +1,14 @@
+skill: bopen-authorization-policy
+prompts:
+- id: negative-01
+  prompt: Use Entitlement as the only access check
+  shouldActivate: false
+- id: negative-02
+  prompt: Hide the button and call it secure
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a newsletter
+  shouldActivate: false
+- id: negative-04
+  prompt: Design a backup plan
+  shouldActivate: false

@@ -1,0 +1,14 @@
+skill: bopen-clean-room-research
+prompts:
+- id: positive-01
+  prompt: Study Basejump RLS patterns without copying code
+  shouldActivate: true
+- id: positive-02
+  prompt: Compare BoxyHQ and Logto clean-room
+  shouldActivate: true
+- id: positive-03
+  prompt: Create a license register
+  shouldActivate: true
+- id: positive-04
+  prompt: Turn a Frappe observation into a module requirement
+  shouldActivate: true

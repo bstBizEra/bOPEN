@@ -1,0 +1,43 @@
+skill: bopen-github-actions-hardening
+cases:
+- id: bopen-github-actions-hardening-core-01
+  prompt: Audit GitHub Actions for script injection
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - permissions
+    - pull_request_target
+    - SHA
+    - untrusted
+    - GITHUB_TOKEN
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-github-actions-hardening-core-02
+  prompt: Harden a pull_request_target workflow
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-github-actions-hardening-core-03
+  prompt: Pin actions and reduce token scopes
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering

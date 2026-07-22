@@ -1,0 +1,43 @@
+skill: bopen-tenant-context-propagation
+cases:
+- id: bopen-tenant-context-propagation-core-01
+  prompt: Trace Tenant context through an API and job
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - server-side
+    - fail closed
+    - background job
+    - cache
+    - revalidate
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-tenant-context-propagation-core-02
+  prompt: Review cache keys for leakage
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-tenant-context-propagation-core-03
+  prompt: Design support-access context
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

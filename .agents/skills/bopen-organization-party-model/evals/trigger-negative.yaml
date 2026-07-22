@@ -1,0 +1,14 @@
+skill: bopen-organization-party-model
+prompts:
+- id: negative-01
+  prompt: Make every supplier a user
+  shouldActivate: false
+- id: negative-02
+  prompt: Use Tenant and Company as one table without analysis
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a CI workflow
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a replay runbook
+  shouldActivate: false

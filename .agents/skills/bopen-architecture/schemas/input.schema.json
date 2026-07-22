@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/skills/architecture-input.schema.json",
+  "title": "bOPEN Architecture Skill Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task",
+    "objective",
+    "scope",
+    "deliverables"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string"
+    },
+    "task": {
+      "enum": [
+        "research",
+        "design",
+        "review",
+        "adr",
+        "gap-analysis",
+        "implementation-control",
+        "conformance-review"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 10
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platformAreas"
+      ],
+      "properties": {
+        "platformAreas": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "products": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "modules": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "tenantContext": {
+          "enum": [
+            "not-applicable",
+            "synthetic",
+            "authorized"
+          ]
+        },
+        "environments": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "local",
+              "development",
+              "test",
+              "staging",
+              "production"
+            ]
+          }
+        }
+      }
+    },
+    "currentState": {
+      "type": [
+        "string",
+        "object",
+        "array"
+      ]
+    },
+    "constraints": {
+      "type": "object"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "location",
+          "authority"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "approved-artifact",
+              "repository",
+              "standard",
+              "official-documentation",
+              "research-reference",
+              "user-statement"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "controlling",
+              "normative",
+              "informative",
+              "unverified"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "research-report",
+          "architecture-design",
+          "adr",
+          "gap-register",
+          "implementation-control",
+          "conformance-review",
+          "verification-matrix",
+          "risk-register"
+        ]
+      }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "webAllowed": {
+          "type": "boolean",
+          "default": true
+        },
+        "primarySourcesOnly": {
+          "type": "boolean",
+          "default": true
+        },
+        "freshnessRequired": {
+          "type": "boolean",
+          "default": true
+        },
+        "asOfDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "outputDirectory": {
+      "type": "string"
+    }
+  }
+}

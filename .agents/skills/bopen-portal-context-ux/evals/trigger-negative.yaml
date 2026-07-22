@@ -1,0 +1,14 @@
+skill: bopen-portal-context-ux
+prompts:
+- id: negative-01
+  prompt: Hide the admin button and skip backend checks
+  shouldActivate: false
+- id: negative-02
+  prompt: Put personal passkeys in Tenant settings
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a SQL migration
+  shouldActivate: false
+- id: negative-04
+  prompt: Design a billing meter
+  shouldActivate: false

@@ -1,0 +1,14 @@
+skill: bopen-tenant-membership-lifecycle
+prompts:
+- id: positive-01
+  prompt: Design invitation acceptance
+  shouldActivate: true
+- id: positive-02
+  prompt: Review Tenant suspension and reactivation
+  shouldActivate: true
+- id: positive-03
+  prompt: Create the Membership state machine
+  shouldActivate: true
+- id: positive-04
+  prompt: Plan ownership transfer safeguards
+  shouldActivate: true

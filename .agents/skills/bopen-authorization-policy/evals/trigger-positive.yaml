@@ -1,0 +1,14 @@
+skill: bopen-authorization-policy
+prompts:
+- id: positive-01
+  prompt: Design authorization for project approvers
+  shouldActivate: true
+- id: positive-02
+  prompt: Review support grants
+  shouldActivate: true
+- id: positive-03
+  prompt: Create stable deny codes
+  shouldActivate: true
+- id: positive-04
+  prompt: Build a role and permission test matrix
+  shouldActivate: true

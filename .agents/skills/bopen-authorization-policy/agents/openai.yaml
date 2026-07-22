@@ -1,0 +1,5 @@
+display_name: bOPEN Authorization Policy
+short_description: Produce deterministic explainable and testable decisions without confusing Membership roles Entitlements
+  or database isolation.
+default_prompt: Use $bopen-authorization-policy to produce a governed evidence-backed result.
+allow_implicit_invocation: false

@@ -1,0 +1,14 @@
+skill: bopen-skill-admission
+prompts:
+- id: negative-01
+  prompt: Install every skill without review
+  shouldActivate: false
+- id: negative-02
+  prompt: Ignore the license
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a feature specification
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a database table
+  shouldActivate: false

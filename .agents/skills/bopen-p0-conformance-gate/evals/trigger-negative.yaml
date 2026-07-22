@@ -1,0 +1,14 @@
+skill: bopen-p0-conformance-gate
+prompts:
+- id: negative-01
+  prompt: Mark every gate passed without evidence
+  shouldActivate: false
+- id: negative-02
+  prompt: Waive cross-Tenant tests
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a project announcement
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a user profile
+  shouldActivate: false

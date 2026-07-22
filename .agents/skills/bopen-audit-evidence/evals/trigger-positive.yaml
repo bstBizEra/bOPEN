@@ -1,0 +1,14 @@
+skill: bopen-audit-evidence
+prompts:
+- id: positive-01
+  prompt: Design audit events for support access
+  shouldActivate: true
+- id: positive-02
+  prompt: Validate a P0 evidence envelope
+  shouldActivate: true
+- id: positive-03
+  prompt: Review denial redaction
+  shouldActivate: true
+- id: positive-04
+  prompt: Create an audit coverage matrix
+  shouldActivate: true

@@ -1,0 +1,5 @@
+display_name: bOPEN ADR Governance
+short_description: Produce machine-readable and human-reviewable decisions with explicit authority alternatives
+  consequences evidence and lifecycle state.
+default_prompt: Use $bopen-adr-governance to produce a governed evidence-backed result.
+allow_implicit_invocation: false

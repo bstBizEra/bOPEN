@@ -1,0 +1,22 @@
+apiVersion: policy.bopen.io/v1alpha1
+kind: SkillDataHandlingPolicy
+metadata:
+  id: io.bizera.bopen.architecture.data
+  version: 0.1.0
+spec:
+  maximumClassification: confidential
+  restrictedData: prohibited-without-separate-authorization
+  secrets:
+    packageStorage: prohibited
+    outputDisclosure: prohibited
+    runtimeResolution: external-to-skill
+  tenancy:
+    crossTenantCombination: prohibited
+    tenantIdentifiersInExamples: synthetic-preferred
+    tenantContextRequiredForRealTenantData: true
+  minimization:
+    collectOnlyNecessary: true
+    redactEvidence: true
+  retention:
+    generatedArtifacts: governed-by-project-policy
+    temporaryFiles: delete-after-task

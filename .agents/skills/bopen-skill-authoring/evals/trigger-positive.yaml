@@ -1,0 +1,14 @@
+skill: bopen-skill-authoring
+prompts:
+- id: positive-01
+  prompt: Create a bOPEN skill for tenant context reviews
+  shouldActivate: true
+- id: positive-02
+  prompt: Improve this skill description
+  shouldActivate: true
+- id: positive-03
+  prompt: Build security evals for the RLS skill
+  shouldActivate: true
+- id: positive-04
+  prompt: Package this skill with checksums
+  shouldActivate: true

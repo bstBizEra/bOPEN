@@ -1,0 +1,14 @@
+skill: bopen-github-actions-hardening
+prompts:
+- id: negative-01
+  prompt: Review a React component for XSS
+  shouldActivate: false
+- id: negative-02
+  prompt: Fix a PostgreSQL index
+  shouldActivate: false
+- id: negative-03
+  prompt: Explain GitHub stars
+  shouldActivate: false
+- id: negative-04
+  prompt: Draft a release announcement
+  shouldActivate: false

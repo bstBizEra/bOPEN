@@ -1,0 +1,24 @@
+apiVersion: policy.bopen.io/v1alpha1
+kind: SkillExecutionPolicy
+metadata:
+  id: io.bizera.bopen.architecture.execution
+  version: 0.1.0
+spec:
+  defaultMode: read-mostly
+  productionSideEffects: prohibited
+  localArtifactWrites: allowed
+  architectureApproval: human-required
+  externalPublication: human-required
+  tenantContext:
+    requiredWhenTenantDataPresent: true
+    clientSuppliedContextAuthoritative: false
+    crossTenantAccess: prohibited
+  budgets:
+    duration: PT30M
+    steps: 80
+    toolCalls: 60
+  failure:
+    onMissingAuthority: record-assumption-or-block
+    onAmbiguousTenantContext: block
+    onNonWaivableControlFailure: block
+    onMissingEvidence: do-not-claim-pass

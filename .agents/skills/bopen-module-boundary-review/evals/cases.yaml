@@ -1,0 +1,43 @@
+skill: bopen-module-boundary-review
+cases:
+- id: bopen-module-boundary-review-core-01
+  prompt: Review tenancy and billing dependencies
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - module
+    - boundary
+    - dependency
+    - ownership
+    - contract
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-module-boundary-review-core-02
+  prompt: Check bPro leakage into core
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-module-boundary-review-core-03
+  prompt: Design an audit Module manifest
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

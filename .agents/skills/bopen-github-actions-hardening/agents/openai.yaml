@@ -1,0 +1,5 @@
+display_name: bOPEN GitHub Actions Hardening
+short_description: Protect the bOPEN software supply chain from workflow injection excessive token authority and
+  mutable dependencies.
+default_prompt: Use $bopen-github-actions-hardening to produce a governed evidence-backed result.
+allow_implicit_invocation: false

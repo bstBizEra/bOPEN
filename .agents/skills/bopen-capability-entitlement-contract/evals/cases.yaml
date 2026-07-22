@@ -1,0 +1,43 @@
+skill: bopen-capability-entitlement-contract
+cases:
+- id: bopen-capability-entitlement-contract-core-01
+  prompt: Design the bPro module manifest
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - Available
+    - Entitled
+    - Enabled
+    - Authorized
+    - Product
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-capability-entitlement-contract-core-02
+  prompt: Model seat and agent-token Entitlements
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-capability-entitlement-contract-core-03
+  prompt: Review capability naming
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

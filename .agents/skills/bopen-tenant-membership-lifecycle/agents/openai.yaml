@@ -1,0 +1,5 @@
+display_name: bOPEN Tenant and Membership Lifecycle
+short_description: Model tenant access as a governed relationship between a global Principal and Tenant with explicit
+  states and auditable transitions.
+default_prompt: Use $bopen-tenant-membership-lifecycle to produce a governed evidence-backed result.
+allow_implicit_invocation: false

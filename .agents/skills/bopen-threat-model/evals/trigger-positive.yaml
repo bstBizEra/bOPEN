@@ -1,0 +1,14 @@
+skill: bopen-threat-model
+prompts:
+- id: positive-01
+  prompt: Threat model Tenant context
+  shouldActivate: true
+- id: positive-02
+  prompt: Update after adding support access
+  shouldActivate: true
+- id: positive-03
+  prompt: Analyze skills-pack supply chain
+  shouldActivate: true
+- id: positive-04
+  prompt: Model the outbox dispatcher
+  shouldActivate: true

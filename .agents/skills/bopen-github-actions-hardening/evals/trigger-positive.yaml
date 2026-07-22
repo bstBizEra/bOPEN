@@ -1,0 +1,14 @@
+skill: bopen-github-actions-hardening
+prompts:
+- id: positive-01
+  prompt: Audit GitHub Actions for script injection
+  shouldActivate: true
+- id: positive-02
+  prompt: Harden a pull_request_target workflow
+  shouldActivate: true
+- id: positive-03
+  prompt: Pin actions and reduce token scopes
+  shouldActivate: true
+- id: positive-04
+  prompt: Create secure CI for the skills pack
+  shouldActivate: true

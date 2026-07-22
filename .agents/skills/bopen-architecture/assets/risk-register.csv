@@ -1,0 +1,4 @@
+risk_id,category,description,cause,impact,likelihood,severity,control,owner,target_date,status,evidence
+R-001,tenancy,Cross-tenant disclosure,Context or RLS failure,Confidentiality breach,low,critical,Default deny plus negative tests,,,,open,
+R-002,authorization,Privilege escalation,Role entitlement or skill conflation,Unauthorized action,medium,critical,Independent authorization per call,,,,open,
+R-003,operations,Duplicate side effect,Unbounded retry or missing idempotency,Data inconsistency,medium,high,Idempotency keys and outbox deduplication,,,,open,

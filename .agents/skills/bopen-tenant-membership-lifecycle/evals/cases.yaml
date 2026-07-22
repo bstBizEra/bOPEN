@@ -1,0 +1,43 @@
+skill: bopen-tenant-membership-lifecycle
+cases:
+- id: bopen-tenant-membership-lifecycle-core-01
+  prompt: Design invitation acceptance
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - Invitation
+    - Membership
+    - state
+    - idempotent
+    - owner
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-tenant-membership-lifecycle-core-02
+  prompt: Review Tenant suspension and reactivation
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-tenant-membership-lifecycle-core-03
+  prompt: Create the Membership state machine
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

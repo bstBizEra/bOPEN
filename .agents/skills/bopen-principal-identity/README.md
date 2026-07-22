@@ -1,0 +1,8 @@
+# bOPEN Principal and Identity
+
+Canonical ID: `io.bizera.bopen.principal.identity`  
+Version: `0.1.0`  
+Lifecycle: `VALIDATED`  
+Risk: `SKR2`
+
+See `SKILL.md` for the operating procedure and `bopen.skill.yaml` for the authoritative bOPEN contract.

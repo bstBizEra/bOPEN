@@ -1,0 +1,14 @@
+skill: bopen-principal-identity
+prompts:
+- id: positive-01
+  prompt: Design the principal and identity schema
+  shouldActivate: true
+- id: positive-02
+  prompt: Review a service-account lifecycle
+  shouldActivate: true
+- id: positive-03
+  prompt: Model passkeys and session revocation
+  shouldActivate: true
+- id: positive-04
+  prompt: Plan migration from provider IDs
+  shouldActivate: true

@@ -1,0 +1,14 @@
+skill: bopen-capability-entitlement-contract
+prompts:
+- id: negative-01
+  prompt: Grant every user access because the Tenant paid
+  shouldActivate: false
+- id: negative-02
+  prompt: Use a feature flag as billing contract
+  shouldActivate: false
+- id: negative-03
+  prompt: Write an RLS policy
+  shouldActivate: false
+- id: negative-04
+  prompt: Draft a support email
+  shouldActivate: false

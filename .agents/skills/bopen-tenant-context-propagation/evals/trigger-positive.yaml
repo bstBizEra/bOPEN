@@ -1,0 +1,14 @@
+skill: bopen-tenant-context-propagation
+prompts:
+- id: positive-01
+  prompt: Trace Tenant context through an API and job
+  shouldActivate: true
+- id: positive-02
+  prompt: Review cache keys for leakage
+  shouldActivate: true
+- id: positive-03
+  prompt: Design support-access context
+  shouldActivate: true
+- id: positive-04
+  prompt: Test stale context after switching
+  shouldActivate: true

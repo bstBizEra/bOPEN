@@ -1,0 +1,14 @@
+skill: bopen-skill-admission
+prompts:
+- id: positive-01
+  prompt: Review this GitHub skill before adding it
+  shouldActivate: true
+- id: positive-02
+  prompt: Reassess an upstream update
+  shouldActivate: true
+- id: positive-03
+  prompt: Quarantine suspicious shell commands
+  shouldActivate: true
+- id: positive-04
+  prompt: Build an admission decision
+  shouldActivate: true

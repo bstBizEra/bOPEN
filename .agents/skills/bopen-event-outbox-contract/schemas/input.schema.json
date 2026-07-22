@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task",
+    "mode"
+  ],
+  "properties": {
+    "task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "event-design",
+        "outbox-review",
+        "consumer-contract",
+        "replay-plan",
+        "incident-analysis"
+      ]
+    },
+    "repositoryPath": {
+      "type": "string"
+    },
+    "sourceFiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "context": {
+      "type": "object"
+    },
+    "requestedOutput": {
+      "type": "string"
+    }
+  },
+  "title": "bOPEN Event and Transactional Outbox Contract Input"
+}

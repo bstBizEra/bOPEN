@@ -38,6 +38,7 @@ PLATFORM
 4. Review [`docs/DOCUMENT-STATUS.md`](docs/DOCUMENT-STATUS.md).
 5. Select an accepted work package from [`docs/work-packages/WORK-PACKAGE-REGISTER.md`](docs/work-packages/WORK-PACKAGE-REGISTER.md).
 6. Run `python tools/validate_repository.py` before and after changes.
+7. Resolve shared skills through [`docs/registers/skill-registry.json`](docs/registers/skill-registry.json) and [`.agents/SKILL-ROUTING.md`](.agents/SKILL-ROUTING.md); run `python tools/validate_skill_registry.py` for integrity and `--resolve-workflow <name>` before execution.
 
 ## Repository zones
 

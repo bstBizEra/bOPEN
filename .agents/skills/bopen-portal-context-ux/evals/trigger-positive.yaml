@@ -1,0 +1,14 @@
+skill: bopen-portal-context-ux
+prompts:
+- id: positive-01
+  prompt: Review personal and Tenant route separation
+  shouldActivate: true
+- id: positive-02
+  prompt: Design Tenant switching UX
+  shouldActivate: true
+- id: positive-03
+  prompt: Differentiate no Entitlement from no Permission
+  shouldActivate: true
+- id: positive-04
+  prompt: Test stale tabs after Membership removal
+  shouldActivate: true

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import json, re, sys
+from validate_skill_registry import validate as validate_skill_registry
 
 ROOT=Path(__file__).resolve().parents[1]
 errors=[]
@@ -37,9 +38,12 @@ for p in (ROOT/'docs/06-contracts').rglob('*.json'):
     try: json.loads(p.read_text(encoding='utf-8'))
     except Exception as e: errors.append(f'INVALID JSON {p.relative_to(ROOT)}: {e}')
 
+for error in validate_skill_registry():
+    errors.append(f'SKILL REGISTRY: {error}')
+
 if errors:
     print('bOPEN repository validation: FAIL')
     for e in errors: print('-',e)
     sys.exit(1)
 print('bOPEN repository validation: PASS')
-print(f'Checked {len(required)} mandatory paths and governance invariants.')
+print(f'Checked {len(required)} mandatory paths, governance invariants and the closed skill registry.')

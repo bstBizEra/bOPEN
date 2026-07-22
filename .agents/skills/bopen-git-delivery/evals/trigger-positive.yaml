@@ -1,0 +1,14 @@
+skill: bopen-git-delivery
+prompts:
+- id: positive-01
+  prompt: Commit the validated skills pack and open a draft PR
+  shouldActivate: true
+- id: positive-02
+  prompt: Prepare this branch and push it
+  shouldActivate: true
+- id: positive-03
+  prompt: Publish only governance changes
+  shouldActivate: true
+- id: positive-04
+  prompt: Create a draft PR after tests pass
+  shouldActivate: true

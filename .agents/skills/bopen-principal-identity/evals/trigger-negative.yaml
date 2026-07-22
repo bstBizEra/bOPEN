@@ -1,0 +1,14 @@
+skill: bopen-principal-identity
+prompts:
+- id: negative-01
+  prompt: Create tenant-local users
+  shouldActivate: false
+- id: negative-02
+  prompt: Model a forklift as a human user
+  shouldActivate: false
+- id: negative-03
+  prompt: Design an invoice
+  shouldActivate: false
+- id: negative-04
+  prompt: Write CSS for login
+  shouldActivate: false

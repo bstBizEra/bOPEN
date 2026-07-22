@@ -1,0 +1,5 @@
+display_name: bOPEN bPro Reference Integration
+short_description: Demonstrate a real product flow on bOPEN while keeping project-management behavior outside platform
+  core.
+default_prompt: Use $bopen-bpro-reference-integration to produce a governed evidence-backed result.
+allow_implicit_invocation: false

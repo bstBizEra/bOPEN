@@ -1,0 +1,5 @@
+display_name: bOPEN Skill Admission
+short_description: Prevent untrusted content or executable resources from entering the bOPEN catalog without bounded
+  evidence and ownership.
+default_prompt: Use $bopen-skill-admission to produce a governed evidence-backed result.
+allow_implicit_invocation: false

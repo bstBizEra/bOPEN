@@ -1,0 +1,14 @@
+skill: bopen-tenant-context-propagation
+prompts:
+- id: negative-01
+  prompt: Trust the tenantId query parameter
+  shouldActivate: false
+- id: negative-02
+  prompt: Put all Tenants in one cache entry
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a logo slogan
+  shouldActivate: false
+- id: negative-04
+  prompt: Review a non-tenant math function
+  shouldActivate: false

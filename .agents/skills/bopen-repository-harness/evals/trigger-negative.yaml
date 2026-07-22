@@ -1,0 +1,14 @@
+skill: bopen-repository-harness
+prompts:
+- id: negative-01
+  prompt: Implement the customer dashboard
+  shouldActivate: false
+- id: negative-02
+  prompt: Explain what Git is
+  shouldActivate: false
+- id: negative-03
+  prompt: Draft a sales email
+  shouldActivate: false
+- id: negative-04
+  prompt: Optimize this SQL query only
+  shouldActivate: false

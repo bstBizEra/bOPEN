@@ -1,0 +1,5 @@
+display_name: bOPEN Portal Context UX
+short_description: Make active operating context visible and safe so users cannot silently or accidentally act in
+  the wrong Tenant or platform scope.
+default_prompt: Use $bopen-portal-context-ux to produce a governed evidence-backed result.
+allow_implicit_invocation: false

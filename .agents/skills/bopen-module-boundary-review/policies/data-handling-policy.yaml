@@ -1,0 +1,10 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: DataHandlingPolicy
+metadata:
+  skill: bopen-module-boundary-review
+spec:
+  maximumClassification: confidential
+  secretsInPackage: prohibited
+  crossTenantData: prohibited
+  redactionRequired: true
+  retainRawPrompts: false

@@ -1,0 +1,14 @@
+skill: bopen-bpro-reference-integration
+prompts:
+- id: positive-01
+  prompt: Design the bPro P0 vertical slice
+  shouldActivate: true
+- id: positive-02
+  prompt: Review bPro for duplicated Tenant logic
+  shouldActivate: true
+- id: positive-03
+  prompt: Map project.created to event contract
+  shouldActivate: true
+- id: positive-04
+  prompt: Build cross-Tenant tests
+  shouldActivate: true

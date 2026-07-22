@@ -1,0 +1,7 @@
+PROPRIETARY — INTERNAL USE ONLY
+
+Copyright (c) 2026 BizEra. All rights reserved.
+
+This package is provided for internal architecture, evaluation, and controlled pilot use. No right is granted to redistribute, sublicense, sell, publish, or expose the package outside the authorized organization without written approval from the applicable legal and architecture authorities.
+
+This file is a packaging placeholder and is not a substitute for approved legal terms. Replace it with the organization's executed license text before external distribution.

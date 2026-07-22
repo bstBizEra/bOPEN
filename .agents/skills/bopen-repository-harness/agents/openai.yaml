@@ -1,0 +1,5 @@
+display_name: bOPEN Repository Harness
+short_description: Turn repository conventions and repeated failures into durable instructions deterministic checks
+  and review evidence.
+default_prompt: Use $bopen-repository-harness to produce a governed evidence-backed result.
+allow_implicit_invocation: false

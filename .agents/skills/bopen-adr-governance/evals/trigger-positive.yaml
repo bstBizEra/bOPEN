@@ -1,0 +1,14 @@
+skill: bopen-adr-governance
+prompts:
+- id: positive-01
+  prompt: Create an ADR for choosing PostgreSQL
+  shouldActivate: true
+- id: positive-02
+  prompt: Review ADR-0004 for missing consequences
+  shouldActivate: true
+- id: positive-03
+  prompt: Supersede the identity-provider ADR
+  shouldActivate: true
+- id: positive-04
+  prompt: Build the bOPEN ADR index
+  shouldActivate: true

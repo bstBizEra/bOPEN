@@ -1,0 +1,4 @@
+display_name: bOPEN Event and Transactional Outbox Contract
+short_description: Keep business state and event publication consistent traceable and recoverable across failures.
+default_prompt: Use $bopen-event-outbox-contract to produce a governed evidence-backed result.
+allow_implicit_invocation: false

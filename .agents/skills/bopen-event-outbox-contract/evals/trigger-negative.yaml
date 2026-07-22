@@ -1,0 +1,14 @@
+skill: bopen-event-outbox-contract
+prompts:
+- id: negative-01
+  prompt: Send an event from the UI after API return
+  shouldActivate: false
+- id: negative-02
+  prompt: Treat Tenant ID in event as Permission
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a user profile page
+  shouldActivate: false
+- id: negative-04
+  prompt: Choose a logo font
+  shouldActivate: false

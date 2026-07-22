@@ -1,0 +1,43 @@
+skill: bopen-event-outbox-contract
+cases:
+- id: bopen-event-outbox-contract-core-01
+  prompt: Design tenant.created.v1
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - transactional outbox
+    - idempotent
+    - correlation
+    - causation
+    - replay
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-event-outbox-contract-core-02
+  prompt: Review a transactional outbox
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-event-outbox-contract-core-03
+  prompt: Create a replay runbook
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

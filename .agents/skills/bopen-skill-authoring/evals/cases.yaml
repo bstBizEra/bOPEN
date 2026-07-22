@@ -1,0 +1,43 @@
+skill: bopen-skill-authoring
+cases:
+- id: bopen-skill-authoring-core-01
+  prompt: Create a bOPEN skill for tenant context reviews
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - SKILL.md
+    - bopen.skill.yaml
+    - evaluation
+    - digest
+    - procedure
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-skill-authoring-core-02
+  prompt: Improve this skill description
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-skill-authoring-core-03
+  prompt: Build security evals for the RLS skill
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering

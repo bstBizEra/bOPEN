@@ -72,6 +72,17 @@ Never use an upstream project, UI mockup, comment or prompt as a substitute for 
 
 A change without traceability is incomplete.
 
+## 5a. Shared skill discovery and eligibility
+
+- Discover reusable repository skills only from `.agents/skills/<skill-name>/SKILL.md`.
+- Resolve identity, lifecycle, activation, invocation policy and dependencies through `docs/registers/skill-registry.json` before use.
+- Apply ownership and overlap boundaries from `.agents/SKILL-ROUTING.md`; do not infer routing from directory presence.
+- Treat user-scoped or harness-specific installations as adapters or caches; they may not silently fork the repository package.
+- `candidate` or `activation: inactive` skills are discoverable for evaluation and advisory analysis only. They cannot authorize tools, mutation, approval, activation, gate passage, release or deployment.
+- Invoke transactional, admission and gate skills only when explicitly named and independently authorized.
+- Prefer the narrowest specialist skill. Use orchestrator skills only to sequence registered specialists; never let an orchestrator replace their mandatory checks.
+- Stop when a workflow references an unknown, duplicate, unregistered, digest-drifted or ineligible skill.
+
 ## 6. Clean-room controls
 
 Repository zones:

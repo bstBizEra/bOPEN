@@ -1,0 +1,14 @@
+skill: bopen-module-boundary-review
+prompts:
+- id: negative-01
+  prompt: Split every folder into a microservice
+  shouldActivate: false
+- id: negative-02
+  prompt: Let Modules update each other's tables
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a portal error message
+  shouldActivate: false
+- id: negative-04
+  prompt: Reset a user session
+  shouldActivate: false

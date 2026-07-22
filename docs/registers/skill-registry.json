@@ -1,0 +1,702 @@
+{
+    "artifact":  "BOPEN-SKILL-REGISTRY-001",
+    "version":  "0.2",
+    "status":  "PROPOSED",
+    "generated_at":  "2026-07-22",
+    "policy":  "SKILLS.md",
+    "routing":  ".agents/SKILL-ROUTING.md",
+    "default_activation":  "inactive",
+    "default_invocation":  "advisory_only",
+    "skills":  [
+                   {
+                       "id":  "bopen-adr-governance",
+                       "canonical_id":  "io.bizera.bopen.adr.governance",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-architecture-authority",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-adr-governance",
+                       "package_sha256":  "8bc177c5e731855d1aecc7e3153c218ca067d22f94627ac9ad33f089e91bbcd2",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:8bc177c5e731855d1aecc7e3153c218ca067d22f94627ac9ad33f089e91bbcd2",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-architecture",
+                       "canonical_id":  "io.bizera.bopen.architecture",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-architecture-authority",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-architecture",
+                       "package_sha256":  "5fc6eb7b78f49ec7ae0e935ead9a89e35b314a61bf0fa06618ed49a0c5e1f631",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:5fc6eb7b78f49ec7ae0e935ead9a89e35b314a61bf0fa06618ed49a0c5e1f631",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-audit-evidence",
+                       "canonical_id":  "io.bizera.bopen.audit.evidence",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-security-and-assurance",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-audit-evidence",
+                       "package_sha256":  "193fe642ee430ece5504bfffd508faa48c452acc7047f9671b6d494ccc5b2d55",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:193fe642ee430ece5504bfffd508faa48c452acc7047f9671b6d494ccc5b2d55",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-authorization-policy",
+                       "canonical_id":  "io.bizera.bopen.authorization.policy",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-authorization-authority",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-authorization-policy",
+                       "package_sha256":  "920e3833ca44a043583ce19288697a65f578de8f8c3cf87ac3560108473548d3",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:920e3833ca44a043583ce19288697a65f578de8f8c3cf87ac3560108473548d3",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-bpro-reference-integration",
+                       "canonical_id":  "io.bizera.bopen.bpro.reference.integration",
+                       "version":  "0.1.0",
+                       "owner":  "bpro-product-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-bpro-reference-integration",
+                       "package_sha256":  "c78afc08056dd54f3eb1c9fd2dd8ebf6aa11d6b29ff387028967b7e149025568",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:c78afc08056dd54f3eb1c9fd2dd8ebf6aa11d6b29ff387028967b7e149025568",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-capability-entitlement-contract",
+                       "canonical_id":  "io.bizera.bopen.capability.entitlement.contract",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-product-platform-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-capability-entitlement-contract",
+                       "package_sha256":  "36a0a3f553b885db46cff54b8403667f05d5f964b24a785c60c3251d4ccbc3b1",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:36a0a3f553b885db46cff54b8403667f05d5f964b24a785c60c3251d4ccbc3b1",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-ci-repair",
+                       "canonical_id":  "io.bizera.bopen.ci.repair",
+                       "version":  "0.1.0",
+                       "owner":  "Delivery",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-ci-repair",
+                       "package_sha256":  "2b8ba841dcdab2d32b02e68c7fee62b443cf20bed43684a00f069b82afa02f34",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:2b8ba841dcdab2d32b02e68c7fee62b443cf20bed43684a00f069b82afa02f34",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-clean-room-research",
+                       "canonical_id":  "io.bizera.bopen.clean.room.research",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-research-authority",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-clean-room-research",
+                       "package_sha256":  "9eb81178669445862d41ada681f0bf86423383406e7087d3c4602ba3fde73688",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:9eb81178669445862d41ada681f0bf86423383406e7087d3c4602ba3fde73688",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-doc-sync",
+                       "canonical_id":  "io.bizera.bopen.doc.sync",
+                       "version":  "0.1.0",
+                       "owner":  "Documentation",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-doc-sync",
+                       "package_sha256":  "7152df6c44fdfc37a532794e8129cb8400a61a7218417b21b5731e0c63bd4ea2",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:7152df6c44fdfc37a532794e8129cb8400a61a7218417b21b5731e0c63bd4ea2",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-event-outbox-contract",
+                       "canonical_id":  "io.bizera.bopen.event.outbox.contract",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-integration-authority",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-event-outbox-contract",
+                       "package_sha256":  "7eafb062c8f1b5aec5b8e7f4074327e82c2eea211ba4ea368aed1ce531bed182",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:7eafb062c8f1b5aec5b8e7f4074327e82c2eea211ba4ea368aed1ce531bed182",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-evidence-envelope",
+                       "canonical_id":  "io.bizera.bopen.evidence.envelope",
+                       "version":  "0.1.0",
+                       "owner":  "Conformance",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-evidence-envelope",
+                       "package_sha256":  "d1f7875d2a994636c77ed822306ec6aa9d694419e7cfcc57bcfde4210200c349",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:d1f7875d2a994636c77ed822306ec6aa9d694419e7cfcc57bcfde4210200c349",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-git-delivery",
+                       "canonical_id":  "io.bizera.bopen.git.delivery",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-engineering",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "orchestrator",
+                       "path":  ".agents/skills/bopen-git-delivery",
+                       "package_sha256":  "32058e0442a9eb0d2b65b1460344f3ea08e7c8a1a508fb363cfda66f15fdffa3",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:32058e0442a9eb0d2b65b1460344f3ea08e7c8a1a508fb363cfda66f15fdffa3",
+                       "dependencies":  [
+                                            "bopen-git-governance",
+                                            "bopen-worktree-management",
+                                            "bopen-evidence-envelope"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-git-governance",
+                       "canonical_id":  "io.bizera.bopen.git.governance",
+                       "version":  "0.1.0",
+                       "owner":  "Platform Engineering",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-git-governance",
+                       "package_sha256":  "dda8a17ff987d986a0546a00c9b1cb702c164ae860dc0cdf7e7f32b659547b54",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:dda8a17ff987d986a0546a00c9b1cb702c164ae860dc0cdf7e7f32b659547b54",
+                       "dependencies":  [
+                                            "bopen-governance-check",
+                                            "bopen-worktree-management"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-github-actions-hardening",
+                       "canonical_id":  "io.bizera.bopen.github.actions.hardening",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-security",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-github-actions-hardening",
+                       "package_sha256":  "1dbb9f4508ea27337bc41df3dd1ff92622969ee26da8274671abfae9a1486ce1",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:1dbb9f4508ea27337bc41df3dd1ff92622969ee26da8274671abfae9a1486ce1",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-governance-check",
+                       "canonical_id":  "io.bizera.bopen.governance.check",
+                       "version":  "0.1.0",
+                       "owner":  "Governance",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-governance-check",
+                       "package_sha256":  "6eb040511ab5ef4cf7b55b8f3287df161e15bb0c3a307649e5700d85399c4485",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:6eb040511ab5ef4cf7b55b8f3287df161e15bb0c3a307649e5700d85399c4485",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-module-boundary-review",
+                       "canonical_id":  "io.bizera.bopen.module.boundary.review",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-architecture-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-module-boundary-review",
+                       "package_sha256":  "8d362f91bc0f52e29111567da05a0d8ec94bde508407caa626b735b6401ac2b6",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:8d362f91bc0f52e29111567da05a0d8ec94bde508407caa626b735b6401ac2b6",
+                       "dependencies":  [
+                                            "bopen-architecture",
+                                            "bopen-module-contract"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-module-contract",
+                       "canonical_id":  "io.bizera.bopen.module.contract",
+                       "version":  "0.1.0",
+                       "owner":  "Architecture",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-module-contract",
+                       "package_sha256":  "c7bbd1b4530f4701651d9e60708fab421774665fc228c31d632ec1ed752b4951",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:c7bbd1b4530f4701651d9e60708fab421774665fc228c31d632ec1ed752b4951",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-organization-party-model",
+                       "canonical_id":  "io.bizera.bopen.organization.party.model",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-foundation-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-organization-party-model",
+                       "package_sha256":  "c86df55024b6d42e1e35946a8c2b499bcb612138de2f57c3a374a1fb7b3332aa",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:c86df55024b6d42e1e35946a8c2b499bcb612138de2f57c3a374a1fb7b3332aa",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-p0-conformance-gate",
+                       "canonical_id":  "io.bizera.bopen.p0.conformance.gate",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-independent-assurance",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "orchestrator",
+                       "path":  ".agents/skills/bopen-p0-conformance-gate",
+                       "package_sha256":  "9195d2731a1cb4590b8873151c29f380254e66547346200c22214ce7be60452f",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:9195d2731a1cb4590b8873151c29f380254e66547346200c22214ce7be60452f",
+                       "dependencies":  [
+                                            "bopen-governance-check",
+                                            "bopen-sec-qa-lead",
+                                            "bopen-release-readiness",
+                                            "bopen-evidence-envelope"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-portal-context-ux",
+                       "canonical_id":  "io.bizera.bopen.portal.context.ux",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-experience-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-portal-context-ux",
+                       "package_sha256":  "0624d7bd7bb23b63b832a8fc5b01957dc54e3938fe3c05f9f014b94e467bd7fa",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:0624d7bd7bb23b63b832a8fc5b01957dc54e3938fe3c05f9f014b94e467bd7fa",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-portal-verification",
+                       "canonical_id":  "io.bizera.bopen.portal.verification",
+                       "version":  "0.1.0",
+                       "owner":  "Design/Test",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-portal-verification",
+                       "package_sha256":  "e2820cbdc38e74692631b54a278bd54a6bd8c8fbd26425eee651bcfbe19e789c",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:e2820cbdc38e74692631b54a278bd54a6bd8c8fbd26425eee651bcfbe19e789c",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-postgres-rls-isolation",
+                       "canonical_id":  "io.bizera.bopen.postgres.rls.isolation",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-security",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-postgres-rls-isolation",
+                       "package_sha256":  "56fda3378cfd3eea0986b4a5123c8f0f2e01cd7d4ec9628eda416e65c8f5c2e2",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:56fda3378cfd3eea0986b4a5123c8f0f2e01cd7d4ec9628eda416e65c8f5c2e2",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-principal-identity",
+                       "canonical_id":  "io.bizera.bopen.principal.identity",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-identity-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-principal-identity",
+                       "package_sha256":  "a8226d4f307c6263600616b58ddc584d5988a6c938dce5ace3c74bd97be4de45",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:a8226d4f307c6263600616b58ddc584d5988a6c938dce5ace3c74bd97be4de45",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-release-readiness",
+                       "canonical_id":  "io.bizera.bopen.release.readiness",
+                       "version":  "0.1.0",
+                       "owner":  "Release",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "orchestrator",
+                       "path":  ".agents/skills/bopen-release-readiness",
+                       "package_sha256":  "8eb2028fb34c6e2368b75d55a1bbf8bccb03f7fe11cf8bd2a7e6a88269ddf7fe",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:8eb2028fb34c6e2368b75d55a1bbf8bccb03f7fe11cf8bd2a7e6a88269ddf7fe",
+                       "dependencies":  [
+                                            "bopen-governance-check",
+                                            "bopen-sec-qa-lead",
+                                            "bopen-evidence-envelope"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-repository-harness",
+                       "canonical_id":  "io.bizera.bopen.repository.harness",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-engineering",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "orchestrator",
+                       "path":  ".agents/skills/bopen-repository-harness",
+                       "package_sha256":  "c750d6f348c47a415d1396206a08ceb1f9e92b41f0925725e7b9f0dfa712e345",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:c750d6f348c47a415d1396206a08ceb1f9e92b41f0925725e7b9f0dfa712e345",
+                       "dependencies":  [
+                                            "bopen-governance-check"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-requirement-to-work-item",
+                       "canonical_id":  "io.bizera.bopen.requirement.to.work.item",
+                       "version":  "0.1.0",
+                       "owner":  "Product/Architecture",
+                       "risk_class":  "SKR1",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-requirement-to-work-item",
+                       "package_sha256":  "bd5a1d5d1c95ef88bf9adbd4ff4a0e696a972e802dd17030f208fdd019bcc14b",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:bd5a1d5d1c95ef88bf9adbd4ff4a0e696a972e802dd17030f208fdd019bcc14b",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-sec-qa-lead",
+                       "canonical_id":  "io.bizera.bopen.sec.qa.lead",
+                       "version":  "0.1.0",
+                       "owner":  "Security/Quality",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "orchestrator",
+                       "path":  ".agents/skills/bopen-sec-qa-lead",
+                       "package_sha256":  "2d4c219d353d66457c123c86fb0f8da75f9215b3cd0915c9736399233055d59a",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:2d4c219d353d66457c123c86fb0f8da75f9215b3cd0915c9736399233055d59a",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-skill-admission",
+                       "canonical_id":  "io.bizera.bopen.skill.admission",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-skills-security-review",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-skill-admission",
+                       "package_sha256":  "2c8780ec24c0ab4764c6406ac41755c9e262190d1d0163dc30d947735ce66efa",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:2c8780ec24c0ab4764c6406ac41755c9e262190d1d0163dc30d947735ce66efa",
+                       "dependencies":  [
+                                            "bopen-governance-check",
+                                            "bopen-repository-harness"
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-skill-authoring",
+                       "canonical_id":  "io.bizera.bopen.skill.authoring",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-skills-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "explicit_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-skill-authoring",
+                       "package_sha256":  "bf33fe90ddcc95212cac9d48d4f99aa15f883f27b499cceb9ec3341c4ec7471c",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:bf33fe90ddcc95212cac9d48d4f99aa15f883f27b499cceb9ec3341c4ec7471c",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-tenant-context-propagation",
+                       "canonical_id":  "io.bizera.bopen.tenant.context.propagation",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-security",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-tenant-context-propagation",
+                       "package_sha256":  "c3e5ac6c7613ea50510f2cb5b418a5fb19e5c4e29c2def3fb1393d0e0f6efa4d",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:c3e5ac6c7613ea50510f2cb5b418a5fb19e5c4e29c2def3fb1393d0e0f6efa4d",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-tenant-isolation-review",
+                       "canonical_id":  "io.bizera.bopen.tenant.isolation.review",
+                       "version":  "0.1.0",
+                       "owner":  "Security",
+                       "risk_class":  "SKR3",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-tenant-isolation-review",
+                       "package_sha256":  "17d6cb1797da11557f80d0adff5ca4319ce8138e9bf234d2b69c81dec6ef6a54",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:17d6cb1797da11557f80d0adff5ca4319ce8138e9bf234d2b69c81dec6ef6a54",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-tenant-membership-lifecycle",
+                       "canonical_id":  "io.bizera.bopen.tenant.membership.lifecycle",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-tenancy-authority",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-tenant-membership-lifecycle",
+                       "package_sha256":  "68829e3bc39bd4a0bf5c859c5c4e595ab7bb61ede2038ea0a9f1c52dbd96a0cb",
+                       "source":  "bopen-full-skills-pack-0.1.0",
+                       "source_revision":  "package-sha256:68829e3bc39bd4a0bf5c859c5c4e595ab7bb61ede2038ea0a9f1c52dbd96a0cb",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-threat-model",
+                       "canonical_id":  "io.bizera.bopen.threat.model",
+                       "version":  "0.1.0",
+                       "owner":  "bopen-platform-security",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "passed",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-threat-model",
+                       "package_sha256":  "0fcf6acf3bf72bc813bb00277404bf8762159237142ef65d5b32beba494e6aeb",
+                       "source":  "merged-candidate",
+                       "source_revision":  "package-sha256:0fcf6acf3bf72bc813bb00277404bf8762159237142ef65d5b32beba494e6aeb",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   },
+                   {
+                       "id":  "bopen-worktree-management",
+                       "canonical_id":  "io.bizera.bopen.worktree.management",
+                       "version":  "0.1.0",
+                       "owner":  "Platform Engineering",
+                       "risk_class":  "SKR2",
+                       "state":  "candidate",
+                       "package_validation":  "not_run",
+                       "activation":  "inactive",
+                       "invocation":  "advisory_only",
+                       "routing_role":  "specialist",
+                       "path":  ".agents/skills/bopen-worktree-management",
+                       "package_sha256":  "3b2a78c4e7327a027eb897063609e3c74eb6a7824139f6d27ee7244f8d59d70b",
+                       "source":  "local-working-tree-snapshot",
+                       "source_revision":  "package-sha256:3b2a78c4e7327a027eb897063609e3c74eb6a7824139f6d27ee7244f8d59d70b",
+                       "dependencies":  [
+
+                                        ],
+                       "activation_decision":  null
+                   }
+               ]
+}

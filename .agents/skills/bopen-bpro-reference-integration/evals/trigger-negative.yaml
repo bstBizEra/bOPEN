@@ -1,0 +1,14 @@
+skill: bopen-bpro-reference-integration
+prompts:
+- id: negative-01
+  prompt: Put project planning rules in Tenant kernel
+  shouldActivate: false
+- id: negative-02
+  prompt: Create bPro_users and bPro_roles
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a marketing site
+  shouldActivate: false
+- id: negative-04
+  prompt: Design fleet maintenance
+  shouldActivate: false

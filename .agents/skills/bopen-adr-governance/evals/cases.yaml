@@ -1,0 +1,43 @@
+skill: bopen-adr-governance
+cases:
+- id: bopen-adr-governance-core-01
+  prompt: Create an ADR for choosing PostgreSQL
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - Context
+    - Decision
+    - Consequences
+    - Alternatives
+    - Status
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-adr-governance-core-02
+  prompt: Review ADR-0004 for missing consequences
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-adr-governance-core-03
+  prompt: Supersede the identity-provider ADR
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering

@@ -1,0 +1,14 @@
+skill: bopen-p0-conformance-gate
+prompts:
+- id: positive-01
+  prompt: Build the P0 exit-gate evidence index
+  shouldActivate: true
+- id: positive-02
+  prompt: Review WP-04 RLS evidence
+  shouldActivate: true
+- id: positive-03
+  prompt: Issue a verdict for this commit
+  shouldActivate: true
+- id: positive-04
+  prompt: Find missing recovery evidence
+  shouldActivate: true

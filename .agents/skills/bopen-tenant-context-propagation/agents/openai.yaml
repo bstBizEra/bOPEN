@@ -1,0 +1,5 @@
+display_name: bOPEN Tenant Context Propagation
+short_description: Ensure tenant authority is server-validated explicit correlated and fail-closed from request
+  entry through downstream effects.
+default_prompt: Use $bopen-tenant-context-propagation to produce a governed evidence-backed result.
+allow_implicit_invocation: false

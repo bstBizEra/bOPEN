@@ -1,0 +1,14 @@
+skill: bopen-event-outbox-contract
+prompts:
+- id: positive-01
+  prompt: Design tenant.created.v1
+  shouldActivate: true
+- id: positive-02
+  prompt: Review a transactional outbox
+  shouldActivate: true
+- id: positive-03
+  prompt: Create a replay runbook
+  shouldActivate: true
+- id: positive-04
+  prompt: Define consumer idempotency
+  shouldActivate: true

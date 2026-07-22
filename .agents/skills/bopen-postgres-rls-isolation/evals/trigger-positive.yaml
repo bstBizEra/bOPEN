@@ -1,0 +1,14 @@
+skill: bopen-postgres-rls-isolation
+prompts:
+- id: positive-01
+  prompt: Review PostgreSQL RLS migrations
+  shouldActivate: true
+- id: positive-02
+  prompt: Design policies for Tenant projects
+  shouldActivate: true
+- id: positive-03
+  prompt: Check runtime-role bypass
+  shouldActivate: true
+- id: positive-04
+  prompt: Create cross-Tenant database tests
+  shouldActivate: true

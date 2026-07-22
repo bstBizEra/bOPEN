@@ -1,0 +1,30 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: ExecutionPolicy
+metadata:
+  skill: bopen-threat-model
+  version: 0.1.0
+spec:
+  instructionTrust: approved-package-only
+  tenantContext: optional
+  toolAuthorization: per-call
+  network: deny-by-default
+  filesystem: repository-worktree
+  secrets: runtime-reference-only
+  crossTenantAccess: prohibited
+  budgets:
+    duration: PT15M
+    steps: 40
+    toolCalls: 30
+  humanApproval:
+  - irreversible-change
+  - external-publication
+  - security-exception
+  audit:
+  - skill-id
+  - version
+  - digest
+  - principal
+  - tenant-context
+  - tool-calls
+  - decision
+  - outputs

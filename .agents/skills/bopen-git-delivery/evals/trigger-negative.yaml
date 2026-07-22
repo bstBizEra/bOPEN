@@ -1,0 +1,14 @@
+skill: bopen-git-delivery
+prompts:
+- id: negative-01
+  prompt: Review code but do not publish
+  shouldActivate: false
+- id: negative-02
+  prompt: Explain pull requests
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a commit example only
+  shouldActivate: false
+- id: negative-04
+  prompt: Delete the main branch
+  shouldActivate: false

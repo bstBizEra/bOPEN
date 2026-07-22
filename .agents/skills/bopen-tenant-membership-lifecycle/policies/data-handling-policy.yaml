@@ -1,0 +1,10 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: DataHandlingPolicy
+metadata:
+  skill: bopen-tenant-membership-lifecycle
+spec:
+  maximumClassification: confidential
+  secretsInPackage: prohibited
+  crossTenantData: prohibited
+  redactionRequired: true
+  retainRawPrompts: false

@@ -1,0 +1,14 @@
+skill: bopen-postgres-rls-isolation
+prompts:
+- id: negative-01
+  prompt: Just add WHERE tenant_id in the ORM
+  shouldActivate: false
+- id: negative-02
+  prompt: Run the app as table owner
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a product announcement
+  shouldActivate: false
+- id: negative-04
+  prompt: Tune only a global lookup table
+  shouldActivate: false

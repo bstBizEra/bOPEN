@@ -1,0 +1,137 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "bopen-full-skills-pack-0.1.0",
+  "documentNamespace": "https://bopen.local/spdx/bopen-full-skills-pack/0.1.0/b2f5080efa481fc6c31174e91ed56b7ab699892dd626d0f1b9102c902103af64",
+  "creationInfo": {
+    "created": "2026-07-22T00:00:00Z",
+    "creators": [
+      "Tool: bOPEN-finalize-supply-chain-0.1.0"
+    ]
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-bopen-full-skills-pack",
+      "name": "bopen-full-skills-pack",
+      "versionInfo": "0.1.0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "LicenseRef-Internal-Evaluation",
+      "copyrightText": "Copyright (c) 2026 BizEra / bOPEN"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-PyYAML",
+      "name": "PyYAML",
+      "versionInfo": "6.0.3",
+      "downloadLocation": "https://pypi.org/project/PyYAML/6.0.3/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-attrs",
+      "name": "attrs",
+      "versionInfo": "26.1.0",
+      "downloadLocation": "https://pypi.org/project/attrs/26.1.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jsonschema",
+      "name": "jsonschema",
+      "versionInfo": "4.26.0",
+      "downloadLocation": "https://pypi.org/project/jsonschema/4.26.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jsonschema-specifications",
+      "name": "jsonschema-specifications",
+      "versionInfo": "2025.9.1",
+      "downloadLocation": "https://pypi.org/project/jsonschema-specifications/2025.9.1/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-referencing",
+      "name": "referencing",
+      "versionInfo": "0.37.0",
+      "downloadLocation": "https://pypi.org/project/referencing/0.37.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rpds-py",
+      "name": "rpds-py",
+      "versionInfo": "2026.5.1",
+      "downloadLocation": "https://pypi.org/project/rpds-py/2026.5.1/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-typing-extensions",
+      "name": "typing-extensions",
+      "versionInfo": "4.15.0",
+      "downloadLocation": "https://pypi.org/project/typing-extensions/4.15.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "PSF-2.0",
+      "copyrightText": "NOASSERTION"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-bopen-full-skills-pack"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-PyYAML"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-attrs"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-jsonschema"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-jsonschema-specifications"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-referencing"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-rpds-py"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-bopen-full-skills-pack",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-typing-extensions"
+    }
+  ]
+}

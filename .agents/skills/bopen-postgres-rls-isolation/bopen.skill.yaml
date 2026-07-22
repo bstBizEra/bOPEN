@@ -1,0 +1,68 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: Skill
+metadata:
+  id: io.bizera.bopen.postgres.rls.isolation
+  name: bopen-postgres-rls-isolation
+  version: 0.1.0
+  owner: bopen-platform-security
+  classification: internal
+  license: Internal-Evaluation
+  sourceRepository: bstBizEra/bOPEN
+  sourceRevision: UNCOMMITTED-CANDIDATE
+  lifecycle: CANDIDATE
+spec:
+  type: analytical
+  riskClass: SKR3
+  category: platform
+  scope:
+    allowed:
+    - platform
+    - product
+    - tenant
+    - workspace
+    - repository
+    tenantContext: required
+  contracts:
+    inputSchema: schemas/input.schema.json
+    outputSchema: schemas/output.schema.json
+  requires:
+    capabilities:
+    - bopen.database.rls.review
+    tools:
+    - id: repository
+      operations:
+      - read
+    - id: database
+      operations:
+      - schema-read
+      - explain
+      - test
+  runtime:
+    sandboxProfile: bopen-standard
+    networkPolicy: deny
+    filesystemPolicy: repository-worktree
+    maxDuration: PT15M
+    maxSteps: 40
+    maxToolCalls: 30
+  approval:
+    mode: conditional
+    requiredFor:
+    - external-publication
+    - production-mutation
+    - security-exception
+  data:
+    maximumClassification: confidential
+    crossTenantAccess: prohibited
+    secretsInPackage: prohibited
+  failure:
+    retryPolicy: bounded
+    compensationRequired: false
+  evaluation:
+    suite: evals/cases.yaml
+    minimumStaticPassRate: 1.0
+    crossTenantFailuresAllowed: 0
+    modelEvaluationRequired: true
+  provenance:
+    digestBound: true
+    signatureRequiredForPublication: true
+    sbomRequired: true

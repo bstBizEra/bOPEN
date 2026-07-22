@@ -1,0 +1,63 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: Skill
+metadata:
+  id: io.bizera.bopen.threat.model
+  name: bopen-threat-model
+  version: 0.1.0
+  owner: bopen-platform-security
+  classification: internal
+  license: Internal-Evaluation
+  sourceRepository: bstBizEra/bOPEN
+  sourceRevision: UNCOMMITTED-CANDIDATE
+  lifecycle: CANDIDATE
+spec:
+  type: analytical
+  riskClass: SKR2
+  category: assurance
+  scope:
+    allowed:
+    - platform
+    - product
+    - tenant
+    - workspace
+    - repository
+    tenantContext: optional
+  contracts:
+    inputSchema: schemas/input.schema.json
+    outputSchema: schemas/output.schema.json
+  requires:
+    capabilities: []
+    tools:
+    - id: repository
+      operations:
+      - read
+      - search
+  runtime:
+    sandboxProfile: bopen-standard
+    networkPolicy: deny
+    filesystemPolicy: repository-worktree
+    maxDuration: PT15M
+    maxSteps: 40
+    maxToolCalls: 30
+  approval:
+    mode: conditional
+    requiredFor:
+    - external-publication
+    - production-mutation
+    - security-exception
+  data:
+    maximumClassification: confidential
+    crossTenantAccess: prohibited
+    secretsInPackage: prohibited
+  failure:
+    retryPolicy: bounded
+    compensationRequired: false
+  evaluation:
+    suite: evals/cases.yaml
+    minimumStaticPassRate: 1.0
+    crossTenantFailuresAllowed: 0
+    modelEvaluationRequired: true
+  provenance:
+    digestBound: true
+    signatureRequiredForPublication: true
+    sbomRequired: true

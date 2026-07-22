@@ -1,0 +1,43 @@
+skill: bopen-clean-room-research
+cases:
+- id: bopen-clean-room-research-core-01
+  prompt: Study Basejump RLS patterns without copying code
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - source revision
+    - license
+    - observation
+    - inference
+    - clean-room
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-clean-room-research-core-02
+  prompt: Compare BoxyHQ and Logto clean-room
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-clean-room-research-core-03
+  prompt: Create a license register
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering

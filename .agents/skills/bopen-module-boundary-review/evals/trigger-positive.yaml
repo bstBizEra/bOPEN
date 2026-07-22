@@ -1,0 +1,14 @@
+skill: bopen-module-boundary-review
+prompts:
+- id: positive-01
+  prompt: Review tenancy and billing dependencies
+  shouldActivate: true
+- id: positive-02
+  prompt: Check bPro leakage into core
+  shouldActivate: true
+- id: positive-03
+  prompt: Design an audit Module manifest
+  shouldActivate: true
+- id: positive-04
+  prompt: Assess event-runtime extraction
+  shouldActivate: true

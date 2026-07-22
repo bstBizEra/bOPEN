@@ -1,0 +1,43 @@
+skill: bopen-portal-context-ux
+cases:
+- id: bopen-portal-context-ux-core-01
+  prompt: Review personal and Tenant route separation
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - /my
+    - tenant
+    - /platform
+    - switch
+    - backend
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-portal-context-ux-core-02
+  prompt: Design Tenant switching UX
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-portal-context-ux-core-03
+  prompt: Differentiate no Entitlement from no Permission
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

@@ -1,0 +1,42 @@
+skill: bopen-repository-harness
+cases:
+- id: bopen-repository-harness-core-01
+  prompt: Add a repository harness so agents stop editing generated clients
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - AGENTS.md
+    - drift
+    - CI
+    - failure memory
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-repository-harness-core-02
+  prompt: Create AGENTS.md and database-scoped rules
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering
+- id: bopen-repository-harness-core-03
+  prompt: Add a drift check for stale commands
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - engineering

@@ -5,6 +5,8 @@
   "description": "Governed bootstrap for the bOPEN platform kernel",
   "scripts": {
     "validate": "python tools/validate_repository.py",
+    "validate:skills": "python tools/validate_skill_registry.py",
+    "test:skills": "python tools/run_skill_package_tests.py",
     "test:governance": "python -m unittest discover -s tests/governance -p \"test_*.py\"",
     "docs:manifest": "python tools/generate_document_manifest.py"
   },

@@ -1,0 +1,14 @@
+skill: bopen-adr-governance
+prompts:
+- id: negative-01
+  prompt: Write meeting minutes
+  shouldActivate: false
+- id: negative-02
+  prompt: Fix a unit test
+  shouldActivate: false
+- id: negative-03
+  prompt: Summarize a news article
+  shouldActivate: false
+- id: negative-04
+  prompt: Create an invoice
+  shouldActivate: false

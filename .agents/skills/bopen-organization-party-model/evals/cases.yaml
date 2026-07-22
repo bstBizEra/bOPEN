@@ -1,0 +1,43 @@
+skill: bopen-organization-party-model
+cases:
+- id: bopen-organization-party-model-core-01
+  prompt: Model customer and supplier as Party roles
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - Party
+    - Principal
+    - Tenant
+    - Organization
+    - Legal Entity
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - foundation
+- id: bopen-organization-party-model-core-02
+  prompt: Design a holding-group graph
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - foundation
+- id: bopen-organization-party-model-core-03
+  prompt: Review Tenant versus Legal Entity
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - foundation

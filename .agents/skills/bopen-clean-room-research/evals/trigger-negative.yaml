@@ -1,0 +1,14 @@
+skill: bopen-clean-room-research
+prompts:
+- id: negative-01
+  prompt: Rename this upstream project and ship it
+  shouldActivate: false
+- id: negative-02
+  prompt: Remove original license headers
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a fictional story
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a tenant invitation API
+  shouldActivate: false

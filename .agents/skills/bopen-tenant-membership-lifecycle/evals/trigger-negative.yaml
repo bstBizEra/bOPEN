@@ -1,0 +1,14 @@
+skill: bopen-tenant-membership-lifecycle
+prompts:
+- id: negative-01
+  prompt: Create tenant_users as a duplicate identity table
+  shouldActivate: false
+- id: negative-02
+  prompt: Use active and inactive for every state
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a marketing email
+  shouldActivate: false
+- id: negative-04
+  prompt: Calculate subscription tax
+  shouldActivate: false

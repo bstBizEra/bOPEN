@@ -1,0 +1,43 @@
+skill: bopen-principal-identity
+cases:
+- id: bopen-principal-identity-core-01
+  prompt: Design the principal and identity schema
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - Principal
+    - Identity
+    - Party
+    - Membership
+    - provider-neutral
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-principal-identity-core-02
+  prompt: Review a service-account lifecycle
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-principal-identity-core-03
+  prompt: Model passkeys and session revocation
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

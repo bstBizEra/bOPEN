@@ -1,0 +1,43 @@
+skill: bopen-audit-evidence
+cases:
+- id: bopen-audit-evidence-core-01
+  prompt: Design audit events for support access
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - actor
+    - tenant
+    - decision
+    - correlation
+    - redaction
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-audit-evidence-core-02
+  prompt: Validate a P0 evidence envelope
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform
+- id: bopen-audit-evidence-core-03
+  prompt: Review denial redaction
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - platform

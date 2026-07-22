@@ -1,0 +1,5 @@
+display_name: bOPEN Git Delivery
+short_description: Publish reviewed bOPEN changes without hidden scope secret leakage history rewriting or bypassed
+  verification.
+default_prompt: Use $bopen-git-delivery to produce a governed evidence-backed result.
+allow_implicit_invocation: false

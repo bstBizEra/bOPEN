@@ -1,0 +1,14 @@
+skill: bopen-repository-harness
+prompts:
+- id: positive-01
+  prompt: Add a repository harness so agents stop editing generated clients
+  shouldActivate: true
+- id: positive-02
+  prompt: Create AGENTS.md and database-scoped rules
+  shouldActivate: true
+- id: positive-03
+  prompt: Add a drift check for stale commands
+  shouldActivate: true
+- id: positive-04
+  prompt: Review Copilot instructions for enforceability
+  shouldActivate: true

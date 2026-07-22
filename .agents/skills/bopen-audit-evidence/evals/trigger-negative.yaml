@@ -1,0 +1,14 @@
+skill: bopen-audit-evidence
+prompts:
+- id: negative-01
+  prompt: Log every password
+  shouldActivate: false
+- id: negative-02
+  prompt: Let users edit audit history
+  shouldActivate: false
+- id: negative-03
+  prompt: Write a product description
+  shouldActivate: false
+- id: negative-04
+  prompt: Create a Tenant invitation
+  shouldActivate: false

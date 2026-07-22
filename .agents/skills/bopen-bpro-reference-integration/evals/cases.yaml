@@ -1,0 +1,43 @@
+skill: bopen-bpro-reference-integration
+cases:
+- id: bopen-bpro-reference-integration-core-01
+  prompt: Design the bPro P0 vertical slice
+  expected:
+    shouldActivate: true
+    requiredTerms: &id001
+    - bPro
+    - platform contract
+    - domain
+    - cross-tenant
+    - vertical slice
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - product
+- id: bopen-bpro-reference-integration-core-02
+  prompt: Review bPro for duplicated Tenant logic
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - product
+- id: bopen-bpro-reference-integration-core-03
+  prompt: Map project.created to event contract
+  expected:
+    shouldActivate: true
+    requiredTerms: *id001
+    mustPreserve:
+    - skill-is-not-permission
+    - no-fabricated-approval
+    - evidence-separation
+  tags:
+  - core
+  - product

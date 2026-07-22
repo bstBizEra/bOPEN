@@ -1,0 +1,146 @@
+{
+  "artifactId": "BOPEN-ARCH-EXAMPLE-001",
+  "title": "bOPEN Skills Registry and Tenant Activation Architecture",
+  "version": "0.1",
+  "status": "candidate",
+  "disposition": "APPROVE WITH CONDITIONS",
+  "executiveSummary": "Implement the registry as a bounded modular-monolith module, preserve immutable skill versions, and separate publication, tenant entitlement, enablement, agent binding, and per-tool authorization.",
+  "scope": {
+    "phase": "P0 pilot",
+    "productionExecution": false
+  },
+  "architecture": {
+    "principles": [
+      "A skill is a procedure and not a permission.",
+      "Every tool call is independently authorized in validated active tenant context.",
+      "Published skill versions are immutable and digest-bound."
+    ],
+    "components": [
+      {
+        "name": "Skill Registry",
+        "owner": "bOPEN agent governance",
+        "topology": "modular-monolith module"
+      },
+      {
+        "name": "Evaluation Control",
+        "owner": "bOPEN quality governance"
+      },
+      {
+        "name": "Tool Policy Gateway",
+        "owner": "bOPEN authorization"
+      }
+    ],
+    "flows": [
+      {
+        "name": "activation",
+        "steps": [
+          "published",
+          "entitled",
+          "enabled",
+          "configured",
+          "bound",
+          "authorized"
+        ]
+      }
+    ],
+    "stateMachines": [],
+    "contracts": []
+  },
+  "decisions": [
+    {
+      "id": "ADR-SKILL-001",
+      "title": "Registry topology",
+      "status": "proposed",
+      "context": "P0 needs governed skill metadata without a separate operational service.",
+      "decision": "Implement the registry as a bounded module in the bOPEN modular monolith.",
+      "rationale": [
+        "Keeps P0 operations simple",
+        "Preserves an extraction seam"
+      ],
+      "alternatives": [
+        {
+          "name": "Separate microservice",
+          "disposition": "deferred",
+          "reason": "No independent scaling or ownership evidence yet"
+        }
+      ],
+      "consequences": [
+        "The module must expose owned contracts and avoid direct cross-module table access."
+      ],
+      "controls": [
+        "PostgreSQL RLS",
+        "immutable version digest",
+        "audit"
+      ],
+      "evidence": [
+        "architecture review",
+        "cross-tenant tests"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "SK-CTX-001",
+      "requirement": "Tenant context is server validated and missing context fails closed."
+    },
+    {
+      "id": "SK-AUTH-001",
+      "requirement": "Skill selection never grants tool authority."
+    },
+    {
+      "id": "SK-RLS-001",
+      "requirement": "Tenant-owned registry rows use PostgreSQL RLS with default deny."
+    }
+  ],
+  "risks": [
+    {
+      "id": "R-001",
+      "risk": "Skill shadowing",
+      "mitigation": "Canonical ID, source authority, explicit override"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "G-001",
+      "gap": "No independent model evaluation yet",
+      "owner": "agent-quality"
+    }
+  ],
+  "implementationPlan": [
+    {
+      "id": "WP-01",
+      "name": "Registry contracts",
+      "evidence": "schema validation"
+    }
+  ],
+  "verification": [
+    {
+      "id": "V-001",
+      "case": "wrong tenant skill activation",
+      "expected": "DENY"
+    },
+    {
+      "id": "V-002",
+      "case": "entitled but unauthorized tool call",
+      "expected": "DENY"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-001",
+      "type": "static-validation",
+      "status": "planned"
+    }
+  ],
+  "assumptions": [
+    "Production execution remains outside P0."
+  ],
+  "unresolvedItems": [
+    "Select registry signing service after technology freeze."
+  ],
+  "artifacts": [
+    "BOPEN-ARCH-EXAMPLE-001.md",
+    "ADR-SKILL-001.md",
+    "verification-matrix.csv"
+  ]
+}
