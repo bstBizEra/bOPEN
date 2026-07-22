@@ -108,3 +108,11 @@ Only after R4 may attributable humans record the separately authorized preparati
 ## Rollback and non-effects
 
 Before activation, rollback is deletion of the isolated candidate branch/worktree. The v0.1 docket and all approved substrate artifacts remain immutable. No step in this plan authorizes protected-branch mutation, force-push, merge, release, deployment, production implementation or PG-G0 passage.
+
+## Append-only execution record — 2026-07-23
+
+R0 is satisfied by signed substrate commit `26bea090c0aca14f1337c4be1a146fd48bb1f626`, tree `8789c5e70c2ce87298928d4d02add7ffe5867402`. The successor candidate implements the R1 binding inventory and prepares R2/R3 surfaces on `codex/GOV-P0-04-docket-v02` without recording any human disposition.
+
+Reason: execute the operator-authorized Batch 2 preparation atomically after Batch 1. Benefit of the old phase: the v0.1 docket and proposal files exposed every missing action without self-activating. Expected outcome: an independent checker can review one exact successor SHA, after which the operator may sign each separately authorized disposition against the frozen substrate.
+
+R4 and R5 remain open. The candidate state is `PENDING_HUMAN_DECISIONS`, technical review is pending, all prepared disposition effects are false, all five legacy decisions are pending, root ledgers remain Draft/Inactive and PG-G0 remains `NOT_READY`.

@@ -84,7 +84,7 @@ class ProgramControlValidationTests(unittest.TestCase):
                 register = self.load_register(root, name)
                 register.update(
                     {
-                        "version": "0.1.0",
+                        "version": "0.2.0" if name == "AUTHORITY-MATRIX.json" else "0.1.0",
                         "status": "approved",
                         "approved_by": "Independent Human Authority",
                         "approved_at": "2026-07-21T11:00:00Z",

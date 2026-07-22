@@ -21,6 +21,7 @@
 | EVD-GOV-005 | GOV-P0-04 | Independent exact-SHA review, fixture repair verification and v0.2 rebinding-plan evidence | `docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md` | REJECT for `203ed05`; maker correction required |
 
 | EVD-GOV-006 | GOV-P0-04 | Independent exact-SHA review of the corrective authority-identity candidate | `docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md` | `ACCEPT_EXACT_SHA` for `d7d8699`; human authority review pending |
+| EVD-GOV-007 | GOV-P0-04 | Maker evidence for the exact-substrate PG-G0 authority docket v0.2 Batch 2 candidate | `docs/evidence/EVD-GOV-007-pg-g0-authority-docket-v02-candidate.md` | Candidate preparation; independent review and human dispositions pending |
 
 ## Append-only EVD-GOV-001 status supersession — 2026-07-21
 

@@ -18,6 +18,14 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCKET_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001.json")
 SCHEMA_PATH = Path("contracts/governance/pg-g0-authority-docket.schema.json")
 AUTHORITY_MATRIX_PATH = Path("docs/00-governance/registers/AUTHORITY-MATRIX.json")
+BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json")
+APPEND_ONLY_GOVERNING_PATHS = {
+    "Backlog.md",
+    "Progress_Log.md",
+    "Recap_Today.md",
+    "docs/decisions/DEC-0013.md",
+    "docs/work-packages/GOV-P0-04.md",
+}
 DEFAULT_REPORT_PATH = Path("artifacts/validation/program-g0-authority-readiness.json")
 SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
@@ -39,12 +47,30 @@ EXPECTED_SUBJECT_REFS = {
 }
 EXPECTED_ACTION_CONFIG = {
     "APPROVE_ARCHITECTURE": ("architecture_approval", False, {"Security Authority", "Data Authority"}),
-    "ACCEPT_WORK_ITEM": ("work_item_acceptance", True, set()),
+    "ACCEPT_WORK_ITEM": ("work_item_acceptance", True, {"Owning Artifact Authority"}),
     "APPROVE_GOAL": ("normative_goal_approval", False, {"Architecture Authority"}),
     "ACCEPT_EVIDENCE": ("evidence_acceptance", False, set()),
     "CERTIFY_MODULE": ("module_certification", False, {"Product Authority", "Security Authority"}),
     "PROMOTE_SKILL": ("skill_promotion", True, set()),
     "AUTHORIZE_RELEASE": ("release_authorization", True, {"Security Authority", "Product Authority"}),
+    "APPROVE_GOVERNANCE_BASELINE": ("governance_baseline_approval", True, {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "APPROVE_PROGRAM_REGISTERS": ("program_register_approval", True, {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PASS_PG_G0": ("program_gate_passage", True, {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+}
+EXPECTED_PREPARED_DISPOSITIONS = {
+    "PG-G0-PREP-001": ("B2", "APPROVE_GOVERNANCE_BASELINE", "BOPEN-GOV-001", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-002": ("B2", "APPROVE_PROGRAM_REGISTERS", "AUTHORITY-MATRIX-V0.2-PROPOSAL", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-003": ("B2", "APPROVE_GOVERNANCE_BASELINE", "DEC-0013", "ACCEPTED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-004": ("B3", "APPROVE_PROGRAM_REGISTERS", "GOAL-REGISTER", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-005": ("B3", "APPROVE_PROGRAM_REGISTERS", "AGENT-REGISTER", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-006": ("B3", "APPROVE_PROGRAM_REGISTERS", "MODULE-REGISTER", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-007": ("B3", "APPROVE_PROGRAM_REGISTERS", "SKILL-REGISTER", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-008": ("B3", "APPROVE_PROGRAM_REGISTERS", "SCHEDULE-REGISTER", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-009": ("B3", "APPROVE_PROGRAM_REGISTERS", "TECHNOLOGY-DECISION-ASSIGNMENTS", "APPROVED", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
+    "PG-G0-PREP-010": ("B4", "ACCEPT_WORK_ITEM", "GOV-P0-01", "ACCEPTED", "Engineering Authority", {"Product Authority"}),
+    "PG-G0-PREP-011": ("B4", "ACCEPT_WORK_ITEM", "GOV-P0-04", "ACCEPTED", "Engineering Authority", {"Engineering Authority"}),
+    "PG-G0-PREP-012": ("B5", "APPROVE_ARCHITECTURE", "DEC-0007", "APPROVED", "Architecture Authority", {"Security Authority", "Data Authority"}),
+    "PG-G0-PREP-013": ("B6", "APPROVE_GOVERNANCE_BASELINE", "GOV-P0-03", "ACTIVE", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
 }
 MISSING_CONTROL_PATHS = (
     "Roadmap.md",
@@ -58,6 +84,7 @@ NON_AUTHORITY_KEYS = {
     "production_implementation_authorized",
     "merge_authorized",
     "release_authorized",
+    "deployment_authorized",
     "runtime_activation_authorized",
     "module_certified",
     "skill_promoted",
@@ -73,7 +100,7 @@ TERMINAL_DECISIONS = {"APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"}
 TERMINAL_CONCURRENCES = {"CONCUR", "NONCONCUR", "DEFER", "WITHDRAW", "EXPIRE"}
 TERMINAL_REVIEWS = {"ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"}
 STATE_TRANSITIONS = {
-    "DRAFT": {"TECHNICAL_REVIEW", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
+    "DRAFT": {"TECHNICAL_REVIEW", "PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "TECHNICAL_REVIEW": {"PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "PENDING_HUMAN_DECISIONS": {"READY_FOR_FINAL_DISPOSITION", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "READY_FOR_FINAL_DISPOSITION": {"DISPOSED"},
@@ -694,7 +721,9 @@ def validate_artifact_binding(
     if not path.is_file():
         errors.append(f"{label} artifact missing: {relative}")
     elif file_sha256(path) != digest:
-        errors.append(f"{label} current artifact drift: {relative}")
+        current = path.read_bytes()
+        if str(relative) not in APPEND_ONLY_GOVERNING_PATHS or committed is None or not current.startswith(committed):
+            errors.append(f"{label} current artifact drift: {relative}")
     if not is_tracked_path(root, str(relative)):
         errors.append(f"{label} artifact untracked: {relative}")
     return errors
@@ -739,10 +768,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     errors.extend(validate_schema_instance(docket, schema, schema, "authority docket"))
     if docket.get("$schema") != schema.get("$id"):
         errors.append("authority docket schema binding mismatch")
-    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.1.0-draft":
+    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.2.0-draft":
         errors.append("authority docket identity/version invalid")
-    if docket.get("status") != "draft" or docket.get("state") != "DRAFT":
-        errors.append("draft authority docket must remain DRAFT")
+    if docket.get("status") != "pending_human_decisions" or docket.get("state") != "PENDING_HUMAN_DECISIONS":
+        errors.append("v0.2 authority docket must remain PENDING_HUMAN_DECISIONS")
 
     updated_at = parse_datetime(docket.get("updated_at"))
     expires_at = parse_datetime(docket.get("expires_at"))
@@ -788,8 +817,54 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"governing artifact ID duplicated: {artifact_id}")
             artifact_map[artifact_id] = artifact
 
+    inventory_binding = docket.get("binding_inventory")
+    inventory_keys = {"inventory_ref", "inventory_id", "substrate_commit_sha", "substrate_tree_sha", "record_count"}
+    errors.extend(exact_keys(inventory_binding, inventory_keys, "binding inventory"))
+    inventory, inventory_error = read_json(root / BINDING_INVENTORY_PATH)
+    if inventory_error:
+        errors.append(f"binding inventory {inventory_error}")
+    elif isinstance(inventory_binding, dict) and isinstance(inventory, dict):
+        if inventory_binding.get("inventory_ref") != BINDING_INVENTORY_PATH.as_posix():
+            errors.append("binding inventory path invalid")
+        if inventory_binding.get("inventory_id") != inventory.get("inventory_id"):
+            errors.append("binding inventory identity mismatch")
+        if inventory_binding.get("substrate_commit_sha") != commit_sha or inventory.get("substrate_commit_sha") != commit_sha:
+            errors.append("binding inventory commit mismatch")
+        if inventory_binding.get("substrate_tree_sha") != tree_sha or inventory.get("substrate_tree_sha") != tree_sha:
+            errors.append("binding inventory tree mismatch")
+        records = inventory.get("records")
+        if not isinstance(records, list) or inventory_binding.get("record_count") != len(records):
+            errors.append("binding inventory record count mismatch")
+            records = []
+        seen_inventory_ids: set[str] = set()
+        seen_inventory_paths: set[str] = set()
+        for index, record in enumerate(records):
+            if not isinstance(record, dict):
+                errors.append(f"binding inventory record {index + 1} invalid")
+                continue
+            record_id = str(record.get("artifact_id", ""))
+            relative = str(record.get("path", ""))
+            if not record_id or record_id in seen_inventory_ids:
+                errors.append(f"binding inventory artifact ID invalid or duplicated: {record_id}")
+            if not relative or relative in seen_inventory_paths:
+                errors.append(f"binding inventory path invalid or duplicated: {relative}")
+            seen_inventory_ids.add(record_id)
+            seen_inventory_paths.add(relative)
+            committed = read_file_at_commit(root, commit_sha, relative) if relative else None
+            if committed is None:
+                errors.append(f"binding inventory source missing at substrate: {relative}")
+            else:
+                if record.get("sha256") != bytes_sha256(committed):
+                    errors.append(f"binding inventory digest mismatch: {relative}")
+                if record.get("bytes") != len(committed):
+                    errors.append(f"binding inventory byte count mismatch: {relative}")
+        for artifact_id, artifact in artifact_map.items():
+            match = next((item for item in records if isinstance(item, dict) and item.get("artifact_id") == artifact_id), None)
+            if match is None or artifact.get("artifact_ref") != match.get("path") or artifact.get("sha256") != match.get("sha256"):
+                errors.append(f"governing artifact not exactly represented in binding inventory: {artifact_id}")
+
     source = docket.get("authority_source")
-    source_keys = {"matrix_id", "artifact_ref", "version", "status", "sha256", "effective"}
+    source_keys = {"matrix_id", "artifact_ref", "adoption_target_ref", "version", "status", "sha256", "effective"}
     errors.extend(exact_keys(source, source_keys, "authority source"))
     if isinstance(source, dict):
         errors.extend(validate_artifact_binding(root, {
@@ -802,6 +877,15 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         source_pair = (source.get("status"), source.get("effective"))
         if source_pair not in {("draft", False), ("approved", True)}:
             errors.append("authority source status/effectiveness mismatch")
+        if source.get("adoption_target_ref") != AUTHORITY_MATRIX_PATH.as_posix():
+            errors.append("authority source adoption target invalid")
+        committed_source = read_file_at_commit(root, commit_sha, str(source.get("artifact_ref", "")))
+        try:
+            source_matrix = json.loads(committed_source.decode("utf-8")) if committed_source is not None else None
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            source_matrix = None
+        if not isinstance(source_matrix, dict) or source_matrix.get("entries") != matrix.get("entries"):
+            errors.append("adopted authority matrix entries differ from signed substrate proposal")
 
     matrix_entries = matrix.get("entries")
     if matrix.get("register_id") != "PG-REG-AUTHORITY-001" or not isinstance(matrix_entries, list):
@@ -878,13 +962,65 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         else:
             errors.append("technical review verdict invalid")
 
+    prepared = docket.get("prepared_dispositions")
+    if not isinstance(prepared, list):
+        errors.append("prepared_dispositions must be an array")
+        prepared = []
+    prepared_ids = [item.get("disposition_id") for item in prepared if isinstance(item, dict)]
+    if set(prepared_ids) != set(EXPECTED_PREPARED_DISPOSITIONS) or len(prepared_ids) != len(EXPECTED_PREPARED_DISPOSITIONS):
+        errors.append("prepared disposition set must match Batch 2 B2 through B6 surfaces")
+    prepared_keys = {
+        "disposition_id", "batch_item", "action_id", "subject", "requested_state",
+        "accountable_authority_role", "required_concurrence", "authority_actor",
+        "disposition", "decided_at", "expires_at", "decision_ref", "evidence_refs", "effective",
+    }
+    for item in prepared:
+        if not isinstance(item, dict):
+            errors.append("prepared disposition must be an object")
+            continue
+        disposition_id = str(item.get("disposition_id", ""))
+        errors.extend(exact_keys(item, prepared_keys, f"{disposition_id} prepared disposition"))
+        expected = EXPECTED_PREPARED_DISPOSITIONS.get(disposition_id)
+        if expected is None:
+            continue
+        batch_item, action_id, artifact_id, requested_state, authority_role, concurrence = expected
+        if item.get("batch_item") != batch_item or item.get("action_id") != action_id:
+            errors.append(f"{disposition_id} batch/action mismatch")
+        if item.get("requested_state") != requested_state:
+            errors.append(f"{disposition_id} requested state mismatch")
+        if item.get("accountable_authority_role") != authority_role:
+            errors.append(f"{disposition_id} authority role mismatch")
+        if set(item.get("required_concurrence", [])) != concurrence:
+            errors.append(f"{disposition_id} concurrence mismatch")
+        if any(item.get(field) is not None for field in ("authority_actor", "decided_at", "decision_ref")):
+            errors.append(f"{disposition_id} pending surface claims human disposition")
+        if item.get("disposition") != "PENDING" or item.get("evidence_refs") or item.get("effective") is not False:
+            errors.append(f"{disposition_id} must remain pending and ineffective")
+        disposition_expiry = parse_datetime(item.get("expires_at"))
+        if disposition_expiry is None or (expires_at is not None and disposition_expiry > expires_at):
+            errors.append(f"{disposition_id} expiry invalid")
+        subject = item.get("subject")
+        subject_keys = {"artifact_id", "version", "artifact_ref", "sha256", "commit_sha", "tree_sha"}
+        errors.extend(exact_keys(subject, subject_keys, f"{disposition_id} subject"))
+        governing = artifact_map.get(artifact_id)
+        if isinstance(subject, dict):
+            if subject.get("artifact_id") != artifact_id:
+                errors.append(f"{disposition_id} subject identity mismatch")
+            if subject.get("commit_sha") != commit_sha or subject.get("tree_sha") != tree_sha:
+                errors.append(f"{disposition_id} subject substrate binding mismatch")
+            if governing is None or any(subject.get(field) != governing.get(field) for field in ("version", "artifact_ref", "sha256")):
+                errors.append(f"{disposition_id} subject must match governing artifact")
+        action = matrix_actions.get(action_id)
+        if action is None or action.get("accountable_human_authority") != authority_role:
+            errors.append(f"{disposition_id} action/authority absent from matrix")
+
     decisions = docket.get("decision_requests")
     if not isinstance(decisions, list):
         errors.append("decision_requests must be an array")
         decisions = []
     decision_ids = [item.get("decision_id") for item in decisions if isinstance(item, dict)]
     if set(decision_ids) != set(EXPECTED_DECISIONS) or len(decision_ids) != len(EXPECTED_DECISIONS):
-        errors.append("authority docket decision set must match the five live mapped actions")
+        errors.append("authority docket decision set must preserve the five B8 decision IDs")
 
     for decision in decisions:
         if not isinstance(decision, dict):
@@ -943,7 +1079,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         actual_roles = [item.get("authority_role") for item in concurrences if isinstance(item, dict)]
         if set(actual_roles) != concurrence_roles or len(actual_roles) != len(concurrence_roles):
             errors.append(f"{decision_id} concurrence roles invalid")
-        if action is not None and not set(action.get("required_concurrence", [])).issubset(set(actual_roles)):
+        matrix_concurrence = set(action.get("required_concurrence", [])) if action is not None else set()
+        if action_id == "ACCEPT_WORK_ITEM" and matrix_concurrence == {"Owning Artifact Authority"}:
+            matrix_concurrence = concurrence_roles
+        if action is not None and not matrix_concurrence.issubset(set(actual_roles)):
             errors.append(f"{decision_id} misses authority-matrix concurrence")
         concurrence_identities: set[str] = set()
         for concurrence in concurrences:
@@ -1073,11 +1212,11 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     outcomes = docket.get("effective_outcome")
     errors.extend(exact_keys(outcomes, EFFECTIVE_OUTCOME_KEYS, "effective outcome"))
     if isinstance(outcomes, dict) and any(value is not False for value in outcomes.values()):
-        errors.append("draft authority docket cannot assert an effective outcome")
+        errors.append("pending authority docket cannot assert an effective outcome")
     flags = docket.get("non_authority_flags")
     errors.extend(exact_keys(flags, NON_AUTHORITY_KEYS, "non-authority flags"))
     if isinstance(flags, dict) and any(value is not False for value in flags.values()):
-        errors.append("draft authority docket cannot grant authority")
+        errors.append("pending authority docket cannot grant authority")
 
     blockers = docket.get("blockers")
     if not isinstance(blockers, list) or not blockers or any(not non_placeholder(item) for item in blockers):
@@ -1099,6 +1238,9 @@ def build_readiness_report(root: Path = ROOT, as_of: datetime | None = None) -> 
             blockers.append("exact-SHA technical review is not accepted")
         if not docket["authority_source"]["effective"]:
             blockers.append("authority source is not effective")
+        for prepared in docket.get("prepared_dispositions", []):
+            if prepared.get("disposition") != "APPROVE" or not prepared.get("effective"):
+                blockers.append(f"{prepared.get('disposition_id', 'prepared disposition')} remains ineffective")
         for decision in docket["decision_requests"]:
             if decision["final_disposition"]["value"] != "APPROVE" or not decision["final_disposition"]["effective"]:
                 blockers.append(f"{decision['decision_id']} remains ineffective")

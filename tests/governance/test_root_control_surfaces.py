@@ -15,6 +15,7 @@ from tools.validate_root_control_surfaces import (
     ROOT,
     ROOT_SURFACES,
     build_package_manifest,
+    ACTIVATION_HEADING,
     read_git_blob,
     validate_append_only_bytes,
     validate_exact_root_names,
@@ -115,6 +116,34 @@ class RootControlSurfaceTests(unittest.TestCase):
             path.write_text(path.read_text(encoding="utf-8") + "\n- [ ] mutable task\n", encoding="utf-8")
             errors = validate_root_control_surfaces(root, check_git=False)
         self.assertTrue(any("MUTABLE CHECKBOX PROHIBITED: Backlog.md" in error for error in errors))
+
+    def test_partial_activation_fails_closed(self):
+        temporary, root = self.make_fixture()
+        with temporary:
+            path = root / "Roadmap.md"
+            path.write_text(path.read_text(encoding="utf-8") + f"\n{ACTIVATION_HEADING}\n", encoding="utf-8")
+            errors = validate_root_control_surfaces(root, check_git=False)
+        self.assertTrue(any("ACTIVATION MUST BE ATOMIC" in error for error in errors), errors)
+
+    def test_activation_requires_exact_signed_fields(self):
+        temporary, root = self.make_fixture()
+        with temporary:
+            event = (
+                f"\n{ACTIVATION_HEADING}\n\n"
+                "**Activation status:** Active\n"
+                "**Activation lifecycle:** Active\n"
+                "**Activated by:** AGENT-INVENTED\n"
+                "**Activated at:** not-a-time\n"
+                "**Activation decision ref:** missing\n"
+                "**Activation evidence ref:** missing\n"
+                "**Activation substrate commit:** 0000000000000000000000000000000000000000\n"
+            )
+            for relative in ROOT_SURFACES:
+                path = root / relative
+                path.write_text(path.read_text(encoding="utf-8") + event, encoding="utf-8")
+            errors = validate_root_control_surfaces(root, check_git=False)
+        self.assertTrue(any("ACTIVATION FIELD INVALID" in error for error in errors), errors)
+        self.assertTrue(any("ACTIVATION SIGNING EVIDENCE MISSING" in error for error in errors), errors)
 
     def test_append_only_prefix_accepts_append(self):
         self.assertEqual(validate_append_only_bytes(b"old\n", b"old\nnew\n"), [])

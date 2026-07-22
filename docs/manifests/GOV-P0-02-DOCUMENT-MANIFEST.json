@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-22",
-  "count": 270,
+  "count": 273,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -20,15 +20,15 @@
       "path": "docs/00-governance/PG-G0-AUTH-001-V0.2-REBINDING-PLAN.md",
       "title": "PG-G0-AUTH-001 v0.2 Rebinding Plan",
       "status": "Draft; non-effective",
-      "sha256": "91ca730d1c9b74db957c7fc3d4b97db98b7e05fcc5d62815c272812b47c8790b",
-      "bytes": 7139
+      "sha256": "3a120cc09b9d9469e19cf81c1241fd6cf0ae7af8cbbb80595da1b5bbe0608649",
+      "bytes": 8119
     },
     {
       "path": "docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md",
       "title": "PG-G0-AUTH-001 \u2014 PG-G0 Authority Docket",
       "status": "Draft",
-      "sha256": "938dd088fba470f6c13043cfb724d5efd6f9b1525e57d42c7bcd90961df52bea",
-      "bytes": 3448
+      "sha256": "587deb8a564490b5d81e3551ba17107405ee33ac8101f19ec67da15269e17d5d",
+      "bytes": 4913
     },
     {
       "path": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
@@ -73,11 +73,18 @@
       "bytes": 524
     },
     {
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json",
+      "title": "",
+      "status": "",
+      "sha256": "8a5dc18496bb9800750c5e55a48c54c8bd61f9d683474ae20744bf271df5218e",
+      "bytes": 7940
+    },
+    {
       "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
       "title": "",
       "status": "",
-      "sha256": "255fd6ae1b88de89b5a89d9575c5e97b4417115b4985a18426414b8003773795",
-      "bytes": 12851
+      "sha256": "83392e98143d4adc8e52b21e5eb7fa33f355bbf9ebf9649d50f3f2f4a5d3cef6",
+      "bytes": 27724
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -139,8 +146,8 @@
       "path": "docs/00-governance/registers/AUTHORITY-MATRIX.json",
       "title": "",
       "status": "",
-      "sha256": "96336276e061512878140727111d1eb37c5db0b42a52e021b1112a2f4bbe40ab",
-      "bytes": 3378
+      "sha256": "d4c3934bc63e892ca0ccdc5af528c6f2ebc77e2664055cbbaad2a4b7abb41aac",
+      "bytes": 4964
     },
     {
       "path": "docs/00-governance/registers/GOAL-REGISTER.json",
@@ -190,6 +197,13 @@
       "status": "Draft (partially disposed; remaining items pending explicit operator confirmation)",
       "sha256": "2fe927e728c1be060a413b5be096007455cef81e4a3bb9028fddab316b924407",
       "bytes": 7250
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-2.md",
+      "title": "PG-G0 Signing Pass 2 \u2014 Pending Human Dispositions",
+      "status": "Prepared; unsigned",
+      "sha256": "d2842cfdbe69a42168d0590c1765eb9049632cabe047a539d38da4548b36c62b",
+      "bytes": 3113
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -951,8 +965,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "e41d987a8127b88346cb3963644a7ca85a09662a26a5c7ddebec940f291a7c56",
-      "bytes": 9604
+      "sha256": "c492da3237b2cbb827c2c18df0e55c14c6e0800c4d508d7b2200459ec6372d0c",
+      "bytes": 10323
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1105,8 +1119,8 @@
       "path": "docs/decisions/DEC-0013.md",
       "title": "DEC-0013 \u2014 Authority Matrix v0.2: Missing PG-G0 Actions, Concurrence Reconciliation and Identity Register Adoption",
       "status": "Proposed",
-      "sha256": "04156eb4cb7d3b4580363cf5ecc1e875c343631c59c1d654510f5ac6e796be27",
-      "bytes": 4664
+      "sha256": "f498688187d1dcde11d28d5b55ebbdad962bc8f1845fdb9cecbb777f9df53599",
+      "bytes": 5378
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1228,6 +1242,13 @@
       "bytes": 6714
     },
     {
+      "path": "docs/evidence/EVD-GOV-007-pg-g0-authority-docket-v02-candidate.md",
+      "title": "EVD-GOV-007 \u2014 PG-G0 Authority Docket v0.2 Candidate",
+      "status": "",
+      "sha256": "7c96d45727311fe3051a45c1eb23b6d01203a94d31a8ea01a2e4b2c92a5b086d",
+      "bytes": 4262
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1245,8 +1266,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "1d62e1890e35d5058f81962833c0c9470417f084cfe059ac09747312e5a81c07",
-      "bytes": 3803
+      "sha256": "5a552dd186c2c9f0ebdd6ab2e392feacd22280bd8de0f523c1d11b01c5c9ba0d",
+      "bytes": 4063
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1259,7 +1280,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "e5928ebe928b18d8cc999869cf7bc272ca170a0339b769ce85d65794c60f22d4",
+      "sha256": "4d79f49c3049906be803d2fee51d54269deb3e685fca7fa35412bbafd1582a34",
       "bytes": 2243
     },
     {
@@ -1882,8 +1903,8 @@
       "path": "docs/work-packages/GOV-P0-04.md",
       "title": "GOV-P0-04 \u2014 Authority Identity Surfaces, Matrix v0.2 Proposal and Operator Decision Packet",
       "status": "Proposed; not accepted",
-      "sha256": "f9d9384f9640aa23204f3b520d5aaa6cafa67ef336c6721e7a75554757489878",
-      "bytes": 6643
+      "sha256": "7b2e350e2ce5b7c39fcefcc0eaeffe11a02ca8a4b3cf2415f87cbb24ca8b2c91",
+      "bytes": 7872
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

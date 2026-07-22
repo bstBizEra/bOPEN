@@ -1,39 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "bopen://schemas/governance/root-control-surface/0.1.0-draft",
-  "title": "bOPEN Draft Root Control Surface Record",
-  "description": "Draft extracted-record contract for a non-effective append-only root control surface.",
+  "$id": "bopen://schemas/governance/root-control-surface/0.2.0-draft",
+  "title": "bOPEN Append-Only Root Control Surface Record",
+  "description": "Genesis metadata remains immutable; activation is represented only by a signed append-only event.",
   "status": "draft",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "document_id",
-    "version",
-    "status",
-    "lifecycle",
-    "owner",
-    "issued",
-    "decision_reference",
-    "work_package",
-    "evidence_reference",
-    "source",
-    "agent_id",
-    "base_commit",
-    "base_tree",
-    "append_only",
-    "authority"
-  ],
+  "required": ["document_id", "version", "status", "lifecycle", "owner", "issued", "decision_reference", "work_package", "evidence_reference", "source", "agent_id", "base_commit", "base_tree", "append_only", "authority"],
   "properties": {
-    "document_id": {
-      "type": "string",
-      "enum": [
-        "GOV-P0-03-ROOT-ROADMAP",
-        "GOV-P0-03-ROOT-STANDARDS",
-        "GOV-P0-03-ROOT-PROGRESS",
-        "GOV-P0-03-ROOT-BACKLOG",
-        "GOV-P0-03-ROOT-RECAP"
-      ]
-    },
+    "document_id": {"type": "string", "enum": ["GOV-P0-03-ROOT-ROADMAP", "GOV-P0-03-ROOT-STANDARDS", "GOV-P0-03-ROOT-PROGRESS", "GOV-P0-03-ROOT-BACKLOG", "GOV-P0-03-ROOT-RECAP"]},
     "version": {"const": "0.1"},
     "status": {"const": "Draft"},
     "lifecycle": {"const": "Inactive"},
@@ -57,6 +32,25 @@
         "merge_authorized": {"const": false},
         "release_authorized": {"const": false}
       }
+    },
+    "activation": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "lifecycle", "activated_by", "activated_at", "decision_ref", "evidence_ref", "substrate_commit"],
+          "properties": {
+            "status": {"const": "Active"},
+            "lifecycle": {"const": "Active"},
+            "activated_by": {"const": "HUMAN-OPERATOR-001"},
+            "activated_at": {"type": "string", "format": "date-time"},
+            "decision_ref": {"const": "docs/00-governance/signing/SIGNING-PASS-2.md#B6"},
+            "evidence_ref": {"const": "docs/00-governance/signing/SIGNING-PASS-2.md"},
+            "substrate_commit": {"const": "26bea090c0aca14f1337c4be1a146fd48bb1f626"}
+          }
+        }
+      ]
     }
   }
 }

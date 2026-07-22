@@ -144,3 +144,11 @@
 - Issued EVD-GOV-006 as independent `ACCEPT_EXACT_SHA` evidence for candidate `d7d8699326345bb1a2f027e4027fb90d18649022` after all focused, full and repository checks passed.
 - Preserved EVD-GOV-005 as an immutable `REJECT` for predecessor `203ed05162dccb2729d4c39e25050817384c3b4b`.
 - Kept GOV-P0-04 proposed, PG-G0 not ready and every activation, merge, release, deployment and production outcome false pending human authority.
+
+## Append-only entry — 2026-07-23 — PG-G0 authority docket v0.2 preparation
+
+- Bound the successor docket to Operator Batch 1 commit `26bea090c0aca14f1337c4be1a146fd48bb1f626` and its exact 34-record substrate inventory.
+- Adopted the ten-entry authority-matrix proposal as a draft bound matrix with approval provenance still null.
+- Prepared 13 unsigned and ineffective Batch 2 disposition surfaces while preserving the original five pending docket decisions.
+- Revised root-control validation so activation can occur only as one complete five-ledger Signing Pass 2 event; no activation event was added.
+- Kept independent review pending and PG-G0, merge, release, deployment and production implementation false.

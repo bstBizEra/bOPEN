@@ -84,3 +84,18 @@ Future daily or corrective events must be appended below this event without repl
 **Reason:** The candidate's unit tests pass, but its repository manifest and authority identity contract are not acceptance-ready.
 **Benefit of old phase:** The draft packet provided a useful dependency-ordered operator surface and disclosed the fixture defect early.
 **Expected outcome:** The maker can issue a corrected candidate without conflating technical acceptance with human authority or PG-G0 passage.
+
+## Event GOV-P0-04-V02-RECAP-0001
+
+**Timestamp:** 2026-07-23T00:05:19+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-authorized docket v0.2 Batch 2 preparation
+**Work package:** GOV-P0-04 (human acceptance pending)
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY; RM-0 ACTIVE_WITH_LIMITS
+**Progress event:** GOV-P0-04-V02-PROGRESS-0001
+**Backlog event:** GOV-P0-04-V02-BACKLOG-0001
+**Evidence:** EVD-GOV-007
+**Summary:** Prepared the v0.2 authority matrix, 13 unsigned Batch 2 disposition surfaces, exact substrate binding inventory, signing surface and atomic root-ledger activation validator against signed commit `26bea090`.
+**Reason:** Execute the rebinding plan as one fail-closed candidate.
+**Benefit of old phase:** Signed Batch 1 decisions remain immutable inputs, not fields rewritten by the successor.
+**Expected outcome:** Independent review precedes separately attributable operator decisions; PG-G0 remains `NOT_READY` until the later human pass.

@@ -75,3 +75,11 @@ The independent checker (BST-Codex-Motor) reviewed candidate `203ed05162dccb2729
 BST-Codex-Motor independently reviewed exact candidate `d7d8699326345bb1a2f027e4027fb90d18649022` (tree `64d0b5891a7460067fc472772b49d505e21bc6d3`) and issued EVD-GOV-006 with verdict `ACCEPT_EXACT_SHA`. RF-001 through RF-004 are technically closed at that immutable SHA; 12/12 authority-identity tests, 44/44 docket tests, 172/172 full tests, `pnpm validate` and the exact-diff check passed. The EVD-GOV-005 `REJECT` for `203ed05` remains unchanged and is bound by review commit `45aae0a9f49c1402f8b976e39deaf8d2894d8be4`.
 
 This technical receipt does not accept this work package, approve DEC-0013, activate authority, pass PG-G0 or authorize merge, release, deployment or production implementation. Human Engineering Authority disposition remains pending.
+
+## Append-only docket v0.2 preparation — 2026-07-23
+
+Following Operator Batch 1 at exact commit `26bea090c0aca14f1337c4be1a146fd48bb1f626` / tree `8789c5e70c2ce87298928d4d02add7ffe5867402`, BST-Codex-Motor prepared the atomic Batch 2 candidate on `codex/GOV-P0-04-docket-v02`.
+
+Scope extends to the authority-matrix, docket and root-control schemas/validators/tests; the bound draft matrix; the v0.2 binding inventory and signing surface; deterministic reports/manifests; and append-only evidence/cross-links. Reason: the authorized rebinding plan requires these artifacts to move as one fail-closed unit. Benefit of the old phase: Batch 1 created an immutable approved identity substrate and accepted GOV-P0-02/03 without approving the remaining surfaces. Expected outcome: one independently reviewable exact-SHA candidate exposes every remaining human disposition without exercising it.
+
+Current state is `PENDING_HUMAN_DECISIONS`. The matrix, BOPEN-GOV-001, six remaining register surfaces, GOV-P0-01, GOV-P0-04, DEC-0007/BOOT-B7 and the root-ledger activation event are unsigned and ineffective. GOV-P0-04 is not accepted by this maker record. PG-G0, merge, release, deployment and production implementation remain false.

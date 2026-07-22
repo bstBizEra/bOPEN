@@ -55,3 +55,13 @@ Final decision and concurrence actors must be humans bound to stable identity an
 ## Extend-only change note
 
 Reason: current draft controls cannot authenticate human authority or express all PG-G0 actions. Benefit of the old phase: the draft authority matrix preserves the initial separation model. Expected outcome: an attributable human decision can approve a successor without rewriting this historical proposal.
+
+## Append-only v0.2 preparation note — 2026-07-23
+
+Operator Batch 1 is frozen at commit `26bea090c0aca14f1337c4be1a146fd48bb1f626`, tree `8789c5e70c2ce87298928d4d02add7ffe5867402`. The machine docket has been prepared as v0.2 with state `PENDING_HUMAN_DECISIONS`; its binding inventory records the immutable post-signing substrate rather than attempting to hash its own successor commit.
+
+The v0.2 candidate adopts the contents of `AUTHORITY-MATRIX-0.2.0-PROPOSAL.json` into the bound matrix as a draft successor and exposes 13 Batch 2 disposition surfaces: BOPEN-GOV-001, authority matrix v0.2, DEC-0013, the remaining six program registers, GOV-P0-01, GOV-P0-04, DEC-0007/BOOT-B7 and the atomic five-ledger activation event. All 13 dispositions are pending, unsigned and ineffective. The original five `PG-G0-DEC-001..005` requests remain pending.
+
+The root-control schema and validator now recognize only a complete, identically timestamped, Signing Pass 2 B6 activation across all five root ledgers. Zero events is valid Draft/Inactive state; one through four events, malformed events, mismatched timestamps or missing signing evidence fail closed. No activation event is present in this candidate.
+
+Current result remains `NOT_READY`. Independent exact-SHA review, operator dispositions, root-ledger activation, B8 decision receipts and B9 PG-G0 disposition remain future controls. Merge, release, deployment and production implementation are unauthorized.

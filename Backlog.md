@@ -87,3 +87,21 @@ Future state changes must be appended as new events; this event must not be edit
 **Reason:** Preserve a precise correction queue without treating technical repair as acceptance or activation.
 **Benefit of old phase:** Draft controls remained fail-closed and protected branches were untouched.
 **Expected outcome:** A new maker candidate can address the four EVD-GOV-005 findings independently of downstream gate decisions.
+
+## Event GOV-P0-04-V02-BACKLOG-0001
+
+**Timestamp:** 2026-07-23T00:05:19+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-authorized docket v0.2 Batch 2 preparation
+**Work package:** GOV-P0-04 (human acceptance pending)
+**Roadmap:** Roadmap.md / PROGRAM-PG-G0 NOT_READY / RM-0 ACTIVE_WITH_LIMITS
+**Progress event:** GOV-P0-04-V02-PROGRESS-0001
+**Recap event:** GOV-P0-04-V02-RECAP-0001
+**README anchor:** README.md / PG-G0 docket v0.2 Batch 2 candidate
+**Config:** No runtime or global configuration changed
+**Evidence:** EVD-GOV-007
+**State:** CANDIDATE_PREPARED_REVIEW_AND_HUMAN_DISPOSITIONS_PENDING
+**Open controls:** Independent exact-SHA review; Signing Pass 2 B2-B6; B8 decision receipts; B9 PG-G0 disposition.
+**Reason:** Track the prepared successor without marking any governed subject approved, accepted or active.
+**Benefit of old phase:** The predecessor docket's missing actions remained explicit and non-effective.
+**Expected outcome:** Human dispositions occur only after technical verification and remain separable from PG-G0 passage.

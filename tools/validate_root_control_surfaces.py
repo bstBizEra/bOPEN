@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the Draft and Inactive GOV-P0-03 root control surfaces."""
+"""Validate immutable root-control genesis and optional signed activation events."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import os
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 
@@ -55,6 +56,15 @@ REQUIRED_FIELDS = {
 }
 FIELD_PATTERN = re.compile(r"^\*\*([^*]+):\*\*\s*(.*?)\s*$", re.MULTILINE)
 CHECKBOX_PATTERN = re.compile(r"^\s*[-*]\s+\[[ xX]\]", re.MULTILINE)
+ACTIVATION_HEADING = "## Root control activation event"
+ACTIVATION_FIELDS = {
+    "Activation status": "Active",
+    "Activation lifecycle": "Active",
+    "Activated by": "HUMAN-OPERATOR-001",
+    "Activation decision ref": "docs/00-governance/signing/SIGNING-PASS-2.md#B6",
+    "Activation evidence ref": "docs/00-governance/signing/SIGNING-PASS-2.md",
+    "Activation substrate commit": "26bea090c0aca14f1337c4be1a146fd48bb1f626",
+}
 
 
 def exact_file_bytes(path: Path) -> bytes:
@@ -97,6 +107,27 @@ def parse_fields(text: str) -> dict[str, str]:
     for key, value in FIELD_PATTERN.findall(text):
         fields.setdefault(key.strip(), value.strip())
     return fields
+
+
+def parse_activation_event(text: str) -> tuple[dict[str, str] | None, list[str]]:
+    count = text.count(ACTIVATION_HEADING)
+    if count == 0:
+        return None, []
+    if count != 1:
+        return None, ["ROOT CONTROL ACTIVATION EVENT COUNT INVALID"]
+    event = parse_fields(text.split(ACTIVATION_HEADING, 1)[1])
+    errors: list[str] = []
+    for key, expected in ACTIVATION_FIELDS.items():
+        if event.get(key) != expected:
+            errors.append(f"ROOT CONTROL ACTIVATION FIELD INVALID: {key}")
+    activated_at = event.get("Activated at")
+    try:
+        parsed = datetime.fromisoformat(str(activated_at).replace("Z", "+00:00"))
+    except ValueError:
+        parsed = None
+    if parsed is None or parsed.tzinfo is None:
+        errors.append("ROOT CONTROL ACTIVATION FIELD INVALID: Activated at")
+    return event, errors
 
 
 def validate_exact_root_names(names: list[str]) -> list[str]:
@@ -209,6 +240,7 @@ def validate_root_control_surfaces(
 
     expected_links = tuple(ROOT_SURFACES) + ("README.md",)
     seen_ids: set[str] = set()
+    activation_events: dict[str, dict[str, str]] = {}
     for rel, expected_id in ROOT_SURFACES.items():
         path = root / rel
         if not path.exists():
@@ -249,6 +281,21 @@ def validate_root_control_surfaces(
             errors.append(f"ROOT CONTROL CONFIG STATE MISSING: {rel}")
         if "Reason:" not in text or "Benefit of old phase:" not in text or "Expected outcome:" not in text:
             errors.append(f"ROOT CONTROL EXTEND-ONLY NOTE INCOMPLETE: {rel}")
+        activation, activation_errors = parse_activation_event(text)
+        errors.extend(f"{item}: {rel}" for item in activation_errors)
+        if activation is not None:
+            activation_events[rel] = activation
+
+    if activation_events and set(activation_events) != set(ROOT_SURFACES):
+        missing = sorted(set(ROOT_SURFACES) - set(activation_events))
+        errors.append(f"ROOT CONTROL ACTIVATION MUST BE ATOMIC: missing {missing}")
+    if len(activation_events) == len(ROOT_SURFACES):
+        activated_at = {item.get("Activated at") for item in activation_events.values()}
+        if len(activated_at) != 1:
+            errors.append("ROOT CONTROL ACTIVATION TIMESTAMPS MUST MATCH")
+        signing_path = root / "docs/00-governance/signing/SIGNING-PASS-2.md"
+        if not signing_path.is_file():
+            errors.append("ROOT CONTROL ACTIVATION SIGNING EVIDENCE MISSING")
 
     roadmap = (root / "Roadmap.md").read_text(encoding="utf-8") if (root / "Roadmap.md").is_file() else ""
     for token in ("PROGRAM / PG-G0", "NOT_READY", "BOOT / B7", "PENDING", "PRODUCTION", "UNAUTHORIZED"):
@@ -273,6 +320,8 @@ def validate_root_control_surfaces(
     else:
         if schema.get("status") != "draft" or schema.get("additionalProperties") is not False:
             errors.append("ROOT CONTROL SCHEMA MUST BE DRAFT AND FAIL CLOSED")
+        if schema.get("$id") != "bopen://schemas/governance/root-control-surface/0.2.0-draft":
+            errors.append("ROOT CONTROL SCHEMA VERSION INVALID")
         enum = schema.get("properties", {}).get("document_id", {}).get("enum", [])
         if set(enum) != set(ROOT_SURFACES.values()):
             errors.append("ROOT CONTROL SCHEMA DOCUMENT IDS INVALID")

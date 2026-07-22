@@ -368,35 +368,22 @@ class ProgramGoalControlTests(unittest.TestCase):
                     "evidence_refs": ["EVD-GOV-001"] if is_g0 else [],
                 }
             )
-        authority = self.approved_register("authority", "Engineering Authority")
-        authority["entries"] = [
-            {
-                "action_id": action_id,
-                "action_class": action_id.lower(),
-                "status": "approved",
-                "accountable_human_authority": "Human Authority",
-                "permitted_maker_roles": ["Requirements Agent"],
-                "permitted_checker_roles": ["QA & Evidence Agent"],
-                "required_concurrence": [],
-                "final_decision_role": "Human Authority",
-                "self_approval_allowed": False,
-                "evidence_required": True,
-                "expiry_required": action_id in {
-                    "ACCEPT_WORK_ITEM",
-                    "PROMOTE_SKILL",
-                    "AUTHORIZE_RELEASE",
-                },
-            }
-            for action_id in (
-                "APPROVE_GOAL",
-                "ACCEPT_WORK_ITEM",
-                "APPROVE_ARCHITECTURE",
-                "ACCEPT_EVIDENCE",
-                "CERTIFY_MODULE",
-                "PROMOTE_SKILL",
-                "AUTHORIZE_RELEASE",
+        authority = json.loads(
+            (ROOT / "docs/00-governance/registers/AUTHORITY-MATRIX.json").read_text(
+                encoding="utf-8"
             )
-        ]
+        )
+        authority.update(
+            {
+                "version": "0.2.0",
+                "status": "approved",
+                "approved_by": "human-authority",
+                "approved_at": "2026-07-21T12:00:00+07:00",
+                "approval_ref": "EVD-GOV-001",
+            }
+        )
+        for entry in authority["entries"]:
+            entry["status"] = "approved"
         technology = self.approved_register("technology", "Architecture Authority")
         technology["entries"] = [
             {

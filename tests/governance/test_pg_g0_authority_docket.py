@@ -25,15 +25,16 @@ from tools.validate_pg_g0_authority_docket import (
 )
 
 
-AS_OF = datetime(2026, 7, 22, 0, 0, 0, tzinfo=timezone.utc)
-EXPECTED_TREE = "f336976981c9b7e95c96ec8289589e53c1ac506c"
+AS_OF = datetime(2026, 7, 23, 0, 0, 0, tzinfo=timezone.utc)
+EXPECTED_TREE = "8789c5e70c2ce87298928d4d02add7ffe5867402"
+LEGACY_TREE = "f336976981c9b7e95c96ec8289589e53c1ac506c"
 
 
 class PgG0AuthorityDocketTests(unittest.TestCase):
     def make_root(self, temporary: str) -> Path:
         root = Path(temporary)
         docket = json.loads((ROOT / DOCKET_PATH).read_text(encoding="utf-8"))
-        paths = {DOCKET_PATH, SCHEMA_PATH, AUTHORITY_MATRIX_PATH}
+        paths = {DOCKET_PATH, SCHEMA_PATH, AUTHORITY_MATRIX_PATH, Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json")}
         paths.update(Path(item["artifact_ref"]) for item in docket["governing_artifacts"])
         for relative in paths:
             target = root / relative
@@ -79,14 +80,19 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         def committed_file(test_root: Path, _commit: str, relative: str):
             if relative in missing_committed_paths:
                 return None
+            source = test_root / relative
+            if relative == "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json" or relative.startswith("docs/00-governance/delegations/"):
+                return source.read_bytes() if source.is_file() else None
             committed = read_repository_file_at_commit(ROOT, _commit, relative)
             if committed is not None:
                 return committed
-            source = test_root / relative
             return source.read_bytes() if source.is_file() else None
 
+        def resolved_tree(_root: Path, commit: str):
+            return LEGACY_TREE if commit == "c893062c197e74c15214e5ce1c425b9e9ed8002f" else EXPECTED_TREE
+
         with (
-            patch("tools.validate_pg_g0_authority_docket.resolve_tree", return_value=EXPECTED_TREE),
+            patch("tools.validate_pg_g0_authority_docket.resolve_tree", side_effect=resolved_tree),
             patch("tools.validate_pg_g0_authority_docket.resolve_head", return_value="f" * 40),
             patch("tools.validate_pg_g0_authority_docket.is_ancestor", return_value=ancestor),
             patch("tools.validate_pg_g0_authority_docket.read_file_at_commit", side_effect=committed_file),
@@ -289,6 +295,14 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             path.write_text(path.read_text(encoding="utf-8") + "\nstale mutation\n", encoding="utf-8")
             errors = self.validate(root)
         self.assertTrue(any("artifact drift" in item and "DEC-0010" in item for item in errors))
+
+    def test_append_only_governing_artifact_rewrite_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            path = root / "docs/decisions/DEC-0013.md"
+            path.write_bytes(b"rewritten predecessor\n" + path.read_bytes())
+            errors = self.validate(root)
+        self.assertTrue(any("artifact drift" in item and "DEC-0013" in item for item in errors), errors)
 
     def test_post_bound_mutation_cannot_be_hidden_by_rewriting_docket_hashes(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -555,10 +569,6 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
                 any("requires an approved effective authority source" in item for item in errors),
                 f"{value}: {errors}",
             )
-            self.assertTrue(
-                any("identity registry must be an approved governing artifact" in item for item in errors),
-                f"{value}: {errors}",
-            )
             self.assertFalse(any("terminal receipt incomplete" in item for item in errors), errors)
 
     def test_fabricated_identity_binding_fails_without_approved_registry_record(self):
@@ -581,7 +591,7 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             }
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertTrue(any("approved identity registry absent" in item or "registry missing" in item for item in errors))
+        self.assertTrue(any("approved identity record missing" in item for item in errors), errors)
 
     def test_identity_binding_hash_tree_status_and_structured_record_must_match(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -800,13 +810,13 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             root = self.make_root(temporary)
             docket = self.load_docket(root)
             first = docket["state_history"][0]
-            docket["state_history"].append({
+            docket["state_history"] = [first, {
                 **first,
                 "sequence": 2,
                 "from": "DRAFT",
                 "to": "DISPOSED",
                 "changed_at": "2027-07-22T00:00:00Z",
-            })
+            }]
             docket["state"] = "DISPOSED"
             self.save_docket(root, docket)
             errors = self.validate(root)
@@ -848,6 +858,7 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             root = self.make_root(temporary)
             docket = self.load_docket(root)
             docket["blockers"] = [item.replace("Roadmap.md", "roadmap") for item in docket["blockers"]]
+            (root / "Roadmap.md").unlink()
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertIn("missing controlled path must be disclosed: Roadmap.md", errors)
@@ -859,7 +870,49 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             docket["non_authority_flags"]["production_implementation_authorized"] = True
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertIn("draft authority docket cannot grant authority", errors)
+        self.assertIn("pending authority docket cannot grant authority", errors)
+
+    def test_prepared_dispositions_are_exact_pending_and_ineffective(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["prepared_dispositions"] = docket["prepared_dispositions"][:-1]
+            docket["prepared_dispositions"][0]["effective"] = True
+            docket["prepared_dispositions"][1]["authority_actor"] = self.authority_actor(
+                "human:operator-001", "Engineering Authority"
+            )
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("must match Batch 2" in item for item in errors), errors)
+        self.assertTrue(any("must remain pending and ineffective" in item for item in errors), errors)
+        self.assertTrue(any("claims human disposition" in item for item in errors), errors)
+
+    def test_binding_inventory_digest_and_count_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            inventory_path = root / "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json"
+            inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+            inventory["records"][0]["sha256"] = "0" * 64
+            inventory_path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+            digest_errors = self.validate(root)
+        self.assertTrue(any("digest mismatch" in item for item in digest_errors), digest_errors)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["binding_inventory"]["record_count"] += 1
+            self.save_docket(root, docket)
+            count_errors = self.validate(root)
+        self.assertTrue(any("record count mismatch" in item for item in count_errors), count_errors)
+
+    def test_adopted_matrix_must_match_signed_proposal_entries(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            matrix = json.loads((root / AUTHORITY_MATRIX_PATH).read_text(encoding="utf-8"))
+            matrix["entries"][0]["action_class"] = "invented"
+            (root / AUTHORITY_MATRIX_PATH).write_text(json.dumps(matrix, indent=2) + "\n", encoding="utf-8")
+            errors = self.validate(root)
+        self.assertTrue(any("differ from signed substrate proposal" in item for item in errors), errors)
 
     def test_report_integrity_detects_missing_and_stale_output(self):
         expected = format_report(build_readiness_report(ROOT, AS_OF))

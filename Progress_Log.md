@@ -85,3 +85,19 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Candidate `203ed05` fails the required manifest check and proposes identity semantics that cannot satisfy the current docket contract.
 **Benefit of old phase:** The candidate made missing authority surfaces and the fixture fragility explicit without activating them.
 **Expected outcome:** A corrected successor can be reviewed from a green validation baseline while this exact-SHA rejection remains immutable.
+
+## Event GOV-P0-04-V02-PROGRESS-0001
+
+**Timestamp:** 2026-07-23T00:05:19+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-authorized docket v0.2 Batch 2 preparation
+**Work package:** GOV-P0-04 (human acceptance pending)
+**Backlog event:** GOV-P0-04-V02-BACKLOG-0001
+**Recap event:** GOV-P0-04-V02-RECAP-0001
+**Roadmap state:** PROGRAM/PG-G0 NOT_READY; RM-0 ACTIVE_WITH_LIMITS
+**Evidence:** EVD-GOV-007
+**Status:** PENDING_HUMAN_DECISIONS
+**Substrate:** `26bea090c0aca14f1337c4be1a146fd48bb1f626` / tree `8789c5e70c2ce87298928d4d02add7ffe5867402`
+**Reason:** Prepare the matrix, governance, register, work-item, bootstrap and root-ledger dispositions as one exact-bound successor.
+**Benefit of old phase:** Batch 1 preserved signed identity and accepted GOV-P0-02/03 as immutable inputs while all other effects remained false.
+**Expected outcome:** An independent checker can issue an exact-SHA receipt before the operator signs any Batch 2 disposition.

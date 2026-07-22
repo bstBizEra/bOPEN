@@ -74,3 +74,7 @@ Exact candidate `203ed05162dccb2729d4c39e25050817384c3b4b` has a technical `REJE
 ## GOV-P0-04 corrective-candidate review
 
 [`EVD-GOV-006`](docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md) records independent technical `ACCEPT_EXACT_SHA` for candidate `d7d8699326345bb1a2f027e4027fb90d18649022`. The earlier EVD-GOV-005 `REJECT` for `203ed05162dccb2729d4c39e25050817384c3b4b` remains immutable. Neither receipt grants human approval, activation, PG-G0 passage, merge, release, deployment or production authority.
+
+## PG-G0 docket v0.2 Batch 2 candidate
+
+The [v0.2 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.json), [binding inventory](docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json) and [Signing Pass 2 surface](docs/00-governance/signing/SIGNING-PASS-2.md) are prepared against Operator Batch 1 substrate `26bea090c0aca14f1337c4be1a146fd48bb1f626`. Their state is `PENDING_HUMAN_DECISIONS`: no prepared disposition is signed or effective, the five root ledgers remain Draft/Inactive, independent exact-SHA review is pending and PG-G0 remains `NOT_READY`.
