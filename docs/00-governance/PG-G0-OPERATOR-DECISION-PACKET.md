@@ -5,7 +5,7 @@
 **Work package:** GOV-P0-04 (Proposed; not accepted)
 **Prepared by:** Claude (BST-SA Motor worker agent)
 **Issued:** 2026-07-22
-**Operator identity (proposed):** `HUM-OPR-001` — ounkhamvilay@gmail.com, sole holder of Product, Architecture, Security, Data and Engineering Authorities (see `registers/AUTHORITY-IDENTITY-REGISTER.json`)
+**Operator identity (proposed):** `HUMAN-OPERATOR-001` — contact ounkhamvilay@gmail.com, sole holder of Product, Architecture, Security, Data and Engineering Authorities (draft at `AUTHORITY-IDENTITY-REGISTER-DRAFT.json`; provider `bopen-authority-identity-registry` per the docket actor contract)
 
 ## Purpose
 
@@ -16,7 +16,7 @@ The five docket decisions (Step 6) bind subjects at commit `c893062c197e74c15214
 ## Step 1 — Approve the authority identity register
 
 **File:** `docs/00-governance/AUTHORITY-IDENTITY-REGISTER-DRAFT.json`
-**Action:** set register `status: "approved"`, fill `approved_by/approved_at/approval_ref`, set entry `HUM-OPR-001` `status: "approved"`, then move the file to the validator-bound path `docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json` (the docket test fixtures must be repaired first — see handoff notes). Confirm the `independence_disclosure` (all five roles collapse to you).
+**Action:** set register `status: "approved"`, bump `version` off `-draft`, fill `approved_by/approved_at/approval_ref`, set entry `HUMAN-OPERATOR-001` `status: "approved"`, then move the file to the validator-bound path `docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json` (Codex's fixture repair must land first — see handoff notes). `python tools/validate_authority_identity_register.py` must pass after signing; it fails closed on missing provenance, draft versions, or an unapproved register at the bound path. Confirm the `independence_disclosure` (all five roles collapse to you).
 **Clears:** "attributable … human authority identities are absent"; "approved authority identity registry … is absent".
 
 ## Step 2 — Adopt authority matrix v0.2 and approve the governance baseline

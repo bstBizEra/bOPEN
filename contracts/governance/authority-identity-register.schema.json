@@ -19,28 +19,73 @@
     "entries": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "type": "object",
-        "required": ["identity_id", "status", "display_name", "human_identity_ref", "identity_provider", "identity_subject", "authority_roles", "authority_mode", "action_ids", "subject_refs", "valid_from", "expires_at", "revoked_at", "evidence_refs"],
-        "properties": {
-          "identity_id": {"type": "string", "pattern": "^HUM-[A-Z0-9-]+$"},
-          "status": {"enum": ["pending", "approved", "revoked"]},
-          "display_name": {"type": "string", "minLength": 1},
-          "human_identity_ref": {"type": "string", "minLength": 1},
-          "identity_provider": {"type": "string", "minLength": 1},
-          "identity_subject": {"type": "string", "minLength": 1},
-          "authority_roles": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
-          "authority_mode": {"enum": ["DIRECT", "DELEGATED"]},
-          "action_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"}, "minItems": 1, "uniqueItems": true},
-          "subject_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
-          "valid_from": {"type": "string", "format": "date-time"},
-          "expires_at": {"type": "string", "format": "date-time"},
-          "revoked_at": {"type": ["string", "null"], "format": "date-time"},
-          "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
-        },
-        "additionalProperties": false
-      }
+      "items": {"$ref": "#/$defs/identityRecord"}
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "approved"}}},
+      "then": {
+        "properties": {
+          "approved_by": {"type": "string", "minLength": 1},
+          "approved_at": {"type": "string", "format": "date-time"},
+          "approval_ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "draft"}}},
+      "then": {
+        "properties": {
+          "approved_by": {"const": null},
+          "approved_at": {"const": null},
+          "approval_ref": {"const": null}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identityRecord": {
+      "type": "object",
+      "$comment": "identity_id and identity_subject must be identical and match the docket actor role_binding_ref fragment. authority_mode is DIRECT-only in this revision; a delegated-authority record model requires a separate reconciled schema revision.",
+      "required": ["identity_id", "status", "display_name", "contact_ref", "human_identity_ref", "identity_provider", "identity_subject", "authority_roles", "authority_mode", "action_ids", "subject_refs", "valid_from", "expires_at", "revoked_at", "evidence_refs"],
+      "properties": {
+        "identity_id": {"type": "string", "pattern": "^HUMAN-[A-Z0-9][A-Z0-9_-]*$"},
+        "status": {"enum": ["pending", "approved", "revoked"]},
+        "display_name": {"type": "string", "minLength": 1},
+        "contact_ref": {"type": "string", "minLength": 1},
+        "human_identity_ref": {"type": "string", "minLength": 1},
+        "identity_provider": {"const": "bopen-authority-identity-registry"},
+        "identity_subject": {"type": "string", "pattern": "^HUMAN-[A-Z0-9][A-Z0-9_-]*$"},
+        "authority_roles": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+        "authority_mode": {"const": "DIRECT"},
+        "action_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"}, "minItems": 1, "uniqueItems": true},
+        "subject_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+        "valid_from": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "revoked_at": {"type": ["string", "null"], "format": "date-time"},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "approved"}}},
+          "then": {
+            "properties": {
+              "revoked_at": {"const": null}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "revoked"}}},
+          "then": {
+            "properties": {
+              "revoked_at": {"type": "string", "format": "date-time"}
+            }
+          }
+        }
+      ]
+    }
+  }
 }

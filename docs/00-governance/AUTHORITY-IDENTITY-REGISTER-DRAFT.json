@@ -11,12 +11,13 @@
   "independence_disclosure": "Solo-operator concentration: a single human holds all five authority roles. Every required concurrence therefore collapses to the same person and provides no inter-human independence. Independence is preserved only at the technical layer (maker agent, independent checker agent and validator must remain distinct). Any future multi-person assignment supersedes this disclosure via an append-only register revision.",
   "entries": [
     {
-      "identity_id": "HUM-OPR-001",
+      "identity_id": "HUMAN-OPERATOR-001",
       "status": "pending",
       "display_name": "Ounkhamvilay (Operator)",
-      "human_identity_ref": "HUM-OPR-001",
-      "identity_provider": "google",
-      "identity_subject": "ounkhamvilay@gmail.com",
+      "contact_ref": "ounkhamvilay@gmail.com",
+      "human_identity_ref": "human:operator-001",
+      "identity_provider": "bopen-authority-identity-registry",
+      "identity_subject": "HUMAN-OPERATOR-001",
       "authority_roles": [
         "Product Authority",
         "Architecture Authority",
@@ -60,7 +61,10 @@
       "valid_from": "2026-07-22T00:00:00+07:00",
       "expires_at": "2026-08-21T00:00:00+07:00",
       "revoked_at": null,
-      "evidence_refs": []
+      "evidence_refs": [
+        "docs/00-governance/PG-G0-OPERATOR-DECISION-PACKET.md",
+        "docs/evidence/EVD-GOV-004-gov-p0-03-independent-verification.md"
+      ]
     }
   ]
 }

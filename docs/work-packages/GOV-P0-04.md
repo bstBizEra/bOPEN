@@ -55,3 +55,11 @@ Risk: the pending identity record or matrix proposal is mistaken for an effectiv
 ## Completion record
 
 Maker drafting complete. Independent checker verdict and Human Engineering Authority acceptance pending. This proposed record does not accept itself.
+
+## Append-only correction record — 2026-07-22
+
+The independent checker (BST-Codex-Motor) reviewed candidate `203ed05162dccb2729d4c39e25050817384c3b4b` and returned `REJECT` with findings RF-001..004 (EVD-GOV-005, checker review branch `codex/GOV-P0-04-review-203ed05`). The maker accepts all four findings. Scope extension for the corrective candidate (reason: RF-003 requires semantic negative tests and a dedicated validator; benefit of the old phase: it kept the first candidate documentation-only; expected outcome: fail-closed register semantics proven by tests):
+
+- **Allowed paths extended:** `tools/validate_authority_identity_register.py`, `tests/governance/test_authority_identity_register.py`, `package.json` (validate chain only), `docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json` (deterministic regeneration only).
+- Corrections per DEC-0013 append-only correction note: docket-compatible identity semantics, status-coupled approval provenance, DIRECT-only authority mode, refreshed manifest, `pnpm validate` green.
+- The `REJECT` receipt for `203ed05` stands; this corrective candidate carries a new SHA and requires a new independent exact-SHA review.
