@@ -1,14 +1,15 @@
 # Bootstrap Gate Readiness Report
 
-**Bootstrap review state:** `ready_for_authority_review`
+**Bootstrap review state:** `approved`
 **B7 review ready:** `true`
 **Production implementation authorized:** `false`
 **Gate count:** 8
-**B7 status:** Pending execution review
+**B7 status:** Approved
+**B7 signed decision verified:** `true`
 
 ## Blockers
 
-- B7 exit gate is not approved.
+- None
 
 ## Pending Evidence
 
@@ -28,4 +29,4 @@
 
 ## Decision
 
-This report is readiness evidence only. It does not approve B7 and does not authorize production platform kernel implementation.
+This report verifies the signed DEC-0007/BOOT-B7 outcome; it does not create or alter that approval and does not authorize production platform kernel implementation.

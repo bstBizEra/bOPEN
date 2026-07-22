@@ -18,12 +18,48 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCKET_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001.json")
 SCHEMA_PATH = Path("contracts/governance/pg-g0-authority-docket.schema.json")
 AUTHORITY_MATRIX_PATH = Path("docs/00-governance/registers/AUTHORITY-MATRIX.json")
-BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json")
-APPEND_ONLY_GOVERNING_PATHS = {
+BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json")
+PREDECESSOR_DOCKET_PATH = "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+SIGNED_SUBSTRATE_COMMIT = "60c4831f4fcdfabb876d62f4eb98949b4a1a5a66"
+SIGNED_SUBSTRATE_TREE = "75775a659f1c36c1cc5b489be572a347e1ea496b"
+SIGNED_SUBSTRATE_BRANCH = "operator/PG-G0-signing-pass-2"
+SIGNED_AT = "2026-07-23T00:45:00+07:00"
+SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
+SIGNED_EVIDENCE_REFS = {
+    "docs/00-governance/signing/SIGNING-PASS-2.md",
+    "docs/evidence/EVD-GOV-008-docket-v02-independent-review.md",
+}
+EXTRA_INVENTORY_RECORDS = (
+    ("AUTHORITY-MATRIX-V0.2", "0.2.0-draft", "draft", "docs/00-governance/registers/AUTHORITY-MATRIX.json"),
+    ("PG-G0-AUTH-001-V0.2", "0.2.0-draft", "pending_human_decisions", PREDECESSOR_DOCKET_PATH),
+    ("PG-G0-AUTH-001-V0.2-BINDINGS", "0.2.0", "frozen_substrate_inventory", "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json"),
+    ("PG-G0-DOCKET-SCHEMA-V0.2", "0.2.0-draft", "predecessor", "contracts/governance/pg-g0-authority-docket.schema.json"),
+    ("AUTHORITY-MATRIX-SCHEMA-V0.2", "0.2.0-draft", "approved-state-capable", "contracts/governance/authority-matrix.schema.json"),
+    ("ROOT-CONTROL-SCHEMA-V0.2", "0.2.0-draft", "predecessor", "contracts/governance/root-control-surface.schema.json"),
+    ("SIGNING-PASS-2", "0.1", "signed_batch_2", "docs/00-governance/signing/SIGNING-PASS-2.md"),
+    ("EVD-GOV-007", "0.1", "maker_candidate", "docs/evidence/EVD-GOV-007-pg-g0-authority-docket-v02-candidate.md"),
+    ("EVD-GOV-008", "0.1", "ACCEPT_EXACT_SHA", "docs/evidence/EVD-GOV-008-docket-v02-independent-review.md"),
+    ("BOPEN-BOOT-001", "0.1", "Approved", "BOPEN-BOOT-001.md"),
+    ("BOOTSTRAP-GATES", "0.1", "B7 pending at substrate", "docs/work-packages/BOOTSTRAP-GATES.md"),
+)
+SIGNED_TRANSFORM_PATHS = {
+    "Roadmap.md",
+    "Master_Standards.md",
     "Backlog.md",
     "Progress_Log.md",
     "Recap_Today.md",
+    "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
+    "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+    "docs/00-governance/registers/GOAL-REGISTER.json",
+    "docs/00-governance/registers/AGENT-REGISTER.json",
+    "docs/00-governance/registers/MODULE-REGISTER.json",
+    "docs/00-governance/registers/SKILL-REGISTER.json",
+    "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+    "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+    "docs/decisions/DEC-0007.md",
     "docs/decisions/DEC-0013.md",
+    "docs/work-packages/GOV-P0-01.md",
+    "docs/work-packages/GOV-P0-03.md",
     "docs/work-packages/GOV-P0-04.md",
 }
 DEFAULT_REPORT_PATH = Path("artifacts/validation/program-g0-authority-readiness.json")
@@ -102,7 +138,7 @@ TERMINAL_REVIEWS = {"ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"}
 STATE_TRANSITIONS = {
     "DRAFT": {"TECHNICAL_REVIEW", "PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "TECHNICAL_REVIEW": {"PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
-    "PENDING_HUMAN_DECISIONS": {"READY_FOR_FINAL_DISPOSITION", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
+    "PENDING_HUMAN_DECISIONS": {"TECHNICAL_REVIEW", "READY_FOR_FINAL_DISPOSITION", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "READY_FOR_FINAL_DISPOSITION": {"DISPOSED"},
     "DISPOSED": set(),
     "WITHDRAWN": set(),
@@ -308,6 +344,251 @@ def read_file_at_commit(root: Path, commit_sha: str, relative: str) -> bytes | N
         check=False,
     )
     return completed.stdout if completed.returncode == 0 else None
+
+
+def build_v03_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
+    predecessor_bytes = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, PREDECESSOR_DOCKET_PATH)
+    if predecessor_bytes is None:
+        raise ValueError("signed predecessor docket missing")
+    predecessor = json.loads(predecessor_bytes.decode("utf-8"))
+    metadata = [
+        (item["artifact_id"], item["version"], item["status"], item["artifact_ref"])
+        for item in predecessor["governing_artifacts"]
+    ]
+    metadata.extend(EXTRA_INVENTORY_RECORDS)
+    records: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    seen_paths: set[str] = set()
+    for artifact_id, version, status, relative in metadata:
+        if artifact_id in seen_ids or relative in seen_paths:
+            raise ValueError(f"duplicate inventory metadata: {artifact_id} {relative}")
+        content = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        if content is None:
+            raise ValueError(f"signed substrate path missing: {relative}")
+        seen_ids.add(artifact_id)
+        seen_paths.add(relative)
+        records.append({
+            "artifact_id": artifact_id,
+            "version": version,
+            "status": status,
+            "path": relative,
+            "sha256": bytes_sha256(content),
+            "bytes": len(content),
+        })
+    return {
+        "inventory_id": "PG-G0-AUTH-001-V0.3-BINDINGS",
+        "version": "0.3.0",
+        "status": "frozen_signed_substrate_inventory",
+        "generated_at": "2026-07-23T01:00:00+07:00",
+        "repository_ref": "bstBizEra/bopen",
+        "substrate_commit_sha": SIGNED_SUBSTRATE_COMMIT,
+        "substrate_tree_sha": SIGNED_SUBSTRATE_TREE,
+        "substrate_branch": SIGNED_SUBSTRATE_BRANCH,
+        "records": records,
+    }
+
+
+def signed_authority_actor(role: str, registry_sha256: str) -> dict[str, Any]:
+    return {
+        "actor_kind": "HUMAN",
+        "human_identity_ref": "human:operator-001",
+        "identity_provider": "bopen-authority-identity-registry",
+        "identity_subject": "HUMAN-OPERATOR-001",
+        "authority_role": role,
+        "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+        "role_binding_sha256": registry_sha256,
+        "role_binding_commit_sha": SIGNED_SUBSTRATE_COMMIT,
+        "role_binding_tree_sha": SIGNED_SUBSTRATE_TREE,
+        "role_binding_status": "approved",
+        "authority_mode": "DIRECT",
+        "delegation_ref": None,
+        "delegation_binding": None,
+    }
+
+
+def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
+    predecessor_bytes = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, PREDECESSOR_DOCKET_PATH)
+    if predecessor_bytes is None:
+        raise ValueError("signed predecessor docket missing")
+    docket = json.loads(predecessor_bytes.decode("utf-8"))
+    inventory = build_v03_binding_inventory(root)
+    inventory_by_path = {item["path"]: item for item in inventory["records"]}
+    registry_path = "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
+    registry_sha256 = inventory_by_path[registry_path]["sha256"]
+
+    docket.update({
+        "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.3.0-draft",
+        "version": "0.3.0-draft",
+        "status": "signed_state_candidate",
+        "updated_at": "2026-07-23T01:00:00+07:00",
+        "repository_binding": {
+            "commit_sha": SIGNED_SUBSTRATE_COMMIT,
+            "tree_sha": SIGNED_SUBSTRATE_TREE,
+            "branch": SIGNED_SUBSTRATE_BRANCH,
+            "repository_ref": "bstBizEra/bopen",
+        },
+        "binding_inventory": {
+            "inventory_ref": BINDING_INVENTORY_PATH.as_posix(),
+            "inventory_id": inventory["inventory_id"],
+            "substrate_commit_sha": SIGNED_SUBSTRATE_COMMIT,
+            "substrate_tree_sha": SIGNED_SUBSTRATE_TREE,
+            "record_count": len(inventory["records"]),
+        },
+        "technical_review": {
+            "candidate_commit_sha": None,
+            "candidate_tree_sha": None,
+            "maker": {
+                "actor_kind": "AGENT",
+                "identity_ref": "BST-Codex-Motor",
+                "role": "Orchestrator Agent",
+                "registration_ref": None,
+                "session_ref": None,
+            },
+            "checker": None,
+            "independence_asserted": False,
+            "verdict": "PENDING",
+            "reviewed_at": None,
+            "evidence_refs": [],
+        },
+        "state": "TECHNICAL_REVIEW",
+        "effective_outcome": {
+            "program_goal_approved": False,
+            "governance_baseline_approved": True,
+            "work_package_accepted": True,
+            "evidence_accepted": False,
+            "ready_for_pg_g0_gate_decision": False,
+        },
+        "blockers": [
+            "independent exact-SHA technical review of the v0.3 signed-state successor is pending",
+            "PG-G0-DEC-001 through PG-G0-DEC-005 remain pending B8 human decisions",
+            "B9 PASS_PG_G0 requires the later readiness result, independent conformance receipt and separate human decision",
+            "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence",
+            "merge, release, deployment, runtime and production implementation remain unauthorized",
+        ],
+    })
+    for artifact in docket["governing_artifacts"]:
+        record = inventory_by_path.get(artifact["artifact_ref"])
+        if record is None:
+            raise ValueError(f"governing artifact missing from v0.3 inventory: {artifact['artifact_ref']}")
+        artifact["sha256"] = record["sha256"]
+
+    matrix_bytes = (root / AUTHORITY_MATRIX_PATH).read_bytes()
+    docket["authority_source"] = {
+        "matrix_id": "PG-REG-AUTHORITY-001",
+        "artifact_ref": AUTHORITY_MATRIX_PATH.as_posix(),
+        "proposal_ref": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
+        "version": "0.2.0",
+        "status": "approved",
+        "sha256": bytes_sha256(matrix_bytes),
+        "signing_ref": SIGNED_DECISION_REF,
+        "effective": True,
+    }
+    for item in docket["prepared_dispositions"]:
+        item["authority_actor"] = signed_authority_actor(item["accountable_authority_role"], registry_sha256)
+        item["concurrences"] = [
+            {
+                "authority_role": role,
+                "authority_actor": signed_authority_actor(role, registry_sha256),
+                "disposition": "CONCUR",
+                "decided_at": SIGNED_AT,
+                "decision_ref": SIGNED_DECISION_REF,
+                "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
+                "effective": True,
+            }
+            for role in item["required_concurrence"]
+        ]
+        item["disposition"] = "APPROVE"
+        item["decided_at"] = SIGNED_AT
+        item["decision_ref"] = SIGNED_DECISION_REF
+        item["evidence_refs"] = sorted(SIGNED_EVIDENCE_REFS)
+        item["effective"] = True
+    docket["state_history"].append({
+        "sequence": 3,
+        "from": "PENDING_HUMAN_DECISIONS",
+        "to": "TECHNICAL_REVIEW",
+        "changed_at": SIGNED_AT,
+        "changed_by": {
+            "actor_kind": "HUMAN",
+            "identity_ref": "HUMAN-OPERATOR-001",
+            "role": "Engineering Authority",
+            "registration_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "session_ref": None,
+        },
+        "reason_code": "BATCH_2_SIGNED_STATE_REQUIRES_SUCCESSOR_TECHNICAL_REVIEW",
+        "commit_sha": SIGNED_SUBSTRATE_COMMIT,
+        "tree_sha": SIGNED_SUBSTRATE_TREE,
+        "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
+    })
+    return docket
+
+
+def validate_signed_artifact_transforms(root: Path) -> list[str]:
+    errors: list[str] = []
+    register_paths = (
+        "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+        "docs/00-governance/registers/GOAL-REGISTER.json",
+        "docs/00-governance/registers/AGENT-REGISTER.json",
+        "docs/00-governance/registers/MODULE-REGISTER.json",
+        "docs/00-governance/registers/SKILL-REGISTER.json",
+        "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+        "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+    )
+    for relative in register_paths:
+        source = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        try:
+            expected = json.loads(source.decode("utf-8")) if source is not None else None
+            current = json.loads((root / relative).read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            errors.append(f"signed register transformation invalid: {relative}")
+            continue
+        if not isinstance(expected, dict):
+            errors.append(f"signed register substrate invalid: {relative}")
+            continue
+        expected["version"] = str(expected.get("version", "")).removesuffix("-draft")
+        expected["status"] = "approved"
+        expected["updated_at"] = SIGNED_AT
+        expected["approved_by"] = "HUMAN-OPERATOR-001"
+        expected["approved_at"] = SIGNED_AT
+        expected["approval_ref"] = SIGNED_DECISION_REF
+        if relative == AUTHORITY_MATRIX_PATH.as_posix():
+            for entry in expected.get("entries", []):
+                if isinstance(entry, dict):
+                    entry["status"] = "approved"
+        if current != expected:
+            errors.append(f"signed register transformation differs from signed outcome: {relative}")
+
+    append_markers = {
+        "docs/00-governance/BOPEN-GOV-001-DRAFT.md": ("## Append-only approval record — 2026-07-23", "**Outcome:** APPROVED; effective"),
+        "docs/decisions/DEC-0013.md": ("## Append-only accepted decision — 2026-07-23", "**Outcome:** ACCEPTED; option 1; effective"),
+        "docs/work-packages/GOV-P0-01.md": ("## Append-only acceptance record — 2026-07-23", "**Outcome:** ACCEPTED; effective"),
+        "docs/work-packages/GOV-P0-04.md": ("## Append-only acceptance record — 2026-07-23", "**Outcome:** ACCEPTED; effective"),
+        "docs/decisions/DEC-0007.md": ("## Append-only accepted decision — 2026-07-23", "**Outcome:** APPROVED; option 1; BOOT-B7 approved"),
+        "docs/work-packages/GOV-P0-03.md": ("## Append-only activation record — 2026-07-23", "**Outcome:** ACTIVE; effective through the atomic five-ledger activation event"),
+    }
+    common_markers = (
+        "HUMAN-OPERATOR-001",
+        SIGNED_AT,
+        SIGNED_DECISION_REF,
+        "EVD-GOV-008",
+    )
+    for relative, specific_markers in append_markers.items():
+        source = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        path = root / relative
+        if source is None or not path.is_file():
+            errors.append(f"signed append-only artifact missing: {relative}")
+            continue
+        current = path.read_bytes()
+        if not current.startswith(source):
+            errors.append(f"signed append-only artifact rewrites substrate: {relative}")
+            continue
+        appended = current[len(source):].decode("utf-8", errors="replace")
+        for marker in specific_markers:
+            if appended.count(marker) != 1:
+                errors.append(f"signed append-only artifact marker invalid {relative}: {marker}")
+        for marker in common_markers:
+            if marker not in appended:
+                errors.append(f"signed append-only artifact marker missing {relative}: {marker}")
+    return errors
 
 
 def is_tracked_path(root: Path, relative: str) -> bool:
@@ -721,8 +1002,7 @@ def validate_artifact_binding(
     if not path.is_file():
         errors.append(f"{label} artifact missing: {relative}")
     elif file_sha256(path) != digest:
-        current = path.read_bytes()
-        if str(relative) not in APPEND_ONLY_GOVERNING_PATHS or committed is None or not current.startswith(committed):
+        if str(relative) not in SIGNED_TRANSFORM_PATHS:
             errors.append(f"{label} current artifact drift: {relative}")
     if not is_tracked_path(root, str(relative)):
         errors.append(f"{label} artifact untracked: {relative}")
@@ -764,14 +1044,23 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     if matrix_error:
         return [f"authority matrix {matrix_error}"]
     assert docket is not None and schema is not None and matrix is not None
+    predecessor_bytes = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, PREDECESSOR_DOCKET_PATH)
+    try:
+        predecessor = json.loads(predecessor_bytes.decode("utf-8")) if predecessor_bytes is not None else None
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        predecessor = None
+    if not isinstance(predecessor, dict):
+        errors.append("signed predecessor docket missing or invalid")
+        predecessor = {}
 
     errors.extend(validate_schema_instance(docket, schema, schema, "authority docket"))
     if docket.get("$schema") != schema.get("$id"):
         errors.append("authority docket schema binding mismatch")
-    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.2.0-draft":
+    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.3.0-draft":
         errors.append("authority docket identity/version invalid")
-    if docket.get("status") != "pending_human_decisions" or docket.get("state") != "PENDING_HUMAN_DECISIONS":
-        errors.append("v0.2 authority docket must remain PENDING_HUMAN_DECISIONS")
+    if docket.get("status") != "signed_state_candidate" or docket.get("state") != "TECHNICAL_REVIEW":
+        errors.append("v0.3 signed-state docket must remain in TECHNICAL_REVIEW")
+    errors.extend(validate_signed_artifact_transforms(root))
 
     updated_at = parse_datetime(docket.get("updated_at"))
     expires_at = parse_datetime(docket.get("expires_at"))
@@ -799,8 +1088,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append("repository binding commit must be an ancestor of HEAD")
         if binding.get("repository_ref") != "bstBizEra/bopen":
             errors.append("repository binding repository_ref invalid")
-        if not non_placeholder(binding.get("branch")):
-            errors.append("repository binding branch invalid")
+        if commit_sha != SIGNED_SUBSTRATE_COMMIT or tree_sha != SIGNED_SUBSTRATE_TREE or binding.get("branch") != SIGNED_SUBSTRATE_BRANCH:
+            errors.append("repository binding must match signed Batch 2 substrate")
     else:
         commit_sha = tree_sha = ""
 
@@ -824,6 +1113,14 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     if inventory_error:
         errors.append(f"binding inventory {inventory_error}")
     elif isinstance(inventory_binding, dict) and isinstance(inventory, dict):
+        try:
+            expected_inventory = build_v03_binding_inventory(root)
+        except (ValueError, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            expected_inventory = None
+            errors.append(f"binding inventory regeneration failed: {exc}")
+        inventory_matches_regeneration = expected_inventory is not None and inventory == expected_inventory
+        if expected_inventory is not None and not inventory_matches_regeneration:
+            errors.append("binding inventory differs from exact signed-substrate regeneration")
         if inventory_binding.get("inventory_ref") != BINDING_INVENTORY_PATH.as_posix():
             errors.append("binding inventory path invalid")
         if inventory_binding.get("inventory_id") != inventory.get("inventory_id"):
@@ -850,41 +1147,44 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"binding inventory path invalid or duplicated: {relative}")
             seen_inventory_ids.add(record_id)
             seen_inventory_paths.add(relative)
-            committed = read_file_at_commit(root, commit_sha, relative) if relative else None
-            if committed is None:
-                errors.append(f"binding inventory source missing at substrate: {relative}")
-            else:
-                if record.get("sha256") != bytes_sha256(committed):
-                    errors.append(f"binding inventory digest mismatch: {relative}")
-                if record.get("bytes") != len(committed):
-                    errors.append(f"binding inventory byte count mismatch: {relative}")
+            # Exact regeneration already read and hashed every substrate object. Only
+            # repeat object-level diagnostics when the supplied inventory differs.
+            if not inventory_matches_regeneration:
+                committed = read_file_at_commit(root, commit_sha, relative) if relative else None
+                if committed is None:
+                    errors.append(f"binding inventory source missing at substrate: {relative}")
+                else:
+                    if record.get("sha256") != bytes_sha256(committed):
+                        errors.append(f"binding inventory digest mismatch: {relative}")
+                    if record.get("bytes") != len(committed):
+                        errors.append(f"binding inventory byte count mismatch: {relative}")
         for artifact_id, artifact in artifact_map.items():
             match = next((item for item in records if isinstance(item, dict) and item.get("artifact_id") == artifact_id), None)
             if match is None or artifact.get("artifact_ref") != match.get("path") or artifact.get("sha256") != match.get("sha256"):
                 errors.append(f"governing artifact not exactly represented in binding inventory: {artifact_id}")
 
     source = docket.get("authority_source")
-    source_keys = {"matrix_id", "artifact_ref", "adoption_target_ref", "version", "status", "sha256", "effective"}
+    source_keys = {"matrix_id", "artifact_ref", "proposal_ref", "version", "status", "sha256", "signing_ref", "effective"}
     errors.extend(exact_keys(source, source_keys, "authority source"))
     if isinstance(source, dict):
-        errors.extend(validate_artifact_binding(root, {
-            "artifact_id": source.get("matrix_id"),
-            "version": source.get("version"),
-            "status": source.get("status"),
-            "artifact_ref": source.get("artifact_ref"),
-            "sha256": source.get("sha256"),
-        }, "authority source", commit_sha))
-        source_pair = (source.get("status"), source.get("effective"))
-        if source_pair not in {("draft", False), ("approved", True)}:
-            errors.append("authority source status/effectiveness mismatch")
-        if source.get("adoption_target_ref") != AUTHORITY_MATRIX_PATH.as_posix():
-            errors.append("authority source adoption target invalid")
-        committed_source = read_file_at_commit(root, commit_sha, str(source.get("artifact_ref", "")))
+        if source.get("artifact_ref") != AUTHORITY_MATRIX_PATH.as_posix():
+            errors.append("authority source artifact path invalid")
+        if source.get("proposal_ref") != "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json":
+            errors.append("authority source proposal path invalid")
+        if source.get("version") != "0.2.0" or source.get("status") != "approved" or source.get("effective") is not True:
+            errors.append("authority source must be approved v0.2 and effective")
+        if source.get("sha256") != file_sha256(root / AUTHORITY_MATRIX_PATH):
+            errors.append("authority source current matrix digest mismatch")
+        if source.get("signing_ref") != SIGNED_DECISION_REF:
+            errors.append("authority source signing reference mismatch")
+        committed_source = read_file_at_commit(root, commit_sha, str(source.get("proposal_ref", "")))
         try:
             source_matrix = json.loads(committed_source.decode("utf-8")) if committed_source is not None else None
         except (UnicodeDecodeError, json.JSONDecodeError):
             source_matrix = None
-        if not isinstance(source_matrix, dict) or source_matrix.get("entries") != matrix.get("entries"):
+        proposal_entries = source_matrix.get("entries") if isinstance(source_matrix, dict) else None
+        normalized_current = [dict(item, status="draft") for item in matrix.get("entries", []) if isinstance(item, dict)]
+        if not isinstance(proposal_entries, list) or proposal_entries != normalized_current:
             errors.append("adopted authority matrix entries differ from signed substrate proposal")
 
     matrix_entries = matrix.get("entries")
@@ -972,7 +1272,16 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     prepared_keys = {
         "disposition_id", "batch_item", "action_id", "subject", "requested_state",
         "accountable_authority_role", "required_concurrence", "authority_actor",
-        "disposition", "decided_at", "expires_at", "decision_ref", "evidence_refs", "effective",
+        "concurrences", "disposition", "decided_at", "expires_at", "decision_ref", "evidence_refs", "effective",
+    }
+    predecessor_prepared = {
+        item.get("disposition_id"): item
+        for item in predecessor.get("prepared_dispositions", [])
+        if isinstance(item, dict)
+    }
+    immutable_prepared_fields = {
+        "disposition_id", "batch_item", "action_id", "subject", "requested_state",
+        "accountable_authority_role", "required_concurrence", "expires_at",
     }
     for item in prepared:
         if not isinstance(item, dict):
@@ -992,27 +1301,82 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append(f"{disposition_id} authority role mismatch")
         if set(item.get("required_concurrence", [])) != concurrence:
             errors.append(f"{disposition_id} concurrence mismatch")
-        if any(item.get(field) is not None for field in ("authority_actor", "decided_at", "decision_ref")):
-            errors.append(f"{disposition_id} pending surface claims human disposition")
-        if item.get("disposition") != "PENDING" or item.get("evidence_refs") or item.get("effective") is not False:
-            errors.append(f"{disposition_id} must remain pending and ineffective")
+        predecessor_item = predecessor_prepared.get(disposition_id)
+        if not isinstance(predecessor_item, dict) or any(item.get(field) != predecessor_item.get(field) for field in immutable_prepared_fields):
+            errors.append(f"{disposition_id} alters the signed v0.2 subject or requested outcome")
+        if item.get("disposition") != "APPROVE" or item.get("effective") is not True:
+            errors.append(f"{disposition_id} signed disposition/effect mismatch")
+        if item.get("decided_at") != SIGNED_AT or item.get("decision_ref") != SIGNED_DECISION_REF:
+            errors.append(f"{disposition_id} signed time/reference mismatch")
+        if set(item.get("evidence_refs", [])) != SIGNED_EVIDENCE_REFS:
+            errors.append(f"{disposition_id} signed evidence mismatch")
         disposition_expiry = parse_datetime(item.get("expires_at"))
         if disposition_expiry is None or (expires_at is not None and disposition_expiry > expires_at):
             errors.append(f"{disposition_id} expiry invalid")
         subject = item.get("subject")
         subject_keys = {"artifact_id", "version", "artifact_ref", "sha256", "commit_sha", "tree_sha"}
         errors.extend(exact_keys(subject, subject_keys, f"{disposition_id} subject"))
-        governing = artifact_map.get(artifact_id)
         if isinstance(subject, dict):
             if subject.get("artifact_id") != artifact_id:
                 errors.append(f"{disposition_id} subject identity mismatch")
-            if subject.get("commit_sha") != commit_sha or subject.get("tree_sha") != tree_sha:
-                errors.append(f"{disposition_id} subject substrate binding mismatch")
-            if governing is None or any(subject.get(field) != governing.get(field) for field in ("version", "artifact_ref", "sha256")):
-                errors.append(f"{disposition_id} subject must match governing artifact")
+            subject_commit = str(subject.get("commit_sha", ""))
+            subject_tree = str(subject.get("tree_sha", ""))
+            subject_ref = str(subject.get("artifact_ref", ""))
+            subject_bytes = read_file_at_commit(root, subject_commit, subject_ref)
+            if resolve_tree(root, subject_commit) != subject_tree:
+                errors.append(f"{disposition_id} signed subject commit/tree mismatch")
+            if subject_bytes is None or bytes_sha256(subject_bytes) != subject.get("sha256"):
+                errors.append(f"{disposition_id} signed subject digest mismatch")
         action = matrix_actions.get(action_id)
         if action is None or action.get("accountable_human_authority") != authority_role:
             errors.append(f"{disposition_id} action/authority absent from matrix")
+        actor_subject_ref = AUTHORITY_MATRIX_PATH.as_posix() if disposition_id == "PG-G0-PREP-002" else str(subject.get("artifact_ref", "")) if isinstance(subject, dict) else ""
+        errors.extend(validate_authority_actor(
+            item.get("authority_actor"),
+            f"{disposition_id} final authority",
+            authority_role,
+            schema,
+            root=root,
+            as_of=as_of,
+            action_id=action_id,
+            subject_ref=actor_subject_ref,
+            authority_source=source,
+            governing_artifacts=artifact_map,
+            repository_commit_sha=commit_sha,
+            repository_tree_sha=tree_sha,
+        ))
+        signed_concurrences = item.get("concurrences")
+        if not isinstance(signed_concurrences, list):
+            errors.append(f"{disposition_id} concurrences must be an array")
+            signed_concurrences = []
+        concurrence_roles = [entry.get("authority_role") for entry in signed_concurrences if isinstance(entry, dict)]
+        if set(concurrence_roles) != concurrence or len(concurrence_roles) != len(concurrence):
+            errors.append(f"{disposition_id} signed concurrence set mismatch")
+        for signed_concurrence in signed_concurrences:
+            if not isinstance(signed_concurrence, dict):
+                errors.append(f"{disposition_id} concurrence must be an object")
+                continue
+            role = str(signed_concurrence.get("authority_role", ""))
+            if signed_concurrence.get("disposition") != "CONCUR" or signed_concurrence.get("effective") is not True:
+                errors.append(f"{disposition_id} {role} concurrence effect mismatch")
+            if signed_concurrence.get("decided_at") != SIGNED_AT or signed_concurrence.get("decision_ref") != SIGNED_DECISION_REF:
+                errors.append(f"{disposition_id} {role} concurrence time/reference mismatch")
+            if set(signed_concurrence.get("evidence_refs", [])) != SIGNED_EVIDENCE_REFS:
+                errors.append(f"{disposition_id} {role} concurrence evidence mismatch")
+            errors.extend(validate_authority_actor(
+                signed_concurrence.get("authority_actor"),
+                f"{disposition_id} {role} concurrence",
+                role,
+                schema,
+                root=root,
+                as_of=as_of,
+                action_id=action_id,
+                subject_ref=actor_subject_ref,
+                authority_source=source,
+                governing_artifacts=artifact_map,
+                repository_commit_sha=commit_sha,
+                repository_tree_sha=tree_sha,
+            ))
 
     decisions = docket.get("decision_requests")
     if not isinstance(decisions, list):
@@ -1021,6 +1385,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     decision_ids = [item.get("decision_id") for item in decisions if isinstance(item, dict)]
     if set(decision_ids) != set(EXPECTED_DECISIONS) or len(decision_ids) != len(EXPECTED_DECISIONS):
         errors.append("authority docket decision set must preserve the five B8 decision IDs")
+    if decisions != predecessor.get("decision_requests"):
+        errors.append("five B8 decision requests must remain byte-semantically unchanged from signed v0.2")
 
     for decision in decisions:
         if not isinstance(decision, dict):
@@ -1049,17 +1415,17 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         if isinstance(subject, dict):
             if subject.get("artifact_id") != artifact_id or subject.get("artifact_ref") != EXPECTED_SUBJECT_REFS[artifact_id]:
                 errors.append(f"{decision_id} subject artifact/path mismatch")
-            if subject.get("commit_sha") != commit_sha or subject.get("tree_sha") != tree_sha:
-                errors.append(f"{decision_id} subject repository binding mismatch")
-            if governing is None or any(subject.get(field) != governing.get(field) for field in ("version", "artifact_ref", "sha256")):
-                errors.append(f"{decision_id} subject must exactly match governing artifact binding")
+            subject_commit = str(subject.get("commit_sha", ""))
+            subject_tree = str(subject.get("tree_sha", ""))
+            if resolve_tree(root, subject_commit) != subject_tree:
+                errors.append(f"{decision_id} subject commit/tree mismatch")
             errors.extend(validate_artifact_binding(root, {
                 "artifact_id": subject.get("artifact_id"),
                 "version": subject.get("version"),
                 "status": governing.get("status") if governing else "bound",
                 "artifact_ref": subject.get("artifact_ref"),
                 "sha256": subject.get("sha256"),
-            }, f"{decision_id} subject", commit_sha))
+            }, f"{decision_id} subject", subject_commit))
 
         errors.extend(validate_actor(decision.get("prepared_by"), f"{decision_id} prepared_by"))
         prepared_identity = actor_identity(decision.get("prepared_by"))
@@ -1090,7 +1456,9 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 errors.append(f"{decision_id} concurrence must be an object")
                 continue
             role = str(concurrence.get("authority_role"))
-            if concurrence.get("bound_commit_sha") != commit_sha or concurrence.get("bound_tree_sha") != tree_sha:
+            expected_subject_commit = subject.get("commit_sha") if isinstance(subject, dict) else None
+            expected_subject_tree = subject.get("tree_sha") if isinstance(subject, dict) else None
+            if concurrence.get("bound_commit_sha") != expected_subject_commit or concurrence.get("bound_tree_sha") != expected_subject_tree:
                 errors.append(f"{decision_id} {role} concurrence binding mismatch")
             errors.extend(validate_evidence_refs(root, concurrence.get("source_refs"), f"{decision_id} {role} source", required=True))
             disposition = concurrence.get("disposition")
@@ -1211,12 +1579,19 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
 
     outcomes = docket.get("effective_outcome")
     errors.extend(exact_keys(outcomes, EFFECTIVE_OUTCOME_KEYS, "effective outcome"))
-    if isinstance(outcomes, dict) and any(value is not False for value in outcomes.values()):
-        errors.append("pending authority docket cannot assert an effective outcome")
+    expected_outcomes = {
+        "program_goal_approved": False,
+        "governance_baseline_approved": True,
+        "work_package_accepted": True,
+        "evidence_accepted": False,
+        "ready_for_pg_g0_gate_decision": False,
+    }
+    if outcomes != expected_outcomes:
+        errors.append("v0.3 effective outcomes must match the signed Batch 2 scope exactly")
     flags = docket.get("non_authority_flags")
     errors.extend(exact_keys(flags, NON_AUTHORITY_KEYS, "non-authority flags"))
     if isinstance(flags, dict) and any(value is not False for value in flags.values()):
-        errors.append("pending authority docket cannot grant authority")
+        errors.append("v0.3 signed-state docket cannot grant B8, B9, runtime or release authority")
 
     blockers = docket.get("blockers")
     if not isinstance(blockers, list) or not blockers or any(not non_placeholder(item) for item in blockers):
@@ -1276,8 +1651,22 @@ def main(argv: list[str] | None = None) -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--write", nargs="?", const=DEFAULT_REPORT_PATH, type=Path)
     mode.add_argument("--check", nargs="?", const=DEFAULT_REPORT_PATH, type=Path)
+    mode.add_argument("--write-inventory", nargs="?", const=BINDING_INVENTORY_PATH, type=Path)
+    mode.add_argument("--write-docket", nargs="?", const=DOCKET_PATH, type=Path)
     mode.add_argument("--require-ready", action="store_true")
     args = parser.parse_args(argv)
+    if args.write_inventory:
+        output = args.write_inventory if args.write_inventory.is_absolute() else ROOT / args.write_inventory
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(build_v03_binding_inventory(), indent=2) + "\n", encoding="utf-8")
+        print(f"Wrote {output}")
+        return 0
+    if args.write_docket:
+        output = args.write_docket if args.write_docket.is_absolute() else ROOT / args.write_docket
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(build_v03_docket(), indent=2) + "\n", encoding="utf-8")
+        print(f"Wrote {output}")
+        return 0
     report = build_readiness_report()
     rendered = format_report(report)
     if args.write:

@@ -30,3 +30,11 @@
 | REQ-GOV-003 Attributable human approval envelopes | BOPEN-GOV-001 Draft | pg-g0-authority-docket schema/validator | GOV-P0-02 Proposed | EVD-GOV-002 | Draft; all human decisions pending |
 | REQ-GOV-004 Exact instruction-path authority | DEC-0012 Proposed | PG-G0 authority docket blockers | GOV-P0-02 Proposed | EVD-GOV-002 | UNRESOLVED; no equivalence inferred |
 | GOAL-PG-G0 Human authority routing | BOPEN-GOAL-001/BOPEN-GOV-001 Drafts | PG-G0-AUTH-001/PG-G0-GATE-001 Drafts | GOV-P0-02 Proposed | EVD-GOV-002 | NOT_READY; no gate action in effective matrix |
+
+## Append-only Batch 2 signed-state trace — 2026-07-23
+
+| Requirement | Governing source | Machine control | Work package | Evidence | Signed-state result |
+|---|---|---|---|---|---|
+| REQ-GOV-003 Attributable human approval envelopes | BOPEN-GOV-001 effective; authority matrix v0.2 approved | PG-G0-AUTH-001 v0.3 schema/validator | GOV-P0-04 accepted | Signing Pass 2; EVD-GOV-009 | 13 signed dispositions encoded; exact-SHA review pending |
+| REQ-GOV-004 Exact instruction-path authority | DEC-0012 accepted; DEC-0013 effective | root-control schema/validator and five package ledgers | GOV-P0-03 active | Signing Pass 2 B6; EVD-GOV-009 | All five ledgers active atomically |
+| GOAL-PG-G0 Human authority routing | approved register set | v0.3 docket and readiness report | GOV-P0-01 accepted | EVD-GOV-009 | `NOT_READY`; five B8 decisions and B9 pending |

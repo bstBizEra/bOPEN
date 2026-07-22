@@ -83,3 +83,14 @@ Following Operator Batch 1 at exact commit `26bea090c0aca14f1337c4be1a146fd48bb1
 Scope extends to the authority-matrix, docket and root-control schemas/validators/tests; the bound draft matrix; the v0.2 binding inventory and signing surface; deterministic reports/manifests; and append-only evidence/cross-links. Reason: the authorized rebinding plan requires these artifacts to move as one fail-closed unit. Benefit of the old phase: Batch 1 created an immutable approved identity substrate and accepted GOV-P0-02/03 without approving the remaining surfaces. Expected outcome: one independently reviewable exact-SHA candidate exposes every remaining human disposition without exercising it.
 
 Current state is `PENDING_HUMAN_DECISIONS`. The matrix, BOPEN-GOV-001, six remaining register surfaces, GOV-P0-01, GOV-P0-04, DEC-0007/BOOT-B7 and the root-ledger activation event are unsigned and ineffective. GOV-P0-04 is not accepted by this maker record. PG-G0, merge, release, deployment and production implementation remain false.
+
+## Append-only acceptance record — 2026-07-23
+
+**Outcome:** ACCEPTED; effective
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Owning-artifact concurrence:** HUMAN-OPERATOR-001 acting as Engineering Authority under the approved solo-operator identity disclosure
+**Accepted at:** 2026-07-23T00:45:00+07:00
+**Decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23
+**Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
+
+The package is accepted exactly as signed. The v0.3 mechanical successor still requires independent exact-SHA review; B8, B9/PG-G0, merge, release, deployment, runtime and production implementation remain pending or false.

@@ -20,3 +20,9 @@ The report is evidence only. It does not approve B7 or authorize production plat
 After EVD-BOOT-001 and EVD-BOOT-002 were generated, the refreshed readiness report is `artifacts/validation/bootstrap-gate-readiness-after-evidence.md`.
 
 EVD-BOOT-011 records the protected Gitea PR #1 merge and the current `main` protection controls. All B0-B6 execution prerequisites are now represented as complete or evidenced, so the deterministic report classifies B7 as `ready_for_authority_review`. B7 remains `Pending execution review` until the bOPEN Architecture Authority records DEC-0007.
+
+## Append-only B7 status supersession — 2026-07-23
+
+DEC-0007 option 1 and BOOT-B7 were approved by HUMAN-OPERATOR-001 acting as Architecture Authority, with Security and Data concurrence, at 2026-07-23T00:45:00+07:00. The signed decision is `docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23`. The historical table remains unchanged; its B7 pending cell is superseded by this append-only record.
+
+BOOT-B7 approval closes the bootstrap execution set only. PG-G0, production implementation, merge, release, deployment and runtime authorization remain separate and false or pending.

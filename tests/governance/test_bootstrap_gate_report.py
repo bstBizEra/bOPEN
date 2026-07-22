@@ -6,14 +6,15 @@ from tools.report_bootstrap_gates import build_report, format_report
 
 
 class BootstrapGateReportTests(unittest.TestCase):
-    def test_repository_report_is_ready_for_authority_review_and_blocks_production(self):
+    def test_repository_report_verifies_signed_b7_and_blocks_production(self):
         report = build_report()
 
-        self.assertEqual(report["bootstrap_review_state"], "ready_for_authority_review")
+        self.assertEqual(report["bootstrap_review_state"], "approved")
         self.assertTrue(report["b7_review_ready"])
         self.assertFalse(report["production_implementation_authorized"])
-        self.assertEqual(report["b7_status"], "Pending execution review")
-        self.assertEqual(report["blockers"], ["B7 exit gate is not approved."])
+        self.assertEqual(report["b7_status"], "Approved")
+        self.assertTrue(report["b7_signed_decision_verified"])
+        self.assertEqual(report["blockers"], [])
         self.assertEqual(report["pending_evidence"], [])
         self.assertEqual(report["execution_pending_packages"], [])
 
@@ -64,6 +65,7 @@ class BootstrapGateReportTests(unittest.TestCase):
             report = build_report(root)
 
         self.assertEqual(report["bootstrap_review_state"], "incomplete")
+        self.assertFalse(report["b7_signed_decision_verified"])
         self.assertEqual(len(report["pending_evidence"]), 1)
         self.assertEqual(len(report["implementation_blocking_docs"]), 1)
         self.assertEqual(report["execution_pending_packages"], [])
@@ -76,6 +78,7 @@ class BootstrapGateReportTests(unittest.TestCase):
                 "production_implementation_authorized": False,
                 "gate_count": 8,
                 "b7_status": "Pending execution review",
+                "b7_signed_decision_verified": False,
                 "pending_evidence": [],
                 "execution_pending_packages": [],
                 "implementation_blocking_docs": [],
@@ -83,7 +86,7 @@ class BootstrapGateReportTests(unittest.TestCase):
             }
         )
 
-        self.assertIn("readiness evidence only", report)
+        self.assertIn("verifies the signed", report)
         self.assertIn("does not authorize production", report)
 
 

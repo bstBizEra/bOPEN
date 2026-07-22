@@ -16,6 +16,13 @@ REQUIRED_IMPLEMENTATION_ARTIFACTS = {
     "BOPEN-AUTHZ-001",
     "BOPEN-SEC-001",
 }
+SIGNED_B7_MARKERS = (
+    "## Append-only accepted decision — 2026-07-23",
+    "**Outcome:** APPROVED; option 1; BOOT-B7 approved",
+    "**Approved by:** HUMAN-OPERATOR-001 (Architecture Authority, DIRECT)",
+    "**Approved at:** 2026-07-23T00:45:00+07:00",
+    "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23",
+)
 
 
 def parse_markdown_table(path: Path) -> list[dict[str, str]]:
@@ -60,6 +67,10 @@ def build_report(root: Path = ROOT) -> dict[str, object]:
     documents = registers["documents"]
 
     b7 = next((gate for gate in gates if gate.get("Gate", "").startswith("B7")), {})
+    decision_path = root / "docs/decisions/DEC-0007.md"
+    decision_text = decision_path.read_text(encoding="utf-8") if decision_path.is_file() else ""
+    b7_signed = all(marker in decision_text for marker in SIGNED_B7_MARKERS)
+    b7_status = "Approved" if b7_signed else b7.get("Status", "Missing")
     pending_evidence = [
         item
         for item in evidence
@@ -83,14 +94,14 @@ def build_report(root: Path = ROOT) -> dict[str, object]:
     blockers: list[str] = []
     if execution_pending_packages:
         blockers.append("Some BOOT-P0 execution packages require external activation.")
-    if b7.get("Status") != "Approved":
+    if b7_status != "Approved":
         blockers.append("B7 exit gate is not approved.")
     if pending_evidence:
         blockers.append("Some bootstrap evidence remains ungenerated.")
     return {
         "bootstrap_review_state": (
             "approved"
-            if b7.get("Status") == "Approved" and b7_review_ready
+            if b7_status == "Approved" and b7_review_ready
             else "ready_for_authority_review"
             if b7_review_ready
             else "incomplete"
@@ -98,7 +109,8 @@ def build_report(root: Path = ROOT) -> dict[str, object]:
         "b7_review_ready": b7_review_ready,
         "production_implementation_authorized": False,
         "gate_count": len(gates),
-        "b7_status": b7.get("Status", "Missing"),
+        "b7_status": b7_status,
+        "b7_signed_decision_verified": b7_signed,
         "pending_evidence": pending_evidence,
         "execution_pending_packages": execution_pending_packages,
         "implementation_blocking_docs": implementation_blocking_docs,
@@ -115,6 +127,7 @@ def format_report(report: dict[str, object]) -> str:
         f"**Production implementation authorized:** `{str(report['production_implementation_authorized']).lower()}`",
         f"**Gate count:** {report['gate_count']}",
         f"**B7 status:** {report['b7_status']}",
+        f"**B7 signed decision verified:** `{str(report['b7_signed_decision_verified']).lower()}`",
         "",
         "## Blockers",
         "",
@@ -158,7 +171,7 @@ def format_report(report: dict[str, object]) -> str:
             "",
             "## Decision",
             "",
-            "This report is readiness evidence only. It does not approve B7 and does not authorize production platform kernel implementation.",
+            "This report verifies the signed DEC-0007/BOOT-B7 outcome; it does not create or alter that approval and does not authorize production platform kernel implementation.",
             "",
         ]
     )

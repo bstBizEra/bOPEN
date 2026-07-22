@@ -53,3 +53,14 @@ No plaintext production credential may be assigned to an agent. Tenant, authoriz
 ## Approval
 
 Pending Engineering, Product and Architecture Authority review, with Security and Data concurrence for their controlled actions.
+
+## Append-only approval record — 2026-07-23
+
+**Outcome:** APPROVED; effective
+**Approved by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Concurrence:** HUMAN-OPERATOR-001 acting as Product, Architecture, Security and Data Authorities under the approved solo-operator identity disclosure
+**Approved at:** 2026-07-23T00:45:00+07:00
+**Decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23
+**Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
+
+This approval makes the governance baseline effective. It does not dispose the five B8 decisions, pass PG-G0, authorize production implementation, merge, release, deployment or runtime activation.

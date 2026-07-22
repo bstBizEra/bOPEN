@@ -99,3 +99,28 @@ Future daily or corrective events must be appended below this event without repl
 **Reason:** Execute the rebinding plan as one fail-closed candidate.
 **Benefit of old phase:** Signed Batch 1 decisions remain immutable inputs, not fields rewritten by the successor.
 **Expected outcome:** Independent review precedes separately attributable operator decisions; PG-G0 remains `NOT_READY` until the later human pass.
+
+## Root control activation event
+
+**Activation status:** Active
+**Activation lifecycle:** Active
+**Activated by:** HUMAN-OPERATOR-001
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
+**Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
+**Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626
+
+## Event GOV-P0-04-V03-RECAP-0001
+
+**Timestamp:** 2026-07-23T01:00:00+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-signed Batch 2 record at `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`
+**Work package:** GOV-P0-04 (accepted; v0.3 encoding under technical review)
+**Roadmap state:** Root controls Active; PROGRAM/PG-G0 NOT_READY
+**Progress event:** GOV-P0-04-V03-PROGRESS-0001
+**Backlog event:** GOV-P0-04-V03-BACKLOG-0001
+**Evidence:** EVD-GOV-009
+**Summary:** Encoded the 13 signed Batch 2 outcomes, approved seven registers with provenance and activated all five root ledgers atomically while preserving B8 and B9 as pending.
+**Reason:** Materialize the operator's signed record through a fail-closed successor.
+**Benefit of old phase:** v0.2 separated human signing from mechanical artifact effect.
+**Expected outcome:** Independent exact-SHA review confirms the encoding before later gate decisions.

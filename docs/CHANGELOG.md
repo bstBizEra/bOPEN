@@ -152,3 +152,11 @@
 - Prepared 13 unsigned and ineffective Batch 2 disposition surfaces while preserving the original five pending docket decisions.
 - Revised root-control validation so activation can occur only as one complete five-ledger Signing Pass 2 event; no activation event was added.
 - Kept independent review pending and PG-G0, merge, release, deployment and production implementation false.
+
+## Append-only entry — 2026-07-23 — PG-G0 authority docket v0.3 signed state
+
+- Encoded all thirteen operator-signed Batch 2 dispositions with exact role-bound human actors and required concurrence blocks.
+- Approved the authority matrix and six program registers with attributable provenance; made BOPEN-GOV-001 and DEC-0013 effective; accepted GOV-P0-01/GOV-P0-04; approved DEC-0007/BOOT-B7.
+- Activated the five root ledgers through one identical append-only B6 event and retained their immutable Draft/Inactive genesis prefixes.
+- Rebound the v0.3 inventory to Signing Pass 2 commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66` and enforced exact signed transformations in schema, validator and negative tests.
+- Preserved all five B8 requests as `PENDING` and PG-G0, merge, release, deployment, runtime and production implementation as unauthorized pending a new independent exact-SHA review and later decisions.

@@ -101,3 +101,28 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Prepare the matrix, governance, register, work-item, bootstrap and root-ledger dispositions as one exact-bound successor.
 **Benefit of old phase:** Batch 1 preserved signed identity and accepted GOV-P0-02/03 as immutable inputs while all other effects remained false.
 **Expected outcome:** An independent checker can issue an exact-SHA receipt before the operator signs any Batch 2 disposition.
+
+## Root control activation event
+
+**Activation status:** Active
+**Activation lifecycle:** Active
+**Activated by:** HUMAN-OPERATOR-001
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
+**Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
+**Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626
+
+## Event GOV-P0-04-V03-PROGRESS-0001
+
+**Timestamp:** 2026-07-23T01:00:00+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-signed Batch 2 record at `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`
+**Work package:** GOV-P0-04 (accepted; v0.3 encoding under technical review)
+**Backlog event:** GOV-P0-04-V03-BACKLOG-0001
+**Recap event:** GOV-P0-04-V03-RECAP-0001
+**Roadmap state:** Root controls Active; PROGRAM/PG-G0 NOT_READY
+**Evidence:** EVD-GOV-009
+**Status:** SIGNED_STATE_CANDIDATE_TECHNICAL_REVIEW_PENDING
+**Reason:** Encode all 13 signed Batch 2 outcomes without changing the five pending B8 decisions.
+**Benefit of old phase:** The v0.2 docket preserved exact subjects and required a separate signed-state successor.
+**Expected outcome:** Claude independently reviews one exact v0.3 candidate SHA before any later B8 or B9 decision.

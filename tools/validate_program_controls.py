@@ -320,7 +320,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
     print("bOPEN program-control validation: PASS")
-    print(f"Checked {len(REGISTER_SCHEMAS)} draft registers with fail-closed semantic controls.")
+    print(f"Checked {len(REGISTER_SCHEMAS)} governed registers with fail-closed semantic controls.")
     print("Program G0 readiness is not asserted by this validator.")
     return 0
 

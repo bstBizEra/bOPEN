@@ -9,34 +9,10 @@
 
 ## Blockers
 
-- goal register status must be approved
-- goal register approved_by is required
-- goal register approved_at is required
-- goal register approval_ref is required
-- agent register status must be approved
-- agent register approved_by is required
-- agent register approved_at is required
-- agent register approval_ref is required
-- module register status must be approved
-- module register approved_by is required
-- module register approved_at is required
-- module register approval_ref is required
-- skill register status must be approved
-- skill register approved_by is required
-- skill register approved_at is required
-- skill register approval_ref is required
-- schedule register status must be approved
-- schedule register approved_by is required
-- schedule register approved_at is required
-- schedule register approval_ref is required
-- authority register status must be approved
-- authority register approved_by is required
-- authority register approved_at is required
-- authority register approval_ref is required
-- technology register status must be approved
-- technology register approved_by is required
-- technology register approved_at is required
-- technology register approval_ref is required
+- BOPEN-GOAL-001 v0.2 must be approved with owner and evidence
+- agent register requires at least one governed active agent
+- schedule register requires assigned PG-G0 review
+- technology decisions not assigned: DEC-0004, DEC-0005
 
 ## Decision
 

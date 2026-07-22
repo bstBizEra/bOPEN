@@ -105,3 +105,29 @@ Future state changes must be appended as new events; this event must not be edit
 **Reason:** Track the prepared successor without marking any governed subject approved, accepted or active.
 **Benefit of old phase:** The predecessor docket's missing actions remained explicit and non-effective.
 **Expected outcome:** Human dispositions occur only after technical verification and remain separable from PG-G0 passage.
+
+## Root control activation event
+
+**Activation status:** Active
+**Activation lifecycle:** Active
+**Activated by:** HUMAN-OPERATOR-001
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
+**Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
+**Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626
+
+## Event GOV-P0-04-V03-BACKLOG-0001
+
+**Timestamp:** 2026-07-23T01:00:00+07:00
+**Agent ID:** BST-Codex-Motor
+**Source:** Operator-signed Batch 2 record at `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`
+**Work package:** GOV-P0-04 (accepted; v0.3 encoding under technical review)
+**Roadmap:** Roadmap.md / root controls Active / PROGRAM-PG-G0 NOT_READY
+**Progress event:** GOV-P0-04-V03-PROGRESS-0001
+**Recap event:** GOV-P0-04-V03-RECAP-0001
+**Evidence:** EVD-GOV-009
+**State:** SIGNED_STATE_ENCODED_INDEPENDENT_REVIEW_PENDING
+**Open controls:** Independent exact-SHA review of v0.3; five B8 decisions; B9 PG-G0 disposition.
+**Reason:** Track the mechanical signed-state successor without conflating it with B8 or B9.
+**Benefit of old phase:** Every signed outcome remained attributable and separately bound.
+**Expected outcome:** No later decision can silently alter the operator's Batch 2 record.

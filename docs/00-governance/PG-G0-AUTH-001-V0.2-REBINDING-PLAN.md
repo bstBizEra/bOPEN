@@ -116,3 +116,9 @@ R0 is satisfied by signed substrate commit `26bea090c0aca14f1337c4be1a146fd48bb1
 Reason: execute the operator-authorized Batch 2 preparation atomically after Batch 1. Benefit of the old phase: the v0.1 docket and proposal files exposed every missing action without self-activating. Expected outcome: an independent checker can review one exact successor SHA, after which the operator may sign each separately authorized disposition against the frozen substrate.
 
 R4 and R5 remain open. The candidate state is `PENDING_HUMAN_DECISIONS`, technical review is pending, all prepared disposition effects are false, all five legacy decisions are pending, root ledgers remain Draft/Inactive and PG-G0 remains `NOT_READY`.
+
+## Append-only v0.3 execution record — 2026-07-23
+
+R4 completed for v0.2 through EVD-GOV-008, and R5 completed for the thirteen prepared Batch 2 dispositions through the append-only Signing Pass 2 record at commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`. The v0.3 successor implements the authorized signed-state transformation, exact substrate inventory, role-bound actor blocks and atomic B6 activation while preserving all five B8 requests unchanged and pending.
+
+Reason: record execution without rewriting the preparation-time plan. Benefit of the old phase: the plan separated technical review from human disposition. Expected outcome: Claude reviews the v0.3 exact SHA independently; PG-G0 remains `NOT_READY` until separate B8 and B9 controls are satisfied.

@@ -1,11 +1,18 @@
 {
   "package_id": "GOV-P0-03",
-  "version": "0.1",
-  "status": "draft",
-  "lifecycle": "inactive",
-  "generated": "2026-07-21",
+  "version": "0.3",
+  "status": "active",
+  "lifecycle": "active",
+  "generated": "2026-07-23",
   "base_commit": "82ed6b38b118aab14a9961c5d75a33e515cb136a",
   "base_tree": "cad6b595fb74a70cc706a78d45778e15524aebd9",
+  "activation": {
+    "activated_by": "HUMAN-OPERATOR-001",
+    "activated_at": "2026-07-23T00:45:00+07:00",
+    "decision_ref": "docs/00-governance/signing/SIGNING-PASS-2.md#B6",
+    "evidence_ref": "docs/00-governance/signing/SIGNING-PASS-2.md",
+    "substrate_commit": "26bea090c0aca14f1337c4be1a146fd48bb1f626"
+  },
   "authority": {
     "pg_g0_passed": false,
     "production_implementation_authorized": false,
@@ -16,33 +23,33 @@
   "files": [
     {
       "path": "Backlog.md",
-      "sha256": "46b8dea42dff079123c3d50f1a693c2351397e42c56a95d41d5058cd0166156c",
-      "bytes": 5540
+      "sha256": "4d81de3296d016e52a736bb553d7e71949fba62c8a8acff350b9cf78879f444e",
+      "bytes": 6839
     },
     {
       "path": "Master_Standards.md",
-      "sha256": "b1d837a156e68bd2cab0359804b4294c855f52187fd2d3f1eaf3f6cbfe8ede06",
-      "bytes": 3070
+      "sha256": "f112a9a3df57b85310188b8165a82ac7cc257a2c852fa372c6e95ad2b1f02eb7",
+      "bytes": 3474
     },
     {
       "path": "Progress_Log.md",
-      "sha256": "68f51fa39e0330ce0c64bb43b5498a131da56b2a38c3c4453f37fa08478db188",
-      "bytes": 5514
+      "sha256": "a5c055799ad018b4f5bc6720aa0bee14919109600e096bdc9e5d769b4b9ed6bd",
+      "bytes": 6762
     },
     {
       "path": "Recap_Today.md",
-      "sha256": "e94354a486cf6c583c5c3b1c4fc06d6a0aaef24a81bffee74718d62489d4aa19",
-      "bytes": 5522
+      "sha256": "bfbf3c6215190f13ecabacb3f8e85f339cc0fb37f12047a6fd941972bbefbbdc",
+      "bytes": 6840
     },
     {
       "path": "Roadmap.md",
-      "sha256": "9039fe3a2d1f77cd8a30c050bbcb2d0c29031ce979ecef380c307f548802f1a8",
-      "bytes": 2805
+      "sha256": "2ae1e89adbc68f415e0e3ecf0efda07d0c7c676f6986cd2ef0e2c3b92c0ceb57",
+      "bytes": 3209
     },
     {
       "path": "contracts/governance/root-control-surface.schema.json",
-      "sha256": "840ed878ae708a84864abd0409d2325400a9c54fd69ebabe032bd01ee6044fcc",
-      "bytes": 2756
+      "sha256": "c12cd58c03645b331941e1a45458edab52ef8ae94aa36d466328161d12463aef",
+      "bytes": 2648
     },
     {
       "path": "docs/decisions/DEC-0012.md",
@@ -56,18 +63,18 @@
     },
     {
       "path": "docs/work-packages/GOV-P0-03.md",
-      "sha256": "1a42d342aea9ab91dbfb689e0263b83e46215c55100f6f25c1d1790505594d9d",
-      "bytes": 7711
+      "sha256": "7ecf90d6c30ce04970ba38f8d9aeba696b301fd275cd7b17a1945bd8cbf9aec8",
+      "bytes": 8560
     },
     {
       "path": "tests/governance/test_root_control_surfaces.py",
-      "sha256": "c10bb0f508c4511c7cd6a853da11cf3bf66dbbe536e56c8424af5d09151b6d8c",
-      "bytes": 9074
+      "sha256": "c443f3c9264fefc3b139c5701f9bad388c22d3cb562d7927356ce22fe6191a58",
+      "bytes": 10540
     },
     {
       "path": "tools/validate_root_control_surfaces.py",
-      "sha256": "952b99176a35d8c1e24b0613164465884cef30d8d62574443ffd0066790afbb1",
-      "bytes": 15199
+      "sha256": "983799831488beb79f51da4947af79da54a3eaa2d354b6cb4bd1a94bbb4c6fcc",
+      "bytes": 16690
     }
   ]
 }

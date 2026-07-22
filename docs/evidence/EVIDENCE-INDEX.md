@@ -26,3 +26,12 @@
 ## Append-only EVD-GOV-001 status supersession — 2026-07-21
 
 Reason: the original index row preserves its pre-review checker-pending state. Benefit of the old phase: it accurately recorded the first indexed state. Expected outcome: this appended note records that exact-SHA technical checks exist through GOV-P0-01 head `c893062c197e74c15214e5ce1c425b9e9ed8002f`, while Human Engineering, Product and Architecture dispositions and PG-G0 remain pending. The historical row is not rewritten.
+
+## Append-only signed-state evidence entries — 2026-07-23
+
+| Evidence ID | Work package | Description | Path | Status |
+|---|---|---|---|---|
+| EVD-GOV-008 | GOV-P0-04 | Independent exact-SHA review of the docket v0.2 Batch 2 candidate | `docs/evidence/EVD-GOV-008-docket-v02-independent-review.md` | `ACCEPT_EXACT_SHA` for `b929821`; technical evidence only |
+| EVD-GOV-009 | GOV-P0-04 | Maker evidence for the v0.3 mechanical encoding of all signed Batch 2 outcomes | `docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md` | Signed-state candidate; new independent exact-SHA review pending |
+
+Reason: index the prerequisite receipt and its non-self-referential signed-state successor evidence. Benefit of the old phase: the original rows preserve the preparation-time status. Expected outcome: reviewers can distinguish the accepted v0.2 candidate from the separately reviewable v0.3 encoding; neither evidence record decides B8 or B9.

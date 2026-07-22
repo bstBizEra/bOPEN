@@ -1,4 +1,4 @@
-"""Fail-closed tests for the GOV-P0-01 draft program-control registers."""
+"""Fail-closed tests for the governed GOV-P0-01 program-control registers."""
 
 from __future__ import annotations
 
@@ -38,9 +38,18 @@ class ProgramControlValidationTests(unittest.TestCase):
             json.dumps(value, indent=2) + "\n", encoding="utf-8"
         )
 
-    def test_repository_draft_registers_validate_without_claiming_readiness(self):
+    def test_repository_approved_registers_validate_without_claiming_runtime_readiness(self):
         self.assertEqual(validate_program_controls(ROOT, AS_OF), [])
         schedule = self.load_register(ROOT, "SCHEDULE-REGISTER.json")
+        for name in (
+            "AGENT-REGISTER.json", "GOAL-REGISTER.json", "MODULE-REGISTER.json",
+            "SKILL-REGISTER.json", "SCHEDULE-REGISTER.json", "AUTHORITY-MATRIX.json",
+            "TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+        ):
+            register = self.load_register(ROOT, name)
+            self.assertEqual(register["status"], "approved")
+            self.assertEqual(register["approved_by"], "HUMAN-OPERATOR-001")
+            self.assertIn("SIGNING-PASS-2.md#append-only-batch-2-signing-record", register["approval_ref"])
         self.assertTrue(all(item["status"] == "NOT_READY" for item in schedule["entries"]))
         self.assertEqual(self.load_register(ROOT, "AGENT-REGISTER.json")["entries"], [])
         self.assertEqual(self.load_register(ROOT, "MODULE-REGISTER.json")["entries"], [])
@@ -61,8 +70,9 @@ class ProgramControlValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             register = self.load_register(root, "AGENT-REGISTER.json")
-            register["status"] = "approved"
-            register["version"] = "0.1.0"
+            register.pop("approved_by")
+            register.pop("approved_at")
+            register.pop("approval_ref")
             self.save_register(root, "AGENT-REGISTER.json", register)
             errors = validate_program_controls(root, AS_OF)
         self.assertTrue(

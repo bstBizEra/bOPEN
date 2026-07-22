@@ -15,3 +15,12 @@
 | DEC-0012 | Reconcile required instruction paths and generated manifests | Proposed | Product/Architecture/Engineering Authorities |
 
 DEC-0011 is reserved by the independent RES-G3 proposal branch and is intentionally not reused here.
+
+## Append-only Batch 2 dispositions — 2026-07-23
+
+| Decision | Signed disposition | Authority record |
+|---|---|---|
+| DEC-0013 | Accepted; option 1 effective | Signing Pass 2, `HUMAN-OPERATOR-001` |
+| DEC-0007 / BOOT-B7 | Approved | Signing Pass 2, `HUMAN-OPERATOR-001` |
+
+The five PG-G0 B8 decision requests remain pending and are not modified by these dispositions. Reason: record the signed successor without rewriting historical rows. Benefit of the old phase: proposal status remained fail-closed. Expected outcome: v0.3 exact-SHA review verifies encoding only.

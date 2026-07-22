@@ -1,10 +1,13 @@
 {
   "$schema": "bopen://schemas/governance/technology-decision-assignment/0.1.0-draft",
   "register_id": "PG-REG-TECH-001",
-  "version": "0.1.0-draft",
-  "status": "draft",
+  "version": "0.1.0",
+  "status": "approved",
   "owner_authority": "Architecture Authority",
-  "updated_at": "2026-07-22T00:00:00+07:00",
+  "updated_at": "2026-07-23T00:45:00+07:00",
+  "approved_by": "HUMAN-OPERATOR-001",
+  "approved_at": "2026-07-23T00:45:00+07:00",
+  "approval_ref": "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23",
   "entries": [
     {
       "assignment_id": "TECH-001",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "bopen://schemas/governance/pg-g0-authority-docket/0.2.0-draft",
+  "$id": "bopen://schemas/governance/pg-g0-authority-docket/0.3.0-draft",
   "status": "draft",
   "title": "bOPEN PG-G0 Authority Docket",
   "type": "object",
@@ -11,10 +11,10 @@
     "state_history", "effective_outcome", "non_authority_flags", "blockers"
   ],
   "properties": {
-    "$schema": {"const": "bopen://schemas/governance/pg-g0-authority-docket/0.2.0-draft"},
+    "$schema": {"const": "bopen://schemas/governance/pg-g0-authority-docket/0.3.0-draft"},
     "docket_id": {"type": "string", "pattern": "^PG-G0-AUTH-[0-9]{3}$"},
-    "version": {"const": "0.2.0-draft"},
-    "status": {"const": "pending_human_decisions"},
+    "version": {"const": "0.3.0-draft"},
+    "status": {"const": "signed_state_candidate"},
     "owner_authority": {"const": "Engineering Authority"},
     "updated_at": {"type": "string", "format": "date-time"},
     "expires_at": {"type": "string", "format": "date-time"},
@@ -27,8 +27,8 @@
       "type": "object", "additionalProperties": false,
       "required": ["inventory_ref", "inventory_id", "substrate_commit_sha", "substrate_tree_sha", "record_count"],
       "properties": {
-        "inventory_ref": {"const": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json"},
-        "inventory_id": {"const": "PG-G0-AUTH-001-V0.2-BINDINGS"},
+        "inventory_ref": {"const": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json"},
+        "inventory_id": {"const": "PG-G0-AUTH-001-V0.3-BINDINGS"},
         "substrate_commit_sha": {"$ref": "#/$defs/sha"},
         "substrate_tree_sha": {"$ref": "#/$defs/sha"},
         "record_count": {"type": "integer", "minimum": 1}
@@ -75,13 +75,15 @@
     },
     "authoritySource": {
       "type": "object", "additionalProperties": false,
-      "required": ["matrix_id", "artifact_ref", "adoption_target_ref", "version", "status", "sha256", "effective"],
+      "required": ["matrix_id", "artifact_ref", "proposal_ref", "version", "status", "sha256", "signing_ref", "effective"],
       "properties": {
         "matrix_id": {"const": "PG-REG-AUTHORITY-001"},
-        "artifact_ref": {"const": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json"},
-        "adoption_target_ref": {"const": "docs/00-governance/registers/AUTHORITY-MATRIX.json"},
-        "version": {"type": "string", "minLength": 1}, "status": {"enum": ["draft", "approved"]},
-        "sha256": {"$ref": "#/$defs/sha256"}, "effective": {"type": "boolean"}
+        "artifact_ref": {"const": "docs/00-governance/registers/AUTHORITY-MATRIX.json"},
+        "proposal_ref": {"const": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json"},
+        "version": {"const": "0.2.0"}, "status": {"const": "approved"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "signing_ref": {"const": "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"},
+        "effective": {"const": true}
       }
     },
     "actor": {
@@ -313,7 +315,7 @@
     },
     "preparedDisposition": {
       "type": "object", "additionalProperties": false,
-      "required": ["disposition_id", "batch_item", "action_id", "subject", "requested_state", "accountable_authority_role", "required_concurrence", "authority_actor", "disposition", "decided_at", "expires_at", "decision_ref", "evidence_refs", "effective"],
+      "required": ["disposition_id", "batch_item", "action_id", "subject", "requested_state", "accountable_authority_role", "required_concurrence", "authority_actor", "concurrences", "disposition", "decided_at", "expires_at", "decision_ref", "evidence_refs", "effective"],
       "properties": {
         "disposition_id": {"type": "string", "pattern": "^PG-G0-PREP-[0-9]{3}$"},
         "batch_item": {"enum": ["B2", "B3", "B4", "B5", "B6"]},
@@ -322,13 +324,27 @@
         "requested_state": {"enum": ["APPROVED", "ACCEPTED", "ACTIVE"]},
         "accountable_authority_role": {"type": "string", "minLength": 1},
         "required_concurrence": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
-        "authority_actor": {"type": "null"},
-        "disposition": {"const": "PENDING"},
-        "decided_at": {"type": "null"},
+        "authority_actor": {"$ref": "#/$defs/authorityActor"},
+        "concurrences": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/preparedConcurrence"}},
+        "disposition": {"const": "APPROVE"},
+        "decided_at": {"const": "2026-07-23T00:45:00+07:00"},
         "expires_at": {"type": "string", "format": "date-time"},
-        "decision_ref": {"type": "null"},
-        "evidence_refs": {"type": "array", "maxItems": 0},
-        "effective": {"const": false}
+        "decision_ref": {"const": "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"},
+        "evidence_refs": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "effective": {"const": true}
+      }
+    },
+    "preparedConcurrence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_role", "authority_actor", "disposition", "decided_at", "decision_ref", "evidence_refs", "effective"],
+      "properties": {
+        "authority_role": {"type": "string", "minLength": 1},
+        "authority_actor": {"$ref": "#/$defs/authorityActor"},
+        "disposition": {"const": "CONCUR"},
+        "decided_at": {"const": "2026-07-23T00:45:00+07:00"},
+        "decision_ref": {"const": "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"},
+        "evidence_refs": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "effective": {"const": true}
       }
     },
     "stateHistory": {
@@ -345,8 +361,8 @@
       "type": "object", "additionalProperties": false,
       "required": ["program_goal_approved", "governance_baseline_approved", "work_package_accepted", "evidence_accepted", "ready_for_pg_g0_gate_decision"],
       "properties": {
-        "program_goal_approved": {"const": false}, "governance_baseline_approved": {"const": false},
-        "work_package_accepted": {"const": false}, "evidence_accepted": {"const": false},
+        "program_goal_approved": {"const": false}, "governance_baseline_approved": {"const": true},
+        "work_package_accepted": {"const": true}, "evidence_accepted": {"const": false},
         "ready_for_pg_g0_gate_decision": {"const": false}
       }
     },

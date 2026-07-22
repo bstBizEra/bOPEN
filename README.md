@@ -78,3 +78,7 @@ Exact candidate `203ed05162dccb2729d4c39e25050817384c3b4b` has a technical `REJE
 ## PG-G0 docket v0.2 Batch 2 candidate
 
 The [v0.2 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.json), [binding inventory](docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json) and [Signing Pass 2 surface](docs/00-governance/signing/SIGNING-PASS-2.md) are prepared against Operator Batch 1 substrate `26bea090c0aca14f1337c4be1a146fd48bb1f626`. Their state is `PENDING_HUMAN_DECISIONS`: no prepared disposition is signed or effective, the five root ledgers remain Draft/Inactive, independent exact-SHA review is pending and PG-G0 remains `NOT_READY`.
+
+## PG-G0 docket v0.3 signed-state candidate
+
+Signing Pass 2 now contains the operator's attributable signature for all thirteen Batch 2 dispositions. The [v0.3 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.json), [v0.3 inventory](docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json) and [EVD-GOV-009](docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md) encode that exact signed state against substrate `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`. The candidate is in `TECHNICAL_REVIEW`; the five B8 decisions and B9 remain pending, and PG-G0, merge, release, deployment, runtime and production implementation remain unauthorized.

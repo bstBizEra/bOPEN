@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import unittest
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from unittest.mock import patch
 
@@ -26,15 +27,30 @@ from tools.validate_pg_g0_authority_docket import (
 
 
 AS_OF = datetime(2026, 7, 23, 0, 0, 0, tzinfo=timezone.utc)
-EXPECTED_TREE = "8789c5e70c2ce87298928d4d02add7ffe5867402"
+SIGNED_COMMIT = "60c4831f4fcdfabb876d62f4eb98949b4a1a5a66"
+EXPECTED_TREE = "75775a659f1c36c1cc5b489be572a347e1ea496b"
+BATCH1_TREE = "8789c5e70c2ce87298928d4d02add7ffe5867402"
 LEGACY_TREE = "f336976981c9b7e95c96ec8289589e53c1ac506c"
+
+
+@lru_cache(maxsize=None)
+def repository_blob(commit: str, relative: str) -> bytes | None:
+    """Cache immutable Git-object fixtures across semantic negative cases."""
+    return read_repository_file_at_commit(ROOT, commit, relative)
 
 
 class PgG0AuthorityDocketTests(unittest.TestCase):
     def make_root(self, temporary: str) -> Path:
         root = Path(temporary)
         docket = json.loads((ROOT / DOCKET_PATH).read_text(encoding="utf-8"))
-        paths = {DOCKET_PATH, SCHEMA_PATH, AUTHORITY_MATRIX_PATH, Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json")}
+        paths = {
+            DOCKET_PATH,
+            SCHEMA_PATH,
+            AUTHORITY_MATRIX_PATH,
+            Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json"),
+            Path("docs/00-governance/signing/SIGNING-PASS-2.md"),
+            Path("docs/evidence/EVD-GOV-008-docket-v02-independent-review.md"),
+        }
         paths.update(Path(item["artifact_ref"]) for item in docket["governing_artifacts"])
         for relative in paths:
             target = root / relative
@@ -60,7 +76,7 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             "authority_role": role,
             "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-TEST",
             "role_binding_sha256": "0" * 64,
-            "role_binding_commit_sha": "a" * 40,
+            "role_binding_commit_sha": SIGNED_COMMIT,
             "role_binding_tree_sha": EXPECTED_TREE,
             "role_binding_status": "approved",
             "authority_mode": "DIRECT",
@@ -83,13 +99,17 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             source = test_root / relative
             if relative == "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json" or relative.startswith("docs/00-governance/delegations/"):
                 return source.read_bytes() if source.is_file() else None
-            committed = read_repository_file_at_commit(ROOT, _commit, relative)
+            committed = repository_blob(_commit, relative)
             if committed is not None:
                 return committed
             return source.read_bytes() if source.is_file() else None
 
         def resolved_tree(_root: Path, commit: str):
-            return LEGACY_TREE if commit == "c893062c197e74c15214e5ce1c425b9e9ed8002f" else EXPECTED_TREE
+            if commit == "c893062c197e74c15214e5ce1c425b9e9ed8002f":
+                return LEGACY_TREE
+            if commit == "26bea090c0aca14f1337c4be1a146fd48bb1f626":
+                return BATCH1_TREE
+            return EXPECTED_TREE
 
         with (
             patch("tools.validate_pg_g0_authority_docket.resolve_tree", side_effect=resolved_tree),
@@ -302,7 +322,10 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             path = root / "docs/decisions/DEC-0013.md"
             path.write_bytes(b"rewritten predecessor\n" + path.read_bytes())
             errors = self.validate(root)
-        self.assertTrue(any("artifact drift" in item and "DEC-0013" in item for item in errors), errors)
+        self.assertTrue(
+            any("signed append-only artifact rewrites substrate" in item and "DEC-0013" in item for item in errors),
+            errors,
+        )
 
     def test_post_bound_mutation_cannot_be_hidden_by_rewriting_docket_hashes(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -329,7 +352,10 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertTrue(any("subject artifact/path mismatch" in item for item in errors))
-        self.assertTrue(any("exactly match governing artifact" in item for item in errors))
+        self.assertTrue(
+            any("five B8 decision requests must remain byte-semantically unchanged" in item for item in errors),
+            errors,
+        )
 
     def test_agent_cannot_be_final_human_authority(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -537,39 +563,17 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
         self.assertTrue(any("maker, checker and final authority must be distinct" in item for item in errors))
         self.assertTrue(any("requires evidence" in item for item in errors))
 
-    def test_all_terminal_dispositions_remain_ineffective_without_approved_trust_root(self):
-        for value in ("APPROVE", "REJECT", "DEFER", "WITHDRAW", "EXPIRE"):
-            with self.subTest(value=value), tempfile.TemporaryDirectory() as temporary:
-                root = self.make_root(temporary)
-                docket = self.load_docket(root)
-                decision = docket["decision_requests"][4]
-                decision["checked_by"] = {
-                    "actor_kind": "AGENT", "identity_ref": "independent-evidence-checker",
-                    "role": "QA & Evidence Agent", "registration_ref": None, "session_ref": None,
-                }
-                decision["final_authority_actor"] = self.install_identity_registry(
-                    root, "human:engineering", "HUMAN-ENGINEERING", "Engineering Authority"
-                )
-                if value == "EXPIRE":
-                    decision["expires_at"] = "2026-07-21T12:00:00Z"
-                    decided_at = "2026-07-21T13:00:00Z"
-                else:
-                    decided_at = "2026-07-21T15:00:00Z"
-                decision["final_disposition"] = {
-                    "value": value,
-                    "decided_at": decided_at,
-                    "reason_code": f"HUMAN_{value}",
-                    "decision_ref": f"AUTH-DECISION-{value}",
-                    "evidence_refs": ["docs/evidence/EVD-GOV-001-program-g0-controls.md"],
-                    "effective": False,
-                }
-                self.save_docket(root, docket)
-                errors = self.validate(root)
-            self.assertTrue(
-                any("requires an approved effective authority source" in item for item in errors),
-                f"{value}: {errors}",
-            )
-            self.assertFalse(any("terminal receipt incomplete" in item for item in errors), errors)
+    def test_five_b8_decisions_cannot_be_changed_by_signed_state_successor(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][4]["final_disposition"]["value"] = "DEFER"
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(
+            any("five B8 decision requests must remain byte-semantically unchanged" in item for item in errors),
+            errors,
+        )
 
     def test_fabricated_identity_binding_fails_without_approved_registry_record(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -870,27 +874,42 @@ class PgG0AuthorityDocketTests(unittest.TestCase):
             docket["non_authority_flags"]["production_implementation_authorized"] = True
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertIn("pending authority docket cannot grant authority", errors)
+        self.assertIn("v0.3 signed-state docket cannot grant B8, B9, runtime or release authority", errors)
 
-    def test_prepared_dispositions_are_exact_pending_and_ineffective(self):
+    def test_signed_prepared_dispositions_are_exact_and_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             docket = self.load_docket(root)
             docket["prepared_dispositions"] = docket["prepared_dispositions"][:-1]
-            docket["prepared_dispositions"][0]["effective"] = True
-            docket["prepared_dispositions"][1]["authority_actor"] = self.authority_actor(
-                "human:operator-001", "Engineering Authority"
-            )
+            docket["prepared_dispositions"][0]["effective"] = False
+            docket["prepared_dispositions"][1]["authority_actor"]["authority_role"] = "Product Authority"
+            docket["prepared_dispositions"][2]["subject"]["sha256"] = "0" * 64
+            docket["prepared_dispositions"][3]["concurrences"] = []
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertTrue(any("must match Batch 2" in item for item in errors), errors)
-        self.assertTrue(any("must remain pending and ineffective" in item for item in errors), errors)
-        self.assertTrue(any("claims human disposition" in item for item in errors), errors)
+        self.assertTrue(any("signed disposition/effect mismatch" in item for item in errors), errors)
+        self.assertTrue(any("authority role must be Engineering Authority" in item for item in errors), errors)
+        self.assertTrue(any("alters the signed v0.2 subject" in item for item in errors), errors)
+        self.assertTrue(any("signed concurrence set mismatch" in item for item in errors), errors)
+
+    def test_signed_register_approval_provenance_cannot_be_rewritten(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            path = root / "docs/00-governance/registers/AGENT-REGISTER.json"
+            register = json.loads(path.read_text(encoding="utf-8"))
+            register["approved_by"] = "HUMAN-FABRICATED"
+            path.write_text(json.dumps(register, indent=2) + "\n", encoding="utf-8")
+            errors = self.validate(root)
+        self.assertTrue(
+            any("signed register transformation differs from signed outcome" in item and "AGENT-REGISTER" in item for item in errors),
+            errors,
+        )
 
     def test_binding_inventory_digest_and_count_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
-            inventory_path = root / "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json"
+            inventory_path = root / "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json"
             inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
             inventory["records"][0]["sha256"] = "0" * 64
             inventory_path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")

@@ -65,3 +65,11 @@ The v0.2 candidate adopts the contents of `AUTHORITY-MATRIX-0.2.0-PROPOSAL.json`
 The root-control schema and validator now recognize only a complete, identically timestamped, Signing Pass 2 B6 activation across all five root ledgers. Zero events is valid Draft/Inactive state; one through four events, malformed events, mismatched timestamps or missing signing evidence fail closed. No activation event is present in this candidate.
 
 Current result remains `NOT_READY`. Independent exact-SHA review, operator dispositions, root-ledger activation, B8 decision receipts and B9 PG-G0 disposition remain future controls. Merge, release, deployment and production implementation are unauthorized.
+
+## Append-only v0.3 signed-state note — 2026-07-23
+
+The operator signed all thirteen prepared Batch 2 dispositions in `SIGNING-PASS-2.md` at 2026-07-23T00:45:00+07:00, recorded at commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`. PG-G0-AUTH-001 v0.3 encodes those exact outcomes, binds its repository inventory to that signed substrate and advances only to `TECHNICAL_REVIEW`.
+
+The original five B8 decision requests remain byte-semantically unchanged, `PENDING` and ineffective. B9/PASS_PG_G0, merge, release, deployment, runtime and production implementation remain unauthorized. A new independent exact-SHA receipt is required for the v0.3 candidate; EVD-GOV-008 cannot be upgraded in place.
+
+Reason: separate the attributable human signature from its reviewable mechanical encoding. Benefit of the old phase: v0.2 exposed every disposition without claiming effect. Expected outcome: an independent checker can verify one exact successor SHA without gaining authority to alter a signed outcome.

@@ -82,3 +82,14 @@ Reason: the preceding evidence-completion note retained its pre-review pending s
 The exact-SHA checker accepted maker SHA `f27b2fe60f12bd9bcc26794c740a1e83ecdc0b9e` and receipt SHA `c59c87472c5d515e0e586e3a6fcbdb19943705d9`. This clarification does not change `Status: Proposed` or `Accepted by/at: Pending`; GOV-P0-01, DEC-0010, BOPEN-GOAL-001, BOPEN-GOV-001 and `PG-G0` remain ineffective pending attributable human authority decisions.
 
 The PG-G0 authority-docket checker subsequently accepted append-only normalization maker SHA `034ead332450da61a1518ffa76645b59e94704dd`. This technical receipt removes only the obsolete evidence-marker blocker; it does not accept this work package or change any human authority disposition.
+
+## Append-only acceptance record — 2026-07-23
+
+**Outcome:** ACCEPTED; effective
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Owning-artifact concurrence:** HUMAN-OPERATOR-001 acting as Product Authority
+**Accepted at:** 2026-07-23T00:45:00+07:00
+**Decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23
+**Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
+
+Acceptance authorizes the governed work-package outcome only. BOPEN-GOAL-001 and the five B8 decisions remain pending; PG-G0 and production implementation remain unauthorized.

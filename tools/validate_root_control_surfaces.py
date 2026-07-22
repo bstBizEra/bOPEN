@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate immutable root-control genesis and optional signed activation events."""
+"""Validate immutable root-control genesis and its required signed activation event."""
 
 from __future__ import annotations
 
@@ -65,6 +65,8 @@ ACTIVATION_FIELDS = {
     "Activation evidence ref": "docs/00-governance/signing/SIGNING-PASS-2.md",
     "Activation substrate commit": "26bea090c0aca14f1337c4be1a146fd48bb1f626",
 }
+SIGNED_ACTIVATION_AT = "2026-07-23T00:45:00+07:00"
+SIGNED_RECORD_MARKER = "## Append-only Batch 2 signing record — 2026-07-23"
 
 
 def exact_file_bytes(path: Path) -> bytes:
@@ -85,12 +87,19 @@ def build_package_manifest(root: Path = ROOT) -> dict[str, object]:
     records = [manifest_record(root / rel, root) for rel in sorted(PACKAGE_PATHS)]
     return {
         "package_id": "GOV-P0-03",
-        "version": "0.1",
-        "status": "draft",
-        "lifecycle": "inactive",
-        "generated": "2026-07-21",
+        "version": "0.3",
+        "status": "active",
+        "lifecycle": "active",
+        "generated": "2026-07-23",
         "base_commit": BASE_COMMIT,
         "base_tree": BASE_TREE,
+        "activation": {
+            "activated_by": "HUMAN-OPERATOR-001",
+            "activated_at": SIGNED_ACTIVATION_AT,
+            "decision_ref": "docs/00-governance/signing/SIGNING-PASS-2.md#B6",
+            "evidence_ref": "docs/00-governance/signing/SIGNING-PASS-2.md",
+            "substrate_commit": "26bea090c0aca14f1337c4be1a146fd48bb1f626",
+        },
         "authority": {
             "pg_g0_passed": False,
             "production_implementation_authorized": False,
@@ -286,16 +295,28 @@ def validate_root_control_surfaces(
         if activation is not None:
             activation_events[rel] = activation
 
-    if activation_events and set(activation_events) != set(ROOT_SURFACES):
+    if set(activation_events) != set(ROOT_SURFACES):
         missing = sorted(set(ROOT_SURFACES) - set(activation_events))
         errors.append(f"ROOT CONTROL ACTIVATION MUST BE ATOMIC: missing {missing}")
     if len(activation_events) == len(ROOT_SURFACES):
         activated_at = {item.get("Activated at") for item in activation_events.values()}
         if len(activated_at) != 1:
             errors.append("ROOT CONTROL ACTIVATION TIMESTAMPS MUST MATCH")
+        elif activated_at != {SIGNED_ACTIVATION_AT}:
+            errors.append("ROOT CONTROL ACTIVATION TIMESTAMP MUST MATCH SIGNED B6")
         signing_path = root / "docs/00-governance/signing/SIGNING-PASS-2.md"
         if not signing_path.is_file():
             errors.append("ROOT CONTROL ACTIVATION SIGNING EVIDENCE MISSING")
+        else:
+            signing_text = signing_path.read_text(encoding="utf-8")
+            for marker in (
+                SIGNED_RECORD_MARKER,
+                "**Signed by:** HUMAN-OPERATOR-001",
+                f"**Signed at:** {SIGNED_ACTIVATION_AT}",
+                "PG-G0-PREP-013 | GOV-P0-03 root-control package — ACTIVE",
+            ):
+                if marker not in signing_text:
+                    errors.append(f"ROOT CONTROL ACTIVATION SIGNED RECORD INVALID: {marker}")
 
     roadmap = (root / "Roadmap.md").read_text(encoding="utf-8") if (root / "Roadmap.md").is_file() else ""
     for token in ("PROGRAM / PG-G0", "NOT_READY", "BOOT / B7", "PENDING", "PRODUCTION", "UNAUTHORIZED"):
@@ -320,7 +341,7 @@ def validate_root_control_surfaces(
     else:
         if schema.get("status") != "draft" or schema.get("additionalProperties") is not False:
             errors.append("ROOT CONTROL SCHEMA MUST BE DRAFT AND FAIL CLOSED")
-        if schema.get("$id") != "bopen://schemas/governance/root-control-surface/0.2.0-draft":
+        if schema.get("$id") != "bopen://schemas/governance/root-control-surface/0.3.0-draft":
             errors.append("ROOT CONTROL SCHEMA VERSION INVALID")
         enum = schema.get("properties", {}).get("document_id", {}).get("enum", [])
         if set(enum) != set(ROOT_SURFACES.values()):
@@ -349,7 +370,18 @@ def validate_root_control_surfaces(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Validate without modifying files.")
-    parser.parse_args()
+    parser.add_argument(
+        "--write-manifest",
+        action="store_true",
+        help="Regenerate the exact package manifest before validation.",
+    )
+    args = parser.parse_args()
+    if args.write_manifest:
+        manifest_path = ROOT / MANIFEST_PATH
+        manifest_path.write_text(
+            json.dumps(build_package_manifest(ROOT), indent=2) + "\n",
+            encoding="utf-8",
+        )
     errors = validate_root_control_surfaces()
     if errors:
         print("bOPEN root control surface validation: FAIL")

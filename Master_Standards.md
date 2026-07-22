@@ -64,3 +64,13 @@ The live repository sources remain [AGENTS.md](AGENTS.md), [GOVERNANCE.md](GOVER
 **Expected outcome:** Agents receive an exact-path locator that fails closed on missing external configuration and preserves source precedence.
 
 Future changes must append new dated events. Existing bytes, events and dependency history must not be rewritten.
+
+## Root control activation event
+
+**Activation status:** Active
+**Activation lifecycle:** Active
+**Activated by:** HUMAN-OPERATOR-001
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
+**Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
+**Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626

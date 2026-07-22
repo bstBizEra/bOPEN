@@ -18,3 +18,13 @@
 | GOV-P0-01 | Program Goal v0.2 controlled baseline and G0 measurement contract | Proposed; draft work only | Create a complete, fail-closed review candidate without passing PG-G0 or authorizing runtime implementation. |
 | BOOT-P0-12 | Bootstrap exit gate | Authority review pending | Review B0–B7 and approve next execution phase. |
 | GOV-P0-02 | PG-G0 authority docket and approval envelope | Proposed; not accepted | Route only live mapped human decisions, expose missing authority actions and keep PG-G0 NOT_READY. |
+
+## Append-only Batch 2 work-package dispositions — 2026-07-23
+
+| Work package | Signed state | Boundary |
+|---|---|---|
+| GOV-P0-01 | Accepted | Program controls remain fail-closed; PG-G0 not passed |
+| GOV-P0-04 | Accepted | Signed-state v0.3 exact-SHA review pending |
+| GOV-P0-03 | Active | Five root ledgers activated atomically through Signing Pass 2 B6 |
+
+Reason: expose the signed successor state without rewriting historical register rows. Benefit of the old phase: proposal rows retained their review-time meaning. Expected outcome: later B8/B9 decisions remain independently attributable.

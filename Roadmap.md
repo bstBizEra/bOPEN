@@ -57,3 +57,13 @@ The instruction-level configuration paths `/opt/bizera-smartthink/config/agents.
 **Expected outcome:** Agents can locate the current bounded phase state from the exact required path without treating this locator as a phase approval.
 
 Future changes must append new dated events. Existing bytes, events and state history must not be rewritten.
+
+## Root control activation event
+
+**Activation status:** Active
+**Activation lifecycle:** Active
+**Activated by:** HUMAN-OPERATOR-001
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
+**Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
+**Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626

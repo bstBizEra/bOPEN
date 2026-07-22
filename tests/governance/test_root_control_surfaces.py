@@ -14,6 +14,7 @@ from tools.validate_root_control_surfaces import (
     PACKAGE_PATHS,
     ROOT,
     ROOT_SURFACES,
+    SIGNED_ACTIVATION_AT,
     build_package_manifest,
     ACTIVATION_HEADING,
     read_git_blob,
@@ -42,6 +43,14 @@ class RootControlSurfaceTests(unittest.TestCase):
     def test_repository_candidate_validates(self):
         self.assertEqual(validate_root_control_surfaces(), [])
 
+        manifest = json.loads((ROOT / MANIFEST_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["version"], "0.3")
+        self.assertEqual(manifest["status"], "active")
+        self.assertEqual(manifest["lifecycle"], "active")
+        self.assertEqual(manifest["activation"]["activated_at"], SIGNED_ACTIVATION_AT)
+        self.assertFalse(manifest["authority"]["pg_g0_passed"])
+        self.assertFalse(manifest["authority"]["production_implementation_authorized"])
+
     def test_draft_schema_is_fail_closed(self):
         schema = json.loads(
             (ROOT / "contracts/governance/root-control-surface.schema.json").read_text(
@@ -52,6 +61,11 @@ class RootControlSurfaceTests(unittest.TestCase):
         self.assertFalse(schema["additionalProperties"])
         self.assertEqual(
             set(schema["properties"]["document_id"]["enum"]), set(ROOT_SURFACES.values())
+        )
+        self.assertIn("activation", schema["required"])
+        self.assertEqual(
+            schema["properties"]["activation"]["properties"]["activated_at"]["const"],
+            "2026-07-23T00:45:00+07:00",
         )
         for key in (
             "pg_g0_passed",
@@ -120,8 +134,20 @@ class RootControlSurfaceTests(unittest.TestCase):
     def test_partial_activation_fails_closed(self):
         temporary, root = self.make_fixture()
         with temporary:
-            path = root / "Roadmap.md"
-            path.write_text(path.read_text(encoding="utf-8") + f"\n{ACTIVATION_HEADING}\n", encoding="utf-8")
+            for relative in tuple(ROOT_SURFACES)[1:]:
+                path = root / relative
+                prefix = path.read_text(encoding="utf-8").split(ACTIVATION_HEADING, 1)[0].rstrip()
+                path.write_text(prefix + "\n", encoding="utf-8")
+            errors = validate_root_control_surfaces(root, check_git=False)
+        self.assertTrue(any("ACTIVATION MUST BE ATOMIC" in error for error in errors), errors)
+
+    def test_unsigned_zero_activation_state_fails_closed(self):
+        temporary, root = self.make_fixture()
+        with temporary:
+            for relative in ROOT_SURFACES:
+                path = root / relative
+                prefix = path.read_text(encoding="utf-8").split(ACTIVATION_HEADING, 1)[0].rstrip()
+                path.write_text(prefix + "\n", encoding="utf-8")
             errors = validate_root_control_surfaces(root, check_git=False)
         self.assertTrue(any("ACTIVATION MUST BE ATOMIC" in error for error in errors), errors)
 
@@ -140,7 +166,8 @@ class RootControlSurfaceTests(unittest.TestCase):
             )
             for relative in ROOT_SURFACES:
                 path = root / relative
-                path.write_text(path.read_text(encoding="utf-8") + event, encoding="utf-8")
+                prefix = path.read_text(encoding="utf-8").split(ACTIVATION_HEADING, 1)[0].rstrip()
+                path.write_text(prefix + event, encoding="utf-8")
             errors = validate_root_control_surfaces(root, check_git=False)
         self.assertTrue(any("ACTIVATION FIELD INVALID" in error for error in errors), errors)
         self.assertTrue(any("ACTIVATION SIGNING EVIDENCE MISSING" in error for error in errors), errors)

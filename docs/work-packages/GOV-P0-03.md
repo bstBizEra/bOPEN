@@ -115,3 +115,14 @@ Reason: manifest and append-only controls must bind repository bytes exactly. Be
 **Technical basis:** independent exact-SHA receipt EVD-GOV-004 (Claude) for candidate a29ec1d8ab28d38621dc4db176b7b2abf2ea44cb
 
 Source: explicit operator confirmation recorded in the current Claude Code session (2026-07-22). Root-ledger activation (packet item B6) is confirmed by the operator but deferred: the GOV-P0-03 validator pins Status Draft / Lifecycle Inactive, so activation requires a reviewed validator revision in the docket v0.2 batch. This acceptance approves no gate and no production implementation.
+
+## Append-only activation record — 2026-07-23
+
+**Outcome:** ACTIVE; effective through the atomic five-ledger activation event
+**Activated by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Concurrence:** HUMAN-OPERATOR-001 acting as Product, Architecture, Security and Data Authorities under the approved solo-operator identity disclosure
+**Activated at:** 2026-07-23T00:45:00+07:00
+**Decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23
+**Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
+
+The immutable Draft/Inactive genesis metadata remains historical. Activation applies through the signed appended events only and does not pass PG-G0 or authorize production implementation, merge, release, deployment or runtime execution.
