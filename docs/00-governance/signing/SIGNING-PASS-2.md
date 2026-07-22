@@ -55,3 +55,30 @@ The following block may be appended to each root ledger only after the prerequis
 ## Non-effects
 
 This prepared surface does not approve BOPEN-GOV-001 or DEC-0013, approve a register, accept GOV-P0-01 or GOV-P0-04, approve BOOT-B7, activate a root ledger, dispose B8, pass B9/PG-G0, merge, release, deploy or authorize production implementation.
+
+## Append-only Batch 2 signing record — 2026-07-23
+
+**Source:** explicit operator confirmation ("Sign all of Batch 2") recorded in the current Claude Code session, 2026-07-23.
+**Signed by:** HUMAN-OPERATOR-001 (identity register `PG-REG-IDENTITY-001`, record `HUMAN-OPERATOR-001`, approved 2026-07-22)
+**Signed at:** 2026-07-23T00:45:00+07:00
+**Recorded by:** Claude (BST-SA Motor worker agent), branch `operator/PG-G0-signing-pass-2`
+**Prerequisite satisfied:** independent `ACCEPT_EXACT_SHA` receipt EVD-GOV-008 (commit `69ecbe7802cfeddbd3cfcc2c7d6f9b48ac1ce07c`) for docket v0.2 candidate `b929821af83ff774be2bfb10dcb5588d862dcaf2` (tree `e1c91773eddc5e1aa02dc048e7708d3684266599`).
+
+The operator signs all thirteen prepared dispositions exactly as bound in docket v0.2, acting in every listed authority role per the approved solo-operator independence disclosure:
+
+| Disposition | Signed outcome |
+|---|---|
+| PG-G0-PREP-001 | BOPEN-GOV-001 — APPROVED |
+| PG-G0-PREP-002 | Authority matrix v0.2 — APPROVED |
+| PG-G0-PREP-003 | DEC-0013 — ACCEPTED (option 1) |
+| PG-G0-PREP-004…009 | GOAL, AGENT, MODULE, SKILL, SCHEDULE, TECHNOLOGY-DECISION-ASSIGNMENTS registers — APPROVED |
+| PG-G0-PREP-010 | GOV-P0-01 — ACCEPTED |
+| PG-G0-PREP-011 | GOV-P0-04 — ACCEPTED |
+| PG-G0-PREP-012 | DEC-0007 / BOOT-B7 — APPROVED |
+| PG-G0-PREP-013 | GOV-P0-03 root-control package — ACTIVE (atomic five-ledger activation per the B6 template) |
+
+**Decision ref for all thirteen:** `docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23`
+
+**Execution note:** the v0.2 validator intentionally pins every prepared surface to `PENDING` (fail-closed), so this signature takes artifact effect only through a v0.3 successor candidate that atomically encodes these dispositions (authority-actor role bindings against the approved identity register, artifact state flips, acceptance and activation appends, rebound inventory, revised validator) and passes a new independent exact-SHA review. This record is the attributable human signature; the successor candidate is its mechanical encoding and may not alter any signed outcome.
+
+PG-G0, B8, B9, merge, release, runtime and production implementation remain unaffected by this record.
