@@ -273,6 +273,12 @@ def validate() -> list[str]:
         lifecycle_match = re.search(r"^\s*bopen\.lifecycle\.stage:\s*(\S+)\s*$", skill_text, re.MULTILINE)
         if lifecycle_match and lifecycle_match.group(1).upper() != "CANDIDATE":
             errors.append(f"{skill_id} SKILL frontmatter lifecycle mismatch")
+        readme = directory / "README.md"
+        if readme.is_file():
+            readme_text = readme.read_text(encoding="utf-8")
+            readme_lifecycle = re.search(r"Lifecycle(?: stage)?:\*?\*?\s*`([^`]+)`", readme_text, re.IGNORECASE)
+            if readme_lifecycle and readme_lifecycle.group(1).upper() != "CANDIDATE":
+                errors.append(f"{skill_id} README lifecycle mismatch")
         openai = directory / "agents" / "openai.yaml"
         if openai.is_file():
             try:

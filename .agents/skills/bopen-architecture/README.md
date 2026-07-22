@@ -3,7 +3,7 @@
 **Package:** `bopen-architecture`  
 **Canonical ID:** `io.bizera.bopen.architecture`  
 **Version:** `0.1.0`  
-**Lifecycle stage:** `validated`  
+**Lifecycle stage:** `candidate`
 **Distribution status:** internal candidate; not independently approved or signed
 
 This package is a complete, repository-ready Agent Skill for researching, designing, reviewing, and governing bOPEN architecture. It uses the open Agent Skills directory format and adds an authoritative bOPEN governance manifest, schemas, policies, deterministic utilities, evaluation fixtures, and supply-chain records.

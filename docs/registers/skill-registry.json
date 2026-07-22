@@ -20,9 +20,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-adr-governance",
-                       "package_sha256":  "8bc177c5e731855d1aecc7e3153c218ca067d22f94627ac9ad33f089e91bbcd2",
+                       "package_sha256":  "ad4edd0300f4bee95b5b63638deb16c44f70214b7a8fedda7b34fedc8bf13cfc",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:8bc177c5e731855d1aecc7e3153c218ca067d22f94627ac9ad33f089e91bbcd2",
+                       "source_revision":  "package-sha256:ad4edd0300f4bee95b5b63638deb16c44f70214b7a8fedda7b34fedc8bf13cfc",
                        "dependencies":  [
 
                                         ],
@@ -40,9 +40,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-architecture",
-                       "package_sha256":  "5fc6eb7b78f49ec7ae0e935ead9a89e35b314a61bf0fa06618ed49a0c5e1f631",
+                       "package_sha256":  "8c050f6cfa58606992f344feace93b6b9caa44920d6c9a6304fa4992591834e3",
                        "source":  "local-working-tree-snapshot",
-                       "source_revision":  "package-sha256:5fc6eb7b78f49ec7ae0e935ead9a89e35b314a61bf0fa06618ed49a0c5e1f631",
+                       "source_revision":  "package-sha256:8c050f6cfa58606992f344feace93b6b9caa44920d6c9a6304fa4992591834e3",
                        "dependencies":  [
 
                                         ],
@@ -60,9 +60,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-audit-evidence",
-                       "package_sha256":  "193fe642ee430ece5504bfffd508faa48c452acc7047f9671b6d494ccc5b2d55",
+                       "package_sha256":  "84989e2a784fdfa608a84cc9c074f0c2112cbc153efc309739bff6380090bf85",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:193fe642ee430ece5504bfffd508faa48c452acc7047f9671b6d494ccc5b2d55",
+                       "source_revision":  "package-sha256:84989e2a784fdfa608a84cc9c074f0c2112cbc153efc309739bff6380090bf85",
                        "dependencies":  [
 
                                         ],
@@ -80,9 +80,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-authorization-policy",
-                       "package_sha256":  "920e3833ca44a043583ce19288697a65f578de8f8c3cf87ac3560108473548d3",
+                       "package_sha256":  "3548ca27e5143e723edd8205757df4b8f2758c52eacc95a9834872a70502ac27",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:920e3833ca44a043583ce19288697a65f578de8f8c3cf87ac3560108473548d3",
+                       "source_revision":  "package-sha256:3548ca27e5143e723edd8205757df4b8f2758c52eacc95a9834872a70502ac27",
                        "dependencies":  [
 
                                         ],
@@ -100,9 +100,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-bpro-reference-integration",
-                       "package_sha256":  "c78afc08056dd54f3eb1c9fd2dd8ebf6aa11d6b29ff387028967b7e149025568",
+                       "package_sha256":  "dcab1fb8846e7ecac1ab52109c8766342f691c4cdf786d5edae27ff006fe6990",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:c78afc08056dd54f3eb1c9fd2dd8ebf6aa11d6b29ff387028967b7e149025568",
+                       "source_revision":  "package-sha256:dcab1fb8846e7ecac1ab52109c8766342f691c4cdf786d5edae27ff006fe6990",
                        "dependencies":  [
 
                                         ],
@@ -120,9 +120,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-capability-entitlement-contract",
-                       "package_sha256":  "36a0a3f553b885db46cff54b8403667f05d5f964b24a785c60c3251d4ccbc3b1",
+                       "package_sha256":  "4e04c831854f82a94116c4c23333dc4e3d6525465c7e78c42660f2306cd1ad13",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:36a0a3f553b885db46cff54b8403667f05d5f964b24a785c60c3251d4ccbc3b1",
+                       "source_revision":  "package-sha256:4e04c831854f82a94116c4c23333dc4e3d6525465c7e78c42660f2306cd1ad13",
                        "dependencies":  [
 
                                         ],
@@ -160,9 +160,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-clean-room-research",
-                       "package_sha256":  "9eb81178669445862d41ada681f0bf86423383406e7087d3c4602ba3fde73688",
+                       "package_sha256":  "d1a1d2e145184bcee2d68480312d51dab5b26a01f992d2c0b0f366b8de7a0b4c",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:9eb81178669445862d41ada681f0bf86423383406e7087d3c4602ba3fde73688",
+                       "source_revision":  "package-sha256:d1a1d2e145184bcee2d68480312d51dab5b26a01f992d2c0b0f366b8de7a0b4c",
                        "dependencies":  [
 
                                         ],
@@ -200,9 +200,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-event-outbox-contract",
-                       "package_sha256":  "7eafb062c8f1b5aec5b8e7f4074327e82c2eea211ba4ea368aed1ce531bed182",
+                       "package_sha256":  "62264c091f5f0b6e4f5387f4d0e0159b426ed4ed6e0661e47cd15e1059d05356",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:7eafb062c8f1b5aec5b8e7f4074327e82c2eea211ba4ea368aed1ce531bed182",
+                       "source_revision":  "package-sha256:62264c091f5f0b6e4f5387f4d0e0159b426ed4ed6e0661e47cd15e1059d05356",
                        "dependencies":  [
 
                                         ],
@@ -240,9 +240,9 @@
                        "invocation":  "explicit_only",
                        "routing_role":  "orchestrator",
                        "path":  ".agents/skills/bopen-git-delivery",
-                       "package_sha256":  "32058e0442a9eb0d2b65b1460344f3ea08e7c8a1a508fb363cfda66f15fdffa3",
+                       "package_sha256":  "aa3b48c6b94b90ef08f31f6a1966a116a1d454f57325d773714e042ee500cd25",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:32058e0442a9eb0d2b65b1460344f3ea08e7c8a1a508fb363cfda66f15fdffa3",
+                       "source_revision":  "package-sha256:aa3b48c6b94b90ef08f31f6a1966a116a1d454f57325d773714e042ee500cd25",
                        "dependencies":  [
                                             "bopen-git-governance",
                                             "bopen-worktree-management",
@@ -283,9 +283,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-github-actions-hardening",
-                       "package_sha256":  "1dbb9f4508ea27337bc41df3dd1ff92622969ee26da8274671abfae9a1486ce1",
+                       "package_sha256":  "23848fdcb0306c909c6839c2bfe1c4b4caa08ec70218d58d45dcd04675337360",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:1dbb9f4508ea27337bc41df3dd1ff92622969ee26da8274671abfae9a1486ce1",
+                       "source_revision":  "package-sha256:23848fdcb0306c909c6839c2bfe1c4b4caa08ec70218d58d45dcd04675337360",
                        "dependencies":  [
 
                                         ],
@@ -323,9 +323,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-module-boundary-review",
-                       "package_sha256":  "8d362f91bc0f52e29111567da05a0d8ec94bde508407caa626b735b6401ac2b6",
+                       "package_sha256":  "c369faa615ba2da6d01fc07ddb299c2b5e0183c1ec036d99d3ba8e99d0b38b36",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:8d362f91bc0f52e29111567da05a0d8ec94bde508407caa626b735b6401ac2b6",
+                       "source_revision":  "package-sha256:c369faa615ba2da6d01fc07ddb299c2b5e0183c1ec036d99d3ba8e99d0b38b36",
                        "dependencies":  [
                                             "bopen-architecture",
                                             "bopen-module-contract"
@@ -364,9 +364,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-organization-party-model",
-                       "package_sha256":  "c86df55024b6d42e1e35946a8c2b499bcb612138de2f57c3a374a1fb7b3332aa",
+                       "package_sha256":  "44060a282037deeb92d6574db600ef8705f7e4f573759681280e852debd03e25",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:c86df55024b6d42e1e35946a8c2b499bcb612138de2f57c3a374a1fb7b3332aa",
+                       "source_revision":  "package-sha256:44060a282037deeb92d6574db600ef8705f7e4f573759681280e852debd03e25",
                        "dependencies":  [
 
                                         ],
@@ -384,9 +384,9 @@
                        "invocation":  "explicit_only",
                        "routing_role":  "orchestrator",
                        "path":  ".agents/skills/bopen-p0-conformance-gate",
-                       "package_sha256":  "9195d2731a1cb4590b8873151c29f380254e66547346200c22214ce7be60452f",
+                       "package_sha256":  "75ad85e03198baf6a9c26faa2de5b47f242125f4e08d3b8160863f5a9ae0d8ff",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:9195d2731a1cb4590b8873151c29f380254e66547346200c22214ce7be60452f",
+                       "source_revision":  "package-sha256:75ad85e03198baf6a9c26faa2de5b47f242125f4e08d3b8160863f5a9ae0d8ff",
                        "dependencies":  [
                                             "bopen-governance-check",
                                             "bopen-sec-qa-lead",
@@ -407,9 +407,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-portal-context-ux",
-                       "package_sha256":  "0624d7bd7bb23b63b832a8fc5b01957dc54e3938fe3c05f9f014b94e467bd7fa",
+                       "package_sha256":  "eb17f24b2598112582a0ac043f4605f489ec84b11904926c635529bb21dcce92",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:0624d7bd7bb23b63b832a8fc5b01957dc54e3938fe3c05f9f014b94e467bd7fa",
+                       "source_revision":  "package-sha256:eb17f24b2598112582a0ac043f4605f489ec84b11904926c635529bb21dcce92",
                        "dependencies":  [
 
                                         ],
@@ -447,9 +447,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-postgres-rls-isolation",
-                       "package_sha256":  "56fda3378cfd3eea0986b4a5123c8f0f2e01cd7d4ec9628eda416e65c8f5c2e2",
+                       "package_sha256":  "78c40e329387fd1ab937112542c12e7d83b33c33e1fbe6e6e11b4068fd019062",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:56fda3378cfd3eea0986b4a5123c8f0f2e01cd7d4ec9628eda416e65c8f5c2e2",
+                       "source_revision":  "package-sha256:78c40e329387fd1ab937112542c12e7d83b33c33e1fbe6e6e11b4068fd019062",
                        "dependencies":  [
 
                                         ],
@@ -467,9 +467,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-principal-identity",
-                       "package_sha256":  "a8226d4f307c6263600616b58ddc584d5988a6c938dce5ace3c74bd97be4de45",
+                       "package_sha256":  "c0f8df5f84f0066fd15e15f111ec21e34e3bdfad354fd4376d71cb3bdb945993",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:a8226d4f307c6263600616b58ddc584d5988a6c938dce5ace3c74bd97be4de45",
+                       "source_revision":  "package-sha256:c0f8df5f84f0066fd15e15f111ec21e34e3bdfad354fd4376d71cb3bdb945993",
                        "dependencies":  [
 
                                         ],
@@ -509,9 +509,9 @@
                        "invocation":  "explicit_only",
                        "routing_role":  "orchestrator",
                        "path":  ".agents/skills/bopen-repository-harness",
-                       "package_sha256":  "c750d6f348c47a415d1396206a08ceb1f9e92b41f0925725e7b9f0dfa712e345",
+                       "package_sha256":  "3b39319a85b8a77c4b4dbf042fec10be4cc2b2552ef171ebe81e56e6b1246b8f",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:c750d6f348c47a415d1396206a08ceb1f9e92b41f0925725e7b9f0dfa712e345",
+                       "source_revision":  "package-sha256:3b39319a85b8a77c4b4dbf042fec10be4cc2b2552ef171ebe81e56e6b1246b8f",
                        "dependencies":  [
                                             "bopen-governance-check"
                                         ],
@@ -569,9 +569,9 @@
                        "invocation":  "explicit_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-skill-admission",
-                       "package_sha256":  "2c8780ec24c0ab4764c6406ac41755c9e262190d1d0163dc30d947735ce66efa",
+                       "package_sha256":  "80617b9e34b404989196e84f74491939fdd81f92c9402e9ff5d7786990e8aaeb",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:2c8780ec24c0ab4764c6406ac41755c9e262190d1d0163dc30d947735ce66efa",
+                       "source_revision":  "package-sha256:80617b9e34b404989196e84f74491939fdd81f92c9402e9ff5d7786990e8aaeb",
                        "dependencies":  [
                                             "bopen-governance-check",
                                             "bopen-repository-harness"
@@ -590,9 +590,9 @@
                        "invocation":  "explicit_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-skill-authoring",
-                       "package_sha256":  "bf33fe90ddcc95212cac9d48d4f99aa15f883f27b499cceb9ec3341c4ec7471c",
+                       "package_sha256":  "a1444b3e1540f9c4560d3f3ccd445b543857e45aef56e2ff0bc6e01a5f6f5c0a",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:bf33fe90ddcc95212cac9d48d4f99aa15f883f27b499cceb9ec3341c4ec7471c",
+                       "source_revision":  "package-sha256:a1444b3e1540f9c4560d3f3ccd445b543857e45aef56e2ff0bc6e01a5f6f5c0a",
                        "dependencies":  [
 
                                         ],
@@ -610,9 +610,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-tenant-context-propagation",
-                       "package_sha256":  "c3e5ac6c7613ea50510f2cb5b418a5fb19e5c4e29c2def3fb1393d0e0f6efa4d",
+                       "package_sha256":  "a2d86a5cdfd5963134246a71b0a3d93c25fa81748900961e4523301978623652",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:c3e5ac6c7613ea50510f2cb5b418a5fb19e5c4e29c2def3fb1393d0e0f6efa4d",
+                       "source_revision":  "package-sha256:a2d86a5cdfd5963134246a71b0a3d93c25fa81748900961e4523301978623652",
                        "dependencies":  [
 
                                         ],
@@ -650,9 +650,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-tenant-membership-lifecycle",
-                       "package_sha256":  "68829e3bc39bd4a0bf5c859c5c4e595ab7bb61ede2038ea0a9f1c52dbd96a0cb",
+                       "package_sha256":  "523e87d7ca9163641254aa0b75f9e5af5812ed16a639a8922e049fd43cd99ecd",
                        "source":  "bopen-full-skills-pack-0.1.0",
-                       "source_revision":  "package-sha256:68829e3bc39bd4a0bf5c859c5c4e595ab7bb61ede2038ea0a9f1c52dbd96a0cb",
+                       "source_revision":  "package-sha256:523e87d7ca9163641254aa0b75f9e5af5812ed16a639a8922e049fd43cd99ecd",
                        "dependencies":  [
 
                                         ],
@@ -670,9 +670,9 @@
                        "invocation":  "advisory_only",
                        "routing_role":  "specialist",
                        "path":  ".agents/skills/bopen-threat-model",
-                       "package_sha256":  "0fcf6acf3bf72bc813bb00277404bf8762159237142ef65d5b32beba494e6aeb",
+                       "package_sha256":  "251fd97f93ef23eeae008a4e3a6adf70587fe025d37723c96ecfbd4a6933287f",
                        "source":  "merged-candidate",
-                       "source_revision":  "package-sha256:0fcf6acf3bf72bc813bb00277404bf8762159237142ef65d5b32beba494e6aeb",
+                       "source_revision":  "package-sha256:251fd97f93ef23eeae008a4e3a6adf70587fe025d37723c96ecfbd4a6933287f",
                        "dependencies":  [
 
                                         ],
