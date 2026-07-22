@@ -1,0 +1,66 @@
+{
+  "$schema": "bopen://schemas/governance/authority-identity-register/0.1.0-draft",
+  "register_id": "PG-REG-IDENTITY-001",
+  "version": "0.1.0-draft",
+  "status": "draft",
+  "owner_authority": "Engineering Authority",
+  "updated_at": "2026-07-22T00:00:00+07:00",
+  "approved_by": null,
+  "approved_at": null,
+  "approval_ref": null,
+  "independence_disclosure": "Solo-operator concentration: a single human holds all five authority roles. Every required concurrence therefore collapses to the same person and provides no inter-human independence. Independence is preserved only at the technical layer (maker agent, independent checker agent and validator must remain distinct). Any future multi-person assignment supersedes this disclosure via an append-only register revision.",
+  "entries": [
+    {
+      "identity_id": "HUM-OPR-001",
+      "status": "pending",
+      "display_name": "Ounkhamvilay (Operator)",
+      "human_identity_ref": "HUM-OPR-001",
+      "identity_provider": "google",
+      "identity_subject": "ounkhamvilay@gmail.com",
+      "authority_roles": [
+        "Product Authority",
+        "Architecture Authority",
+        "Security Authority",
+        "Data Authority",
+        "Engineering Authority"
+      ],
+      "authority_mode": "DIRECT",
+      "action_ids": [
+        "APPROVE_GOAL",
+        "ACCEPT_WORK_ITEM",
+        "APPROVE_ARCHITECTURE",
+        "ACCEPT_EVIDENCE",
+        "APPROVE_GOVERNANCE_BASELINE",
+        "APPROVE_PROGRAM_REGISTERS",
+        "PASS_PG_G0"
+      ],
+      "subject_refs": [
+        "docs/decisions/DEC-0007.md",
+        "docs/decisions/DEC-0010.md",
+        "docs/decisions/DEC-0012.md",
+        "docs/decisions/DEC-0013.md",
+        "docs/work-packages/GOV-P0-01.md",
+        "docs/work-packages/GOV-P0-02.md",
+        "docs/work-packages/GOV-P0-03.md",
+        "docs/work-packages/GOV-P0-04.md",
+        "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
+        "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
+        "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+        "docs/00-governance/registers/GOAL-REGISTER.json",
+        "docs/00-governance/registers/AGENT-REGISTER.json",
+        "docs/00-governance/registers/MODULE-REGISTER.json",
+        "docs/00-governance/registers/SKILL-REGISTER.json",
+        "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+        "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+        "docs/evidence/EVD-GOV-001-program-g0-controls.md",
+        "docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md",
+        "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
+        "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
+      ],
+      "valid_from": "2026-07-22T00:00:00+07:00",
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "revoked_at": null,
+      "evidence_refs": []
+    }
+  ]
+}

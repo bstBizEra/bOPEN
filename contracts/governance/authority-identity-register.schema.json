@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/governance/authority-identity-register/0.1.0-draft",
+  "status": "draft",
+  "title": "bOPEN Authority Identity Register",
+  "type": "object",
+  "required": ["$schema", "register_id", "version", "status", "owner_authority", "updated_at", "approved_by", "approved_at", "approval_ref", "independence_disclosure", "entries"],
+  "properties": {
+    "$schema": {"const": "bopen://schemas/governance/authority-identity-register/0.1.0-draft"},
+    "register_id": {"type": "string", "pattern": "^PG-REG-IDENTITY-[0-9]{3}$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-draft)?$"},
+    "status": {"enum": ["draft", "approved"]},
+    "owner_authority": {"type": "string", "minLength": 1},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "approved_by": {"type": ["string", "null"], "minLength": 1},
+    "approved_at": {"type": ["string", "null"], "format": "date-time"},
+    "approval_ref": {"type": ["string", "null"], "minLength": 1},
+    "independence_disclosure": {"type": "string", "minLength": 1},
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["identity_id", "status", "display_name", "human_identity_ref", "identity_provider", "identity_subject", "authority_roles", "authority_mode", "action_ids", "subject_refs", "valid_from", "expires_at", "revoked_at", "evidence_refs"],
+        "properties": {
+          "identity_id": {"type": "string", "pattern": "^HUM-[A-Z0-9-]+$"},
+          "status": {"enum": ["pending", "approved", "revoked"]},
+          "display_name": {"type": "string", "minLength": 1},
+          "human_identity_ref": {"type": "string", "minLength": 1},
+          "identity_provider": {"type": "string", "minLength": 1},
+          "identity_subject": {"type": "string", "minLength": 1},
+          "authority_roles": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "authority_mode": {"enum": ["DIRECT", "DELEGATED"]},
+          "action_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"}, "minItems": 1, "uniqueItems": true},
+          "subject_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+          "valid_from": {"type": "string", "format": "date-time"},
+          "expires_at": {"type": "string", "format": "date-time"},
+          "revoked_at": {"type": ["string", "null"], "format": "date-time"},
+          "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
