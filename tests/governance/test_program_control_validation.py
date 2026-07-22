@@ -182,6 +182,8 @@ class ProgramControlValidationTests(unittest.TestCase):
             self.save_register(root, "AUTHORITY-MATRIX.json", authority)
             technology = self.load_register(root, "TECHNOLOGY-DECISION-ASSIGNMENTS.json")
             technology["entries"][0]["status"] = "READY_FOR_REVIEW"
+            technology["entries"][0]["checker_authorities"] = []
+            technology["entries"][0]["due_at"] = None
             self.save_register(root, "TECHNOLOGY-DECISION-ASSIGNMENTS.json", technology)
             errors = validate_program_controls(root, AS_OF)
         self.assertTrue(any("AUTHORITY SELF APPROVAL PROHIBITED" in error for error in errors))

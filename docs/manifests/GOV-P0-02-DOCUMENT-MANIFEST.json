@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-22",
-  "count": 266,
+  "count": 267,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-IDENTITY-REGISTER-DRAFT.json",
@@ -174,8 +174,15 @@
       "path": "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
       "title": "",
       "status": "",
-      "sha256": "9c453920137c0ebd07eec92842078eee8f9da89071fabbc4429b7147df9f2faf",
-      "bytes": 1776
+      "sha256": "5e5bf64ec40b6312a5a815356484e97bce947312ea18dc5b91897da4ee524a3e",
+      "bytes": 2544
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
+      "title": "PG-G0 Signing Pass 1 \u2014 Operator Dispositions and Prepared Confirmations",
+      "status": "Draft (partially disposed; remaining items pending explicit operator confirmation)",
+      "sha256": "e515cd18683d43efd3b91b778fd128fd954efeca4f7c6dca24e29b3f1064898b",
+      "bytes": 5547
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -1007,8 +1014,8 @@
       "path": "docs/adr/ADR-0005.md",
       "title": "ADR-0005 \u2014 Pooled PostgreSQL with RLS as default candidate",
       "status": "Proposed",
-      "sha256": "d3368f6d7bae8127878bfff920dd71e76da1108d294d0ec8ac226de1303d6db5",
-      "bytes": 602
+      "sha256": "3bc074d4572fc20c6c5fec140c207b111a2eb9f8e2f7971cc53d52ae57276f10",
+      "bytes": 1083
     },
     {
       "path": "docs/adr/ADR-0006.md",
@@ -1035,8 +1042,8 @@
       "path": "docs/adr/ADR-0009.md",
       "title": "ADR-0009 \u2014 Modular monolith first for transactional kernel",
       "status": "Proposed",
-      "sha256": "95226d6cad7dfa6e3acac77113ecc60269584ab0104c8f8c45ab38dac4dfe3a5",
-      "bytes": 600
+      "sha256": "f901f7f1bf17a05aeda8b722b9d1762b27a677bec2a6e5001e41b24db13df052",
+      "bytes": 1081
     },
     {
       "path": "docs/adr/README.md",
