@@ -1,11 +1,11 @@
 # EVD-GOV-013 - PG-G0 Authority Docket v0.4 RF-001/RF-002 Remediated Candidate
 
-**Evidence ID:** EVD-GOV-013  
-**Timestamp:** 2026-07-23T11:00:00+07:00  
-**Agent ID:** BST-Codex-Motor  
-**Work package:** GOV-P0-04  
-**Base:** rejected v0.4 candidate `8a0987070efa4108e7f9ada716a8fb533fa47e42`  
-**Prerequisite reject:** EVD-GOV-012 at `269a8b2c444e3ec0de159177308f63ba51660dfa`  
+**Evidence ID:** EVD-GOV-013
+**Timestamp:** 2026-07-23T11:00:00+07:00
+**Agent ID:** BST-Codex-Motor
+**Work package:** GOV-P0-04
+**Base:** rejected v0.4 candidate `8a0987070efa4108e7f9ada716a8fb533fa47e42`
+**Prerequisite reject:** EVD-GOV-012 at `269a8b2c444e3ec0de159177308f63ba51660dfa`
 **Evidence status:** `REMEDIATED_CANDIDATE`; exact final SHA intentionally left for independent review binding
 
 ## Scope

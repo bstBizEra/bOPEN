@@ -1301,8 +1301,8 @@
       "path": "docs/evidence/EVD-GOV-013-pg-g0-authority-docket-v04-rf-remediated-candidate.md",
       "title": "EVD-GOV-013 - PG-G0 Authority Docket v0.4 RF-001/RF-002 Remediated Candidate",
       "status": "",
-      "sha256": "fda713b8e600bef1d1fd6d821ed72a023db52b8819b3e728eaa9fd2f22938f68",
-      "bytes": 1259
+      "sha256": "e3aed23150392512eea912c8aa834d2c797d0f1803b29028a70735bb67c8a8dc",
+      "bytes": 1247
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
