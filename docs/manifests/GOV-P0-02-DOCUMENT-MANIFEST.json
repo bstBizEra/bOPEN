@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 281,
+  "count": 282,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1303,6 +1303,13 @@
       "status": "",
       "sha256": "e1cb0db9296293be08f5dc3ff869bf029b8f328f7482e4fa18bc1996c0fea7c2",
       "bytes": 1077
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md",
+      "title": "EVD-GOV-015 \u2014 Independent Exact-SHA Acceptance of the Rebuilt v0.4 Remediation Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "2a73db520740fe7f566c85a26ee6f9477f5f6874822d4f83ee9ed7d44c8d26af",
+      "bytes": 3890
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
