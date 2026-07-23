@@ -67,6 +67,16 @@ ACTIVATION_FIELDS = {
 }
 SIGNED_ACTIVATION_AT = "2026-07-23T00:45:00+07:00"
 SIGNED_RECORD_MARKER = "## Append-only Batch 2 signing record — 2026-07-23"
+GATE_PASSAGE_HEADING = "## PG-G0 gate passage event"
+GATE_PASSAGE_FIELDS = {
+    "Gate passage status": "PASSED",
+    "Gate passage lifecycle": "PG-P0 OPEN",
+    "Passed by": "HUMAN-OPERATOR-001",
+    "Gate decision ref": "docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision",
+    "Gate evidence ref": "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md",
+    "Gate substrate commit": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+}
+SIGNED_GATE_AT = "2026-07-24T00:20:36+07:00"
 
 
 def exact_file_bytes(path: Path) -> bytes:
@@ -136,6 +146,22 @@ def parse_activation_event(text: str) -> tuple[dict[str, str] | None, list[str]]
         parsed = None
     if parsed is None or parsed.tzinfo is None:
         errors.append("ROOT CONTROL ACTIVATION FIELD INVALID: Activated at")
+    return event, errors
+
+
+def parse_gate_passage_event(text: str) -> tuple[dict[str, str] | None, list[str]]:
+    count = text.count(GATE_PASSAGE_HEADING)
+    if count == 0:
+        return None, ["ROOT CONTROL GATE PASSAGE EVENT MISSING"]
+    if count != 1:
+        return None, ["ROOT CONTROL GATE PASSAGE EVENT COUNT INVALID"]
+    event = parse_fields(text.split(GATE_PASSAGE_HEADING, 1)[1])
+    errors: list[str] = []
+    for key, expected in GATE_PASSAGE_FIELDS.items():
+        if event.get(key) != expected:
+            errors.append(f"ROOT CONTROL GATE PASSAGE FIELD INVALID: {key}")
+    if event.get("Passed at") != SIGNED_GATE_AT:
+        errors.append("ROOT CONTROL GATE PASSAGE FIELD INVALID: Passed at")
     return event, errors
 
 
@@ -294,6 +320,8 @@ def validate_root_control_surfaces(
         errors.extend(f"{item}: {rel}" for item in activation_errors)
         if activation is not None:
             activation_events[rel] = activation
+        gate_event, gate_errors = parse_gate_passage_event(text)
+        errors.extend(f"{item}: {rel}" for item in gate_errors)
 
     if set(activation_events) != set(ROOT_SURFACES):
         missing = sorted(set(ROOT_SURFACES) - set(activation_events))

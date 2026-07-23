@@ -1,17 +1,14 @@
 {
   "blockers": [
-    "B9 PASS_PG_G0 remains PENDING",
-    "B9 PASS_PG_G0 remains PENDING until a fresh independent conformance receipt is bound",
-    "B9 requires a fresh independent conformance receipt before final disposition",
     "exact-SHA technical review of the v0.4 signed-state successor is pending",
-    "independent exact-SHA technical review of the v0.4 signed-state successor is pending",
+    "independent exact-SHA technical review of the terminal gate-passed successor is pending",
     "merge, release, deployment, runtime and production implementation remain unauthorized",
     "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence"
   ],
   "docket_id": "PG-G0-AUTH-001",
-  "pg_g0_passed": false,
+  "pg_g0_passed": true,
   "production_implementation_authorized": false,
-  "ready_for_human_gate_decision": true,
-  "status": "READY_FOR_HUMAN_GATE_DECISION",
+  "ready_for_human_gate_decision": false,
+  "status": "PG_G0_PASSED",
   "validation_errors": []
 }

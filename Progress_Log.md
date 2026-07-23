@@ -136,3 +136,13 @@ Future events must be appended below this event and must include the same proven
 
 **Source:** EVD-GOV-012 `REJECT` at `269a8b2c444e3ec0de159177308f63ba51660dfa`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-013.
 **Status:** REMEDIATED_CANDIDATE_INDEPENDENT_REVIEW_PENDING. Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`; preserved the v0.4 docket and B8 outcomes; appended this ledger entry after the existing final entry; rebound the GOV-P0-03 package manifest in the same candidate commit.
+
+## PG-G0 gate passage event
+
+**Gate passage status:** PASSED
+**Gate passage lifecycle:** PG-P0 OPEN
+**Passed by:** HUMAN-OPERATOR-001
+**Passed at:** 2026-07-24T00:20:36+07:00
+**Gate decision ref:** docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision
+**Gate evidence ref:** docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md
+**Gate substrate commit:** 7995d171ccaf43074155828c6a6bcca5c75d8359

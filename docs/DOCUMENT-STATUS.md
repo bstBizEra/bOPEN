@@ -32,3 +32,7 @@ Reason: preserve historical status rows while exposing the signed successor stat
 ## Append-only v0.4 status - 2026-07-23
 
 PG-G0-AUTH-001 v0.4 is a `PENDING_HUMAN_DECISIONS` signed-state candidate. B8 dispositions 001-005 are effective approvals from Signing Pass 3; readiness is `READY_FOR_HUMAN_GATE_DECISION` and `ready_for_pg_g0_gate_decision: true`. B9/DEC-006 remains pending and requires fresh independent conformance plus separate human disposition. Independent exact-SHA review is pending.
+
+## Append-only v0.5 terminal gate-passed status - 2026-07-24
+
+PG-G0-AUTH-001 v0.5 is terminal `DISPOSED`/`gate_passed`. PG-G0-DEC-006 is the operator-signed `PASS_PG_G0` approval from Signing Pass 4, with EVD-GOV-015 as its independent-conformance prerequisite. Readiness reports `PG_G0_PASSED`; PG-P0 is opened as `READY_FOR_AUTHORITY_REVIEW`. Production implementation, merge, release, deployment and runtime activation remain false and unauthorized. Final independent exact-SHA review is pending.

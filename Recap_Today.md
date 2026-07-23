@@ -128,3 +128,13 @@ Future daily or corrective events must be appended below this event without repl
 ## GOV-P0-04 v0.4 recap - 2026-07-23
 
 Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd06f2bdea0b81` without altering signed outcomes. Readiness computes true for a human PG-G0 gate decision; B9 remains pending with its independent-conformance prerequisite. Evidence: EVD-GOV-011. Independent exact-SHA review is the next control.
+
+## PG-G0 gate passage event
+
+**Gate passage status:** PASSED
+**Gate passage lifecycle:** PG-P0 OPEN
+**Passed by:** HUMAN-OPERATOR-001
+**Passed at:** 2026-07-24T00:20:36+07:00
+**Gate decision ref:** docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision
+**Gate evidence ref:** docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md
+**Gate substrate commit:** 7995d171ccaf43074155828c6a6bcca5c75d8359

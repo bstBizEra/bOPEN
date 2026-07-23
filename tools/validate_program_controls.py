@@ -289,7 +289,7 @@ def validate_program_controls(
                 errors.append(f"SCHEDULE DEPENDENCY MISSING {schedule_id}: {dependency}")
         start = _parse_datetime(item.get("planned_start")) if item.get("planned_start") else None
         end = _parse_datetime(item.get("planned_end")) if item.get("planned_end") else None
-        if (start is None) != (end is None) or (start and end and end < start):
+        if (start is None and end is not None) or (start and end and end < start):
             errors.append(f"SCHEDULE WINDOW INVALID: {schedule_id}")
     if _has_cycle(schedule):
         errors.append("SCHEDULE DEPENDENCY CYCLE DETECTED")

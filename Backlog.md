@@ -135,3 +135,13 @@ Future state changes must be appended as new events; this event must not be edit
 ## GOV-P0-04 v0.4 successor
 
 Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.4 successor candidate; EVD-GOV-011 and fresh Claude exact-SHA review remain pending. B9 is prepared but unsigned and requires independent conformance. See `Roadmap.md`, `Progress_Log.md`, `Recap_Today.md`, `README.md` and EVD-GOV-011.
+
+## PG-G0 gate passage event
+
+**Gate passage status:** PASSED
+**Gate passage lifecycle:** PG-P0 OPEN
+**Passed by:** HUMAN-OPERATOR-001
+**Passed at:** 2026-07-24T00:20:36+07:00
+**Gate decision ref:** docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision
+**Gate evidence ref:** docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md
+**Gate substrate commit:** 7995d171ccaf43074155828c6a6bcca5c75d8359

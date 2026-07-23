@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 283,
+  "count": 285,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -94,11 +94,18 @@
       "bytes": 13278
     },
     {
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.5-BINDING-INVENTORY.json",
+      "title": "",
+      "status": "",
+      "sha256": "7483557e6fa6934dfc393f9caf2d9b9758836bcaba07187b9233cac39823031c",
+      "bytes": 14165
+    },
+    {
       "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
       "title": "",
       "status": "",
-      "sha256": "0a7f9e14bef82857b55e0c3a78e7f35773a9e6ec830ac220a14f7d9dd47077b1",
-      "bytes": 126838
+      "sha256": "45123eed673edaaab9b532b7aa3dc202459e8c7be60ec597dcf3584dba04b7b4",
+      "bytes": 132553
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -188,8 +195,8 @@
       "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
       "title": "",
       "status": "",
-      "sha256": "786fcb0a3dc4acc8d1c02d3bc04300ad6680f492d730d56d8f6b9efb2a7ef3fa",
-      "bytes": 2365
+      "sha256": "04b21ee89c81902b1dd22f0c754b2bf2e4dd475662b7870f9e5bcdd4b82a32cc",
+      "bytes": 2804
     },
     {
       "path": "docs/00-governance/registers/SKILL-REGISTER.json",
@@ -993,8 +1000,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "7fedbb15b8d3f89de3fda4298058124c2356f9db5d784188d9a946698229eae5",
-      "bytes": 12752
+      "sha256": "78a5097c252c23b3289eb9032d6a2470c9a3b5c79190a386b42d0485bf5e9f0f",
+      "bytes": 13266
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1007,8 +1014,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "54ca02268e238933892437467da3683a6bac58675fe43fd6c2baff7fa198d109",
-      "bytes": 3519
+      "sha256": "9515cbbb8cef2711889c2864c563f4cdcfa8a5e72c54854bca1b28938de5846c",
+      "bytes": 4020
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1319,6 +1326,13 @@
       "bytes": 3890
     },
     {
+      "path": "docs/evidence/EVD-GOV-016-pg-g0-terminal-gate-passed-candidate.md",
+      "title": "EVD-GOV-016 - PG-G0 Terminal Gate-Passed Successor",
+      "status": "",
+      "sha256": "af125a367333d949de14829293be6b94b1c595492b3c54626daf4a743e549635",
+      "bytes": 959
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1336,8 +1350,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "c9aff5b18017c00d5123d9f68524f1ebd5c68d1407cf729173037587e07f42de",
-      "bytes": 6096
+      "sha256": "d66a8cdd4a4b6ee36fc440ce58fab9ec537dc55f3e45303efcbf53b2de082795",
+      "bytes": 6459
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1350,7 +1364,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "36850e38c84d9cdc82571936cb6ddbf0a5880abff19e209102f771d2ac014063",
+      "sha256": "83d9406bfe20e23ba2e40cd61555faa16073ea797ac7ec45776c4d13638e691f",
       "bytes": 2563
     },
     {

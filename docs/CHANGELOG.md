@@ -161,6 +161,12 @@
 - Rebound the v0.3 inventory to Signing Pass 2 commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66` and enforced exact signed transformations in schema, validator and negative tests.
 - Preserved all five B8 requests as `PENDING` and PG-G0, merge, release, deployment, runtime and production implementation as unauthorized pending a new independent exact-SHA review and later decisions.
 
+## Append-only entry - 2026-07-24 - PG-G0 terminal gate passage
+
+- Encoded the operator's Signing Pass 4 `PG-G0-DEC-006` `PASS_PG_G0` approval without altering the signed subject or outcome.
+- Transitioned the docket to terminal `DISPOSED`, regenerated readiness as `PG_G0_PASSED`, appended the passage event to all five root ledgers, and opened PG-P0 for authority review.
+- Kept production implementation, merge, release, deployment and runtime flags false; final independent exact-SHA review remains required.
+
 ## Append-only entry - 2026-07-23 - v0.4 remediation rebuild
 
 - Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`, preserving the signed docket and all B8 outcomes.

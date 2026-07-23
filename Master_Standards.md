@@ -74,3 +74,13 @@ Future changes must append new dated events. Existing bytes, events and dependen
 **Activation decision ref:** docs/00-governance/signing/SIGNING-PASS-2.md#B6
 **Activation evidence ref:** docs/00-governance/signing/SIGNING-PASS-2.md
 **Activation substrate commit:** 26bea090c0aca14f1337c4be1a146fd48bb1f626
+
+## PG-G0 gate passage event
+
+**Gate passage status:** PASSED
+**Gate passage lifecycle:** PG-P0 OPEN
+**Passed by:** HUMAN-OPERATOR-001
+**Passed at:** 2026-07-24T00:20:36+07:00
+**Gate decision ref:** docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision
+**Gate evidence ref:** docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md
+**Gate substrate commit:** 7995d171ccaf43074155828c6a6bcca5c75d8359

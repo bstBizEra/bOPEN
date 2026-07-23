@@ -1,4 +1,4 @@
-"""Fail-closed tests for the signed PG-G0 authority docket v0.4 successor."""
+"""Fail-closed tests for the terminal PG-G0 authority docket v0.5 successor."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ from tools.validate_pg_g0_authority_docket import (
 from tools.validate_root_control_surfaces import MANIFEST_PATH, PACKAGE_PATHS, build_package_manifest, validate_root_control_surfaces
 
 
-AS_OF = datetime(2026, 7, 23, 10, 0, 0, tzinfo=timezone.utc)
+AS_OF = datetime(2026, 7, 24, 1, 0, 0, tzinfo=timezone.utc)
 BATCH1_TREE = "8789c5e70c2ce87298928d4d02add7ffe5867402"
 LEGACY_TREE = "f336976981c9b7e95c96ec8289589e53c1ac506c"
 
@@ -53,6 +53,8 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
             Path("docs/00-governance/signing/SIGNING-PASS-3.md"),
             Path("docs/evidence/EVD-GOV-008-docket-v02-independent-review.md"),
             Path("docs/evidence/EVD-GOV-010-docket-v03-independent-review.md"),
+            Path("docs/00-governance/signing/SIGNING-PASS-4.md"),
+            Path("docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"),
             Path("docs/00-governance/PG-G0-OPERATOR-DECISION-PACKET.md"),
         }
         paths.update(Path(item["artifact_ref"]) for item in docket["governing_artifacts"])
@@ -109,12 +111,12 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
         ):
             return validate_pg_g0_authority_docket(root, AS_OF)
 
-    def test_repository_v04_is_valid_ready_and_b9_pending(self):
+    def test_repository_v05_is_valid_gate_passed_and_b9_effective(self):
         self.assertEqual(validate_pg_g0_authority_docket(ROOT, AS_OF), [])
         report = build_readiness_report(ROOT, AS_OF)
-        self.assertEqual(report["status"], "READY_FOR_HUMAN_GATE_DECISION")
-        self.assertTrue(report["ready_for_human_gate_decision"])
-        self.assertFalse(report["pg_g0_passed"])
+        self.assertEqual(report["status"], "PG_G0_PASSED")
+        self.assertFalse(report["ready_for_human_gate_decision"])
+        self.assertTrue(report["pg_g0_passed"])
         docket = self.load_docket(ROOT)
         self.assertTrue(docket["effective_outcome"]["ready_for_pg_g0_gate_decision"])
         b8 = docket["decision_requests"][:5]
@@ -122,8 +124,8 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
         b9 = docket["decision_requests"][5]
         self.assertEqual(b9["decision_id"], "PG-G0-DEC-006")
         self.assertEqual(b9["action_id"], "PASS_PG_G0")
-        self.assertEqual(b9["final_disposition"]["value"], "PENDING")
-        self.assertIsNone(b9["final_authority_actor"])
+        self.assertEqual(b9["final_disposition"]["value"], "APPROVE")
+        self.assertIsNotNone(b9["final_authority_actor"])
         self.assertEqual(len(b9["prerequisite_refs"]), 3)
 
     def test_all_b8_final_actors_bind_to_pass3_identity_register(self):
@@ -163,24 +165,24 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
             errors = self.validate(root)
         self.assertTrue(any("final authority authority role must be Architecture Authority" in item for item in errors), errors)
 
-    def test_b9_cannot_be_pre_signed(self):
+    def test_b9_terminal_outcome_cannot_be_reverted(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             docket = self.load_docket(root)
-            docket["decision_requests"][5]["final_disposition"]["value"] = "APPROVE"
-            docket["decision_requests"][5]["final_disposition"]["effective"] = True
+            docket["decision_requests"][5]["final_disposition"]["value"] = "PENDING"
+            docket["decision_requests"][5]["final_disposition"]["effective"] = False
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertTrue(any("PG-G0-DEC-006 B9 decision must remain PENDING" in item for item in errors), errors)
+        self.assertTrue(any("signed B9 outcome must remain APPROVE" in item for item in errors), errors)
 
-    def test_b9_prerequisite_list_is_fail_closed(self):
+    def test_b9_signed_receipt_is_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             docket = self.load_docket(root)
-            docket["decision_requests"][5]["prerequisite_refs"] = []
+            docket["decision_requests"][5]["final_disposition"]["decision_ref"] = "tampered"
             self.save_docket(root, docket)
             errors = self.validate(root)
-        self.assertTrue(any("independent-conformance prerequisites incomplete" in item for item in errors), errors)
+        self.assertTrue(any("signed B9 time/reference mismatch" in item for item in errors), errors)
 
     def test_inventory_digest_and_count_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:
