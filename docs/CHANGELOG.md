@@ -161,8 +161,20 @@
 - Rebound the v0.3 inventory to Signing Pass 2 commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66` and enforced exact signed transformations in schema, validator and negative tests.
 - Preserved all five B8 requests as `PENDING` and PG-G0, merge, release, deployment, runtime and production implementation as unauthorized pending a new independent exact-SHA review and later decisions.
 
+## Append-only entry - 2026-07-23 - v0.4 remediation rebuild
+
+- Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`, preserving the signed docket and all B8 outcomes.
+- Appended the remediation ledger event after the existing final entry and regenerated the GOV-P0-03 package manifest in the same commit.
+- Removed the live DELEGATED validator path, added temporary-fixture manifest ordering and DIRECT-only negative coverage, and retained the 33-item disposition table.
+
 ## Append-only entry - 2026-07-23 - PG-G0 authority docket v0.4 B8 signed successor
 
 - Encoded exactly the five Signing Pass 3 B8 approvals with final-authority identity-register provenance, signing timestamp and decision references.
 - Rebound the v0.4 inventory and repository binding to the post-signing substrate; readiness now reports `ready_for_pg_g0_gate_decision: true` with zero validation errors.
 - Surfaced B9/PASS_PG_G0 as pending with an independent-conformance prerequisite; no B9, merge, release, deployment, runtime or production authority was signed.
+
+## Append-only entry - 2026-07-23 - v0.4 review-finding remediation
+
+- Preserved the v0.4 docket, inventory, B8 approvals, B9 staging and readiness bytes unchanged.
+- Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
+- Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.

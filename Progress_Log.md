@@ -131,3 +131,8 @@ Future events must be appended below this event and must include the same proven
 
 **Source:** Operator Signing Pass 3 `7834c48f84c01be8a03cf00380dd06f2bdea0b81`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-011.
 **Status:** SIGNED_STATE_CANDIDATE_INDEPENDENT_REVIEW_PENDING. Encoded exactly five B8 approvals, rebound inventory, and surfaced B9 pending with independent-conformance prerequisite; readiness is true for the human gate decision. **Backlog:** GOV-P0-04; **Recap:** GOV-P0-04 v0.4; **Roadmap:** Root controls Active / PROGRAM-PG-G0 awaiting human gate.
+
+## GOV-P0-04 v0.4 RF remediation - 2026-07-23
+
+**Source:** EVD-GOV-012 `REJECT` at `269a8b2c444e3ec0de159177308f63ba51660dfa`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-013.
+**Status:** REMEDIATED_CANDIDATE_INDEPENDENT_REVIEW_PENDING. Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`; preserved the v0.4 docket and B8 outcomes; appended this ledger entry after the existing final entry; rebound the GOV-P0-03 package manifest in the same candidate commit.
