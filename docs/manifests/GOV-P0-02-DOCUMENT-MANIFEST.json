@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 282,
+  "count": 283,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -225,6 +225,13 @@
       "status": "Signed operator record; encoding pending",
       "sha256": "73fa498d017f7b8084bb927644321c7aa4668fcc76202d594ed41a6f2b47f095",
       "bytes": 2572
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-4.md",
+      "title": "PG-G0 Signing Pass 4 \u2014 B9 Gate Decision: PASS_PG_G0",
+      "status": "Signed operator record; encoding pending",
+      "sha256": "b8c43e59eaa7da6c261793719d85669c1aad85491a544ad8c802a9551ddf741d",
+      "bytes": 2553
     },
     {
       "path": "docs/00-governance/source-governance.md",
