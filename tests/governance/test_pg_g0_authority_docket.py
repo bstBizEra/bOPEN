@@ -26,6 +26,7 @@ from tools.validate_pg_g0_authority_docket import (
     read_file_at_commit as read_repository_file_at_commit,
     validate_pg_g0_authority_docket,
 )
+from tools.validate_root_control_surfaces import build_package_manifest, validate_root_control_surfaces
 
 
 AS_OF = datetime(2026, 7, 23, 10, 0, 0, tzinfo=timezone.utc)
@@ -216,6 +217,16 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertTrue(any("alters the signed v0.2 subject" in item for item in errors), errors)
+
+    def test_root_manifest_validation_is_repeatable_and_order_stable(self):
+        first = validate_root_control_surfaces()
+        second = validate_root_control_surfaces()
+        self.assertEqual(first, [])
+        self.assertEqual(second, [])
+        self.assertEqual(
+            build_package_manifest(ROOT),
+            json.loads((ROOT / "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json").read_text(encoding="utf-8")),
+        )
 
 
 if __name__ == "__main__":

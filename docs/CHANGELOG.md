@@ -166,3 +166,9 @@
 - Encoded exactly the five Signing Pass 3 B8 approvals with final-authority identity-register provenance, signing timestamp and decision references.
 - Rebound the v0.4 inventory and repository binding to the post-signing substrate; readiness now reports `ready_for_pg_g0_gate_decision: true` with zero validation errors.
 - Surfaced B9/PASS_PG_G0 as pending with an independent-conformance prerequisite; no B9, merge, release, deployment, runtime or production authority was signed.
+
+## Append-only entry - 2026-07-23 - v0.4 review-finding remediation
+
+- Preserved the v0.4 docket, inventory, B8 approvals, B9 staging and readiness bytes unchanged.
+- Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
+- Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.

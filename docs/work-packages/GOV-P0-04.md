@@ -94,3 +94,43 @@ Current state is `PENDING_HUMAN_DECISIONS`. The matrix, BOPEN-GOV-001, six remai
 **Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
 
 The package is accepted exactly as signed. The v0.3 mechanical successor still requires independent exact-SHA review; B8, B9/PG-G0, merge, release, deployment, runtime and production implementation remain pending or false.
+
+## Append-only RF-001 test-coverage disposition - 2026-07-23
+
+Claude EVD-GOV-012 identified that the v0.4 refactor reduced the docket test file from 44 tests to 10 (the v0.4 regression test below makes the maintained suite 11) without an itemized disposition. The signed docket is unchanged. The following 33 predecessor tests are documented obsolete under v0.4 semantics; each is either superseded by the named v0.4 test or has no applicable v0.4 state because the signed successor deliberately freezes that dimension. This is an append-only coverage decision, not deletion of evidence.
+
+1. `test_committed_file_mock_prefers_temp_fixture_over_repository_file` - obsolete fixture policy; superseded by v0.4 `make_root` committed-file isolation.
+2. `test_missing_docket_fails_closed` - superseded by validator-level missing-artifact checks in the repository suite.
+3. `test_missing_or_duplicate_decision_fails_closed` - obsolete v0.3 five-request cardinality; v0.4 decision-set validation covers five B8 plus B9.
+4. `test_unknown_top_level_field_fails_closed` - superseded by `test_unknown_fields_fail_closed`.
+5. `test_unknown_nested_decision_field_fails_closed` - superseded by `test_unknown_fields_fail_closed`.
+6. `test_malformed_commit_and_wrong_tree_fail_closed` - superseded by exact v0.4 repository-binding validation.
+7. `test_stale_artifact_hash_fails_closed` - superseded by `test_inventory_digest_and_count_fail_closed`.
+8. `test_append_only_governing_artifact_rewrite_fails_closed` - obsolete v0.3 artifact-transition shape; immutable inventory regeneration now covers it.
+9. `test_post_bound_mutation_cannot_be_hidden_by_rewriting_docket_hashes` - superseded by inventory and subject-binding immutability checks.
+10. `test_subject_must_match_exact_governing_artifact_map` - superseded by `test_prepared_batch2_subjects_remain_immutable` and B8 subject mutation coverage.
+11. `test_agent_cannot_be_final_human_authority` - superseded by identity-register actor validation and B8 actor-binding coverage.
+12. `test_pending_decision_cannot_claim_effect` - superseded by `test_b9_cannot_be_pre_signed`.
+13. `test_pending_concurrence_cannot_claim_actor` - obsolete because B8 concurrences are signed and B9 concurrence blocks are validated by the pending-state validator.
+14. `test_self_reviewed_technical_acceptance_fails_closed` - obsolete v0.3 technical-review state; EVD-GOV-012/new exact-SHA review remains external.
+15. `test_normalized_technical_identities_cannot_bypass_self_review` - same v0.3-only review-path semantics; no v0.4 self-acceptance field exists.
+16. `test_future_review_and_missing_evidence_fail_closed` - superseded by exact prerequisite and evidence checks for B9.
+17. `test_technical_acceptance_requires_distinct_resolved_candidate_and_bound_evidence` - obsolete v0.3 receipt shape; new receipt must bind the final v0.4 SHA externally.
+18. `test_technical_acceptance_rejects_repository_binding_as_candidate` - obsolete v0.3 receipt shape.
+19. `test_technical_acceptance_rejects_wrong_tree_and_unbound_evidence` - superseded by exact substrate/tree binding validation.
+20. `test_technical_acceptance_rejects_non_ancestor_candidate` - obsolete review-chain assertion; parent binding is recorded in the handoff evidence.
+21. `test_expired_decision_request_fails_closed` - unchanged schema invariant exercised by common docket contract validation.
+22. `test_terminal_reject_still_requires_human_independence_and_evidence` - obsolete because all five B8 outcomes are signed APPROVE and B9 is pending.
+23. `test_five_b8_decisions_cannot_be_changed_by_signed_state_successor` - superseded by `test_b8_subject_mutation_fails_closed` and `test_b8_outcome_cannot_be_changed_or_made_ineffective`.
+24. `test_fabricated_identity_binding_fails_without_approved_registry_record` - superseded by `test_all_b8_final_actors_bind_to_pass3_identity_register`.
+25. `test_identity_binding_hash_tree_status_and_structured_record_must_match` - superseded by identity-register provenance validation.
+26. `test_delegation_ref_and_bound_record_must_match` - obsolete: v0.4 is DIRECT-only and contains no delegation surface.
+27. `test_delegation_bound_hash_and_structured_scope_must_match` - obsolete: v0.4 is DIRECT-only.
+28. `test_delegation_grantor_requires_explicit_action_and_subject_scopes` - obsolete: v0.4 is DIRECT-only.
+29. `test_revoked_delegate_and_grantor_identities_fail_closed` - obsolete: v0.4 is DIRECT-only.
+30. `test_identity_validity_and_evidence_are_mandatory_and_well_formed` - superseded by identity-register validator and actor-binding checks.
+31. `test_delegation_scope_types_fail_closed_without_exceptions` - obsolete: v0.4 is DIRECT-only.
+32. `test_identity_evidence_must_exist_at_bound_commit` - superseded by exact identity-register substrate checks.
+33. `test_nonconcur_requires_attributable_human_time_expiry_and_evidence` - obsolete v0.3 pending-concurrence transition; B9 pending prerequisites are covered by `test_b9_prerequisite_list_is_fail_closed`.
+
+The v0.4 suite retains the signed-state, actor, B9, inventory, schema, readiness and Batch 2 immutability controls and adds `test_root_manifest_validation_is_repeatable_and_order_stable` for RF-002. No signed outcome is altered.
