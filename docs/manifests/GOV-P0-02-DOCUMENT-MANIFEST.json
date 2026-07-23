@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 277,
+  "count": 278,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -211,6 +211,13 @@
       "status": "Prepared; unsigned",
       "sha256": "e39670d9a35222a08bcafc123784b3b0aa223afb0ca0f9f9ae9c8a0cdb867d9f",
       "bytes": 5380
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-3.md",
+      "title": "PG-G0 Signing Pass 3 \u2014 B8 Docket Decision Signature",
+      "status": "Signed operator record; encoding pending",
+      "sha256": "73fa498d017f7b8084bb927644321c7aa4668fcc76202d594ed41a6f2b47f095",
+      "bytes": 2572
     },
     {
       "path": "docs/00-governance/source-governance.md",
