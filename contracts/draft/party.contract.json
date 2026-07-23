@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bopen:draft:contract:party:0.1.0",
+  "title": "bOPEN Party Contract Shell",
+  "description": "Draft traceability shell only. This file deliberately imposes no production validation semantics.",
+  "type": "object",
+  "additionalProperties": true,
+  "x-bopen-control": {
+    "artifact_id": "BOPEN-CONTRACT-PARTY-001",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "work_package": "SKEL-P0-01",
+    "stable_dependency": false,
+    "promotion_gate": "Human Engineering Authority acceptance after independent exact-SHA review",
+    "normative_traceability": [
+      {
+        "artifact_id": "BOPEN-PARTY-001",
+        "artifact_status": "draft",
+        "requirement_ids": [],
+        "section_refs": [
+          "Party"
+        ],
+        "link": "artifact:BOPEN-PARTY-001",
+        "requirement_id_note": "No normative requirement identifiers were supplied in the available preparation sources; identifiers must be bound without invention before promotion."
+      }
+    ]
+  },
+  "x-bopen-surface": {
+    "surface": "party",
+    "placeholder_fields": [
+      "party_id",
+      "party_type",
+      "linked_principal_id",
+      "business_roles"
+    ],
+    "semantics_deferred": true,
+    "consumer_warning": "Do not import, generate from, or treat this shell as a stable contract."
+  }
+}

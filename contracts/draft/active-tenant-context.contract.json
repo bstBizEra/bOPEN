@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bopen:draft:contract:active-tenant-context:0.1.0",
+  "title": "bOPEN Active Tenant Context Contract Shell",
+  "description": "Draft traceability shell only. This file deliberately imposes no production validation semantics.",
+  "type": "object",
+  "additionalProperties": true,
+  "x-bopen-control": {
+    "artifact_id": "BOPEN-CONTRACT-ACTIVE-CONTEXT-001",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "work_package": "SKEL-P0-01",
+    "stable_dependency": false,
+    "promotion_gate": "Human Engineering Authority acceptance after independent exact-SHA review",
+    "normative_traceability": [
+      {
+        "artifact_id": "BOPEN-TENANT-001",
+        "artifact_status": "draft",
+        "requirement_ids": [],
+        "section_refs": [
+          "Active tenant context"
+        ],
+        "link": "artifact:BOPEN-TENANT-001",
+        "requirement_id_note": "No normative requirement identifiers were supplied in the available preparation sources; identifiers must be bound without invention before promotion."
+      }
+    ]
+  },
+  "x-bopen-surface": {
+    "surface": "active-tenant-context",
+    "placeholder_fields": [
+      "tenant_id",
+      "principal_id",
+      "membership_id",
+      "context_proof"
+    ],
+    "semantics_deferred": true,
+    "consumer_warning": "Do not import, generate from, or treat this shell as a stable contract."
+  }
+}

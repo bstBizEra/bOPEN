@@ -1,0 +1,421 @@
+{
+  "artifact_id": "SKEL-P0-01-PACKAGE-MANIFEST",
+  "version": "0.1.0",
+  "status": "draft",
+  "owner": "Engineering Authority",
+  "work_package": "SKEL-P0-01",
+  "generated_at": "2026-07-24T01:39:14+07:00",
+  "base_commit": "9a80f9d042f1ed176c9939bae57953443d0c5964",
+  "candidate_branch": "agent/skel-p0-01-repository-skeleton",
+  "binding_method": "sha256(path + NUL + file_sha256 + LF), sorted by path",
+  "excluded_control_files": [
+    {
+      "path": "README.md",
+      "reason": "pre-existing root file preserved byte-for-byte"
+    },
+    {
+      "path": "docs/manifests/SKEL-P0-01.package-manifest.json",
+      "reason": "self-referential control file"
+    },
+    {
+      "path": "docs/ledgers/repository-change-ledger.ndjson",
+      "reason": "append record binds the completed manifest"
+    }
+  ],
+  "file_count": 56,
+  "payload_sha256": "b1b672f3c75372ed71e1db6d640db24552623ac85572077751e19c301bd55dbe",
+  "files": [
+    {
+      "path": "apps/AGENTS.md",
+      "sha256": "82d664ac91234d129b1d5701945833432f8564134b05d7ba7af6cda349a53a62",
+      "bytes": 1328,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "apps/README.md",
+      "sha256": "b80399a7517004b4bc2c3722cefaf2c00a87bac64f76fc8f39a5e4a25cf3ee93",
+      "bytes": 653,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/AGENTS.md",
+      "sha256": "ef961f6018d102a02e97efefce1ec3dc98f7829e4a83cd1f3c0f24d11c92af24",
+      "bytes": 1339,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "32ba99558483fb058894c74e6326a8c81e898ca67fbcee2e7d3d5df9f9babce5",
+      "bytes": 692,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/CONTRACT-MANIFEST.json",
+      "sha256": "d04287fd58fb74e349ae51ec4907cea15da798572ece2751f3de91f945fa7187",
+      "bytes": 3212,
+      "role": "draft-contract-control",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/active-tenant-context.contract.json",
+      "sha256": "d48914740b7802f7aaa96a7822b1d1b988ba2ebec24ad075e325b85d5edc4a52",
+      "bytes": 1473,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/audit-envelope.contract.json",
+      "sha256": "1b901e34164009e2c7e004b07b0db06638c763d5934560adf6eb53a6ebfe9576",
+      "bytes": 1532,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/authorization-decision.contract.json",
+      "sha256": "48f64c9997d424f06a1d0169954c8873d74c0df5447ca7b8ad470c8df25d5132",
+      "bytes": 1536,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/capability.contract.json",
+      "sha256": "f4e1616c4050d4d03b95a9287ebeef51c59d6eb158d296f02bef6fc82e48892c",
+      "bytes": 1444,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/entitlement.contract.json",
+      "sha256": "3a81032ed8ff4d589a823cdec000104a2198948d5c148fc11cb3f8fcc3c57351",
+      "bytes": 1438,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/event-envelope.contract.json",
+      "sha256": "483d2e16515dae898541dda127d4625b50cfa3be1378e9c4a52fd19f0095b52a",
+      "bytes": 1555,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/membership.contract.json",
+      "sha256": "54fc8e5265a15cf2c17c3db1ecbc21629c06f7d913a09e7b3616769a03d05370",
+      "bytes": 1429,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/module-manifest.contract.json",
+      "sha256": "178a21249e34ffb1db4f04403dc7f0d7e2a8ec1702acc419c7c334a2c86aad3a",
+      "bytes": 1453,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/organization.contract.json",
+      "sha256": "b51d9662ccbde1ab25ca22971149f922eba64e26ff371db64a4269893f72a59c",
+      "bytes": 1448,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/party.contract.json",
+      "sha256": "56b653b08c7fce81781debf1e7323c83433062651fa3536f4175d1aeebface33",
+      "bytes": 1402,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "contracts/draft/tenant.contract.json",
+      "sha256": "7b8736c24012c7721499547790bb053ec0ef19bf734d22400365afc583c28297",
+      "bytes": 1387,
+      "role": "draft-contract-shell",
+      "status": "draft"
+    },
+    {
+      "path": "docs/AGENTS.md",
+      "sha256": "f92e4dd55615c81829b75ab7c7fd240b9ad65c42d01d29770b79ec6540fa3d7b",
+      "bytes": 1326,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "5802c43fda51a86d10c8d9339b5df21ba633da0eb87ceb648edfa1b6fb44364b",
+      "bytes": 688,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "docs/evidence/EVD-SKEL-001.md",
+      "sha256": "af3f449b9827be9513ce760738d501795a2897727425ce255a90ea9a8646717e",
+      "bytes": 3289,
+      "role": "evidence-record",
+      "status": "draft"
+    },
+    {
+      "path": "docs/status/DOCUMENT-STATUS.md",
+      "sha256": "01e7f19297ba11914cdd8241f1721187b59dec8d36f9e94a36c20469ea7f2636",
+      "bytes": 1181,
+      "role": "document-status",
+      "status": "draft"
+    },
+    {
+      "path": "docs/traceability/SKEL-P0-01.traceability.json",
+      "sha256": "aa8f26615448a7dd320c4bc246a87f6886795699f307e451d79517f615dc06f6",
+      "bytes": 2933,
+      "role": "traceability-record",
+      "status": "draft"
+    },
+    {
+      "path": "docs/work-packages/SKEL-P0-01.md",
+      "sha256": "b6a2766fdb58a4908e53327123e3fec35b18b9f66252b6f7d4b13751d8093720",
+      "bytes": 3765,
+      "role": "work-package-record",
+      "status": "draft"
+    },
+    {
+      "path": "infrastructure/AGENTS.md",
+      "sha256": "8e0dd529cdcbcce64d4fc0a2778482399e091ab5ffcf5211acc280349440ab4a",
+      "bytes": 1351,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "infrastructure/README.md",
+      "sha256": "56fe93be72be273c2e4635fe3370a7ab043d1782d0a4d0a8af4629349da22d34",
+      "bytes": 655,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "package.json",
+      "sha256": "2490cc8836e00e8547229b61a039802fa1536d494516a177865b0e15130ef6ff",
+      "bytes": 1009,
+      "role": "build-lint-test-wiring",
+      "status": "draft"
+    },
+    {
+      "path": "packages/AGENTS.md",
+      "sha256": "64bd5ab5c21a839824557fe99b5f7eea24ed75d2aa51042166c3e4a9c23441dc",
+      "bytes": 1325,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "packages/README.md",
+      "sha256": "bdf73de306156340a90aa330c7fc78229961b3314d9b1398d371509e3c02a91d",
+      "bytes": 654,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-contracts/README.md",
+      "sha256": "b675ab2ec1d33417ac052f8ecc868f89e8cdc4caef0e2e66f50df3dd827b3bb6",
+      "bytes": 386,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-contracts/package.json",
+      "sha256": "782645295bb1399f46ae880af6f6ce40e434c398c85c0edf2ddb17156659b251",
+      "bytes": 902,
+      "role": "build-lint-test-wiring",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-contracts/types/index.d.ts",
+      "sha256": "53c79bda73cdeafff1594b0ee019dce744916cf1a7cad9d3f29d6834ae7aafc8",
+      "bytes": 194,
+      "role": "empty-typed-root",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-testing/README.md",
+      "sha256": "7db765736145285bccfe78e3102eb566b4ef4221f7881a301c7f51cd74a78ec8",
+      "bytes": 382,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-testing/package.json",
+      "sha256": "e26ba12129658fbbed72f0f558db72fe42f218459464f6ba984e201efb9af290",
+      "bytes": 896,
+      "role": "build-lint-test-wiring",
+      "status": "draft"
+    },
+    {
+      "path": "packages/kernel-testing/types/index.d.ts",
+      "sha256": "53c79bda73cdeafff1594b0ee019dce744916cf1a7cad9d3f29d6834ae7aafc8",
+      "bytes": 194,
+      "role": "empty-typed-root",
+      "status": "draft"
+    },
+    {
+      "path": "sdk/AGENTS.md",
+      "sha256": "1cdaa359732697f44061d4a49bc36b21f31f01722f76be39e596c760d3b9c7b1",
+      "bytes": 1326,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "sdk/README.md",
+      "sha256": "795645a3a83091c380f358881d3a1b3d5e5aa6625bc5a2a341e6d7e3a51b2d93",
+      "bytes": 599,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "services/AGENTS.md",
+      "sha256": "55b0b9572f28776082fb3c6081d6d4e115593af58af6fdfad62fa5ac7b0faf61",
+      "bytes": 1327,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "services/README.md",
+      "sha256": "20f3d756f921fc511da5cd280717c4215a9147894c7b4d06eae8dbb2e047ffb6",
+      "bytes": 639,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/AGENTS.md",
+      "sha256": "04032437358c573a4be706a3deb15e2a842a0814a67a5e635f2ab2792b836850",
+      "bytes": 1357,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "tests/README.md",
+      "sha256": "2bb17b483aac0874b5b07c181c0d66d77cd8035e7757bb47e022f2736fce77a1",
+      "bytes": 698,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/_support/skeleton_guard.py",
+      "sha256": "d7993c825a8b1a38be45b9358fbe02868d7bc5863e30e898e15048e38ae5cfc1",
+      "bytes": 2883,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/authorization/README.md",
+      "sha256": "0fc0e703447d0ea8b83cd023a93321141ced452c4286ecc9a2b3ff029be6ae3d",
+      "bytes": 379,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/authorization/test_placeholder_guard.py",
+      "sha256": "9d3d9a385898204bf1d24aa8e1a19426535ae5699f638067ab6d94812b64541b",
+      "bytes": 536,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/contract/README.md",
+      "sha256": "8e3e2929d0cca7a67b762f55c1bef933b0116115ad1da5a8d91be1e103fda1b2",
+      "bytes": 369,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/contract/test_placeholder_guard.py",
+      "sha256": "a966b889533030cfde4e7950c5f52147db02eb7967de0ee327ea8579df28bff7",
+      "bytes": 526,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/integration/README.md",
+      "sha256": "c6d9a02c83ba39e639f378421adc821231647f29bd5422a5b464b78ae91d099d",
+      "bytes": 375,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/integration/test_placeholder_guard.py",
+      "sha256": "c7789bb021a4762da5dc66b91538313f40458c02030b6ee3796e4596b5a8711a",
+      "bytes": 532,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/run_harness.py",
+      "sha256": "1434fc99dc8140554ed16bd6a2556ef7da200e6cdc4e41fee18fab56602bcde9",
+      "bytes": 1522,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/tenant-isolation/README.md",
+      "sha256": "f934f2ba60f69c516692811c8213621a19cd00afe702c6728276f94ab89c74ec",
+      "bytes": 385,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/tenant-isolation/test_placeholder_guard.py",
+      "sha256": "5a1d56086962876cb1d265101a5d59f9eed131581452201890527d7fe8a86de0",
+      "bytes": 541,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/unit/README.md",
+      "sha256": "c1484e7d32591f5bdcf5bae2dfe7ae018bdfb3ddbdd96cad27f5be9fb548dc51",
+      "bytes": 361,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tests/unit/test_guard_fail_closed.py",
+      "sha256": "ae0b7a4b4bf2a2096149d3eb0b02f277a6e407f2f8ab2586d42877ddf96ce9be",
+      "bytes": 1856,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/unit/test_placeholder_guard.py",
+      "sha256": "01dadba572874e3ea550cb48612a1919b8a3b48a1662da37b07d37c5bdfda15e",
+      "bytes": 518,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tests/unit/test_skeleton_validator.py",
+      "sha256": "c9904aad0ac95609d9e5e1af196ecf43bdef2dcbc89cf593594a0fa856fdcb0d",
+      "bytes": 1196,
+      "role": "test-harness-guard",
+      "status": "draft"
+    },
+    {
+      "path": "tools/AGENTS.md",
+      "sha256": "2868c8f4a615c1c469013b023a055752aefc1e225db167e4496aaf8bf6044435",
+      "bytes": 1328,
+      "role": "scoped-agent-instruction",
+      "status": "draft"
+    },
+    {
+      "path": "tools/README.md",
+      "sha256": "eb9a565a059fe0cdc28927782728eb26f8381d55ba17d57c6086482f51c42550",
+      "bytes": 633,
+      "role": "zone-or-package-documentation",
+      "status": "draft"
+    },
+    {
+      "path": "tools/validate_skeleton.py",
+      "sha256": "cd46a3d1bdf838117818bf3bf431a4f91befe1e15d3e3414003ef9d60952d6dd",
+      "bytes": 19123,
+      "role": "skeleton-validator",
+      "status": "draft"
+    }
+  ]
+}

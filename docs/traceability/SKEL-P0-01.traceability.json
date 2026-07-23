@@ -1,0 +1,116 @@
+{
+  "artifact_id": "SKEL-P0-01-TRACEABILITY",
+  "version": "0.1.0",
+  "status": "draft",
+  "owner": "Engineering Authority",
+  "work_package": "SKEL-P0-01",
+  "requirement_id_policy": "Do not invent identifiers absent from the supplied normative drafts.",
+  "normative_artifacts": [
+    {
+      "artifact_id": "BOPEN-TENANT-001",
+      "surfaces": [
+        "tenant",
+        "organization",
+        "membership",
+        "active-tenant-context"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    },
+    {
+      "artifact_id": "BOPEN-AUTHZ-001",
+      "surfaces": [
+        "authorization-decision"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    },
+    {
+      "artifact_id": "BOPEN-ENT-001",
+      "surfaces": [
+        "entitlement"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    },
+    {
+      "artifact_id": "BOPEN-MOD-001",
+      "surfaces": [
+        "module-manifest",
+        "capability"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    },
+    {
+      "artifact_id": "BOPEN-PARTY-001",
+      "surfaces": [
+        "party"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    },
+    {
+      "artifact_id": "BOPEN-ARCH-001",
+      "surfaces": [
+        "event-envelope",
+        "audit-envelope"
+      ],
+      "requirement_ids": [],
+      "binding_state": "artifact-and-section-level"
+    }
+  ],
+  "acceptance_coverage": [
+    {
+      "criterion": "additive draft-only artifacts",
+      "evidence": [
+        "tools/validate_skeleton.py",
+        "docs/status/DOCUMENT-STATUS.md"
+      ]
+    },
+    {
+      "criterion": "zero production business logic",
+      "evidence": [
+        "tools/validate_skeleton.py",
+        "tests/unit/test_skeleton_validator.py"
+      ]
+    },
+    {
+      "criterion": "five fail-closed test tiers",
+      "evidence": [
+        "tests/unit/test_placeholder_guard.py",
+        "tests/contract/test_placeholder_guard.py",
+        "tests/integration/test_placeholder_guard.py",
+        "tests/tenant-isolation/test_placeholder_guard.py",
+        "tests/authorization/test_placeholder_guard.py"
+      ]
+    },
+    {
+      "criterion": "contract traceability",
+      "evidence": [
+        "contracts/draft/CONTRACT-MANIFEST.json"
+      ]
+    },
+    {
+      "criterion": "atomic manifest rebind",
+      "evidence": [
+        "docs/manifests/SKEL-P0-01.package-manifest.json",
+        "docs/ledgers/repository-change-ledger.ndjson"
+      ]
+    },
+    {
+      "criterion": "exact-SHA independent review",
+      "evidence": [
+        "draft pull request metadata"
+      ],
+      "status": "pending-external-checker"
+    },
+    {
+      "criterion": "human acceptance",
+      "evidence": [
+        "attributable authority disposition"
+      ],
+      "status": "pending"
+    }
+  ]
+}

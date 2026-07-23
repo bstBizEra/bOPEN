@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bopen:draft:contract:audit-envelope:0.1.0",
+  "title": "bOPEN Audit Envelope Contract Shell",
+  "description": "Draft traceability shell only. This file deliberately imposes no production validation semantics.",
+  "type": "object",
+  "additionalProperties": true,
+  "x-bopen-control": {
+    "artifact_id": "BOPEN-CONTRACT-AUDIT-ENVELOPE-001",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "work_package": "SKEL-P0-01",
+    "stable_dependency": false,
+    "promotion_gate": "Human Engineering Authority acceptance after independent exact-SHA review",
+    "normative_traceability": [
+      {
+        "artifact_id": "BOPEN-ARCH-001",
+        "artifact_status": "draft",
+        "requirement_ids": [],
+        "section_refs": [
+          "Audit envelope"
+        ],
+        "link": "artifact:BOPEN-ARCH-001",
+        "requirement_id_note": "No normative requirement identifiers were supplied in the available preparation sources; identifiers must be bound without invention before promotion."
+      }
+    ]
+  },
+  "x-bopen-surface": {
+    "surface": "audit-envelope",
+    "placeholder_fields": [
+      "audit_event_id",
+      "tenant_id",
+      "actor",
+      "action",
+      "resource",
+      "decision",
+      "occurred_at",
+      "correlation_id",
+      "evidence_refs"
+    ],
+    "semantics_deferred": true,
+    "consumer_warning": "Do not import, generate from, or treat this shell as a stable contract."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bopen:draft:contract:authorization-decision:0.1.0",
+  "title": "bOPEN Authorization Decision Contract Shell",
+  "description": "Draft traceability shell only. This file deliberately imposes no production validation semantics.",
+  "type": "object",
+  "additionalProperties": true,
+  "x-bopen-control": {
+    "artifact_id": "BOPEN-CONTRACT-AUTHZ-DECISION-001",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "work_package": "SKEL-P0-01",
+    "stable_dependency": false,
+    "promotion_gate": "Human Engineering Authority acceptance after independent exact-SHA review",
+    "normative_traceability": [
+      {
+        "artifact_id": "BOPEN-AUTHZ-001",
+        "artifact_status": "draft",
+        "requirement_ids": [],
+        "section_refs": [
+          "Authorization decision interface"
+        ],
+        "link": "artifact:BOPEN-AUTHZ-001",
+        "requirement_id_note": "No normative requirement identifiers were supplied in the available preparation sources; identifiers must be bound without invention before promotion."
+      }
+    ]
+  },
+  "x-bopen-surface": {
+    "surface": "authorization-decision",
+    "placeholder_fields": [
+      "principal",
+      "tenant_context",
+      "action",
+      "resource",
+      "decision",
+      "reason_codes",
+      "obligations"
+    ],
+    "semantics_deferred": true,
+    "consumer_warning": "Do not import, generate from, or treat this shell as a stable contract."
+  }
+}

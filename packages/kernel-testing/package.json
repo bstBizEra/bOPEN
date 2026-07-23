@@ -1,0 +1,23 @@
+{
+  "name": "@bopen/kernel-testing",
+  "version": "0.0.0-draft.1",
+  "private": true,
+  "description": "Typed, empty root reserved for future governed test utilities.",
+  "license": "UNLICENSED",
+  "types": "types/index.d.ts",
+  "files": [
+    "types"
+  ],
+  "scripts": {
+    "build": "node -e \"const fs=require('node:fs');const p='types/index.d.ts';if(!fs.existsSync(p)||!fs.readFileSync(p,'utf8').includes('export {};'))process.exit(1)\"",
+    "lint": "node -e \"const p=require('./package.json');if(!p.private||!p.version.startsWith('0.')||p.main||p.module||p.bin)process.exit(1)\"",
+    "test": "node -e \"const fs=require('node:fs');if(fs.existsSync('src')||fs.existsSync('dist'))process.exit(1)\""
+  },
+  "bopen": {
+    "artifactId": "SKEL-P0-01-KERNEL-TESTING",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "stableDependency": false,
+    "runtimeExports": false
+  }
+}

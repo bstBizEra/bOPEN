@@ -1,0 +1,99 @@
+{
+  "artifact_id": "BOPEN-CONTRACT-MANIFEST-001",
+  "version": "0.1.0",
+  "status": "draft",
+  "owner": "Engineering Authority",
+  "work_package": "SKEL-P0-01",
+  "stable_dependency": false,
+  "contract_count": 11,
+  "contracts": [
+    {
+      "path": "contracts/draft/tenant.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-TENANT-001",
+      "surface": "tenant",
+      "normative_artifact_id": "BOPEN-TENANT-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/organization.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-ORGANIZATION-001",
+      "surface": "organization",
+      "normative_artifact_id": "BOPEN-TENANT-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/membership.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-MEMBERSHIP-001",
+      "surface": "membership",
+      "normative_artifact_id": "BOPEN-TENANT-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/active-tenant-context.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-ACTIVE-CONTEXT-001",
+      "surface": "active-tenant-context",
+      "normative_artifact_id": "BOPEN-TENANT-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/authorization-decision.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-AUTHZ-DECISION-001",
+      "surface": "authorization-decision",
+      "normative_artifact_id": "BOPEN-AUTHZ-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/entitlement.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-ENTITLEMENT-001",
+      "surface": "entitlement",
+      "normative_artifact_id": "BOPEN-ENT-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/module-manifest.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-MODULE-MANIFEST-001",
+      "surface": "module-manifest",
+      "normative_artifact_id": "BOPEN-MOD-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/capability.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-CAPABILITY-001",
+      "surface": "capability",
+      "normative_artifact_id": "BOPEN-MOD-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/party.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-PARTY-001",
+      "surface": "party",
+      "normative_artifact_id": "BOPEN-PARTY-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/event-envelope.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-EVENT-ENVELOPE-001",
+      "surface": "event-envelope",
+      "normative_artifact_id": "BOPEN-ARCH-001",
+      "status": "draft",
+      "stable_dependency": false
+    },
+    {
+      "path": "contracts/draft/audit-envelope.contract.json",
+      "artifact_id": "BOPEN-CONTRACT-AUDIT-ENVELOPE-001",
+      "surface": "audit-envelope",
+      "normative_artifact_id": "BOPEN-ARCH-001",
+      "status": "draft",
+      "stable_dependency": false
+    }
+  ]
+}
