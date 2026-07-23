@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/tenant/0.1.0-draft",
+  "title": "Tenant Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN tenant surface. Field semantics remain subordinate to BOPEN-TENANT-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-TENANT",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-TENANT-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-TEN-001",
+      "REQ-ISO-001",
+      "REQ-DATA-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-TENANT-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "tenantId": {
+      "type": "string",
+      "description": "Opaque tenant identifier; normative format unresolved."
+    },
+    "isolationProfile": {
+      "type": "string",
+      "description": "Reference to pooled/bridge/silo/dedicated profile."
+    }
+  },
+  "additionalProperties": true
+}

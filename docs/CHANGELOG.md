@@ -195,3 +195,9 @@
 - Preserved the v0.4 docket, inventory, B8 approvals, B9 staging and readiness bytes unchanged.
 - Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
 - Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.
+
+## Append-only entry - 2026-07-24 - SKEL-P0-01 skeleton maker candidate
+
+- Prepared the SKEL-P0-01 skeleton delta on the governed PG-P0 `ACTIVE` substrate: 11 draft contract shells traced 1:1 to the normative drafts, typed `@bopen/kernel-contracts` and `@bopen/kernel-testing` roots, five fail-closed test tiers, and `tools/validate_skeleton.py` added to the `pnpm validate` chain.
+- Recorded truthful maker provenance (Claude `claude-opus-4-8`); kept every shell `draft`, all signed surfaces byte-unchanged, and production/migration/merge/release/deployment/runtime unauthorized.
+- Left SKEL-P0-01 `Proposed; not accepted` pending independent BST-Codex-Motor exact-SHA review and Human Engineering Authority disposition.

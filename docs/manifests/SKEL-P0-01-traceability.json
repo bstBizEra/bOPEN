@@ -1,0 +1,31 @@
+{
+  "artifactId": "SKEL-P0-01-TRACEABILITY",
+  "version": "0.1.0",
+  "status": "draft",
+  "owner": "Engineering Authority",
+  "workPackage": "SKEL-P0-01",
+  "base": {
+    "baseCommit": "29949f460345a55b8f8079cad802d6ca85cbe46e",
+    "baseTree": "463901cf45f3d264a392484a95dfaad139be7339",
+    "note": "Governed PG-P0 ACTIVE substrate. All normative draft bodies are present on this base; requirement IDs are resolved, not invented."
+  },
+  "sourceAvailability": {
+    "normativeBodiesPresentInBaseRepository": true,
+    "requirementIdentifiersResolvable": true,
+    "control": "No requirement identifier is invented. Unresolved traces would block acceptance; none are unresolved here."
+  },
+  "mappings": [
+    {"shell": "contracts/platform/tenant.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-TENANT", "normativeArtifact": "BOPEN-TENANT-001", "normativeArtifactPath": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md", "requirementIds": ["REQ-TEN-001", "REQ-ISO-001", "REQ-DATA-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/organization.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-ORGANIZATION", "normativeArtifact": "BOPEN-TENANT-001", "normativeArtifactPath": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md", "requirementIds": ["REQ-ORG-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/membership.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-MEMBERSHIP", "normativeArtifact": "BOPEN-TENANT-001", "normativeArtifactPath": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md", "requirementIds": ["REQ-MEM-001", "REQ-MEM-002"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/active-tenant-context.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-ACTIVETENANTCONTEXT", "normativeArtifact": "BOPEN-TENANT-001", "normativeArtifactPath": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md", "requirementIds": ["REQ-CTX-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/authorization-decision.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-AUTHORIZATIONDECISION", "normativeArtifact": "BOPEN-AUTHZ-001", "normativeArtifactPath": "docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md", "requirementIds": ["REQ-AUTH-001", "REQ-AUTH-002"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/entitlement.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-ENTITLEMENT", "normativeArtifact": "BOPEN-ENT-001", "normativeArtifactPath": "docs/04-platform/BOPEN-ENT-001-DRAFT.md", "requirementIds": ["REQ-ENT-001", "REQ-ENT-002"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/module-manifest.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-MODULEMANIFEST", "normativeArtifact": "BOPEN-MOD-001", "normativeArtifactPath": "docs/04-platform/BOPEN-MOD-001-DRAFT.md", "requirementIds": ["REQ-MOD-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/capability.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-CAPABILITY", "normativeArtifact": "BOPEN-MOD-001", "normativeArtifactPath": "docs/04-platform/BOPEN-MOD-001-DRAFT.md", "requirementIds": ["REQ-MOD-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/platform/party.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-PARTY", "normativeArtifact": "BOPEN-PARTY-001", "normativeArtifactPath": "docs/05-foundation/BOPEN-PARTY-001-DRAFT.md", "requirementIds": ["REQ-PRI-001", "REQ-ID-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/events/event-envelope.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-EVENTENVELOPE", "normativeArtifact": "BOPEN-ARCH-001", "normativeArtifactPath": "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md", "requirementIds": ["REQ-EVT-001"], "requirementIdStatus": "resolved"},
+    {"shell": "contracts/audit/audit-envelope.draft.schema.json", "artifactId": "SKEL-P0-01-CONTRACT-AUDITENVELOPE", "normativeArtifact": "BOPEN-ARCH-001", "normativeArtifactPath": "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md", "requirementIds": ["REQ-AUD-001"], "requirementIdStatus": "resolved"}
+  ],
+  "boundary": "Every shell is status:draft, not a stable dependency; requirement IDs trace to Draft requirements in BOPEN-REQ-001. No production logic, migration, merge, release, deployment or runtime activation is authorized."
+}

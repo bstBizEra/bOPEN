@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 290,
+  "count": 292,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "bd82d7b10412d7ff596c88a4a066d4275332095870247c35704efd4f7d409029",
-      "bytes": 14068
+      "sha256": "39a0e12dd516ffaeedb941a7e2fa04cf9d8f8269cf4c5537a9b2b0437ece6672",
+      "bytes": 14791
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1021,8 +1021,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "487e16316d06bf6fd843034a3b41922a0d6458d5221a551cf6c803a8f14d550a",
-      "bytes": 4424
+      "sha256": "311d00027b64cb70118bec5c4579da9990ff826f19619a3fab9006f6b15d7b76",
+      "bytes": 5102
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1375,11 +1375,18 @@
       "bytes": 1920
     },
     {
+      "path": "docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md",
+      "title": "EVD-SKEL-002 \u2014 SKEL-P0-01 Skeleton Maker Candidate",
+      "status": "Maker candidate; draft; not accepted. Independent exact-SHA checker review (Codex) pending.",
+      "sha256": "60a2903d231c47a7caf62f02049e46409394b03fc037fd59a8810bea535afe74",
+      "bytes": 3456
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "75e172414cd85298f7f35fdc8a2e3567dec809489b8452b652ec6ba1edfe912f",
-      "bytes": 7023
+      "sha256": "c943eb813deadbca73c8928d40f3b0ab25fa8bef5367ed6dc628cc0a90f8fdb3",
+      "bytes": 7451
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1401,6 +1408,13 @@
       "status": "Draft operational convention pending DEC-0012",
       "sha256": "c15a259a3e882b712d8351846f9916cb7ed52f5a73f96c114094eef816ec3ba7",
       "bytes": 792
+    },
+    {
+      "path": "docs/manifests/SKEL-P0-01-traceability.json",
+      "title": "",
+      "status": "",
+      "sha256": "1dc7bede5f4b4bc2ac807f2217e7a01321b992b1bb32ecf6bcc6592d55f56dd4",
+      "bytes": 4318
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",

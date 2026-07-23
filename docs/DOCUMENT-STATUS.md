@@ -40,3 +40,7 @@ PG-G0-AUTH-001 v0.5 is terminal `DISPOSED`/`gate_passed`. PG-G0-DEC-006 is the o
 ## Append-only PG-P0 preparation status - 2026-07-24
 
 Signing Pass 5 transitions PG-P0 from `READY_FOR_AUTHORITY_REVIEW` to `ACTIVE` preparation at the exact operator-signed substrate. SKEL-P0-01 remains proposed and unaccepted; only preparation and independent review are in scope. Production implementation, migrations, merge, release, deployment and runtime activation remain false and unauthorized.
+
+## Append-only SKEL-P0-01 maker candidate status - 2026-07-24
+
+SKEL-P0-01 has a maker candidate prepared on the governed PG-P0 `ACTIVE` substrate (base `29949f46`): additive draft contract shells, typed package roots, fail-closed test tiers and `tools/validate_skeleton.py` wired into `pnpm validate`. Maker: Claude (`claude-opus-4-8`). Evidence: `docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md`. The work package remains `Proposed; not accepted`; production implementation, migrations, merge, release, deployment and runtime activation remain false and unauthorized. Independent BST-Codex-Motor exact-SHA review and Human Engineering Authority acceptance are pending.

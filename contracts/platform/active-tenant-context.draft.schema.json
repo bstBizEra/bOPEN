@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/active-tenant-context/0.1.0-draft",
+  "title": "Active Tenant Context Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN active tenant context surface. Field semantics remain subordinate to BOPEN-TENANT-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-ACTIVETENANTCONTEXT",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-TENANT-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-CTX-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-TENANT-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "contextId": {
+      "type": "string",
+      "description": "Opaque context identifier."
+    },
+    "validationSource": {
+      "type": "string",
+      "description": "Server-validation source; normative enum unresolved."
+    }
+  },
+  "additionalProperties": true
+}
