@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 280,
+  "count": 281,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -986,8 +986,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "143b8d5456bc29703d216b72e4dd9457bd364875d299245a2333a28ce8ab8794",
-      "bytes": 11812
+      "sha256": "061ed619594f93dffa5ad9450d40bb75caab2f276c55c9cbec850149b373c971",
+      "bytes": 12288
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1294,8 +1294,15 @@
       "path": "docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md",
       "title": "EVD-GOV-011 - PG-G0 Authority Docket v0.4 B8 Signed-State Candidate",
       "status": "",
-      "sha256": "f94605dc2e4ccfe345f5967064c6fc0b1d076f5dd86e68cff5f9c3f44bc8a75e",
-      "bytes": 2345
+      "sha256": "6bdf1504ed4ebee58419388b095b5f2a93c9467af91216e18f55cb2d63451a3f",
+      "bytes": 2327
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-013-pg-g0-authority-docket-v04-rf-remediated-candidate.md",
+      "title": "EVD-GOV-013 - PG-G0 Authority Docket v0.4 Rebuild Remediation",
+      "status": "",
+      "sha256": "e1cb0db9296293be08f5dc3ff869bf029b8f328f7482e4fa18bc1996c0fea7c2",
+      "bytes": 1077
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
@@ -1315,8 +1322,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "51e643c23439c4a242ba40b3e4746539bdf4058e3fe59d7893d7c6f184d57971",
-      "bytes": 5708
+      "sha256": "c9aff5b18017c00d5123d9f68524f1ebd5c68d1407cf729173037587e07f42de",
+      "bytes": 6096
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1329,7 +1336,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "8b99bc5eed09c407027fb560b32b4e11c68d626159b52f6a89e1ab4235002dec",
+      "sha256": "5b8e6e6ce914dc7fb15d07eb306a934d64a6f5df3808faaaff5fa979244d72bf",
       "bytes": 2563
     },
     {
@@ -1952,8 +1959,8 @@
       "path": "docs/work-packages/GOV-P0-04.md",
       "title": "GOV-P0-04 \u2014 Authority Identity Surfaces, Matrix v0.2 Proposal and Operator Decision Packet",
       "status": "Proposed; not accepted",
-      "sha256": "c36b1c21dc8e6b1f984d63174af75fe7728da35210e405613cffea70844ee259",
-      "bytes": 8643
+      "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af",
+      "bytes": 13173
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

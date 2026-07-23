@@ -36,6 +36,12 @@ Reason: the original index row preserves its pre-review checker-pending state. B
 
 Reason: index the prerequisite receipt and its non-self-referential signed-state successor evidence. Benefit of the old phase: the original rows preserve the preparation-time status. Expected outcome: reviewers can distinguish the accepted v0.2 candidate from the separately reviewable v0.3 encoding; neither evidence record decides B8 or B9.
 
+## Append-only v0.4 remediation rebuild - 2026-07-23
+
+| Evidence ID | Work package | Description | Path | Status |
+|---|---|---|---|---|
+| EVD-GOV-013 | GOV-P0-04 | Rebuild from 8a09870 closing ledger-order, delegation-path and fixture-order findings | `docs/evidence/EVD-GOV-013-pg-g0-authority-docket-v04-rf-remediated-candidate.md` | Candidate; independent exact-SHA review pending |
+
 ## Append-only v0.4 B8 signed-state entry - 2026-07-23
 
 | Evidence ID | Work package | Description | Path | Status |

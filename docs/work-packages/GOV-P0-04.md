@@ -94,3 +94,45 @@ Current state is `PENDING_HUMAN_DECISIONS`. The matrix, BOPEN-GOV-001, six remai
 **Technical prerequisite:** EVD-GOV-008 `ACCEPT_EXACT_SHA` for `b929821af83ff774be2bfb10dcb5588d862dcaf2`
 
 The package is accepted exactly as signed. The v0.3 mechanical successor still requires independent exact-SHA review; B8, B9/PG-G0, merge, release, deployment, runtime and production implementation remain pending or false.
+
+## Append-only RF-001/RF-002/RF-003 remediation disposition - 2026-07-23
+
+Rebuilt from v0.4 candidate `8a0987070efa4108e7f9ada716a8fb533fa47e42`; the signed docket, inventory, B8 approvals, B9 pending state and readiness remain byte-for-byte unchanged. The 33 predecessor tests removed during the v0.4 reduction are itemized below. `OBSOLETE/SUPERSEDED` means the v0.4 test named in the disposition is the maintained equal-or-stronger control; no signed outcome is altered.
+
+| # | Removed predecessor test | Disposition |
+|---:|---|---|
+| 1 | `test_committed_file_mock_prefers_temp_fixture_over_repository_file` | OBSOLETE/SUPERSEDED by v0.4 fixture isolation |
+| 2 | `test_missing_docket_fails_closed` | OBSOLETE/SUPERSEDED by repository validation |
+| 3 | `test_missing_or_duplicate_decision_fails_closed` | OBSOLETE/SUPERSEDED by v0.4 decision-set validation |
+| 4 | `test_unknown_top_level_field_fails_closed` | SUPERSEDED by `test_unknown_fields_fail_closed` |
+| 5 | `test_unknown_nested_decision_field_fails_closed` | SUPERSEDED by `test_unknown_fields_fail_closed` |
+| 6 | `test_malformed_commit_and_wrong_tree_fail_closed` | SUPERSEDED by exact v0.4 repository binding |
+| 7 | `test_stale_artifact_hash_fails_closed` | SUPERSEDED by inventory digest test |
+| 8 | `test_append_only_governing_artifact_rewrite_fails_closed` | OBSOLETE v0.4 artifact transition |
+| 9 | `test_post_bound_mutation_cannot_be_hidden_by_rewriting_docket_hashes` | SUPERSEDED by inventory/subject immutability |
+| 10 | `test_subject_must_match_exact_governing_artifact_map` | SUPERSEDED by B8 and Batch 2 subject tests |
+| 11 | `test_agent_cannot_be_final_human_authority` | SUPERSEDED by identity-register actor checks |
+| 12 | `test_pending_decision_cannot_claim_effect` | SUPERSEDED by B9 pre-sign test |
+| 13 | `test_pending_concurrence_cannot_claim_actor` | OBSOLETE v0.4 pending-concurrence shape |
+| 14 | `test_self_reviewed_technical_acceptance_fails_closed` | OBSOLETE v0.3 review state |
+| 15 | `test_normalized_technical_identities_cannot_bypass_self_review` | OBSOLETE v0.3 review state |
+| 16 | `test_future_review_and_missing_evidence_fail_closed` | SUPERSEDED by B9 prerequisite test |
+| 17 | `test_technical_acceptance_requires_distinct_resolved_candidate_and_bound_evidence` | OBSOLETE external receipt shape |
+| 18 | `test_technical_acceptance_rejects_repository_binding_as_candidate` | OBSOLETE external receipt shape |
+| 19 | `test_technical_acceptance_rejects_wrong_tree_and_unbound_evidence` | SUPERSEDED by exact substrate checks |
+| 20 | `test_technical_acceptance_rejects_non_ancestor_candidate` | OBSOLETE external review-chain assertion |
+| 21 | `test_expired_decision_request_fails_closed` | SUPERSEDED by common schema validation |
+| 22 | `test_terminal_reject_still_requires_human_independence_and_evidence` | OBSOLETE; B8 outcomes are signed APPROVE |
+| 23 | `test_five_b8_decisions_cannot_be_changed_by_signed_state_successor` | SUPERSEDED by B8 subject/outcome tests |
+| 24 | `test_fabricated_identity_binding_fails_without_approved_registry_record` | SUPERSEDED by actor provenance test |
+| 25 | `test_identity_binding_hash_tree_status_and_structured_record_must_match` | SUPERSEDED by identity-register validator |
+| 26 | `test_delegation_ref_and_bound_record_must_match` | OBSOLETE; DELEGATED is rejected and null placeholders are compatibility-only |
+| 27 | `test_delegation_bound_hash_and_structured_scope_must_match` | OBSOLETE; DELEGATED is rejected |
+| 28 | `test_delegation_grantor_requires_explicit_action_and_subject_scopes` | OBSOLETE; DELEGATED is rejected |
+| 29 | `test_revoked_delegate_and_grantor_identities_fail_closed` | OBSOLETE; DELEGATED is rejected |
+| 30 | `test_identity_validity_and_evidence_are_mandatory_and_well_formed` | SUPERSEDED by identity-register validator |
+| 31 | `test_delegation_scope_types_fail_closed_without_exceptions` | OBSOLETE; DELEGATED is rejected |
+| 32 | `test_identity_evidence_must_exist_at_bound_commit` | SUPERSEDED by exact registry substrate checks |
+| 33 | `test_nonconcur_requires_attributable_human_time_expiry_and_evidence` | OBSOLETE v0.3 pending transition |
+
+RF-002 is closed by a temporary-root repeatability test that copies the package fixture, builds its manifest, and validates twice. RF-003 is closed by `test_delegated_authority_mode_fails_closed`; schema authority mode is `DIRECT`-only and the validator no longer has a live DELEGATED branch. The GOV-P0-03 ledger entry and package manifest are committed together in this rebuilt candidate.

@@ -192,7 +192,7 @@
         "role_binding_commit_sha": {"$ref": "#/$defs/sha"},
         "role_binding_tree_sha": {"$ref": "#/$defs/sha"},
         "role_binding_status": {"const": "approved"},
-        "authority_mode": {"enum": ["DIRECT", "DELEGATED"]},
+        "authority_mode": {"const": "DIRECT"},
         "delegation_ref": {
           "oneOf": [
             {"type": "string", "pattern": "^docs/00-governance/delegations/[A-Za-z0-9][A-Za-z0-9._/-]*\\.json#[A-Z][A-Z0-9_-]+$"},
@@ -207,13 +207,7 @@
           "then": {"properties": {"delegation_ref": {"type": "null"}, "delegation_binding": {"type": "null"}}}
         },
         {
-          "if": {"properties": {"authority_mode": {"const": "DELEGATED"}}, "required": ["authority_mode"]},
-          "then": {
-            "properties": {
-              "delegation_ref": {"type": "string", "minLength": 1},
-              "delegation_binding": {"$ref": "#/$defs/delegationBinding"}
-            }
-          }
+          "$comment": "DELEGATED authority is not representable in this revision; delegation fields remain null placeholders for signed v0.4 compatibility."
         }
       ]
     },

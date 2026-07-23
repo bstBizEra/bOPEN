@@ -26,6 +26,7 @@ from tools.validate_pg_g0_authority_docket import (
     read_file_at_commit as read_repository_file_at_commit,
     validate_pg_g0_authority_docket,
 )
+from tools.validate_root_control_surfaces import MANIFEST_PATH, PACKAGE_PATHS, build_package_manifest, validate_root_control_surfaces
 
 
 AS_OF = datetime(2026, 7, 23, 10, 0, 0, tzinfo=timezone.utc)
@@ -216,6 +217,34 @@ class PgG0AuthorityDocketV04Tests(unittest.TestCase):
             self.save_docket(root, docket)
             errors = self.validate(root)
         self.assertTrue(any("alters the signed v0.2 subject" in item for item in errors), errors)
+
+    def test_root_manifest_validation_is_repeatable_and_order_stable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for relative in PACKAGE_PATHS:
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / relative, target)
+            signing = root / "docs/00-governance/signing/SIGNING-PASS-2.md"
+            signing.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / "docs/00-governance/signing/SIGNING-PASS-2.md", signing)
+            manifest = root / MANIFEST_PATH
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            manifest.write_text(json.dumps(build_package_manifest(root), indent=2) + "\n", encoding="utf-8")
+            first = validate_root_control_surfaces(root, check_git=False)
+            second = validate_root_control_surfaces(root, check_git=False)
+            self.assertEqual(first, [])
+            self.assertEqual(second, [])
+            self.assertEqual(build_package_manifest(root), json.loads(manifest.read_text(encoding="utf-8")))
+
+    def test_delegated_authority_mode_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            docket = self.load_docket(root)
+            docket["decision_requests"][0]["final_authority_actor"]["authority_mode"] = "DELEGATED"
+            self.save_docket(root, docket)
+            errors = self.validate(root)
+        self.assertTrue(any("authority mode must be DIRECT" in item for item in errors), errors)
 
 
 if __name__ == "__main__":

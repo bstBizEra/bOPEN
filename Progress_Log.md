@@ -127,6 +127,11 @@ Future events must be appended below this event and must include the same proven
 **Benefit of old phase:** The v0.2 docket preserved exact subjects and required a separate signed-state successor.
 **Expected outcome:** Claude independently reviews one exact v0.3 candidate SHA before any later B8 or B9 decision.
 
+## GOV-P0-04 v0.4 RF remediation - 2026-07-23
+
+**Source:** EVD-GOV-012 `REJECT` at `269a8b2c444e3ec0de159177308f63ba51660dfa`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-013.
+**Status:** REMEDIATED_CANDIDATE_INDEPENDENT_REVIEW_PENDING. Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`; preserved the v0.4 docket and B8 outcomes; appended this ledger entry after the existing final entry; rebound the GOV-P0-03 package manifest in the same candidate commit.
+
 ## GOV-P0-04 v0.4 B8 signed successor - 2026-07-23
 
 **Source:** Operator Signing Pass 3 `7834c48f84c01be8a03cf00380dd06f2bdea0b81`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-011.
