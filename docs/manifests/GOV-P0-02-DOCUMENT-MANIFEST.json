@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 281,
+  "count": 282,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1303,6 +1303,13 @@
       "status": "",
       "sha256": "e3aed23150392512eea912c8aa834d2c797d0f1803b29028a70735bb67c8a8dc",
       "bytes": 1247
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-014-docket-v04-remediation-review.md",
+      "title": "EVD-GOV-014 \u2014 Independent Exact-SHA Review of the v0.4 RF-Remediation Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "43c5b57c31b9c763431ca65b73dd64d12afc1bb7a9ec2af01a1eb7ddcff607bd",
+      "bytes": 4284
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
