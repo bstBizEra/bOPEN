@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-22",
-  "count": 276,
+  "generated": "2026-07-23",
+  "count": 277,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1268,6 +1268,13 @@
       "status": "",
       "sha256": "3c2640f94d17ab84adedc0957f17b28de569d72ac232760b9d9fea760db26b9f",
       "bytes": 5055
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md",
+      "title": "EVD-GOV-010 \u2014 Independent Exact-SHA Review of the PG-G0 Authority Docket v0.3 Signed-State Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "f8c335d16f875c32b0084bff98af4098e7af767bbc3c095854c27242fdc05595",
+      "bytes": 3773
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
