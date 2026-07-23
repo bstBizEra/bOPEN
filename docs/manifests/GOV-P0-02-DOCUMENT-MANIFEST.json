@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 280,
+  "count": 281,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1294,8 +1294,15 @@
       "path": "docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md",
       "title": "EVD-GOV-011 - PG-G0 Authority Docket v0.4 B8 Signed-State Candidate",
       "status": "",
-      "sha256": "f94605dc2e4ccfe345f5967064c6fc0b1d076f5dd86e68cff5f9c3f44bc8a75e",
-      "bytes": 2345
+      "sha256": "6bdf1504ed4ebee58419388b095b5f2a93c9467af91216e18f55cb2d63451a3f",
+      "bytes": 2327
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-012-docket-v04-independent-review.md",
+      "title": "EVD-GOV-012 \u2014 Independent Exact-SHA Review of the PG-G0 Authority Docket v0.4 B8-Signed Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "b9dfaf70c724b102cab1f15a588ab2b202eda81484196d7629779d20dd6c3e8a",
+      "bytes": 4345
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
@@ -1329,7 +1336,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "8b99bc5eed09c407027fb560b32b4e11c68d626159b52f6a89e1ab4235002dec",
+      "sha256": "1d0e2dee6f87af0889e8c8d647fd8d5e5b7b6f539ffa00cd076f11ec11200261",
       "bytes": 2563
     },
     {
