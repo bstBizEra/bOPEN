@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCKET_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001.json")
 SCHEMA_PATH = Path("contracts/governance/pg-g0-authority-docket.schema.json")
 AUTHORITY_MATRIX_PATH = Path("docs/00-governance/registers/AUTHORITY-MATRIX.json")
-BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json")
+BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.5-BINDING-INVENTORY.json")
 PREDECESSOR_DOCKET_PATH = "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
 V03_SUBSTRATE_COMMIT = "60c4831f4fcdfabb876d62f4eb98949b4a1a5a66"
 V03_SUBSTRATE_TREE = "75775a659f1c36c1cc5b489be572a347e1ea496b"
@@ -31,6 +31,15 @@ SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-3.md#signed-decis
 SIGNED_EVIDENCE_REFS = {
     "docs/00-governance/signing/SIGNING-PASS-3.md",
     "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md",
+}
+TERMINAL_SUBSTRATE_COMMIT = "7995d171ccaf43074155828c6a6bcca5c75d8359"
+TERMINAL_SUBSTRATE_TREE = "f545ca2f4eb44ff81adad6de3627434187d25023"
+TERMINAL_SUBSTRATE_BRANCH = "operator/PG-G0-signing-pass-4"
+TERMINAL_SIGNED_AT = "2026-07-24T00:20:36+07:00"
+TERMINAL_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision"
+TERMINAL_EVIDENCE_REFS = {
+    "docs/00-governance/signing/SIGNING-PASS-4.md",
+    "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md",
 }
 V03_SIGNED_AT = "2026-07-23T00:45:00+07:00"
 V03_SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
@@ -55,6 +64,9 @@ EXTRA_INVENTORY_RECORDS = (
     ("EVD-GOV-010", "0.1", "ACCEPT_EXACT_SHA", "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md"),
     ("SIGNING-PASS-3", "0.1", "signed_b8", "docs/00-governance/signing/SIGNING-PASS-3.md"),
     ("PG-G0-GATE-001", "0.1-draft", "draft", "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md"),
+    ("SIGNING-PASS-4", "0.1", "signed_b9_gate", "docs/00-governance/signing/SIGNING-PASS-4.md"),
+    ("EVD-GOV-013", "0.1", "remediated_candidate", "docs/evidence/EVD-GOV-013-pg-g0-authority-docket-v04-rf-remediated-candidate.md"),
+    ("EVD-GOV-015", "0.1", "ACCEPT_EXACT_SHA", "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"),
 )
 SIGNED_TRANSFORM_PATHS = {
     "Roadmap.md",
@@ -155,7 +167,7 @@ TERMINAL_REVIEWS = {"ACCEPT_EXACT_SHA", "REQUEST_CHANGES", "REJECT"}
 STATE_TRANSITIONS = {
     "DRAFT": {"TECHNICAL_REVIEW", "PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "TECHNICAL_REVIEW": {"PENDING_HUMAN_DECISIONS", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
-    "PENDING_HUMAN_DECISIONS": {"TECHNICAL_REVIEW", "READY_FOR_FINAL_DISPOSITION", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
+    "PENDING_HUMAN_DECISIONS": {"TECHNICAL_REVIEW", "READY_FOR_FINAL_DISPOSITION", "DISPOSED", "WITHDRAWN", "EXPIRED", "SUPERSEDED"},
     "READY_FOR_FINAL_DISPOSITION": {"DISPOSED"},
     "DISPOSED": set(),
     "WITHDRAWN": set(),
@@ -379,7 +391,7 @@ def build_v04_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
     for artifact_id, version, status, relative in metadata:
         if artifact_id in seen_ids or relative in seen_paths:
             raise ValueError(f"duplicate inventory metadata: {artifact_id} {relative}")
-        content = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        content = read_file_at_commit(root, TERMINAL_SUBSTRATE_COMMIT, relative)
         if content is None:
             raise ValueError(f"signed substrate path missing: {relative}")
         seen_ids.add(artifact_id)
@@ -393,14 +405,14 @@ def build_v04_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
             "bytes": len(content),
         })
     return {
-        "inventory_id": "PG-G0-AUTH-001-V0.4-BINDINGS",
-        "version": "0.4.0",
+        "inventory_id": "PG-G0-AUTH-001-V0.5-BINDINGS",
+        "version": "0.5.0",
         "status": "frozen_signed_substrate_inventory",
-        "generated_at": SIGNED_AT,
+        "generated_at": TERMINAL_SIGNED_AT,
         "repository_ref": "bstBizEra/bopen",
-        "substrate_commit_sha": SIGNED_SUBSTRATE_COMMIT,
-        "substrate_tree_sha": SIGNED_SUBSTRATE_TREE,
-        "substrate_branch": SIGNED_SUBSTRATE_BRANCH,
+        "substrate_commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+        "substrate_tree_sha": TERMINAL_SUBSTRATE_TREE,
+        "substrate_branch": TERMINAL_SUBSTRATE_BRANCH,
         "records": records,
     }
 
@@ -597,6 +609,72 @@ def build_v04_docket(root: Path = ROOT) -> dict[str, Any]:
         "commit_sha": SIGNED_SUBSTRATE_COMMIT,
         "tree_sha": SIGNED_SUBSTRATE_TREE,
         "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
+    })
+    docket["$schema"] = "bopen://schemas/governance/pg-g0-authority-docket/0.5.0-terminal"
+    docket["version"] = "0.5.0-terminal"
+    docket["status"] = "gate_passed"
+    docket["updated_at"] = TERMINAL_SIGNED_AT
+    docket["state"] = "DISPOSED"
+    docket["repository_binding"] = {
+        "commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+        "tree_sha": TERMINAL_SUBSTRATE_TREE,
+        "branch": TERMINAL_SUBSTRATE_BRANCH,
+        "repository_ref": "bstBizEra/bopen",
+    }
+    docket["binding_inventory"] = {
+        "inventory_ref": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.5-BINDING-INVENTORY.json",
+        "inventory_id": inventory["inventory_id"],
+        "substrate_commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+        "substrate_tree_sha": TERMINAL_SUBSTRATE_TREE,
+        "record_count": len(inventory["records"]),
+    }
+    docket["blockers"] = [
+        "independent exact-SHA technical review of the terminal gate-passed successor is pending",
+        "merge, release, deployment, runtime and production implementation remain unauthorized",
+        "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence",
+    ]
+    b9 = next(item for item in docket["decision_requests"] if item["decision_id"] == "PG-G0-DEC-006")
+    b9["final_authority_actor"] = {
+        **signed_authority_actor("Engineering Authority", registry_sha256),
+        "role_binding_commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+        "role_binding_tree_sha": TERMINAL_SUBSTRATE_TREE,
+    }
+    for concurrence in b9["required_concurrences"]:
+        concurrence["authority_actor"] = {
+            **signed_authority_actor(concurrence["authority_role"], registry_sha256),
+            "role_binding_commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+            "role_binding_tree_sha": TERMINAL_SUBSTRATE_TREE,
+        }
+        concurrence["bound_commit_sha"] = b9["subject"]["commit_sha"]
+        concurrence["bound_tree_sha"] = b9["subject"]["tree_sha"]
+        concurrence["disposition"] = "CONCUR"
+        concurrence["decided_at"] = TERMINAL_SIGNED_AT
+        concurrence["expires_at"] = b9["expires_at"]
+        concurrence["evidence_refs"] = sorted(TERMINAL_EVIDENCE_REFS)
+    b9["final_disposition"] = {
+        "value": "APPROVE",
+        "decided_at": TERMINAL_SIGNED_AT,
+        "reason_code": "OPERATOR_SIGNED_B9_PASS_PG_G0_APPROVE",
+        "decision_ref": TERMINAL_DECISION_REF,
+        "evidence_refs": sorted(TERMINAL_EVIDENCE_REFS),
+        "effective": True,
+    }
+    docket["state_history"].append({
+        "sequence": len(docket["state_history"]) + 1,
+        "from": "PENDING_HUMAN_DECISIONS",
+        "to": "DISPOSED",
+        "changed_at": TERMINAL_SIGNED_AT,
+        "changed_by": {
+            "actor_kind": "HUMAN",
+            "identity_ref": "HUMAN-OPERATOR-001",
+            "role": "Engineering Authority",
+            "registration_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "session_ref": None,
+        },
+        "reason_code": "B9_SIGNED_PG_G0_PASSED",
+        "commit_sha": TERMINAL_SUBSTRATE_COMMIT,
+        "tree_sha": TERMINAL_SUBSTRATE_TREE,
+        "evidence_refs": sorted(TERMINAL_EVIDENCE_REFS),
     })
     return docket
 
@@ -1037,10 +1115,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     errors.extend(validate_schema_instance(docket, schema, schema, "authority docket"))
     if docket.get("$schema") != schema.get("$id"):
         errors.append("authority docket schema binding mismatch")
-    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.4.0-draft":
+    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.5.0-terminal":
         errors.append("authority docket identity/version invalid")
-    if docket.get("status") != "signed_state_candidate" or docket.get("state") != "PENDING_HUMAN_DECISIONS":
-        errors.append("v0.4 signed-state docket must remain PENDING_HUMAN_DECISIONS")
+    if docket.get("status") != "gate_passed" or docket.get("state") != "DISPOSED":
+        errors.append("v0.5 terminal docket must remain gate_passed and DISPOSED")
     errors.extend(validate_signed_artifact_transforms(root))
 
     updated_at = parse_datetime(docket.get("updated_at"))
@@ -1069,8 +1147,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append("repository binding commit must be an ancestor of HEAD")
         if binding.get("repository_ref") != "bstBizEra/bopen":
             errors.append("repository binding repository_ref invalid")
-        if commit_sha != SIGNED_SUBSTRATE_COMMIT or tree_sha != SIGNED_SUBSTRATE_TREE or binding.get("branch") != SIGNED_SUBSTRATE_BRANCH:
-            errors.append("repository binding must match signed Batch 2 substrate")
+        if commit_sha != TERMINAL_SUBSTRATE_COMMIT or tree_sha != TERMINAL_SUBSTRATE_TREE or binding.get("branch") != TERMINAL_SUBSTRATE_BRANCH:
+            errors.append("repository binding must match Signing Pass 4 substrate")
     else:
         commit_sha = tree_sha = ""
 
@@ -1471,12 +1549,12 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                     subject_ref=EXPECTED_SUBJECT_REFS[artifact_id],
                     authority_source=source,
                     governing_artifacts=artifact_map,
-                    repository_commit_sha=commit_sha,
-                    repository_tree_sha=tree_sha,
+                    repository_commit_sha=SIGNED_SUBSTRATE_COMMIT if decision_id in B8_DECISION_IDS else commit_sha,
+                    repository_tree_sha=SIGNED_SUBSTRATE_TREE if decision_id in B8_DECISION_IDS else tree_sha,
                 ))
                 identity = actor_identity(concurrence.get("authority_actor"))
                 if not identity or identity == prepared_identity or (
-                    decision_id not in B8_DECISION_IDS and identity in concurrence_identities
+                    decision_id not in B8_DECISION_IDS and decision_id != "PG-G0-DEC-006" and identity in concurrence_identities
                 ):
                     errors.append(f"{decision_id} {role} concurrence actor is not independent")
                 concurrence_identities.add(identity)
@@ -1504,15 +1582,12 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             if final.get("effective") is not True:
                 errors.append(f"{decision_id} signed B8 outcome must be effective")
         elif decision_id == "PG-G0-DEC-006":
-            expected_prerequisites = {
-                "ready_for_pg_g0_gate_decision=true",
-                "fresh independent conformance receipt covering the PG-G0 requirements",
-                "independent conformance receipt must be bound before any B9 final disposition",
-            }
-            if set(decision.get("prerequisite_refs", [])) != expected_prerequisites:
-                errors.append("PG-G0-DEC-006 independent-conformance prerequisites incomplete")
-            if final.get("value") != "PENDING" or final.get("effective") is not False:
-                errors.append("PG-G0-DEC-006 B9 decision must remain PENDING and ineffective")
+            if final.get("value") != "APPROVE" or final.get("effective") is not True:
+                errors.append("PG-G0-DEC-006 signed B9 outcome must remain APPROVE and effective")
+            if final.get("decided_at") != TERMINAL_SIGNED_AT or final.get("decision_ref") != TERMINAL_DECISION_REF:
+                errors.append("PG-G0-DEC-006 signed B9 time/reference mismatch")
+            if set(final.get("evidence_refs", [])) != TERMINAL_EVIDENCE_REFS:
+                errors.append("PG-G0-DEC-006 signed B9 evidence mismatch")
         value = final.get("value")
         if value == "PENDING":
             if decision.get("final_authority_actor") is not None or decision.get("checked_by") is not None:
@@ -1533,8 +1608,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 subject_ref=EXPECTED_SUBJECT_REFS[artifact_id],
                 authority_source=source,
                 governing_artifacts=artifact_map,
-                repository_commit_sha=commit_sha,
-                repository_tree_sha=tree_sha,
+                repository_commit_sha=SIGNED_SUBSTRATE_COMMIT if decision_id in B8_DECISION_IDS else commit_sha,
+                repository_tree_sha=SIGNED_SUBSTRATE_TREE if decision_id in B8_DECISION_IDS else tree_sha,
             ))
             if decision.get("checked_by") is not None:
                 errors.extend(validate_actor(decision.get("checked_by"), f"{decision_id} checker"))
@@ -1639,9 +1714,19 @@ def build_readiness_report(root: Path = ROOT, as_of: datetime | None = None) -> 
                 decision["final_disposition"]["value"] != "APPROVE" or not decision["final_disposition"]["effective"]
             ):
                 blockers.append(f"{decision['decision_id']} remains ineffective")
-            if decision["decision_id"] == "PG-G0-DEC-006":
+            if decision["decision_id"] == "PG-G0-DEC-006" and decision["final_disposition"]["value"] == "PENDING":
                 blockers.append("B9 PASS_PG_G0 remains PENDING")
                 blockers.append("B9 requires a fresh independent conformance receipt before final disposition")
+    terminal = bool(
+        docket
+        and docket.get("state") == "DISPOSED"
+        and any(
+            item.get("decision_id") == "PG-G0-DEC-006"
+            and item.get("final_disposition", {}).get("value") == "APPROVE"
+            and item.get("final_disposition", {}).get("effective") is True
+            for item in docket.get("decision_requests", [])
+        )
+    )
     ready = bool(
         docket
         and docket.get("effective_outcome", {}).get("ready_for_pg_g0_gate_decision") is True
@@ -1651,9 +1736,9 @@ def build_readiness_report(root: Path = ROOT, as_of: datetime | None = None) -> 
     blockers = sorted(set(blockers))
     return {
         "docket_id": docket.get("docket_id") if docket else "missing",
-        "status": "INVALID" if errors else ("READY_FOR_HUMAN_GATE_DECISION" if ready else "NOT_READY"),
-        "ready_for_human_gate_decision": ready,
-        "pg_g0_passed": False,
+        "status": "INVALID" if errors else ("PG_G0_PASSED" if terminal and ready else ("READY_FOR_HUMAN_GATE_DECISION" if ready else "NOT_READY")),
+        "ready_for_human_gate_decision": bool(ready and not terminal),
+        "pg_g0_passed": bool(terminal and ready),
         "production_implementation_authorized": False,
         "validation_errors": errors,
         "blockers": blockers,

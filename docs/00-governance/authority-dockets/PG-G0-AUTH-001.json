@@ -1,15 +1,15 @@
 {
-  "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.4.0-draft",
+  "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.5.0-terminal",
   "docket_id": "PG-G0-AUTH-001",
-  "version": "0.4.0-draft",
-  "status": "signed_state_candidate",
+  "version": "0.5.0-terminal",
+  "status": "gate_passed",
   "owner_authority": "Engineering Authority",
-  "updated_at": "2026-07-23T09:14:00+07:00",
+  "updated_at": "2026-07-24T00:20:36+07:00",
   "expires_at": "2026-08-21T00:00:00+07:00",
   "repository_binding": {
-    "commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
-    "tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-    "branch": "operator/PG-G0-signing-pass-3",
+    "commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+    "tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+    "branch": "operator/PG-G0-signing-pass-4",
     "repository_ref": "bstBizEra/bopen"
   },
   "governing_artifacts": [
@@ -81,7 +81,7 @@
       "version": "0.1",
       "status": "Proposed",
       "artifact_ref": "docs/work-packages/GOV-P0-04.md",
-      "sha256": "c36b1c21dc8e6b1f984d63174af75fe7728da35210e405613cffea70844ee259"
+      "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af"
     },
     {
       "artifact_id": "EVD-GOV-001",
@@ -200,21 +200,21 @@
       "version": "0.1",
       "status": "Draft/Inactive",
       "artifact_ref": "Progress_Log.md",
-      "sha256": "a5c055799ad018b4f5bc6720aa0bee14919109600e096bdc9e5d769b4b9ed6bd"
+      "sha256": "94b0754d1d366c760a82ddcc767cfac427cbf7e34b6ea51ed630a050016c3124"
     },
     {
       "artifact_id": "ROOT-BACKLOG",
       "version": "0.1",
       "status": "Draft/Inactive",
       "artifact_ref": "Backlog.md",
-      "sha256": "4d81de3296d016e52a736bb553d7e71949fba62c8a8acff350b9cf78879f444e"
+      "sha256": "636fd189f669153cc807fbdac525b161810389d6e908bf458179634b3c7926b6"
     },
     {
       "artifact_id": "ROOT-RECAP",
       "version": "0.1",
       "status": "Draft/Inactive",
       "artifact_ref": "Recap_Today.md",
-      "sha256": "bfbf3c6215190f13ecabacb3f8e85f339cc0fb37f12047a6fd941972bbefbbdc"
+      "sha256": "6582f54150464270bb6a9c35b104ad49e1c5de81c929d56e099f66a4d29ed0ac"
     },
     {
       "artifact_id": "SIGNING-PASS-1",
@@ -232,11 +232,11 @@
     }
   ],
   "binding_inventory": {
-    "inventory_ref": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json",
-    "inventory_id": "PG-G0-AUTH-001-V0.4-BINDINGS",
-    "substrate_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
-    "substrate_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-    "record_count": 46
+    "inventory_ref": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.5-BINDING-INVENTORY.json",
+    "inventory_id": "PG-G0-AUTH-001-V0.5-BINDINGS",
+    "substrate_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+    "substrate_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+    "record_count": 49
   },
   "authority_source": {
     "matrix_id": "PG-REG-AUTHORITY-001",
@@ -2569,7 +2569,21 @@
       "checked_by": null,
       "accountable_authority_role": "Engineering Authority",
       "final_decision_role": "Engineering Authority",
-      "final_authority_actor": null,
+      "final_authority_actor": {
+        "actor_kind": "HUMAN",
+        "human_identity_ref": "human:operator-001",
+        "identity_provider": "bopen-authority-identity-registry",
+        "identity_subject": "HUMAN-OPERATOR-001",
+        "authority_role": "Engineering Authority",
+        "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+        "role_binding_sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+        "role_binding_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+        "role_binding_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+        "role_binding_status": "approved",
+        "authority_mode": "DIRECT",
+        "delegation_ref": null,
+        "delegation_binding": null
+      },
       "required_concurrences": [
         {
           "authority_role": "Product Authority",
@@ -2579,11 +2593,28 @@
           ],
           "bound_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
           "bound_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-          "authority_actor": null,
-          "disposition": "PENDING",
-          "decided_at": null,
-          "expires_at": null,
-          "evidence_refs": []
+          "authority_actor": {
+            "actor_kind": "HUMAN",
+            "human_identity_ref": "human:operator-001",
+            "identity_provider": "bopen-authority-identity-registry",
+            "identity_subject": "HUMAN-OPERATOR-001",
+            "authority_role": "Product Authority",
+            "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "role_binding_sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+            "role_binding_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+            "role_binding_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+            "role_binding_status": "approved",
+            "authority_mode": "DIRECT",
+            "delegation_ref": null,
+            "delegation_binding": null
+          },
+          "disposition": "CONCUR",
+          "decided_at": "2026-07-24T00:20:36+07:00",
+          "expires_at": "2026-08-21T00:00:00+07:00",
+          "evidence_refs": [
+            "docs/00-governance/signing/SIGNING-PASS-4.md",
+            "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+          ]
         },
         {
           "authority_role": "Architecture Authority",
@@ -2593,11 +2624,28 @@
           ],
           "bound_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
           "bound_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-          "authority_actor": null,
-          "disposition": "PENDING",
-          "decided_at": null,
-          "expires_at": null,
-          "evidence_refs": []
+          "authority_actor": {
+            "actor_kind": "HUMAN",
+            "human_identity_ref": "human:operator-001",
+            "identity_provider": "bopen-authority-identity-registry",
+            "identity_subject": "HUMAN-OPERATOR-001",
+            "authority_role": "Architecture Authority",
+            "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "role_binding_sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+            "role_binding_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+            "role_binding_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+            "role_binding_status": "approved",
+            "authority_mode": "DIRECT",
+            "delegation_ref": null,
+            "delegation_binding": null
+          },
+          "disposition": "CONCUR",
+          "decided_at": "2026-07-24T00:20:36+07:00",
+          "expires_at": "2026-08-21T00:00:00+07:00",
+          "evidence_refs": [
+            "docs/00-governance/signing/SIGNING-PASS-4.md",
+            "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+          ]
         },
         {
           "authority_role": "Security Authority",
@@ -2607,11 +2655,28 @@
           ],
           "bound_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
           "bound_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-          "authority_actor": null,
-          "disposition": "PENDING",
-          "decided_at": null,
-          "expires_at": null,
-          "evidence_refs": []
+          "authority_actor": {
+            "actor_kind": "HUMAN",
+            "human_identity_ref": "human:operator-001",
+            "identity_provider": "bopen-authority-identity-registry",
+            "identity_subject": "HUMAN-OPERATOR-001",
+            "authority_role": "Security Authority",
+            "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "role_binding_sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+            "role_binding_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+            "role_binding_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+            "role_binding_status": "approved",
+            "authority_mode": "DIRECT",
+            "delegation_ref": null,
+            "delegation_binding": null
+          },
+          "disposition": "CONCUR",
+          "decided_at": "2026-07-24T00:20:36+07:00",
+          "expires_at": "2026-08-21T00:00:00+07:00",
+          "evidence_refs": [
+            "docs/00-governance/signing/SIGNING-PASS-4.md",
+            "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+          ]
         },
         {
           "authority_role": "Data Authority",
@@ -2621,11 +2686,28 @@
           ],
           "bound_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
           "bound_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
-          "authority_actor": null,
-          "disposition": "PENDING",
-          "decided_at": null,
-          "expires_at": null,
-          "evidence_refs": []
+          "authority_actor": {
+            "actor_kind": "HUMAN",
+            "human_identity_ref": "human:operator-001",
+            "identity_provider": "bopen-authority-identity-registry",
+            "identity_subject": "HUMAN-OPERATOR-001",
+            "authority_role": "Data Authority",
+            "role_binding_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+            "role_binding_sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+            "role_binding_commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+            "role_binding_tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+            "role_binding_status": "approved",
+            "authority_mode": "DIRECT",
+            "delegation_ref": null,
+            "delegation_binding": null
+          },
+          "disposition": "CONCUR",
+          "decided_at": "2026-07-24T00:20:36+07:00",
+          "expires_at": "2026-08-21T00:00:00+07:00",
+          "evidence_refs": [
+            "docs/00-governance/signing/SIGNING-PASS-4.md",
+            "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+          ]
         }
       ],
       "expires_at": "2026-08-21T00:00:00+07:00",
@@ -2635,16 +2717,19 @@
         "independent conformance receipt must be bound before any B9 final disposition"
       ],
       "final_disposition": {
-        "value": "PENDING",
-        "decided_at": null,
-        "reason_code": "PENDING_INDEPENDENT_CONFORMANCE_AND_HUMAN_B9_DECISION",
-        "decision_ref": null,
-        "evidence_refs": [],
-        "effective": false
+        "value": "APPROVE",
+        "decided_at": "2026-07-24T00:20:36+07:00",
+        "reason_code": "OPERATOR_SIGNED_B9_PASS_PG_G0_APPROVE",
+        "decision_ref": "docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision",
+        "evidence_refs": [
+          "docs/00-governance/signing/SIGNING-PASS-4.md",
+          "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+        ],
+        "effective": true
       }
     }
   ],
-  "state": "PENDING_HUMAN_DECISIONS",
+  "state": "DISPOSED",
   "state_history": [
     {
       "sequence": 1,
@@ -2723,6 +2808,26 @@
         "docs/00-governance/signing/SIGNING-PASS-3.md",
         "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md"
       ]
+    },
+    {
+      "sequence": 5,
+      "from": "PENDING_HUMAN_DECISIONS",
+      "to": "DISPOSED",
+      "changed_at": "2026-07-24T00:20:36+07:00",
+      "changed_by": {
+        "actor_kind": "HUMAN",
+        "identity_ref": "HUMAN-OPERATOR-001",
+        "role": "Engineering Authority",
+        "registration_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
+        "session_ref": null
+      },
+      "reason_code": "B9_SIGNED_PG_G0_PASSED",
+      "commit_sha": "7995d171ccaf43074155828c6a6bcca5c75d8359",
+      "tree_sha": "f545ca2f4eb44ff81adad6de3627434187d25023",
+      "evidence_refs": [
+        "docs/00-governance/signing/SIGNING-PASS-4.md",
+        "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"
+      ]
     }
   ],
   "effective_outcome": {
@@ -2743,9 +2848,8 @@
     "skill_promoted": false
   },
   "blockers": [
-    "independent exact-SHA technical review of the v0.4 signed-state successor is pending",
-    "B9 PASS_PG_G0 remains PENDING until a fresh independent conformance receipt is bound",
-    "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence",
-    "merge, release, deployment, runtime and production implementation remain unauthorized"
+    "independent exact-SHA technical review of the terminal gate-passed successor is pending",
+    "merge, release, deployment, runtime and production implementation remain unauthorized",
+    "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence"
   ]
 }

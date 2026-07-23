@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "bopen://schemas/governance/pg-g0-authority-docket/0.4.0-draft",
+  "$id": "bopen://schemas/governance/pg-g0-authority-docket/0.5.0-terminal",
   "status": "draft",
   "title": "bOPEN PG-G0 Authority Docket",
   "type": "object",
@@ -10,11 +10,11 @@
     "binding_inventory", "authority_source", "technical_review", "prepared_dispositions", "decision_requests", "state",
     "state_history", "effective_outcome", "non_authority_flags", "blockers"
   ],
-  "properties": {
-    "$schema": {"const": "bopen://schemas/governance/pg-g0-authority-docket/0.4.0-draft"},
+    "properties": {
+    "$schema": {"const": "bopen://schemas/governance/pg-g0-authority-docket/0.5.0-terminal"},
     "docket_id": {"type": "string", "pattern": "^PG-G0-AUTH-[0-9]{3}$"},
-    "version": {"const": "0.4.0-draft"},
-    "status": {"const": "signed_state_candidate"},
+    "version": {"const": "0.5.0-terminal"},
+    "status": {"const": "gate_passed"},
     "owner_authority": {"const": "Engineering Authority"},
     "updated_at": {"type": "string", "format": "date-time"},
     "expires_at": {"type": "string", "format": "date-time"},
@@ -27,8 +27,8 @@
       "type": "object", "additionalProperties": false,
       "required": ["inventory_ref", "inventory_id", "substrate_commit_sha", "substrate_tree_sha", "record_count"],
       "properties": {
-        "inventory_ref": {"const": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json"},
-        "inventory_id": {"const": "PG-G0-AUTH-001-V0.4-BINDINGS"},
+        "inventory_ref": {"const": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.5-BINDING-INVENTORY.json"},
+        "inventory_id": {"const": "PG-G0-AUTH-001-V0.5-BINDINGS"},
         "substrate_commit_sha": {"$ref": "#/$defs/sha"},
         "substrate_tree_sha": {"$ref": "#/$defs/sha"},
         "record_count": {"type": "integer", "minimum": 1}
@@ -44,7 +44,7 @@
       "type": "array", "minItems": 1,
       "items": {"$ref": "#/$defs/decisionRequest"}
     },
-    "state": {"enum": ["DRAFT", "TECHNICAL_REVIEW", "PENDING_HUMAN_DECISIONS", "READY_FOR_FINAL_DISPOSITION", "DISPOSED", "WITHDRAWN", "EXPIRED", "SUPERSEDED"]},
+    "state": {"const": "DISPOSED"},
     "state_history": {
       "type": "array", "minItems": 1,
       "items": {"$ref": "#/$defs/stateHistory"}
