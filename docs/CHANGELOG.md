@@ -167,6 +167,17 @@
 - Transitioned the docket to terminal `DISPOSED`, regenerated readiness as `PG_G0_PASSED`, appended the passage event to all five root ledgers, and opened PG-P0 for authority review.
 - Kept production implementation, merge, release, deployment and runtime flags false; final independent exact-SHA review remains required.
 
+## Append-only entry - 2026-07-24 - PG-P0 preparation opening
+
+- Encoded the operator's Signing Pass 5 transition of PG-P0 from `READY_FOR_AUTHORITY_REVIEW` to `ACTIVE` preparation.
+- Bound the schedule entry to SKEL-P0-01, SIGNING-PASS-5 and EVD-GOV-017; the work package remains proposed and unaccepted.
+- Preserved preparation/review-only scope and kept production implementation, migrations, merge, release, deployment and runtime unauthorized.
+
+## Append-only entry - 2026-07-24 - SKEL-P0-01 checker review
+
+- Recorded Codex concurrence with bounded findings on scope, allowed paths, acceptance reproducibility and the fail-closed skeleton-validator requirement.
+- Kept SKEL-P0-01 proposed and unaccepted pending Human Engineering Authority disposition; no skeleton implementation was performed.
+
 ## Append-only entry - 2026-07-23 - v0.4 remediation rebuild
 
 - Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`, preserving the signed docket and all B8 outcomes.

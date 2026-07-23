@@ -291,6 +291,21 @@ def validate_program_controls(
         end = _parse_datetime(item.get("planned_end")) if item.get("planned_end") else None
         if (start is None and end is not None) or (start and end and end < start):
             errors.append(f"SCHEDULE WINDOW INVALID: {schedule_id}")
+    pg_g0 = schedule.get("PG-G0")
+    pg_p0 = schedule.get("PG-P0")
+    if isinstance(pg_p0, dict) and pg_p0.get("status") == "ACTIVE":
+        if not isinstance(pg_g0, dict) or pg_g0.get("status") != "COMPLETE":
+            errors.append("ACTIVE PG-P0 REQUIRES COMPLETE PG-G0")
+        if not pg_p0.get("work_item_refs"):
+            errors.append("ACTIVE PG-P0 REQUIRES WORK-PACKAGE REFERENCE")
+        if pg_p0.get("rebaseline_decision_ref") != "docs/00-governance/signing/SIGNING-PASS-5.md#signed-decision":
+            errors.append("ACTIVE PG-P0 SIGNING-PASS-5 DECISION REF REQUIRED")
+        evidence_refs = pg_p0.get("evidence_refs", [])
+        if (
+            "docs/00-governance/signing/SIGNING-PASS-5.md" not in evidence_refs
+            or "docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md" not in evidence_refs
+        ):
+            errors.append("ACTIVE PG-P0 SIGNING-PASS-5 AND EVD-GOV-017 EVIDENCE REQUIRED")
     if _has_cycle(schedule):
         errors.append("SCHEDULE DEPENDENCY CYCLE DETECTED")
 

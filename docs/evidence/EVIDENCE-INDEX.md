@@ -42,6 +42,14 @@ Reason: index the prerequisite receipt and its non-self-referential signed-state
 |---|---|---|---|---|
 | EVD-GOV-016 | GOV-P0-04 | Maker evidence for the terminal PG-G0 B9 gate-passed successor | `docs/evidence/EVD-GOV-016-pg-g0-terminal-gate-passed-candidate.md` | Candidate; final independent exact-SHA review pending |
 
+## Append-only SKEL-P0-01 checker review - 2026-07-24
+
+| EVD-SKEL-001 | SKEL-P0-01 | Independent Codex checker review: concurrence with bounded findings; not human acceptance | `docs/evidence/EVD-SKEL-001-codex-checker-review.md` | Checker review; operator disposition pending |
+
+## Append-only PG-P0 preparation opening - 2026-07-24
+
+| EVD-GOV-018 | PG-P0 | Maker evidence for the Signing Pass 5 schedule transition to active preparation | `docs/evidence/EVD-GOV-018-pg-p0-preparation-transition-candidate.md` | Candidate; independent exact-SHA review pending |
+
 ## Append-only v0.4 remediation rebuild - 2026-07-23
 
 | Evidence ID | Work package | Description | Path | Status |

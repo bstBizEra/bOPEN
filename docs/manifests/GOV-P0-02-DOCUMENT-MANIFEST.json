@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 288,
+  "count": 290,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -195,8 +195,8 @@
       "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
       "title": "",
       "status": "",
-      "sha256": "04b21ee89c81902b1dd22f0c754b2bf2e4dd475662b7870f9e5bcdd4b82a32cc",
-      "bytes": 2804
+      "sha256": "cee8954f35076d4acb4936edee46aed33c7c8672ed6c77fcad5fba6d7d06d71c",
+      "bytes": 2782
     },
     {
       "path": "docs/00-governance/registers/SKILL-REGISTER.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "78a5097c252c23b3289eb9032d6a2470c9a3b5c79190a386b42d0485bf5e9f0f",
-      "bytes": 13266
+      "sha256": "bd82d7b10412d7ff596c88a4a066d4275332095870247c35704efd4f7d409029",
+      "bytes": 14068
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1021,8 +1021,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "9515cbbb8cef2711889c2864c563f4cdcfa8a5e72c54854bca1b28938de5846c",
-      "bytes": 4020
+      "sha256": "487e16316d06bf6fd843034a3b41922a0d6458d5221a551cf6c803a8f14d550a",
+      "bytes": 4424
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1347,6 +1347,13 @@
       "bytes": 3221
     },
     {
+      "path": "docs/evidence/EVD-GOV-018-pg-p0-preparation-transition-candidate.md",
+      "title": "EVD-GOV-018 \u2014 PG-P0 Preparation Transition Candidate",
+      "status": "Candidate; independent exact-SHA review pending",
+      "sha256": "7964cd3a405c5a8679597c8b205b799e2ea1ca110579f03d12f24952b27c7fc6",
+      "bytes": 772
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1361,11 +1368,18 @@
       "bytes": 7338
     },
     {
+      "path": "docs/evidence/EVD-SKEL-001-codex-checker-review.md",
+      "title": "EVD-SKEL-001 \u2014 SKEL-P0-01 Independent Checker Review",
+      "status": "Checker review; not human acceptance",
+      "sha256": "bc8aba4e469f2a9bfe29fd1fac638643def288196ee6fd2a35f9be6eeb0b9535",
+      "bytes": 1920
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "d66a8cdd4a4b6ee36fc440ce58fab9ec537dc55f3e45303efcbf53b2de082795",
-      "bytes": 6459
+      "sha256": "75e172414cd85298f7f35fdc8a2e3567dec809489b8452b652ec6ba1edfe912f",
+      "bytes": 7023
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1378,7 +1392,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "83d9406bfe20e23ba2e40cd61555faa16073ea797ac7ec45776c4d13638e691f",
+      "sha256": "0edfcfc7e7597080117e14accadfd04b4e8bd31d583463efa16e4b6668048253",
       "bytes": 2563
     },
     {

@@ -77,3 +77,14 @@ Future changes must append new dated events. Existing bytes, events and state hi
 **Gate decision ref:** docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision
 **Gate evidence ref:** docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md
 **Gate substrate commit:** 7995d171ccaf43074155828c6a6bcca5c75d8359
+
+## PG-P0 preparation transition event
+
+**Transition:** READY_FOR_AUTHORITY_REVIEW -> ACTIVE
+**Phase:** PG-P0
+**Authorized by:** HUMAN-OPERATOR-001
+**Authorized at:** 2026-07-24T01:15:27+07:00
+**Decision ref:** docs/00-governance/signing/SIGNING-PASS-5.md#signed-decision
+**Evidence ref:** docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md
+**Work package:** SKEL-P0-01 (proposed; not accepted)
+**Scope:** Preparation and independent review only; production implementation, migration, merge, release and runtime remain unauthorized.

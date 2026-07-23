@@ -51,11 +51,22 @@ class ProgramControlValidationTests(unittest.TestCase):
             self.assertEqual(register["approved_by"], "HUMAN-OPERATOR-001")
             self.assertIn("SIGNING-PASS-2.md#append-only-batch-2-signing-record", register["approval_ref"])
         self.assertEqual(schedule["entries"][0]["status"], "COMPLETE")
-        self.assertEqual(schedule["entries"][1]["status"], "READY_FOR_AUTHORITY_REVIEW")
+        self.assertEqual(schedule["entries"][1]["status"], "ACTIVE")
+        self.assertEqual(schedule["entries"][1]["work_item_refs"], ["SKEL-P0-01"])
+        self.assertIn("SIGNING-PASS-5.md#signed-decision", schedule["entries"][1]["rebaseline_decision_ref"])
         self.assertTrue(all(item["status"] == "NOT_READY" for item in schedule["entries"][2:]))
         self.assertEqual(self.load_register(ROOT, "AGENT-REGISTER.json")["entries"], [])
         self.assertEqual(self.load_register(ROOT, "MODULE-REGISTER.json")["entries"], [])
         self.assertEqual(self.load_register(ROOT, "SKILL-REGISTER.json")["entries"], [])
+
+    def test_active_pg_p0_fails_closed_without_signed_opening_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_root(temporary)
+            register = self.load_register(root, "SCHEDULE-REGISTER.json")
+            register["entries"][1]["evidence_refs"] = []
+            self.save_register(root, "SCHEDULE-REGISTER.json", register)
+            errors = validate_program_controls(root, AS_OF)
+        self.assertTrue(any("ACTIVE PG-P0 SIGNING-PASS-5" in error for error in errors))
 
     def test_missing_and_unknown_fields_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:

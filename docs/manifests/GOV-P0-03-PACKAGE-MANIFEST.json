@@ -23,28 +23,28 @@
   "files": [
     {
       "path": "Backlog.md",
-      "sha256": "18e25826deba5e6cb03df46dadb8d6d3b780cf040edd4a7b78bf05c5cc5192dc",
-      "bytes": 7606
+      "sha256": "2249a5be53e4245b5d7b88f93ba03489f4f4a5f44b5c61d7ba68a3c411e08a46",
+      "bytes": 8145
     },
     {
       "path": "Master_Standards.md",
-      "sha256": "43023f2abe7b80f8030044b9d82e7ec3999e8415c9f02bd980fee186ac4bac5e",
-      "bytes": 3896
+      "sha256": "a72bcac6833dd70e5f6b6ba46834d046960d40f4c58cf4aced6537fafa96c40f",
+      "bytes": 4435
     },
     {
       "path": "Progress_Log.md",
-      "sha256": "953c32889ac863e583bc6915255fa292d9b9f8280779ba64cd59765c5029bdbf",
-      "bytes": 8203
+      "sha256": "a6db5cd4678385e9496f208e89104a2b8db46c5c2e69d5d97297b356e498552d",
+      "bytes": 8742
     },
     {
       "path": "Recap_Today.md",
-      "sha256": "04c0e74cf771d4a870a1a36c21dd53829c7af851c6a7e664ac6457bffeaa5275",
-      "bytes": 7625
+      "sha256": "5ec62941782d674ab4e81df829255ee6a419078428c14c0a8f8846100e9ac525",
+      "bytes": 8164
     },
     {
       "path": "Roadmap.md",
-      "sha256": "c6e85a0ee07247c42c5f139b16844dae14fdc62af9574a1ed0a368ab266ef635",
-      "bytes": 3631
+      "sha256": "ec4e4a892a15ac1df46ed6948f9fdf6948b09423c2384c988cacb942193d7077",
+      "bytes": 4170
     },
     {
       "path": "contracts/governance/root-control-surface.schema.json",

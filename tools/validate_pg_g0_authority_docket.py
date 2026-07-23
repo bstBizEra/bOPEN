@@ -41,6 +41,12 @@ TERMINAL_EVIDENCE_REFS = {
     "docs/00-governance/signing/SIGNING-PASS-4.md",
     "docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md",
 }
+P0_OPENED_AT = "2026-07-24T01:15:27+07:00"
+P0_OPEN_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-5.md#signed-decision"
+P0_OPEN_EVIDENCE_REFS = {
+    "docs/00-governance/signing/SIGNING-PASS-5.md",
+    "docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md",
+}
 V03_SIGNED_AT = "2026-07-23T00:45:00+07:00"
 V03_SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
 V03_SIGNED_EVIDENCE_REFS = {
@@ -708,7 +714,7 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
         expected["approved_at"] = V03_SIGNED_AT
         expected["approval_ref"] = V03_SIGNED_DECISION_REF
         if relative == "docs/00-governance/registers/SCHEDULE-REGISTER.json":
-            expected["updated_at"] = TERMINAL_SIGNED_AT
+            expected["updated_at"] = P0_OPENED_AT
             for entry in expected.get("entries", []):
                 if not isinstance(entry, dict):
                     continue
@@ -722,10 +728,11 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
                     })
                 elif entry.get("schedule_id") == "PG-P0":
                     entry.update({
-                        "status": "READY_FOR_AUTHORITY_REVIEW",
-                        "planned_start": TERMINAL_SIGNED_AT,
-                        "rebaseline_decision_ref": TERMINAL_DECISION_REF,
-                        "evidence_refs": sorted(TERMINAL_EVIDENCE_REFS),
+                        "status": "ACTIVE",
+                        "work_item_refs": ["SKEL-P0-01"],
+                        "planned_start": P0_OPENED_AT,
+                        "rebaseline_decision_ref": P0_OPEN_DECISION_REF,
+                        "evidence_refs": sorted(P0_OPEN_EVIDENCE_REFS),
                     })
         if relative == AUTHORITY_MATRIX_PATH.as_posix():
             for entry in expected.get("entries", []):

@@ -36,3 +36,7 @@ PG-G0-AUTH-001 v0.4 is a `PENDING_HUMAN_DECISIONS` signed-state candidate. B8 di
 ## Append-only v0.5 terminal gate-passed status - 2026-07-24
 
 PG-G0-AUTH-001 v0.5 is terminal `DISPOSED`/`gate_passed`. PG-G0-DEC-006 is the operator-signed `PASS_PG_G0` approval from Signing Pass 4, with EVD-GOV-015 as its independent-conformance prerequisite. Readiness reports `PG_G0_PASSED`; PG-P0 is opened as `READY_FOR_AUTHORITY_REVIEW`. Production implementation, merge, release, deployment and runtime activation remain false and unauthorized. Final independent exact-SHA review is pending.
+
+## Append-only PG-P0 preparation status - 2026-07-24
+
+Signing Pass 5 transitions PG-P0 from `READY_FOR_AUTHORITY_REVIEW` to `ACTIVE` preparation at the exact operator-signed substrate. SKEL-P0-01 remains proposed and unaccepted; only preparation and independent review are in scope. Production implementation, migrations, merge, release, deployment and runtime activation remain false and unauthorized.
