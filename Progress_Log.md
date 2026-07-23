@@ -126,3 +126,8 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Encode all 13 signed Batch 2 outcomes without changing the five pending B8 decisions.
 **Benefit of old phase:** The v0.2 docket preserved exact subjects and required a separate signed-state successor.
 **Expected outcome:** Claude independently reviews one exact v0.3 candidate SHA before any later B8 or B9 decision.
+
+## GOV-P0-04 v0.4 B8 signed successor - 2026-07-23
+
+**Source:** Operator Signing Pass 3 `7834c48f84c01be8a03cf00380dd06f2bdea0b81`; **Agent ID:** BST-Codex-Motor; **Evidence:** EVD-GOV-011.
+**Status:** SIGNED_STATE_CANDIDATE_INDEPENDENT_REVIEW_PENDING. Encoded exactly five B8 approvals, rebound inventory, and surfaced B9 pending with independent-conformance prerequisite; readiness is true for the human gate decision. **Backlog:** GOV-P0-04; **Recap:** GOV-P0-04 v0.4; **Roadmap:** Root controls Active / PROGRAM-PG-G0 awaiting human gate.

@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 278,
+  "count": 280,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -27,8 +27,8 @@
       "path": "docs/00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md",
       "title": "PG-G0-AUTH-001 \u2014 PG-G0 Authority Docket",
       "status": "Draft",
-      "sha256": "11f4613fb6ae7d4e6dd6c045951980afdd915148cae3f2235fdf0d2c78e41e9a",
-      "bytes": 5915
+      "sha256": "15062889b361030508f1995474626ba204d27dbdea05c67c72b03708c1dd7d83",
+      "bytes": 6463
     },
     {
       "path": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
@@ -87,11 +87,18 @@
       "bytes": 11780
     },
     {
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json",
+      "title": "",
+      "status": "",
+      "sha256": "53e4d97c8ad59dd64ca3e766aa3c25601ba3e6c09e8aaf07dde42d5dffce8d03",
+      "bytes": 13278
+    },
+    {
       "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
       "title": "",
       "status": "",
-      "sha256": "c73b36f0aca9764e6e52a990a5790aed215607e21078505209f6b64c91de4070",
-      "bytes": 108301
+      "sha256": "0a7f9e14bef82857b55e0c3a78e7f35773a9e6ec830ac220a14f7d9dd47077b1",
+      "bytes": 126838
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -979,8 +986,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "be9e7da061b6f9e70bc33ceb6ab39edd50e8678ea6d2f630342f2174b311804c",
-      "bytes": 11244
+      "sha256": "143b8d5456bc29703d216b72e4dd9457bd364875d299245a2333a28ce8ab8794",
+      "bytes": 11812
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -993,8 +1000,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "9e9f03d91551655753825fca5706eeac064de5a1e5da05a4329706c8d17f74c4",
-      "bytes": 3101
+      "sha256": "54ca02268e238933892437467da3683a6bac58675fe43fd6c2baff7fa198d109",
+      "bytes": 3519
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1014,8 +1021,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "152ab0622244548d9e876d8204bea635ea95e7bff6c110ea6e4d5ef7b26bcf0a",
-      "bytes": 5466
+      "sha256": "115706eba878d1090010cfb510494901ecb75edc534a758a472c91278e546ae8",
+      "bytes": 6099
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1284,6 +1291,13 @@
       "bytes": 3773
     },
     {
+      "path": "docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md",
+      "title": "EVD-GOV-011 - PG-G0 Authority Docket v0.4 B8 Signed-State Candidate",
+      "status": "",
+      "sha256": "f94605dc2e4ccfe345f5967064c6fc0b1d076f5dd86e68cff5f9c3f44bc8a75e",
+      "bytes": 2345
+    },
+    {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
       "title": "EVD-RES-002 - Research R0 control establishment",
       "status": "",
@@ -1301,8 +1315,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "b208ee4f4022bef4a40fd5be8b6dc6ddedcda843480ed93a21cca222704e29a7",
-      "bytes": 5030
+      "sha256": "51e643c23439c4a242ba40b3e4746539bdf4058e3fe59d7893d7c6f184d57971",
+      "bytes": 5708
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1315,7 +1329,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "c7d69ec62b7474c5ac160b7464d76853fec2a69c84f4b860e1aadfbde4846061",
+      "sha256": "8b99bc5eed09c407027fb560b32b4e11c68d626159b52f6a89e1ab4235002dec",
       "bytes": 2563
     },
     {

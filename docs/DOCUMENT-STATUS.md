@@ -28,3 +28,7 @@ Reason: replacement instructions require five exact root control paths that do n
 The operator's Signing Pass 2 record makes BOPEN-GOV-001 and DEC-0013 effective, approves the authority matrix plus six program registers, accepts GOV-P0-01/GOV-P0-04 and DEC-0007/BOOT-B7, and activates GOV-P0-03 through the atomic five-ledger B6 event. PG-G0-AUTH-001 v0.3 is a `TECHNICAL_REVIEW` candidate for that exact state. The five B8 requests and B9 remain pending; no merge, release, deployment, runtime or production implementation authority is created.
 
 Reason: preserve historical status rows while exposing the signed successor state. Benefit of the old phase: proposed controls made missing authority explicit. Expected outcome: document consumers use the v0.3 docket and EVD-GOV-009 pending a new exact-SHA receipt.
+
+## Append-only v0.4 status - 2026-07-23
+
+PG-G0-AUTH-001 v0.4 is a `PENDING_HUMAN_DECISIONS` signed-state candidate. B8 dispositions 001-005 are effective approvals from Signing Pass 3; readiness is `READY_FOR_HUMAN_GATE_DECISION` and `ready_for_pg_g0_gate_decision: true`. B9/DEC-006 remains pending and requires fresh independent conformance plus separate human disposition. Independent exact-SHA review is pending.

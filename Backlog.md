@@ -131,3 +131,7 @@ Future state changes must be appended as new events; this event must not be edit
 **Reason:** Track the mechanical signed-state successor without conflating it with B8 or B9.
 **Benefit of old phase:** Every signed outcome remained attributable and separately bound.
 **Expected outcome:** No later decision can silently alter the operator's Batch 2 record.
+
+## GOV-P0-04 v0.4 successor
+
+Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.4 successor candidate; EVD-GOV-011 and fresh Claude exact-SHA review remain pending. B9 is prepared but unsigned and requires independent conformance. See `Roadmap.md`, `Progress_Log.md`, `Recap_Today.md`, `README.md` and EVD-GOV-011.

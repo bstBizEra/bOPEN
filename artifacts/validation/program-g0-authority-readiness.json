@@ -1,21 +1,17 @@
 {
   "blockers": [
-    "B9 PASS_PG_G0 requires the later readiness result, independent conformance receipt and separate human decision",
-    "PG-G0-DEC-001 remains ineffective",
-    "PG-G0-DEC-001 through PG-G0-DEC-005 remain pending B8 human decisions",
-    "PG-G0-DEC-002 remains ineffective",
-    "PG-G0-DEC-003 remains ineffective",
-    "PG-G0-DEC-004 remains ineffective",
-    "PG-G0-DEC-005 remains ineffective",
-    "exact-SHA technical review is not accepted",
-    "independent exact-SHA technical review of the v0.3 signed-state successor is pending",
+    "B9 PASS_PG_G0 remains PENDING",
+    "B9 PASS_PG_G0 remains PENDING until a fresh independent conformance receipt is bound",
+    "B9 requires a fresh independent conformance receipt before final disposition",
+    "exact-SHA technical review of the v0.4 signed-state successor is pending",
+    "independent exact-SHA technical review of the v0.4 signed-state successor is pending",
     "merge, release, deployment, runtime and production implementation remain unauthorized",
     "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence"
   ],
   "docket_id": "PG-G0-AUTH-001",
   "pg_g0_passed": false,
   "production_implementation_authorized": false,
-  "ready_for_human_gate_decision": false,
-  "status": "NOT_READY",
+  "ready_for_human_gate_decision": true,
+  "status": "READY_FOR_HUMAN_GATE_DECISION",
   "validation_errors": []
 }

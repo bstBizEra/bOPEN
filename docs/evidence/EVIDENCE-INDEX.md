@@ -35,3 +35,11 @@ Reason: the original index row preserves its pre-review checker-pending state. B
 | EVD-GOV-009 | GOV-P0-04 | Maker evidence for the v0.3 mechanical encoding of all signed Batch 2 outcomes | `docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md` | Signed-state candidate; new independent exact-SHA review pending |
 
 Reason: index the prerequisite receipt and its non-self-referential signed-state successor evidence. Benefit of the old phase: the original rows preserve the preparation-time status. Expected outcome: reviewers can distinguish the accepted v0.2 candidate from the separately reviewable v0.3 encoding; neither evidence record decides B8 or B9.
+
+## Append-only v0.4 B8 signed-state entry - 2026-07-23
+
+| Evidence ID | Work package | Description | Path | Status |
+|---|---|---|---|---|
+| EVD-GOV-011 | GOV-P0-04 | Maker evidence for v0.4 encoding of all five Signing Pass 3 B8 approvals and B9 pending surface | `docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md` | Signed-state candidate; new independent exact-SHA review pending |
+
+Reason: record the next mechanical successor without upgrading EVD-GOV-010 or pre-signing B9. Benefit of the old phase: EVD-GOV-009 remains a stable v0.3 audit trail. Expected outcome: Claude reviews one exact v0.4 SHA while the human B9 decision remains pending.

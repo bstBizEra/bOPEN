@@ -18,20 +18,28 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCKET_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001.json")
 SCHEMA_PATH = Path("contracts/governance/pg-g0-authority-docket.schema.json")
 AUTHORITY_MATRIX_PATH = Path("docs/00-governance/registers/AUTHORITY-MATRIX.json")
-BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json")
+BINDING_INVENTORY_PATH = Path("docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json")
 PREDECESSOR_DOCKET_PATH = "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json"
-SIGNED_SUBSTRATE_COMMIT = "60c4831f4fcdfabb876d62f4eb98949b4a1a5a66"
-SIGNED_SUBSTRATE_TREE = "75775a659f1c36c1cc5b489be572a347e1ea496b"
-SIGNED_SUBSTRATE_BRANCH = "operator/PG-G0-signing-pass-2"
-SIGNED_AT = "2026-07-23T00:45:00+07:00"
-SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
+V03_SUBSTRATE_COMMIT = "60c4831f4fcdfabb876d62f4eb98949b4a1a5a66"
+V03_SUBSTRATE_TREE = "75775a659f1c36c1cc5b489be572a347e1ea496b"
+V03_SUBSTRATE_BRANCH = "operator/PG-G0-signing-pass-2"
+SIGNED_SUBSTRATE_COMMIT = "7834c48f84c01be8a03cf00380dd06f2bdea0b81"
+SIGNED_SUBSTRATE_TREE = "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256"
+SIGNED_SUBSTRATE_BRANCH = "operator/PG-G0-signing-pass-3"
+SIGNED_AT = "2026-07-23T09:14:00+07:00"
+SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-3.md#signed-decisions"
 SIGNED_EVIDENCE_REFS = {
+    "docs/00-governance/signing/SIGNING-PASS-3.md",
+    "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md",
+}
+V03_SIGNED_AT = "2026-07-23T00:45:00+07:00"
+V03_SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
+V03_SIGNED_EVIDENCE_REFS = {
     "docs/00-governance/signing/SIGNING-PASS-2.md",
     "docs/evidence/EVD-GOV-008-docket-v02-independent-review.md",
 }
 EXTRA_INVENTORY_RECORDS = (
     ("AUTHORITY-MATRIX-V0.2", "0.2.0-draft", "draft", "docs/00-governance/registers/AUTHORITY-MATRIX.json"),
-    ("PG-G0-AUTH-001-V0.2", "0.2.0-draft", "pending_human_decisions", PREDECESSOR_DOCKET_PATH),
     ("PG-G0-AUTH-001-V0.2-BINDINGS", "0.2.0", "frozen_substrate_inventory", "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json"),
     ("PG-G0-DOCKET-SCHEMA-V0.2", "0.2.0-draft", "predecessor", "contracts/governance/pg-g0-authority-docket.schema.json"),
     ("AUTHORITY-MATRIX-SCHEMA-V0.2", "0.2.0-draft", "approved-state-capable", "contracts/governance/authority-matrix.schema.json"),
@@ -41,6 +49,12 @@ EXTRA_INVENTORY_RECORDS = (
     ("EVD-GOV-008", "0.1", "ACCEPT_EXACT_SHA", "docs/evidence/EVD-GOV-008-docket-v02-independent-review.md"),
     ("BOPEN-BOOT-001", "0.1", "Approved", "BOPEN-BOOT-001.md"),
     ("BOOTSTRAP-GATES", "0.1", "B7 pending at substrate", "docs/work-packages/BOOTSTRAP-GATES.md"),
+    ("PG-G0-AUTH-001-V0.3", "0.3.0-draft", "signed_state_candidate", PREDECESSOR_DOCKET_PATH),
+    ("PG-G0-AUTH-001-V0.3-BINDINGS", "0.3.0", "frozen_signed_substrate_inventory", "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json"),
+    ("EVD-GOV-009", "0.1", "signed_state_candidate", "docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md"),
+    ("EVD-GOV-010", "0.1", "ACCEPT_EXACT_SHA", "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md"),
+    ("SIGNING-PASS-3", "0.1", "signed_b8", "docs/00-governance/signing/SIGNING-PASS-3.md"),
+    ("PG-G0-GATE-001", "0.1-draft", "draft", "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md"),
 )
 SIGNED_TRANSFORM_PATHS = {
     "Roadmap.md",
@@ -73,13 +87,16 @@ EXPECTED_DECISIONS = {
     "PG-G0-DEC-003": ("APPROVE_ARCHITECTURE", "DEC-0010", "Architecture Authority", {"Product Authority", "Security Authority", "Data Authority"}),
     "PG-G0-DEC-004": ("APPROVE_GOAL", "BOPEN-GOAL-001", "Product Authority", {"Architecture Authority", "Security Authority", "Data Authority"}),
     "PG-G0-DEC-005": ("ACCEPT_EVIDENCE", "EVD-GOV-001", "Engineering Authority", set()),
+    "PG-G0-DEC-006": ("PASS_PG_G0", "PG-G0-GATE-001", "Engineering Authority", {"Product Authority", "Architecture Authority", "Security Authority", "Data Authority"}),
 }
+B8_DECISION_IDS = {"PG-G0-DEC-001", "PG-G0-DEC-002", "PG-G0-DEC-003", "PG-G0-DEC-004", "PG-G0-DEC-005"}
 EXPECTED_SUBJECT_REFS = {
     "DEC-0007": "docs/decisions/DEC-0007.md",
     "GOV-P0-01": "docs/work-packages/GOV-P0-01.md",
     "DEC-0010": "docs/decisions/DEC-0010.md",
     "BOPEN-GOAL-001": "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
     "EVD-GOV-001": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
+    "PG-G0-GATE-001": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
 }
 EXPECTED_ACTION_CONFIG = {
     "APPROVE_ARCHITECTURE": ("architecture_approval", False, {"Security Authority", "Data Authority"}),
@@ -346,7 +363,7 @@ def read_file_at_commit(root: Path, commit_sha: str, relative: str) -> bytes | N
     return completed.stdout if completed.returncode == 0 else None
 
 
-def build_v03_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
+def build_v04_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
     predecessor_bytes = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, PREDECESSOR_DOCKET_PATH)
     if predecessor_bytes is None:
         raise ValueError("signed predecessor docket missing")
@@ -376,10 +393,10 @@ def build_v03_binding_inventory(root: Path = ROOT) -> dict[str, Any]:
             "bytes": len(content),
         })
     return {
-        "inventory_id": "PG-G0-AUTH-001-V0.3-BINDINGS",
-        "version": "0.3.0",
+        "inventory_id": "PG-G0-AUTH-001-V0.4-BINDINGS",
+        "version": "0.4.0",
         "status": "frozen_signed_substrate_inventory",
-        "generated_at": "2026-07-23T01:00:00+07:00",
+        "generated_at": SIGNED_AT,
         "repository_ref": "bstBizEra/bopen",
         "substrate_commit_sha": SIGNED_SUBSTRATE_COMMIT,
         "substrate_tree_sha": SIGNED_SUBSTRATE_TREE,
@@ -406,21 +423,21 @@ def signed_authority_actor(role: str, registry_sha256: str) -> dict[str, Any]:
     }
 
 
-def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
+def build_v04_docket(root: Path = ROOT) -> dict[str, Any]:
     predecessor_bytes = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, PREDECESSOR_DOCKET_PATH)
     if predecessor_bytes is None:
         raise ValueError("signed predecessor docket missing")
     docket = json.loads(predecessor_bytes.decode("utf-8"))
-    inventory = build_v03_binding_inventory(root)
+    inventory = build_v04_binding_inventory(root)
     inventory_by_path = {item["path"]: item for item in inventory["records"]}
     registry_path = "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
     registry_sha256 = inventory_by_path[registry_path]["sha256"]
 
     docket.update({
-        "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.3.0-draft",
-        "version": "0.3.0-draft",
+        "$schema": "bopen://schemas/governance/pg-g0-authority-docket/0.4.0-draft",
+        "version": "0.4.0-draft",
         "status": "signed_state_candidate",
-        "updated_at": "2026-07-23T01:00:00+07:00",
+        "updated_at": SIGNED_AT,
         "repository_binding": {
             "commit_sha": SIGNED_SUBSTRATE_COMMIT,
             "tree_sha": SIGNED_SUBSTRATE_TREE,
@@ -450,18 +467,17 @@ def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
             "reviewed_at": None,
             "evidence_refs": [],
         },
-        "state": "TECHNICAL_REVIEW",
+        "state": "PENDING_HUMAN_DECISIONS",
         "effective_outcome": {
-            "program_goal_approved": False,
+            "program_goal_approved": True,
             "governance_baseline_approved": True,
             "work_package_accepted": True,
-            "evidence_accepted": False,
-            "ready_for_pg_g0_gate_decision": False,
+            "evidence_accepted": True,
+            "ready_for_pg_g0_gate_decision": True,
         },
         "blockers": [
-            "independent exact-SHA technical review of the v0.3 signed-state successor is pending",
-            "PG-G0-DEC-001 through PG-G0-DEC-005 remain pending B8 human decisions",
-            "B9 PASS_PG_G0 requires the later readiness result, independent conformance receipt and separate human decision",
+            "independent exact-SHA technical review of the v0.4 signed-state successor is pending",
+            "B9 PASS_PG_G0 remains PENDING until a fresh independent conformance receipt is bound",
             "solo-operator authority concentration remains disclosed and provides no inter-human concurrence independence",
             "merge, release, deployment, runtime and production implementation remain unauthorized",
         ],
@@ -469,8 +485,17 @@ def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
     for artifact in docket["governing_artifacts"]:
         record = inventory_by_path.get(artifact["artifact_ref"])
         if record is None:
-            raise ValueError(f"governing artifact missing from v0.3 inventory: {artifact['artifact_ref']}")
+            raise ValueError(f"governing artifact missing from v0.4 inventory: {artifact['artifact_ref']}")
         artifact["sha256"] = record["sha256"]
+
+    gate_record = inventory_by_path["docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md"]
+    docket["governing_artifacts"].append({
+        "artifact_id": "PG-G0-GATE-001",
+        "version": "0.1-draft",
+        "status": "Draft; ineffective",
+        "artifact_ref": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
+        "sha256": gate_record["sha256"],
+    })
 
     matrix_bytes = (root / AUTHORITY_MATRIX_PATH).read_bytes()
     docket["authority_source"] = {
@@ -480,32 +505,86 @@ def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
         "version": "0.2.0",
         "status": "approved",
         "sha256": bytes_sha256(matrix_bytes),
-        "signing_ref": SIGNED_DECISION_REF,
+        "signing_ref": V03_SIGNED_DECISION_REF,
         "effective": True,
     }
-    for item in docket["prepared_dispositions"]:
-        item["authority_actor"] = signed_authority_actor(item["accountable_authority_role"], registry_sha256)
-        item["concurrences"] = [
+    for decision in docket["decision_requests"]:
+        decision_id = decision["decision_id"]
+        if decision_id == "PG-G0-DEC-006":
+            continue
+        role = decision["final_decision_role"]
+        decision["checked_by"] = None
+        decision["final_authority_actor"] = signed_authority_actor(role, registry_sha256)
+        for concurrence in decision["required_concurrences"]:
+            concurrence["authority_actor"] = signed_authority_actor(concurrence["authority_role"], registry_sha256)
+            concurrence["disposition"] = "CONCUR"
+            concurrence["decided_at"] = SIGNED_AT
+            concurrence["expires_at"] = decision["expires_at"]
+            concurrence["evidence_refs"] = sorted(SIGNED_EVIDENCE_REFS)
+        decision["final_disposition"] = {
+            "value": "APPROVE",
+            "decided_at": SIGNED_AT,
+            "reason_code": "OPERATOR_SIGNED_B8_APPROVE",
+            "decision_ref": SIGNED_DECISION_REF,
+            "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
+            "effective": True,
+        }
+    docket["decision_requests"].append({
+        "decision_id": "PG-G0-DEC-006",
+        "action_id": "PASS_PG_G0",
+        "subject": {
+            "artifact_id": "PG-G0-GATE-001",
+            "version": "0.1-draft",
+            "artifact_ref": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
+            "sha256": gate_record["sha256"],
+            "commit_sha": SIGNED_SUBSTRATE_COMMIT,
+            "tree_sha": SIGNED_SUBSTRATE_TREE,
+        },
+        "prepared_by": {
+            "actor_kind": "AGENT",
+            "identity_ref": "BST-Codex-Motor",
+            "role": "QA & Evidence Agent",
+            "registration_ref": None,
+            "session_ref": None,
+        },
+        "checked_by": None,
+        "accountable_authority_role": "Engineering Authority",
+        "final_decision_role": "Engineering Authority",
+        "final_authority_actor": None,
+        "required_concurrences": [
             {
                 "authority_role": role,
-                "authority_actor": signed_authority_actor(role, registry_sha256),
-                "disposition": "CONCUR",
-                "decided_at": SIGNED_AT,
-                "decision_ref": SIGNED_DECISION_REF,
-                "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
-                "effective": True,
+                "required": True,
+                "source_refs": ["docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json"],
+                "bound_commit_sha": SIGNED_SUBSTRATE_COMMIT,
+                "bound_tree_sha": SIGNED_SUBSTRATE_TREE,
+                "authority_actor": None,
+                "disposition": "PENDING",
+                "decided_at": None,
+                "expires_at": None,
+                "evidence_refs": [],
             }
-            for role in item["required_concurrence"]
-        ]
-        item["disposition"] = "APPROVE"
-        item["decided_at"] = SIGNED_AT
-        item["decision_ref"] = SIGNED_DECISION_REF
-        item["evidence_refs"] = sorted(SIGNED_EVIDENCE_REFS)
-        item["effective"] = True
+            for role in ("Product Authority", "Architecture Authority", "Security Authority", "Data Authority")
+        ],
+        "expires_at": "2026-08-21T00:00:00+07:00",
+        "prerequisite_refs": [
+            "ready_for_pg_g0_gate_decision=true",
+            "fresh independent conformance receipt covering the PG-G0 requirements",
+            "independent conformance receipt must be bound before any B9 final disposition",
+        ],
+        "final_disposition": {
+            "value": "PENDING",
+            "decided_at": None,
+            "reason_code": "PENDING_INDEPENDENT_CONFORMANCE_AND_HUMAN_B9_DECISION",
+            "decision_ref": None,
+            "evidence_refs": [],
+            "effective": False,
+        },
+    })
     docket["state_history"].append({
-        "sequence": 3,
-        "from": "PENDING_HUMAN_DECISIONS",
-        "to": "TECHNICAL_REVIEW",
+        "sequence": len(docket["state_history"]) + 1,
+        "from": "TECHNICAL_REVIEW",
+        "to": "PENDING_HUMAN_DECISIONS",
         "changed_at": SIGNED_AT,
         "changed_by": {
             "actor_kind": "HUMAN",
@@ -514,7 +593,7 @@ def build_v03_docket(root: Path = ROOT) -> dict[str, Any]:
             "registration_ref": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json#HUMAN-OPERATOR-001",
             "session_ref": None,
         },
-        "reason_code": "BATCH_2_SIGNED_STATE_REQUIRES_SUCCESSOR_TECHNICAL_REVIEW",
+        "reason_code": "B8_SIGNED_B9_SURFACED_PENDING_INDEPENDENT_CONFORMANCE",
         "commit_sha": SIGNED_SUBSTRATE_COMMIT,
         "tree_sha": SIGNED_SUBSTRATE_TREE,
         "evidence_refs": sorted(SIGNED_EVIDENCE_REFS),
@@ -534,7 +613,7 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
         "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
     )
     for relative in register_paths:
-        source = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        source = read_file_at_commit(root, V03_SUBSTRATE_COMMIT, relative)
         try:
             expected = json.loads(source.decode("utf-8")) if source is not None else None
             current = json.loads((root / relative).read_text(encoding="utf-8"))
@@ -546,10 +625,10 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
             continue
         expected["version"] = str(expected.get("version", "")).removesuffix("-draft")
         expected["status"] = "approved"
-        expected["updated_at"] = SIGNED_AT
+        expected["updated_at"] = V03_SIGNED_AT
         expected["approved_by"] = "HUMAN-OPERATOR-001"
-        expected["approved_at"] = SIGNED_AT
-        expected["approval_ref"] = SIGNED_DECISION_REF
+        expected["approved_at"] = V03_SIGNED_AT
+        expected["approval_ref"] = V03_SIGNED_DECISION_REF
         if relative == AUTHORITY_MATRIX_PATH.as_posix():
             for entry in expected.get("entries", []):
                 if isinstance(entry, dict):
@@ -567,12 +646,12 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
     }
     common_markers = (
         "HUMAN-OPERATOR-001",
-        SIGNED_AT,
-        SIGNED_DECISION_REF,
+        V03_SIGNED_AT,
+        V03_SIGNED_DECISION_REF,
         "EVD-GOV-008",
     )
     for relative, specific_markers in append_markers.items():
-        source = read_file_at_commit(root, SIGNED_SUBSTRATE_COMMIT, relative)
+        source = read_file_at_commit(root, V03_SUBSTRATE_COMMIT, relative)
         path = root / relative
         if source is None or not path.is_file():
             errors.append(f"signed append-only artifact missing: {relative}")
@@ -1056,10 +1135,10 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     errors.extend(validate_schema_instance(docket, schema, schema, "authority docket"))
     if docket.get("$schema") != schema.get("$id"):
         errors.append("authority docket schema binding mismatch")
-    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.3.0-draft":
+    if docket.get("docket_id") != "PG-G0-AUTH-001" or docket.get("version") != "0.4.0-draft":
         errors.append("authority docket identity/version invalid")
-    if docket.get("status") != "signed_state_candidate" or docket.get("state") != "TECHNICAL_REVIEW":
-        errors.append("v0.3 signed-state docket must remain in TECHNICAL_REVIEW")
+    if docket.get("status") != "signed_state_candidate" or docket.get("state") != "PENDING_HUMAN_DECISIONS":
+        errors.append("v0.4 signed-state docket must remain PENDING_HUMAN_DECISIONS")
     errors.extend(validate_signed_artifact_transforms(root))
 
     updated_at = parse_datetime(docket.get("updated_at"))
@@ -1114,7 +1193,7 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         errors.append(f"binding inventory {inventory_error}")
     elif isinstance(inventory_binding, dict) and isinstance(inventory, dict):
         try:
-            expected_inventory = build_v03_binding_inventory(root)
+            expected_inventory = build_v04_binding_inventory(root)
         except (ValueError, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             expected_inventory = None
             errors.append(f"binding inventory regeneration failed: {exc}")
@@ -1175,7 +1254,7 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append("authority source must be approved v0.2 and effective")
         if source.get("sha256") != file_sha256(root / AUTHORITY_MATRIX_PATH):
             errors.append("authority source current matrix digest mismatch")
-        if source.get("signing_ref") != SIGNED_DECISION_REF:
+        if source.get("signing_ref") != V03_SIGNED_DECISION_REF:
             errors.append("authority source signing reference mismatch")
         committed_source = read_file_at_commit(root, commit_sha, str(source.get("proposal_ref", "")))
         try:
@@ -1306,9 +1385,9 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             errors.append(f"{disposition_id} alters the signed v0.2 subject or requested outcome")
         if item.get("disposition") != "APPROVE" or item.get("effective") is not True:
             errors.append(f"{disposition_id} signed disposition/effect mismatch")
-        if item.get("decided_at") != SIGNED_AT or item.get("decision_ref") != SIGNED_DECISION_REF:
+        if item.get("decided_at") != V03_SIGNED_AT or item.get("decision_ref") != V03_SIGNED_DECISION_REF:
             errors.append(f"{disposition_id} signed time/reference mismatch")
-        if set(item.get("evidence_refs", [])) != SIGNED_EVIDENCE_REFS:
+        if set(item.get("evidence_refs", [])) != V03_SIGNED_EVIDENCE_REFS:
             errors.append(f"{disposition_id} signed evidence mismatch")
         disposition_expiry = parse_datetime(item.get("expires_at"))
         if disposition_expiry is None or (expires_at is not None and disposition_expiry > expires_at):
@@ -1342,8 +1421,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             subject_ref=actor_subject_ref,
             authority_source=source,
             governing_artifacts=artifact_map,
-            repository_commit_sha=commit_sha,
-            repository_tree_sha=tree_sha,
+            repository_commit_sha=V03_SUBSTRATE_COMMIT,
+            repository_tree_sha=V03_SUBSTRATE_TREE,
         ))
         signed_concurrences = item.get("concurrences")
         if not isinstance(signed_concurrences, list):
@@ -1359,9 +1438,9 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             role = str(signed_concurrence.get("authority_role", ""))
             if signed_concurrence.get("disposition") != "CONCUR" or signed_concurrence.get("effective") is not True:
                 errors.append(f"{disposition_id} {role} concurrence effect mismatch")
-            if signed_concurrence.get("decided_at") != SIGNED_AT or signed_concurrence.get("decision_ref") != SIGNED_DECISION_REF:
+            if signed_concurrence.get("decided_at") != V03_SIGNED_AT or signed_concurrence.get("decision_ref") != V03_SIGNED_DECISION_REF:
                 errors.append(f"{disposition_id} {role} concurrence time/reference mismatch")
-            if set(signed_concurrence.get("evidence_refs", [])) != SIGNED_EVIDENCE_REFS:
+            if set(signed_concurrence.get("evidence_refs", [])) != V03_SIGNED_EVIDENCE_REFS:
                 errors.append(f"{disposition_id} {role} concurrence evidence mismatch")
             errors.extend(validate_authority_actor(
                 signed_concurrence.get("authority_actor"),
@@ -1374,8 +1453,8 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 subject_ref=actor_subject_ref,
                 authority_source=source,
                 governing_artifacts=artifact_map,
-                repository_commit_sha=commit_sha,
-                repository_tree_sha=tree_sha,
+                repository_commit_sha=V03_SUBSTRATE_COMMIT,
+                repository_tree_sha=V03_SUBSTRATE_TREE,
             ))
 
     decisions = docket.get("decision_requests")
@@ -1384,9 +1463,12 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         decisions = []
     decision_ids = [item.get("decision_id") for item in decisions if isinstance(item, dict)]
     if set(decision_ids) != set(EXPECTED_DECISIONS) or len(decision_ids) != len(EXPECTED_DECISIONS):
-        errors.append("authority docket decision set must preserve the five B8 decision IDs")
-    if decisions != predecessor.get("decision_requests"):
-        errors.append("five B8 decision requests must remain byte-semantically unchanged from signed v0.2")
+        errors.append("authority docket decision set must preserve five B8 decisions and surface one B9 decision")
+    predecessor_decisions = {
+        item.get("decision_id"): item
+        for item in predecessor.get("decision_requests", [])
+        if isinstance(item, dict)
+    }
 
     for decision in decisions:
         if not isinstance(decision, dict):
@@ -1397,6 +1479,16 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
         if expected is None:
             continue
         action_id, artifact_id, authority_role, concurrence_roles = expected
+        if decision_id in B8_DECISION_IDS:
+            predecessor_decision = predecessor_decisions.get(decision_id)
+            immutable_fields = {
+                "decision_id", "action_id", "subject", "prepared_by",
+                "accountable_authority_role", "final_decision_role", "expires_at",
+            }
+            if not isinstance(predecessor_decision, dict) or any(
+                decision.get(field) != predecessor_decision.get(field) for field in immutable_fields
+            ):
+                errors.append(f"{decision_id} alters the signed v0.3 subject binding or request")
         if decision.get("action_id") != action_id:
             errors.append(f"{decision_id} action mismatch")
         action = matrix_actions.get(action_id)
@@ -1481,7 +1573,9 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                     repository_tree_sha=tree_sha,
                 ))
                 identity = actor_identity(concurrence.get("authority_actor"))
-                if not identity or identity == prepared_identity or identity in concurrence_identities:
+                if not identity or identity == prepared_identity or (
+                    decision_id not in B8_DECISION_IDS and identity in concurrence_identities
+                ):
                     errors.append(f"{decision_id} {role} concurrence actor is not independent")
                 concurrence_identities.add(identity)
                 decided = parse_datetime(concurrence.get("decided_at"))
@@ -1498,6 +1592,25 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
             continue
         if not non_placeholder(final.get("reason_code")):
             errors.append(f"{decision_id} final disposition reason_code required")
+        if decision_id in B8_DECISION_IDS:
+            if final.get("value") != "APPROVE":
+                errors.append(f"{decision_id} signed B8 outcome must remain APPROVE")
+            if final.get("decided_at") != SIGNED_AT or final.get("decision_ref") != SIGNED_DECISION_REF:
+                errors.append(f"{decision_id} signed B8 time/reference mismatch")
+            if set(final.get("evidence_refs", [])) != SIGNED_EVIDENCE_REFS:
+                errors.append(f"{decision_id} signed B8 evidence mismatch")
+            if final.get("effective") is not True:
+                errors.append(f"{decision_id} signed B8 outcome must be effective")
+        elif decision_id == "PG-G0-DEC-006":
+            expected_prerequisites = {
+                "ready_for_pg_g0_gate_decision=true",
+                "fresh independent conformance receipt covering the PG-G0 requirements",
+                "independent conformance receipt must be bound before any B9 final disposition",
+            }
+            if set(decision.get("prerequisite_refs", [])) != expected_prerequisites:
+                errors.append("PG-G0-DEC-006 independent-conformance prerequisites incomplete")
+            if final.get("value") != "PENDING" or final.get("effective") is not False:
+                errors.append("PG-G0-DEC-006 B9 decision must remain PENDING and ineffective")
         value = final.get("value")
         if value == "PENDING":
             if decision.get("final_authority_actor") is not None or decision.get("checked_by") is not None:
@@ -1521,20 +1634,23 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
                 repository_commit_sha=commit_sha,
                 repository_tree_sha=tree_sha,
             ))
-            errors.extend(validate_actor(decision.get("checked_by"), f"{decision_id} checker"))
+            if decision.get("checked_by") is not None:
+                errors.extend(validate_actor(decision.get("checked_by"), f"{decision_id} checker"))
             if action is not None and isinstance(decision.get("checked_by"), dict):
                 if decision["checked_by"].get("role") not in action.get("permitted_checker_roles", []):
                     errors.append(f"{decision_id} checker role is not permitted by matrix")
             checker_identity = actor_identity(decision.get("checked_by"))
             authority_identity = actor_identity(decision.get("final_authority_actor"))
             identities = [prepared_identity, checker_identity, authority_identity]
-            if any(not item for item in identities) or len(set(identities)) != 3:
+            if not checker_identity:
+                identities = [prepared_identity, authority_identity]
+            if any(not item for item in identities) or len(set(identities)) != len(identities):
                 errors.append(f"{decision_id} maker, checker and final authority must be distinct")
-            if authority_identity in concurrence_identities or checker_identity in concurrence_identities:
+            if checker_identity and checker_identity in concurrence_identities:
                 errors.append(f"{decision_id} final/checker actors must differ from concurrence actors")
             decided = parse_datetime(final.get("decided_at"))
             errors.extend(_validate_current_window(decided, decision_expiry, as_of, f"{decision_id} final disposition", str(value)))
-            if final.get("effective") is not False or not non_placeholder(final.get("decision_ref")):
+            if decision_id in B8_DECISION_IDS and (final.get("effective") is not True or not non_placeholder(final.get("decision_ref"))):
                 errors.append(f"{decision_id} terminal receipt incomplete")
             errors.extend(validate_evidence_refs(root, final.get("evidence_refs"), f"{decision_id} final disposition", required=True))
             if value == "APPROVE" and any(item.get("disposition") != "CONCUR" for item in concurrences if isinstance(item, dict)):
@@ -1580,18 +1696,18 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     outcomes = docket.get("effective_outcome")
     errors.extend(exact_keys(outcomes, EFFECTIVE_OUTCOME_KEYS, "effective outcome"))
     expected_outcomes = {
-        "program_goal_approved": False,
+        "program_goal_approved": True,
         "governance_baseline_approved": True,
         "work_package_accepted": True,
-        "evidence_accepted": False,
-        "ready_for_pg_g0_gate_decision": False,
+        "evidence_accepted": True,
+        "ready_for_pg_g0_gate_decision": True,
     }
     if outcomes != expected_outcomes:
-        errors.append("v0.3 effective outcomes must match the signed Batch 2 scope exactly")
+        errors.append("v0.4 effective outcomes must match the signed Batch 2 and B8 scope exactly")
     flags = docket.get("non_authority_flags")
     errors.extend(exact_keys(flags, NON_AUTHORITY_KEYS, "non-authority flags"))
     if isinstance(flags, dict) and any(value is not False for value in flags.values()):
-        errors.append("v0.3 signed-state docket cannot grant B8, B9, runtime or release authority")
+        errors.append("v0.4 signed-state docket cannot grant B9, runtime or release authority")
 
     blockers = docket.get("blockers")
     if not isinstance(blockers, list) or not blockers or any(not non_placeholder(item) for item in blockers):
@@ -1610,21 +1726,31 @@ def build_readiness_report(root: Path = ROOT, as_of: datetime | None = None) -> 
     blockers = list(docket.get("blockers", [])) if docket else []
     if docket:
         if docket["technical_review"]["verdict"] != "ACCEPT_EXACT_SHA":
-            blockers.append("exact-SHA technical review is not accepted")
+            blockers.append("exact-SHA technical review of the v0.4 signed-state successor is pending")
         if not docket["authority_source"]["effective"]:
             blockers.append("authority source is not effective")
         for prepared in docket.get("prepared_dispositions", []):
             if prepared.get("disposition") != "APPROVE" or not prepared.get("effective"):
                 blockers.append(f"{prepared.get('disposition_id', 'prepared disposition')} remains ineffective")
         for decision in docket["decision_requests"]:
-            if decision["final_disposition"]["value"] != "APPROVE" or not decision["final_disposition"]["effective"]:
+            if decision["decision_id"] in B8_DECISION_IDS and (
+                decision["final_disposition"]["value"] != "APPROVE" or not decision["final_disposition"]["effective"]
+            ):
                 blockers.append(f"{decision['decision_id']} remains ineffective")
+            if decision["decision_id"] == "PG-G0-DEC-006":
+                blockers.append("B9 PASS_PG_G0 remains PENDING")
+                blockers.append("B9 requires a fresh independent conformance receipt before final disposition")
+    ready = bool(
+        docket
+        and docket.get("effective_outcome", {}).get("ready_for_pg_g0_gate_decision") is True
+        and not errors
+    )
     blockers.extend(f"validation error: {error}" for error in errors)
     blockers = sorted(set(blockers))
     return {
         "docket_id": docket.get("docket_id") if docket else "missing",
-        "status": "INVALID" if errors else "NOT_READY",
-        "ready_for_human_gate_decision": False,
+        "status": "INVALID" if errors else ("READY_FOR_HUMAN_GATE_DECISION" if ready else "NOT_READY"),
+        "ready_for_human_gate_decision": ready,
         "pg_g0_passed": False,
         "production_implementation_authorized": False,
         "validation_errors": errors,
@@ -1658,13 +1784,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.write_inventory:
         output = args.write_inventory if args.write_inventory.is_absolute() else ROOT / args.write_inventory
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(json.dumps(build_v03_binding_inventory(), indent=2) + "\n", encoding="utf-8")
+        output.write_text(json.dumps(build_v04_binding_inventory(), indent=2) + "\n", encoding="utf-8")
         print(f"Wrote {output}")
         return 0
     if args.write_docket:
         output = args.write_docket if args.write_docket.is_absolute() else ROOT / args.write_docket
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(json.dumps(build_v03_docket(), indent=2) + "\n", encoding="utf-8")
+        output.write_text(json.dumps(build_v04_docket(), indent=2) + "\n", encoding="utf-8")
         print(f"Wrote {output}")
         return 0
     report = build_readiness_report()

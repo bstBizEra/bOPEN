@@ -73,3 +73,7 @@ The operator signed all thirteen prepared Batch 2 dispositions in `SIGNING-PASS-
 The original five B8 decision requests remain byte-semantically unchanged, `PENDING` and ineffective. B9/PASS_PG_G0, merge, release, deployment, runtime and production implementation remain unauthorized. A new independent exact-SHA receipt is required for the v0.3 candidate; EVD-GOV-008 cannot be upgraded in place.
 
 Reason: separate the attributable human signature from its reviewable mechanical encoding. Benefit of the old phase: v0.2 exposed every disposition without claiming effect. Expected outcome: an independent checker can verify one exact successor SHA without gaining authority to alter a signed outcome.
+
+## Append-only v0.4 B8 signed-state note - 2026-07-23
+
+Signing Pass 3 at `7834c48f84c01be8a03cf00380dd06f2bdea0b81` records all five B8 approvals against exact v0.3 subjects. The v0.4 successor preserves those outcomes, binds final-authority actors through the identity register, and computes `ready_for_pg_g0_gate_decision: true` with a 46-record rebound inventory. B9/PASS_PG_G0 is surfaced as `PENDING` with an independent-conformance prerequisite and is not pre-signed. A new exact-SHA review receipt is required; EVD-GOV-010 is not upgraded.

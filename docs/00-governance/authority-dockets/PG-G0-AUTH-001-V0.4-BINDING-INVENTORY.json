@@ -1,0 +1,380 @@
+{
+  "inventory_id": "PG-G0-AUTH-001-V0.4-BINDINGS",
+  "version": "0.4.0",
+  "status": "frozen_signed_substrate_inventory",
+  "generated_at": "2026-07-23T09:14:00+07:00",
+  "repository_ref": "bstBizEra/bopen",
+  "substrate_commit_sha": "7834c48f84c01be8a03cf00380dd06f2bdea0b81",
+  "substrate_tree_sha": "6988941a5afacd3ea2ca6d0dd62f3ff8ebf4c256",
+  "substrate_branch": "operator/PG-G0-signing-pass-3",
+  "records": [
+    {
+      "artifact_id": "BOPEN-GOV-001",
+      "version": "0.1",
+      "status": "Draft",
+      "path": "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
+      "sha256": "d88a371ca7343da6c7ea990112ef2857e13f4faeb379bcb1f8a458567a2a140a",
+      "bytes": 5083
+    },
+    {
+      "artifact_id": "BOPEN-GOAL-001",
+      "version": "0.2",
+      "status": "Draft",
+      "path": "docs/01-product/BOPEN-GOAL-001-DRAFT.md",
+      "sha256": "31cd060b393c77e637e7e841280d87c0e9d358f616950c1745e70a1303a0857c",
+      "bytes": 14188
+    },
+    {
+      "artifact_id": "DEC-0007",
+      "version": "0.1",
+      "status": "Proposed",
+      "path": "docs/decisions/DEC-0007.md",
+      "sha256": "d0e6c3828a3698bc1c02b38bb66422fdcd52eb3ab3b33cbd96f8eab808a66e36",
+      "bytes": 2606
+    },
+    {
+      "artifact_id": "DEC-0010",
+      "version": "0.1",
+      "status": "Proposed",
+      "path": "docs/decisions/DEC-0010.md",
+      "sha256": "0df762a9dcafd3580c24662ca851507853a00f869eb86ef09e4950067ae205cd",
+      "bytes": 2055
+    },
+    {
+      "artifact_id": "DEC-0012",
+      "version": "0.1",
+      "status": "Partially disposed",
+      "path": "docs/decisions/DEC-0012.md",
+      "sha256": "10023fe43191d702a0703b30c820ce6ea572209165481054239eeca4f9c66325",
+      "bytes": 4658
+    },
+    {
+      "artifact_id": "DEC-0013",
+      "version": "0.1",
+      "status": "Proposed",
+      "path": "docs/decisions/DEC-0013.md",
+      "sha256": "19965928fff4283f39613c42a7dcd5aeb7306604aa18c1c22ff77d9ba25e66c2",
+      "bytes": 6212
+    },
+    {
+      "artifact_id": "GOV-P0-01",
+      "version": "0.1",
+      "status": "Proposed",
+      "path": "docs/work-packages/GOV-P0-01.md",
+      "sha256": "c909d9053a6f442db0dd2408120e666aabbff515e8fd927d4d4dcc7dc8c414c4",
+      "bytes": 5861
+    },
+    {
+      "artifact_id": "GOV-P0-02",
+      "version": "0.1",
+      "status": "Accepted",
+      "path": "docs/work-packages/GOV-P0-02.md",
+      "sha256": "20fd63289022a51318b07ee9f4c531bed49e0ca401148df1a4a7c30e3c0840df",
+      "bytes": 7382
+    },
+    {
+      "artifact_id": "GOV-P0-03",
+      "version": "0.1",
+      "status": "Accepted; activation pending",
+      "path": "docs/work-packages/GOV-P0-03.md",
+      "sha256": "7ecf90d6c30ce04970ba38f8d9aeba696b301fd275cd7b17a1945bd8cbf9aec8",
+      "bytes": 8560
+    },
+    {
+      "artifact_id": "GOV-P0-04",
+      "version": "0.1",
+      "status": "Proposed",
+      "path": "docs/work-packages/GOV-P0-04.md",
+      "sha256": "c36b1c21dc8e6b1f984d63174af75fe7728da35210e405613cffea70844ee259",
+      "bytes": 8643
+    },
+    {
+      "artifact_id": "EVD-GOV-001",
+      "version": "0.1",
+      "status": "Draft technical evidence",
+      "path": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
+      "sha256": "29c965c3a629449e7722ecdad15cbafb2beed6ec6693e7a40d747a17d1adff8f",
+      "bytes": 6846
+    },
+    {
+      "artifact_id": "EVD-GOV-002",
+      "version": "0.1",
+      "status": "Draft maker evidence",
+      "path": "docs/evidence/EVD-GOV-002-pg-g0-authority-docket.md",
+      "sha256": "4cafd91d22dbf70ecbd9bf91d1e679d18da8832d04add28d865e0d69edf4ffaa",
+      "bytes": 12283
+    },
+    {
+      "artifact_id": "EVD-GOV-003",
+      "version": "0.1",
+      "status": "Draft technical evidence",
+      "path": "docs/evidence/EVD-GOV-003-root-control-surfaces.md",
+      "sha256": "3fcb548b990cf6497008692b87813fe99d636ef30ee0e1b396230c6e409495f5",
+      "bytes": 7514
+    },
+    {
+      "artifact_id": "EVD-GOV-004",
+      "version": "0.1",
+      "status": "ACCEPT_EXACT_SHA",
+      "path": "docs/evidence/EVD-GOV-004-gov-p0-03-independent-verification.md",
+      "sha256": "ff2fb11f02d80a61ddf5fd368c28a613a38e575393794bae7b71496569504bf9",
+      "bytes": 3692
+    },
+    {
+      "artifact_id": "EVD-GOV-005",
+      "version": "0.1",
+      "status": "REJECT for 203ed05",
+      "path": "docs/evidence/EVD-GOV-005-gov-p0-04-independent-review.md",
+      "sha256": "f6d14750289d6a4bf0fbcbe3817a89d95e869ccb7d0a43b93eb2914cf693b7a2",
+      "bytes": 5543
+    },
+    {
+      "artifact_id": "EVD-GOV-006",
+      "version": "0.1",
+      "status": "ACCEPT_EXACT_SHA for d7d8699",
+      "path": "docs/evidence/EVD-GOV-006-gov-p0-04-corrective-candidate-review.md",
+      "sha256": "d8415433cd381c3a6e370ecc41d2be966bfcae765c11b97da8aa07f1a2885639",
+      "bytes": 6714
+    },
+    {
+      "artifact_id": "AUTHORITY-MATRIX-V0.2-PROPOSAL",
+      "version": "0.2.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
+      "sha256": "14671ba675d47dd5aa992bc2b56c2d5dfb10cc6f39ffe48c9be72e8dd8338a24",
+      "bytes": 6452
+    },
+    {
+      "artifact_id": "AUTHORITY-IDENTITY-REGISTER",
+      "version": "0.1.0",
+      "status": "approved",
+      "path": "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json",
+      "sha256": "3418736ff45a6a56f2d63d251fa98181f42ddd3d3bb8f42a894146c20ee313f4",
+      "bytes": 3135
+    },
+    {
+      "artifact_id": "GOAL-REGISTER",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/GOAL-REGISTER.json",
+      "sha256": "758d5632a8f4a6fc53101d5e7cc8f6d60bf33cc9fac8d81888a63dc221596b58",
+      "bytes": 999
+    },
+    {
+      "artifact_id": "AGENT-REGISTER",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/AGENT-REGISTER.json",
+      "sha256": "fec29f489954ec45972e107ddbb47a1d9191075d45d7158844b6c03a636877d3",
+      "bytes": 462
+    },
+    {
+      "artifact_id": "MODULE-REGISTER",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/MODULE-REGISTER.json",
+      "sha256": "e466a61b5bbd90458e30bd04eeae5fc7db357dca479aeeaf2e85ee6f62aef0ba",
+      "bytes": 465
+    },
+    {
+      "artifact_id": "SKILL-REGISTER",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/SKILL-REGISTER.json",
+      "sha256": "ea8227c9cc21bad6452c10c4dd1288f27ade3deb149372f51ff040a2ca93d3ab",
+      "bytes": 462
+    },
+    {
+      "artifact_id": "SCHEDULE-REGISTER",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+      "sha256": "786fcb0a3dc4acc8d1c02d3bc04300ad6680f492d730d56d8f6b9efb2a7ef3fa",
+      "bytes": 2365
+    },
+    {
+      "artifact_id": "TECHNOLOGY-DECISION-ASSIGNMENTS",
+      "version": "0.1.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/TECHNOLOGY-DECISION-ASSIGNMENTS.json",
+      "sha256": "dc2acf6c0319314496b77070e0e5a93d13cde2c20affd3a1a2c91c3a69f54b8e",
+      "bytes": 2739
+    },
+    {
+      "artifact_id": "ROOT-ROADMAP",
+      "version": "0.1",
+      "status": "Draft/Inactive",
+      "path": "Roadmap.md",
+      "sha256": "2ae1e89adbc68f415e0e3ecf0efda07d0c7c676f6986cd2ef0e2c3b92c0ceb57",
+      "bytes": 3209
+    },
+    {
+      "artifact_id": "ROOT-MASTER-STANDARDS",
+      "version": "0.1",
+      "status": "Draft/Inactive",
+      "path": "Master_Standards.md",
+      "sha256": "f112a9a3df57b85310188b8165a82ac7cc257a2c852fa372c6e95ad2b1f02eb7",
+      "bytes": 3474
+    },
+    {
+      "artifact_id": "ROOT-PROGRESS",
+      "version": "0.1",
+      "status": "Draft/Inactive",
+      "path": "Progress_Log.md",
+      "sha256": "a5c055799ad018b4f5bc6720aa0bee14919109600e096bdc9e5d769b4b9ed6bd",
+      "bytes": 6762
+    },
+    {
+      "artifact_id": "ROOT-BACKLOG",
+      "version": "0.1",
+      "status": "Draft/Inactive",
+      "path": "Backlog.md",
+      "sha256": "4d81de3296d016e52a736bb553d7e71949fba62c8a8acff350b9cf78879f444e",
+      "bytes": 6839
+    },
+    {
+      "artifact_id": "ROOT-RECAP",
+      "version": "0.1",
+      "status": "Draft/Inactive",
+      "path": "Recap_Today.md",
+      "sha256": "bfbf3c6215190f13ecabacb3f8e85f339cc0fb37f12047a6fd941972bbefbbdc",
+      "bytes": 6840
+    },
+    {
+      "artifact_id": "SIGNING-PASS-1",
+      "version": "0.1",
+      "status": "partially disposed",
+      "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
+      "sha256": "2fe927e728c1be060a413b5be096007455cef81e4a3bb9028fddab316b924407",
+      "bytes": 7250
+    },
+    {
+      "artifact_id": "AUTHORITY-MATRIX-V0.2",
+      "version": "0.2.0-draft",
+      "status": "draft",
+      "path": "docs/00-governance/registers/AUTHORITY-MATRIX.json",
+      "sha256": "df34a3875d4076e1ceb35355da65c73e2d9f4836133a4751694df8ee8672cfe4",
+      "bytes": 5119
+    },
+    {
+      "artifact_id": "PG-G0-AUTH-001-V0.2-BINDINGS",
+      "version": "0.2.0",
+      "status": "frozen_substrate_inventory",
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.2-BINDING-INVENTORY.json",
+      "sha256": "8a5dc18496bb9800750c5e55a48c54c8bd61f9d683474ae20744bf271df5218e",
+      "bytes": 7940
+    },
+    {
+      "artifact_id": "PG-G0-DOCKET-SCHEMA-V0.2",
+      "version": "0.2.0-draft",
+      "status": "predecessor",
+      "path": "contracts/governance/pg-g0-authority-docket.schema.json",
+      "sha256": "ee7b9ce4a00d461506fa0f8bf8dee75638b23fd98886bed36ee3c25445a5fcee",
+      "bytes": 20649
+    },
+    {
+      "artifact_id": "AUTHORITY-MATRIX-SCHEMA-V0.2",
+      "version": "0.2.0-draft",
+      "status": "approved-state-capable",
+      "path": "contracts/governance/authority-matrix.schema.json",
+      "sha256": "c64ba3a0ad8be83865a3a27ccb6f9ab634e27043a5e126fec6c59ee18428361b",
+      "bytes": 3228
+    },
+    {
+      "artifact_id": "ROOT-CONTROL-SCHEMA-V0.2",
+      "version": "0.2.0-draft",
+      "status": "predecessor",
+      "path": "contracts/governance/root-control-surface.schema.json",
+      "sha256": "c12cd58c03645b331941e1a45458edab52ef8ae94aa36d466328161d12463aef",
+      "bytes": 2648
+    },
+    {
+      "artifact_id": "SIGNING-PASS-2",
+      "version": "0.1",
+      "status": "signed_batch_2",
+      "path": "docs/00-governance/signing/SIGNING-PASS-2.md",
+      "sha256": "e39670d9a35222a08bcafc123784b3b0aa223afb0ca0f9f9ae9c8a0cdb867d9f",
+      "bytes": 5380
+    },
+    {
+      "artifact_id": "EVD-GOV-007",
+      "version": "0.1",
+      "status": "maker_candidate",
+      "path": "docs/evidence/EVD-GOV-007-pg-g0-authority-docket-v02-candidate.md",
+      "sha256": "7c96d45727311fe3051a45c1eb23b6d01203a94d31a8ea01a2e4b2c92a5b086d",
+      "bytes": 4262
+    },
+    {
+      "artifact_id": "EVD-GOV-008",
+      "version": "0.1",
+      "status": "ACCEPT_EXACT_SHA",
+      "path": "docs/evidence/EVD-GOV-008-docket-v02-independent-review.md",
+      "sha256": "1110f20a4b3c37fad459777f936d8ab9a22348af8fd79f75bc1bf20312208366",
+      "bytes": 3910
+    },
+    {
+      "artifact_id": "BOPEN-BOOT-001",
+      "version": "0.1",
+      "status": "Approved",
+      "path": "BOPEN-BOOT-001.md",
+      "sha256": "675114dd58f795d4cb5e256c70cb8fb9147595b6f45ef1d0b1c4bfcd724d3a04",
+      "bytes": 5687
+    },
+    {
+      "artifact_id": "BOOTSTRAP-GATES",
+      "version": "0.1",
+      "status": "B7 pending at substrate",
+      "path": "docs/work-packages/BOOTSTRAP-GATES.md",
+      "sha256": "8c6ca353e0711e91c6e63c8be4676d06b4ea2d7cbc4f1dec3dd0c2db59a3bbdb",
+      "bytes": 2243
+    },
+    {
+      "artifact_id": "PG-G0-AUTH-001-V0.3",
+      "version": "0.3.0-draft",
+      "status": "signed_state_candidate",
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001.json",
+      "sha256": "c73b36f0aca9764e6e52a990a5790aed215607e21078505209f6b64c91de4070",
+      "bytes": 108301
+    },
+    {
+      "artifact_id": "PG-G0-AUTH-001-V0.3-BINDINGS",
+      "version": "0.3.0",
+      "status": "frozen_signed_substrate_inventory",
+      "path": "docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json",
+      "sha256": "f26084775e0ea5894486e68e214aa6afe5e7d3a6b3c0b7caa2867800919927ed",
+      "bytes": 11780
+    },
+    {
+      "artifact_id": "EVD-GOV-009",
+      "version": "0.1",
+      "status": "signed_state_candidate",
+      "path": "docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md",
+      "sha256": "3c2640f94d17ab84adedc0957f17b28de569d72ac232760b9d9fea760db26b9f",
+      "bytes": 5055
+    },
+    {
+      "artifact_id": "EVD-GOV-010",
+      "version": "0.1",
+      "status": "ACCEPT_EXACT_SHA",
+      "path": "docs/evidence/EVD-GOV-010-docket-v03-independent-review.md",
+      "sha256": "f8c335d16f875c32b0084bff98af4098e7af767bbc3c095854c27242fdc05595",
+      "bytes": 3773
+    },
+    {
+      "artifact_id": "SIGNING-PASS-3",
+      "version": "0.1",
+      "status": "signed_b8",
+      "path": "docs/00-governance/signing/SIGNING-PASS-3.md",
+      "sha256": "73fa498d017f7b8084bb927644321c7aa4668fcc76202d594ed41a6f2b47f095",
+      "bytes": 2572
+    },
+    {
+      "artifact_id": "PG-G0-GATE-001",
+      "version": "0.1-draft",
+      "status": "draft",
+      "path": "docs/00-governance/PG-G0-GATE-CONTRACT-DRAFT.md",
+      "sha256": "b45b1c100efda6cceff7b4472297271b9cc8f3d69a05a89b07bd9612a9d4cae9",
+      "bytes": 1602
+    }
+  ]
+}

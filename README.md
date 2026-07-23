@@ -82,3 +82,7 @@ The [v0.2 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.js
 ## PG-G0 docket v0.3 signed-state candidate
 
 Signing Pass 2 now contains the operator's attributable signature for all thirteen Batch 2 dispositions. The [v0.3 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.json), [v0.3 inventory](docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.3-BINDING-INVENTORY.json) and [EVD-GOV-009](docs/evidence/EVD-GOV-009-pg-g0-authority-docket-v03-signed-state-candidate.md) encode that exact signed state against substrate `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66`. The candidate is in `TECHNICAL_REVIEW`; the five B8 decisions and B9 remain pending, and PG-G0, merge, release, deployment, runtime and production implementation remain unauthorized.
+
+## PG-G0 docket v0.4 B8 signed successor
+
+The [v0.4 machine docket](docs/00-governance/authority-dockets/PG-G0-AUTH-001.json), [v0.4 inventory](docs/00-governance/authority-dockets/PG-G0-AUTH-001-V0.4-BINDING-INVENTORY.json) and [EVD-GOV-011](docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md) encode all five Signing Pass 3 B8 approvals against substrate `7834c48f84c01be8a03cf00380dd06f2bdea0b81`. Readiness is true for the human gate decision; B9 remains pending and unsigned pending independent conformance and a separate human disposition.
