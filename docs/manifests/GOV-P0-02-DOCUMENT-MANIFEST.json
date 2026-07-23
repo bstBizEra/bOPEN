@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 285,
+  "count": 286,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1331,6 +1331,13 @@
       "status": "",
       "sha256": "af125a367333d949de14829293be6b94b1c595492b3c54626daf4a743e549635",
       "bytes": 959
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md",
+      "title": "EVD-GOV-017 \u2014 Final Independent Exact-SHA Review of the PG-G0 Terminal Gate-Passed Candidate",
+      "status": "Draft technical evidence",
+      "sha256": "c271fb1ffba422a2e3a2e1c06a93b16e9262606e9ee5ece6d6c98ec04fff51fe",
+      "bytes": 3221
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
