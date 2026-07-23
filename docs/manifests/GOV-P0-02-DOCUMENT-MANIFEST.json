@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-23",
-  "count": 286,
+  "count": 288,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -239,6 +239,13 @@
       "status": "Signed operator record; encoding pending",
       "sha256": "b8c43e59eaa7da6c261793719d85669c1aad85491a544ad8c802a9551ddf741d",
       "bytes": 2553
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-5.md",
+      "title": "PG-P0 Signing Pass 5 \u2014 Phase-Opening Decision",
+      "status": "Signed operator record; encoding pending",
+      "sha256": "7c172746190c38ca473301051ba29e3c36d21dbad7ae51dc5abeaee755d52e7d",
+      "bytes": 2589
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -1996,6 +2003,13 @@
       "status": "Proposed; not accepted",
       "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af",
       "bytes": 13173
+    },
+    {
+      "path": "docs/work-packages/SKEL-P0-01.md",
+      "title": "SKEL-P0-01 \u2014 bOPEN Repository Skeleton (PG-P0 Preparation Scope)",
+      "status": "Proposed; not accepted",
+      "sha256": "b89b9b59915c7391ef3046aac883b5c924bd0c70a4fdeab3002861d7007892e7",
+      "bytes": 4142
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
