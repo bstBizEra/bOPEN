@@ -1385,8 +1385,8 @@
       "path": "docs/evidence/PG-P0-COMPLETION-VERIFICATION-RECEIPT.json",
       "title": "",
       "status": "",
-      "sha256": "b255d7d92e2ce07f9c4b8188541b7b017daf0504c4dee410d486c0732e0f0248",
-      "bytes": 2643
+      "sha256": "3a6cf9b0b046726216cc15d69cdbf2e527a0f14d8122b0275030854d2f6ee49b",
+      "bytes": 3225
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
