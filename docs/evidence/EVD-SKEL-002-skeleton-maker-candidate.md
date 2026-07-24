@@ -109,3 +109,38 @@ policy. Manifests in this candidate were written as LF.
 M-A bytes were authored by Codex and M-B/skeleton bytes by Claude. Neither agent is
 therefore an independent checker of this integrated candidate as a whole; a fresh
 reviewer that authored none of these bytes is required for the exact-SHA receipt.
+
+## Append-only correction - 2026-07-24 - conformance-review findings (I02)
+
+Two findings from the independent conformance reviews of candidate `b138c76` are
+corrected here (append-only; the original lines above are preserved as the reviewers
+saw them):
+
+- **Stale test path (Claude review, LOW).** Line 47 above cites the negative fixtures
+  at `tests/tools/test_validate_skeleton.py`. That path is stale from before the
+  `tests/tools/` -> `tests/skeleton/` rename (the rename was required because a
+  `tests/tools/` package shadowed the top-level `tools` import). The correct, current
+  path is **`tests/skeleton/test_validate_skeleton.py`**; the business-logic-injection
+  and draft->active-promotion denials it describes are present and green there.
+
+- **M-B author provenance (Claude review, MEDIUM).** Module M-B (commit
+  `6491a4580a040b2f71af4912dfd5c9f51c06672d`) carries the git author trailer
+  `BST-Codex-Motor` — the repository's default configured identity, which the Claude
+  subagent inherited when it committed. The actual byte-maker of M-B was a **Claude
+  (`claude-opus-4-8`) subagent**, as stated in the I01 record. The authoritative
+  provenance is this evidence record; the git trailer is inaccurate for M-B and should
+  be read as the inherited default, not the maker. Module M-A (`4ee134b`) is correctly
+  attributed to BST-Codex-Motor (bytes authored by codex-cli / gpt-5.6-sol). A history
+  rewrite to align M-B's author trailer with its byte-maker is available on operator
+  request; it was not performed here because it would change the M-B and integration
+  SHAs and invalidate the completed conformance reviews, and because the authoritative
+  provenance record is already correct.
+
+Both conformance reviews concurred on substance (skeleton-only; signed surfaces
+byte-unchanged; contracts valid with resolving requirement IDs) and both explicitly
+recorded that NEITHER is the independent whole-candidate exact-SHA receipt: Codex
+authored M-A and Claude authored the remainder. A fresh reviewer that authored none of
+these bytes remains required. Codex additionally could not execute `pnpm validate` in
+its read-only sandbox (pnpm requires write access to its store); the gate is confirmed
+exit 0 by two other executions (the I01 maker run and the Claude conformance run) on
+2026-07-24 UTC.
