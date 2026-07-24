@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 290,
+  "generated": "2026-07-24",
+  "count": 292,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "bd82d7b10412d7ff596c88a4a066d4275332095870247c35704efd4f7d409029",
-      "bytes": 14068
+      "sha256": "8c1008ecdf93356883a9b5366eb3bb42b84dc1406ecff9afa3ff563e254834ea",
+      "bytes": 14852
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1240,6 +1240,13 @@
       "status": "",
       "sha256": "56f279fe6f31a02c943e8288b235a9b5bc5973d6d8a971fc1a8cd77addf2d9ba",
       "bytes": 5013
+    },
+    {
+      "path": "docs/evidence/EVD-ENCODER-001-executable-controls.md",
+      "title": "EVD-ENCODER-001 \u2014 Executable Phase-Transition Controls",
+      "status": "Maker candidate; draft; not accepted. Independent exact-SHA review pending.",
+      "sha256": "287584329f8a42405b2c6dd0b095fd7ee932094e049b5ed1099e87ae599e0a55",
+      "bytes": 1983
     },
     {
       "path": "docs/evidence/EVD-GOV-001-program-g0-controls.md",
@@ -1982,6 +1989,13 @@
       "status": "Execution complete; authority review pending",
       "sha256": "3abfa39d7129527f6769413f2953ad7f30a7321b6811ca9bc8567948ae6a7846",
       "bytes": 3230
+    },
+    {
+      "path": "docs/work-packages/ENCODER-P0-01.md",
+      "title": "ENCODER-P0-01 \u2014 Executable Phase-Transition Encoder (Stage-2 controls)",
+      "status": "Proposed; not accepted",
+      "sha256": "319c59ba1298083adde96a7814780fbe6c951e328a657c4b327e70ec1f0bffe9",
+      "bytes": 3685
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

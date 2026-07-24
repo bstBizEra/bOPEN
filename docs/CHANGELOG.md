@@ -195,3 +195,8 @@
 - Preserved the v0.4 docket, inventory, B8 approvals, B9 staging and readiness bytes unchanged.
 - Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
 - Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.
+
+## Append-only entry - 2026-07-25 - ENCODER-P0-01 executable phase-transition controls
+
+- Added `tools/apply_phase_transition.py` (Stage-2 phase-transition encoder) and `tests/governance/test_phase_transition.py`, implementing and proving the controls the PG-P0 completion package previously documented but did not enforce: JCS canonicalization, compare-and-swap anti-replay, single-use decision consumption, deterministic transform, invariant enforcement, idempotency (APPLIED_EXACT/ALREADY_APPLIED_EXACT/REPLAY_DENIED/CONFLICT), atomic receipt, and independent recompute.
+- Additive; `docs/00-governance/**` byte-unchanged. Sole maker Claude (claude-opus-4-8). Status: Proposed; not accepted; fresh independent Codex review required. The tool changes no governed state on its own.
