@@ -156,3 +156,15 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Evidence ref:** docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md
 **Work package:** SKEL-P0-01 (proposed; not accepted)
 **Scope:** Preparation and independent review only; production implementation, migration, merge, release and runtime remain unauthorized.
+
+## SKEL-P0-01 maker candidate event
+
+**Work package:** SKEL-P0-01
+**Phase:** PG-P0
+**Recorded at:** 2026-07-24T09:19:49+07:00
+**Maker:** Claude (claude-opus-4-8)
+**Candidate base commit:** 29949f460345a55b8f8079cad802d6ca85cbe46e
+**Candidate commit:** ca92c7c9796824213fa68db280131bc87e6b2cfb
+**Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
+**Candidate status:** Proposed; not accepted
+**Scope:** Production implementation, migration, merge, release, deployment and runtime remain unauthorized.

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-23",
+  "generated": "2026-07-24",
   "count": 292,
   "documents": [
     {
@@ -1399,7 +1399,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "0edfcfc7e7597080117e14accadfd04b4e8bd31d583463efa16e4b6668048253",
+      "sha256": "f827f10b1764e7bc5feb362ed9ee9f9499cc050bc38cfb5876e8f65efd3ed00d",
       "bytes": 2563
     },
     {
