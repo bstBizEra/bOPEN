@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/capability/0.1.0-draft",
+  "title": "Capability Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN capability surface. Field semantics remain subordinate to BOPEN-MOD-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-CAPABILITY",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-MOD-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-MOD-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-MOD-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "capabilityId": {
+      "type": "string",
+      "description": "Opaque capability identifier."
+    },
+    "moduleId": {
+      "type": "string",
+      "description": "Declaring module reference."
+    }
+  },
+  "additionalProperties": true
+}

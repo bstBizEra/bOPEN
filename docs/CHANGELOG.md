@@ -195,3 +195,9 @@
 - Preserved the v0.4 docket, inventory, B8 approvals, B9 staging and readiness bytes unchanged.
 - Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
 - Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.
+
+## Append-only entry - 2026-07-24 - SKEL-P0-01 sole-maker skeleton candidate
+
+- Prepared a sole-Claude-maker SKEL-P0-01 candidate on the governed PG-P0 `ACTIVE` substrate: 11 draft contract shells, typed kernel package roots, five fail-closed test tiers with recursive guards, and a re-authored `tools/validate_skeleton.py` (AST-based) added to the `pnpm validate` chain.
+- Every byte is authored solely by Claude (`claude-opus-4-8`), restoring the work package's Claude-maker/Codex-checker design so BST-Codex-Motor is an independent checker; this resolves the checker-independence block that stopped acceptance of the superseded mixed-author candidate `8927b258`.
+- Signed surfaces byte-unchanged; production/migration/merge/release/deployment/runtime unauthorized. Status: Proposed; not accepted.
