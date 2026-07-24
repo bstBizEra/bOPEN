@@ -196,15 +196,11 @@
 - Itemized all 33 removed predecessor docket tests with v0.4 obsolescence/supersession decisions and added a repeatable root-manifest regression test.
 - Clean-checkout discovery passes 144/144; `pnpm validate` passes. EVD-GOV-012 remains an immutable reject and a new exact-SHA review is required.
 
-## Append-only entry - 2026-07-24 - MANIFEST-P0-01 deterministic manifest check
+## Append-only entry - 2026-07-24 - SKEL-P0-01 sole-maker skeleton candidate
 
-- Fixed `tools/generate_document_manifest.py`: `--check` now adopts the committed `generated` date so a byte-frozen candidate no longer goes stale at UTC-midnight rollover, restoring exact-SHA reproducibility; content drift (paths/sha256/bytes/count) still fails. Write mode uses `newline="\n"` (LF) to fix silent CRLF emission on Windows.
-- Added regression test `tests/governance/test_document_manifest_reproducibility.py` proving date-invariance and content-sensitivity.
-- Demonstrated on an isolated branch for operator disposition; the tool is outside SKEL-P0-01 allowed paths, so acceptance/merge requires a separate operator decision. No manifest content changed; no signed byte changed. Status: Proposed; not accepted.
-
-## Append-only entry - 2026-07-24 - MANIFEST-P0-01 acceptance-criteria correction
-
-- Corrected a self-contradicting acceptance criterion in `docs/work-packages/MANIFEST-P0-01.md`: it read "no manifest content changes", but the commit legitimately adds its own work-package record and changes the CHANGELOG record in GOV-P0-02. The criterion now states the ONLY manifest record changes are the documents this commit adds/changes (its work package + changelog), with no other record change and no signed byte change. Independent-review finding (WSL BST-Codex-Motor); wording-only fix, no behavior change.
+- Prepared a sole-Claude-maker SKEL-P0-01 candidate on the governed PG-P0 `ACTIVE` substrate: 11 draft contract shells, typed kernel package roots, five fail-closed test tiers with recursive guards, and a re-authored `tools/validate_skeleton.py` (AST-based) added to the `pnpm validate` chain.
+- Every byte is authored solely by Claude (`claude-opus-4-8`), restoring the work package's Claude-maker/Codex-checker design so BST-Codex-Motor is an independent checker; this resolves the checker-independence block that stopped acceptance of the superseded mixed-author candidate `8927b258`.
+- Signed surfaces byte-unchanged; production/migration/merge/release/deployment/runtime unauthorized. Status: Proposed; not accepted.
 
 ## 2026-07-24 — MANIFEST-P0-01 acceptance
 

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/audit/audit-envelope/0.1.0-draft",
+  "title": "Audit Envelope Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN audit envelope surface. Field semantics remain subordinate to BOPEN-ARCH-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-AUDITENVELOPE",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-ARCH-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-AUD-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-ARCH-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "auditId": {
+      "type": "string",
+      "description": "Opaque audit record identifier."
+    },
+    "tenantId": {
+      "type": "string",
+      "description": "Tenant scope reference."
+    },
+    "action": {
+      "type": "string",
+      "description": "Audited action reference."
+    }
+  },
+  "additionalProperties": true
+}

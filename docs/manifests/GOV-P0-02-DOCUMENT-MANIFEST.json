@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-24",
-  "count": 291,
+  "count": 293,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "725c77cf6fdbbdcc9d9064b98e79142de45f23ee456c2157e256b38b20290021",
-      "bytes": 15925
+      "sha256": "fc179dafd69e6e5e9431351c10eda50f2fcd3174ed0401f873a8229c89192241",
+      "bytes": 15313
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1021,8 +1021,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "487e16316d06bf6fd843034a3b41922a0d6458d5221a551cf6c803a8f14d550a",
-      "bytes": 4424
+      "sha256": "4a93d08f1097914dea2c20af0f0ced4a7e89180d4ea36788264d076fd1d1bf10",
+      "bytes": 5103
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1375,11 +1375,18 @@
       "bytes": 1920
     },
     {
+      "path": "docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md",
+      "title": "EVD-SKEL-002 \u2014 SKEL-P0-01 Skeleton Maker Candidate (sole-maker)",
+      "status": "Maker candidate; draft; not accepted. Independent exact-SHA checker review pending.",
+      "sha256": "26f36cd4ab4e583eedf1329064b1704991fc226b2a3f177a9f23573b48b2d8cf",
+      "bytes": 5056
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "75e172414cd85298f7f35fdc8a2e3567dec809489b8452b652ec6ba1edfe912f",
-      "bytes": 7023
+      "sha256": "b38a1385e50c92a1eb34acf34adc276a2b4d8e1609c675399e18f9c83e3ed619",
+      "bytes": 7440
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1392,7 +1399,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "0edfcfc7e7597080117e14accadfd04b4e8bd31d583463efa16e4b6668048253",
+      "sha256": "529091023430051c972b58e99cc03a2d01be59f109e54f8c54198c41f1343e2c",
       "bytes": 2563
     },
     {
@@ -1401,6 +1408,13 @@
       "status": "Draft operational convention pending DEC-0012",
       "sha256": "c15a259a3e882b712d8351846f9916cb7ed52f5a73f96c114094eef816ec3ba7",
       "bytes": 792
+    },
+    {
+      "path": "docs/manifests/SKEL-P0-01-traceability.json",
+      "title": "",
+      "status": "",
+      "sha256": "1dc7bede5f4b4bc2ac807f2217e7a01321b992b1bb32ecf6bcc6592d55f56dd4",
+      "bytes": 4318
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
@@ -2036,8 +2050,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "eca0c227aba9b0b347d944c4c45aa6c39e597eda8d5d805a140470a737d26b03",
-      "bytes": 3168
+      "sha256": "99512fc950fdab16ba21e8d2e0342b8aee2bd71c4ac6c90199917c8089cfd532",
+      "bytes": 3763
     }
   ]
 }

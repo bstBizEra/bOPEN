@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/authorization-decision/0.1.0-draft",
+  "title": "Authorization Decision Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN authorization decision surface. Field semantics remain subordinate to BOPEN-AUTHZ-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-AUTHORIZATIONDECISION",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-AUTHZ-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-AUTH-001",
+      "REQ-AUTH-002"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-AUTHZ-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "description": "deny-by-default reasoned decision; normative enum unresolved."
+    },
+    "reason": {
+      "type": "string",
+      "description": "Auditable reason string."
+    }
+  },
+  "additionalProperties": true
+}

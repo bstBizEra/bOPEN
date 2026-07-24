@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/events/event-envelope/0.1.0-draft",
+  "title": "Event Envelope Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN event envelope surface. Field semantics remain subordinate to BOPEN-ARCH-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-EVENTENVELOPE",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-ARCH-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-EVT-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-ARCH-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "description": "Opaque event identifier."
+    },
+    "tenantId": {
+      "type": "string",
+      "description": "Tenant scope reference."
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Correlation reference."
+    }
+  },
+  "additionalProperties": true
+}
