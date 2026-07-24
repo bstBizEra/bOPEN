@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "e989f5641798330487955aebd6916021efd4386b1e08abd52bbaaad3ae0fa33c",
-      "bytes": 15481
+      "sha256": "725c77cf6fdbbdcc9d9064b98e79142de45f23ee456c2157e256b38b20290021",
+      "bytes": 15925
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -2022,8 +2022,8 @@
       "path": "docs/work-packages/MANIFEST-P0-01.md",
       "title": "MANIFEST-P0-01 \u2014 Deterministic document-manifest check (Proposal + demonstrated fix)",
       "status": "Proposed; not accepted",
-      "sha256": "71b84f44df19f92c5deb937d024df125683e93ae8b171781213ad5f925432322",
-      "bytes": 3482
+      "sha256": "a3b006544d93a5dd845e94ea00ece311a59a9294520bd3f42d838206404b6b39",
+      "bytes": 4645
     },
     {
       "path": "docs/work-packages/SKEL-P0-01.md",

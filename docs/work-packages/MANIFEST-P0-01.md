@@ -64,3 +64,16 @@ Revert the isolated candidate branch; no signed, runtime or content state is tou
 ## Completion record
 
 Pending. This proposed record does not accept itself.
+
+## Append-only human acceptance record — 2026-07-24
+
+**Outcome:** ACCEPTED; effective for governed preparation lineage
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Attestation:** "As HUMAN-OPERATOR-001, Engineering Authority, I ACCEPT_WORK_ITEM MANIFEST-P0-01 at exact SHA 78e985b41ed8354f6525154d5cdfbe4b1052a2d5. I have reviewed the evidence and take accountability for this acceptance."
+**Accepted at:** 2026-07-24T16:22:25+07:00
+**Accepted exact SHA:** 78e985b41ed8354f6525154d5cdfbe4b1052a2d5
+**Accepted tree:** 85cdc3f3413e5ad301e8f3ff96bcb640f1e6d953
+**Predecessor base:** 29949f460345a55b8f8079cad802d6ca85cbe46e
+**Technical evidence:** Two independent `ACCEPT_EXACT_SHA` receipts; canonical frozen-install/validate gate; targeted reproducibility tests 2/2; full suite 148/148; clean worktree.
+
+This record binds acceptance to the exact predecessor object above. It does not authorize merge, release, deployment, runtime activation, production implementation, PG-P0 completion, or PG-P1 transition. Any governed-base successor and subsequent SKEL rebuild MUST reference this acceptance record and remain separately reviewable.

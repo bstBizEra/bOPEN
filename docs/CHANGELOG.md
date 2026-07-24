@@ -205,3 +205,8 @@
 ## Append-only entry - 2026-07-24 - MANIFEST-P0-01 acceptance-criteria correction
 
 - Corrected a self-contradicting acceptance criterion in `docs/work-packages/MANIFEST-P0-01.md`: it read "no manifest content changes", but the commit legitimately adds its own work-package record and changes the CHANGELOG record in GOV-P0-02. The criterion now states the ONLY manifest record changes are the documents this commit adds/changes (its work package + changelog), with no other record change and no signed byte change. Independent-review finding (WSL BST-Codex-Motor); wording-only fix, no behavior change.
+
+## 2026-07-24 — MANIFEST-P0-01 acceptance
+
+- HUMAN-OPERATOR-001 accepted `MANIFEST-P0-01` at exact SHA `78e985b41ed8354f6525154d5cdfbe4b1052a2d5` after dual independent `ACCEPT_EXACT_SHA` receipts and canonical reproducibility verification.
+- This acceptance advances only the governed preparation lineage; merge, release, deployment, runtime activation, production implementation, PG-P0 completion and PG-P1 transition remain unauthorized.
