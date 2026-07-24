@@ -1378,8 +1378,8 @@
       "path": "docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md",
       "title": "EVD-SKEL-002 \u2014 SKEL-P0-01 Skeleton Maker Candidate",
       "status": "Maker candidate; draft; not accepted. Independent exact-SHA checker review (Codex) pending.",
-      "sha256": "60a2903d231c47a7caf62f02049e46409394b03fc037fd59a8810bea535afe74",
-      "bytes": 3456
+      "sha256": "b7176436cb37a283d25c3e563a216f011734e881f899c0992cf278c8685324e6",
+      "bytes": 6671
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
