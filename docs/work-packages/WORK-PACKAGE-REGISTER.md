@@ -28,3 +28,9 @@
 | GOV-P0-03 | Active | Five root ledgers activated atomically through Signing Pass 2 B6 |
 
 Reason: expose the signed successor state without rewriting historical register rows. Benefit of the old phase: proposal rows retained their review-time meaning. Expected outcome: later B8/B9 decisions remain independently attributable.
+
+## Append-only SKEL-P0-01 registration - 2026-07-24
+
+| ID | Title | Status | Primary outcome |
+|---|---|---|---|
+| SKEL-P0-01 | bOPEN repository skeleton (PG-P0 preparation) | Proposed; not accepted | Sole-Claude-maker skeleton on governed base' aab8bd9; draft contract shells, typed kernel package roots, fail-closed recursive test tiers, skeleton validator, reconciled lockfile. References MANIFEST-P0-01 acceptance. Independent BST-Codex-Motor exact-SHA receipt and Human Engineering Authority acceptance pending. |

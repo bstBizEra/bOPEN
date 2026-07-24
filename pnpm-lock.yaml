@@ -7,3 +7,7 @@ settings:
 importers:
 
   .: {}
+
+  packages/kernel-contracts: {}
+
+  packages/kernel-testing: {}

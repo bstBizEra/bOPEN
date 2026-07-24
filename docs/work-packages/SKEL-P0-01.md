@@ -52,3 +52,20 @@ Risk: skeleton shells mistaken for approved contracts. Control: mandatory `draft
 ## Completion record
 
 Pending. This proposed record does not accept itself.
+
+## Append-only scope amendment - 2026-07-24 - lockfile only (Option B, on accepted base')
+
+Built on the governed-base successor `aab8bd9a94c0297da60830af934c66b330b47a81` (base +
+the human-accepted MANIFEST-P0-01 reproducibility fix; predecessor acceptance
+`78e985b41ed8354f6525154d5cdfbe4b1052a2d5`, HUMAN-OPERATOR-001). Because the manifest fix
+is now inherited from the accepted base, this SKEL package does NOT own any change to
+`tools/generate_document_manifest.py`. The only path beyond the original allowed set is:
+
+- `pnpm-lock.yaml` — reconciled to include the two workspace importers for
+  `packages/kernel-contracts` and `packages/kernel-testing`, so the canonical
+  `pnpm validate` (with `--frozen-lockfile`) does not mutate the worktree.
+
+Reason: a skeleton that adds workspace packages must reconcile the lockfile; this is a
+direct consequence of SKEL's own additions. This amendment requires Human Engineering
+Authority acceptance of the amended work package and references the MANIFEST-P0-01
+acceptance record. It does not accept itself.

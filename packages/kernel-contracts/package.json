@@ -1,0 +1,13 @@
+{
+  "name": "@bopen/kernel-contracts",
+  "version": "0.0.0-draft",
+  "private": true,
+  "description": "Draft type-only contract surface for the bOPEN platform kernel (SKEL-P0-01 preparation). Type-only; no runtime business logic.",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\"",
+    "test": "node -e \"process.exit(0)\""
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}

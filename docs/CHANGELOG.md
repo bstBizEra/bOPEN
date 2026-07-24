@@ -210,3 +210,9 @@
 
 - HUMAN-OPERATOR-001 accepted `MANIFEST-P0-01` at exact SHA `78e985b41ed8354f6525154d5cdfbe4b1052a2d5` after dual independent `ACCEPT_EXACT_SHA` receipts and canonical reproducibility verification.
 - This acceptance advances only the governed preparation lineage; merge, release, deployment, runtime activation, production implementation, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Append-only entry - 2026-07-24 - SKEL-P0-01 sole-maker candidate on accepted base'
+
+- Rebuilt SKEL-P0-01 as a fresh sole-Claude-maker candidate on governed base' `aab8bd9` (Option B): the human-accepted MANIFEST-P0-01 reproducibility fix is inherited from the accepted base, so SKEL owns only the reconciled `pnpm-lock.yaml` (workspace importers), not the manifest tool.
+- Every SKEL byte is authored solely by Claude (`claude-opus-4-8`); the earlier operator replay `700cf1e` carried Codex-authored bytes from conflict resolution and is superseded. Re-authored skeleton validator (fail-closed non-.d.ts rule); references the MANIFEST-P0-01 acceptance record.
+- Canonical `pnpm validate` clean under `--frozen-lockfile`; signed surfaces byte-unchanged. Status: Proposed; not accepted; fresh independent Codex review required.

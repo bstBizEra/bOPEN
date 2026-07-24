@@ -40,3 +40,7 @@ PG-G0-AUTH-001 v0.5 is terminal `DISPOSED`/`gate_passed`. PG-G0-DEC-006 is the o
 ## Append-only PG-P0 preparation status - 2026-07-24
 
 Signing Pass 5 transitions PG-P0 from `READY_FOR_AUTHORITY_REVIEW` to `ACTIVE` preparation at the exact operator-signed substrate. SKEL-P0-01 remains proposed and unaccepted; only preparation and independent review are in scope. Production implementation, migrations, merge, release, deployment and runtime activation remain false and unauthorized.
+
+## Append-only SKEL-P0-01 sole-maker candidate (on accepted base') status - 2026-07-24
+
+SKEL-P0-01 has a sole-Claude-maker candidate on governed base' `aab8bd9` (base + the human-accepted MANIFEST-P0-01 reproducibility fix; predecessor acceptance `78e985b4`, HUMAN-OPERATOR-001). Draft contract shells, typed package roots, fail-closed recursive test tiers, re-authored skeleton validator, reconciled lockfile. Every SKEL byte is sole-Claude (the operator replay 700cf1e carried Codex bytes and is superseded). Evidence: `docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md`. Work package remains `Proposed; not accepted`; production, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
