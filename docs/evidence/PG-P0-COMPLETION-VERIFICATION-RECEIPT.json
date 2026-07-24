@@ -1,0 +1,44 @@
+{
+    "verification":  {
+                         "schedule_changes":  0,
+                         "docs_only":  {
+
+                                       },
+                         "manifest_tool_changes":  0,
+                         "canonical_validate":  {
+                                                    "output_sha256":  "e7d2f557ebd88e74a8232aebb547d92877ca2cfcd798262a2ae5083203795019",
+                                                    "command":  "pnpm run validate",
+                                                    "exit_code":  0
+                                                },
+                         "idempotency_executable_controls":  "NOT_PRESENT",
+                         "anti_replay_executable_controls":  "NOT_PRESENT",
+                         "protected_governance_changes":  0,
+                         "documented_controls":  "PRESENT",
+                         "deterministic_recompute_executable_control":  "NOT_PRESENT",
+                         "note":  "Documentation specifies these controls, but repository search found no executable PG-P0 mandate encoder, compare-and-swap implementation, consumption store, or corresponding tests."
+                     },
+    "generated_by":  "BST-Codex-Motor",
+    "disposition":  "NOT_READY_FOR_SIGNATURE",
+    "blockers":  [
+                     "Implement and independently test anti-replay, idempotency, and deterministic apply/receipt controls before Stage-1 signature."
+                 ],
+    "substrate":  {
+                      "schedule_sha256_raw":  "2c34668dc6466f6e8359be030225fa9dc412476a7251450c47bc09bcbfecc458",
+                      "commit":  "29949f460345a55b8f8079cad802d6ca85cbe46e"
+                  },
+    "generated_at":  "2026-07-25T02:25:52+07:00",
+    "receipt_id":  "PG-P0-COMPLETION-VERIFICATION-001",
+    "status":  "PASS_WITH_EXECUTABLE_CONTROL_GAP",
+    "candidate":  {
+                      "tree":  "a8d24bce1f0b6cd2993d0087c6da1111660259a7",
+                      "accepted_exact_sha":  "f1eea272442a0587ab5843ba28c6ce47b91e1615",
+                      "commit":  "f1eea272442a0587ab5843ba28c6ce47b91e1615"
+                  },
+    "completion_package":  {
+                               "head_tree":  "bb0842dd8747102e6d6ed07ed9e3c0a7e1153a73",
+                               "parent":  "fbe1ec832825a312a024ea5d8c141ddfac8d8f15",
+                               "head_commit":  "0ad60e6f79f985869e1ebd0394e07e1a465f24a5",
+                               "no_bom":  true,
+                               "disposition_sha256":  "3e295b337c4eefe53ccd9ef6eabb2873997a6f3e162643941538bd0259b24ea0"
+                           }
+}
