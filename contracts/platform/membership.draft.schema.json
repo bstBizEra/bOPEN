@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/membership/0.1.0-draft",
+  "title": "Membership Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN membership surface. Field semantics remain subordinate to BOPEN-TENANT-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-MEMBERSHIP",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-TENANT-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-MEM-001",
+      "REQ-MEM-002"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-TENANT-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "membershipId": {
+      "type": "string",
+      "description": "Opaque membership identifier."
+    },
+    "principalId": {
+      "type": "string",
+      "description": "Principal reference."
+    },
+    "tenantId": {
+      "type": "string",
+      "description": "Tenant reference."
+    }
+  },
+  "additionalProperties": true
+}

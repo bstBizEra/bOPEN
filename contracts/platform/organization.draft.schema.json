@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/organization/0.1.0-draft",
+  "title": "Organization Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN organization surface. Field semantics remain subordinate to BOPEN-TENANT-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-ORGANIZATION",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-TENANT-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-ORG-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-TENANT-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "organizationId": {
+      "type": "string",
+      "description": "Opaque organization identifier."
+    },
+    "tenantId": {
+      "type": "string",
+      "description": "Owning tenant reference."
+    }
+  },
+  "additionalProperties": true
+}
