@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/party/0.1.0-draft",
+  "title": "Party Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN party surface. Field semantics remain subordinate to BOPEN-PARTY-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-PARTY",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-PARTY-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-PRI-001",
+      "REQ-ID-001"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-PARTY-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "partyId": {
+      "type": "string",
+      "description": "Opaque party identifier."
+    },
+    "partyType": {
+      "type": "string",
+      "description": "human/service/application/device/agent/system; normative enum unresolved."
+    }
+  },
+  "additionalProperties": true
+}

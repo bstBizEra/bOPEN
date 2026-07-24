@@ -1,0 +1,6 @@
+{
+  "tier": "tenant_isolation",
+  "status": "inactive",
+  "requiredNegativeTests": [],
+  "note": "SKEL-P0-01 skeleton scaffold. Arming an implementation requires status 'armed' and the enumerated negative (guard) tests present in this tier."
+}

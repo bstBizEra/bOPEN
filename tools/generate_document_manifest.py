@@ -72,13 +72,24 @@ def main() -> int:
         except FileNotFoundError:
             print(f"ERROR: manifest snapshot missing: {output}")
             return 1
+        # Reproducibility: `generated` is a human-facing date stamp, not content. Adopt the
+        # committed value before comparing so a byte-frozen candidate does not go stale at
+        # UTC-midnight rollover. Genuine content drift (paths/titles/statuses/sha256/bytes/
+        # count) still fails the check.
+        try:
+            committed_generated = json.loads(actual).get("generated")
+        except json.JSONDecodeError:
+            committed_generated = None
+        if committed_generated is not None:
+            manifest["generated"] = committed_generated
+            rendered = json.dumps(manifest, indent=2) + "\n"
         if actual != rendered:
             print(f"ERROR: manifest snapshot stale: {output}")
             return 1
         print(f"Manifest snapshot current: {output} ({manifest['count']} records)")
         return 0
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(rendered, encoding="utf-8")
+    output.write_text(rendered, encoding="utf-8", newline="\n")
     print(f"Wrote {manifest['count']} records to {output}")
     return 0
 

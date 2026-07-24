@@ -52,3 +52,33 @@ Risk: skeleton shells mistaken for approved contracts. Control: mandatory `draft
 ## Completion record
 
 Pending. This proposed record does not accept itself.
+
+## Append-only scope amendment - 2026-07-24 - canonical reproducibility (maker, in response to independent findings)
+
+An independent BST-Codex-Motor exact-SHA review of candidate `0cf5f9cd` found two
+reproducibility blockers that cannot be resolved within the original allowed paths:
+
+1. The canonical gate `pnpm validate` mutated `pnpm-lock.yaml` (added workspace importer
+   entries for the new `packages/kernel-*` projects), so a python-only run could not prove
+   a clean canonical gate.
+2. `tools/generate_document_manifest.py` stamped `generated` from wall-clock UTC, so a
+   byte-frozen candidate went stale at UTC-midnight rollover — breaking exact-SHA
+   reproducibility.
+
+**Reason:** a repository skeleton that adds workspace packages cannot be canonically
+reproducible without (a) a reconciled lockfile and (b) a date-invariant manifest check.
+Both are prerequisites of acceptance criterion "full repository validation chain passes at
+the exact candidate SHA." **Benefit of the old phase:** the original narrow paths kept the
+first candidates minimal and surfaced these two controls through independent review rather
+than assumption. **Expected outcome:** one canonically-reproducible sole-Claude candidate
+whose `pnpm validate` is clean and date-stable.
+
+**Allowed paths extended (append-only) to include:**
+- `pnpm-lock.yaml` — reconciled to the workspace so the canonical `pnpm validate` does not
+  mutate it (verified stable across repeated runs).
+- `tools/generate_document_manifest.py` — the manifest-`--check` reproducibility fix
+  (adopt the committed `generated` date; write LF), integrating the MANIFEST-P0-01 fix.
+- `tests/governance/test_document_manifest_reproducibility.py` — regression test for it.
+
+This amendment is itself part of the proposal and requires Human Engineering Authority
+acceptance of the amended work package. It does not accept itself.

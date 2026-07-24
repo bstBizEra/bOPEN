@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bopen://schemas/platform/entitlement/0.1.0-draft",
+  "title": "Entitlement Contract Shell (Draft)",
+  "description": "Preparation-only draft shell for the bOPEN entitlement surface. Field semantics remain subordinate to BOPEN-ENT-001; not a stable dependency.",
+  "status": "draft",
+  "x-bopen-control": {
+    "artifactId": "SKEL-P0-01-CONTRACT-ENTITLEMENT",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "Engineering Authority",
+    "workPackage": "SKEL-P0-01"
+  },
+  "x-bopen-stability": {
+    "stableDependency": false,
+    "productionUse": "prohibited",
+    "codeGeneration": "prohibited",
+    "approvalRequired": true
+  },
+  "x-bopen-traceability": {
+    "normativeArtifact": "BOPEN-ENT-001",
+    "normativeStatus": "draft",
+    "requirementIds": [
+      "REQ-ENT-001",
+      "REQ-ENT-002"
+    ],
+    "requirementIdStatus": "resolved",
+    "links": [
+      "bopen://artifact/BOPEN-ENT-001",
+      "docs/manifests/SKEL-P0-01-traceability.json"
+    ]
+  },
+  "type": "object",
+  "properties": {
+    "entitlementId": {
+      "type": "string",
+      "description": "Opaque entitlement identifier."
+    },
+    "entitlementType": {
+      "type": "string",
+      "description": "boolean/static/capacity/seat/metered; normative enum unresolved."
+    }
+  },
+  "additionalProperties": true
+}
