@@ -51,6 +51,33 @@ class SkeletonValidatorNegativeFixtures(unittest.TestCase):
             report = validate_skeleton.validate_skeleton(root)
             self.assertEqual(report.errors, [], f"expected clean skeleton, got: {report.errors}")
 
+    def test_nested_implementation_file_in_tier_is_denied(self):
+        """Fail-closed guard must catch an implementation hidden in a tier SUBDIRECTORY,
+        not only top-level files (I04: the non-recursive iterdir scan was a bypass)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _make_valid_fixture(root)
+            # implementation nested one level deep, manifest deliberately left 'inactive'
+            _write(root / "tests" / "authorization" / "policies" / "test_policy.py",
+                   "def test_policy():\n    assert True\n")
+            report = validate_skeleton.validate_skeleton(root)
+            self.assertTrue(
+                any("authorization" in e and "fail-closed" in e for e in report.errors),
+                f"nested implementation must be denied fail-closed; errors: {report.errors}",
+            )
+
+    def test_pycache_in_tier_is_ignored(self):
+        """A __pycache__ artifact must NOT trip the fail-closed guard (avoids false positives)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _make_valid_fixture(root)
+            _write(root / "tests" / "unit" / "__pycache__" / "test_guard.cpython-313.pyc", "bytecode\n")
+            report = validate_skeleton.validate_skeleton(root)
+            self.assertFalse(
+                any("unit" in e and "fail-closed" in e for e in report.errors),
+                f"__pycache__ must be ignored; errors: {report.errors}",
+            )
+
     def test_python_function_body_in_kernel_zone_is_denied(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

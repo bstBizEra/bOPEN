@@ -265,15 +265,51 @@ def check_typed_packages(root: Path, report: Report) -> None:
     report.group("typed-package-skeletons", errors)
 
 
+TIER_ALLOWED = {"__init__.py", "test_guard.py", "README.md", "AGENTS.md", "negative-tests.manifest.json"}
+TIER_IGNORED_DIRS = {"__pycache__"}
+
+
+def unexpected_tier_files(directory: Path, root: Path) -> list[str]:
+    """Recursively inventory a tier: any file that is not top-level allowed scaffolding
+    (and not in an ignored cache dir) is an implementation file. Recursion is required —
+    a non-recursive scan lets a nested implementation (e.g. tests/<tier>/sub/impl.py)
+    bypass the fail-closed guard."""
+    found: list[str] = []
+    for path in sorted(directory.rglob("*"), key=lambda p: p.as_posix()):
+        if not path.is_file():
+            continue
+        relative_parts = path.relative_to(directory).parts
+        if any(part in TIER_IGNORED_DIRS for part in relative_parts):
+            continue
+        if path.parent == directory and path.name in TIER_ALLOWED:
+            continue
+        found.append(path.relative_to(root).as_posix())
+    return found
+
+
 def check_test_guards(root: Path, report: Report) -> None:
     errors: list[str] = []
     for tier in TEST_TIERS:
         directory = root / "tests" / tier
-        if directory.is_dir():
-            if not (directory / "test_guard.py").is_file():
-                errors.append(f"tests/{tier}: fail-closed guard test missing")
-            if not (directory / "negative-tests.manifest.json").is_file():
-                errors.append(f"tests/{tier}: negative-tests manifest missing")
+        if not directory.is_dir():
+            continue
+        if not (directory / "test_guard.py").is_file():
+            errors.append(f"tests/{tier}: fail-closed guard test missing")
+        manifest_path = directory / "negative-tests.manifest.json"
+        if not manifest_path.is_file():
+            errors.append(f"tests/{tier}: negative-tests manifest missing")
+            continue
+        try:
+            manifest = json.loads(normalized_text(manifest_path))
+        except Exception:  # noqa: BLE001 - a malformed manifest is itself a failure
+            errors.append(f"tests/{tier}: negative-tests manifest is not valid JSON")
+            continue
+        implementation_files = unexpected_tier_files(directory, root)
+        if implementation_files and manifest.get("status") != "armed":
+            errors.append(
+                f"tests/{tier}: implementation file(s) present while manifest status is not 'armed' "
+                f"(fail-closed): {implementation_files}"
+            )
     report.group("fail-closed-test-harness", errors)
 
 

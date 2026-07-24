@@ -144,3 +144,32 @@ these bytes remains required. Codex additionally could not execute `pnpm validat
 its read-only sandbox (pnpm requires write access to its store); the gate is confirmed
 exit 0 by two other executions (the I01 maker run and the Claude conformance run) on
 2026-07-24 UTC.
+
+## Append-only correction - 2026-07-24 - independent Codex dynamic review finding (I04)
+
+An independent Codex conformance review of candidate `f6bb69f` (BST-Codex-Conformance,
+executed via `codex exec` with full-path python) **ran the full governed gate green**
+— all 11 validators + the 157-test suite exit 0, document manifest current — and
+independently confirmed every static property (base ancestry, root-ledger byte-prefixes,
+`docs/00-governance/**` unchanged, 11 draft shells, 16 requirement IDs resolving,
+registration). This is an independent gate-execution (a deterministic gate is
+authorship-independent) plus independent static judgement of every file except Codex's
+own M-A (`tools/validate_skeleton.py`, `tests/skeleton/test_validate_skeleton.py`).
+
+It issued a REJECT on one real HIGH finding **in the independently reviewed tier guards**
+(not M-A): the fail-closed tier guards used a **non-recursive** `iterdir()` scan, so an
+implementation nested in a subdirectory (e.g. `tests/authorization/policies/test_policy.py`)
+bypassed the guard while `negative-tests.manifest.json` stayed `inactive` and the whole
+chain remained green.
+
+**I04 remediation (this commit):**
+- `tools/validate_skeleton.py` `check_test_guards` now recursively inventories each tier
+  (`rglob`), excluding `__pycache__`, and fails closed when any implementation file is
+  present at any depth while the tier manifest is not `armed`.
+- The five tier `test_guard.py` files use the same recursive inventory (defense in depth).
+- New negative fixtures prove a nested implementation is denied and that `__pycache__`
+  is ignored (no false positive).
+
+Provenance: the defect was found by the independent Codex review; the remediation is
+authored by Claude (`claude-opus-4-8`). Maker/checker loop as intended — a green gate hid
+a fail-closed bypass that only independent static reasoning surfaced.
