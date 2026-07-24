@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-24",
-  "count": 291,
+  "count": 292,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "a8c9c5a28f6a5c969d31385cfae26e5fdd58ec43c61166663217dbcb31349467",
-      "bytes": 14875
+      "sha256": "0156c23fc277b69992220c620b71ae6866aa2b8f843f91f48d7d43b9fd47ef2b",
+      "bytes": 15623
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1021,8 +1021,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "487e16316d06bf6fd843034a3b41922a0d6458d5221a551cf6c803a8f14d550a",
-      "bytes": 4424
+      "sha256": "5be8eb98a11fc192f99253e8d6aa1f519133db22eb69edfcef6d5081d414cd88",
+      "bytes": 5203
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1170,6 +1170,13 @@
       "status": "",
       "sha256": "fbe1aea195320bf9cedc2d14d555b78f7e52b83d7d295392beef06a05967aef1",
       "bytes": 2045
+    },
+    {
+      "path": "docs/evidence/EVD-AGENTOPS-001-proposal.md",
+      "title": "EVD-AGENTOPS-001 \u2014 AGENTOPS-P0-01 Proposal Evidence",
+      "status": "Proposal evidence; not accepted; grants no execution authority.",
+      "sha256": "0da32d9df1cc706a1f4d9bb5c54f3a7d89720a723fe2e68d35e0f52f48720b70",
+      "bytes": 2494
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1378,8 +1385,8 @@
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "75e172414cd85298f7f35fdc8a2e3567dec809489b8452b652ec6ba1edfe912f",
-      "bytes": 7023
+      "sha256": "d82f7cb97db30bd8f5a5d4aab03b950e0eb36b0a3befd5166e22af10b43ac072",
+      "bytes": 7605
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
@@ -1889,8 +1896,8 @@
       "path": "docs/work-packages/AGENTOPS-P0-01.md",
       "title": "AGENTOPS-P0-01 \u2014 Agent Engineering Control Plane and Model Routing (Proposal)",
       "status": "Proposed; not accepted",
-      "sha256": "2aa76db319cee32e4e49f37c4678e008655872b0ed7cd1710dcc75156802239c",
-      "bytes": 7034
+      "sha256": "477229ab7efd6cf92e65ee6357e24c40b2a898cd1f372927460a067df33dceb4",
+      "bytes": 8382
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

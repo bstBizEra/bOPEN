@@ -201,3 +201,9 @@
 - Re-homed the SKEL-P0-01-A1 agent control plane and SKEL-P0-01-A2 model-routing recommendation into a separate proposed work package `docs/work-packages/AGENTOPS-P0-01.md`, after both were found out of scope for the SKEL-P0-01 repository-skeleton package.
 - Recorded that the package is unauthorized: SIGNING-PASS-5 does not cover agent-operations meta-tooling, so execution requires a separate operator decision and binding into `SCHEDULE-REGISTER` PG-P0 work_item_refs, sequenced after SKEL-P0-01 acceptance.
 - Recorded truthful source-input provenance (A1 bytes attributed to OpenAI GPT-5.6 Pro; proposal authored by Claude claude-opus-4-8) and kept everything draft, disabled and unaccepted; no `docs/agent-operations/` files were created.
+
+## Append-only entry - 2026-07-24 - AGENTOPS-P0-01 constitution and F1 remediation
+
+- Extended `docs/work-packages/AGENTOPS-P0-01.md` to add the Agent Constitution, Role Contracts and SKEL-P0 Loop as a third proposed component (supreme clause: Rule 0 Authority Boundary), with a proposed `.agents/` structure created only if the package is authorized.
+- Closed Codex cross-check finding F1 (documentation-ledger under-recording) by adding `docs/evidence/EVD-AGENTOPS-001-proposal.md` and append-only DOCUMENT-STATUS and EVIDENCE-INDEX entries; concurred with F2 by not writing the signed root-control surfaces for an unaccepted proposal.
+- Kept everything draft, disabled and unauthorized; created no `docs/agent-operations/` or `.agents/` files.

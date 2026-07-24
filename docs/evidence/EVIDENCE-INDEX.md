@@ -63,3 +63,11 @@ Reason: index the prerequisite receipt and its non-self-referential signed-state
 | EVD-GOV-011 | GOV-P0-04 | Maker evidence for v0.4 encoding of all five Signing Pass 3 B8 approvals and B9 pending surface | `docs/evidence/EVD-GOV-011-pg-g0-authority-docket-v04-b8-signed-candidate.md` | Signed-state candidate; new independent exact-SHA review pending |
 
 Reason: record the next mechanical successor without upgrading EVD-GOV-010 or pre-signing B9. Benefit of the old phase: EVD-GOV-009 remains a stable v0.3 audit trail. Expected outcome: Claude reviews one exact v0.4 SHA while the human B9 decision remains pending.
+
+## Append-only AGENTOPS-P0-01 proposal - 2026-07-24
+
+| Evidence ID | Work package | Description | Path | Status |
+|---|---|---|---|---|
+| EVD-AGENTOPS-001 | AGENTOPS-P0-01 | Proposal evidence re-homing A1 control plane, A2 model routing and the Agent Constitution/role-contracts/SKEL-P0 loop; unauthorized pending operator disposition | `docs/evidence/EVD-AGENTOPS-001-proposal.md` | Proposal evidence; not accepted |
+
+Reason: close the F1 documentation-ledger under-recording of the AGENTOPS-P0-01 proposal without writing signed root-control surfaces for an unaccepted proposal.

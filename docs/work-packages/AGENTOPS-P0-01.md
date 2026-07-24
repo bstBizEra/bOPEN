@@ -34,6 +34,16 @@ Establish a governed, **disabled-by-default** agent engineering control plane an
 3. **Validators:** `tools/validate_agent_controls.py` and `tools/validate_model_routing.py`, dependency-free and LF-normalized (no raw-byte hashing), added to the `pnpm validate` chain **without removing or reordering any existing governance validator**.
 4. **Negative tests** for every fail-closed rule (see acceptance criteria).
 5. **Documentation and traceability:** work package, evidence, traceability manifest, append-only documentation-ledger entries with the document manifest rebound in the same commit.
+6. **Agent Constitution, Role Contracts and the SKEL-P0 Loop:** a governed `.agents/` layer — team constitution, role contracts (director, Claude architect, Codex engineer, reviewer, validator, skill engineer), the permanent Goal→Inspect→…→Repeat loop, checkpoint definitions (C0–C5) and playbooks (skel-p0 / review / worktree / validation / skill-promotion). Its supreme clause is **Rule 0 — Authority Boundary**: the operating model may not authorize acceptance, merge, push, release, deploy, runtime, signed-artifact change, Skill promotion, or any out-of-PG-P0-scope work; those remain operator / Human Engineering Authority decisions, and a candidate integrating both providers' bytes requires a fresh non-authoring reviewer. Proposed structure (created only if this package is authorized):
+
+   ```text
+   .agents/
+   ├── AGENT-CONSTITUTION.md   roles/{director,claude-architect,codex-engineer,reviewer,validator,skill-engineer}.md
+   ├── LOOP.md · TEAM.md       playbooks/{skel-p0-loop,review-loop,worktree-loop,validation-loop,skill-promotion-loop}.md
+   └── checkpoints/{c0-inspect,c1-plan,c2-build,c3-review,c4-validate,c5-integrate}.md
+   ```
+
+   Until authorized, the constitution exists only as a session-local working prompt in scratch space; no `.agents/` file is committed to the tree.
 
 ## Out of scope
 
@@ -41,7 +51,7 @@ Production business logic; database migrations; enabling any MCP server, plugin,
 
 ## Allowed paths
 
-`docs/agent-operations/**`, `tools/validate_agent_controls.py`, `tools/validate_model_routing.py`, `tests/**` (guard and negative tests only), `docs/` (status, manifest, evidence, work-package and changelog surfaces), `package.json` (validate-chain extension only).
+`docs/agent-operations/**`, `.agents/**`, `tools/validate_agent_controls.py`, `tools/validate_model_routing.py`, `tests/**` (guard and negative tests only), `docs/` (status, manifest, evidence, work-package and changelog surfaces), `package.json` (validate-chain extension only).
 
 ## Prohibited paths
 

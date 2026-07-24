@@ -40,3 +40,7 @@ PG-G0-AUTH-001 v0.5 is terminal `DISPOSED`/`gate_passed`. PG-G0-DEC-006 is the o
 ## Append-only PG-P0 preparation status - 2026-07-24
 
 Signing Pass 5 transitions PG-P0 from `READY_FOR_AUTHORITY_REVIEW` to `ACTIVE` preparation at the exact operator-signed substrate. SKEL-P0-01 remains proposed and unaccepted; only preparation and independent review are in scope. Production implementation, migrations, merge, release, deployment and runtime activation remain false and unauthorized.
+
+## Append-only AGENTOPS-P0-01 proposal status - 2026-07-24
+
+`AGENTOPS-P0-01` is a `Proposed; not accepted` work package that re-homes the SKEL-P0-01-A1 control plane, the SKEL-P0-01-A2 model routing, and an Agent Constitution + Role Contracts + SKEL-P0 Loop (supreme clause: Rule 0 Authority Boundary) out of the skeleton scope. Evidence: `docs/evidence/EVD-AGENTOPS-001-proposal.md`. It is unauthorized: SIGNING-PASS-5 does not cover agent-operations meta-tooling, so execution requires a separate operator decision plus binding into `SCHEDULE-REGISTER` PG-P0 work_item_refs, sequenced after SKEL-P0-01 acceptance. No `docs/agent-operations/` or `.agents/` file is created; nothing is enabled; production, migration, merge, release, deployment and runtime remain unauthorized.
