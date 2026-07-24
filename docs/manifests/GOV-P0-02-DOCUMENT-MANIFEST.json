@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-24",
-  "count": 291,
+  "count": 292,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1380,6 +1380,13 @@
       "status": "",
       "sha256": "75e172414cd85298f7f35fdc8a2e3567dec809489b8452b652ec6ba1edfe912f",
       "bytes": 7023
+    },
+    {
+      "path": "docs/evidence/PG-P0-COMPLETION-VERIFICATION-RECEIPT.json",
+      "title": "",
+      "status": "",
+      "sha256": "b255d7d92e2ce07f9c4b8188541b7b017daf0504c4dee410d486c0732e0f0248",
+      "bytes": 2643
     },
     {
       "path": "docs/exceptions/EXCEPTION-REGISTER.md",
