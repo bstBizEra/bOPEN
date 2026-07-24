@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "507a0e10e9d669280a81f417af541e343441831dd29961f0d6190cf43eec7487",
-      "bytes": 16755
+      "sha256": "d53186e8441cb2b66b8e77ccfbac57af60dec6596532a84c06dc29801fbf0d18",
+      "bytes": 17119
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -2043,8 +2043,8 @@
       "path": "docs/work-packages/SKEL-P0-01.md",
       "title": "SKEL-P0-01 \u2014 bOPEN Repository Skeleton (PG-P0 Preparation Scope)",
       "status": "Proposed; not accepted",
-      "sha256": "2c2d3dbe5681b9d6edeacf97ae446e4a4f8d4def065628884ef831f25b573662",
-      "bytes": 5199
+      "sha256": "efba14c7bfaae84cfe1a02f62faa605329a65c8782a45daaab781eeebaefb0a4",
+      "bytes": 6422
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

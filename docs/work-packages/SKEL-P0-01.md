@@ -69,3 +69,17 @@ Reason: a skeleton that adds workspace packages must reconcile the lockfile; thi
 direct consequence of SKEL's own additions. This amendment requires Human Engineering
 Authority acceptance of the amended work package and references the MANIFEST-P0-01
 acceptance record. It does not accept itself.
+
+## Append-only human acceptance record — 2026-07-25
+
+**Outcome:** ACCEPTED; effective for governed preparation lineage
+**Accepted by:** HUMAN-OPERATOR-001 (Engineering Authority, DIRECT)
+**Attestation:** "As HUMAN-OPERATOR-001, Engineering Authority, I authorize the SKEL-P0-01 pnpm-lock.yaml scope amendment and ACCEPT_WORK_ITEM SKEL-P0-01 at exact SHA f1eea272442a0587ab5843ba28c6ce47b91e1615. I have reviewed the evidence and take accountability."
+**Accepted at:** 2026-07-25T00:00:00+07:00
+**Accepted exact SHA:** f1eea272442a0587ab5843ba28c6ce47b91e1615
+**Accepted tree:** a8d24bce1f0b6cd2993d0087c6da1111660259a7
+**Base:** aab8bd9a94c0297da60830af934c66b330b47a81
+**Technical evidence:** Independent `ACCEPT_EXACT_SHA`; canonical frozen-install/validate gate; skeleton validator 5/5; full suite 162/162; clean worktree.
+**Scope authorization:** `pnpm-lock.yaml` amendment is authorized only for the two workspace importer entries required by `packages/kernel-contracts` and `packages/kernel-testing`.
+
+This record binds acceptance to the exact reviewed predecessor above. It does not authorize merge, release, deployment, runtime activation, PG-P0 phase completion, production implementation, or PG-P1 transition.

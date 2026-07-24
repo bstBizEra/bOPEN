@@ -216,3 +216,8 @@
 - Rebuilt SKEL-P0-01 as a fresh sole-Claude-maker candidate on governed base' `aab8bd9` (Option B): the human-accepted MANIFEST-P0-01 reproducibility fix is inherited from the accepted base, so SKEL owns only the reconciled `pnpm-lock.yaml` (workspace importers), not the manifest tool.
 - Every SKEL byte is authored solely by Claude (`claude-opus-4-8`); the earlier operator replay `700cf1e` carried Codex-authored bytes from conflict resolution and is superseded. Re-authored skeleton validator (fail-closed non-.d.ts rule); references the MANIFEST-P0-01 acceptance record.
 - Canonical `pnpm validate` clean under `--frozen-lockfile`; signed surfaces byte-unchanged. Status: Proposed; not accepted; fresh independent Codex review required.
+
+## 2026-07-25 — SKEL-P0-01 acceptance
+
+- HUMAN-OPERATOR-001 authorized the `pnpm-lock.yaml` scope amendment and accepted SKEL-P0-01 at exact SHA `f1eea272442a0587ab5843ba28c6ce47b91e1615`.
+- Acceptance is bounded to the governed preparation lineage; merge, release, deployment, runtime activation, PG-P0 completion and PG-P1 transition remain separately gated.
