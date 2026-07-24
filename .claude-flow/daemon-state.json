@@ -1,76 +1,76 @@
 {
   "running": true,
-  "startedAt": "2026-07-23T18:54:09.434Z",
+  "startedAt": "2026-07-24T07:00:07.937Z",
   "workers": {
     "map": {
-      "runCount": 43,
-      "successCount": 43,
+      "runCount": 45,
+      "successCount": 45,
       "failureCount": 0,
-      "averageDurationMs": 3.441860465116279,
-      "isRunning": false,
-      "nextRun": "2026-07-24T06:47:50.694Z",
-      "lastStartedAt": "2026-07-24T06:32:50.677Z",
-      "lastRun": "2026-07-24T06:32:50.689Z"
+      "averageDurationMs": 3.4444444444444446,
+      "lastRun": "2026-07-24T07:02:50.713Z",
+      "lastStartedAt": "2026-07-24T07:02:50.710Z",
+      "nextRun": "2026-07-24T07:17:50.715Z",
+      "isRunning": false
     },
     "audit": {
-      "runCount": 64,
-      "successCount": 64,
+      "runCount": 67,
+      "successCount": 67,
       "failureCount": 0,
-      "averageDurationMs": 4.375000000000001,
-      "isRunning": false,
-      "nextRun": "2026-07-24T06:37:50.959Z",
-      "lastStartedAt": "2026-07-24T06:37:50.967Z",
-      "lastRun": "2026-07-24T06:37:50.971Z"
+      "averageDurationMs": 4.358208955223882,
+      "lastRun": "2026-07-24T07:12:07.981Z",
+      "lastStartedAt": "2026-07-24T07:12:07.978Z",
+      "nextRun": "2026-07-24T07:12:07.952Z",
+      "isRunning": false
     },
     "optimize": {
-      "runCount": 43,
-      "successCount": 43,
+      "runCount": 45,
+      "successCount": 45,
       "failureCount": 0,
-      "averageDurationMs": 6.674418604651163,
-      "isRunning": false,
-      "nextRun": "2026-07-24T06:47:50.858Z",
-      "lastStartedAt": "2026-07-24T06:32:50.853Z",
-      "lastRun": "2026-07-24T06:32:50.856Z"
+      "averageDurationMs": 23.555555555555557,
+      "lastRun": "2026-07-24T07:04:08.716Z",
+      "lastStartedAt": "2026-07-24T07:04:07.946Z",
+      "nextRun": "2026-07-24T07:19:08.721Z",
+      "isRunning": false
     },
     "consolidate": {
-      "runCount": 22,
-      "successCount": 22,
+      "runCount": 23,
+      "successCount": 23,
       "failureCount": 0,
-      "averageDurationMs": 4.454545454545454,
-      "isRunning": false,
-      "nextRun": "2026-07-24T06:47:50.828Z",
-      "lastStartedAt": "2026-07-24T06:17:50.823Z",
-      "lastRun": "2026-07-24T06:17:50.826Z"
+      "averageDurationMs": 4.391304347826086,
+      "lastRun": "2026-07-24T06:47:50.840Z",
+      "lastStartedAt": "2026-07-24T06:47:50.837Z",
+      "nextRun": "2026-07-24T07:17:50.840Z",
+      "isRunning": false
     },
     "testgaps": {
-      "runCount": 33,
-      "successCount": 33,
+      "runCount": 34,
+      "successCount": 34,
       "failureCount": 0,
-      "averageDurationMs": 3.0303030303030303,
-      "isRunning": false,
-      "nextRun": "2026-07-24T06:57:50.666Z",
-      "lastStartedAt": "2026-07-24T06:37:50.662Z",
-      "lastRun": "2026-07-24T06:37:50.665Z"
+      "averageDurationMs": 3.0588235294117645,
+      "lastRun": "2026-07-24T07:08:07.948Z",
+      "lastStartedAt": "2026-07-24T07:08:07.944Z",
+      "nextRun": "2026-07-24T07:28:07.950Z",
+      "isRunning": false
     },
     "backup": {
       "runCount": 1,
       "successCount": 1,
       "failureCount": 0,
       "averageDurationMs": 3,
-      "isRunning": false,
-      "nextRun": "2026-07-24T19:04:09.447Z",
+      "lastRun": "2026-07-23T19:04:09.445Z",
       "lastStartedAt": "2026-07-23T19:04:09.442Z",
-      "lastRun": "2026-07-23T19:04:09.445Z"
+      "nextRun": "2026-07-24T19:04:09.445Z",
+      "isRunning": false
     },
     "harness": {
-      "runCount": 2,
-      "successCount": 2,
+      "runCount": 3,
+      "successCount": 3,
       "failureCount": 0,
-      "averageDurationMs": 13,
-      "isRunning": false,
-      "nextRun": "2026-07-24T07:06:09.479Z",
-      "lastStartedAt": "2026-07-24T01:06:09.474Z",
-      "lastRun": "2026-07-24T01:06:09.477Z"
+      "averageDurationMs": 18.333333333333332,
+      "lastRun": "2026-07-24T07:12:07.977Z",
+      "lastStartedAt": "2026-07-24T07:12:07.948Z",
+      "nextRun": "2026-07-24T13:12:07.978Z",
+      "isRunning": false
     },
     "predict": {
       "runCount": 0,
@@ -175,5 +175,5 @@
       }
     ]
   },
-  "savedAt": "2026-07-24T06:37:50.972Z"
+  "savedAt": "2026-07-24T07:12:07.981Z"
 }

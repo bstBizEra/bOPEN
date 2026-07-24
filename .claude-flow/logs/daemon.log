@@ -446,3 +446,43 @@
 [2026-07-24T06:37:50.665Z] [INFO] Worker testgaps completed in 3ms
 [2026-07-24T06:37:50.969Z] [INFO] Starting worker: audit (1/2 concurrent)
 [2026-07-24T06:37:50.971Z] [INFO] Worker audit completed in 4ms
+[2026-07-24T06:47:50.704Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-07-24T06:47:50.705Z] [INFO] Worker map completed in 4ms
+[2026-07-24T06:47:50.839Z] [INFO] Starting worker: consolidate (1/2 concurrent)
+[2026-07-24T06:47:50.839Z] [INFO] Consolidate worker: distillation skipped (no-db)
+[2026-07-24T06:47:50.840Z] [INFO] Worker consolidate completed in 3ms
+[2026-07-24T06:47:50.869Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-07-24T06:47:50.870Z] [INFO] Worker optimize completed in 3ms
+[2026-07-24T06:47:50.981Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-07-24T06:47:50.983Z] [INFO] Worker audit completed in 5ms
+[2026-07-24T06:54:51.367Z] [INFO] Daemon self-shutdown: max age 43200s reached
+[2026-07-24T06:54:51.370Z] [INFO] Stopped worker: map
+[2026-07-24T06:54:51.371Z] [INFO] Stopped worker: audit
+[2026-07-24T06:54:51.371Z] [INFO] Stopped worker: optimize
+[2026-07-24T06:54:51.372Z] [INFO] Stopped worker: consolidate
+[2026-07-24T06:54:51.372Z] [INFO] Stopped worker: testgaps
+[2026-07-24T06:54:51.373Z] [INFO] Stopped worker: backup
+[2026-07-24T06:54:51.373Z] [INFO] Stopped worker: harness
+[2026-07-24T06:54:51.377Z] [INFO] Daemon stopped
+[2026-07-24T07:00:07.936Z] [INFO] AI workers disabled (default) - all workers run local-only. Enable with `daemon start --headless`, daemon.aiWorkers.enabled=true, or RUFLO_DAEMON_AI_WORKERS=1 (#2661)
+[2026-07-24T07:00:07.938Z] [INFO] Scheduled map (interval: 900s, first run in 162.767s)
+[2026-07-24T07:00:07.938Z] [INFO] Scheduled audit (interval: 600s, first run in 120s)
+[2026-07-24T07:00:07.938Z] [INFO] Scheduled optimize (interval: 900s, first run in 240s)
+[2026-07-24T07:00:07.939Z] [INFO] Scheduled consolidate (interval: 1800s, first run in 1062.901s)
+[2026-07-24T07:00:07.939Z] [INFO] Scheduled testgaps (interval: 1200s, first run in 480s)
+[2026-07-24T07:00:07.939Z] [INFO] Scheduled backup (interval: 86400s, first run in 43441.506s)
+[2026-07-24T07:00:07.939Z] [INFO] Scheduled harness (interval: 21600s, first run in 720s)
+[2026-07-24T07:00:07.940Z] [INFO] Lifecycle monitor active (workspace-removal, ttl=43200s)
+[2026-07-24T07:00:07.941Z] [INFO] Daemon started (PID: 56428, CPUs: 22, workers: 7, maxCpuLoad: 17.6, minFreeMemoryPercent: 10%)
+[2026-07-24T07:02:07.948Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-07-24T07:02:07.951Z] [INFO] Worker audit completed in 4ms
+[2026-07-24T07:02:50.712Z] [INFO] Starting worker: map (1/2 concurrent)
+[2026-07-24T07:02:50.713Z] [INFO] Worker map completed in 3ms
+[2026-07-24T07:04:08.713Z] [INFO] Starting worker: optimize (1/2 concurrent)
+[2026-07-24T07:04:08.716Z] [INFO] Worker optimize completed in 770ms
+[2026-07-24T07:08:07.946Z] [INFO] Starting worker: testgaps (1/2 concurrent)
+[2026-07-24T07:08:07.948Z] [INFO] Worker testgaps completed in 4ms
+[2026-07-24T07:12:07.949Z] [INFO] Starting worker: harness (1/2 concurrent)
+[2026-07-24T07:12:07.977Z] [INFO] Worker harness completed in 29ms
+[2026-07-24T07:12:07.979Z] [INFO] Starting worker: audit (1/2 concurrent)
+[2026-07-24T07:12:07.981Z] [INFO] Worker audit completed in 3ms
