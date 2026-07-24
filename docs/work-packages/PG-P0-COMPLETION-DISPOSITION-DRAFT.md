@@ -1,4 +1,4 @@
-﻿# PG-P0 Completion and Integration Decision — Draft
+# PG-P0 Completion and Integration Decision — Draft
 
 **Artifact ID:** PG-P0-COMPLETION-001-DRAFT
 **Version:** 0.1-draft
@@ -208,3 +208,70 @@ segregation_of_duties:
 
 This revision supersedes the circular successor-hash wording in the original draft;
 it does not itself sign, encode, complete PG-P0, authorize integration, or open PG-P1.
+
+## Revision 0.3 — anti-replay, idempotency, and canonical trust hardening (2026-07-25)
+
+### Anti-replay controls
+
+A signed completion mandate is single-use and MUST be rejected unless all conditions
+hold at application time:
+
+- `predecessor_schedule_sha256` equals the byte/canonical digest of the currently
+  governed schedule register;
+- `decision_id` has not already been consumed, superseded, revoked, or expired;
+- the mandate's accepted candidate SHA and transform-spec digest match the current
+  application request exactly;
+- the authority validity window and revocation status remain valid; and
+- the mandate has not already produced an encoding receipt.
+
+A mismatch MUST fail closed with `STALE_PREDECESSOR`, `DECISION_ALREADY_CONSUMED`,
+`MANDATE_MISMATCH`, `MANDATE_REVOKED`, or `MANDATE_EXPIRED`; it MUST NOT attempt a
+best-effort transform.
+
+### Idempotency controls
+
+The encoder MUST expose deterministic outcomes for repeated application:
+
+```yaml
+first_application: APPLIED_EXACT
+repeat_same_decision_and_predecessor: ALREADY_APPLIED_EXACT
+same_decision_different_predecessor: REJECT_STALE_OR_REPLAY
+same_decision_different_transform: REJECT_MANDATE_MISMATCH
+```
+
+`ALREADY_APPLIED_EXACT` is successful observation only; it MUST NOT create a second
+schedule transition, second receipt, new timestamp, or alternate successor. The
+receipt lookup key is `(decision_id, predecessor_schedule_sha256,
+transform_spec_sha256)` and the stored successor digest MUST match exactly.
+
+### Canonicalization and signed-payload profile
+
+The transform specification and authority mandate MUST be serialized as canonical
+UTF-8 JSON using RFC 8785 JSON Canonicalization Scheme (JCS): no BOM, LF-independent
+JSON bytes, deterministic property ordering, normalized numbers and strings, no
+unknown fields, no duplicate keys, and no aliases. The signed envelope MUST identify
+its profile and payload digest explicitly. If DSSE is used, the envelope MUST bind
+the JCS payload through the DSSE pre-authentication encoding and retain the complete
+signed envelope for verification.
+
+The transform-spec digest MUST be computed over the exact canonical bytes that the
+mandate signs. Human-readable YAML MAY be a view, but it is not the signed payload.
+
+### Durable trust evidence
+
+The encoding receipt MUST retain the signer certificate/key identifier or pinned
+trust-anchor reference, certificate chain, signature algorithm, signed payload
+bytes/digest, trusted timestamp evidence (RFC 3161 or equivalent), validation time,
+revocation evidence and validator executable/version digest. Evidence MUST be retained
+for the governance record's lifetime and replicated to an immutable or retention-locked
+store. Credential compromise, replacement, supersession and revocation MUST produce
+an append-only disposition rather than rewriting the original receipt.
+
+### Canonicalization self-consistency
+
+This draft file is emitted as UTF-8 without BOM. The canonicalization rule applies to
+all future mandate, transform-spec and receipt payloads; no-BOM is a validated byte
+property, not merely a prose assertion.
+
+This revision remains `DRAFT`; it does not sign or apply a mandate, consume a decision
+ID, change the schedule register, complete PG-P0, authorize merge, or open PG-P1.
