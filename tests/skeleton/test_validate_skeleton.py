@@ -51,16 +51,61 @@ class SkeletonValidatorNegativeFixtures(unittest.TestCase):
             report = validate_skeleton.validate_skeleton(root)
             self.assertEqual(report.errors, [], f"expected clean skeleton, got: {report.errors}")
 
-    def test_business_logic_injection_is_denied(self):
+    def test_python_function_body_in_kernel_zone_is_denied(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             _make_valid_fixture(root)
-            _write(root / "packages" / "kernel-contracts" / "src" / "logic.ts",
-                   "export function computeTax(x){ return x * 0.2 }\n")
+            injected = root / "services" / "billing" / "logic.py"
+            _write(injected, "def compute_tax(value):\n    return value * 0.2\n")
             report = validate_skeleton.validate_skeleton(root)
+            relative = injected.relative_to(root).as_posix()
             self.assertTrue(
-                any("business-logic" in e or "type-only" in e for e in report.errors),
-                f"business logic must be denied; errors: {report.errors}",
+                any(relative in error for error in report.errors),
+                f"Python business logic must be denied; errors: {report.errors}",
+            )
+
+    def test_empty_and_metadata_only_init_files_are_allowed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _make_valid_fixture(root)
+            _write(root / "apps" / "empty_package" / "__init__.py", "")
+            _write(
+                root / "services" / "metadata_package" / "__init__.py",
+                '"""Preparation-only package."""\nfrom __future__ import annotations\n',
+            )
+            report = validate_skeleton.validate_skeleton(root)
+            self.assertEqual(
+                report.errors,
+                [],
+                f"empty or metadata-only __init__.py must be allowed; errors: {report.errors}",
+            )
+
+    def test_d_ts_type_only_file_is_allowed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _make_valid_fixture(root)
+            _write(
+                root / "sdk" / "types" / "index.d.ts",
+                "export interface Placeholder { readonly id: string }\n",
+            )
+            report = validate_skeleton.validate_skeleton(root)
+            self.assertEqual(
+                report.errors,
+                [],
+                f".d.ts type-only source must be allowed; errors: {report.errors}",
+            )
+
+    def test_typescript_runtime_export_is_denied(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _make_valid_fixture(root)
+            injected = root / "packages" / "kernel-contracts" / "src" / "logic.ts"
+            _write(injected, "export function computeTax(x){ return x * 0.2 }\n")
+            report = validate_skeleton.validate_skeleton(root)
+            relative = injected.relative_to(root).as_posix()
+            self.assertTrue(
+                any(relative in error for error in report.errors),
+                f"TypeScript runtime export must be denied; errors: {report.errors}",
             )
 
     def test_draft_to_active_promotion_is_denied(self):

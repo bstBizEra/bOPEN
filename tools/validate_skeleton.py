@@ -13,6 +13,8 @@ type-only; skeleton test tiers keep their fail-closed guard and manifest.
 from __future__ import annotations
 
 import argparse
+import ast
+import re
 from pathlib import Path
 
 try:
@@ -24,6 +26,19 @@ ZONES = ["apps", "services", "packages", "contracts", "sdk", "infrastructure", "
 KERNEL_ZONES = ["apps", "services", "packages", "sdk"]
 RUNTIME_SUFFIXES = {".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"}
 TEST_TIERS = ["unit", "contract", "integration", "tenant_isolation", "authorization"]
+RUNTIME_IMPORT_EXPORT = re.compile(
+    r"(?m)^\s*(?:"
+    r"import\s+(?!type\b)"
+    r"|export\s+(?!(?:type|interface|declare)\b|\{\s*type\b)"
+    r")"
+)
+RUNTIME_DECLARATION = re.compile(
+    r"(?m)^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?"
+    r"(?:function|class|const|let|var|enum|namespace)\b"
+)
+TYPE_ONLY_DECLARATION = re.compile(
+    r"^(?:export\s+)?(?:(?:declare\s+)?(?:type|interface)\b|declare\b)"
+)
 
 
 def normalized_text(path: Path) -> str:
@@ -42,14 +57,131 @@ class Report:
         self.errors.extend(errors)
 
 
+def _is_simple_literal(node: ast.expr) -> bool:
+    if isinstance(node, ast.Constant):
+        return True
+    if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+        return all(_is_simple_literal(item) for item in node.elts)
+    if isinstance(node, ast.Dict):
+        return all(
+            key is not None
+            and _is_simple_literal(key)
+            and _is_simple_literal(value)
+            for key, value in zip(node.keys, node.values)
+        )
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub, ast.Invert)):
+        return _is_simple_literal(node.operand)
+    return False
+
+
+def _is_inert_expression(statement: ast.stmt) -> bool:
+    return (
+        isinstance(statement, ast.Expr)
+        and isinstance(statement.value, ast.Constant)
+        and (isinstance(statement.value.value, str) or statement.value.value is Ellipsis)
+    )
+
+
+def _is_simple_assignment(statement: ast.stmt) -> bool:
+    if isinstance(statement, ast.Assign):
+        return (
+            all(isinstance(target, ast.Name) for target in statement.targets)
+            and _is_simple_literal(statement.value)
+        )
+    if isinstance(statement, ast.AnnAssign):
+        return (
+            isinstance(statement.target, ast.Name)
+            and (statement.value is None or _is_simple_literal(statement.value))
+        )
+    return False
+
+
+def _is_stub_definition(statement: ast.stmt) -> bool:
+    if not isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        return False
+    if statement.decorator_list:
+        return False
+    if isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        defaults = [*statement.args.defaults, *statement.args.kw_defaults]
+        if any(default is not None and not _is_simple_literal(default) for default in defaults):
+            return False
+        return all(
+            isinstance(item, ast.Pass) or _is_inert_expression(item)
+            for item in statement.body
+        )
+    return all(
+        isinstance(item, ast.Pass)
+        or _is_inert_expression(item)
+        or _is_simple_assignment(item)
+        or _is_stub_definition(item)
+        for item in statement.body
+    )
+
+
+def _python_has_executable_substance(text: str) -> bool:
+    if not text.strip():
+        return False
+    try:
+        module = ast.parse(text)
+    except SyntaxError:
+        return True
+    return any(
+        not (
+            isinstance(statement, (ast.Import, ast.ImportFrom))
+            or _is_inert_expression(statement)
+            or _is_simple_assignment(statement)
+            or _is_stub_definition(statement)
+        )
+        for statement in module.body
+    )
+
+
+def _without_script_comments(text: str) -> str:
+    without_blocks = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    return re.sub(r"//[^\n]*", "", without_blocks)
+
+
+def _typescript_is_demonstrably_type_only(text: str) -> bool:
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if not lines:
+        return True
+    in_declaration = False
+    brace_depth = 0
+    for line in lines:
+        if in_declaration:
+            brace_depth += line.count("{") - line.count("}")
+            if brace_depth <= 0 and (";" in line or "}" in line):
+                in_declaration = False
+            continue
+        if re.match(r"^import\s+type\b", line):
+            continue
+        if re.match(r"^export\s*\{\s*type\b.*\}\s*;?$", line):
+            continue
+        if TYPE_ONLY_DECLARATION.match(line):
+            brace_depth = line.count("{") - line.count("}")
+            has_braced_body = "{" in line
+            in_declaration = brace_depth > 0 or (not has_braced_body and ";" not in line)
+            continue
+        return False
+    return True
+
+
 def is_runtime_source(path: Path) -> bool:
     name = path.name
     if name.endswith(".d.ts"):
         return False
+    text = normalized_text(path)
+    if path.suffix == ".py":
+        return _python_has_executable_substance(text)
     if path.suffix in RUNTIME_SUFFIXES:
+        script = _without_script_comments(text)
+        if not script.strip():
+            return False
+        if RUNTIME_IMPORT_EXPORT.search(script) or RUNTIME_DECLARATION.search(script):
+            return True
+        if path.suffix in {".ts", ".tsx"} and _typescript_is_demonstrably_type_only(script):
+            return False
         return True
-    if path.suffix == ".py" and name != "__init__.py":
-        return normalized_text(path).strip() != ""
     return False
 
 
