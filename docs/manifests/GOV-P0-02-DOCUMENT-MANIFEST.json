@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 290,
+  "generated": "2026-07-24",
+  "count": 291,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -2017,6 +2017,13 @@
       "status": "Proposed; not accepted",
       "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af",
       "bytes": 13173
+    },
+    {
+      "path": "docs/work-packages/PG-P0-COMPLETION-DISPOSITION-DRAFT.md",
+      "title": "",
+      "status": "DRAFT; NOT SIGNED; NOT EFFECTIVE",
+      "sha256": "e543ae793b8d44754736bbcdb12862292d711ec3c4889fcbc7725f73a3385437",
+      "bytes": 3776
     },
     {
       "path": "docs/work-packages/SKEL-P0-01.md",
