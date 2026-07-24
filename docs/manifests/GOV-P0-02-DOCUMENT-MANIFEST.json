@@ -2020,10 +2020,10 @@
     },
     {
       "path": "docs/work-packages/PG-P0-COMPLETION-DISPOSITION-DRAFT.md",
-      "title": "",
+      "title": "PG-P0 Completion and Integration Decision \u2014 Draft",
       "status": "DRAFT; NOT SIGNED; NOT EFFECTIVE",
-      "sha256": "cb89ea807f06c2dc9f54bda963cee922625c899e81583b8ca56a12d292839d75",
-      "bytes": 8503
+      "sha256": "3e295b337c4eefe53ccd9ef6eabb2873997a6f3e162643941538bd0259b24ea0",
+      "bytes": 11763
     },
     {
       "path": "docs/work-packages/SKEL-P0-01.md",
