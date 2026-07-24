@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 290,
+  "generated": "2026-07-24",
+  "count": 291,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "bd82d7b10412d7ff596c88a4a066d4275332095870247c35704efd4f7d409029",
-      "bytes": 14068
+      "sha256": "e989f5641798330487955aebd6916021efd4386b1e08abd52bbaaad3ae0fa33c",
+      "bytes": 15481
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -2017,6 +2017,13 @@
       "status": "Proposed; not accepted",
       "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af",
       "bytes": 13173
+    },
+    {
+      "path": "docs/work-packages/MANIFEST-P0-01.md",
+      "title": "MANIFEST-P0-01 \u2014 Deterministic document-manifest check (Proposal + demonstrated fix)",
+      "status": "Proposed; not accepted",
+      "sha256": "71b84f44df19f92c5deb937d024df125683e93ae8b171781213ad5f925432322",
+      "bytes": 3482
     },
     {
       "path": "docs/work-packages/SKEL-P0-01.md",
