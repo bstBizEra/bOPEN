@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 290,
+  "generated": "2026-07-24",
+  "count": 291,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1007,8 +1007,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "bd82d7b10412d7ff596c88a4a066d4275332095870247c35704efd4f7d409029",
-      "bytes": 14068
+      "sha256": "a8c9c5a28f6a5c969d31385cfae26e5fdd58ec43c61166663217dbcb31349467",
+      "bytes": 14875
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1884,6 +1884,13 @@
       "status": "Proposed",
       "sha256": "9920d82d42f8433613970d033c9aecebfda3a00f228f38051ebf450a7b1aa223",
       "bytes": 861
+    },
+    {
+      "path": "docs/work-packages/AGENTOPS-P0-01.md",
+      "title": "AGENTOPS-P0-01 \u2014 Agent Engineering Control Plane and Model Routing (Proposal)",
+      "status": "Proposed; not accepted",
+      "sha256": "2aa76db319cee32e4e49f37c4678e008655872b0ed7cd1710dcc75156802239c",
+      "bytes": 7034
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
