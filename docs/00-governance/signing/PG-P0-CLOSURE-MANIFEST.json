@@ -1,0 +1,81 @@
+{
+  "_artifact": "PG-P0 closure manifest - pre-execution (evidence layer 1)",
+  "_status": "FROZEN pre-execution manifest. Binds the exact predecessor, mandate, and authorized successor for PG-P0 ACTIVE-to-COMPLETE. The operator signs mandate_payload_b64 at C4; this manifest is not itself a mandate and carries no signature.",
+  "_encoding": "ASCII-only, UTF-8, LF. (Supersedes the C3 draft at 7d13898b, which carried a cp1252 em-dash byte 0x97 and failed strict UTF-8 load; digests unchanged.)",
+  "_no_circularity": "This manifest does not contain its own resulting commit/tree/blob identity.",
+  "decision_id": "PG-P0-CLOSURE-001",
+  "schema_id": "bopen.phase-completion-mandate",
+  "operation": "COMPLETE_PHASE",
+  "phase_id": "PG-P0",
+  "authority_basis": "PG-P0-INTERP-002 v0.4 (SIGNING-PASS-12); actions APPROVE_PROGRAM_REGISTERS (schedule register) + APPROVE_GOVERNANCE_BASELINE (docket validator extension), held by HUMAN-OPERATOR-001",
+  "verification_time": "2026-07-27T00:00:00+07:00",
+  "predecessor": {
+    "schedule_register_path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+    "source_commit": "dab84c06f4f78d7f285f462d869969f156542079",
+    "schedule_digest_rfc8785_sha256": "e80f7b9390d86a7627d6d14bd683296f2314189d145791971fb8aeb2a8d9f1cf"
+  },
+  "successor": {
+    "authorized_schedule_digest_rfc8785_sha256": "1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863",
+    "pg_p0_mutation": {
+      "status": "ACTIVE -> COMPLETE",
+      "planned_end": "null -> 2026-07-27T00:00:00+07:00",
+      "rebaseline_decision_ref": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision",
+      "evidence_refs_sorted": [
+        "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+        "docs/00-governance/signing/SIGNING-PASS-10.md",
+        "docs/00-governance/signing/SIGNING-PASS-8.md"
+      ]
+    },
+    "invariants": {
+      "phases.PG-P0.status": "COMPLETE",
+      "phases.PG-P1.status": "NOT_READY"
+    }
+  },
+  "mandate": {
+    "digest_rfc8785_sha256": "0f34a306ad63bb3457c1fdda3d3c9185bd99636314dc3008f2dc6ebc9acaf92c",
+    "dsse_payload_type": "application/vnd.bopen.phase-completion-mandate+json",
+    "mandate_payload_b64": "eyJhdXRob3JpdHkiOnsiZWZmZWN0aXZlX2F0IjoiMjAyNi0wNy0yN1QwMDowMDowMCswNzowMCIsInJlcXVpcmVkX2FjdGlvbiI6IkFQUFJPVkVfUFJPR1JBTV9SRUdJU1RFUlMiLCJyZXF1aXJlZF9yb2xlIjoiRW5naW5lZXJpbmcgQXV0aG9yaXR5In0sImRlY2lzaW9uX2lkIjoiUEctUDAtQ0xPU1VSRS0wMDEiLCJpbnZhcmlhbnRzIjp7InBoYXNlcy5QRy1QMC5zdGF0dXMiOiJDT01QTEVURSIsInBoYXNlcy5QRy1QMS5zdGF0dXMiOiJOT1RfUkVBRFkifSwib3BlcmF0aW9uIjoiQ09NUExFVEVfUEhBU0UiLCJwaGFzZV9pZCI6IlBHLVAwIiwicHJlZGVjZXNzb3IiOnsic2NoZWR1bGVfZGlnZXN0IjoiZTgwZjdiOTM5MGQ4NmE3NjI3ZDZkMTRiZDY4MzI5NmYyMzE0MTg5ZDE0NTc5MTk3MWZiOGFlYjJhOGQ5ZjFjZiJ9LCJzY2hlbWFfaWQiOiJib3Blbi5waGFzZS1jb21wbGV0aW9uLW1hbmRhdGUiLCJ0cmFuc2Zvcm0iOnsicGVybWl0dGVkX211dGF0aW9ucyI6W3siZnJvbSI6IkFDVElWRSIsInBhdGgiOiJwaGFzZXMuUEctUDAuc3RhdHVzIiwidG8iOiJDT01QTEVURSJ9LHsicGF0aCI6InBoYXNlcy5QRy1QMC5wbGFubmVkX2VuZCIsInJ1bGUiOiJDT1BZX01BTkRBVEVfRUZGRUNUSVZFX1RJTUUifSx7ImZyb20iOiJkb2NzLzAwLWdvdmVybmFuY2Uvc2lnbmluZy9TSUdOSU5HLVBBU1MtNS5tZCNzaWduZWQtZGVjaXNpb24iLCJwYXRoIjoicGhhc2VzLlBHLVAwLnJlYmFzZWxpbmVfZGVjaXNpb25fcmVmIiwidG8iOiJkb2NzLzAwLWdvdmVybmFuY2Uvc2lnbmluZy9QRy1QMC1DTE9TVVJFLU1BTkRBVEUubWQjc2lnbmVkLWRlY2lzaW9uIn0seyJmcm9tIjpbImRvY3MvMDAtZ292ZXJuYW5jZS9zaWduaW5nL1NJR05JTkctUEFTUy01Lm1kIiwiZG9jcy9ldmlkZW5jZS9FVkQtR09WLTAxNy10ZXJtaW5hbC1nYXRlLXBhc3NlZC1yZXZpZXcubWQiXSwicGF0aCI6InBoYXNlcy5QRy1QMC5ldmlkZW5jZV9yZWZzIiwidG8iOlsiZG9jcy8wMC1nb3Zlcm5hbmNlL3NpZ25pbmcvUEctUDAtQ0xPU1VSRS1NQU5EQVRFLm1kIiwiZG9jcy8wMC1nb3Zlcm5hbmNlL3NpZ25pbmcvU0lHTklORy1QQVNTLTEwLm1kIiwiZG9jcy8wMC1nb3Zlcm5hbmNlL3NpZ25pbmcvU0lHTklORy1QQVNTLTgubWQiXX1dfX0=",
+    "pae_sha256": "bd5113a6edf87e03d8a80d60da41f430afbe8c7fe0e6a1e59c8352c221863d41",
+    "pae_bytes": 1197,
+    "signing_note": "Operator signs the DSSE pre-authentication encoding (PAE) with the C2 candidate private key (keyid operator-pgp0-completion-1). Ed25519 over the exact PAE bytes; output base64 signature."
+  },
+  "trust_root": {
+    "candidate_commit": "8346f33e9d10326a2b3a99977495fb4bba99eaa0",
+    "candidate_blob_oid": "0641b01adce2aa1311a47bdd93ead21241992a5b",
+    "keyid": "operator-pgp0-completion-1",
+    "public_key": "83696c1bf3f47fbba21dd40a928e31b7845753364f6733a00be5c4b27caeb637",
+    "activation": "APPROVED_PENDING_PROOF_OF_POSSESSION -> ACTIVE on this valid C4 signature (SIGNING-PASS-11)"
+  },
+  "permitted_effects_at_execution_C8": [
+    {
+      "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+      "effect": "apply the PG-P0 successor mutation ONLY (structure per successor.pg_p0_mutation); all other entries byte-identical"
+    },
+    {
+      "path": "tools/validate_pg_g0_authority_docket.py",
+      "effect": "extend expected-state per PG-P0-INTERP-002 v0.4 section 5: add P0_COMPLETED_AT=2026-07-27T00:00:00+07:00, P0_COMPLETE_DECISION_REF=docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision, P0_COMPLETE_EVIDENCE_REFS={the sorted set}, and switch the PG-P0 expected branch to the COMPLETE shape"
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+      "effect": "create at C4: the signed DSSE envelope + closure decision record (layer-2-adjacent; exists before C8)"
+    },
+    {
+      "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
+      "effect": "deterministic regeneration (derived)"
+    },
+    {
+      "path": "docs/DOCUMENT-MANIFEST.json",
+      "effect": "deterministic regeneration (derived; regenerate after GOV-P0-02)"
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "effect": "append execution note (derived)"
+    }
+  ],
+  "prohibited_effects": [
+    "any change to PG-P1..PG-C0 schedule entries",
+    "any authority-matrix / identity-register / schema change",
+    "any move of an authoritative ref by an agent (C9 is the operator expected-old CAS commit)",
+    "opening PG-P1, authorizing research or production"
+  ]
+}
