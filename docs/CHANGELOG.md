@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-008: durable receipt for the C3 closure manifest (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent checker receipt for the re-issued C3 manifest at b0e56564 (bc4ysdfum): round-trip VERIFIED_EXACT, strict UTF-8 PASS, all four digests exact (predecessor e80f7b93, successor 1f8d183e, mandate 0f34a306, PAE bd5113a6), authority + trust-root key confirmed, 189 tests + both manifest checks PASS, no finding. Green light for operator C4 signature. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - C3 (reissue): freeze PG-P0 closure manifest, clean UTF-8 (supersedes 7d13898b)
 
 - Re-froze docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json as pure ASCII / valid UTF-8 / LF. The prior C3 draft 7d13898b carried a single cp1252 em-dash byte (0x97) from a Windows stdout redirect and failed the verifier strict read_text(encoding=utf-8) round-trip (independent review REJECT). Digests unchanged (predecessor e80f7b93, successor 1f8d183e, mandate 0f34a306, PAE bd5113a6); the embedded mandate_payload_b64 and thus the operator C4 signing subject are identical. Re-verified end-to-end through VERIFY-P0-01 (throwaway key) = VERIFIED_EXACT. Carries no signature; mutates no register/validator. PG-P0 ACTIVE; PG-P1 NOT_READY.

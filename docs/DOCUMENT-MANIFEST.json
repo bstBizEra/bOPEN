@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-26",
-  "count": 320,
+  "count": 321,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1112,8 +1112,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "8be4c795a6399646b935703e2310548cc4f826439feea52de6bc97065a46b923",
-      "bytes": 27918
+      "sha256": "8e42e73b9ca61b007882199724e13e0257c00412259742dec5192dd7c26b4929",
+      "bytes": 28428
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1396,6 +1396,13 @@
       "bytes": 2681
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-008-c3-closure-manifest-receipt.md",
+      "title": "EVD-CLOSURE-008 - Durable checker receipt: C3 pre-execution closure manifest",
+      "status": "Durable independent-review receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 section 7)",
+      "sha256": "c7881e3c1b277c21bf7d76f377a55c11ebdbc6e84f15edb0ee4905af4b373a88",
+      "bytes": 2426
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1567,8 +1574,8 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "6fd35290e5745ba6f2a9bed40d855eefba8474b8a5fd68fec0894fe7092469ff",
-      "bytes": 86020
+      "sha256": "00bd3fd30181832952d2425cd07f92b162bb8d941c1b9e9ac6eec5643299e5c5",
+      "bytes": 86429
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
