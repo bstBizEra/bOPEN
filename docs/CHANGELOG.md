@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-005: durable receipt for the C2 approval encoding (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent checker receipt for SIGNING-PASS-11 (C2 trust-root approval) at 5b19fd13: bound candidate digests exact, candidate_unmutated true, non_activation_boundary_verified true, no finding. Trust root APPROVED_PENDING_PROOF_OF_POSSESSION (not active until C4). PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - SIGNING-PASS-11: C2 trust-root approval (APPROVED_PENDING_PROOF_OF_POSSESSION)
 
 - Encoded HUMAN-OPERATOR-001 C2 approval of the trust-root candidate at 8346f33e (separate receipt per the no-circularity rule; binds candidate commit 8346f33e, tree 42ab3439, trust-root blob 0641b01a, raw sha256 a6806c16, public key + fingerprint, authority basis PG-P0-INTERP-002 v0.3). Lifecycle CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION. The candidate JSON is NOT mutated (bound digests stay valid).
