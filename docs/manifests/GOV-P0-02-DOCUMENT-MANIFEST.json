@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-26",
-  "count": 315,
+  "count": 316,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1098,8 +1098,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "c5986a60fbe1b1293e1a28216f868f2dea521250f7ce7c24f10552d5452611cf",
-      "bytes": 24686
+      "sha256": "9ffff1cda503d959a56c8429646f3f001697e5545358fe39221c8f147775eed6",
+      "bytes": 25112
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1366,6 +1366,13 @@
       "status": "Durable independent-review receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 \u00a77)",
       "sha256": "f29f9cae443372fb41751e1583ab934ed9a8436a2f14332bbc47c4d4285d55c7",
       "bytes": 2580
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-006-interp002-v04-receipt.md",
+      "title": "EVD-CLOSURE-006 \u2014 Durable checker receipt: INTERP-002 v0.4 (\u00a74 de-circularization)",
+      "status": "Durable independent-review receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 \u00a77)",
+      "sha256": "4b9b438a1ff4bdf52ed541ff72a85107e7f4f3c2d888c6314538d32f1efccb46",
+      "bytes": 2430
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",

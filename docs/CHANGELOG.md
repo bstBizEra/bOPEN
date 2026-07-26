@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-006: durable receipt for INTERP-002 v0.4 (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent checker receipt for v0.4 at e55012c3: scope confirmed SS4-only, de-circularization sound (no layer-3/mechanism break), prior artifacts unchanged, validators + 189 tests PASS, v0.4 blob digest exact, no finding. Ready for human re-issuance against the v0.4 exact text. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - INTERP-002 v0.4: de-circularize successor evidence_refs (supersedes v0.3 at SS4 only)
 
 - Added PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.4.md correcting SS4: the sanctioned successor evidence_refs now reference only execution-time-available evidence sorted({SIGNING-PASS-8, SIGNING-PASS-10, <closure mandate signing record>}); the C10 post-execution receipt is REMOVED from the set and attests the result externally (layer 3, per SS3). Root cause: v0.3 SS4 embedded the post-execution receipt, which cannot exist inside the C8 commit it attests -> docket evidence-ref check would fail at execution. Found during C3 prep from the exact VERIFY-P0-01/docket contract.
