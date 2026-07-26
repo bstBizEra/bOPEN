@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - chore: regenerate legacy docs/DOCUMENT-MANIFEST.json (pre-existing staleness)
+
+- Regenerated the tool-default document manifest docs/DOCUMENT-MANIFEST.json, STALE since the accepted head 73912e4 and base 52bd96ec (pre-existing legacy condition, not introduced by closure work). Canonical pnpm validate gates on docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json (always current here); the default-path manifest is tracked but not in pnpm validate, so an independent reviewer running generate_document_manifest.py --check (default) correctly flagged it. Regen order matters: the default manifest indexes the GOV-P0-02 manifest, so GOV-P0-02 is regenerated first and the default last; both --check paths now pass. Touches only the two manifests + CHANGELOG; zero register/authority/decision/validator change. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - SIGNING-PASS-12: re-issue PG-P0-INTERP-002 against v0.4 exact text (C1 current)
 
 - Encoded HUMAN-OPERATOR-001 re-issuance attestation: PG-P0-INTERP-002 v0.4 EFFECTIVE against exact text at e55012c3 (v0.4 blob sha256 f4948f90...), narrowly superseding the v0.3 issuance (SIGNING-PASS-10; SS4-only change) with review receipt EVD-CLOSURE-006 (ACCEPT_EXACT_SHA) on file. The C2 approval (SIGNING-PASS-11) and trust-root candidate remain valid. Appended issuance record to the v0.4 doc extend-only.
