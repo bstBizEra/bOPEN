@@ -1,5 +1,10 @@
 # Documentation Changelog
 
+## 2026-07-27 - SIGNING-PASS-11: C2 trust-root approval (APPROVED_PENDING_PROOF_OF_POSSESSION)
+
+- Encoded HUMAN-OPERATOR-001 C2 approval of the trust-root candidate at 8346f33e (separate receipt per the no-circularity rule; binds candidate commit 8346f33e, tree 42ab3439, trust-root blob 0641b01a, raw sha256 a6806c16, public key + fingerprint, authority basis PG-P0-INTERP-002 v0.3). Lifecycle CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION. The candidate JSON is NOT mutated (bound digests stay valid).
+- Boundary: approval binds the key to authority but does NOT activate the trust root; it becomes ACTIVE only on the first valid C4 mandate signature verified by VERIFY-P0-01 (proof of possession). No mandate accepted; no register/validator mutation; PG-P0 ACTIVE; PG-P1 NOT_READY; main a908bbe. Next: C3 manifest + mandate-bytes freeze.
+
 ## 2026-07-27 - K4: trust-root CANDIDATE with operator public key (CANDIDATE_PENDING_C2_APPROVAL)
 
 - Added docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-CANDIDATE.json: the operator-generated Ed25519 PUBLIC key (raw-32 hex) + SHA-256 fingerprint, intake-validated per the corrected K3 logic (strict lowercase-hex, constant-time fingerprint match, canonical decompress/recompress roundtrip = structural validity only). Profile named sha256:rfc8032-ed25519-raw-32. Private key generated and held solely by the operator (encrypted PKCS8, offline); no agent generated, received, or handles it.
