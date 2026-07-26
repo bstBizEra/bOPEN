@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-26",
-  "count": 314,
+  "count": 315,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -71,6 +71,13 @@
       "status": "Draft; ineffective \u2014 for human re-issuance against this exact text",
       "sha256": "a4cf901f2ff561f9404b0aff381b508b0afb7a9ce991882c85de77ae65924dfe",
       "bytes": 9889
+    },
+    {
+      "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.4.md",
+      "title": "PG-P0-INTERP-002 v0.4 (DRAFT) \u2014 Closure authorization: \u00a74 evidence-refs de-circularization",
+      "status": "Draft; ineffective \u2014 for human re-issuance against this exact text",
+      "sha256": "f4948f9034a04ebcc3926b58f8d1bc1d94e190c15a6019e09e451a37d6992d8e",
+      "bytes": 10392
     },
     {
       "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION.md",
@@ -1091,8 +1098,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "2f282731b62901f3f0e851d2e22daee88662bb5037c102b32f5b5539c4a69e00",
-      "bytes": 23491
+      "sha256": "c5986a60fbe1b1293e1a28216f868f2dea521250f7ce7c24f10552d5452611cf",
+      "bytes": 24686
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",

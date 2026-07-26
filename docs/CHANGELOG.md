@@ -1,5 +1,11 @@
 # Documentation Changelog
 
+## 2026-07-27 - INTERP-002 v0.4: de-circularize successor evidence_refs (supersedes v0.3 at SS4 only)
+
+- Added PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.4.md correcting SS4: the sanctioned successor evidence_refs now reference only execution-time-available evidence sorted({SIGNING-PASS-8, SIGNING-PASS-10, <closure mandate signing record>}); the C10 post-execution receipt is REMOVED from the set and attests the result externally (layer 3, per SS3). Root cause: v0.3 SS4 embedded the post-execution receipt, which cannot exist inside the C8 commit it attests -> docket evidence-ref check would fail at execution. Found during C3 prep from the exact VERIFY-P0-01/docket contract.
+- Scope: SS4 ONLY. SS1-2 authority-scope finding + dual-action basis, SS3 layers, SS5 validator extension, SS6 C0-C11, SS7 receipts, SS8 acceptance rule unchanged. The trust-root candidate (8346f33e) and operator C2 approval (SIGNING-PASS-11, 5b19fd13) remain valid; v0.4 re-issuance re-affirms the same authority basis. C1 re-executes on re-issuance against the v0.4 exact text.
+- Draft only; no live register/schema/docket/validator mutation; nothing issued/signed. PG-P0 ACTIVE; PG-P1 NOT_READY; main a908bbe.
+
 ## 2026-07-27 - EVD-CLOSURE-005: durable receipt for the C2 approval encoding (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent checker receipt for SIGNING-PASS-11 (C2 trust-root approval) at 5b19fd13: bound candidate digests exact, candidate_unmutated true, non_activation_boundary_verified true, no finding. Trust root APPROVED_PENDING_PROOF_OF_POSSESSION (not active until C4). PG-P0 ACTIVE; PG-P1 NOT_READY.
