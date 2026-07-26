@@ -128,3 +128,22 @@ This draft grants no authority, issues nothing by itself, mutates no register/sc
 validator, signs no mandate, and completes no phase. Gate 1 and PG-P0 closure do not implicitly open
 PG-P1. It is content staged for the accountable human authority to re-issue against this exact text.
 `PG-P0 ACTIVE`; `PG-P1 NOT_READY`; production not authorized; `main` `a908bbe`.
+
+## Issuance record — 2026-07-27
+
+**Outcome:** RE-ISSUED / EFFECTIVE, against the exact v0.3 text.
+**Issued by:** `HUMAN-OPERATOR-001` (Engineering Authority, DIRECT), holding both scoped actions
+(`APPROVE_PROGRAM_REGISTERS`, `APPROVE_GOVERNANCE_BASELINE`) per `PG-REG-IDENTITY-001`.
+**Attestation:** "As HUMAN-OPERATOR-001, I re-issue PG-P0-INTERP-002 against v0.3 at a210e8a4."
+**Issued at:** 2026-07-27T00:00:00+07:00
+**Exact-text binding:** commit `a210e8a41f8975351890f6f673e6b82bc458870b`, v0.3 file SHA-256
+`15c01709219e575d76435a57d09967cdc3e5fb6af2a39c9a49e81d1a24f45d64`; independent review receipt
+`EVD-CLOSURE-003` (`ACCEPT_EXACT_SHA`, no finding).
+**Supersedes:** the v0.2 issuance (SIGNING-PASS-9 at `32271aa2`), preserved as history.
+**Recorded in:** `docs/00-governance/signing/SIGNING-PASS-10.md`
+
+The interpretation above is hereby effective with its bounds, corrections, consolidated execution
+lineage, C0–C11 sequence, and six-condition acceptance rule in full. The immutable "Draft;
+ineffective" header reflects authoring-time status and is preserved unchanged per the extend-only
+principle; this issuance record is the authoritative current state. C1 is complete on this lineage;
+C2–C11 remain, each separately gated. `PG-P0 ACTIVE`; `PG-P1 NOT_READY`; production not authorized.
