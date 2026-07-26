@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-26",
-  "count": 311,
+  "count": 312,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -246,6 +246,13 @@
       "status": "",
       "sha256": "dc2acf6c0319314496b77070e0e5a93d13cde2c20affd3a1a2c91c3a69f54b8e",
       "bytes": 2739
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-CANDIDATE.json",
+      "title": "",
+      "status": "",
+      "sha256": "a6806c1645bcb2f700764ac21009ea58d3cbf8245fdf87540ef6b64b771eebba",
+      "bytes": 3942
     },
     {
       "path": "docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-V2-DRAFT.json",
@@ -1077,8 +1084,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "751818f1773410ca57777b5adec79ba30bc829dcad2e851bcce5fbdc6ab96b46",
-      "bytes": 21236
+      "sha256": "447fca9bb0eb7a472f5c7b2fea441bc3449fcb4232cd848043404e052a722a2a",
+      "bytes": 22205
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",

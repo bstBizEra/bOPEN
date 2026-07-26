@@ -1,0 +1,43 @@
+{
+  "_artifact": "PG-P0 completion trust root — CANDIDATE",
+  "_status": "CANDIDATE_PENDING_C2_APPROVAL — not effective; becomes APPROVED_PENDING_PROOF_OF_POSSESSION only via the operator's signed C2 approval receipt, and ACTIVE only via a valid C4 mandate signature (K8-K10 proof of possession)",
+  "_principle": "A key proves signature authenticity only; it does not confer authority. Authority comes from the pre-existing effective mandate bound below. The public key authenticates the mandate; it cannot create the mandate that authorizes itself.",
+  "_boundary": "The PRIVATE key was generated and is held solely by the operator, offline (encrypted PKCS8, operator passphrase); never in this repository; no agent generated, received, or handles it.",
+  "_no_circularity": "This candidate file does not contain its own resulting commit/tree/blob identity. The separate C2 approval receipt binds the resulting candidate commit, tree, trust-root blob OID and raw SHA-256.",
+  "_intake_k3": "Operator-supplied PUBLIC_KEY/FINGERPRINT validated per the corrected K3 logic: re.fullmatch lowercase-hex-64 on both; sha256(raw) recomputed and compared constant-time (hmac.compare_digest) = MATCH; _point_decompress -> _point_compress roundtrip byte-equal (canonical structural encoding validity ONLY; proves no possession, identity, authority, or scope).",
+  "trust_domain": "bopen-governance",
+  "repository_id": "bopen PG execution lineage (accepted base' 52bd96ecc66ae910942ce0c245858cfcb8fc20fa)",
+  "subject_parent": {
+    "parent_commit": "d0a88aa3a2a89acb9cc21b4570adc545195832e5",
+    "parent_note": "verified execution-lineage head containing EVD-CLOSURE-004"
+  },
+  "keys": [
+    {
+      "keyid": "operator-pgp0-completion-1",
+      "algorithm": "ed25519",
+      "public_key_encoding": "RFC8032_RAW_32",
+      "public_key": "83696c1bf3f47fbba21dd40a928e31b7845753364f6733a00be5c4b27caeb637",
+      "fingerprint_algorithm": "SHA-256",
+      "fingerprint_input": "RFC8032_RAW_32",
+      "fingerprint_profile": "sha256:rfc8032-ed25519-raw-32",
+      "public_key_fingerprint": "87c9cd7ece4790733ef7ca6dc4ebfd0f855d6ca87c2f6a8fb9ba64ee3f70bf1d",
+      "identity": "HUMAN-OPERATOR-001 (verified natural person: Ounkhamvilay, per PG-REG-IDENTITY-001)",
+      "identity_id": "HUMAN-OPERATOR-001",
+      "role": "Engineering Authority (accountable for APPROVE_PROGRAM_REGISTERS and APPROVE_GOVERNANCE_BASELINE); Architecture Authority (PG-P0 schedule-entry owner)",
+      "authority_basis": "Issued PG-P0-INTERP-002 v0.3 (SIGNING-PASS-10 at commit 266ca800d1f33c1f03324a36166307dd42c15c21; v0.3 blob 15c01709219e575d76435a57d09967cdc3e5fb6af2a39c9a49e81d1a24f45d64) scoping the pre-existing held actions; this key does not create authority",
+      "permitted_actions": ["COMPLETE_PG_P0_SCHEDULE_TRANSITION"],
+      "scope": "Signing the PG-P0 Stage-1 completion mandate only: the single sanctioned SCHEDULE-REGISTER.json PG-P0 ACTIVE->COMPLETE mutation defined in PG-P0-INTERP-002 v0.3 (canonical sorted evidence_refs). No other register, phase, or artifact.",
+      "threshold": 1,
+      "effective_at": "PENDING_C2_APPROVAL",
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "revocation_reference": "docs/00-governance/signing/ (append-only revocation record naming this keyid; verifier rejects via revoked_keyids)",
+      "rotation_and_recovery": "On loss/compromise: operator appends a revocation record for this keyid, generates a new offline keypair, and a successor candidate is re-approved; no agent ever holds any private key."
+    }
+  ],
+  "activation": {
+    "status": "CANDIDATE_PENDING_C2_APPROVAL",
+    "next_status_on_signed_c2_approval": "APPROVED_PENDING_PROOF_OF_POSSESSION",
+    "final_status_on_valid_c4_mandate_signature": "ACTIVE",
+    "proof_event": "first valid C4 Stage-1 mandate signature verified by VERIFY-P0-01 against this public key (RFC 8032 verification; RFC 4210 proof-of-possession by signing)"
+  }
+}

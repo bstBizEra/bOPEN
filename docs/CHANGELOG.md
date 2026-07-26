@@ -1,5 +1,10 @@
 # Documentation Changelog
 
+## 2026-07-27 - K4: trust-root CANDIDATE with operator public key (CANDIDATE_PENDING_C2_APPROVAL)
+
+- Added docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-CANDIDATE.json: the operator-generated Ed25519 PUBLIC key (raw-32 hex) + SHA-256 fingerprint, intake-validated per the corrected K3 logic (strict lowercase-hex, constant-time fingerprint match, canonical decompress/recompress roundtrip = structural validity only). Profile named sha256:rfc8032-ed25519-raw-32. Private key generated and held solely by the operator (encrypted PKCS8, offline); no agent generated, received, or handles it.
+- Lifecycle: CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION (operator signed C2 receipt) -> ACTIVE (valid C4 mandate signature = proof of possession). No circularity: the separate C2 receipt binds the resulting commit/tree/blob digests. V2 placeholder draft preserved as history. Additive; no live surface changed. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - EVD-CLOSURE-004: durable receipt for the SIGNING-PASS-10 encoding (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent checker receipt for the v0.3 re-issuance encoding at 266ca800: binding digests recomputed exact; supersession of the v0.2 issuance correct with history byte-preserved; strictly additive; validators 11/11; full tests 189/189; no finding. C1 final; C2 (operator keygen) next.
