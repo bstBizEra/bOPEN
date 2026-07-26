@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-007: durable receipt for SIGNING-PASS-12 issuance + manifest housekeeping
+
+- Persisted verbatim the independent checker receipt (bsad7ar0b): signing_pass_12_issuance ACCEPT_EXACT_SHA + manifest_housekeeping ACCEPT. Pre-existing default-manifest staleness independently confirmed at 73912e4 and 52bd96ec; canonical pnpm validate + 189 tests PASS; SP-12 binds v0.4 blob f4948f90; C2 blob 0641b01a unchanged; no new finding. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - chore: regenerate legacy docs/DOCUMENT-MANIFEST.json (pre-existing staleness)
 
 - Regenerated the tool-default document manifest docs/DOCUMENT-MANIFEST.json, STALE since the accepted head 73912e4 and base 52bd96ec (pre-existing legacy condition, not introduced by closure work). Canonical pnpm validate gates on docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json (always current here); the default-path manifest is tracked but not in pnpm validate, so an independent reviewer running generate_document_manifest.py --check (default) correctly flagged it. Regen order matters: the default manifest indexes the GOV-P0-02 manifest, so GOV-P0-02 is regenerated first and the default last; both --check paths now pass. Touches only the two manifests + CHANGELOG; zero register/authority/decision/validator change. PG-P0 ACTIVE; PG-P1 NOT_READY.
