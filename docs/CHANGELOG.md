@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-003: durable receipt for INTERP-002 v0.3 (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent checker receipt for v0.3 at a210e8a4: hard check PASS (verifier in-lineage, 27/27), byte-faithful carries PASS, sorted-refs rule + preserved controls confirmed, validators 11/11, full suite 189/189, v0.3 blob digest exact match, no finding. Advisory only; human re-issuance remains authoritative.
+
 ## 2026-07-27 - INTERP-002 v0.3 + consolidated execution lineage on accepted base'
 
 - Consolidated the PG-P0 closure records into the accepted integrated base' `52bd96ec` — the lineage that contains VERIFY-P0-01 in-tree (operator hard check: the verifier must exist in the exact execution lineage). Carried byte-faithfully: SIGNING-PASS-8 + issued PG-P0-INTERP-001 (from `d6252de1`); SIGNING-PASS-9 + INTERP-002 v0.2 text + trust-root v2 draft (from `32271aa2`); EVD-CLOSURE-001/002 (from `52359dc4`).
