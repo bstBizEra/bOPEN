@@ -83,3 +83,24 @@ acceptance record. It does not accept itself.
 **Scope authorization:** `pnpm-lock.yaml` amendment is authorized only for the two workspace importer entries required by `packages/kernel-contracts` and `packages/kernel-testing`.
 
 This record binds acceptance to the exact reviewed predecessor above. It does not authorize merge, release, deployment, runtime activation, PG-P0 phase completion, production implementation, or PG-P1 transition.
+
+## Current status (derived) — 2026-07-25
+
+**Effective status: ACCEPTED / COMPLETE as a work item.** The immutable `**Status:** Proposed;
+not accepted` header and the `## Completion record` line above reflect the work package's
+authoring-time state and are preserved unchanged under the extend-only principle (headers are
+never overwritten). The authoritative current state is the `## Append-only human acceptance
+record — 2026-07-25` above: HUMAN-OPERATOR-001 (Engineering Authority) recorded `ACCEPT_WORK_ITEM`
+for SKEL-P0-01 at exact SHA `f1eea272442a0587ab5843ba28c6ce47b91e1615`. This derived-status
+section only points to that existing acceptance for legibility (Immune scan finding F-1,
+2026-07-25); it records no new decision and grants no authority.
+
+**Boundary (unchanged):** acceptance is of the SKEL-P0-01 *work item* only. It does not complete
+the PG-P0 *phase* (still `ACTIVE`; completion is a separate human-signed schedule transition
+governed by the draft `PG-P0-GATE-CONTRACT` and decision `DEC-0014`), and it does not authorize
+merge, PG-P1, research gates G3–G7, or production implementation. `main` remains `a908bbe`.
+
+*Note: the same header-vs-appendix legibility gap exists in other accepted packages
+(MANIFEST-P0-01, GOV-P0-01, GOV-P0-04); a repo-wide reconciliation (a machine-checked rule plus
+this derived-status convention) is a separate governance-legibility decision, tracked but not
+performed here.*

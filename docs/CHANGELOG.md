@@ -1,5 +1,15 @@
 # Documentation Changelog
 
+## 2026-07-25 - PG-P0 preparation base' — integrate the SIGNING-PASS-6 accepted batch
+
+- Integrated, at their exact accepted bytes, the four work items accepted by HUMAN-OPERATOR-001 in SIGNING-PASS-6 into a single governed preparation successor (base') off the accepted head `73912e4`:
+  - VERIFY-P0-01 (`3946e946`): `tools/verify_phase_transition.py`, `tests/governance/test_phase_transition_verify.py`, `docs/work-packages/VERIFY-P0-01.md`, `docs/evidence/EVD-VERIFY-001-executable-verifier.md`.
+  - GATE-P0-01 (`f552da30`): `docs/00-governance/PG-P0-GATE-CONTRACT-DRAFT.md` (v0.1 draft), `docs/00-governance/AUTHORITY-MATRIX-COMPLETE-PHASE-PROPOSAL.md`, `docs/work-packages/GATE-P0-01.md`.
+  - DEC-0014 (`8b8b79ed`): `docs/decisions/DEC-0014.md` + its `DECISION-REGISTER.md` row.
+  - SKEL-P0-01 reconciliation (`11329bba`): the appended "Current status (derived)" section.
+- Carried the acceptance record `docs/00-governance/signing/SIGNING-PASS-6.md` (`98ec002f`).
+- Regenerated the document manifest; reconciled this changelog. Additive only: no live register mutated (AUTHORITY-MATRIX.json / AUTHORITY-IDENTITY-REGISTER.json byte-unchanged); no merge to `main`; PG-P0 remains ACTIVE; PG-P1 NOT_READY. This base' is the ground on which the effective-successor gate contract and the completion-enablement drafts are rebuilt so their references resolve in-tree.
+
 ## 2026-07-21 - GOV-P0-01 Program Goal v0.2 controlled draft
 
 - Converted the supplied Program Goal v0.2 into BOPEN-GOAL-001 with a source hash and explicit non-authorizing status.

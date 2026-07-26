@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-24",
-  "count": 293,
+  "generated": "2026-07-26",
+  "count": 300,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -8,6 +8,13 @@
       "status": "",
       "sha256": "14671ba675d47dd5aa992bc2b56c2d5dfb10cc6f39ffe48c9be72e8dd8338a24",
       "bytes": 6452
+    },
+    {
+      "path": "docs/00-governance/AUTHORITY-MATRIX-COMPLETE-PHASE-PROPOSAL.md",
+      "title": "Proposal \u2014 `COMPLETE_PHASE` Authority Action Mapping",
+      "status": "Draft proposal; ineffective \u2014 NOT an edit to the live authority matrix",
+      "sha256": "b94984a459378923e6bfa2bc2499a4214215487d16d705d280f35bbd9987209b",
+      "bytes": 3714
     },
     {
       "path": "docs/00-governance/BOPEN-GOV-001-DRAFT.md",
@@ -43,6 +50,13 @@
       "status": "Draft (advisory; grants nothing by itself)",
       "sha256": "d977a1d887cf920408b81107e8e4f9fe347804d66226587998a9aeb5a6b8ef49",
       "bytes": 6174
+    },
+    {
+      "path": "docs/00-governance/PG-P0-GATE-CONTRACT-DRAFT.md",
+      "title": "PG-P0-GATE-001 \u2014 PG-P0 Completion Gate Decision Contract",
+      "status": "Draft; ineffective",
+      "sha256": "da8a2a77231eb4723f1009edd1a08af4828f0a3a5a94e989c7556d62a71a6fbf",
+      "bytes": 6793
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -246,6 +260,13 @@
       "status": "Signed operator record; encoding pending",
       "sha256": "7c172746190c38ca473301051ba29e3c36d21dbad7ae51dc5abeaee755d52e7d",
       "bytes": 2589
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-6.md",
+      "title": "PG-P0 Signing Pass 6 \u2014 Skeleton-Boundary Scope Decision + Work-Item Acceptances",
+      "status": "Signed operator record; integration/register-binding pending",
+      "sha256": "a6610c8b81af9dcfada0e9b2bb41fe9e7b733d4b81c32d5530ab7ec91b87cdb5",
+      "bytes": 4625
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -1007,8 +1028,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "d53186e8441cb2b66b8e77ccfbac57af60dec6596532a84c06dc29801fbf0d18",
-      "bytes": 17119
+      "sha256": "4cd2b875b44044c4a8130e62a6fdfa29946276a26185b89b894ab3dfc78168e4",
+      "bytes": 18488
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1165,11 +1186,18 @@
       "bytes": 6212
     },
     {
+      "path": "docs/decisions/DEC-0014.md",
+      "title": "DEC-0014 \u2014 PG-P0 Completion Mechanism: Verifier + Human Apply; Exclude Tool-Performed Authoritative Apply",
+      "status": "Proposed",
+      "sha256": "09fb9fc12b3d1fb91cc10b5b5b89095cd58ff2e0ce8558867ab6ca584cd7f769",
+      "bytes": 4140
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "fbe1aea195320bf9cedc2d14d555b78f7e52b83d7d295392beef06a05967aef1",
-      "bytes": 2045
+      "sha256": "42f88d8962a07bb2f992990a3fd0e3f71f1dc3fd0969599cbc051b125816d03c",
+      "bytes": 2191
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1380,6 +1408,13 @@
       "status": "Maker candidate; draft; not accepted. Independent exact-SHA checker review pending.",
       "sha256": "f2cc9dfaf0ab7a467b0e6d30e78bc6dd85d7d1d6cae178533256c805238529fc",
       "bytes": 2456
+    },
+    {
+      "path": "docs/evidence/EVD-VERIFY-001-executable-verifier.md",
+      "title": "EVD-VERIFY-001 \u2014 Executable Verifier for a Human-Applied Phase Transition",
+      "status": "Draft technical evidence",
+      "sha256": "2fe87a2f2a9e45e94e1fd00016c5525cf85abab91903639801dfcb2aa45e7317",
+      "bytes": 3009
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -2005,6 +2040,13 @@
       "bytes": 1712
     },
     {
+      "path": "docs/work-packages/GATE-P0-01.md",
+      "title": "GATE-P0-01 \u2014 PG-P0 Completion Gate Contract + Completion-Action Proposal (draft)",
+      "status": "Proposed; not accepted",
+      "sha256": "550db67c25607077e6fb90a2c2c403a02f6c70b3534e30290cf734426e2bfdb0",
+      "bytes": 2510
+    },
+    {
       "path": "docs/work-packages/GOV-P0-01.md",
       "title": "GOV-P0-01 \u2014 Program Goal v0.2 Controlled Baseline and G0 Measurement Contract",
       "status": "Proposed",
@@ -2043,8 +2085,15 @@
       "path": "docs/work-packages/SKEL-P0-01.md",
       "title": "SKEL-P0-01 \u2014 bOPEN Repository Skeleton (PG-P0 Preparation Scope)",
       "status": "Proposed; not accepted",
-      "sha256": "efba14c7bfaae84cfe1a02f62faa605329a65c8782a45daaab781eeebaefb0a4",
-      "bytes": 6422
+      "sha256": "4adaa3484051413851a1219ee920ad04f70df376d31e66e51f858108197989b9",
+      "bytes": 7858
+    },
+    {
+      "path": "docs/work-packages/VERIFY-P0-01.md",
+      "title": "VERIFY-P0-01 \u2014 Independent Verifier for a Human-Applied Phase Transition",
+      "status": "Proposed; not accepted",
+      "sha256": "ce045e36b8babadeb875fb413932918bd01900a4a7f25adb3c1a1f0cfc85eee8",
+      "bytes": 5808
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

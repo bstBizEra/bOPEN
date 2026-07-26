@@ -13,6 +13,7 @@
 | DEC-0009 | Keep physical upstream clones and raw evidence in an approved external ephemeral workspace | Approved | bOPEN Architecture Authority |
 | DEC-0010 | Adopt Program Goal v0.2 and namespaced lifecycle model | Proposed | Product/Architecture Authorities |
 | DEC-0012 | Reconcile required instruction paths and generated manifests | Proposed | Product/Architecture/Engineering Authorities |
+| DEC-0014 | PG-P0 completion mechanism: verifier + human apply; exclude tool-performed authoritative apply | Proposed | Architecture Authority |
 
 DEC-0011 is reserved by the independent RES-G3 proposal branch and is intentionally not reused here.
 
