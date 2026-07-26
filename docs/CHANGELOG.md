@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-004: durable receipt for the SIGNING-PASS-10 encoding (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent checker receipt for the v0.3 re-issuance encoding at 266ca800: binding digests recomputed exact; supersession of the v0.2 issuance correct with history byte-preserved; strictly additive; validators 11/11; full tests 189/189; no finding. C1 final; C2 (operator keygen) next.
+
 ## 2026-07-27 - SIGNING-PASS-10: re-issue PG-P0-INTERP-002 against v0.3 exact text (C1 final)
 
 - Encoded HUMAN-OPERATOR-001 re-issuance attestation: PG-P0-INTERP-002 v0.3 EFFECTIVE against exact text at a210e8a4 (v0.3 blob sha256 15c01709...), superseding the v0.2 issuance (SIGNING-PASS-9, preserved as history), with independent review receipt EVD-CLOSURE-003 (ACCEPT_EXACT_SHA, no finding) on file. Appended the issuance record to the v0.3 doc (extend-only; immutable Draft header preserved).
