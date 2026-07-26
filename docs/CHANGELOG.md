@@ -1,5 +1,10 @@
 # Documentation Changelog
 
+## 2026-07-27 - SIGNING-PASS-12: re-issue PG-P0-INTERP-002 against v0.4 exact text (C1 current)
+
+- Encoded HUMAN-OPERATOR-001 re-issuance attestation: PG-P0-INTERP-002 v0.4 EFFECTIVE against exact text at e55012c3 (v0.4 blob sha256 f4948f90...), narrowly superseding the v0.3 issuance (SIGNING-PASS-10; SS4-only change) with review receipt EVD-CLOSURE-006 (ACCEPT_EXACT_SHA) on file. The C2 approval (SIGNING-PASS-11) and trust-root candidate remain valid. Appended issuance record to the v0.4 doc extend-only.
+- Closure C1 complete on the current lineage; C2 trust root remains APPROVED_PENDING_PROOF_OF_POSSESSION; C3-C11 remain. Additive; full validate incl docket --check PASSES. PG-P0 ACTIVE; PG-P1 NOT_READY; main a908bbe.
+
 ## 2026-07-27 - EVD-CLOSURE-006: durable receipt for INTERP-002 v0.4 (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent checker receipt for v0.4 at e55012c3: scope confirmed SS4-only, de-circularization sound (no layer-3/mechanism break), prior artifacts unchanged, validators + 189 tests PASS, v0.4 blob digest exact, no finding. Ready for human re-issuance against the v0.4 exact text. PG-P0 ACTIVE; PG-P1 NOT_READY.

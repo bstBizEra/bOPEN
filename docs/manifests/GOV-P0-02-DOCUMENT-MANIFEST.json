@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-26",
-  "count": 316,
+  "count": 317,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -76,8 +76,8 @@
       "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.4.md",
       "title": "PG-P0-INTERP-002 v0.4 (DRAFT) \u2014 Closure authorization: \u00a74 evidence-refs de-circularization",
       "status": "Draft; ineffective \u2014 for human re-issuance against this exact text",
-      "sha256": "f4948f9034a04ebcc3926b58f8d1bc1d94e190c15a6019e09e451a37d6992d8e",
-      "bytes": 10392
+      "sha256": "648d86cfd97bd4c1e67ab6fc3fa9cbead167fc925210d4546a12ff3665ae7282",
+      "bytes": 11724
     },
     {
       "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION.md",
@@ -288,6 +288,13 @@
       "status": "Signed operator C2 approval receipt; encoded append-only in this commit",
       "sha256": "4af7ef9025df02ce8ba4b123541d37cb45fa30629be630be67f2669e95e59647",
       "bytes": 4326
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-12.md",
+      "title": "PG-P0 Signing Pass 12 \u2014 Re-issue PG-P0-INTERP-002 against v0.4 exact text (closure C1, current)",
+      "status": "Signed operator record; encoded append-only in this commit",
+      "sha256": "a62df8646c9b2a387b6b649a1315ac6127ff4a663eb8db72d28c12336fd1ac1b",
+      "bytes": 3416
     },
     {
       "path": "docs/00-governance/signing/SIGNING-PASS-2.md",
@@ -1098,8 +1105,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "9ffff1cda503d959a56c8429646f3f001697e5545358fe39221c8f147775eed6",
-      "bytes": 25112
+      "sha256": "8dc10288c6d05f1d2478aff7a1e353e44ece5b3a75cf45fef9ab98d0a4153efe",
+      "bytes": 25842
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
