@@ -1,5 +1,11 @@
 # Documentation Changelog
 
+## 2026-07-27 - INTERP-002 v0.3 + consolidated execution lineage on accepted base'
+
+- Consolidated the PG-P0 closure records into the accepted integrated base' `52bd96ec` — the lineage that contains VERIFY-P0-01 in-tree (operator hard check: the verifier must exist in the exact execution lineage). Carried byte-faithfully: SIGNING-PASS-8 + issued PG-P0-INTERP-001 (from `d6252de1`); SIGNING-PASS-9 + INTERP-002 v0.2 text + trust-root v2 draft (from `32271aa2`); EVD-CLOSURE-001/002 (from `52359dc4`).
+- Added `PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.3.md`: supersedes v0.2 per operator direction (a signed exact-text blob must not carry a known ordering ambiguity). The correction is normative: the executed successor's `evidence_refs` MUST be the canonical `sorted(...)` of the sanctioned set (EVD-CLOSURE-002 finding); examples are non-normative. All other content (authority-scope finding, corrections 2–4, C0–C11, negative tests, six-condition rule) preserved; C1 re-executes on human re-issuance against the v0.3 exact text.
+- Drafts only; no live register/schema/docket/validator mutation; nothing issued or signed by this commit. PG-P0 ACTIVE; PG-P1 NOT_READY; main a908bbe.
+
 ## 2026-07-25 - PG-P0 preparation base' — integrate the SIGNING-PASS-6 accepted batch
 
 - Integrated, at their exact accepted bytes, the four work items accepted by HUMAN-OPERATOR-001 in SIGNING-PASS-6 into a single governed preparation successor (base') off the accepted head `73912e4`:

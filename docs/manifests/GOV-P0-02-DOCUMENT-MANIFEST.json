@@ -1,7 +1,14 @@
 {
   "generated": "2026-07-26",
-  "count": 300,
+  "count": 308,
   "documents": [
+    {
+      "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
+      "title": "Authority Interpretation (DRAFT) \u2014 `ACCEPT_EVIDENCE` scope for accepting an integrated preparation base",
+      "status": "Draft interpretation; ineffective \u2014 for issuance by the accountable human authority",
+      "sha256": "8ef45ad0dd32592db235974b79b6f51029bb2c85e9a447857022be9c30918586",
+      "bytes": 6149
+    },
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
       "title": "",
@@ -57,6 +64,20 @@
       "status": "Draft; ineffective",
       "sha256": "da8a2a77231eb4723f1009edd1a08af4828f0a3a5a94e989c7556d62a71a6fbf",
       "bytes": 6793
+    },
+    {
+      "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION-V0.3.md",
+      "title": "PG-P0-INTERP-002 v0.3 (DRAFT) \u2014 Closure authorization: sorted-refs correction + consolidated execution lineage",
+      "status": "Draft; ineffective \u2014 for human re-issuance against this exact text",
+      "sha256": "15c01709219e575d76435a57d09967cdc3e5fb6af2a39c9a49e81d1a24f45d64",
+      "bytes": 8581
+    },
+    {
+      "path": "docs/00-governance/PG-P0-INTERP-002-CLOSURE-AUTHORIZATION.md",
+      "title": "PG-P0-INTERP-002 v0.2 (DRAFT) \u2014 Closure authorization, authority-scope finding, and mechanism for PG-P0 `ACTIVE \u2192 COMPLETE`",
+      "status": "Draft; ineffective \u2014 for human issuance against this exact text",
+      "sha256": "986ebfd9959b3c35fb6176c230b60aa8d5bfa6173a6fcbee908d1aefb90d7d85",
+      "bytes": 10924
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -227,6 +248,13 @@
       "bytes": 2739
     },
     {
+      "path": "docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-V2-DRAFT.json",
+      "title": "",
+      "status": "",
+      "sha256": "35573270e0ff1cad8b7cada522e986c592f37657531c04b2fdb71f4823f6ac1e",
+      "bytes": 2324
+    },
+    {
       "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
       "title": "PG-G0 Signing Pass 1 \u2014 Operator Dispositions and Prepared Confirmations",
       "status": "Draft (partially disposed; remaining items pending explicit operator confirmation)",
@@ -267,6 +295,20 @@
       "status": "Signed operator record; integration/register-binding pending",
       "sha256": "a6610c8b81af9dcfada0e9b2bb41fe9e7b733d4b81c32d5530ab7ec91b87cdb5",
       "bytes": 4625
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-8.md",
+      "title": "PG-P0 Signing Pass 8 \u2014 Issue PG-P0-INTERP-001 + ACCEPT_EVIDENCE of the integrated base (Gate 1)",
+      "status": "Signed operator record; encoded append-only in this commit",
+      "sha256": "816f18658a24f2f2ec12fae84b952c22dcc5ac501d3a0b64c92758c711e4a8e7",
+      "bytes": 3921
+    },
+    {
+      "path": "docs/00-governance/signing/SIGNING-PASS-9.md",
+      "title": "PG-P0 Signing Pass 9 \u2014 Issue PG-P0-INTERP-002 v0.2 (closure authorization, exact text)",
+      "status": "Signed operator record; encoded append-only in this commit",
+      "sha256": "389e488dca9d6f8523c1d23dd1954e537a4847453f2f5a310c24c9bc00f28810",
+      "bytes": 3566
     },
     {
       "path": "docs/00-governance/source-governance.md",
@@ -1028,8 +1070,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "4cd2b875b44044c4a8130e62a6fdfa29946276a26185b89b894ab3dfc78168e4",
-      "bytes": 18488
+      "sha256": "f50c62bbb77d2954ae467b78fd008a8be0256861b80359328253f6a41155a0d8",
+      "bytes": 19680
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1261,6 +1303,20 @@
       "status": "",
       "sha256": "48ac0bb7684375fadd5cdae7e902c48dedec6a147b0e489044ef8bc0529a0656",
       "bytes": 6434
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-001-interp002-signing-pass-9-receipt.md",
+      "title": "EVD-CLOSURE-001 \u2014 Durable checker receipt: INTERP-002 v0.2 content + SIGNING-PASS-9 encoding",
+      "status": "Durable independent-review receipt (persisted verbatim by the maker per the issued",
+      "sha256": "93a64afbc71fd51973c6d585c68bffefa76ebc4d3b8bcaa29c6ee1b7aade02c1",
+      "bytes": 2778
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-002-mechanism-reproduction-proven.md",
+      "title": "EVD-CLOSURE-002 \u2014 Independent reproduction of the coordinated closure mechanism: PROVEN",
+      "status": "Durable evidence record of an independent checker reproduction (maker-persisted; verdict",
+      "sha256": "60ad154d9965df9b4e46224334b3c12e6fdbabb21ef029e288e7a95bf4eaa521",
+      "bytes": 3175
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",

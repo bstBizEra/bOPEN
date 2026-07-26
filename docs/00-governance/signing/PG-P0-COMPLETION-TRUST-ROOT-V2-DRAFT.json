@@ -1,0 +1,27 @@
+{
+  "_artifact": "PG-P0 completion trust root v2 (DRAFT)",
+  "_status": "draft; ineffective — placeholder public key; not a trust root until the operator inserts a real Ed25519 public key and the accountable authorities approve it",
+  "_principle": "A key proves signature authenticity only; it does not confer authority. Authority comes from the pre-existing effective mandate bound below. The public key authenticates the mandate; it cannot create the mandate that authorizes itself.",
+  "_boundary": "The PRIVATE key is generated and held solely by the operator, offline; never in this repository; no agent handles it.",
+  "trust_domain": "bopen-governance",
+  "repository_id": "bopen PG preparation lineage (accepted head 73912e483cc9f4b5bc107f84564b955c9a335ca4)",
+  "keys": [
+    {
+      "keyid": "operator-pgp0-completion-1",
+      "algorithm": "ed25519",
+      "public_key": "REPLACE_WITH_OPERATOR_ED25519_PUBLIC_KEY_64_HEX_CHARS",
+      "public_key_fingerprint": "REPLACE_WITH_SHA256_FINGERPRINT_OF_PUBLIC_KEY",
+      "identity": "HUMAN-OPERATOR-001 (verified natural person: Ounkhamvilay, per PG-REG-IDENTITY-001)",
+      "identity_id": "HUMAN-OPERATOR-001",
+      "role": "Engineering Authority (accountable for APPROVE_PROGRAM_REGISTERS); Architecture Authority (PG-P0 schedule-entry owner)",
+      "authority_basis": "AUTHORITY-MATRIX.APPROVE_PROGRAM_REGISTERS held per PG-REG-IDENTITY-001, as scoped by PG-P0-INTERP-002 (pre-existing effective mandate; this key does not create authority)",
+      "permitted_actions": ["COMPLETE_PG_P0_SCHEDULE_TRANSITION"],
+      "scope": "Signing the PG-P0 Stage-1 completion mandate only: the single sanctioned SCHEDULE-REGISTER.json PG-P0 ACTIVE->COMPLETE mutation defined in PG-P0-INTERP-002. No other register, phase, or artifact.",
+      "threshold": 1,
+      "effective_at": "REPLACE_AT_APPROVAL_ISO8601",
+      "expires_at": "2026-08-21T00:00:00+07:00",
+      "revocation_reference": "docs/00-governance/signing/ (append-only revocation record naming this keyid; verifier rejects via revoked_keyids)",
+      "rotation_and_recovery": "On loss/compromise: operator appends a revocation record for this keyid, generates a new offline keypair, and the successor trust root is re-approved by the accountable authorities; no agent ever holds any private key."
+    }
+  ]
+}
