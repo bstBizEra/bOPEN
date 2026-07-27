@@ -373,7 +373,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
             "predecessor_commit": self.base_commit,
             "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
-            "expected_old": "042dda535be70927b73cd1a131b2545349729643",
+            "expected_old": self.base_commit,
             "revocation_state_digest": hashlib.sha256(self._revocation_bytes()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._consumed_bytes()).hexdigest(),
             "successor_blobs": self._resolved_blobs(),
@@ -608,7 +608,7 @@ class SuccessorBlobBindingTests(unittest.TestCase):
             "predecessor_commit": self.base_commit,
             "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
-            "expected_old": "042dda535be70927b73cd1a131b2545349729643",
+            "expected_old": self.base_commit,
             "revocation_state_digest": hashlib.sha256(self._rev()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._con()).hexdigest(),
             "successor_blobs": blobs if blobs is not None else self._resolved_blobs(),
@@ -803,7 +803,7 @@ class TreeScopeAttackTests(unittest.TestCase):
             "predecessor_tree": self.pred_tree,
             "successor_tree": succ_tree,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
-            "expected_old": "0" * 40,
+            "expected_old": self.base_commit,
             "revocation_state_digest": hashlib.sha256(self._rev()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._con()).hexdigest(),
             "successor_blobs": blobs,
@@ -939,12 +939,65 @@ class TreeScopeAttackTests(unittest.TestCase):
     def test_tree_oid_supplied_as_predecessor_commit_rejects(self):
         (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
         succ = self._commit_tree()
-        self._assert(v.PREDECESSOR_COMMIT_INVALID, succ, predecessor_commit=self.pred_tree)
+        # expected_old must track predecessor_commit or the cycle-6 structural check fires first.
+        self._assert(v.PREDECESSOR_COMMIT_INVALID, succ,
+                     predecessor_commit=self.pred_tree, expected_old=self.pred_tree)
 
     def test_nonexistent_predecessor_commit_rejects(self):
         (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
         succ = self._commit_tree()
-        self._assert(v.TREE_OBJECT_INVALID, succ, predecessor_commit="d" * 40)
+        self._assert(v.TREE_OBJECT_INVALID, succ,
+                     predecessor_commit="d" * 40, expected_old="d" * 40)
+
+    # ---- cycle-6 regression: expected_old must equal predecessor_commit -------------------
+    def test_expected_old_equals_predecessor_commit_accepts(self):
+        """Positive: the compare-and-swap baseline and the verified baseline are the same commit."""
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        binding = self._binding(succ)
+        self.assertEqual(binding["expected_old"], binding["predecessor_commit"])
+        result = self._enforce(succ)
+        self.assertTrue(result["successor_tree"]["successor_tree_verified"])
+
+    def test_expected_old_all_f_rejects(self):
+        """CYCLE-6 REGRESSION, the reported attack: expected_old is all-f (syntactically a valid
+        40-hex lowercase id) while predecessor_commit and predecessor_tree are entirely genuine.
+        Nothing previously compared the two, so the transition PROVEN was anchored at one commit
+        while the CAS would publish on top of another."""
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.EXPECTED_OLD_MISMATCH, succ, expected_old="f" * 40)
+
+    def test_expected_old_naming_a_different_real_commit_rejects(self):
+        """Two REAL commits: expected_old names a genuine commit in this repository that simply is
+        not the verified baseline. Harder than the all-f case, because every field resolves."""
+        base_commit = self._git("rev-parse", "HEAD").decode().strip()
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        other_real_commit = self._git("rev-parse", "HEAD").decode().strip()
+        self.assertNotEqual(other_real_commit, base_commit)
+        self._assert(v.EXPECTED_OLD_MISMATCH, succ,
+                     predecessor_commit=base_commit, expected_old=other_real_commit)
+
+    def test_expected_old_swapped_with_predecessor_commit_rejects(self):
+        """Symmetric case: predecessor_commit is moved forward while expected_old keeps the true
+        baseline. Either direction of divergence must reject."""
+        base_commit = self._git("rev-parse", "HEAD").decode().strip()
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        later_real_commit = self._git("rev-parse", "HEAD").decode().strip()
+        self._assert(v.EXPECTED_OLD_MISMATCH, succ,
+                     predecessor_commit=later_real_commit, expected_old=base_commit)
+
+    def test_expected_old_enforced_before_any_repository_work(self):
+        """The check is structural, so it fires even with no repository supplied at all -- a caller
+        cannot skip it by omitting --repository."""
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        binding = self._binding(succ, expected_old="f" * 40)
+        with self.assertRaises(v.VerifyError) as cm:
+            v.validate_closure_binding(binding)
+        self.assertEqual(cm.exception.reason, v.EXPECTED_OLD_MISMATCH)
 
     # ---- tree object identity --------------------------------------------------------
     def test_unresolved_successor_tree_rejects(self):

@@ -1,5 +1,30 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 6 (EVD-CLOSURE-027)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-5 fail-closed result
+  named one blocker against `d4cd5d594d9b9e25fed8634ef0def5dea18c354a`. Reproduced before fixing.
+- **`expected_old` was never compared to `predecessor_commit`.** They mean different things -
+  `predecessor_commit` is the baseline the whole verification diffs from, `expected_old` is the
+  value the C9 compare-and-swap publishes on top of - and both are only 40-hex-validated. So
+  `expected_old = "f" * 40` passed while both other fields stayed genuine. The transition proven
+  would not have been the transition applied, and every cycle-3-to-5 control inherits that
+  divergence silently because all are anchored to `predecessor_commit`.
+- **Fixed** with new stable reason code `EXPECTED_OLD_MISMATCH`, enforced inside the *structural*
+  validator so it runs in both modes, before any repository or tree work, and cannot be skipped by
+  omitting `--repository`. Needs no I/O: both fields are inside the signed payload.
+- Five tests: positive equality; the all-f attack; `expected_old` naming a **different real commit**;
+  a swapped pair (`predecessor_commit` moved forward, `expected_old` keeping the true baseline); and
+  a structural case with no repository supplied at all. DSSE suite 96/96.
+- Disclosed: three fixtures binding placeholder `expected_old` values now bind the fixture's real
+  base commit, and two cycle-5 tests that override `predecessor_commit` now also override
+  `expected_old` so they still reach their intended reason codes. No control was weakened.
+- Preserved: all cycle-3-to-5 controls; frozen signed artifacts byte-identical to base; unsigned
+  proposal still `DRAFT_NOT_SIGNABLE` / `BLOCKED_PENDING_EXECUTION_BYTES` (its `expected_old` and
+  `predecessor_commit` are both `042dda53...` and already satisfy the new check);
+  `PG-P0-CLOSURE-002` revocation scoping; withdrawn backdated verification guidance; no Graphify
+  artifacts.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 5 (EVD-CLOSURE-026)
 
 - Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex returned `REJECT_EXACT_SHA` on

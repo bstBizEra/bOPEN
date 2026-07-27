@@ -87,6 +87,7 @@ REGULAR_FILE_MODES = {"100644", "100755"}
 REPOSITORY_REQUIRED = "REPOSITORY_REQUIRED"
 TREE_OBJECT_INVALID = "TREE_OBJECT_INVALID"
 TREE_SCOPE_VIOLATION = "TREE_SCOPE_VIOLATION"
+EXPECTED_OLD_MISMATCH = "EXPECTED_OLD_MISMATCH"
 PREDECESSOR_COMMIT_INVALID = "PREDECESSOR_COMMIT_INVALID"
 PREDECESSOR_TREE_MISMATCH = "PREDECESSOR_TREE_MISMATCH"
 SUCCESSOR_TREE_UNRESOLVED = "SUCCESSOR_TREE_UNRESOLVED"
@@ -986,6 +987,19 @@ def validate_closure_binding(binding):
         raise VerifyError(
             CLOSURE_BINDING_MALFORMED,
             f"closure_binding.target_ref must be a fully-qualified ref, got {target_ref!r}",
+        )
+    # expected_old is the C9 compare-and-swap value; predecessor_commit is the baseline the whole
+    # verification diffs from. If they disagree, the transition that gets PROVEN is not the
+    # transition that gets APPLIED: the proof is anchored at one commit while the CAS publishes on
+    # top of another. Both fields are inside the signed payload, so this is a pure consistency
+    # property of the binding itself -- checked here, structurally, in BOTH modes and before any
+    # repository or tree work, so it can never be skipped by a caller that omits --repository.
+    if binding["expected_old"] != binding["predecessor_commit"]:
+        raise VerifyError(
+            EXPECTED_OLD_MISMATCH,
+            f"closure_binding.expected_old {binding['expected_old']} must equal "
+            f"predecessor_commit {binding['predecessor_commit']}: the compare-and-swap baseline and "
+            "the verified baseline must be the same commit",
         )
     if not isinstance(binding["successor_blobs"], dict) or not binding["successor_blobs"]:
         raise VerifyError(

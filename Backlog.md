@@ -235,3 +235,20 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Track the two bounded corrections without marking the proposal signable or any binding resolved.
 **Benefit of old phase:** Both defects were named precisely enough to be reproduced first and fixed narrowly, with no rebuild required.
 **Expected outcome:** Scope enforcement is now correct for renames and anchored to the signed predecessor commit.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0005
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-5 fail-closed result, one blocker
+**Work package:** PG-P0 closure repair, cycle 6
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0005
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0005
+**Evidence:** EVD-CLOSURE-027
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-5 candidate `d4cd5d594d9b9e25fed8634ef0def5dea18c354a`, preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six blob ids and `successor_tree`; replacement of the inherited `authority.effective_at` and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the single bounded correction without marking the proposal signable or any binding resolved.
+**Benefit of old phase:** The blocker was named precisely enough to reproduce first and fix narrowly, with no rebuild required.
+**Expected outcome:** `expected_old` and `predecessor_commit` are provably the same commit; divergence in either direction hard-rejects `EXPECTED_OLD_MISMATCH`.

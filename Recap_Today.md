@@ -220,3 +220,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** A scope layer that mis-parses git's output, or that diffs from an unanchored baseline, provides no assurance regardless of how strict its later checks are.
 **Benefit of old phase:** The cycle-4 design held up; only the baseline anchoring and the diff parsing needed correction.
 **Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0005
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-5 fail-closed result, one blocker
+**Work package:** PG-P0 closure repair, cycle 6
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0005
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0005
+**Evidence:** EVD-CLOSURE-027
+**Summary:** Reproduced the blocker first: with `expected_old` set to all-f and both `predecessor_commit` and `predecessor_tree` genuine, cycle-5 code accepted. Added the new stable reason code `EXPECTED_OLD_MISMATCH` and enforced `expected_old == predecessor_commit` inside the structural validator, so it runs in both modes, before any repository or tree work, and cannot be skipped by omitting `--repository`. Five tests: positive equality, the all-f attack, a different real commit, a swapped pair, and a no-repository structural case. Two cycle-5 tests that deliberately override `predecessor_commit` now also override `expected_old` so they still reach their intended reason codes.
+**Reason:** If the compare-and-swap baseline and the verified baseline can differ, the transition that is proven is not the transition that is applied, and every scope and anchoring control built in earlier cycles inherits that divergence silently.
+**Benefit of old phase:** The earlier layers were sound; only a cross-field consistency requirement was missing.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.

@@ -228,3 +228,18 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Two exact defects, both reproduced before fixing. `--no-renames` followed by `-M0` re-enabled rename detection under git's last-option-wins rule, and the resulting three-field rename record defeated a two-field parser, so renaming a permitted path to an undeclared destination enumerated only the permitted source and passed. Separately, `predecessor_commit` was never resolved, so it and `predecessor_tree` floated free and a genuine base commit could be paired with a substituted real tree.
 **Benefit of old phase:** The cycle-4 scope layer was correct in design; both defects were in how the baseline was anchored and how git's output was parsed, which is exactly what an exact-SHA review surfaces.
 **Expected outcome:** Rename destinations are enumerated and rejected when out of scope, and the diff baseline is provably the signed predecessor commit's own tree.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0005
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-5 fail-closed result naming one blocker
+**Work package:** PG-P0 closure repair, cycle 6 (additive commit on `claude/PG-P0-closure-repair-c8-v2`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0005
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0005
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-027 (022-026 remain valid and unedited)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; proposal remains DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES
+**Reason:** `expected_old` (the C9 compare-and-swap baseline) and `predecessor_commit` (the baseline the whole verification diffs from) were never compared, so an all-f or otherwise divergent `expected_old` passed while both other fields stayed genuine. The transition proven would not have been the transition applied, and every cycle-3-to-5 control inherits that divergence silently because they are all anchored to `predecessor_commit`.
+**Benefit of old phase:** Cycles 3-5 built the scope and anchoring layers this check completes; the gap was a missing cross-field consistency requirement, not a design fault in those layers.
+**Expected outcome:** The compare-and-swap baseline and the verified baseline are provably the same commit, enforced structurally in both modes and before any repository work.
