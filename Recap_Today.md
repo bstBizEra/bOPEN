@@ -160,3 +160,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-RECAP-0001
+
+**Timestamp:** 2026-07-27T00:00:00+07:00 (session)
+**Agent ID:** Claude (BST-SA Motor, sole maker this session)
+**Source:** Explicit operator/Codex-handshake instruction to continue as implementation maker
+**Work package:** PG-P0 closure repair (`codex/PG-P0-closure-repair-c8`)
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-0001
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-BACKLOG-0001
+**Evidence:** EVD-CLOSURE-017, EVD-CLOSURE-018, EVD-CLOSURE-019, EVD-CLOSURE-020, EVD-CLOSURE-021
+**Summary:** Isolated a candidate worktree at exact governed head `042dda535be70927b73cd1a131b2545349729643`; extended VERIFY-P0-01 with an optional, additive closure-manifest binding (34/34 tests pass, up from 27); corrected a 63-hex-char truncated digest in EVD-CLOSURE-014 via new append-only evidence; reconciled a C2/C4 labeling conflation in the closure manifest; added explicit proposed C9 `target_ref`/`expected_old` fields; persisted `PG-P0-CONSUMED-DECISIONS.json`/`PG-P0-REVOCATIONS.json` and re-verified end-to-end (`VERIFIED: ALREADY_VERIFIED_EXACT`). Five of six items complete. The sixth (durable C6-C8 apply-patch bytes) is INCOMPLETE: a motor-role subagent self-refused it as execution beyond its advisory authority, and two direct attempts (an Agent call, then a direct mutating write inside a disposable scratch clone) were blocked by the Claude Code auto-mode permission classifier. Stopped rather than routed around the denial; only a digest-verified specification was recorded (EVD-CLOSURE-021).
+**Reason:** Clear the audited C8 blockers so an independent checker can review a complete, bounded candidate before the human's C8 commit.
+**Benefit of old phase:** The prior state's six gaps were individually well-documented (the maker's own footnotes, the DSSE skill's stop conditions) but never durably repaired.
+**Expected outcome:** Codex reviews this exact candidate; no signed byte changed, no ref moved, no decision consumed beyond what EVD-CLOSURE-014 already consumed, `9bd1c591` and every other worktree untouched, C8/C9/merge/production remain human-gated and unauthorized. Item 3 (apply-patch bytes) needs an operator decision on how to proceed.

@@ -167,3 +167,19 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-BACKLOG-0001
+
+**Timestamp:** 2026-07-27T00:00:00+07:00 (session)
+**Agent ID:** Claude (BST-SA Motor, sole maker this session)
+**Source:** Explicit operator/Codex-handshake instruction to continue as implementation maker
+**Work package:** PG-P0 closure repair (`codex/PG-P0-closure-repair-c8`)
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-0001
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-RECAP-0001
+**Evidence:** EVD-CLOSURE-017..021
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Open controls:** Independent-checker (Codex) exact-SHA review of EVD-CLOSURE-017..021; human disposition of the c9_proposed_ref_move proposal; the actual C4-already-signed mandate remains authoritative and unedited.
+**Reason:** Track the prepared closure-repair candidate without marking any of the six items accepted, applied or authoritative.
+**Benefit of old phase:** The pre-repair state kept the six defects explicit (via the maker's own transcription footnote and the DSSE skill's documented stop conditions) rather than silently papering over them.
+**Expected outcome:** Codex independent review can proceed against this exact candidate branch/commit; C8, any ref move, any merge, and any production claim remain separately gated and unauthorized.

@@ -1,0 +1,11 @@
+{
+  "_artifact": "PG-P0 consumed-decisions registry - external anti-replay state for VERIFY-P0-01 (--consumed).",
+  "_status": "Persisted per EVD-CLOSURE-020. bopen-dsse-verification: 'Anti-replay is external state... the tool persists nothing. Single-use holds only if the caller writes the registry back.' This is that write-back, sourced from the already-persisted EVD-CLOSURE-014 C5 VERIFIED_EXACT receipt (the first, and to date only, verification of decision_id PG-P0-CLOSURE-001). A re-verification of the byte-identical transition against this file must report ALREADY_VERIFIED_EXACT; a different transition under the same decision_id must be REPLAY_DENIED.",
+  "_schema_note": "Flat map: decision_id -> {predecessor_digest, successor_digest}, matching tools/verify_phase_transition.py's internal `consumed` shape exactly (see verify_transition()'s consumed_next.setdefault call) so this file can be passed directly via --consumed.",
+  "PG-P0-CLOSURE-001": {
+    "predecessor_digest": "e80f7b9390d86a7627d6d14bd683296f2314189d145791971fb8aeb2a8d9f1cf",
+    "successor_digest": "1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863",
+    "source": "EVD-CLOSURE-014 (C5, VERIFIED_EXACT, signer HUMAN-OPERATOR-001, checker BST-Codex-Motor)",
+    "recorded_at": "2026-07-27T00:00:00+07:00"
+  }
+}

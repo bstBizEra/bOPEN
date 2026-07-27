@@ -23,8 +23,8 @@
   "files": [
     {
       "path": "Backlog.md",
-      "sha256": "6ad1dbb599b767f1ee02edfa2306c47a4d6cf7dc03eafedfa0abd326c76f4708",
-      "bytes": 8712
+      "sha256": "032cca5d25999fa6c925a5a32c96ebac8a3d430dafd186d2d3d915554a0e134b",
+      "bytes": 10043
     },
     {
       "path": "Master_Standards.md",
@@ -33,13 +33,13 @@
     },
     {
       "path": "Progress_Log.md",
-      "sha256": "b629033c48487431079e9bc04e3f27dd630a9c7633a6e6e03b93e5ffd6cfe806",
-      "bytes": 9309
+      "sha256": "19f8e5abf81610ed67496401de543947cda1880383ac2e7c7016b50bfb7a49ac",
+      "bytes": 11244
     },
     {
       "path": "Recap_Today.md",
-      "sha256": "485e1dba91c2dccee51817f8ba464ac1deaab16d1d6ec1c097b97e5d0e924559",
-      "bytes": 8731
+      "sha256": "5fa62bb7590b0b92c0228dc635842c8595f733e618782d613dd42b28abed768f",
+      "bytes": 11012
     },
     {
       "path": "Roadmap.md",

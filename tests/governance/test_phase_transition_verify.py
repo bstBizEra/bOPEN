@@ -96,7 +96,8 @@ def _envelope(mandate, seed=SEED, keyid=KEYID, payload_bytes=None):
 
 
 def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust_root=None,
-            identity_register=None, verification_time=VTIME, consumed=None, revocations=None):
+            identity_register=None, verification_time=VTIME, consumed=None, revocations=None,
+            closure_manifest_bytes=None):
     predecessor = predecessor if predecessor is not None else _predecessor()
     mandate = mandate if mandate is not None else _mandate(predecessor)
     successor = successor if successor is not None else v.recompute_successor(predecessor, mandate)
@@ -105,7 +106,7 @@ def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust
         predecessor, successor, envelope,
         trust_root if trust_root is not None else _trust_root(),
         identity_register if identity_register is not None else _identity_register(),
-        verification_time, consumed or {}, revocations or {},
+        verification_time, consumed or {}, revocations or {}, closure_manifest_bytes,
     )
 
 
@@ -279,6 +280,88 @@ class VerifierRejectionTests(unittest.TestCase):
             _verify(predecessor=pred2, mandate=mandate2, successor=succ2,
                     envelope=_envelope(mandate2), consumed=first["consumed"])
         self.assertEqual(cm.exception.reason, v.REPLAY_DENIED)
+
+
+class ClosureManifestBindingTests(unittest.TestCase):
+    """EVD-CLOSURE-017: the manifest binding must be tool-computed (never hand-transcribed, which
+    is exactly how EVD-CLOSURE-014 shipped a 63-hex-char truncated digest), and it must not
+    invalidate a mandate signed before closure_manifest_digest existed."""
+
+    def _manifest_bytes(self, permitted_effects=None):
+        obj = {
+            "decision_id": "PG-P0-CLOSURE-001",
+            "permitted_effects_at_execution_C8": permitted_effects or [
+                {"path": "docs/00-governance/registers/SCHEDULE-REGISTER.json", "effect": "apply successor"},
+            ],
+        }
+        return json.dumps(obj).encode("utf-8")
+
+    def test_manifest_digest_reported_and_full_length(self):
+        manifest_bytes = self._manifest_bytes()
+        result = _verify(closure_manifest_bytes=manifest_bytes)
+        receipt = result["receipt"]
+        self.assertEqual(receipt["closure_manifest_sha256"], hashlib.sha256(manifest_bytes).hexdigest())
+        self.assertEqual(len(receipt["closure_manifest_sha256"]), 64)
+        self.assertIsNotNone(receipt["permitted_effects_digest"])
+
+    def test_no_manifest_supplied_fields_are_none(self):
+        result = _verify()
+        receipt = result["receipt"]
+        self.assertIsNone(receipt["closure_manifest_sha256"])
+        self.assertIsNone(receipt["permitted_effects_digest"])
+
+    def test_mandate_without_closure_manifest_digest_is_not_contradicted(self):
+        # A mandate signed before this field existed (e.g. the real PG-P0-CLOSURE-001 mandate)
+        # must still verify cleanly when a closure manifest is supplied -- the binding is then
+        # advisory/reporting only, not an enforced equality.
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        self.assertNotIn("closure_manifest_digest", mandate)
+        result = _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
+                          closure_manifest_bytes=self._manifest_bytes())
+        self.assertEqual(result["verdict"], v.VERIFIED)
+
+    def test_declared_digest_mismatch_rejected(self):
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["closure_manifest_digest"] = "0" * 64
+        env = _envelope(mandate)  # signed over the mandate that now declares the digest
+        with self.assertRaises(v.VerifyError) as cm:
+            _verify(predecessor=pred, mandate=mandate, envelope=env,
+                    closure_manifest_bytes=self._manifest_bytes())
+        self.assertEqual(cm.exception.reason, v.CLOSURE_MANIFEST_MISMATCH)
+
+    def test_declared_digest_match_accepted(self):
+        pred = _predecessor()
+        manifest_bytes = self._manifest_bytes()
+        mandate = _mandate(pred)
+        mandate["closure_manifest_digest"] = hashlib.sha256(manifest_bytes).hexdigest()
+        env = _envelope(mandate)
+        result = _verify(predecessor=pred, mandate=mandate, envelope=env,
+                          closure_manifest_bytes=manifest_bytes)
+        self.assertEqual(result["verdict"], v.VERIFIED)
+        self.assertEqual(result["receipt"]["closure_manifest_sha256"], mandate["closure_manifest_digest"])
+
+    def test_unknown_field_still_rejected_when_not_closure_manifest_digest(self):
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["totally_unrelated_field"] = "x"
+        env = _envelope(mandate)
+        with self.assertRaises(v.VerifyError) as cm:
+            _verify(predecessor=pred, mandate=mandate, envelope=env)
+        self.assertEqual(cm.exception.reason, v.MANDATE_INVALID)
+
+    def test_helper_matches_real_manifest_gap(self):
+        # Reproduces the exact EVD-CLOSURE-014 defect: a hand-transcribed digest missing its last
+        # hex character must not silently pass as "the" manifest digest -- the tool always reports
+        # the full, freshly recomputed 64-char value, so a 63-char value could never have been
+        # tool-produced in the first place.
+        manifest_bytes = self._manifest_bytes()
+        full = v.closure_manifest_sha256(manifest_bytes)
+        truncated = full[:-1]
+        self.assertEqual(len(full), 64)
+        self.assertEqual(len(truncated), 63)
+        self.assertNotEqual(full, truncated)
 
 
 if __name__ == "__main__":

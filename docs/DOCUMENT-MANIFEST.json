@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 331,
+  "count": 338,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -272,8 +272,8 @@
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a",
-      "bytes": 6613
+      "sha256": "8a3c14b65276a98241a4aece46f7e2b020189a44aef79e68fde209737eb81202",
+      "bytes": 10148
     },
     {
       "path": "docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-CANDIDATE.json",
@@ -288,6 +288,20 @@
       "status": "",
       "sha256": "35573270e0ff1cad8b7cada522e986c592f37657531c04b2fdb71f4823f6ac1e",
       "bytes": 2324
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
+      "title": "",
+      "status": "",
+      "sha256": "0f9c87011030471d53b746ed46b33dca941be51ba25f61ef3417eb9aadab15e5",
+      "bytes": 1312
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
+      "title": "",
+      "status": "",
+      "sha256": "7bd3042b8c4eb2ee1943353cf064fca0997998c3b28fe257e937c9c57f3b92a5",
+      "bytes": 870
     },
     {
       "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
@@ -1126,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
-      "bytes": 33194
+      "sha256": "ecb0ff4e00548928a090e58de82aea88f01992b1aeac4045422dc79f886af82f",
+      "bytes": 35816
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1473,6 +1487,41 @@
       "bytes": 6311
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-017-verify-p0-01-closure-manifest-binding-and-c5-digest-correction.md",
+      "title": "EVD-CLOSURE-017 - Maker evidence: VERIFY-P0-01 closure-manifest binding + C5 digest correction",
+      "status": "Maker-authored preparation evidence (advisory; NOT an independent-checker receipt). Per",
+      "sha256": "2bd8234c47e426a03d8b5030338a5f9d570c574b525918d7a878821cba1a79d9",
+      "bytes": 6489
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-018-c2-vs-c4-labeling-reconciliation.md",
+      "title": "EVD-CLOSURE-018 - Maker evidence: C2 vs C4 labeling reconciliation",
+      "status": "Maker-authored preparation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "c382103aada0a6535700adbbf650a049fcccc0a6ad6baf9ae24dce609ed43f10",
+      "bytes": 4795
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-019-c9-proposed-ref-move-fields.md",
+      "title": "EVD-CLOSURE-019 - Maker evidence: explicit proposed C9 target-ref and expected-old CAS fields",
+      "status": "Maker-authored preparation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "f7afebc4a35dd75d3335fcbfe86cb6390f0be37e6b67e3e9d914f97f28152587",
+      "bytes": 3595
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-020-revocation-consumed-decision-state-binding.md",
+      "title": "EVD-CLOSURE-020 - Maker evidence: revocation + consumed-decision state binding",
+      "status": "Maker-authored preparation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "6f903233636b8dde19ea5c75ebf4c626af15f92a7aa4f9713c7978fb0dcce9c1",
+      "bytes": 5915
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-021-c8-apply-candidate-specification-blocked.md",
+      "title": "EVD-CLOSURE-021 - Maker evidence: C6-C8 apply-candidate specification (execution blocked)",
+      "status": "Maker-authored SPECIFICATION ONLY. No mutated bytes were executed, validated, or",
+      "sha256": "74efad4427f561cb14cc7e66b628c67b0765cfbab8879236f62d17a3da440d19",
+      "bytes": 5915
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1644,15 +1693,15 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "34e62d40f17427beaaad265f410ac6ac1e75b15f020ab1e01f3345b94e65fcc8",
-      "bytes": 90240
+      "sha256": "48b9df3473ef83316f94d2bf26fbc3cc4268818d1d180ec5f2f80b8f618f97d8",
+      "bytes": 92767
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "9c218676d7ba1b367f888c84a2bc318573ea293b44d1fff377bf5f752e5eb55d",
-      "bytes": 2563
+      "sha256": "5e9a1e761846f9789f73648cbf8301e86f05d714c75ce905ade5fd39a7e8597a",
+      "bytes": 2566
     },
     {
       "path": "docs/manifests/README.md",

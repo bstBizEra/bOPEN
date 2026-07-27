@@ -1,0 +1,7 @@
+{
+  "_artifact": "PG-P0 revocations registry - external revocation state for VERIFY-P0-01 (--revocations).",
+  "_status": "Persisted per EVD-CLOSURE-020. bopen-dsse-verification: 'Revocations are external too: revoked_keyids and revoked_decision_ids are honoured only when --revocations is actually supplied.' Empty scaffold: as of this session, no key or decision in the PG-P0 closure lineage has been revoked. Any future revocation MUST be appended here (extend-only) and cited by a durable evidence record naming the reason and authorizing actor; this registry is advisory external state, not itself an authority record.",
+  "_schema_note": "Matches tools/verify_phase_transition.py's _authority_identity() lookup exactly: revocations.get('revoked_keyids', []) and revocations.get('revoked_decision_ids', []).",
+  "revoked_keyids": [],
+  "revoked_decision_ids": []
+}

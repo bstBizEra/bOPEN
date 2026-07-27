@@ -1,5 +1,37 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-27 - PG-P0 closure-repair candidate (EVD-CLOSURE-017..021)
+
+- Maker-prepared closure-repair candidate on isolated branch `codex/PG-P0-closure-repair-c8`
+  (worktree base `042dda535be70927b73cd1a131b2545349729643`), addressing six audited C8 blockers.
+  Advisory only; requires independent-checker review; does not execute C8, move any ref, or sign
+  anything.
+- **EVD-CLOSURE-017**: extended `tools/verify_phase_transition.py` (VERIFY-P0-01) with an optional,
+  additive `closure_manifest_digest` mandate field, a `--closure-manifest` CLI input, and a new
+  `CLOSURE_MANIFEST_MISMATCH` reason code, so the closure manifest and its
+  `permitted_effects_at_execution_C8` are tool-recomputed and reported rather than hand-transcribed
+  (backward compatible: the already-signed `PG-P0-CLOSURE-001` mandate is unaffected). Corrected the
+  malformed 63-hex-char `closure_manifest_sha256` in `EVD-CLOSURE-014`'s embedded receipt via new,
+  append-only superseding evidence (the original file is untouched).
+- **EVD-CLOSURE-018**: reconciled a C2/C4 labeling conflict in `PG-P0-CLOSURE-MANIFEST.json`'s
+  `trust_root.activation` text (it attributed the C2 approval SIGNING-PASS-11 to "C4"); corrected
+  additively, signed mandate subject bytes unchanged.
+- **EVD-CLOSURE-019**: added an explicit `c9_proposed_ref_move` block (`target_ref`, `expected_old`,
+  explicit staleness caveat) to the closure manifest — proposal only, no ref moved.
+- **EVD-CLOSURE-020**: persisted `PG-P0-CONSUMED-DECISIONS.json` (seeded from `EVD-CLOSURE-014`'s
+  already-verified digests) and `PG-P0-REVOCATIONS.json` (empty scaffold) so VERIFY-P0-01's
+  `--consumed`/`--revocations` external anti-replay state is real, not omitted. End-to-end
+  re-verification against the real, currently-committed mandate/trust-root/identity-register
+  confirms `VERIFIED: ALREADY_VERIFIED_EXACT`.
+- **EVD-CLOSURE-021**: attempted, but BLOCKED — construction of the durable C6-C8 apply-patch
+  candidate hit three independent stop signals (a motor-role subagent's own self-refusal, and two
+  Claude Code auto-mode permission-classifier blocks on mutating the disposable scratch clone) and
+  was not pushed through. Only a specification (the exact, independently-recomputed successor
+  register bytes, digest-verified against `1f8d183e...`) is recorded; no patch/bundle bytes exist.
+  This item is incomplete and flagged for the operator.
+- 34/34 tests pass in `tests/governance/test_phase_transition_verify.py` (was 27; 7 new tests added
+  for the closure-manifest binding). Both document manifests regenerated and pass `--check`.
+
 ## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
 
 - EVD-CLOSURE-015 (INDEPENDENT BST-Codex-Motor): adversarial fail-proof of the C6-C9 apply pipeline = PIPELINE_FAILS_CLOSED. 9/9 negative cases rejected (forged sig, swapped payload, wrong key, missing mandate, tampered patch, wrong-parent CAS, validator-only apply, schedule-only apply, reversed manifest order) + happy-path control accepted. Binds PATCH_SHA256 1A9FF63B...499D88BE, maker-verified to match the on-disk apply patch. No commit or ref movement on any failing case; source repo untouched.

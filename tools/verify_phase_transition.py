@@ -61,6 +61,7 @@ PREDECESSOR_MISMATCH = "PREDECESSOR_MISMATCH"
 SUCCESSOR_MISMATCH = "SUCCESSOR_MISMATCH"
 INVARIANT_VIOLATION = "INVARIANT_VIOLATION"
 MANDATE_INVALID = "MANDATE_INVALID"
+CLOSURE_MANIFEST_MISMATCH = "CLOSURE_MANIFEST_MISMATCH"
 
 
 class VerifyError(Exception):
@@ -383,7 +384,19 @@ def _trust_keys(trust_root):
 # ================================================================ mandate model + transform
 
 MANDATE_REQUIRED = {"schema_id", "decision_id", "phase_id", "operation", "predecessor", "transform", "invariants", "authority"}
-MANDATE_ALLOWED = MANDATE_REQUIRED | {"schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties"}
+# `closure_manifest_digest` is OPTIONAL and forward-looking: it lets a mandate cryptographically
+# bind the raw-bytes SHA-256 of its pre-execution closure manifest (evidence layer 1, including
+# permitted_effects_at_execution_C8) inside the signed PAE. It is additive to MANDATE_REQUIRED, not
+# a member of it, so an already-signed mandate that predates this field remains valid unchanged
+# (adding it to MANDATE_REQUIRED would retroactively invalidate a signed-and-verified mandate,
+# which the DSSE-verification stop conditions forbid: "a mandate is edited after signing, in any
+# byte"). The binding for a mandate that omits the field is instead carried out-of-band via
+# --closure-manifest (see verify_transition), which independently recomputes and reports the exact
+# manifest digest so it is never hand-transcribed (see EVD-CLOSURE-017).
+MANDATE_ALLOWED = MANDATE_REQUIRED | {
+    "schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties",
+    "closure_manifest_digest",
+}
 MUTATION_ALLOWED_KEYS = {"path", "from", "to", "rule", "value"}
 
 
@@ -522,6 +535,58 @@ def _lookup_identity(identity_register, identity_id):
     raise VerifyError(AUTHORITY_DENIED, f"identity {identity_id!r} not found in register")
 
 
+# ================================================================ closure-manifest binding
+#
+# The closure manifest (evidence layer 1) is NOT the signed DSSE payload -- it is a broader
+# governance artifact (predecessor/successor digests, trust root, permitted_effects_at_execution_C8,
+# prohibited_effects) that the mandate's signed subject only partially covers (the schedule-register
+# transform). Binding it here is deliberately layered outside the PAE rather than retrofitted into
+# it: see MANDATE_ALLOWED's closure_manifest_digest for the forward-looking in-PAE option. This
+# gives every mandate -- signed before or after that field existed -- a tool-computed, never
+# hand-transcribed manifest digest, closing the exact gap that produced the truncated 63-hex-char
+# digest in EVD-CLOSURE-014 (see EVD-CLOSURE-017).
+
+def closure_manifest_sha256(raw_bytes):
+    """Raw-bytes SHA-256 of the closure manifest file (not RFC 8785 canonical -- the manifest is a
+    plain committed JSON file, not a signed payload, so its binding digest is over its exact
+    on-disk bytes, matching how every closure-manifest reference elsewhere in the repo is computed)."""
+    return hashlib.sha256(raw_bytes).hexdigest()
+
+
+def permitted_effects_digest(closure_manifest_obj):
+    """RFC 8785 canonical digest of the closure manifest's permitted_effects_at_execution_C8 list,
+    so the exact permitted-effects set can be independently and cryptographically re-verified
+    without re-hashing the whole manifest (whose free-text _status/_encoding fields are allowed to
+    grow footnotes across revisions -- see the manifest's own additive revision-note history)."""
+    effects = closure_manifest_obj.get("permitted_effects_at_execution_C8")
+    if effects is None:
+        return None
+    return digest(effects)
+
+
+def verify_closure_manifest_binding(mandate, closure_manifest_bytes):
+    """Independently recompute and report the closure-manifest binding. Returns a dict with
+    closure_manifest_sha256 and permitted_effects_digest. Raises CLOSURE_MANIFEST_MISMATCH only
+    when the mandate itself declares closure_manifest_digest (the optional in-PAE field) and the
+    supplied manifest bytes do not match it -- a mandate that omits the field is not contradicted,
+    it simply has no in-PAE claim to check (the binding is then advisory/reporting only)."""
+    actual = closure_manifest_sha256(closure_manifest_bytes)
+    declared = mandate.get("closure_manifest_digest")
+    if declared is not None and declared != actual:
+        raise VerifyError(
+            CLOSURE_MANIFEST_MISMATCH,
+            f"mandate binds closure_manifest_digest {declared}, supplied manifest is {actual}",
+        )
+    try:
+        manifest_obj = parse_strict(closure_manifest_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, VerifyError) as exc:
+        raise VerifyError(CLOSURE_MANIFEST_MISMATCH, f"closure manifest is not valid JSON: {exc}")
+    return {
+        "closure_manifest_sha256": actual,
+        "permitted_effects_digest": permitted_effects_digest(manifest_obj),
+    }
+
+
 # ================================================================ verify (core)
 
 def verify_transition(
@@ -533,6 +598,7 @@ def verify_transition(
     verification_time,
     consumed=None,
     revocations=None,
+    closure_manifest_bytes=None,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
@@ -562,6 +628,10 @@ def verify_transition(
             f"proposed successor {proposed_digest} != authorized recomputation {recomputed_digest}",
         )
 
+    closure_manifest_binding = None
+    if closure_manifest_bytes is not None:
+        closure_manifest_binding = verify_closure_manifest_binding(mandate, closure_manifest_bytes)
+
     prior = consumed.get(decision_id)
     if prior is not None:
         # Single-use: the only acceptable re-verification is the byte-identical transition.
@@ -587,6 +657,8 @@ def verify_transition(
         "predecessor_schedule_digest": current_digest,
         "authorized_successor_schedule_digest": recomputed_digest,
         "proposed_successor_schedule_digest": proposed_digest,
+        "closure_manifest_sha256": closure_manifest_binding["closure_manifest_sha256"] if closure_manifest_binding else None,
+        "permitted_effects_digest": closure_manifest_binding["permitted_effects_digest"] if closure_manifest_binding else None,
         "note": "advisory verification only; no register mutated, nothing signed or consumed",
     }
     consumed_next = dict(consumed)
@@ -610,9 +682,18 @@ def main():
     parser.add_argument("--verification-time", required=True, help="ISO-8601 time to evaluate validity at")
     parser.add_argument("--consumed", help="consumed-decisions registry JSON (optional)")
     parser.add_argument("--revocations", help="revocations JSON (optional)")
+    parser.add_argument(
+        "--closure-manifest",
+        help="pre-execution closure manifest JSON (optional); independently recomputes and reports "
+             "its raw-bytes SHA-256 and the permitted_effects_at_execution_C8 digest, and enforces "
+             "the mandate's closure_manifest_digest when the mandate declares one",
+    )
     args = parser.parse_args()
     consumed = _load(args.consumed) if args.consumed and Path(args.consumed).is_file() else {}
     revocations = _load(args.revocations) if args.revocations and Path(args.revocations).is_file() else {}
+    closure_manifest_bytes = (
+        Path(args.closure_manifest).read_bytes() if args.closure_manifest else None
+    )
     try:
         result = verify_transition(
             _load(args.predecessor),
@@ -623,6 +704,7 @@ def main():
             args.verification_time,
             consumed,
             revocations,
+            closure_manifest_bytes,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")

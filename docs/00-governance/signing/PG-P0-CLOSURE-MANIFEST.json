@@ -1,6 +1,6 @@
 {
   "_artifact": "PG-P0 closure manifest - pre-execution (evidence layer 1)",
-  "_status": "FROZEN pre-execution manifest. Binds the exact predecessor, mandate, and authorized successor for PG-P0 ACTIVE-to-COMPLETE. The operator signs mandate_payload_b64 at C4; this manifest is not itself a mandate and carries no signature. (Rev: permitted_effects corrected to include the tests/governance/test_program_control_validation.py delta found by the C6-C8 execution dry-run; the mandate/predecessor/successor/PAE digests are UNCHANGED, so the operator C4 signature subject is unaffected.)",
+  "_status": "FROZEN pre-execution manifest. Binds the exact predecessor, mandate, and authorized successor for PG-P0 ACTIVE-to-COMPLETE. The operator signs mandate_payload_b64 at C4; this manifest is not itself a mandate and carries no signature. (Rev: permitted_effects corrected to include the tests/governance/test_program_control_validation.py delta found by the C6-C8 execution dry-run; the mandate/predecessor/successor/PAE digests are UNCHANGED, so the operator C4 signature subject is unaffected.) (Rev, EVD-CLOSURE-018: trust_root.activation text corrected -- SIGNING-PASS-11 is the C2 approval of the candidate key (CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION), not the C4 signature; the C4 signature is the operator's Ed25519 signature over the mandate PAE recorded in PG-P0-CLOSURE-MANDATE.md/.dsse.json. This is a label-only correction to an informational field outside the signed mandate_payload_b64; all signed-subject digests are UNCHANGED.) (Rev, EVD-CLOSURE-019: added c9_proposed_ref_move as an explicit PROPOSED, non-executed advisory field -- no authoritative ref is moved by this revision.) (Rev, EVD-CLOSURE-020: added revocation_and_consumed_decision_state referencing the persisted PG-P0-REVOCATIONS.json / PG-P0-CONSUMED-DECISIONS.json registries -- advisory external state, per bopen-dsse-verification 'anti-replay is external state'.)",
   "_encoding": "ASCII-only, UTF-8, LF. (Supersedes the C3 draft at 7d13898b, which carried a cp1252 em-dash byte 0x97 and failed strict UTF-8 load; digests unchanged.)",
   "_no_circularity": "This manifest does not contain its own resulting commit/tree/blob identity.",
   "decision_id": "PG-P0-CLOSURE-001",
@@ -44,7 +44,7 @@
     "candidate_blob_oid": "0641b01adce2aa1311a47bdd93ead21241992a5b",
     "keyid": "operator-pgp0-completion-1",
     "public_key": "83696c1bf3f47fbba21dd40a928e31b7845753364f6733a00be5c4b27caeb637",
-    "activation": "APPROVED_PENDING_PROOF_OF_POSSESSION -> ACTIVE on this valid C4 signature (SIGNING-PASS-11)"
+    "activation": "APPROVED_PENDING_PROOF_OF_POSSESSION -> ACTIVE on the valid C4 signature over this mandate, recorded in PG-P0-CLOSURE-MANDATE.md and PG-P0-CLOSURE-MANDATE.dsse.json. SIGNING-PASS-11 is the C2 approval of this candidate key (CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION) -- it is NOT the C4 signature itself; the prior text conflated the two (corrected per EVD-CLOSURE-018)."
   },
   "permitted_effects_at_execution_C8": [
     {
@@ -81,5 +81,21 @@
     "any authority-matrix / identity-register / schema change",
     "any move of an authoritative ref by an agent (C9 is the operator expected-old CAS commit)",
     "opening PG-P1, authorizing research or production"
-  ]
+  ],
+  "c9_proposed_ref_move": {
+    "_status": "PROPOSED ONLY, per EVD-CLOSURE-019. C9 is the human operator's expected-old compare-and-swap ref update (bopen-phase-closure C9; bopen-dsse-verification: 'the structural backstop is git compare-and-swap plus the predecessor-digest binding'). This block states, in advance, the exact fields the operator's C9 command needs; it does not move any ref and carries no authority. The expected_old value MUST be re-read and re-confirmed as the true current tip immediately before C9 executes -- this field is a proposal snapshot, not a live value, and goes stale the moment main advances.",
+    "target_ref": "refs/heads/main",
+    "expected_old": "a908bbea1975ffc52a636765cd9f823dfeb978eb",
+    "expected_old_as_of": "2026-07-27T17:06:16+07:00",
+    "expected_old_note": "a908bbe is the main tip named throughout the PG-P0-CLOSURE-MANDATE.md and EVD-CLOSURE-01x record ('main a908bbe'); it is NOT the same commit as predecessor.source_commit above, which binds only the SCHEDULE-REGISTER.json blob lineage on pg-p0-closure-lineage. The C9 CAS is against refs/heads/main's tip, not the closure-lineage branch.",
+    "proposed_command": "git update-ref refs/heads/main <new_C8_commit_sha> a908bbea1975ffc52a636765cd9f823dfeb978eb",
+    "authority": "human operator only, per DEC-0014; an agent proposing this block does not execute it"
+  },
+  "revocation_and_consumed_decision_state": {
+    "_status": "Advisory external state per bopen-dsse-verification ('Revocations are external too... anti-replay is external state... Single-use holds only if the caller writes the registry back'). Persisted per EVD-CLOSURE-020 so future VERIFY-P0-01 invocations can supply real --consumed/--revocations files instead of omitting them (a documented stop condition: '--consumed or --revocations is omitted and single-use or revocation is then claimed').",
+    "consumed_decisions_path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
+    "revocations_path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
+    "decision_id": "PG-P0-CLOSURE-001",
+    "consumed_state_source": "EVD-CLOSURE-014 (C5 VERIFIED_EXACT): predecessor_schedule_digest e80f7b9390d86a7627d6d14bd683296f2314189d145791971fb8aeb2a8d9f1cf, successor_schedule_digest 1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863"
+  }
 }

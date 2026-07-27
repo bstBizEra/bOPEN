@@ -168,3 +168,18 @@ Future events must be appended below this event and must include the same proven
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## PG-P0-CLOSURE-REPAIR-C8-0001
+
+**Timestamp:** 2026-07-27T00:00:00+07:00 (session)
+**Agent ID:** Claude (BST-SA Motor, sole maker this session)
+**Source:** Explicit operator/Codex-handshake instruction to continue as implementation maker and clear the audited C8 blockers
+**Work package:** PG-P0 closure repair (candidate branch `codex/PG-P0-closure-repair-c8`, isolated worktree at base `042dda535be70927b73cd1a131b2545349729643`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-BACKLOG-0001
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-RECAP-0001
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-017, EVD-CLOSURE-018, EVD-CLOSURE-019, EVD-CLOSURE-020, EVD-CLOSURE-021
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING (5 of 6 items complete; item 3 incomplete, see below)
+**Reason:** Address six audited C8-readiness blockers ahead of the human's C8 commit: DSSE closure-manifest/permitted-effects binding (done), the malformed C5 digest in EVD-CLOSURE-014 (done), C2/C4 labeling conflated in the closure manifest (done), missing explicit C9 target-ref/expected-old CAS fields (done), unpersisted revocation/consumed-decision anti-replay state (done), and an unpersisted C6-C8 apply-patch artifact (BLOCKED — a motor-role subagent self-refused it as execution, and two direct attempts were blocked by the Claude Code auto-mode permission classifier; only a digest-verified specification was recorded, EVD-CLOSURE-021; needs an operator decision).
+**Benefit of old phase:** The prior state left every one of these as either a narrative assertion, a hand-transcription risk, or scratch-clone-only evidence that vanished once the clone was deleted.
+**Expected outcome:** An independent checker (Codex) can review a bounded, additive candidate that changes no signed byte, moves no ref, executes no C8, and leaves 9bd1c591 and every other worktree untouched.
