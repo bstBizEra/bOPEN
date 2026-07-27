@@ -1,6 +1,6 @@
 {
   "_artifact": "PG-P0 closure manifest - pre-execution (evidence layer 1)",
-  "_status": "FROZEN pre-execution manifest. Binds the exact predecessor, mandate, and authorized successor for PG-P0 ACTIVE-to-COMPLETE. The operator signs mandate_payload_b64 at C4; this manifest is not itself a mandate and carries no signature.",
+  "_status": "FROZEN pre-execution manifest. Binds the exact predecessor, mandate, and authorized successor for PG-P0 ACTIVE-to-COMPLETE. The operator signs mandate_payload_b64 at C4; this manifest is not itself a mandate and carries no signature. (Rev: permitted_effects corrected to include the tests/governance/test_program_control_validation.py delta found by the C6-C8 execution dry-run; the mandate/predecessor/successor/PAE digests are UNCHANGED, so the operator C4 signature subject is unaffected.)",
   "_encoding": "ASCII-only, UTF-8, LF. (Supersedes the C3 draft at 7d13898b, which carried a cp1252 em-dash byte 0x97 and failed strict UTF-8 load; digests unchanged.)",
   "_no_circularity": "This manifest does not contain its own resulting commit/tree/blob identity.",
   "decision_id": "PG-P0-CLOSURE-001",
@@ -54,6 +54,10 @@
     {
       "path": "tools/validate_pg_g0_authority_docket.py",
       "effect": "extend expected-state per PG-P0-INTERP-002 v0.4 section 5: add P0_COMPLETED_AT=2026-07-27T00:00:00+07:00, P0_COMPLETE_DECISION_REF=docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision, P0_COMPLETE_EVIDENCE_REFS={the sorted set}, and switch the PG-P0 expected branch to the COMPLETE shape"
+    },
+    {
+      "path": "tests/governance/test_program_control_validation.py",
+      "effect": "apply the test delta so the two PG-P0==ACTIVE-hardcoded assertions reflect COMPLETE, and the fail-closed test restores an ACTIVE precondition locally (per the C6-C8 execution dry-run EVD-CLOSURE-012); tools/validate_program_controls.py itself needs NO change (its PG-P0 rule is skipped once COMPLETE)"
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",

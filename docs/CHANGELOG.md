@@ -1,5 +1,10 @@
 # Documentation Changelog
 
+## 2026-07-27 - C3 manifest re-freeze (permitted_effects +test delta) + EVD-CLOSURE-012 dry-run
+
+- EVD-CLOSURE-012: persisted the advisory C6-C8 execution dry-run (throwaway key, scratch, destroyed) = EXECUTION_PROVEN (successor 1f8d183e, docket + both manifests + VERIFY-P0-01 VERIFIED_EXACT + 189 tests; PG-P1 drift fails). It found the C3 permitted_effects omitted tests/governance/test_program_control_validation.py (two tests hardcode PG-P0==ACTIVE).
+- Corrected PG-P0-CLOSURE-MANIFEST.json permitted_effects_at_execution_C8 to include that test-delta file. Mandate/predecessor/successor/PAE digests UNCHANGED (0f34a306/e80f7b93/1f8d183e/bd5113a6) -> operator C4 signature subject unaffected. New manifest sha256 7417cc6a (was 9e67cd0b); the real C6 mandate record must name the new sha256 per INTERP-002 v0.4 SS5. Re-verified round-trip VERIFIED_EXACT. Both manifests regenerated. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - EVD-CLOSURE-009/010/011: advisory maker-side closure audits (3 parallel nodes)
 
 - Persisted the three parallel advisory audits of the PG-P0 closure (Claude worker sub-agents; maker-side, NOT independent BST-Codex-Motor verification; they authorize nothing): EVD-CLOSURE-009 chain-integrity = CHAIN_SOUND (+ confirmed the MAX_PATH manifest reproducibility risk); EVD-CLOSURE-010 C7 negative-control battery = MECHANISM_ROBUST (13/13 fail-closed + docket J1/J2/J3, throwaway key); EVD-CLOSURE-011 authority-boundary = DISCIPLINE_HELD. Advisory evidence only; C0-C3 de-risked; only the human C4 signature remains. PG-P0 ACTIVE; PG-P1 NOT_READY.

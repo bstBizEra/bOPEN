@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 323,
+  "count": 324,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -258,8 +258,8 @@
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "9e67cd0b76817f1ca84c2badfb1236676beaa42aa64e9d5dbdbf117929518677",
-      "bytes": 5953
+      "sha256": "7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a",
+      "bytes": 6613
     },
     {
       "path": "docs/00-governance/signing/PG-P0-COMPLETION-TRUST-ROOT-CANDIDATE.json",
@@ -1112,8 +1112,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "42aecbdc53ba83cbb99d54aaf80d77b18d2a7eaa68f6c6bd386d236bf255022a",
-      "bytes": 29087
+      "sha256": "0117760b34ee6f934dbee9a0da0d40caddc7787d3d170906af8159fd9de74fa8",
+      "bytes": 30006
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1422,6 +1422,13 @@
       "status": "Advisory governance audit (maker-side). NOT an independent-checker receipt.",
       "sha256": "8a8373110742ba2f12bfdbde93442dd3823db6cf9deedf8b516ada9278234947",
       "bytes": 3522
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-012-c6-c8-execution-dry-run.md",
+      "title": "EVD-CLOSURE-012 - Advisory maker-side rehearsal: C6-C8 execution dry-run (EXECUTION_PROVEN)",
+      "status": "Advisory execution-rehearsal evidence (maker-side). NOT an independent-checker receipt; NOT",
+      "sha256": "1bb476cd82b1e19d906b3fba418a8e71bdc6e44bb73f21acfb3c5234e5c65241",
+      "bytes": 4928
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
