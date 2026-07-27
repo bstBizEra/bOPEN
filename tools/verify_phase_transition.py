@@ -61,6 +61,16 @@ PREDECESSOR_MISMATCH = "PREDECESSOR_MISMATCH"
 SUCCESSOR_MISMATCH = "SUCCESSOR_MISMATCH"
 INVARIANT_VIOLATION = "INVARIANT_VIOLATION"
 MANDATE_INVALID = "MANDATE_INVALID"
+# Closure-execution binding codes. These exist so that verifying a *closure execution* (as opposed
+# to verifying a bare schedule transform) fails closed unless the mandate cryptographically binds
+# the exact closure manifest, the exact permitted effects, the exact predecessor commit/tree, the
+# exact compare-and-swap target, and the exact external revocation/consumed state.
+CLOSURE_BINDING_REQUIRED = "CLOSURE_BINDING_REQUIRED"
+CLOSURE_BINDING_MALFORMED = "CLOSURE_BINDING_MALFORMED"
+CLOSURE_MANIFEST_MISMATCH = "CLOSURE_MANIFEST_MISMATCH"
+PERMITTED_EFFECTS_MISMATCH = "PERMITTED_EFFECTS_MISMATCH"
+REVOCATION_STATE_MISMATCH = "REVOCATION_STATE_MISMATCH"
+CONSUMED_STATE_MISMATCH = "CONSUMED_STATE_MISMATCH"
 
 
 class VerifyError(Exception):
@@ -383,8 +393,40 @@ def _trust_keys(trust_root):
 # ================================================================ mandate model + transform
 
 MANDATE_REQUIRED = {"schema_id", "decision_id", "phase_id", "operation", "predecessor", "transform", "invariants", "authority"}
-MANDATE_ALLOWED = MANDATE_REQUIRED | {"schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties"}
+# `closure_binding` is OPTIONAL in the schema but MANDATORY in closure-execution verification mode
+# (see require_closure_binding). It is deliberately NOT added to MANDATE_REQUIRED: a mandate that
+# authorizes a bare schedule transform is a different, narrower thing than one that authorizes a
+# closure execution, and forcing the field on the former would retroactively invalidate already
+# signed mandates without making anything safer. Safety comes from the *mode*: a caller verifying a
+# closure execution MUST pass require_closure_binding=True, and then absence is a hard rejection.
+MANDATE_ALLOWED = MANDATE_REQUIRED | {
+    "schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties",
+    "closure_binding",
+}
 MUTATION_ALLOWED_KEYS = {"path", "from", "to", "rule", "value"}
+
+# Every field below must be present and well-formed for a closure binding to be usable. The
+# allow-list is closed: an unknown key is CLOSURE_BINDING_MALFORMED, so a binding cannot smuggle in
+# an unchecked field that a reader might mistake for an enforced control.
+CLOSURE_BINDING_REQUIRED_KEYS = {
+    "closure_manifest_digest",
+    "permitted_effects_digest",
+    "predecessor_commit",
+    "predecessor_tree",
+    "target_ref",
+    "expected_old",
+    "revocation_state_digest",
+    "consumed_state_digest",
+    "successor_blobs",
+}
+CLOSURE_BINDING_ALLOWED_KEYS = CLOSURE_BINDING_REQUIRED_KEYS | {"successor_blobs_status"}
+_SHA256_HEX_KEYS = {
+    "closure_manifest_digest",
+    "permitted_effects_digest",
+    "revocation_state_digest",
+    "consumed_state_digest",
+}
+_GIT_OID_KEYS = {"predecessor_commit", "predecessor_tree", "expected_old"}
 
 
 def validate_mandate(mandate):
@@ -522,6 +564,157 @@ def _lookup_identity(identity_register, identity_id):
     raise VerifyError(AUTHORITY_DENIED, f"identity {identity_id!r} not found in register")
 
 
+# ================================================================ closure-execution binding
+#
+# A closure execution is broader than the schedule transform the DSSE payload's `transform` field
+# describes: it also rewrites a validator, a test file, a signing record and two derived manifests,
+# and it lands as one commit that a compare-and-swap then publishes. The signed payload alone
+# therefore cannot answer "were exactly these effects, on exactly this base, toward exactly this
+# ref, under exactly this revocation/consumed state, what the human authorized?" -- `closure_binding`
+# is what makes that question answerable, and require_closure_binding is what makes it unskippable.
+
+def _is_lower_hex(value, length):
+    if not isinstance(value, str) or len(value) != length:
+        return False
+    return all(character in "0123456789abcdef" for character in value)
+
+
+def raw_sha256(data):
+    """SHA-256 over exact on-disk bytes (not RFC 8785). Closure manifests, revocation registries
+    and consumed registries are plain committed files, not signed payloads, so their binding digest
+    is over the bytes a reader can independently hash with any tool."""
+    return hashlib.sha256(data).hexdigest()
+
+
+def validate_closure_binding(binding):
+    """Structurally validate a mandate's closure_binding. Fails closed on absence of any required
+    field, any unknown field, and any malformed digest -- including the near-miss shapes that a
+    hand-transcribed value produces (a 63-character digest, an uppercase digest, a truncated OID)."""
+    if not isinstance(binding, dict):
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, "closure_binding must be a JSON object")
+    unknown = set(binding) - CLOSURE_BINDING_ALLOWED_KEYS
+    if unknown:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"unknown closure_binding fields: {sorted(unknown)}")
+    missing = CLOSURE_BINDING_REQUIRED_KEYS - set(binding)
+    if missing:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"missing closure_binding fields: {sorted(missing)}")
+    for key in sorted(_SHA256_HEX_KEYS):
+        if not _is_lower_hex(binding[key], 64):
+            raise VerifyError(
+                CLOSURE_BINDING_MALFORMED,
+                f"closure_binding.{key} must be 64 lowercase hex characters, got {binding[key]!r}",
+            )
+    for key in sorted(_GIT_OID_KEYS):
+        if not _is_lower_hex(binding[key], 40):
+            raise VerifyError(
+                CLOSURE_BINDING_MALFORMED,
+                f"closure_binding.{key} must be a 40-character lowercase git object id, got {binding[key]!r}",
+            )
+    target_ref = binding["target_ref"]
+    if not isinstance(target_ref, str) or not target_ref.startswith("refs/"):
+        raise VerifyError(
+            CLOSURE_BINDING_MALFORMED,
+            f"closure_binding.target_ref must be a fully-qualified ref, got {target_ref!r}",
+        )
+    if not isinstance(binding["successor_blobs"], dict) or not binding["successor_blobs"]:
+        raise VerifyError(
+            CLOSURE_BINDING_MALFORMED, "closure_binding.successor_blobs must be a non-empty object"
+        )
+    return binding
+
+
+def enforce_closure_binding(
+    mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *, required
+):
+    """Enforce the closure binding. When `required` is True (closure-execution verification), a
+    missing binding or missing manifest bytes is a hard rejection -- never a silent pass. When it is
+    False, a binding that IS present is still fully enforced; only its absence is tolerated."""
+    binding = mandate.get("closure_binding")
+    if binding is None:
+        if required:
+            raise VerifyError(
+                CLOSURE_BINDING_REQUIRED,
+                "closure-execution verification requested but the mandate declares no closure_binding",
+            )
+        return None
+    validate_closure_binding(binding)
+
+    if closure_manifest_bytes is None:
+        if required:
+            raise VerifyError(
+                CLOSURE_BINDING_REQUIRED,
+                "closure-execution verification requested but no closure manifest bytes were supplied",
+            )
+        return {"closure_binding_enforced": False, "reason": "manifest bytes not supplied"}
+
+    actual_manifest_digest = raw_sha256(closure_manifest_bytes)
+    if actual_manifest_digest != binding["closure_manifest_digest"]:
+        raise VerifyError(
+            CLOSURE_MANIFEST_MISMATCH,
+            f"mandate binds closure manifest {binding['closure_manifest_digest']}, "
+            f"supplied manifest is {actual_manifest_digest}",
+        )
+
+    try:
+        manifest = parse_strict(closure_manifest_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"closure manifest is not valid JSON: {exc}")
+    effects = manifest.get("permitted_effects_at_execution_C8")
+    if effects is None:
+        raise VerifyError(
+            PERMITTED_EFFECTS_MISMATCH,
+            "closure manifest declares no permitted_effects_at_execution_C8",
+        )
+    # Independent second control. The whole-file digest above already rejects any byte change, but
+    # a manifest legitimately accretes free-text revision notes over its life, so the effects list
+    # gets its own digest: an attacker who alters WHAT MAY BE WRITTEN is caught by this check even
+    # in a future where the whole-file digest is re-issued for an unrelated editorial reason.
+    actual_effects_digest = digest(effects)
+    if actual_effects_digest != binding["permitted_effects_digest"]:
+        raise VerifyError(
+            PERMITTED_EFFECTS_MISMATCH,
+            f"mandate binds permitted effects {binding['permitted_effects_digest']}, "
+            f"supplied manifest's effects are {actual_effects_digest}",
+        )
+
+    if revocation_bytes is not None:
+        actual = raw_sha256(revocation_bytes)
+        if actual != binding["revocation_state_digest"]:
+            raise VerifyError(
+                REVOCATION_STATE_MISMATCH,
+                f"mandate binds revocation state {binding['revocation_state_digest']}, supplied is {actual}",
+            )
+    elif required:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "closure-execution verification requested but no revocation-state bytes were supplied",
+        )
+
+    if consumed_bytes is not None:
+        actual = raw_sha256(consumed_bytes)
+        if actual != binding["consumed_state_digest"]:
+            raise VerifyError(
+                CONSUMED_STATE_MISMATCH,
+                f"mandate binds consumed state {binding['consumed_state_digest']}, supplied is {actual}",
+            )
+    elif required:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "closure-execution verification requested but no consumed-state bytes were supplied",
+        )
+
+    return {
+        "closure_binding_enforced": True,
+        "closure_manifest_digest": actual_manifest_digest,
+        "permitted_effects_digest": actual_effects_digest,
+        "predecessor_commit": binding["predecessor_commit"],
+        "predecessor_tree": binding["predecessor_tree"],
+        "target_ref": binding["target_ref"],
+        "expected_old": binding["expected_old"],
+        "successor_blobs_status": binding.get("successor_blobs_status", "UNSPECIFIED"),
+    }
+
+
 # ================================================================ verify (core)
 
 def verify_transition(
@@ -533,6 +726,10 @@ def verify_transition(
     verification_time,
     consumed=None,
     revocations=None,
+    closure_manifest_bytes=None,
+    revocation_bytes=None,
+    consumed_bytes=None,
+    require_closure_binding=False,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
@@ -541,6 +738,16 @@ def verify_transition(
 
     mandate, signer_keyid = open_signed_mandate(envelope, trust_root)
     validate_mandate(mandate)
+    # Enforced BEFORE authority resolution and before any digest comparison: if the closure binding
+    # is required and absent/malformed/mismatched, no later check should get the chance to produce
+    # a VERIFIED-looking verdict.
+    closure_binding_result = enforce_closure_binding(
+        mandate,
+        closure_manifest_bytes,
+        revocation_bytes,
+        consumed_bytes,
+        required=require_closure_binding,
+    )
     signer_identity = _authority_identity(
         mandate, signer_keyid, trust_root, identity_register, verification_time, revocations
     )
@@ -587,6 +794,8 @@ def verify_transition(
         "predecessor_schedule_digest": current_digest,
         "authorized_successor_schedule_digest": recomputed_digest,
         "proposed_successor_schedule_digest": proposed_digest,
+        "closure_binding": closure_binding_result,
+        "closure_execution_verification": bool(require_closure_binding),
         "note": "advisory verification only; no register mutated, nothing signed or consumed",
     }
     consumed_next = dict(consumed)
@@ -610,9 +819,33 @@ def main():
     parser.add_argument("--verification-time", required=True, help="ISO-8601 time to evaluate validity at")
     parser.add_argument("--consumed", help="consumed-decisions registry JSON (optional)")
     parser.add_argument("--revocations", help="revocations JSON (optional)")
+    parser.add_argument(
+        "--closure-manifest",
+        help="pre-execution closure manifest JSON; required with --require-closure-binding",
+    )
+    parser.add_argument(
+        "--require-closure-binding",
+        action="store_true",
+        help="closure-execution verification: fail closed unless the mandate's closure_binding is "
+             "present, well-formed, and matches the supplied closure manifest, revocation state "
+             "and consumed state exactly",
+    )
     args = parser.parse_args()
     consumed = _load(args.consumed) if args.consumed and Path(args.consumed).is_file() else {}
     revocations = _load(args.revocations) if args.revocations and Path(args.revocations).is_file() else {}
+    closure_manifest_bytes = Path(args.closure_manifest).read_bytes() if args.closure_manifest else None
+    # Bound as exact bytes, not as reparsed objects: the digest a human can reproduce with any
+    # sha256 tool is the one that must match.
+    revocation_bytes = (
+        Path(args.revocations).read_bytes()
+        if args.revocations and Path(args.revocations).is_file()
+        else None
+    )
+    consumed_bytes = (
+        Path(args.consumed).read_bytes()
+        if args.consumed and Path(args.consumed).is_file()
+        else None
+    )
     try:
         result = verify_transition(
             _load(args.predecessor),
@@ -623,6 +856,10 @@ def main():
             args.verification_time,
             consumed,
             revocations,
+            closure_manifest_bytes,
+            revocation_bytes,
+            consumed_bytes,
+            args.require_closure_binding,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")

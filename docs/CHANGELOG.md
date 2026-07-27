@@ -1,5 +1,34 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 2 (EVD-CLOSURE-022/023)
+
+- Rebuilt from exact base `042dda535be70927b73cd1a131b2545349729643` on branch
+  `claude/PG-P0-closure-repair-c8-v2` after the independent Codex checker returned
+  `REJECT_EXACT_SHA` on candidate `2134ea2d53f78b79522b476e78f4b33022595615`. Not built atop the
+  rejected candidate; evidence ids EVD-CLOSURE-017..021 stay consumed by it and are not carried over.
+- **Fail-closed closure verification.** `tools/verify_phase_transition.py` gains a `closure_binding`
+  mandate object with a closed required-key set and a `--require-closure-binding` mode: absent,
+  malformed or mismatched bindings are hard rejections, enforced before authority resolution. Six new
+  reason codes. The cycle-1 test asserting an unbound mandate is "not contradicted" is deleted, not
+  replaced. Two semantic attacker negative tests prove that widening `permitted_effects` (e.g. adding
+  a write to `AUTHORITY-MATRIX.json`) is rejected while the transform and signature stay valid.
+  49/49 tests pass.
+- **Frozen artifacts preserved.** `PG-P0-CLOSURE-MANIFEST.json` is byte-identical to base
+  (`7417cc6a...fb33a`, 6613 bytes); cycle 1 had mutated it and wrongly claimed the existing C4
+  signature still bound it. Corrections now live in a new unsigned
+  `PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json` under a new decision id, generated programmatically from
+  the frozen file so its seven permitted effects cannot drift.
+- **C9 target corrected.** `refs/heads/main` is withdrawn as factually impossible: `git merge-base`
+  exits 1, `main` is a single-commit orphan history disjoint from the closure lineage. Corrected to
+  `refs/heads/pg-p0-closure-lineage` @ `042dda535be70927b73cd1a131b2545349729643`.
+- **External state corrected.** Consumed registry emptied - the C5 check was advisory verification,
+  not consumption. Revocations relabelled a non-authoritative maker scaffold requiring operator
+  attestation.
+- **Unsigned signing packet** `PG-P0-CLOSURE-MANDATE-V2-PROPOSAL` marked `READY_FOR_HUMAN_SIGNATURE`.
+  Nothing is signed or authorized. Six of seven successor blob bindings remain `UNRESOLVED` because
+  constructing the C6-C8 execution bytes is classifier-blocked for any agent (EVD-CLOSURE-023); the
+  packet must not be signed until they resolve.
+
 ## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
 
 - EVD-CLOSURE-015 (INDEPENDENT BST-Codex-Motor): adversarial fail-proof of the C6-C9 apply pipeline = PIPELINE_FAILS_CLOSED. 9/9 negative cases rejected (forged sig, swapped payload, wrong key, missing mandate, tampered patch, wrong-parent CAS, validator-only apply, schedule-only apply, reversed manifest order) + happy-path control accepted. Binds PATCH_SHA256 1A9FF63B...499D88BE, maker-verified to match the on-disk apply patch. No commit or ref movement on any failing case; source repo untouched.

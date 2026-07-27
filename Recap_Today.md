@@ -160,3 +160,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0001
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 2 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 2 (`claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0001
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0001
+**Evidence:** EVD-CLOSURE-022, EVD-CLOSURE-023
+**Summary:** Rebuilt from exact base rather than atop the rejected candidate. Made closure-execution verification fail closed on absent, malformed or mismatched bindings, deleted the insecure "unbound mandate is not contradicted" test, and added two semantic attacker negative tests proving that widening permitted effects is rejected (49/49 tests pass). Preserved the frozen signed manifest byte-identical and moved all corrections into a new unsigned superseding proposal under a new decision id. Corrected the C9 target to `refs/heads/pg-p0-closure-lineage` after verifying `main` is a disjoint orphan history. Emptied the consumed registry (C5 was advisory verification, not consumption) and relabelled revocations a non-authoritative maker scaffold. Produced an unsigned `READY_FOR_HUMAN_SIGNATURE` packet binding every digest programmatically.
+**Reason:** Clear the five defects that produced the cycle-1 rejection without repeating its central error of claiming more than was verified.
+**Benefit of old phase:** The independent rejection identified defects a maker self-review had missed, including one factual impossibility, which is exactly the separation the authority model exists to produce.
+**Expected outcome:** Independent review of this exact candidate. One item remains honestly incomplete: the C6-C8 execution bytes are classifier-blocked for any agent, leaving six of seven successor blob bindings UNRESOLVED, so the packet must not be signed as-is.

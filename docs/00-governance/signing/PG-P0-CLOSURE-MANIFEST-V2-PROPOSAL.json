@@ -1,0 +1,99 @@
+{
+  "_artifact": "PG-P0 closure manifest v2 - UNSIGNED PROPOSAL. Supersedes the frozen C3 manifest for a FUTURE human signature; it is not itself signed, authorized, or effective.",
+  "_status": "READY_FOR_HUMAN_SIGNATURE. Not signed. Not authorized. Not effective. Carries no authority and completes no phase. The frozen C3 manifest remains the only manifest any existing signature binds.",
+  "_supersession_model": "Append-only. The frozen C3 manifest at docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json (raw-bytes sha256 7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a, 6613 bytes) is NOT modified by this proposal and remains byte-identical to its state at commit 27e70fa82e5ae5573658dbb0ca10f622fe232f56 and at base 042dda535be70927b73cd1a131b2545349729643. Corrections are layered here, in a separate artifact, because editing the frozen manifest would break the exact binding the operator's C4 signature already made to it - the defect that caused candidate 2134ea2d53f78b79522b476e78f4b33022595615 to be rejected REJECT_EXACT_SHA.",
+  "_requires_new_signature": "Yes. Because this proposal's content differs from the frozen manifest, the existing C4 signature over PG-P0-CLOSURE-001 does NOT and CANNOT bind it. Executing a closure against this proposal requires a NEW operator signature over the accompanying unsigned mandate proposal (PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.json).",
+  "_supersedes": {
+    "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
+    "raw_sha256": "7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a",
+    "bytes": 6613,
+    "unmodified_by_this_proposal": true
+  },
+  "decision_id": "PG-P0-CLOSURE-002-PROPOSAL",
+  "schema_id": "bopen.phase-completion-mandate",
+  "operation": "COMPLETE_PHASE",
+  "phase_id": "PG-P0",
+  "authority_basis": "PG-P0-INTERP-002 v0.4 (SIGNING-PASS-12); actions APPROVE_PROGRAM_REGISTERS (schedule register) + APPROVE_GOVERNANCE_BASELINE (docket validator extension), held by HUMAN-OPERATOR-001",
+  "verification_time": "2026-07-27T00:00:00+07:00",
+  "predecessor": {
+    "schedule_register_path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+    "source_commit": "dab84c06f4f78d7f285f462d869969f156542079",
+    "schedule_digest_rfc8785_sha256": "e80f7b9390d86a7627d6d14bd683296f2314189d145791971fb8aeb2a8d9f1cf"
+  },
+  "successor": {
+    "authorized_schedule_digest_rfc8785_sha256": "1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863",
+    "pg_p0_mutation": {
+      "status": "ACTIVE -> COMPLETE",
+      "planned_end": "null -> 2026-07-27T00:00:00+07:00",
+      "rebaseline_decision_ref": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision",
+      "evidence_refs_sorted": [
+        "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+        "docs/00-governance/signing/SIGNING-PASS-10.md",
+        "docs/00-governance/signing/SIGNING-PASS-8.md"
+      ]
+    },
+    "invariants": {
+      "phases.PG-P0.status": "COMPLETE",
+      "phases.PG-P1.status": "NOT_READY"
+    }
+  },
+  "trust_root": {
+    "candidate_commit": "8346f33e9d10326a2b3a99977495fb4bba99eaa0",
+    "candidate_blob_oid": "0641b01adce2aa1311a47bdd93ead21241992a5b",
+    "keyid": "operator-pgp0-completion-1",
+    "public_key": "83696c1bf3f47fbba21dd40a928e31b7845753364f6733a00be5c4b27caeb637",
+    "activation": "APPROVED_PENDING_PROOF_OF_POSSESSION -> ACTIVE on a valid C4 signature over the mandate, recorded in PG-P0-CLOSURE-MANDATE.md / PG-P0-CLOSURE-MANDATE.dsse.json. SIGNING-PASS-11 is the C2 approval of this candidate key (CANDIDATE_PENDING_C2_APPROVAL -> APPROVED_PENDING_PROOF_OF_POSSESSION); it is NOT the C4 signature. The frozen manifest's wording conflated the two; corrected here."
+  },
+  "permitted_effects_at_execution_C8": [
+    {
+      "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+      "effect": "apply the PG-P0 successor mutation ONLY (structure per successor.pg_p0_mutation); all other entries byte-identical"
+    },
+    {
+      "path": "tools/validate_pg_g0_authority_docket.py",
+      "effect": "extend expected-state per PG-P0-INTERP-002 v0.4 section 5: add P0_COMPLETED_AT=2026-07-27T00:00:00+07:00, P0_COMPLETE_DECISION_REF=docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision, P0_COMPLETE_EVIDENCE_REFS={the sorted set}, and switch the PG-P0 expected branch to the COMPLETE shape"
+    },
+    {
+      "path": "tests/governance/test_program_control_validation.py",
+      "effect": "apply the test delta so the two PG-P0==ACTIVE-hardcoded assertions reflect COMPLETE, and the fail-closed test restores an ACTIVE precondition locally (per the C6-C8 execution dry-run EVD-CLOSURE-012); tools/validate_program_controls.py itself needs NO change (its PG-P0 rule is skipped once COMPLETE)"
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+      "effect": "create at C4: the signed DSSE envelope + closure decision record (layer-2-adjacent; exists before C8)"
+    },
+    {
+      "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
+      "effect": "deterministic regeneration (derived)"
+    },
+    {
+      "path": "docs/DOCUMENT-MANIFEST.json",
+      "effect": "deterministic regeneration (derived; regenerate after GOV-P0-02)"
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "effect": "append execution note (derived)"
+    }
+  ],
+  "prohibited_effects": [
+    "any change to PG-P1..PG-C0 schedule entries",
+    "any authority-matrix / identity-register / schema change",
+    "any move of an authoritative ref by an agent (C9 is the operator expected-old CAS commit)",
+    "opening PG-P1, authorizing research or production"
+  ],
+  "_decision_id_note": "A NEW decision id. PG-P0-CLOSURE-001 is the operator's already-signed decision bound to the frozen manifest; reusing it here would invite a replay collision and would misrepresent an unsigned proposal as the signed decision.",
+  "c9_ref_move": {
+    "_status": "PROPOSED. Human-only act (DEC-0014). No ref is moved by this proposal.",
+    "target_ref": "refs/heads/pg-p0-closure-lineage",
+    "expected_old": "042dda535be70927b73cd1a131b2545349729643",
+    "_correction": "A prior candidate proposed refs/heads/main with expected_old a908bbea1975ffc52a636765cd9f823dfeb978eb. That was WRONG and is withdrawn: `git merge-base a908bbe 042dda5` exits 1 - the histories are DISJOINT. main's root commit is a908bbe itself (a single-commit orphan bootstrap history); the closure lineage's root is 9a80f9d042f1ed176c9939bae57953443d0c5964. A C8 commit descending from 042dda5 can never be a fast-forward of main, so main was never a valid compare-and-swap target.",
+    "_verified": "refs/heads/pg-p0-closure-lineage is at exactly 042dda535be70927b73cd1a131b2545349729643 as of this proposal.",
+    "_staleness_caveat": "expected_old is a snapshot. The operator MUST re-read the live tip immediately before C9; if the lineage has advanced, this proposal is stale and must be re-issued and re-signed."
+  },
+  "external_state_binding": {
+    "_status": "Advisory external state. Neither file is an authority record.",
+    "consumed_decisions_path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
+    "revocations_path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
+    "_consumed_note": "EMPTY. The C5 verification (EVD-CLOSURE-014) was advisory and is NOT consumption; only the human's real C8 execution consumes a decision.",
+    "_revocation_note": "Maker-prepared scaffold only. An empty list is NOT a maker attestation of non-revocation; the operator must attest completeness at signing time."
+  }
+}

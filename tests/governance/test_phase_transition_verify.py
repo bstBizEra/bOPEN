@@ -96,7 +96,9 @@ def _envelope(mandate, seed=SEED, keyid=KEYID, payload_bytes=None):
 
 
 def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust_root=None,
-            identity_register=None, verification_time=VTIME, consumed=None, revocations=None):
+            identity_register=None, verification_time=VTIME, consumed=None, revocations=None,
+            closure_manifest_bytes=None, revocation_bytes=None, consumed_bytes=None,
+            require_closure_binding=False):
     predecessor = predecessor if predecessor is not None else _predecessor()
     mandate = mandate if mandate is not None else _mandate(predecessor)
     successor = successor if successor is not None else v.recompute_successor(predecessor, mandate)
@@ -106,6 +108,7 @@ def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust
         trust_root if trust_root is not None else _trust_root(),
         identity_register if identity_register is not None else _identity_register(),
         verification_time, consumed or {}, revocations or {},
+        closure_manifest_bytes, revocation_bytes, consumed_bytes, require_closure_binding,
     )
 
 
@@ -279,6 +282,228 @@ class VerifierRejectionTests(unittest.TestCase):
             _verify(predecessor=pred2, mandate=mandate2, successor=succ2,
                     envelope=_envelope(mandate2), consumed=first["consumed"])
         self.assertEqual(cm.exception.reason, v.REPLAY_DENIED)
+
+
+class ClosureBindingFailClosedTests(unittest.TestCase):
+    """Closure-execution verification must fail closed when the closure binding is absent,
+    malformed, or mismatched. There is deliberately NO test asserting that an unbound mandate is
+    'not contradicted' in closure mode -- that shape is the vulnerability, not a compatibility
+    requirement."""
+
+    MANIFEST_EFFECTS = [
+        {"path": "docs/00-governance/registers/SCHEDULE-REGISTER.json", "effect": "apply successor"},
+        {"path": "tools/validate_pg_g0_authority_docket.py", "effect": "extend expected state"},
+    ]
+
+    def _manifest_bytes(self, effects=None):
+        obj = {
+            "decision_id": "PG-P0-CLOSURE-001",
+            "_status": "frozen pre-execution manifest",
+            "permitted_effects_at_execution_C8": effects if effects is not None else self.MANIFEST_EFFECTS,
+        }
+        return json.dumps(obj, indent=2).encode("utf-8")
+
+    def _revocation_bytes(self):
+        return json.dumps({"revoked_keyids": [], "revoked_decision_ids": []}).encode("utf-8")
+
+    def _consumed_bytes(self):
+        return json.dumps({}).encode("utf-8")
+
+    def _binding(self, manifest_bytes=None, **overrides):
+        manifest_bytes = manifest_bytes if manifest_bytes is not None else self._manifest_bytes()
+        effects = json.loads(manifest_bytes.decode("utf-8"))["permitted_effects_at_execution_C8"]
+        binding = {
+            "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
+            "permitted_effects_digest": v.digest(effects),
+            "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
+            "predecessor_tree": "1732e445c0d05b416223443314e73c5b978ce1be",
+            "target_ref": "refs/heads/pg-p0-closure-lineage",
+            "expected_old": "042dda535be70927b73cd1a131b2545349729643",
+            "revocation_state_digest": hashlib.sha256(self._revocation_bytes()).hexdigest(),
+            "consumed_state_digest": hashlib.sha256(self._consumed_bytes()).hexdigest(),
+            "successor_blobs": {"docs/00-governance/registers/SCHEDULE-REGISTER.json": "UNRESOLVED"},
+            "successor_blobs_status": "UNRESOLVED_PENDING_HUMAN_EXECUTION_BYTES",
+        }
+        binding.update(overrides)
+        return binding
+
+    def _bound_mandate(self, manifest_bytes=None, **overrides):
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["closure_binding"] = self._binding(manifest_bytes, **overrides)
+        return pred, mandate
+
+    def _verify_closure(self, pred, mandate, manifest_bytes=None, **kwargs):
+        kwargs.setdefault("revocation_bytes", self._revocation_bytes())
+        kwargs.setdefault("consumed_bytes", self._consumed_bytes())
+        return _verify(
+            predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
+            closure_manifest_bytes=manifest_bytes if manifest_bytes is not None else self._manifest_bytes(),
+            require_closure_binding=True, **kwargs
+        )
+
+    def _assert_reason(self, reason, pred, mandate, manifest_bytes=None, **kwargs):
+        with self.assertRaises(v.VerifyError) as cm:
+            self._verify_closure(pred, mandate, manifest_bytes, **kwargs)
+        self.assertEqual(cm.exception.reason, reason)
+
+    # ---- happy path -----------------------------------------------------------------
+    def test_complete_valid_binding_accepts(self):
+        pred, mandate = self._bound_mandate()
+        result = self._verify_closure(pred, mandate)
+        self.assertEqual(result["verdict"], v.VERIFIED)
+        binding = result["receipt"]["closure_binding"]
+        self.assertTrue(binding["closure_binding_enforced"])
+        self.assertEqual(binding["target_ref"], "refs/heads/pg-p0-closure-lineage")
+        self.assertTrue(result["receipt"]["closure_execution_verification"])
+
+    # ---- absent ---------------------------------------------------------------------
+    def test_absent_binding_rejects_in_closure_mode(self):
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        self.assertNotIn("closure_binding", mandate)
+        self._assert_reason(v.CLOSURE_BINDING_REQUIRED, pred, mandate)
+
+    def test_absent_manifest_bytes_rejects_in_closure_mode(self):
+        pred, mandate = self._bound_mandate()
+        with self.assertRaises(v.VerifyError) as cm:
+            _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
+                    closure_manifest_bytes=None, revocation_bytes=self._revocation_bytes(),
+                    consumed_bytes=self._consumed_bytes(), require_closure_binding=True)
+        self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
+
+    def test_absent_revocation_state_rejects_in_closure_mode(self):
+        pred, mandate = self._bound_mandate()
+        self._assert_reason(v.CLOSURE_BINDING_REQUIRED, pred, mandate, revocation_bytes=None)
+
+    def test_absent_consumed_state_rejects_in_closure_mode(self):
+        pred, mandate = self._bound_mandate()
+        self._assert_reason(v.CLOSURE_BINDING_REQUIRED, pred, mandate, consumed_bytes=None)
+
+    def test_missing_required_binding_field_rejects(self):
+        pred, mandate = self._bound_mandate()
+        del mandate["closure_binding"]["expected_old"]
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    # ---- malformed ------------------------------------------------------------------
+    def test_truncated_63_char_digest_rejects(self):
+        # The exact defect shape that shipped in EVD-CLOSURE-014: a hand-transcribed digest one
+        # character short. A near-miss must be a hard rejection, never a near-pass.
+        pred, mandate = self._bound_mandate()
+        full = mandate["closure_binding"]["closure_manifest_digest"]
+        mandate["closure_binding"]["closure_manifest_digest"] = full[:-1]
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_uppercase_digest_rejects(self):
+        pred, mandate = self._bound_mandate()
+        binding = mandate["closure_binding"]
+        binding["closure_manifest_digest"] = binding["closure_manifest_digest"].upper()
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_non_hex_digest_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["permitted_effects_digest"] = "z" * 64
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_short_git_oid_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["expected_old"] = "042dda5"
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_unqualified_target_ref_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["target_ref"] = "main"
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_unknown_binding_field_rejects(self):
+        # The binding allow-list is closed, so a field a reader might mistake for an enforced
+        # control cannot be smuggled in.
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["also_verified"] = "trust me"
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_empty_successor_blobs_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["successor_blobs"] = {}
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate)
+
+    def test_manifest_not_json_rejects(self):
+        raw = b"not json at all"
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["closure_manifest_digest"] = hashlib.sha256(raw).hexdigest()
+        self._assert_reason(v.CLOSURE_BINDING_MALFORMED, pred, mandate, raw)
+
+    # ---- mismatched -----------------------------------------------------------------
+    def test_mismatched_manifest_digest_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["closure_manifest_digest"] = "0" * 64
+        self._assert_reason(v.CLOSURE_MANIFEST_MISMATCH, pred, mandate)
+
+    def test_mismatched_revocation_state_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["revocation_state_digest"] = "1" * 64
+        self._assert_reason(v.REVOCATION_STATE_MISMATCH, pred, mandate)
+
+    def test_mismatched_consumed_state_rejects(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["consumed_state_digest"] = "2" * 64
+        self._assert_reason(v.CONSUMED_STATE_MISMATCH, pred, mandate)
+
+    def test_manifest_without_permitted_effects_rejects(self):
+        raw = json.dumps({"decision_id": "PG-P0-CLOSURE-001"}).encode("utf-8")
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["closure_manifest_digest"] = hashlib.sha256(raw).hexdigest()
+        self._assert_reason(v.PERMITTED_EFFECTS_MISMATCH, pred, mandate, raw)
+
+    # ---- semantic attacker ----------------------------------------------------------
+    def test_attacker_altered_permitted_effects_rejects(self):
+        """SEMANTIC ATTACK: the attacker widens what the closure is allowed to write -- adding a
+        write to the authority matrix -- while leaving the schedule transform, the signature, and
+        every other input untouched. The transform-level checks are all still perfectly happy;
+        only the closure binding catches this."""
+        pred, mandate = self._bound_mandate()
+        attacker_effects = self.MANIFEST_EFFECTS + [
+            {"path": "docs/00-governance/registers/AUTHORITY-MATRIX.json", "effect": "grant self approval"},
+        ]
+        attacker_manifest = self._manifest_bytes(attacker_effects)
+        # Sanity: the transform itself is untouched, so this is purely an effects-scope attack.
+        self.assertEqual(mandate["transform"], _mandate(pred)["transform"])
+        self._assert_reason(v.CLOSURE_MANIFEST_MISMATCH, pred, mandate, attacker_manifest)
+
+    def test_permitted_effects_digest_is_an_independent_control(self):
+        """Defence in depth: even if the whole-file digest were re-issued for a legitimate
+        editorial reason (manifests accrete revision notes), an altered effects list is still
+        caught by its own digest. Here the mandate binds the ALTERED file's whole-file digest but
+        the ORIGINAL effects digest -- the second control is what fires."""
+        original_effects_digest = v.digest(self.MANIFEST_EFFECTS)
+        attacker_effects = self.MANIFEST_EFFECTS + [
+            {"path": "tools/check_secrets.py", "effect": "disable"},
+        ]
+        attacker_manifest = self._manifest_bytes(attacker_effects)
+        pred, mandate = self._bound_mandate(
+            attacker_manifest,
+            permitted_effects_digest=original_effects_digest,
+        )
+        # whole-file digest matches the attacker's file, so ONLY the effects digest can catch it
+        self.assertEqual(
+            mandate["closure_binding"]["closure_manifest_digest"],
+            hashlib.sha256(attacker_manifest).hexdigest(),
+        )
+        self._assert_reason(v.PERMITTED_EFFECTS_MISMATCH, pred, mandate, attacker_manifest)
+
+    # ---- non-closure mode remains usable, but never silently unbound ------------------
+    def test_present_binding_is_enforced_even_outside_closure_mode(self):
+        pred, mandate = self._bound_mandate()
+        mandate["closure_binding"]["closure_manifest_digest"] = "3" * 64
+        with self.assertRaises(v.VerifyError) as cm:
+            _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
+                    closure_manifest_bytes=self._manifest_bytes(), require_closure_binding=False)
+        self.assertEqual(cm.exception.reason, v.CLOSURE_MANIFEST_MISMATCH)
+
+    def test_non_closure_mode_reports_no_binding(self):
+        result = _verify()
+        self.assertIsNone(result["receipt"]["closure_binding"])
+        self.assertFalse(result["receipt"]["closure_execution_verification"])
 
 
 if __name__ == "__main__":

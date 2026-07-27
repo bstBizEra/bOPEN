@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 331,
+  "count": 338,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -255,6 +255,20 @@
       "bytes": 2739
     },
     {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.md",
+      "title": "PG-P0 Closure Mandate v2 - UNSIGNED HUMAN SIGNING PACKET",
+      "status": "`READY_FOR_HUMAN_SIGNATURE`",
+      "sha256": "fa0b000f9e84371456d5d692f85429fe6af59b1b70657765a9e9a84079a6e8dc",
+      "bytes": 7398
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.payload.json",
+      "title": "",
+      "status": "",
+      "sha256": "30f9605f2847b7bf3ff95dfbf10a38028db1611666bcc94f2fbb65ede8b9c3fe",
+      "bytes": 2276
+    },
+    {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.dsse.json",
       "title": "",
       "status": "",
@@ -267,6 +281,13 @@
       "status": "Signed operator mandate; the DSSE envelope carries the operator's Ed25519 signature.",
       "sha256": "2551a49de95db095cdda9824fa2a554bf3a850b048e5af500429042b77c5fd1b",
       "bytes": 3380
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json",
+      "title": "",
+      "status": "",
+      "sha256": "9d4a2568b53997b2c940d863edef9129173450492e4c7e24b6065ebe53622347",
+      "bytes": 7593
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
@@ -288,6 +309,20 @@
       "status": "",
       "sha256": "35573270e0ff1cad8b7cada522e986c592f37657531c04b2fdb71f4823f6ac1e",
       "bytes": 2324
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
+      "title": "",
+      "status": "",
+      "sha256": "bbd628ee8c13107f958f8053ff647cf9ed923d08b9139bfeab5a4dfee46a06b2",
+      "bytes": 1674
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
+      "title": "",
+      "status": "",
+      "sha256": "ef3610d0217746d00c6ced6cbd69b262e4ec976110ea9baf5f55ae001491fb87",
+      "bytes": 1566
     },
     {
       "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
@@ -1126,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
-      "bytes": 33194
+      "sha256": "a2b9ae5e14eda23b76b84a4712debf0146c86ecb73216ce3df1fea09d52ea284",
+      "bytes": 35534
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1473,6 +1508,20 @@
       "bytes": 6311
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-022-cycle2-remediation-and-superseding-reconciliation.md",
+      "title": "EVD-CLOSURE-022 - Maker evidence: cycle-2 remediation and superseding reconciliation",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "b1d653e370182995bc4c9c096054100fca02e5307fbdf86f74599a594884dc2c",
+      "bytes": 7903
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-023-execution-bytes-human-only-blocker.md",
+      "title": "EVD-CLOSURE-023 - Maker evidence: C6-C8 execution bytes remain a human-only blocker",
+      "status": "Maker-authored blocker record (advisory; NOT an independent-checker receipt).",
+      "sha256": "2f1031d12120a03388016c9de2e9f055766be7677cf421cba0d4547acc38e43e",
+      "bytes": 4917
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1644,15 +1693,15 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "34e62d40f17427beaaad265f410ac6ac1e75b15f020ab1e01f3345b94e65fcc8",
-      "bytes": 90240
+      "sha256": "07f017d33ca1927f55996f258fecc6fcaa6b001357c70f2f728ae9c6b23e2dac",
+      "bytes": 92324
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "9c218676d7ba1b367f888c84a2bc318573ea293b44d1fff377bf5f752e5eb55d",
-      "bytes": 2563
+      "sha256": "fe0a7efb2304225b12fb60b5ec9371b52ce9b4e66ad85628b32c3b7177f5c71a",
+      "bytes": 2566
     },
     {
       "path": "docs/manifests/README.md",

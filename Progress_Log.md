@@ -168,3 +168,18 @@ Future events must be appended below this event and must include the same proven
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0001
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 2 after `REJECT_EXACT_SHA` on candidate `2134ea2d53f78b79522b476e78f4b33022595615`
+**Work package:** PG-P0 closure repair, cycle 2 (branch `claude/PG-P0-closure-repair-c8-v2`, isolated worktree, exact base `042dda535be70927b73cd1a131b2545349729643`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0001
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0001
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-022, EVD-CLOSURE-023
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; signing packet READY_FOR_HUMAN_SIGNATURE in form only, blocked in substance
+**Reason:** Remediate five defects that caused the cycle-1 rejection: an insecure optional closure binding that verified unbound mandates; in-place mutation of the frozen signed manifest with a false claim the existing C4 signature still bound it; a factually impossible `refs/heads/main` C9 target (disjoint histories); maker-manufactured consumption and revocation state; and an untruthful commit identity.
+**Benefit of old phase:** The rejected candidate made every defect explicit and reviewable at an exact SHA, which is what allowed a bounded, evidence-bound cycle-2 correction rather than a rewrite.
+**Expected outcome:** An independent (non-maker, non-Claude) checker can review a candidate that changes no signed byte, moves no ref, and honestly reports the one item that remains human-only: the unconstructed C6-C8 execution bytes leaving six of seven successor blob bindings UNRESOLVED.

@@ -167,3 +167,20 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0001
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 2 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 2 (`claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0001
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0001
+**Evidence:** EVD-CLOSURE-022, EVD-CLOSURE-023
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** candidate `2134ea2d53f78b79522b476e78f4b33022595615` (`REJECT_EXACT_SHA`); evidence ids EVD-CLOSURE-017..021 were consumed by that rejected candidate and are not carried into this lineage
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six of seven successor blob bindings; operator attestation that the revocation state is complete; a new operator signature over a re-issued packet once those blobs resolve.
+**Reason:** Track the cycle-2 candidate without marking any correction accepted, any packet signed, or any binding resolved.
+**Benefit of old phase:** The rejection preserved five precise defects as immutable review findings rather than allowing an in-place fixup of a candidate that had already been reviewed.
+**Expected outcome:** Codex reviews this exact candidate branch/commit; C8, C9, merge, PG-P1 and production remain separately gated and unauthorized.
