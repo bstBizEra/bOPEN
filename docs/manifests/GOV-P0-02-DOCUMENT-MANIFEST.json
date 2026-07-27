@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 339,
+  "count": 340,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "4acc5fa84381897f43108566af755ae5e4dccfc8aaef5574d9cabdbb1d2c9746",
-      "bytes": 39905
+      "sha256": "96a7180e32c8f5918901489d4dc173165ae3346f27027661ebc81eb48d11a5c4",
+      "bytes": 41957
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1536,6 +1536,13 @@
       "bytes": 5826
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-026-cycle5-rename-detection-and-predecessor-anchor.md",
+      "title": "EVD-CLOSURE-026 - Maker evidence: cycle-5 rename-detection and predecessor-anchor defects",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "dff0ad41f865adfcebf49e0977f933a60a135c3a195122daa52299e2bb817275",
+      "bytes": 6048
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1707,7 +1714,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "1817d808123c4e04cfce4a306c5b55458685df79e54c4cbef9ae2664f87e16ad",
+      "sha256": "15d09b9579bf16a0e7184cad3960e2e8ca79c12cc85c2bf2edf183fdde3a932c",
       "bytes": 2566
     },
     {

@@ -127,7 +127,9 @@ EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
 def _make_git_execution_tree(test_case, relative_paths):
     """Build a throwaway git repository whose HEAD tree contains exactly `relative_paths`.
 
-    Returns (repo_path, tree_oid, {path: bytes}). Registered for cleanup on the test case."""
+    Returns (repo_path, tree_oid, {path: bytes}, base_commit). The base commit is a real empty
+    commit whose tree IS the empty tree, so fixtures can bind predecessor_commit and
+    predecessor_tree to genuinely consistent objects."""
     repo = pathlib.Path(tempfile.mkdtemp())
     test_case.addCleanup(shutil.rmtree, repo, True)
 
@@ -138,6 +140,8 @@ def _make_git_execution_tree(test_case, relative_paths):
     git("init", "-q")
     git("config", "user.email", "t@example.invalid")
     git("config", "user.name", "t")
+    git("commit", "-q", "--allow-empty", "-m", "empty base")
+    base_commit = git("rev-parse", "HEAD").decode().strip()
     contents = {}
     for index, relative in enumerate(relative_paths):
         target = repo / relative
@@ -148,7 +152,7 @@ def _make_git_execution_tree(test_case, relative_paths):
     git("add", "-A")
     git("commit", "-qm", "execution bytes")
     tree = git("rev-parse", "HEAD^{tree}").decode().strip()
-    return repo, tree, contents
+    return repo, tree, contents, base_commit
 
 
 class Ed25519Rfc8032Tests(unittest.TestCase):
@@ -339,7 +343,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         # genuine git execution tree rather than a bare directory.
         if shutil.which("git") is None:
             self.skipTest("git binary unavailable")
-        self.exec_root, self.succ_tree, self.exec_bytes = _make_git_execution_tree(
+        self.exec_root, self.succ_tree, self.exec_bytes, self.base_commit = _make_git_execution_tree(
             self, [effect["path"] for effect in self.MANIFEST_EFFECTS]
         )
 
@@ -366,7 +370,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         binding = {
             "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
             "permitted_effects_digest": v.digest(effects),
-            "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
+            "predecessor_commit": self.base_commit,
             "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
             "expected_old": "042dda535be70927b73cd1a131b2545349729643",
@@ -574,7 +578,7 @@ class SuccessorBlobBindingTests(unittest.TestCase):
     def setUp(self):
         if shutil.which("git") is None:
             self.skipTest("git binary unavailable")
-        self.root, self.succ_tree, self.contents = _make_git_execution_tree(
+        self.root, self.succ_tree, self.contents, self.base_commit = _make_git_execution_tree(
             self, [effect["path"] for effect in self.EFFECTS]
         )
 
@@ -601,7 +605,7 @@ class SuccessorBlobBindingTests(unittest.TestCase):
         mandate["closure_binding"] = {
             "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
             "permitted_effects_digest": v.digest(effects),
-            "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
+            "predecessor_commit": self.base_commit,
             "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
             "expected_old": "042dda535be70927b73cd1a131b2545349729643",
@@ -761,6 +765,7 @@ class TreeScopeAttackTests(unittest.TestCase):
         self._git("add", "-A")
         self._git("commit", "-qm", "base")
         self.pred_tree = self._git("rev-parse", "HEAD^{tree}").decode().strip()
+        self.base_commit = self._git("rev-parse", "HEAD").decode().strip()
 
     def _commit_tree(self, message="succ"):
         self._git("add", "-A")
@@ -784,12 +789,17 @@ class TreeScopeAttackTests(unittest.TestCase):
     def _binding(self, succ_tree, **over):
         blobs = {}
         for path in self.PERMITTED:
-            blobs[path] = self._git("rev-parse", f"{succ_tree}:{path}").decode().strip()
+            try:
+                blobs[path] = self._git("rev-parse", f"{succ_tree}:{path}").decode().strip()
+            except subprocess.CalledProcessError:
+                # Path absent from the successor tree (e.g. it was renamed away). Bind a syntactically
+                # valid but wrong id; the scope check runs first and is what these cases assert on.
+                blobs[path] = "0" * 40
         mb = self._manifest_bytes()
         binding = {
             "closure_manifest_digest": hashlib.sha256(mb).hexdigest(),
             "permitted_effects_digest": v.digest(self._effects()),
-            "predecessor_commit": "0" * 40,
+            "predecessor_commit": self.base_commit,
             "predecessor_tree": self.pred_tree,
             "successor_tree": succ_tree,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
@@ -864,6 +874,77 @@ class TreeScopeAttackTests(unittest.TestCase):
         self.assertIn(cm.exception.reason,
                       {v.SUCCESSOR_TREE_ENTRY_INVALID, v.EXECUTION_ROOT_MISMATCH,
                        v.SUCCESSOR_BLOB_MISMATCH})
+
+    # ---- cycle-5 regression: rename of a PERMITTED source to an UNDECLARED destination ----
+    def test_permitted_source_renamed_to_undeclared_destination_rejects(self):
+        """CYCLE-5 REGRESSION. `--no-renames` followed by `-M0` silently re-enables rename
+        detection (git applies last-option-wins). The pair then emits ONE `R100` record carrying
+        THREE NUL fields, so a two-field parser records only the PERMITTED source and never
+        enumerates the undeclared destination. Renaming docs/CHANGELOG.md to evil.txt therefore
+        read as an in-scope change and passed."""
+        (self.repo / "docs/CHANGELOG.md").rename(self.repo / "evil.txt")
+        succ = self._commit_tree()
+        touched = v.tree_diff_paths(self.repo, self.pred_tree, succ)
+        # The destination MUST be enumerated, whichever way git reports the change.
+        self.assertIn("evil.txt", touched, "undeclared rename destination was not enumerated")
+        # Prove the SCOPE layer specifically rejects it, not merely that some later control does.
+        with self.assertRaises(v.VerifyError) as cm:
+            v.validate_successor_tree(
+                self._binding(succ), self._effects(), self.repo, self.repo, required=True
+            )
+        self.assertEqual(cm.exception.reason, v.TREE_SCOPE_VIOLATION)
+        self.assertIn("evil.txt", cm.exception.message)
+        # And that full enforcement rejects it too (an earlier control may fire first; either is
+        # a correct fail-closed outcome).
+        with self.assertRaises(v.VerifyError):
+            self._enforce(succ)
+
+    def test_rename_detection_is_actually_disabled(self):
+        """Directly pin the flag order: a rename must surface as separate D and A records."""
+        (self.repo / "docs/CHANGELOG.md").rename(self.repo / "evil.txt")
+        succ = self._commit_tree()
+        touched = v.tree_diff_paths(self.repo, self.pred_tree, succ)
+        self.assertEqual(touched.get("docs/CHANGELOG.md"), "D")
+        self.assertEqual(touched.get("evil.txt"), "A")
+
+    def test_rename_between_two_permitted_paths_still_enumerates_both(self):
+        # replace(), not rename(): the destination already exists and Windows rename() refuses.
+        (self.repo / "docs/CHANGELOG.md").replace(self.repo / "tools/validate_pg_g0_authority_docket.py")
+        succ = self._commit_tree()
+        touched = v.tree_diff_paths(self.repo, self.pred_tree, succ)
+        self.assertIn("docs/CHANGELOG.md", touched)
+        self.assertIn("tools/validate_pg_g0_authority_docket.py", touched)
+
+    # ---- cycle-5 regression: predecessor_commit must carry predecessor_tree ---------------
+    def test_substituted_real_but_wrong_predecessor_tree_rejects(self):
+        """CYCLE-5 REGRESSION. A REAL tree object from a different commit, substituted for
+        predecessor_tree while predecessor_commit names the genuine base. Cycle 4 only checked that
+        predecessor_tree was *a* tree, so the whole diff ran against a substituted baseline."""
+        base_commit = self._git("rev-parse", "HEAD").decode().strip()
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        # A genuine, existing tree object -- just not the one base_commit carries.
+        other_real_tree = self._git("rev-parse", f"{succ}:docs").decode().strip()
+        self.assertNotEqual(other_real_tree, self.pred_tree)
+        self._assert(v.PREDECESSOR_TREE_MISMATCH, succ,
+                     predecessor_commit=base_commit, predecessor_tree=other_real_tree)
+
+    def test_predecessor_commit_and_tree_consistent_accepts(self):
+        base_commit = self._git("rev-parse", "HEAD").decode().strip()
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        result = self._enforce(succ, predecessor_commit=base_commit)
+        self.assertTrue(result["successor_tree"]["successor_tree_verified"])
+
+    def test_tree_oid_supplied_as_predecessor_commit_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.PREDECESSOR_COMMIT_INVALID, succ, predecessor_commit=self.pred_tree)
+
+    def test_nonexistent_predecessor_commit_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.TREE_OBJECT_INVALID, succ, predecessor_commit="d" * 40)
 
     # ---- tree object identity --------------------------------------------------------
     def test_unresolved_successor_tree_rejects(self):

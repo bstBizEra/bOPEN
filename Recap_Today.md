@@ -205,3 +205,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** Per-path verification, however strict, cannot establish scope; the missing layer had to be added above it.
 **Benefit of old phase:** The cycle-3 per-path controls were correct and are retained unchanged; only the scope layer was missing.
 **Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; resolving the execution bytes and `successor_tree` remains human-only.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0004
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-4 `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 5
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0004
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0004
+**Evidence:** EVD-CLOSURE-026
+**Summary:** Reproduced both named defects before fixing. Confirmed `--no-renames -M0` emits a single three-field `R100` record while `-M0 --no-renames` emits separate `D` and `A` records; corrected the flag order and additionally hardened the parser to consume and record both paths of any rename or copy record. Added the named regression: `docs/CHANGELOG.md` renamed to `evil.txt` now enumerates the destination and rejects `TREE_SCOPE_VIOLATION`. Added `assert_predecessor_commit_binds_tree`, run before any diff, requiring `predecessor_commit` to be a real commit whose `^{tree}` equals the signed `predecessor_tree`; the negative test substitutes a genuine existing tree object, not a nonexistent id.
+**Reason:** A scope layer that mis-parses git's output, or that diffs from an unanchored baseline, provides no assurance regardless of how strict its later checks are.
+**Benefit of old phase:** The cycle-4 design held up; only the baseline anchoring and the diff parsing needed correction.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.

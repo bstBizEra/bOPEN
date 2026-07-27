@@ -1,5 +1,30 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 5 (EVD-CLOSURE-026)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex returned `REJECT_EXACT_SHA` on
+  `fc4960fcc99df3cf35aa3140e9a01bf215abfa91`. Two exact defects, both reproduced before fixing.
+- **Rename detection was never actually disabled.** `tree_diff_paths` passed `--no-renames` then
+  `-M0`; git applies last-option-wins, so `-M0` re-enabled it. A rename record carries three
+  NUL-separated fields, not two, so the parser recorded the source and skipped the destination:
+  renaming a **permitted** path to an **undeclared** one enumerated only the permitted source and
+  passed. `--no-renames` is now the final rename-related flag, and the parser handles `R`/`C`
+  records explicitly, recording **both** paths. Regression: `docs/CHANGELOG.md` renamed to
+  `evil.txt` now enumerates the destination and rejects `TREE_SCOPE_VIOLATION`.
+- **`predecessor_commit` was never resolved.** It and `predecessor_tree` floated free, so the signed
+  base commit could be paired with a substituted real tree and every downstream check would run
+  against that baseline. `assert_predecessor_commit_binds_tree()` now runs before any diff: the
+  commit must be a real commit object (`PREDECESSOR_COMMIT_INVALID`) whose `^{tree}` equals the
+  signed `predecessor_tree` (`PREDECESSOR_TREE_MISMATCH`). The negative test substitutes a genuine
+  existing tree object, not a nonexistent id.
+- Two new reason codes; 7 new regression tests. DSSE suite 91/91.
+- Disclosed: adding the predecessor anchor invalidated three fixtures that bound placeholder
+  commits. The helper now creates a real empty base commit whose tree is the empty tree, so fixtures
+  bind a genuinely consistent pair; the check was not weakened.
+- Preserved: all cycle-4 controls, frozen signed artifacts byte-identical to base,
+  `DRAFT_NOT_SIGNABLE` / `BLOCKED_PENDING_EXECUTION_BYTES`, `PG-P0-CLOSURE-002` revocation scoping,
+  withdrawn backdated verification guidance, no Graphify artifacts.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 4 (EVD-CLOSURE-025)
 
 - Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-3 assurance conflict

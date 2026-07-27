@@ -87,6 +87,8 @@ REGULAR_FILE_MODES = {"100644", "100755"}
 REPOSITORY_REQUIRED = "REPOSITORY_REQUIRED"
 TREE_OBJECT_INVALID = "TREE_OBJECT_INVALID"
 TREE_SCOPE_VIOLATION = "TREE_SCOPE_VIOLATION"
+PREDECESSOR_COMMIT_INVALID = "PREDECESSOR_COMMIT_INVALID"
+PREDECESSOR_TREE_MISMATCH = "PREDECESSOR_TREE_MISMATCH"
 SUCCESSOR_TREE_UNRESOLVED = "SUCCESSOR_TREE_UNRESOLVED"
 SUCCESSOR_TREE_ENTRY_INVALID = "SUCCESSOR_TREE_ENTRY_INVALID"
 SUCCESSOR_TREE_BLOB_MISMATCH = "SUCCESSOR_TREE_BLOB_MISMATCH"
@@ -743,15 +745,20 @@ def assert_tree_object(repository, oid, label):
 
 
 def tree_diff_paths(repository, predecessor_tree, successor_tree):
-    """Every path touched between the two trees, as a set.
+    """Every path touched between the two trees, as {path: status}.
 
-    `--no-renames` is deliberate: a rename decomposes into a delete of the old path AND an add of
-    the new one, so BOTH sides are enumerated and a rename that touches anything outside the
-    permitted set cannot hide behind a single similarity-matched record. `-z` avoids any path
-    quoting ambiguity."""
+    `--no-renames` MUST be the final rename-related flag. git applies last-option-wins, so an
+    earlier `--no-renames` followed by `-M0` silently RE-ENABLES rename detection: the pair then
+    emits one `R100` record carrying THREE NUL-separated fields (metadata, source, destination)
+    instead of two. A parser that assumes two fields records only the source -- so renaming a
+    PERMITTED path to an UNDECLARED destination reads as an in-scope change and the destination is
+    never enumerated. That was a real escape; the flag order below is load-bearing.
+
+    The parser additionally handles R/C records explicitly and records BOTH paths, so scope is
+    still enforced correctly even if some git version emits a rename despite the flag."""
     raw = _git(
         repository,
-        ["diff", "--raw", "-z", "--no-renames", "-M0", predecessor_tree, successor_tree],
+        ["diff", "--raw", "-z", "-M0", "--no-renames", predecessor_tree, successor_tree],
     )
     fields = raw.split(b"\0")
     touched = {}
@@ -761,14 +768,45 @@ def tree_diff_paths(repository, predecessor_tree, successor_tree):
         if not meta.startswith(b":"):
             index += 1
             continue
-        if index + 1 >= len(fields):
-            raise VerifyError(TREE_OBJECT_INVALID, "malformed git diff --raw record: missing path")
         parts = meta.decode("utf-8", "replace").split()
         status = parts[4] if len(parts) >= 5 else "?"
-        path = fields[index + 1].decode("utf-8", "surrogateescape")
-        touched[path] = status
-        index += 2
+        # Rename/copy records carry a source AND a destination path; every other status carries one.
+        path_count = 2 if status[:1] in {"R", "C"} else 1
+        if index + path_count >= len(fields):
+            raise VerifyError(
+                TREE_OBJECT_INVALID,
+                f"malformed git diff --raw record: status {status!r} expects {path_count} path(s)",
+            )
+        for offset in range(1, path_count + 1):
+            touched[fields[index + offset].decode("utf-8", "surrogateescape")] = status
+        index += 1 + path_count
     return touched
+
+
+def assert_predecessor_commit_binds_tree(repository, predecessor_commit, predecessor_tree):
+    """The signed predecessor_commit must be a real commit whose tree IS predecessor_tree.
+
+    Without this, the two fields float free of each other: a mandate could name the genuine signed
+    base commit while pairing it with some OTHER real tree, and every later check -- the diff, the
+    scope test, the blob comparisons -- would run against that substituted baseline and pass. Both
+    fields are inside the signed payload, so they must be proven mutually consistent against the
+    object database, not merely well-formed."""
+    kind = _git(repository, ["cat-file", "-t", predecessor_commit]).decode("ascii", "replace").strip()
+    if kind != "commit":
+        raise VerifyError(
+            PREDECESSOR_COMMIT_INVALID,
+            f"predecessor_commit {predecessor_commit} is a {kind!r} object, expected a commit",
+        )
+    resolved = _git(
+        repository, ["rev-parse", "--verify", f"{predecessor_commit}^{{tree}}"]
+    ).decode("ascii", "replace").strip()
+    if resolved != predecessor_tree:
+        raise VerifyError(
+            PREDECESSOR_TREE_MISMATCH,
+            f"predecessor_commit {predecessor_commit} has tree {resolved}, but the mandate binds "
+            f"predecessor_tree {predecessor_tree}",
+        )
+    return resolved
 
 
 def tree_entries(repository, tree):
@@ -827,6 +865,9 @@ def validate_successor_tree(
     predecessor_tree = binding["predecessor_tree"]
     assert_tree_object(repo, predecessor_tree, "predecessor_tree")
     assert_tree_object(repo, successor_tree, "successor_tree")
+    # Anchor the baseline BEFORE any diff: the signed predecessor_commit must actually carry the
+    # signed predecessor_tree, or every downstream comparison runs against a substituted baseline.
+    assert_predecessor_commit_binds_tree(repo, binding["predecessor_commit"], predecessor_tree)
 
     permitted = {effect["path"] for effect in permitted_effects}
 

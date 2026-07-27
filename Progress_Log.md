@@ -213,3 +213,18 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Per-path verification cannot establish scope. Cycle 3 checked the seven declared paths thoroughly but never enumerated anything else, so an undeclared path was invisible. Scope is now established from the complete predecessor-to-successor tree diff plus a full execution-root-equals-successor-tree comparison, with a required `successor_tree` binding.
 **Benefit of old phase:** The cycle-3 per-path controls remain correct and are retained; cycle 4 adds the missing scope layer above them rather than replacing them.
 **Expected outcome:** An undeclared added, modified, deleted, renamed, mode-changed or type-changed path anywhere in the tree is rejected, as is an extra untracked file under the execution root.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0004
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-4 review `REJECT_EXACT_SHA` naming two exact defects
+**Work package:** PG-P0 closure repair, cycle 5 (additive commit on `claude/PG-P0-closure-repair-c8-v2`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0004
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0004
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-026 (022/023/024/025 remain valid and unedited)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; proposal remains DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES
+**Reason:** Two exact defects, both reproduced before fixing. `--no-renames` followed by `-M0` re-enabled rename detection under git's last-option-wins rule, and the resulting three-field rename record defeated a two-field parser, so renaming a permitted path to an undeclared destination enumerated only the permitted source and passed. Separately, `predecessor_commit` was never resolved, so it and `predecessor_tree` floated free and a genuine base commit could be paired with a substituted real tree.
+**Benefit of old phase:** The cycle-4 scope layer was correct in design; both defects were in how the baseline was anchored and how git's output was parsed, which is exactly what an exact-SHA review surfaces.
+**Expected outcome:** Rename destinations are enumerated and rejected when out of scope, and the diff baseline is provably the signed predecessor commit's own tree.
