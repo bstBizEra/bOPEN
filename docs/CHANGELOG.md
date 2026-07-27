@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-013: durable receipt for the C3 re-freeze (ACCEPT_EXACT_SHA)
+
+- Persisted verbatim the independent BST-Codex-Motor receipt for the C3 closure-manifest re-freeze at 27e70fa8: verdict ACCEPT_EXACT_SHA. The four signing digests are UNCHANGED (mandate 0f34a306, predecessor e80f7b93, successor 1f8d183e, PAE bd5113a6) so the operator C4 signature subject + command are unaffected; only the manifest sha256 changed 9e67cd0b -> 7417cc6a (the real C6 mandate record must name 7417cc6a). Round-trip VERIFIED_EXACT; both manifest checks + 189 tests PASS; no finding. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - C3 manifest re-freeze (permitted_effects +test delta) + EVD-CLOSURE-012 dry-run
 
 - EVD-CLOSURE-012: persisted the advisory C6-C8 execution dry-run (throwaway key, scratch, destroyed) = EXECUTION_PROVEN (successor 1f8d183e, docket + both manifests + VERIFY-P0-01 VERIFIED_EXACT + 189 tests; PG-P1 drift fails). It found the C3 permitted_effects omitted tests/governance/test_program_control_validation.py (two tests hardcode PG-P0==ACTIVE).
