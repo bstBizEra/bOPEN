@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-009/010/011: advisory maker-side closure audits (3 parallel nodes)
+
+- Persisted the three parallel advisory audits of the PG-P0 closure (Claude worker sub-agents; maker-side, NOT independent BST-Codex-Motor verification; they authorize nothing): EVD-CLOSURE-009 chain-integrity = CHAIN_SOUND (+ confirmed the MAX_PATH manifest reproducibility risk); EVD-CLOSURE-010 C7 negative-control battery = MECHANISM_ROBUST (13/13 fail-closed + docket J1/J2/J3, throwaway key); EVD-CLOSURE-011 authority-boundary = DISCIPLINE_HELD. Advisory evidence only; C0-C3 de-risked; only the human C4 signature remains. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - EVD-CLOSURE-008: durable receipt for the C3 closure manifest (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent checker receipt for the re-issued C3 manifest at b0e56564 (bc4ysdfum): round-trip VERIFIED_EXACT, strict UTF-8 PASS, all four digests exact (predecessor e80f7b93, successor 1f8d183e, mandate 0f34a306, PAE bd5113a6), authority + trust-root key confirmed, 189 tests + both manifest checks PASS, no finding. Green light for operator C4 signature. PG-P0 ACTIVE; PG-P1 NOT_READY.

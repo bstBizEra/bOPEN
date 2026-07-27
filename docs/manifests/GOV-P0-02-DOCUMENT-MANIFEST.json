@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-26",
-  "count": 320,
+  "generated": "2026-07-27",
+  "count": 323,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1112,8 +1112,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "8e42e73b9ca61b007882199724e13e0257c00412259742dec5192dd7c26b4929",
-      "bytes": 28428
+      "sha256": "42aecbdc53ba83cbb99d54aaf80d77b18d2a7eaa68f6c6bd386d236bf255022a",
+      "bytes": 29087
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1401,6 +1401,27 @@
       "status": "Durable independent-review receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 section 7)",
       "sha256": "c7881e3c1b277c21bf7d76f377a55c11ebdbc6e84f15edb0ee4905af4b373a88",
       "bytes": 2426
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-009-chain-integrity-audit.md",
+      "title": "EVD-CLOSURE-009 - Advisory maker-side audit: closure-chain integrity",
+      "status": "Advisory audit evidence (maker-side). NOT an independent-checker receipt.",
+      "sha256": "8e7366e22bb691ed6461c6f778aac300d91a6b39e648aefedba643aa9b333e6d",
+      "bytes": 3459
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-010-c7-negative-control-battery.md",
+      "title": "EVD-CLOSURE-010 - Advisory maker-side audit: C7 negative-control robustness battery",
+      "status": "Advisory robustness evidence (maker-side). NOT an independent-checker receipt.",
+      "sha256": "ccdbacda4f6819d500a1ace2e8657fc48bdeea07e204a003c5e1240872d32d82",
+      "bytes": 3632
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-011-authority-boundary-audit.md",
+      "title": "EVD-CLOSURE-011 - Advisory maker-side audit: authority-boundary review",
+      "status": "Advisory governance audit (maker-side). NOT an independent-checker receipt.",
+      "sha256": "8a8373110742ba2f12bfdbde93442dd3823db6cf9deedf8b516ada9278234947",
+      "bytes": 3522
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
