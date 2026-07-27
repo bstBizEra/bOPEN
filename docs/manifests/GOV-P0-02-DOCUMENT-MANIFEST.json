@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 328,
+  "count": 330,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1126,8 +1126,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "e54c616dc0831a48eb5430263801aa4c51d520d01691825ed484d08899696796",
-      "bytes": 32022
+      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
+      "bytes": 33194
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1457,6 +1457,20 @@
       "status": "Durable independent-review receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 section 7).",
       "sha256": "54bfa786f86005ae8263549013084e1f52ab1a29593f429eee496754fa7d2654",
       "bytes": 3014
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-015-apply-pipeline-failproof.md",
+      "title": "EVD-CLOSURE-015 - Independent adversarial fail-proof of the PG-P0 apply pipeline",
+      "status": "Durable independent-checker receipt (maker-persisted verbatim per issued PG-P0-INTERP-002 section 7).",
+      "sha256": "98a6c7f6f3bd0ce9b995256a24b88afedc1d94c13a4eae3863dea361217ea143",
+      "bytes": 3779
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-016-preapply-advisory-battery.md",
+      "title": "EVD-CLOSURE-016 - Advisory maker-side pre-apply battery (4 nodes)",
+      "status": "Advisory maker-side evidence. NOT independent-checker receipts (that class is",
+      "sha256": "0b71c5a49d9ea7deb3ba7d678735cf0d19963c619ecf8c1efac24210dbca8775",
+      "bytes": 6311
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",

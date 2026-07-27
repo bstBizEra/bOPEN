@@ -1,5 +1,11 @@
 # Documentation Changelog
 
+## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
+
+- EVD-CLOSURE-015 (INDEPENDENT BST-Codex-Motor): adversarial fail-proof of the C6-C9 apply pipeline = PIPELINE_FAILS_CLOSED. 9/9 negative cases rejected (forged sig, swapped payload, wrong key, missing mandate, tampered patch, wrong-parent CAS, validator-only apply, schedule-only apply, reversed manifest order) + happy-path control accepted. Binds PATCH_SHA256 1A9FF63B...499D88BE, maker-verified to match the on-disk apply patch. No commit or ref movement on any failing case; source repo untouched.
+- EVD-CLOSURE-016 (advisory maker-side, 4 nodes): EXECUTION_CANDIDATE_VALID + GUARD_FAILS_CLOSED + SIGNATURE_GATE_FAILS_CLOSED (60 probes, 0 critical) + ABORT_SAFE_AND_CAS_PROTECTED. Records 7 hardening findings; H1-H3 were adopted into the apply runbook (never use --write to fix a stale --check; gate VERIFY-P0-01 on rc AND stdout; destroy the worktree on the CAS-failure path). H4/H5 (trust-root ingest, ISO-8601 offset) queued post-closure.
+- Additive evidence only; SCHEDULE-REGISTER untouched (PG-P0 still ACTIVE, closure subject and mandate binding unaffected). PG-P1 NOT_READY; main a908bbe.
+
 ## 2026-07-27 - EVD-CLOSURE-014: C5 independent verification of the operator-signed mandate (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent BST-Codex-Motor C5 receipt for the signed mandate at d38ab2d: verify_ed25519 True, verify_transition VERIFIED_EXACT, signer HUMAN-OPERATOR-001, authority/scope/manifest-binding/signed-decision-anchor PASS, non-execution confirmed (PG-P0 still ACTIVE). Proof of possession independently confirmed -> trust root ACTIVE. Next: C6-C8 apply, bounded by DEC-0014 (verifier + human apply). PG-P0 ACTIVE; PG-P1 NOT_READY.
