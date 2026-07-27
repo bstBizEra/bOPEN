@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 326,
+  "count": 328,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -253,6 +253,20 @@
       "status": "",
       "sha256": "dc2acf6c0319314496b77070e0e5a93d13cde2c20affd3a1a2c91c3a69f54b8e",
       "bytes": 2739
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.dsse.json",
+      "title": "",
+      "status": "",
+      "sha256": "750ef6c7de2707f91ec41d8501d680092a9de63a9b8bc684d22142005b297724",
+      "bytes": 1784
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+      "title": "PG-P0 Closure Mandate - Stage-1 signed completion mandate (C4/C5)",
+      "status": "Signed operator mandate; the DSSE envelope carries the operator's Ed25519 signature.",
+      "sha256": "2551a49de95db095cdda9824fa2a554bf3a850b048e5af500429042b77c5fd1b",
+      "bytes": 3380
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
@@ -1112,8 +1126,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "6a631e8e35be64c852e2639fca43d33a5a716c08b9d2e8f030f88a771c32aa5f",
-      "bytes": 30624
+      "sha256": "056da8f9efc55f2d69da03e5937c737820a42a5598d42d9bafc0c55d2a754470",
+      "bytes": 31458
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1609,8 +1623,8 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "b007908728a4abaafe8d6e6cc1354c6b19bfe3bf7ab6c090de14024547f8368d",
-      "bytes": 88410
+      "sha256": "b87d1bdf8f4378f7b1b7af9aa6c8285158cdd753b463ecf066a03fb626b6e196",
+      "bytes": 89016
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",

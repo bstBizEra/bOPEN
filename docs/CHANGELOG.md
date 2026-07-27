@@ -1,5 +1,9 @@
 # Documentation Changelog
 
+## 2026-07-27 - C5: record the operator-signed Stage-1 closure mandate (pre-execution)
+
+- Added docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md (decision record) + PG-P0-CLOSURE-MANDATE.dsse.json (DSSE envelope carrying HUMAN-OPERATOR-001 Ed25519 signature, keyid operator-pgp0-completion-1). Maker verified on receipt: verify_ed25519 True, verify_transition VERIFIED_EXACT (proof of possession; trust root APPROVED_PENDING_PROOF_OF_POSSESSION -> ACTIVE). The record names both authorizing actions + the bound closure-manifest content sha256 7417cc6a + the #signed-decision anchor per INTERP-002 v0.4 SS5. This commit RECORDS the signed mandate only; it does NOT mutate SCHEDULE-REGISTER (PG-P0 stays ACTIVE) or the docket - that is the C6-C8 execution commit. Independent C5 verification pending. PG-P0 ACTIVE; PG-P1 NOT_READY.
+
 ## 2026-07-27 - EVD-CLOSURE-013: durable receipt for the C3 re-freeze (ACCEPT_EXACT_SHA)
 
 - Persisted verbatim the independent BST-Codex-Motor receipt for the C3 closure-manifest re-freeze at 27e70fa8: verdict ACCEPT_EXACT_SHA. The four signing digests are UNCHANGED (mandate 0f34a306, predecessor e80f7b93, successor 1f8d183e, PAE bd5113a6) so the operator C4 signature subject + command are unaffected; only the manifest sha256 changed 9e67cd0b -> 7417cc6a (the real C6 mandate record must name 7417cc6a). Round-trip VERIFIED_EXACT; both manifest checks + 189 tests PASS; no finding. PG-P0 ACTIVE; PG-P1 NOT_READY.
