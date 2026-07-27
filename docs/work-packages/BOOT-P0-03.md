@@ -1,10 +1,9 @@
 # BOOT-P0-03 — Documentation system
 
-**Status:** Execution complete
-**Owner:** BST Codex Motor
-**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
-**Phase:** Bootstrap P0
-**Dependencies:** See register
+**Status:** Proposed  
+**Owner:** Unassigned  
+**Phase:** Bootstrap P0  
+**Dependencies:** See register  
 
 ## Objective
 
@@ -34,4 +33,4 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-EVD-BOOT-002, EVD-BOOT-008, and `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`.
+`docs/evidence/<evidence-id>.md` or approved CI/review reference.

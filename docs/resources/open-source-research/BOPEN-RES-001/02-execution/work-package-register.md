@@ -18,16 +18,6 @@
 **Acceptance:** second operator reproduces result.  
 **Outputs:** terminal log, environment manifest, test report.
 
-### R0 execution receipt - 2026-07-13
-
-| Package | Result | Evidence |
-|---|---|---|
-| RES-P0-01 | Complete; G0 `PASS WITH CONDITIONS` | Named RACI, DEC-0009 external workspace control, two isolated roots, evidence secret scans pass; SecB legal interpretation pending |
-| RES-P0-02 | Complete; G1 `PASS WITH CONDITIONS` | Canonical source ID, exact pin, public/not-archived observation, license and lock checksums reproduced twice; legal review pending |
-| RES-P0-03 | Complete; G2 `PASS WITH CONDITIONS` | ENGIN and REV independently reproduce the same baseline exit matrix; npm 10.9.2 required and upstream format check remains failing |
-
-The R0 result authorizes planning for RES-P0-04 through RES-P0-07 only. It does not pass G3-G7 or authorize clean implementation.
-
 ## RES-P0-04 — Repository orientation
 
 **Tasks:** map UI, API, models, schema, integrations and tests.  
@@ -51,17 +41,6 @@ The R0 result authorizes planning for RES-P0-04 through RES-P0-07 only. It does 
 **Tasks:** email/link invite, allowed domains, acceptance, expiry, deletion, replay and concurrency.  
 **Acceptance:** end-to-end tests and event/audit evidence captured.  
 **Outputs:** invitation state comparison and controls.
-
-### R1 execution receipt - 2026-07-13
-
-| Package | Result | Evidence |
-|---|---|---|
-| RES-P0-04 | Complete at E2 | Two operators verified the explicit case-by-layer matrix with gaps preserved as gap anchors and no runtime claim. |
-| RES-P0-05 | Trace complete; acceptance partial | Identity/principal gaps and positive declarations mapped; required negative runtime evidence remains open. |
-| RES-P0-06 | Trace complete; acceptance partial | Team/membership states and constraints mapped; atomic owner and cross-team/role runtime negatives remain open. |
-| RES-P0-07 | Trace complete; acceptance not satisfied | End-to-end expiry, revoke, replay, concurrency and event/audit evidence is absent. |
-
-G3 remains open. R1 static declaration inventory is E2 and does not authorize RES-P0-08 implementation, production adoption or any clean-room handoff.
 
 ## RES-P0-08 — Context and authorization trace
 

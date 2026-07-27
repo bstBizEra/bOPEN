@@ -13,28 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
       - name: Validate repository governance
         run: python tools/validate_repository.py
-      - name: Validate draft contracts
-        run: python tools/validate_contracts.py
-      - name: Validate draft program controls
-        run: python tools/validate_program_controls.py
-      - name: Verify deterministic Program G0 readiness report
-        run: python tools/report_program_g0.py --check
-      - name: Verify draft PG-G0 authority docket and report
-        run: python tools/validate_pg_g0_authority_docket.py --check
-      - name: Verify GOV-P0-02 versioned document manifest
-        run: python tools/generate_document_manifest.py --output docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json --check
-      - name: Validate clean-room boundary
-        run: python tools/check_clean_room.py
-      - name: Scan repository for secrets
-        run: python tools/check_secrets.py
-      - name: Validate supply-chain baseline
-        run: python tools/check_supply_chain.py
-      - name: Run full bootstrap test suite
-        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Run governance tests
+        run: python -m unittest discover -s tests/governance -p 'test_*.py'

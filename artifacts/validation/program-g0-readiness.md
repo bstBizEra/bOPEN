@@ -13,6 +13,8 @@
 - agent register requires at least one governed active agent
 - schedule register requires assigned PG-G0 review
 - technology decisions not assigned: DEC-0004, DEC-0005
+- docs/templates/work-package-template.md missing operational markers: **Maker:**, **Checker:**, **Branch/worktree:**, **Allowed paths:**, **Base SHA:**, **Expiry:**
+- docs/templates/evidence-template.md missing operational markers: **Evidence ID:**, **Maker:**, **Checker:**, ## Independent verdict
 
 ## Decision
 

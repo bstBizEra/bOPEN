@@ -1,87 +1,19 @@
 #!/usr/bin/env python3
-"""Generate a deterministic document manifest or an immutable candidate snapshot."""
-
-from __future__ import annotations
-
-import argparse
-import hashlib
-import json
-import re
-from datetime import datetime, timezone
 from pathlib import Path
-
-
-ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = Path("docs/DOCUMENT-MANIFEST.json")
-TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml"}
-
-
-def canonical_document_bytes(path: Path) -> tuple[bytes, str]:
-    """Return platform-independent bytes for governed UTF-8 text documents."""
-    data = path.read_bytes()
-    if path.suffix not in TEXT_SUFFIXES:
-        return data, ""
-    try:
-        text = data.decode("utf-8")
-    except UnicodeDecodeError:
-        return data, ""
-    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
-    return normalized.encode("utf-8"), normalized
-
-
-def build_manifest(output: Path, root: Path = ROOT) -> dict:
-    records = []
-    resolved_output = output if output.is_absolute() else root / output
-    document_paths = sorted(
-        (root / "docs").rglob("*"),
-        key=lambda candidate: candidate.relative_to(root).as_posix(),
-    )
-    for path in document_paths:
-        if not path.is_file() or path.name == "DOCUMENT-MANIFEST.json" or path.resolve() == resolved_output.resolve():
-            continue
-        data, text = canonical_document_bytes(path)
-        title = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
-        match = re.search(r"\*\*Status:\*\*\s*([^\n]+)", text)
-        records.append(
-            {
-                "path": str(path.relative_to(root)).replace("\\", "/"),
-                "title": title,
-                "status": match.group(1).strip() if match else "",
-                "sha256": hashlib.sha256(data).hexdigest(),
-                "bytes": len(data),
-            }
-        )
-    return {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
-        "count": len(records),
-        "documents": records,
-    }
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--check", action="store_true", help="Verify output without rewriting it.")
-    args = parser.parse_args()
-    output = args.output if args.output.is_absolute() else ROOT / args.output
-    manifest = build_manifest(args.output)
-    rendered = json.dumps(manifest, indent=2) + "\n"
-    if args.check:
-        try:
-            actual = output.read_text(encoding="utf-8")
-        except FileNotFoundError:
-            print(f"ERROR: manifest snapshot missing: {output}")
-            return 1
-        if actual != rendered:
-            print(f"ERROR: manifest snapshot stale: {output}")
-            return 1
-        print(f"Manifest snapshot current: {output} ({manifest['count']} records)")
-        return 0
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(rendered, encoding="utf-8")
-    print(f"Wrote {manifest['count']} records to {output}")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+import json, hashlib, re
+ROOT=Path(__file__).resolve().parents[1]
+records=[]
+for p in sorted((ROOT/'docs').rglob('*')):
+    if not p.is_file() or p.name=='DOCUMENT-MANIFEST.json': continue
+    data=p.read_bytes()
+    text=data.decode('utf-8','replace') if p.suffix in {'.md','.json','.yaml','.yml'} else ''
+    title=''
+    for line in text.splitlines():
+        if line.startswith('# '): title=line[2:].strip(); break
+    status=''
+    m=re.search(r'\*\*Status:\*\*\s*([^\n]+)',text)
+    if m: status=m.group(1).strip()
+    records.append({'path':str(p.relative_to(ROOT)).replace('\\','/'),'title':title,'status':status,'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
+out={'generated':'2026-07-12','count':len(records),'documents':records}
+(ROOT/'docs/DOCUMENT-MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+print(f'Wrote {len(records)} records')

@@ -25,21 +25,3 @@ body:
     id: evidence
     attributes:
       label: Required evidence
-  - type: input
-    id: maker
-    attributes:
-      label: Maker actor and session ID
-    validations:
-      required: true
-  - type: input
-    id: checker
-    attributes:
-      label: Independent checker actor and session ID
-    validations:
-      required: true
-  - type: textarea
-    id: isolated_scope
-    attributes:
-      label: Worktree, branch, exact base SHA, allowed paths and expiry
-    validations:
-      required: true

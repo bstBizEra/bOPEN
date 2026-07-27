@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/evidence/envelope.schema.json",
+  "title": "bOPEN Evidence Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidenceId",
+    "artifactId",
+    "createdAt",
+    "source",
+    "check",
+    "result",
+    "verifier"
+  ],
+  "properties": {
+    "evidenceId": {
+      "type": "string"
+    },
+    "artifactId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string"
+    },
+    "check": {
+      "type": "string"
+    },
+    "result": {
+      "enum": [
+        "pass",
+        "fail",
+        "warning",
+        "not-run",
+        "not-applicable"
+      ]
+    },
+    "hash": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "verifier": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

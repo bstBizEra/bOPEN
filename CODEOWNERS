@@ -1,11 +1,11 @@
-# Gitea code owners. GitHub uses .github/CODEOWNERS instead.
-* @bst-sa/bopen-reviewers
-/AGENTS.md @bst-sa/bopen-architects @bst-sa/bopen-reviewers
-/docs/ @bst-sa/bopen-architects @bst-sa/bopen-reviewers
-/docs/07-security/ @bst-sa/bopen-reviewers
-/contracts/ @bst-sa/bopen-reviewers
-/services/ @bst-sa/bopen-engineers @bst-sa/bopen-reviewers
-/packages/platform/ @bst-sa/bopen-architects @bst-sa/bopen-reviewers
-/infrastructure/ @bst-sa/bopen-reviewers
-/research/ @bst-sa/bopen-reviewers
-/.gitea/ @bst-sa/bopen-reviewers
+# Replace placeholders with actual GitHub teams/users before enforcement.
+* @bopen/engineering
+/AGENTS.md @bopen/architecture @bopen/engineering
+/docs/ @bopen/architecture @bopen/product
+/docs/07-security/ @bopen/security
+/contracts/ @bopen/architecture @bopen/security
+/services/ @bopen/engineering @bopen/architecture
+/packages/platform/ @bopen/architecture @bopen/security
+/infrastructure/ @bopen/platform-engineering @bopen/security
+/research/ @bopen/research @bopen/legal
+/.github/ @bopen/engineering @bopen/security

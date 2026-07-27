@@ -48,6 +48,18 @@ def parse_markdown_table(path: Path) -> list[dict[str, str]]:
     return records
 
 
+def latest_table_records(records: list[dict[str, str]], key: str) -> list[dict[str, str]]:
+    """Use the last append-only disposition for each governed record."""
+    latest: dict[str, dict[str, str]] = {}
+    order: list[str] = []
+    for record in records:
+        value = record.get(key, "")
+        if value not in latest:
+            order.append(value)
+        latest[value] = record
+    return [latest[value] for value in order if value]
+
+
 def load_registers(root: Path = ROOT) -> dict[str, list[dict[str, str]]]:
     return {
         "gates": parse_markdown_table(root / "docs/work-packages/BOOTSTRAP-GATES.md"),
@@ -61,9 +73,9 @@ def load_registers(root: Path = ROOT) -> dict[str, list[dict[str, str]]]:
 
 def build_report(root: Path = ROOT) -> dict[str, object]:
     registers = load_registers(root)
-    gates = registers["gates"]
-    work_packages = registers["work_packages"]
-    evidence = registers["evidence"]
+    gates = latest_table_records(registers["gates"], "Gate")
+    work_packages = latest_table_records(registers["work_packages"], "ID")
+    evidence = latest_table_records(registers["evidence"], "Evidence ID")
     documents = registers["documents"]
 
     b7 = next((gate for gate in gates if gate.get("Gate", "").startswith("B7")), {})

@@ -32,11 +32,3 @@ Register human principal
 5. Cross-tenant read is denied at API and database enforcement layers.
 6. Authorization result includes reason and policy version.
 7. Audit event identifies actor, tenant, resource, action, result and correlation.
-
-## Executable draft fixture
-
-The draft acceptance fixture is `docs/06-contracts/acceptance/first-vertical-slice.acceptance.json`.
-
-DEV-P0-01 extends the negative multi-tenant boundary through `docs/06-contracts/acceptance/multitenant-dev-readiness.acceptance.json`; it does not expand implementation authority.
-
-This fixture is a contract/test input only. It does not authorize production implementation before the required BOPEN-RES-001 G7 pass, approved normative artifacts and accepted implementation work package.

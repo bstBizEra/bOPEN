@@ -1,110 +1,5 @@
 # Documentation Changelog
 
-## 2026-07-21 - GOV-P0-01 Program Goal v0.2 controlled draft
-
-- Converted the supplied Program Goal v0.2 into BOPEN-GOAL-001 with a source hash and explicit non-authorizing status.
-- Added BOPEN-GOV-001, DEC-0010 and namespaced program/roadmap/bootstrap/research lifecycle aliases to prevent gate-status leakage.
-- Established draft program registers, a source-complete requirement catalog and fail-closed program-control validation.
-- Extended work-item, evidence and handoff templates with maker/checker, session, worktree, SHA, scope and authority separation fields.
-- Kept PG-G0 NOT_READY, B7/DEC-0007 pending, RES-G3-G7 open and production implementation unauthorized.
-
-## 2026-07-21 - BOOT-P0-12 external-control reconciliation
-
-- Reconciled BOOT-P0-01 and BOOT-P0-08 with the protected Gitea PR #1 merge and current `main` protection observation.
-- Updated EVD-BOOT-011 without changing the historical activation record.
-- Moved deterministic bootstrap readiness to `ready_for_authority_review` while preserving B7 as pending and production implementation authority as false.
-- Kept DEC-0007 proposed for the bOPEN Architecture Authority.
-
-## 2026-07-13 - research R0 control establishment
-
-- Approved DEC-0009 to keep physical upstream clones and raw evidence outside the bOPEN worktree.
-- Assigned the R0 SARCHI/ARCHI/ENGIN/REV responsibilities and SecB license/compliance ownership.
-- Consolidated the BoxyHQ source ID and expected pin, license and lock checksums.
-- Hardened the Windows clone and verification scripts against ambient credential prompting, wrong origins, attached branches, missing locks and checksum drift.
-- Added a recorded baseline runner and reproduced the exact result in separate ENGIN and REV workspaces.
-- Recorded npm 10.9.2 as the R0 compatibility requirement, npm 11 lock rejection, the pinned upstream format failure, and passing lint/types/unit/build outcomes.
-- Added EVD-RES-002 and marked G0-G2 `PASS WITH CONDITIONS`; G3-G7 and production implementation remain closed.
-
-## 2026-07-13 - multi-tenant DEV readiness
-
-- Accepted DEV-P0-01 for contract, fixture, validator, and test execution only.
-- Added draft membership, active-context, and tenant-ownership schemas.
-- Added seven synthetic multi-tenant readiness scenarios with API and database cross-tenant denial.
-- Extended contract validation and focused tests for membership separation, trusted context, tenant ownership, deny-by-default behavior, and audit correlation.
-- Added EVD-DEV-001 while keeping G7, normative approval, and production implementation gates closed.
-
-## 2026-07-13 - bGitea protected review activation
-
-- Created and verified the private `bst-sa/bopen` local source-of-truth repository and configured credential-free `origin`.
-- Added separated Gitea Architect, Engineer, and Reviewer teams with repository-only membership.
-- Installed the checksum-verified repository-scoped Gitea Runner 2.0.1 over rootless Podman.
-- Protected `main` against direct/force pushes and administrator bypass, with Reviewer-only approval and merge authority.
-- Added Gitea CODEOWNERS and governance workflow controls plus EVD-BOOT-011.
-- Observed successful Actions run 17/job 33 and required the exact `Bootstrap Governance / validate (pull_request)` context.
-- Recorded RSK-012 for rootless WSL host job networking required by the unavailable `/dev/net/tun` device.
-- Applied independent review findings by making the Gitea workflow token read-only, pinning external actions to full commits, and validating both GitHub and Gitea workflows.
-- Reported the Gitea hardening incident and residual host decisions to SecB and bstSA SARCHI without credential values.
-
-## 2026-07-13 - GitHub draft review activation
-
-- Published the reconciliation branch and opened draft GitHub PR #1.
-- Recorded the passing Bootstrap Governance workflow result.
-- Replaced placeholder CODEOWNERS teams with verified repository administrator `@bstBizEra`.
-- Recorded DEC-0008 and RSK-011 after GitHub rejected private-repository branch protection under the current account plan.
-- Approved DEC-0008 option 2, preserving private bGitea as the protected working source and GitHub as the stable review/publication surface.
-
-## 2026-07-13 - approved GitHub reconciliation
-
-- Recorded sponsor approval of DEC-0006 option 1.
-- Rebuilt the BOOT-P0 history on a reconciliation branch from existing GitHub `main`.
-- Preserved the GitHub root commit and resolved the one-line README conflict with the governed bootstrap README.
-- Added EVD-BOOT-010 and kept direct or force publication to `main` prohibited.
-
-## 2026-07-13 - BOOT-P0 completion self-review
-
-- Audited all BOOT-P0-01 through BOOT-P0-12 outcomes against current evidence.
-- Added executable secret and supply-chain checks with tests and full CI/pre-commit coverage.
-- Added the missing exception register and formal DEC-0006/DEC-0007 decision requests.
-- Classified ten packages as execution-complete, two as external-activation-pending, and BOOT-P0-12 as authority-review-pending.
-- Recorded EVD-BOOT-009 without retaining local bGitea credentials.
-
-## 2026-07-13 - missing bootstrap evidence
-
-- Generated EVD-BOOT-001 AGENTS hierarchy validation evidence.
-- Generated EVD-BOOT-002 document manifest validation evidence.
-- Updated BOOTSTRAP-GATES B2/B3 status to evidence generated.
-- Refreshed the bootstrap gate readiness report so pending evidence is no longer listed.
-
-## 2026-07-13 - bootstrap gate readiness
-
-- Added a deterministic bootstrap gate readiness report tool for BOOT-P0-12.
-- Generated `artifacts/validation/bootstrap-gate-readiness.md`.
-- Added governance tests for the report and EVD-BOOT-007 evidence.
-- Confirmed B7 remains review-required and production implementation remains unauthorized.
-
-## 2026-07-13 - vertical-slice fixtures
-
-- Added the first vertical-slice acceptance fixture for BOOT-P0-11.
-- Added a draft authorization audit-event schema.
-- Extended contract validation to check `.acceptance.json` fixtures and correlation consistency.
-- Added contract tests covering the seven first-slice acceptance scenarios.
-- Added EVD-BOOT-006 evidence.
-
-## 2026-07-13 - first coding move
-
-- Added a standard-library contract validation harness for Phase 0 machine-readable contracts.
-- Added contract validator tests and package scripts.
-- Marked existing draft JSON schemas with top-level draft status metadata.
-- Added EVD-BOOT-005 evidence for BOOT-P0-10.
-
-## 2026-07-13 - roadmap build start
-
-- Started the roadmap-safe Phase 0 build lane through BOOT-P0-09/BOOT-P0-01.
-- Documented the local bGitea working remote and GitHub stable publication model.
-- Added EVD-BOOT-004 source-control baseline evidence and traceability.
-- Recorded DEC-0006/RSK-009 for the unrelated local bootstrap and GitHub `main` histories.
-- Verified local bGitea service at `http://localhost:3030/` and recorded RSK-010 for the unverified local `origin` repository path.
-
 ## 2026-07-13 - local preparation
 
 - Prepared downloaded BOPEN-BOOT-001 full pack for local version control.
@@ -114,7 +9,6 @@
 ## 2026-07-12 — v1.0
 
 - Created BOPEN-BOOT-001 full AGENTS.md and documentation bootstrap pack.
-
 ## Append-only entry — 2026-07-21 — GOV-P0-02 authority-docket proposal
 
 - Added a draft exact-bound PG-G0 authority docket using only actions present in the live draft authority matrix.
@@ -160,6 +54,12 @@
 - Activated the five root ledgers through one identical append-only B6 event and retained their immutable Draft/Inactive genesis prefixes.
 - Rebound the v0.3 inventory to Signing Pass 2 commit `60c4831f4fcdfabb876d62f4eb98949b4a1a5a66` and enforced exact signed transformations in schema, validator and negative tests.
 - Preserved all five B8 requests as `PENDING` and PG-G0, merge, release, deployment, runtime and production implementation as unauthorized pending a new independent exact-SHA review and later decisions.
+
+## Append-only entry - 2026-07-23 - v0.4 remediation rebuild
+
+- Rebuilt from `8a0987070efa4108e7f9ada716a8fb533fa47e42`, preserving the signed docket and all B8 outcomes.
+- Appended the remediation ledger event after the existing final entry and regenerated the GOV-P0-03 package manifest in the same commit.
+- Removed the live DELEGATED validator path, added temporary-fixture manifest ordering and DIRECT-only negative coverage, and retained the 33-item disposition table.
 
 ## Append-only entry - 2026-07-23 - PG-G0 authority docket v0.4 B8 signed successor
 

@@ -1,0 +1,134 @@
+{
+  "artifact": "BOPEN-SKILL-REGISTRY-001",
+  "version": "0.1",
+  "status": "PROPOSED",
+  "skills": [
+    {
+      "id": "bopen-architecture",
+      "canonical_id": "io.bizera.bopen.architecture",
+      "version": "0.1.0",
+      "owner": "Architecture",
+      "risk": "medium",
+      "state": "candidate",
+      "package_validation": "passed",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-architecture",
+      "source_revision": "unbound"
+    },
+    {
+      "id": "bopen-governance-check",
+      "owner": "Governance",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-requirement-to-work-item",
+      "owner": "Product/Architecture",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-module-contract",
+      "owner": "Architecture",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-tenant-isolation-review",
+      "owner": "Security",
+      "risk": "high",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-evidence-envelope",
+      "owner": "Conformance",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-release-readiness",
+      "owner": "Release",
+      "risk": "high",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-portal-verification",
+      "owner": "Design/Test",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-doc-sync",
+      "owner": "Documentation",
+      "risk": "low",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-threat-model",
+      "owner": "Security",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-ci-repair",
+      "owner": "Delivery",
+      "risk": "medium",
+      "state": "candidate"
+    },
+    {
+      "id": "bopen-git-governance",
+      "canonical_id": "io.bizera.bopen.git-governance",
+      "version": "0.1.0",
+      "owner": "Governance",
+      "risk": "high",
+      "state": "candidate",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-git-governance",
+      "source_revision": "unbound"
+    },
+    {
+      "id": "bopen-phase-closure",
+      "canonical_id": "io.bizera.bopen.phase-closure",
+      "version": "0.1.0",
+      "owner": "Release",
+      "risk": "high",
+      "state": "candidate",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-phase-closure",
+      "source_revision": "unbound"
+    },
+    {
+      "id": "bopen-sec-qa-lead",
+      "canonical_id": "io.bizera.bopen.sec-qa-lead",
+      "version": "0.1.0",
+      "owner": "Security",
+      "risk": "high",
+      "state": "candidate",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-sec-qa-lead",
+      "source_revision": "unbound"
+    },
+    {
+      "id": "bopen-windows-toolchain",
+      "canonical_id": "io.bizera.bopen.windows-toolchain",
+      "version": "0.1.0",
+      "owner": "Delivery",
+      "risk": "medium",
+      "state": "candidate",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-windows-toolchain",
+      "source_revision": "unbound"
+    },
+    {
+      "id": "bopen-worktree-management",
+      "canonical_id": "io.bizera.bopen.worktree-management",
+      "version": "0.1.0",
+      "owner": "Governance",
+      "risk": "high",
+      "state": "candidate",
+      "activation": "inactive",
+      "path": ".agents/skills/bopen-worktree-management",
+      "source_revision": "unbound"
+    }
+  ]
+}

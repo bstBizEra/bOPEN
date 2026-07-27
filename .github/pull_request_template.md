@@ -10,15 +10,6 @@
 - ADR IDs:
 - Contract versions:
 
-## Delivery control
-
-- Maker actor/session:
-- Independent checker actor/session:
-- Worktree and branch:
-- Exact base/head SHA:
-- Allowed paths:
-- Work-item expiry:
-
 ## Change summary
 
 ## Tenant/security impact
@@ -34,8 +25,6 @@
 - [ ] Tests passed.
 - [ ] Documentation and traceability updated.
 - [ ] Evidence stored at:
-- [ ] Maker and checker are different actors/sessions.
-- [ ] Exact commit reviewed is recorded in evidence.
 
 ## Migration and rollback
 

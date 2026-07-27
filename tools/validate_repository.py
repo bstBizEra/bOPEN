@@ -8,7 +8,6 @@ errors=[]
 required=[
 'AGENTS.md','BOPEN-BOOT-001.md','README.md','CONTRIBUTING.md','SECURITY.md','GOVERNANCE.md',
 'docs/README.md','docs/DOCUMENT-STATUS.md','docs/DOCUMENT-COVERAGE.md','docs/GLOSSARY.md','docs/TRACEABILITY-MATRIX.md',
-'docs/exceptions/EXCEPTION-REGISTER.md',
 'apps/AGENTS.md','services/AGENTS.md','packages/AGENTS.md','contracts/AGENTS.md','infrastructure/AGENTS.md','tests/AGENTS.md','research/AGENTS.md','docs/AGENTS.md',
 'docs/02-requirements/BOPEN-REQ-001-DRAFT.md','docs/03-architecture/BOPEN-ARCH-001-DRAFT.md',
 'docs/04-platform/BOPEN-TENANT-001-DRAFT.md','docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md',

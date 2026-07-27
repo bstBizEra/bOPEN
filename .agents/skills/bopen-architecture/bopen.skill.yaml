@@ -1,0 +1,90 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: Skill
+metadata:
+  id: io.bizera.bopen.architecture
+  name: bopen-architecture
+  version: 0.1.0
+  owner: bopen-architecture-authority
+  classification: internal
+  status: validated
+  license: Proprietary
+  sourceRepository: bstBizEra/bopen
+  sourceRevision: unbound
+  createdAt: "2026-07-22"
+spec:
+  purpose: Produce governed, evidence-backed bOPEN architecture research, designs, reviews, ADRs, implementation controls, and conformance verdicts.
+  type: advisory
+  riskClass: SKR1
+  scope:
+    allowed:
+      - platform
+      - product
+      - module
+      - tenant
+      - workspace
+      - repository
+    tenantContext: conditional
+  contracts:
+    inputSchema: schemas/input.schema.json
+    outputSchema: schemas/output.schema.json
+    evidenceSchema: schemas/evidence-envelope.schema.json
+  requires:
+    products: []
+    modules: []
+    capabilities:
+      - architecture.read
+      - architecture.artifact.prepare
+      - architecture.conformance.evaluate
+    tools:
+      - id: filesystem
+        operations:
+          - read
+          - search
+          - write-local-artifact
+        access: conditional
+      - id: python
+        operations:
+          - execute-bundled-validation
+          - execute-bundled-generation
+        access: conditional
+      - id: web-research
+        operations:
+          - search
+          - retrieve-primary-source
+        access: conditional
+  runtime:
+    sandboxProfile: bopen-read-mostly
+    networkPolicy: restricted
+    filesystemPolicy: workspace-output-only
+    maxDuration: PT30M
+    maxSteps: 80
+    maxToolCalls: 60
+  approval:
+    mode: conditional
+    requiredFor:
+      - external-publication
+      - architecture-approval
+      - production-change
+      - exception-to-non-waivable-control
+  data:
+    maximumClassification: confidential
+    crossTenantAccess: prohibited
+    secretsInPackage: prohibited
+  failure:
+    retryPolicy: bounded
+    compensationRequired: false
+  evaluation:
+    suite: evals/cases.yaml
+    minimumSuccessRate: 0.95
+    crossTenantFailuresAllowed: 0
+  lifecycle:
+    stage: validated
+    deprecationPolicy: policies/revocation-policy.yaml
+    revocationPolicy: policies/revocation-policy.yaml
+  distribution:
+    formats:
+      - directory
+      - zip
+    immutableVersionRequired: true
+    signatureRequiredForPublication: true
+    provenanceRequiredForPublication: true

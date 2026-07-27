@@ -22,10 +22,6 @@
 
 ## Navigation
 
-Program-control registers: [`00-governance/registers/`](00-governance/registers/) (draft; non-authorizing).
-
-PG-G0 authority routing proposal: [`00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md`](00-governance/PG-G0-AUTHORITY-DOCKET-DRAFT.md). It is Draft, cannot approve a gate, and requires GOV-P0-02 Human Engineering acceptance.
-
 - [`00-governance/`](00-governance/) — document, agent and decision governance
 - [`01-product/`](01-product/) — product vision and ecosystem boundaries
 - [`02-requirements/`](02-requirements/) — product requirements

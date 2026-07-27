@@ -37,22 +37,3 @@ Service Principal
 ## Decision proposal
 
 Adopt the global-human-user pattern. Reject the idea that user and API key together are sufficient as the bOPEN principal kernel.
-
-## R1 observations - 2026-07-13
-
-### Observation
-
-- Human `User` remains the sole identity root; no general principal abstraction was observed.
-- Identity operations provide metrics but no complete domain-event/audit chain.
-- Email canonicalization is not consistently applied before unique lookup/storage.
-- Verification, reset, lockout, linked-account and API-key use have substantial negative-test gaps.
-- JWT sessions are not invalidated by password reset/change.
-- Team API keys are stored by digest, but observed code does not use them as an authentication path or enforce expiry/last-used semantics.
-
-### Inference
-
-bOPEN needs principal, credential, session and audit lifecycles that remain independent from the human-user profile and tenant membership. Identity canonicalization and credential/session revocation require explicit contracts and negative tests.
-
-### Decision status
-
-Research input only. RES-P0-05 trace is complete, but runtime acceptance and G3 remain open.

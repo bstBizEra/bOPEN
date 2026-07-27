@@ -1,0 +1,49 @@
+{
+  "artifact": "BOPEN-AGENT-REGISTRY-001",
+  "version": "0.1",
+  "status": "TEMPLATE",
+  "agents": [
+    {
+      "agent_id": "codex-maker",
+      "harness": "Codex",
+      "roles": [
+        "Backend Maker",
+        "CI Maker"
+      ],
+      "status": "proposed"
+    },
+    {
+      "agent_id": "claude-architect",
+      "harness": "Claude Code",
+      "roles": [
+        "Architect"
+      ],
+      "status": "proposed"
+    },
+    {
+      "agent_id": "claude-evidence-auditor",
+      "harness": "Claude Code",
+      "roles": [
+        "Evidence Auditor"
+      ],
+      "status": "proposed"
+    },
+    {
+      "agent_id": "antigravity-portal",
+      "harness": "Antigravity",
+      "roles": [
+        "Portal Maker",
+        "E2E Verifier"
+      ],
+      "status": "proposed"
+    },
+    {
+      "agent_id": "independent-conformance",
+      "harness": "TBD",
+      "roles": [
+        "Conformance Verifier"
+      ],
+      "status": "proposed"
+    }
+  ]
+}

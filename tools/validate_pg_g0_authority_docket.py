@@ -929,8 +929,8 @@ def validate_authority_actor(
     if actor.get("authority_role") != required_role:
         errors.append(f"{label} authority role must be {required_role}")
     authority_mode = actor.get("authority_mode")
-    if authority_mode not in {"DIRECT", "DELEGATED"}:
-        errors.append(f"{label} authority mode invalid")
+    if authority_mode != "DIRECT":
+        errors.append(f"{label} authority mode must be DIRECT")
     for field in ("identity_provider", "identity_subject", "role_binding_ref"):
         if field in expected and not non_placeholder(actor.get(field)):
             errors.append(f"{label} {field} is required")
@@ -953,104 +953,6 @@ def validate_authority_actor(
     if authority_mode == "DIRECT":
         if delegation_ref is not None or delegation is not None:
             errors.append(f"{label} direct authority cannot carry delegation")
-    elif authority_mode == "DELEGATED":
-        if not non_placeholder(delegation_ref) or not isinstance(delegation, dict):
-            errors.append(f"{label} delegated authority requires reference and binding")
-        else:
-            delegation_schema = schema.get("$defs", {}).get("delegationBinding", {})
-            required = set(delegation_schema.get("required", [])) if isinstance(delegation_schema, dict) else set()
-            errors.extend(exact_keys(delegation, required, f"{label} delegation"))
-            if delegation.get("authority_role") != required_role:
-                errors.append(f"{label} delegation authority role mismatch")
-            if normalized_identity(delegation.get("delegate_human_identity_ref")) != normalized_identity(actor.get("human_identity_ref")):
-                errors.append(f"{label} delegation delegate identity mismatch")
-            if normalized_identity(delegation.get("grantor_human_identity_ref")) in {"", normalized_identity(actor.get("human_identity_ref"))}:
-                errors.append(f"{label} delegation grantor must be a different human")
-            delegation_actions = delegation.get("action_ids")
-            if not isinstance(delegation_actions, list) or action_id not in delegation_actions:
-                errors.append(f"{label} delegation action scope missing")
-            delegation_subjects = delegation.get("subject_refs")
-            if not isinstance(delegation_subjects, list) or subject_ref not in delegation_subjects:
-                errors.append(f"{label} delegation subject scope missing")
-            expected_delegation_ref = f"{delegation.get('artifact_ref')}#{delegation.get('delegation_id')}"
-            if delegation_ref != expected_delegation_ref:
-                errors.append(f"{label} delegation_ref does not match binding")
-            valid_from = parse_datetime(delegation.get("valid_from"))
-            delegated_expiry = parse_datetime(delegation.get("expires_at"))
-            if valid_from is None or delegated_expiry is None or not (valid_from <= as_of < delegated_expiry):
-                errors.append(f"{label} delegation is not currently effective")
-            if delegation.get("revoked_at") is not None:
-                errors.append(f"{label} delegation is revoked")
-            artifact_ref = delegation.get("artifact_ref")
-            artifact_path, path_errors = safe_relative_path(root, artifact_ref, f"{label} delegation artifact_ref")
-            errors.extend(path_errors)
-            artifact_digest = delegation.get("artifact_sha256")
-            delegation_commit = str(delegation.get("commit_sha", ""))
-            delegation_tree = str(delegation.get("tree_sha", ""))
-            head = resolve_head(root)
-            if resolve_tree(root, delegation_commit) != delegation_tree:
-                errors.append(f"{label} delegation commit/tree mismatch")
-            if head is None or not is_ancestor(root, delegation_commit, head):
-                errors.append(f"{label} delegation commit must be an ancestor of HEAD")
-            committed = read_file_at_commit(root, delegation_commit, str(artifact_ref)) if artifact_ref else None
-            if committed is None or not isinstance(artifact_digest, str) or SHA256_PATTERN.fullmatch(artifact_digest) is None or bytes_sha256(committed) != artifact_digest:
-                errors.append(f"{label} delegation bound artifact sha256 mismatch")
-            if artifact_path is not None:
-                if not artifact_path.is_file() or not is_tracked_path(root, str(artifact_ref)):
-                    errors.append(f"{label} delegation artifact missing or untracked")
-                elif not isinstance(artifact_digest, str) or SHA256_PATTERN.fullmatch(artifact_digest) is None or file_sha256(artifact_path) != artifact_digest:
-                    errors.append(f"{label} delegation artifact sha256 mismatch")
-                record_bytes = committed if committed is not None else artifact_path.read_bytes()
-                try:
-                    delegation_document = json.loads(record_bytes.decode("utf-8"))
-                except (UnicodeDecodeError, json.JSONDecodeError):
-                    delegation_document = None
-                record = _find_record(delegation_document, str(delegation.get("delegation_id")))
-                match_fields = (
-                    "grantor_human_identity_ref", "delegate_human_identity_ref",
-                    "authority_role", "action_ids", "subject_refs", "valid_from",
-                    "expires_at", "revoked_at", "evidence_refs",
-                )
-                if record is None or any(record.get(field) != delegation.get(field) for field in match_fields):
-                    errors.append(f"{label} delegation record does not match binding")
-            registry_ref = str(actor.get("role_binding_ref", "")).split("#", 1)[0]
-            registry_bytes = read_file_at_commit(root, str(actor.get("role_binding_commit_sha", "")), registry_ref) if registry_ref else None
-            try:
-                registry_document = json.loads(registry_bytes.decode("utf-8")) if registry_bytes is not None else None
-            except (UnicodeDecodeError, json.JSONDecodeError):
-                registry_document = None
-            grantor = _find_identity_record(registry_document, delegation.get("grantor_human_identity_ref"))
-            if grantor is None or str(grantor.get("status", "")).casefold() != "approved":
-                errors.append(f"{label} delegation grantor is not an approved identity")
-            else:
-                grantor_roles = grantor.get("authority_roles")
-                grantor_role_matches = required_role in grantor_roles if isinstance(grantor_roles, list) else grantor.get("authority_role") == required_role
-                if not grantor_role_matches or grantor.get("can_delegate") is not True:
-                    errors.append(f"{label} delegation grantor lacks role or delegation authority")
-                grantor_actions = grantor.get("delegation_action_ids")
-                if not isinstance(grantor_actions, list) or action_id not in grantor_actions:
-                    errors.append(f"{label} delegation grantor action scope missing")
-                grantor_subjects = grantor.get("delegation_subject_refs")
-                if not isinstance(grantor_subjects, list) or subject_ref not in grantor_subjects:
-                    errors.append(f"{label} delegation grantor subject scope missing")
-                valid_from = parse_datetime(grantor.get("valid_from"))
-                expires = parse_datetime(grantor.get("expires_at"))
-                if valid_from is None or expires is None or not (valid_from <= as_of < expires):
-                    errors.append(f"{label} delegation grantor is not currently effective")
-                if "revoked_at" not in grantor or grantor.get("revoked_at") is not None:
-                    errors.append(f"{label} delegation grantor is revoked or lacks revocation state")
-                errors.extend(validate_evidence_at_commit(
-                    root,
-                    grantor.get("evidence_refs"),
-                    f"{label} delegation grantor",
-                    str(actor.get("role_binding_commit_sha", "")),
-                ))
-            errors.extend(validate_evidence_at_commit(
-                root,
-                delegation.get("evidence_refs"),
-                f"{label} delegation",
-                delegation_commit,
-            ))
     return errors
 
 

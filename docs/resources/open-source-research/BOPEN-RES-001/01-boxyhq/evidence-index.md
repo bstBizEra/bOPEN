@@ -14,16 +14,3 @@
 | BOX-E-010 | E1/E2 | README/package manifest | Stack includes Next.js, Postgres, Prisma, NextAuth and enterprise integrations. | Confirmed |
 | BOX-E-011 | E0 | Runtime pending | Active-team context and cross-team denial behavior. | Open |
 | BOX-E-012 | E0 | Runtime pending | Subscription-to-capability gating behavior. | Open |
-
-## R1 evidence additions - 2026-07-13
-
-| Evidence ID | Class | Source | Observation | Status |
-|---|---|---|---|---|
-| BOX-E-013 | E2 | R1 trace contract and two external receipts | 57 case-specific evidence records independently match the pinned source: 47 observations and 10 gap anchors. | Confirmed |
-| BOX-E-014 | E2 | Static test-declaration receipts | 42 declarations are present in 9 Git-tracked TypeScript test files; upstream code was not executed. | Confirmed |
-| BOX-E-015 | E2 | Identity trace | Human-user identity root, session/token gaps and absent identity audit chain recorded. | Confirmed |
-| BOX-E-016 | E2 | Team/membership trace | Owner atomicity, last-owner and cross-team negative gaps recorded. | Confirmed |
-| BOX-E-017 | E2 | Invitation trace | Implicit state, replay/concurrency and event/audit gaps recorded. | Confirmed |
-| BOX-E-018 | E0 | G3 runtime pack | Database-backed positive/negative lifecycle behavior. | Open |
-
-EVD-RES-003 contains the reviewed R1 synthesis and external manifest hashes.

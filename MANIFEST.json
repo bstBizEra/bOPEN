@@ -1,0 +1,647 @@
+{
+    "artifact":  "BOPEN-GOVERNANCE-AGENT-PACK-001",
+    "version":  "0.1",
+    "generated_date":  "2026-07-22",
+    "files":  [
+                  {
+                      "path":  ".agents/skills/bopen-architecture/.gitignore",
+                      "bytes":  70,
+                      "sha256":  "1e1d08973e39c229311603c633005f7a4a761bdaeed8a8e755d9894a5b9e9d01"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/agents/openai.yaml",
+                      "bytes":  330,
+                      "sha256":  "95fc9fde8caf3d56f53239db411899bebea751e11e55619a8877d4ac6a0f722c"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/adr-template.md",
+                      "bytes":  376,
+                      "sha256":  "6ff2c1e095e841af11571ebf4cf66c9a9f7fa1752e902906db260681e2959a43"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/architecture-design-template.md",
+                      "bytes":  894,
+                      "sha256":  "179ab8d976c260d10a698ab87ff5c4dd95ebe3dd3bd6fd165afd35e8556be7a7"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/architecture-research-template.md",
+                      "bytes":  539,
+                      "sha256":  "f62da67f8f9e401f1296abb2e2183a6f2d1bc9b5629ba0b7ab2746157269b044"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/bopen-context.example.yaml",
+                      "bytes":  880,
+                      "sha256":  "9261f52e07f4789bf4f5dc603cd1781b59081a3e47db42948f7f4cbb419b3b0e"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/conformance-review-template.md",
+                      "bytes":  655,
+                      "sha256":  "6d4eed08154773eb2d5fde84bd08d63a3548551eb20275351c656b552d8a6347"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/implementation-control-template.md",
+                      "bytes":  651,
+                      "sha256":  "847a74132b3f9a36374d6de70891f0e1636dffabb39dc11b941620b1100b28fd"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/risk-register.csv",
+                      "bytes":  561,
+                      "sha256":  "41dfe73d382ba2db4ab1cee5b727b5d273a7d7a93faf485133420a4bfb4ee407"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/assets/verification-matrix.csv",
+                      "bytes":  830,
+                      "sha256":  "e1c7887272499f0cc9c50d06f5a6fe87021125d6c8a533acc0d4eaef18c22116"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/bopen.skill.yaml",
+                      "bytes":  2401,
+                      "sha256":  "4bc904a32ac8e870fcabe46fb56d7336dff6a51ea1c75206011090dc04b1e85a"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/CHANGELOG.md",
+                      "bytes":  678,
+                      "sha256":  "db4ebf68e14ae59cf5552cbd144b400c47c51933495a57e479fff92c17c81dde"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/ci/validate-skill.yml",
+                      "bytes":  606,
+                      "sha256":  "44c9ac79f89be6ab528149a4a723ed232ddb3f7d346409343bc555a8c3e19808"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/docs/GOVERNANCE.md",
+                      "bytes":  1209,
+                      "sha256":  "4a42403cff5d80224135ee5f7f4a1b346847414d22954ed39161f574c5f1aaef"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/docs/INSTALL.md",
+                      "bytes":  871,
+                      "sha256":  "de63c038c2e30d4405d550ab4c2408db575eb02858dbe98c45c71398ddada0db"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/docs/RELEASE.md",
+                      "bytes":  848,
+                      "sha256":  "d65c10b954470b46079531e543e260f5f8c883e490460ad2341b1fa3b357aec3"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/docs/USAGE.md",
+                      "bytes":  1293,
+                      "sha256":  "42be51240671e3cf386ee196f8f321bf0c808140f39bc07437b25cd124d5589c"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/cases.yaml",
+                      "bytes":  4918,
+                      "sha256":  "a8261622569a9e53f004f25b7dc79329446ef1d702d2c75d6e63bcff3daba648"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/example-input.json",
+                      "bytes":  1171,
+                      "sha256":  "65152b3b545ba345e1cabc16175f88728dbe936ef9d5d6a41cd457a352e33bb1"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/example-output.json",
+                      "bytes":  3785,
+                      "sha256":  "6774bbab72511e053bd4e2f2ac1fbda242a0d986486f89817e7327b1ac088951"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/rubric.md",
+                      "bytes":  1736,
+                      "sha256":  "c743543df4106837c957a7ac4f829f79eb5f8d5a32f009502a45f739d008417d"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/security-cases.yaml",
+                      "bytes":  2103,
+                      "sha256":  "b75f628cbf3eb796d505bb8ca461b9c97d4a89d4e8d8ab675303357ab67253a3"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/trigger-negative.yaml",
+                      "bytes":  452,
+                      "sha256":  "14412de74d148283fe480bbe6ab2d54256caef72fb3678a82d3a4e38572f9860"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/evals/trigger-positive.yaml",
+                      "bytes":  626,
+                      "sha256":  "6ae3c89e611d477e186ee822dd3a5bef7bca59ae9c70ed6476edd39de2f43e9f"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/LICENSE.txt",
+                      "bytes":  552,
+                      "sha256":  "468832fe6be8a630819d293977a439c525b126a9b1d621ebacc1fff70da9ce5b"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/Makefile",
+                      "bytes":  392,
+                      "sha256":  "65f3eec76c75ed726bb9cbef9e25d2c96654c9d4a0dc0cbfa912e6461d022a8c"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/NOTICE.md",
+                      "bytes":  552,
+                      "sha256":  "c328b24cb98e8d361753414ef1856de335cb8ccdb01b37490eb81b362d9117bb"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/policies/data-handling-policy.yaml",
+                      "bytes":  680,
+                      "sha256":  "dbb3dbb6c845ae1929f5c3e68850a94f7be4e2aa52db2829076b050d338d0ce7"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/policies/execution-policy.yaml",
+                      "bytes":  691,
+                      "sha256":  "c3789b8e8a2c78cd6dd32859ee313d6134981ec4626dd4b09e1f24296460952d"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/policies/publication-policy.yaml",
+                      "bytes":  855,
+                      "sha256":  "04b05c3e2b899a4ad1e9497fb7cadc10974c003b866f8e7b75f6a0bb0cf90775"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/policies/revocation-policy.yaml",
+                      "bytes":  952,
+                      "sha256":  "3a5aaadc551bf96f956b794a62174cc7d459245839ff8c29b772bfad7fe4cd4d"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/policies/tool-policy.yaml",
+                      "bytes":  944,
+                      "sha256":  "f548e2001100279c932bfa5629109343fca4c30ed6120bd5ab5060b609b1ec8d"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/pyproject.toml",
+                      "bytes":  346,
+                      "sha256":  "edcd77b418cab47e7c028045232789853f543b6d932956096ca720d585fcbe5b"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/README.md",
+                      "bytes":  3661,
+                      "sha256":  "b8e7aca48cdf3a9c101ce941c856819a9a18f3f2f543a08415e7fc8ddbc61279"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/architecture-baseline.md",
+                      "bytes":  5401,
+                      "sha256":  "d705618d866c67b6d0c3de5ec85e115cfcc965965b7370008bb9d71414a97eb9"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/decision-and-review-model.md",
+                      "bytes":  2552,
+                      "sha256":  "cdea600c3b019f82f44a7a02e3d1271660c947f9ceccd31a46f9573c942189ea"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/deliverable-contracts.md",
+                      "bytes":  2046,
+                      "sha256":  "ec2a165fe2e3069a5a695fc69d04982f7607b42a6321581dd81680ba855d92e8"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/domain-glossary.md",
+                      "bytes":  2340,
+                      "sha256":  "13a0902de52b83283ca7fb493109f3d993da3db9fbca083333ebcbdc4ebe67b2"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/operating-procedure.md",
+                      "bytes":  1648,
+                      "sha256":  "e9f674aa52d69de138b47334e5549e95331f0dc3540fcd605acdad6dc8f43e85"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/quality-gates.md",
+                      "bytes":  2439,
+                      "sha256":  "e6b56153e04edd3bd9b476b62e8087e71d2bbbe3b88d78146a5acbfb5e2ac680"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/research-and-evidence-policy.md",
+                      "bytes":  2171,
+                      "sha256":  "9305ddf81e7e7310cce07fda382ef69f5edd1929be4921e4365734024f03904f"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/security-and-tenancy.md",
+                      "bytes":  3411,
+                      "sha256":  "9c2169e3fda60b6fefe3bc5af7e538c17d68518c7d7578088c834c8c982fced5"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/references/source-register.md",
+                      "bytes":  3384,
+                      "sha256":  "97d858b778d7d8962dc0043e37c57bc1768631cf17acbdbc8371607f67036e1f"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/requirements.txt",
+                      "bytes":  33,
+                      "sha256":  "0b0709dc3105d98b29f4fc6a870c15c0cf42191498384ef8a2a32d3fcf5f34ed"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/architecture-decision.schema.json",
+                      "bytes":  1697,
+                      "sha256":  "92220ca8ecbaa6fe795fd9e18db763fab87510c68e7df2640c1d69cd5c47d69e"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/bopen-skill.schema.json",
+                      "bytes":  11092,
+                      "sha256":  "c1cc7959ce70b0105a386685ac010661a3dbf9410fda649bf4a22f47c7f16952"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/evaluation-case.schema.json",
+                      "bytes":  1584,
+                      "sha256":  "3e01047cff8e0020e9cc31ad05ef22439729f89d54c9d83f130765d5b7e2a22e"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/evidence-envelope.schema.json",
+                      "bytes":  1092,
+                      "sha256":  "37c89832913114fdd123d3b7a0c4ead489edc491801cce4781ebfc52c8c4c9ea"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/input.schema.json",
+                      "bytes":  3822,
+                      "sha256":  "a30911ad83054bbe623558a3c8fafe8f590d1d5300757a635e6523fe2c0c5afb"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/schemas/output.schema.json",
+                      "bytes":  2885,
+                      "sha256":  "64d96a41db27e4b95373a2ad81ceaa9563616ebfc5566357eac8bae856f59d17"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/scripts/check_architecture.py",
+                      "bytes":  3174,
+                      "sha256":  "c6ce52389b11066b7fb6835cde1bf1619774d80b10a004eae8a87039edf24fe7"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/scripts/new_artifact.py",
+                      "bytes":  1825,
+                      "sha256":  "41e8d52cb1de7418a03a82da9161dc7cc1fad353e8a0d731fc7889211b5e3f5b"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/scripts/package_release.py",
+                      "bytes":  5877,
+                      "sha256":  "23ba78ceef66b3f74ad079af1b5d24b761c78b01818da6e9c78145210260eb24"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/scripts/run_static_evals.py",
+                      "bytes":  3695,
+                      "sha256":  "cc6504d12691f08917c4a1706a83361c92a8090238deef29021e95f92263b271"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/scripts/validate_package.py",
+                      "bytes":  13815,
+                      "sha256":  "2ed7eaf73884d7715b01a75af5dbabb426be480619f6438c4e10c07f74f174f4"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/SHA256SUMS",
+                      "bytes":  5754,
+                      "sha256":  "a8c4abc1243b792a2e01aa1b511a0e801c4f18638c2617bed03858b88a034449"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/SKILL.md",
+                      "bytes":  10286,
+                      "sha256":  "07bdeda1983b1be528c16e146f8405776d022884b39faf94975da984352d69f3"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/supply-chain/provenance.intoto.jsonl",
+                      "bytes":  767,
+                      "sha256":  "9ddcabfd02719099814c3c2bf6bb2d2cc5105501f4a58e13ffea24555527d8ae"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/supply-chain/README.md",
+                      "bytes":  461,
+                      "sha256":  "93135cfb43181a95483560321735f26ac96cf4b93e227d96bbf9ef9738162879"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/supply-chain/release-manifest.json",
+                      "bytes":  10075,
+                      "sha256":  "426fdb4c4df3e9307ec623c4e88158fe674f949fe2ae48e465b5493531fc5275"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/supply-chain/sbom.spdx.json",
+                      "bytes":  2033,
+                      "sha256":  "838119d1d66e2ca7fbe242fc3c2d80b1b1b7b7ca26099500dc8aad00225945dd"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/tests/test_check_architecture.py",
+                      "bytes":  1698,
+                      "sha256":  "4a2d0d1a1fe4a76621b9078f78a11d32e2d4e5360a444b0b5d3191e343fcb977"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-architecture/tests/test_validate_package.py",
+                      "bytes":  1193,
+                      "sha256":  "66a4fb4f14197a57e804b08db593f9a4c5910cb8b5999e7944c98871124e2420"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-ci-repair/SKILL.md",
+                      "bytes":  2399,
+                      "sha256":  "1fabebdde72df90810d9bfe2d2f64158212436c8ad90a7063c7aa3808a910e47"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-doc-sync/SKILL.md",
+                      "bytes":  397,
+                      "sha256":  "1e3e4254e4e99eca06d58e7f374037c400fdab13c3e2694ed6f5d5da9d56093c"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-evidence-envelope/SKILL.md",
+                      "bytes":  2278,
+                      "sha256":  "7c4b35aa6a20b440196d647b78379f1eacd791729b4153b4d8b629d4c8c9b551"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-governance-check/SKILL.md",
+                      "bytes":  1923,
+                      "sha256":  "2e2ed4b0f4a16d913a254b90071180dfa307779b3b8a097c3ab40654a724a8ea"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-module-contract/SKILL.md",
+                      "bytes":  504,
+                      "sha256":  "6cc768d2979d545e52253bcab5d7c17a7581f143166bf273b7120f7bb9a5a052"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-portal-verification/SKILL.md",
+                      "bytes":  460,
+                      "sha256":  "5acdd773af49edc3bb76b9442e101fed2bd28b4df42f1ec127498552aace0b85"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-release-readiness/SKILL.md",
+                      "bytes":  456,
+                      "sha256":  "28b41390dafdec678915f61696f0432893199f0c7cfda3ef27916fc4c6b8d1f8"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-requirement-to-work-item/SKILL.md",
+                      "bytes":  484,
+                      "sha256":  "252d6b37d610ca198fe833dfa74ded251878bc55e10b16018aca2aa02adfb047"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-tenant-isolation-review/SKILL.md",
+                      "bytes":  520,
+                      "sha256":  "9737ba997f0a71deb78eb002ed64fc5afad0608c916339c66b36da3e5bfad3ed"
+                  },
+                  {
+                      "path":  ".agents/skills/bopen-threat-model/SKILL.md",
+                      "bytes":  419,
+                      "sha256":  "f1124a20d64db3b3b64c67485ff318e203e3b4be2ceef24ddbf1bae6051578ba"
+                  },
+                  {
+                      "path":  ".agents/workflows/conformance-review.md",
+                      "bytes":  332,
+                      "sha256":  "693224ac38113ed908be9854b354ecd8597f2764637f01e71278d35d0ed62480"
+                  },
+                  {
+                      "path":  ".agents/workflows/module-cycle.md",
+                      "bytes":  388,
+                      "sha256":  "70178479f2300e81847160477aed3faf83c5ba05308e25e84121f8503d7b4377"
+                  },
+                  {
+                      "path":  ".agents/workflows/start-governed-work.md",
+                      "bytes":  412,
+                      "sha256":  "6196b0bd59b75ac55b4461db4f824517dd658205f567a7c01660cac70adc5334"
+                  },
+                  {
+                      "path":  ".claude/agents/evidence-auditor.md",
+                      "bytes":  272,
+                      "sha256":  "727695be6ac0e93f07c56db0bb98621b51c6d317ba568a226411c41c40173532"
+                  },
+                  {
+                      "path":  ".claude/agents/platform-architect.md",
+                      "bytes":  316,
+                      "sha256":  "f00ef2d7b2f43b01aa82396b9130d5441fdf965a2be546f1ff70294ba6d17c99"
+                  },
+                  {
+                      "path":  ".claude/agents/requirements-analyst.md",
+                      "bytes":  289,
+                      "sha256":  "1979ef20e45da7867953419990b5db345a441cc8271fa816b5742ff3549113a7"
+                  },
+                  {
+                      "path":  ".claude/agents/tenant-isolation-verifier.md",
+                      "bytes":  312,
+                      "sha256":  "c4242f53be37d297c0c141ec4499bf2bcc46b4d9c762e6dead3ee7341a004225"
+                  },
+                  {
+                      "path":  ".claude/rules/module-boundaries.md",
+                      "bytes":  230,
+                      "sha256":  "a4beda183f8e1364fcfee9f75ddddb502d4137715671856c5336a7a521fe1e1e"
+                  },
+                  {
+                      "path":  ".claude/rules/security.md",
+                      "bytes":  307,
+                      "sha256":  "f6531f64379ac91b692e3e7dfbca242ba590e2e30a4f5fad546372f0129406a8"
+                  },
+                  {
+                      "path":  ".github/copilot-instructions.md",
+                      "bytes":  627,
+                      "sha256":  "a752c62b7c689dbf3cd825b87dd58ae9147b107403990038630bc04256f34abd"
+                  },
+                  {
+                      "path":  "agents.md",
+                      "bytes":  1406,
+                      "sha256":  "ff1be4037474fd838fa3935e297999de751f29a6e3eca893f11fb134bc0de619"
+                  },
+                  {
+                      "path":  "AGENTS.md",
+                      "bytes":  1406,
+                      "sha256":  "ff1be4037474fd838fa3935e297999de751f29a6e3eca893f11fb134bc0de619"
+                  },
+                  {
+                      "path":  "CLAUDE.md",
+                      "bytes":  1205,
+                      "sha256":  "871c9f4228192a1a8fdbf7b9230c862280902507b0d8aca4ed5f58ed715285ba"
+                  },
+                  {
+                      "path":  "DESIGN.md",
+                      "bytes":  655,
+                      "sha256":  "5d078fb397435ec305eb9b60093ad56a448e92fd0b90f5ea466153b004188c4c"
+                  },
+                  {
+                      "path":  "docs/00-governance/AUTHORITY-MATRIX.md",
+                      "bytes":  1142,
+                      "sha256":  "4606895b3b61625406b703b611f12f79ba1f3d71c1d871da09074b782e9f8089"
+                  },
+                  {
+                      "path":  "docs/00-governance/BOPEN-GOV-001_v0.1.md",
+                      "bytes":  6104,
+                      "sha256":  "51ec694cf0a1cf34fa8e9e0dde4dd2877a45ae2e42db34f62b1d26602a855391"
+                  },
+                  {
+                      "path":  "docs/00-governance/DECISION-PROTOCOL.md",
+                      "bytes":  408,
+                      "sha256":  "4eac79abe2d719a9cc020eb387bad977a127576e4604c05f117449bb44b0a31a"
+                  },
+                  {
+                      "path":  "docs/01-program/BOPEN-GOAL-001_v0.1.md",
+                      "bytes":  2732,
+                      "sha256":  "9f77f01eab78c3aa7bf8b62120ae9b531a2987de4b0d7a8b4e8f94f82c14e306"
+                  },
+                  {
+                      "path":  "docs/01-program/BOPEN-SCHEDULE-001_v0.1.md",
+                      "bytes":  2266,
+                      "sha256":  "92d71e81319afe9cc0f4049e1ba650acc7fc11b3686ef7ee53ffe7b1fa367f15"
+                  },
+                  {
+                      "path":  "docs/01-program/ROADMAP.md",
+                      "bytes":  994,
+                      "sha256":  "325ff0fdb72682ba39e91133206704793bbc813a9433b4f95d2cb044d15690af"
+                  },
+                  {
+                      "path":  "docs/02-agents/BOPEN-AGENT-001_v0.1.md",
+                      "bytes":  2505,
+                      "sha256":  "095ab1a2c86e779cc2206a6ce3cef0128d696070ecadf6e95537f26a361ac78d"
+                  },
+                  {
+                      "path":  "docs/02-agents/HANDOFF-CONTRACT.md",
+                      "bytes":  452,
+                      "sha256":  "e59129f3d82f708a6d06eeb261dc7a4e7f16d715f13041b02373dc684d9099cb"
+                  },
+                  {
+                      "path":  "docs/02-agents/HARNESS-MATRIX.md",
+                      "bytes":  1961,
+                      "sha256":  "a748eccaf2864b8ff7ad2b3ecd250fde362d4f09ea65850afa9cd9d933f15a59"
+                  },
+                  {
+                      "path":  "docs/02-agents/ROLE-CATALOG.md",
+                      "bytes":  1294,
+                      "sha256":  "eed2a0a15bedf5fdbef59e797f53cf5f7338732b0d01d4181b0342772a20c23a"
+                  },
+                  {
+                      "path":  "docs/02-agents/WORKTREE-POLICY.md",
+                      "bytes":  486,
+                      "sha256":  "0d9ea8bf32af4794b0a47c1d467e6c9af6cc984b310849b17cb67d3606d7d7bb"
+                  },
+                  {
+                      "path":  "docs/03-loop/BOPEN-LOOP-001_v0.1.md",
+                      "bytes":  1979,
+                      "sha256":  "4cd9d6605af0723e0c69e79c7066770fb792fee1f735ef7191d89824245c68f8"
+                  },
+                  {
+                      "path":  "docs/03-loop/PROFESSIONAL-JUDGMENT-PROTOCOL.md",
+                      "bytes":  374,
+                      "sha256":  "a62d75680fe277700c1790cb4f7db1efd1a890664f75cd97dd3377d9d1e68854"
+                  },
+                  {
+                      "path":  "docs/04-skills/BOPEN-SKILL-001_v0.1.md",
+                      "bytes":  2978,
+                      "sha256":  "82e6110f1cea2f4eeed15cbaa1b5ffc3c2132d951825e397989ac9c1913b3f37"
+                  },
+                  {
+                      "path":  "docs/05-modules/MODULE-ALLOCATION.md",
+                      "bytes":  1631,
+                      "sha256":  "d67a42d1668b37a2f3e0b8d296b4ae0fdb16896595c17f0313e08c46f839c853"
+                  },
+                  {
+                      "path":  "docs/05-modules/MODULE-CONTRACT.md",
+                      "bytes":  330,
+                      "sha256":  "7bb04e03a301b06b5a7c202204f204e18673d71799c17640ac792ac6b32e9faf"
+                  },
+                  {
+                      "path":  "docs/05-modules/MODULE-REGISTRY.md",
+                      "bytes":  815,
+                      "sha256":  "765af5fc49d0c07a5994e483344950b1e92a1a79d346ab52e08acf549be9e977"
+                  },
+                  {
+                      "path":  "docs/06-evidence/EVIDENCE-ENVELOPE.md",
+                      "bytes":  830,
+                      "sha256":  "21f464a5628cc420305752b6732b012dafc89e953e3b930effd8387ab9b3e35e"
+                  },
+                  {
+                      "path":  "docs/06-evidence/VERIFICATION-MATRIX.md",
+                      "bytes":  697,
+                      "sha256":  "481d206cb20c2b7ee43988251c5b73f6d735205d4f2e1542698bae0f582cbc30"
+                  },
+                  {
+                      "path":  "docs/07-technology/BOPEN-TECH-001_v0.1.md",
+                      "bytes":  1102,
+                      "sha256":  "0a6ff5ee6df02a830f890876b0982ec3c19075e1b6322c68e416ccaeaae45199"
+                  },
+                  {
+                      "path":  "docs/08-design/BOPEN-DESIGN-001_v0.1.md",
+                      "bytes":  1219,
+                      "sha256":  "9b128cb755e2f52d9a232d7dbb493173594018c40aa1a049a60f8cb7cb7c3e00"
+                  },
+                  {
+                      "path":  "docs/09-operations/OPERATING-CADENCE.md",
+                      "bytes":  544,
+                      "sha256":  "5a42bf43b8ffd147e33401c28ac753aa6799d3dbb7352d18911e7e34ba2f8717"
+                  },
+                  {
+                      "path":  "docs/09-operations/SESSION-RUNBOOK.md",
+                      "bytes":  690,
+                      "sha256":  "fc5f131ebb6e15ccd68caad7df91468f5b9cb6c846b2d5c33f3db678d7ebd2a4"
+                  },
+                  {
+                      "path":  "docs/DOCUMENT-MANIFEST.json",
+                      "bytes":  61363,
+                      "sha256":  "41f32440a7f3fbb04499d80e149d6d829e5b083869abeef639a62975923f4bbe"
+                  },
+                  {
+                      "path":  "docs/registers/agent-registry.json",
+                      "bytes":  802,
+                      "sha256":  "3a0a6b8dd88987705903a272ba0bb3c938ce5680f89586f092be1fbde9623532"
+                  },
+                  {
+                      "path":  "docs/registers/goal-register.json",
+                      "bytes":  1126,
+                      "sha256":  "67200adaeebe280ebadbdaffd9ce6e4db6e803ba016e245978e982b4d503f2fa"
+                  },
+                  {
+                      "path":  "docs/registers/module-assignment.json",
+                      "bytes":  1139,
+                      "sha256":  "41671b81b0810a454d09f3754822e884cb2a528e85aebbe18a6a9f2356ecea73"
+                  },
+                  {
+                      "path":  "docs/registers/schedule-register.json",
+                      "bytes":  1099,
+                      "sha256":  "35f88e8d4e445ffe75caef8f5a4be22c9fee39f01ea272049658ae3c70a3eb7a"
+                  },
+                  {
+                      "path":  "docs/registers/skill-registry.json",
+                      "bytes":  1775,
+                      "sha256":  "1208dc5d3638a8ad361f73482d096500c64b84f0e9ba960137ee72a464dcd614"
+                  },
+                  {
+                      "path":  "GOALS.md",
+                      "bytes":  2732,
+                      "sha256":  "9f77f01eab78c3aa7bf8b62120ae9b531a2987de4b0d7a8b4e8f94f82c14e306"
+                  },
+                  {
+                      "path":  "GOVERNANCE.md",
+                      "bytes":  560,
+                      "sha256":  "306991a70e5655cfc3c5566682bd83e05c2e7c59c888b5d9b8e61dccf0a78f67"
+                  },
+                  {
+                      "path":  "LOOP.md",
+                      "bytes":  1979,
+                      "sha256":  "4cd9d6605af0723e0c69e79c7066770fb792fee1f735ef7191d89824245c68f8"
+                  },
+                  {
+                      "path":  "MODULES.md",
+                      "bytes":  1631,
+                      "sha256":  "d67a42d1668b37a2f3e0b8d296b4ae0fdb16896595c17f0313e08c46f839c853"
+                  },
+                  {
+                      "path":  "README.md",
+                      "bytes":  2932,
+                      "sha256":  "daaf10484f34de5ca1e160b09ed8152cc6d7c27d6cebc449721f7703c4505db0"
+                  },
+                  {
+                      "path":  "REFERENCES.md",
+                      "bytes":  799,
+                      "sha256":  "a5652d1cd1fe49d5228c6b2f767822bc46af265e71ae65b155c7aa95c7162585"
+                  },
+                  {
+                      "path":  "SCHEDULE.md",
+                      "bytes":  2266,
+                      "sha256":  "92d71e81319afe9cc0f4049e1ba650acc7fc11b3686ef7ee53ffe7b1fa367f15"
+                  },
+                  {
+                      "path":  "SKILLS.md",
+                      "bytes":  2978,
+                      "sha256":  "82e6110f1cea2f4eeed15cbaa1b5ffc3c2132d951825e397989ac9c1913b3f37"
+                  },
+                  {
+                      "path":  "TECHNOLOGY.md",
+                      "bytes":  757,
+                      "sha256":  "224a5728b5eb36ac4b06690a5aa54902dba5a7dba5bddc5b006afd24fbcad2d2"
+                  },
+                  {
+                      "path":  "templates/ADR.md",
+                      "bytes":  293,
+                      "sha256":  "f9327b8bde2c9f2102bce5169013fbf6deaa74eef46a48e40b35cbcd05214a31"
+                  },
+                  {
+                      "path":  "templates/module.yaml",
+                      "bytes":  537,
+                      "sha256":  "16f67553b879a9fa506a7898c497f73122d0df1156a2d982b195e089a467e7d3"
+                  },
+                  {
+                      "path":  "templates/WORK-ITEM.md",
+                      "bytes":  443,
+                      "sha256":  "7ebdd3ad344980efd57b4da8d5c127774b4fa22066ec152f4c05abae83b814dd"
+                  }
+              ]
+}

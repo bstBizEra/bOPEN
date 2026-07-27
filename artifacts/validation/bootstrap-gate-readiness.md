@@ -3,7 +3,7 @@
 **Bootstrap review state:** `approved`
 **B7 review ready:** `true`
 **Production implementation authorized:** `false`
-**Gate count:** 8
+**Gate count:** 9
 **B7 status:** Approved
 **B7 signed decision verified:** `true`
 
@@ -23,7 +23,7 @@
 
 - BOPEN-REQ-001: Draft shell (implementation authority: No)
 - BOPEN-ARCH-001: Draft shell (implementation authority: No)
-- BOPEN-TENANT-001: Draft contract baseline (implementation authority: No)
+- BOPEN-TENANT-001: Draft shell (implementation authority: No)
 - BOPEN-AUTHZ-001: Draft shell (implementation authority: No)
 - BOPEN-SEC-001: Draft shell (implementation authority: No)
 

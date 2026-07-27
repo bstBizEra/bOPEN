@@ -1,24 +1,14 @@
-# Repository Governance
+# GOVERNANCE.md
 
-## Authorities
+The normative governance specification is:
+`docs/00-governance/BOPEN-GOV-001_v0.1.md`.
 
-| Authority | Accountability |
-|---|---|
-| Product Authority | Product scope, value proposition and roadmap |
-| Architecture Authority | Normative architecture, ADRs and cross-domain consistency |
-| Security Authority | Security controls, threat acceptance and incident policy |
-| Data Authority | Data ownership, privacy, retention and isolation |
-| Engineering Authority | Repository, CI/CD, quality and release controls |
-| Research Authority | Source provenance, evidence and clean-room compliance |
+This root file provides the operational summary:
 
-## Decision classes
-
-- **Normative artifact:** broad product or architecture specification.
-- **ADR:** durable architecture choice and trade-off.
-- **Contract:** machine-readable or externally observable interface.
-- **Work package:** bounded execution authorization.
-- **Exception:** time-bound approved deviation with expiry and owner.
-
-## Escalation
-
-Any unresolved conflict involving tenant isolation, authorization, legal/license obligations, privacy or destructive data change blocks implementation until the responsible authority records a decision.
+- Register every project, module, agent, skill, work item, decision and exception.
+- Apply stage gates from intake through retirement.
+- Maintain maker–checker separation.
+- Fail closed for missing authority, tenant context or evidence.
+- Treat tenant isolation as non-waivable for P0.
+- Require signed or otherwise attributable release decisions.
+- Promote learning only after evidence and evaluation.

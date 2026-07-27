@@ -1,0 +1,33 @@
+apiVersion: policy.bopen.io/v1alpha1
+kind: SkillToolPolicy
+metadata:
+  id: io.bizera.bopen.architecture.tools
+  version: 0.1.0
+spec:
+  principle: A declared tool is a dependency hint, not an authorization grant.
+  filesystem:
+    read:
+      mode: allowed-within-authorized-workspace
+    write:
+      mode: output-directory-only
+    symlinks: reject-during-packaging
+  shell:
+    allowedPurposes:
+      - run-bundled-python-validation
+      - run-bundled-python-generation
+      - inspect-version-control-read-only
+    destructiveCommands: prohibited
+    secretAccess: prohibited
+  network:
+    default: deny
+    allowedPurpose:
+      - current-primary-source-research
+    restrictions:
+      - no credential submission
+      - no production administration
+      - no unapproved package installation
+  toolCalls:
+    authorizeIndependently: true
+    validateInputSchema: true
+    validateOutputClassification: true
+    auditMaterialCalls: true

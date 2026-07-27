@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/skills/skill-manifest.schema.json",
+  "title": "bOPEN Portable Skill Manifest (bopen.skill.yaml)",
+  "$comment": "Derived by reverse-engineering .agents/skills/bopen-architecture/bopen.skill.yaml and its in-package schema schemas/bopen-skill.schema.json. Field set, required lists and enums are faithful to the real manifest. Deviations from the in-package schema are limited to (a) a corrected metadata.version pattern (the in-package pattern '^0|[1-9][0-9]*\\.(?:0|...)' has an unbracketed leading alternation and therefore matches ANY string beginning with '0', e.g. '0abcXYZ'), and (b) $comment annotations marking OPTIONAL fields. No field is invented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": { "const": "skills.bopen.io/v1alpha1" },
+    "kind": { "const": "Skill" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "owner", "classification", "status", "license", "createdAt"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$" },
+        "name": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 64 },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:[-+][0-9A-Za-z.-]+)?$",
+          "$comment": "CORRECTED semver pattern. See top-level $comment."
+        },
+        "owner": { "type": "string", "minLength": 1 },
+        "classification": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "status": {
+          "enum": ["observed", "candidate", "normalized", "validated", "evaluated", "approved", "signed", "published", "deprecated", "suspended", "revoked"]
+        },
+        "license": { "type": "string", "minLength": 1 },
+        "sourceRepository": { "type": "string", "$comment": "OPTIONAL" },
+        "sourceRevision": { "type": "string", "$comment": "OPTIONAL" },
+        "createdAt": { "type": "string", "format": "date" }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["purpose", "type", "riskClass", "scope", "contracts", "requires", "runtime", "approval", "data", "failure", "evaluation", "lifecycle", "distribution"],
+      "properties": {
+        "purpose": { "type": "string", "minLength": 20 },
+        "type": { "enum": ["analytical", "advisory", "transactional", "hybrid"] },
+        "riskClass": { "enum": ["SKR0", "SKR1", "SKR2", "SKR3", "SKR4"] },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["allowed", "tenantContext"],
+          "properties": {
+            "allowed": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "enum": ["platform", "product", "module", "tenant", "workspace", "repository", "user"] }
+            },
+            "tenantContext": { "enum": ["not-applicable", "conditional", "required"] }
+          }
+        },
+        "contracts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["inputSchema", "outputSchema", "evidenceSchema"],
+          "$comment": "Values are package-relative paths; the validator resolves each one on disk.",
+          "properties": {
+            "inputSchema": { "type": "string" },
+            "outputSchema": { "type": "string" },
+            "evidenceSchema": { "type": "string" }
+          }
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["products", "modules", "capabilities", "tools"],
+          "properties": {
+            "products": { "type": "array", "items": { "type": "string" } },
+            "modules": { "type": "array", "items": { "type": "string" } },
+            "capabilities": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["id", "operations", "access"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "operations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+                  "access": { "enum": ["none", "conditional", "required"] }
+                }
+              }
+            }
+          }
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sandboxProfile", "networkPolicy", "filesystemPolicy", "maxDuration", "maxSteps", "maxToolCalls"],
+          "properties": {
+            "sandboxProfile": { "type": "string" },
+            "networkPolicy": { "enum": ["deny", "restricted", "allowlisted"] },
+            "filesystemPolicy": { "enum": ["read-only", "workspace-output-only", "workspace-read-write"] },
+            "maxDuration": { "type": "string", "pattern": "^P(?:T.*)?$" },
+            "maxSteps": { "type": "integer", "minimum": 1, "maximum": 1000 },
+            "maxToolCalls": { "type": "integer", "minimum": 0, "maximum": 1000 }
+          }
+        },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "requiredFor"],
+          "properties": {
+            "mode": { "enum": ["none", "conditional", "required"] },
+            "requiredFor": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+          }
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maximumClassification", "crossTenantAccess", "secretsInPackage"],
+          "properties": {
+            "maximumClassification": { "enum": ["public", "internal", "confidential", "restricted"] },
+            "crossTenantAccess": { "enum": ["prohibited", "explicitly-authorized"] },
+            "secretsInPackage": { "const": "prohibited" }
+          }
+        },
+        "failure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["retryPolicy", "compensationRequired"],
+          "properties": {
+            "retryPolicy": { "enum": ["none", "bounded", "policy-defined"] },
+            "compensationRequired": { "type": "boolean" }
+          }
+        },
+        "evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["suite", "minimumSuccessRate", "crossTenantFailuresAllowed"],
+          "properties": {
+            "suite": { "type": "string" },
+            "minimumSuccessRate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "crossTenantFailuresAllowed": { "type": "integer", "const": 0 }
+          }
+        },
+        "lifecycle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stage", "deprecationPolicy", "revocationPolicy"],
+          "properties": {
+            "stage": {
+              "enum": ["observed", "candidate", "normalized", "validated", "evaluated", "approved", "signed", "published", "deprecated", "suspended", "revoked"]
+            },
+            "deprecationPolicy": { "type": "string" },
+            "revocationPolicy": { "type": "string" }
+          }
+        },
+        "distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["formats", "immutableVersionRequired", "signatureRequiredForPublication", "provenanceRequiredForPublication"],
+          "properties": {
+            "formats": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["directory", "zip", "oci"] } },
+            "immutableVersionRequired": { "const": true },
+            "signatureRequiredForPublication": { "type": "boolean" },
+            "provenanceRequiredForPublication": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

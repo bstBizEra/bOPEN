@@ -5,9 +5,11 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..\..\..")).Path
+$Python = (Get-Command python.exe -ErrorAction SilentlyContinue).Source
+if (-not $Python) { $Python = "C:\laragon\bin\python\python-3.13\python.exe" }
 $ApprovedRoot = [IO.Path]::GetFullPath("C:\laragon\www\bopen-research")
 $EvidenceRoot = [IO.Path]::GetFullPath($EvidenceRoot)
-& python (Join-Path $RepositoryRoot "tools\validate_research_r0.py") paths `
+& $Python (Join-Path $RepositoryRoot "tools\validate_research_r0.py") paths `
   --target (Join-Path $EvidenceRoot "..\01-boxyhq\upstream") `
   --evidence-root $EvidenceRoot --approved-root $ApprovedRoot
 if ($LASTEXITCODE -ne 0) { throw "Evidence path validation failed" }
@@ -32,7 +34,7 @@ function Get-EvidenceRecords {
 
 if (-not $Verify) {
   $SecretReceipt = Join-Path $EvidenceRoot "secret-scan-receipt.json"
-  & python (Join-Path $RepositoryRoot "tools\check_secrets.py") `
+  & $Python (Join-Path $RepositoryRoot "tools\check_secrets.py") `
     --root $EvidenceRoot --receipt $SecretReceipt
   if ($LASTEXITCODE -ne 0) { throw "Evidence secret scan failed" }
   $Records = Get-EvidenceRecords

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/skills/evaluation-case.schema.json",
+  "title": "bOPEN Skill Evaluation Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "category",
+    "shouldTrigger",
+    "prompt",
+    "expected"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "category": {
+      "enum": [
+        "activation",
+        "outcome",
+        "process",
+        "security",
+        "tenancy",
+        "efficiency",
+        "style",
+        "recovery"
+      ]
+    },
+    "shouldTrigger": {
+      "type": "boolean"
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 5
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requiredConcepts",
+        "prohibitedConcepts"
+      ],
+      "properties": {
+        "requiredConcepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prohibitedConcepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifactTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "disposition": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    }
+  }
+}

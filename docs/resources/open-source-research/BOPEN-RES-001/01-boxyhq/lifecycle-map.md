@@ -95,17 +95,3 @@ The schema supports subscription, service, price and team billing identifiers, w
 ## 7. Deletion/offboarding
 
 Team deletion, member leave/removal, invitation revocation, SSO/SCIM deprovisioning and subscription cancellation must be traced separately. Cascade deletion in the schema is not sufficient lifecycle governance for bOPEN.
-
-## R1 invitation-state finding - 2026-07-13
-
-### Observation
-
-Invitation acceptance is a multi-step lookup/upsert/event/delete flow without an observed transaction or consumption version. Email invitations are deleted after acceptance, link invitations remain reusable, and acceptance has no dedicated audit record. Declared tests do not execute expiry, revocation, replay, concurrency, accept-versus-revoke or event/audit failure cases.
-
-### Inference
-
-The bOPEN invitation contract should model explicit states, one-time consumption where required, optimistic or serialized concurrency control, correlated membership activation, and deterministic event/audit outcomes.
-
-### Decision status
-
-No normative decision is granted. RES-P0-07 acceptance is not satisfied and G3 remains open.

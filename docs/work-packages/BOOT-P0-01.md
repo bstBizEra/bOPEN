@@ -1,10 +1,9 @@
 # BOOT-P0-01 — Repository initialization and protections
 
-**Status:** Execution complete
-**Owner:** Engineering Authority
-**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
-**Phase:** Bootstrap P0
-**Dependencies:** See register
+**Status:** Proposed  
+**Owner:** Unassigned  
+**Phase:** Bootstrap P0  
+**Dependencies:** See register  
 
 ## Objective
 
@@ -34,8 +33,4 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-`docs/evidence/EVD-BOOT-004-source-control-start.md`, `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`, and `docs/evidence/EVD-BOOT-011-bgitea-protected-review-activation.md`.
-
-## External-control reconciliation
-
-EVD-BOOT-011 records the private bGitea repository, credential-free `origin`, fenced teams, runner, protected `main`, exact required status context, Reviewer approval, and protected merge of Gitea PR #1. BOOT-P0-01 execution is complete. B7 remains a separate bOPEN Architecture Authority decision.
+`docs/evidence/<evidence-id>.md` or approved CI/review reference.

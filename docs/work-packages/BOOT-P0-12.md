@@ -1,10 +1,9 @@
 # BOOT-P0-12 — Bootstrap exit gate
 
-**Status:** Authority review pending
-**Owner:** bOPEN Architecture Authority
-**Authorization:** `BOPEN-BOOT-001` (approved for bootstrap execution)
-**Phase:** Bootstrap P0
-**Dependencies:** See register
+**Status:** Proposed  
+**Owner:** Unassigned  
+**Phase:** Bootstrap P0  
+**Dependencies:** See register  
 
 ## Objective
 
@@ -34,8 +33,4 @@ Production platform business logic and unapproved architecture decisions.
 
 ## Required evidence
 
-EVD-BOOT-007, EVD-BOOT-008, `docs/evidence/EVD-BOOT-009-bootstrap-self-review.md`, and DEC-0007.
-
-## Current readiness artifact
-
-`artifacts/validation/bootstrap-gate-readiness.md` records the current BOOT-P0-12 readiness state. Following the EVD-BOOT-011 external-control reconciliation, the report identifies B7 as `ready_for_authority_review`. B7 remains pending, and the report does not authorize production platform kernel implementation.
+`docs/evidence/<evidence-id>.md` or approved CI/review reference.
