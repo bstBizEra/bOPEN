@@ -41,7 +41,7 @@ import argparse
 import base64
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 
 # ================================================================ verdicts
@@ -71,6 +71,14 @@ CLOSURE_MANIFEST_MISMATCH = "CLOSURE_MANIFEST_MISMATCH"
 PERMITTED_EFFECTS_MISMATCH = "PERMITTED_EFFECTS_MISMATCH"
 REVOCATION_STATE_MISMATCH = "REVOCATION_STATE_MISMATCH"
 CONSUMED_STATE_MISMATCH = "CONSUMED_STATE_MISMATCH"
+# Successor-blob binding codes. A closure execution is only meaningfully authorized if the mandate
+# names the exact resulting bytes of every file the closure may write. An unresolved placeholder is
+# a hard rejection, never a "pending" state that a verifier waves through.
+SUCCESSOR_BLOBS_INCOMPLETE = "SUCCESSOR_BLOBS_INCOMPLETE"
+SUCCESSOR_BLOBS_UNRESOLVED = "SUCCESSOR_BLOBS_UNRESOLVED"
+SUCCESSOR_BLOB_MISMATCH = "SUCCESSOR_BLOB_MISMATCH"
+EXECUTION_ROOT_REQUIRED = "EXECUTION_ROOT_REQUIRED"
+EXECUTION_PATH_UNSAFE = "EXECUTION_PATH_UNSAFE"
 
 
 class VerifyError(Exception):
@@ -579,6 +587,102 @@ def _is_lower_hex(value, length):
     return all(character in "0123456789abcdef" for character in value)
 
 
+def git_blob_oid(data):
+    """Git blob object id for exact file bytes: sha1(b"blob <len>\\0" + data).
+
+    SHA-1 is used here because that is what a git object id IS in this repository's object format --
+    this is content addressing for cross-checking against `git rev-parse HEAD:<path>`, not a
+    security primitive, and it is never used to authenticate anything. The security-bearing digests
+    in this module are SHA-256 (raw_sha256 / digest)."""
+    header = b"blob %d\0" % len(data)
+    return hashlib.sha1(header + data).hexdigest()  # noqa: S324 - git object id, not a security hash
+
+
+def resolve_execution_path(execution_root, relative_path):
+    """Resolve a permitted-effect path inside a bounded execution root.
+
+    Fails closed on absolute paths, drive-qualified paths, and any traversal that would escape the
+    root, so a manifest path can never be used to hash a file outside the tree under review."""
+    if not isinstance(relative_path, str) or not relative_path:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"invalid permitted-effect path: {relative_path!r}")
+    pure = PurePosixPath(relative_path)
+    if pure.is_absolute() or relative_path.startswith("\\") or ".." in pure.parts:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"path escapes the execution root: {relative_path!r}")
+    if len(relative_path) > 1 and relative_path[1] == ":":
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"drive-qualified path rejected: {relative_path!r}")
+    root = Path(execution_root).resolve()
+    candidate = (root / relative_path).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"path escapes the execution root: {relative_path!r}")
+    return candidate
+
+
+def validate_successor_blobs(binding, permitted_effects, execution_root, *, required):
+    """Bind the exact resulting bytes of every permitted effect.
+
+    In closure-execution mode the successor_blobs map must name EXACTLY the permitted-effect paths
+    (no missing path, no extra path), every value must be a 40-character lowercase git object id
+    (an `UNRESOLVED` placeholder is rejected, not tolerated), and every bound id must equal the git
+    blob id recomputed from the actual bytes on disk under the bounded execution root."""
+    blobs = binding["successor_blobs"]
+    expected_paths = []
+    for effect in permitted_effects:
+        if not isinstance(effect, dict) or "path" not in effect:
+            raise VerifyError(PERMITTED_EFFECTS_MISMATCH, "permitted effect entry has no path")
+        expected_paths.append(effect["path"])
+    expected = set(expected_paths)
+    if len(expected) != len(expected_paths):
+        raise VerifyError(PERMITTED_EFFECTS_MISMATCH, "permitted effects contain duplicate paths")
+    actual = set(blobs)
+
+    missing = sorted(expected - actual)
+    extra = sorted(actual - expected)
+    if missing or extra:
+        raise VerifyError(
+            SUCCESSOR_BLOBS_INCOMPLETE,
+            f"successor_blobs must name exactly the {len(expected)} permitted-effect paths; "
+            f"missing={missing} extra={extra}",
+        )
+
+    unresolved = sorted(path for path, oid in blobs.items() if not _is_lower_hex(oid, 40))
+    if unresolved:
+        if not required:
+            return {"successor_blobs_verified": False, "unresolved_paths": unresolved}
+        raise VerifyError(
+            SUCCESSOR_BLOBS_UNRESOLVED,
+            "closure-execution verification requires every successor blob to be a resolved "
+            f"40-character lowercase git object id; unresolved or malformed: {unresolved}",
+        )
+
+    if execution_root is None:
+        if not required:
+            return {"successor_blobs_verified": False, "unresolved_paths": []}
+        raise VerifyError(
+            EXECUTION_ROOT_REQUIRED,
+            "closure-execution verification requires an execution root so each bound successor blob "
+            "id can be recomputed from the actual file bytes",
+        )
+
+    verified = {}
+    for path in sorted(blobs):
+        resolved = resolve_execution_path(execution_root, path)
+        if not resolved.is_file():
+            raise VerifyError(
+                SUCCESSOR_BLOB_MISMATCH,
+                f"bound successor blob for {path!r} but no such file under the execution root",
+            )
+        recomputed = git_blob_oid(resolved.read_bytes())
+        if recomputed != blobs[path]:
+            raise VerifyError(
+                SUCCESSOR_BLOB_MISMATCH,
+                f"{path}: mandate binds blob {blobs[path]}, actual execution bytes hash to {recomputed}",
+            )
+        verified[path] = recomputed
+    return {"successor_blobs_verified": True, "unresolved_paths": [], "verified_blobs": verified}
+
+
 def raw_sha256(data):
     """SHA-256 over exact on-disk bytes (not RFC 8785). Closure manifests, revocation registries
     and consumed registries are plain committed files, not signed payloads, so their binding digest
@@ -624,7 +728,8 @@ def validate_closure_binding(binding):
 
 
 def enforce_closure_binding(
-    mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *, required
+    mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *, required,
+    execution_root=None,
 ):
     """Enforce the closure binding. When `required` is True (closure-execution verification), a
     missing binding or missing manifest bytes is a hard rejection -- never a silent pass. When it is
@@ -703,10 +808,15 @@ def enforce_closure_binding(
             "closure-execution verification requested but no consumed-state bytes were supplied",
         )
 
+    successor_blob_result = validate_successor_blobs(
+        binding, effects, execution_root, required=required
+    )
+
     return {
         "closure_binding_enforced": True,
         "closure_manifest_digest": actual_manifest_digest,
         "permitted_effects_digest": actual_effects_digest,
+        "successor_blobs": successor_blob_result,
         "predecessor_commit": binding["predecessor_commit"],
         "predecessor_tree": binding["predecessor_tree"],
         "target_ref": binding["target_ref"],
@@ -730,6 +840,7 @@ def verify_transition(
     revocation_bytes=None,
     consumed_bytes=None,
     require_closure_binding=False,
+    execution_root=None,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
@@ -747,6 +858,7 @@ def verify_transition(
         revocation_bytes,
         consumed_bytes,
         required=require_closure_binding,
+        execution_root=execution_root,
     )
     signer_identity = _authority_identity(
         mandate, signer_keyid, trust_root, identity_register, verification_time, revocations
@@ -824,6 +936,12 @@ def main():
         help="pre-execution closure manifest JSON; required with --require-closure-binding",
     )
     parser.add_argument(
+        "--execution-root",
+        help="directory holding the actual execution bytes; each bound successor blob id is "
+             "recomputed from the file at that path (git blob hashing) and must match. Required "
+             "with --require-closure-binding. Paths are resolved strictly inside this root.",
+    )
+    parser.add_argument(
         "--require-closure-binding",
         action="store_true",
         help="closure-execution verification: fail closed unless the mandate's closure_binding is "
@@ -860,6 +978,7 @@ def main():
             revocation_bytes,
             consumed_bytes,
             args.require_closure_binding,
+            args.execution_root,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")

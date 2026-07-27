@@ -1,5 +1,33 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 3 (EVD-CLOSURE-024)
+
+- Additive follow-up commit on `claude/PG-P0-closure-repair-c8-v2` after the independent Codex
+  checker returned `REJECT_EXACT_SHA` on `17b9075d97c9022c698097e4d88ca628fc9e9c31`. That commit is
+  preserved in history; nothing was amended or rebased.
+- **successor_blobs strictly bound.** Closure mode now requires the map's keys to equal the seven
+  manifest permitted-effect paths exactly (missing, extra or renamed paths reject
+  `SUCCESSOR_BLOBS_INCOMPLETE`), every value to be a 40-character lowercase git object id
+  (`UNRESOLVED`, non-hex, uppercase and truncated reject `SUCCESSOR_BLOBS_UNRESOLVED`), an
+  `--execution-root` to be supplied (`EXECUTION_ROOT_REQUIRED`), and every bound id to equal the git
+  blob id recomputed from the real file bytes (`SUCCESSOR_BLOB_MISMATCH`). Path resolution is bounded
+  inside the root; traversal and absolute paths reject `EXECUTION_PATH_UNSAFE`. 18 new negative tests;
+  67/67 DSSE tests pass.
+- **Status corrected to blocked.** `READY_FOR_HUMAN_SIGNATURE` is withdrawn. The V2 manifest carries
+  `_signing_status: DRAFT_NOT_SIGNABLE` and `_blocking_state: BLOCKED_PENDING_EXECUTION_BYTES`; the
+  binding carries `successor_blobs_status: BLOCKED_PENDING_EXECUTION_BYTES`. Regression tests assert
+  the shipped proposal stays rejected `SUCCESSOR_BLOBS_UNRESOLVED` in closure mode - the correct
+  current state, not a defect.
+- **Revocation scaffold retargeted** to the proposed decision `PG-P0-CLOSURE-002` (not the signed
+  `PG-P0-CLOSURE-001`), marked `PENDING_HUMAN_ATTESTATION` and still non-authoritative.
+- **Backdated verification guidance withdrawn.** The `2026-07-27T00:00:00+07:00` example is removed
+  and replaced by a policy requiring the actual verification-event instant, a justification of why it
+  is the true event time, and a receipt bound to the exact commit and tree. Additionally disclosed:
+  the payload's inherited `authority.effective_at` must be replaced at re-issuance, which also
+  changes the authorized successor digest.
+- Frozen signed artifacts unchanged: `PG-P0-CLOSURE-MANIFEST.json` (`7417cc6a...fb33a`),
+  `PG-P0-CLOSURE-MANDATE.md`, `.dsse.json`, `SCHEDULE-REGISTER.json`, `EVD-CLOSURE-014`.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 2 (EVD-CLOSURE-022/023)
 
 - Rebuilt from exact base `042dda535be70927b73cd1a131b2545349729643` on branch

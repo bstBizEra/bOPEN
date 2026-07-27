@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 338,
+  "count": 339,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -256,17 +256,17 @@
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.md",
-      "title": "PG-P0 Closure Mandate v2 - UNSIGNED HUMAN SIGNING PACKET",
-      "status": "`READY_FOR_HUMAN_SIGNATURE`",
-      "sha256": "fa0b000f9e84371456d5d692f85429fe6af59b1b70657765a9e9a84079a6e8dc",
-      "bytes": 7398
+      "title": "PG-P0 Closure Mandate v2 - UNSIGNED DRAFT",
+      "status": "",
+      "sha256": "01f2067ce0b482711d9a3edff5c40a4634a2db801e085acd7dd0b54c9f0bf0f0",
+      "bytes": 8017
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.payload.json",
       "title": "",
       "status": "",
-      "sha256": "30f9605f2847b7bf3ff95dfbf10a38028db1611666bcc94f2fbb65ede8b9c3fe",
-      "bytes": 2276
+      "sha256": "5e6967ca19533ff02acea03cc1ee32dc1010091b93d25146cd2ae1608d761403",
+      "bytes": 2258
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.dsse.json",
@@ -286,8 +286,8 @@
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json",
       "title": "",
       "status": "",
-      "sha256": "9d4a2568b53997b2c940d863edef9129173450492e4c7e24b6065ebe53622347",
-      "bytes": 7593
+      "sha256": "bde8922676f7e2d81cee35f17d5fd7b874bc2af440e5f5989ad836fe3071ac7b",
+      "bytes": 9117
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
@@ -314,15 +314,15 @@
       "path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
       "title": "",
       "status": "",
-      "sha256": "bbd628ee8c13107f958f8053ff647cf9ed923d08b9139bfeab5a4dfee46a06b2",
-      "bytes": 1674
+      "sha256": "c176b8540a2c09219656a71e75582064263bd0dcf97e5026053a58a7cc2d0f52",
+      "bytes": 1864
     },
     {
       "path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
       "title": "",
       "status": "",
-      "sha256": "ef3610d0217746d00c6ced6cbd69b262e4ec976110ea9baf5f55ae001491fb87",
-      "bytes": 1566
+      "sha256": "6fda0993bafb18c20424c40f7652751f77cf234f936baf594d209034f2252c2e",
+      "bytes": 1791
     },
     {
       "path": "docs/00-governance/signing/SIGNING-PASS-1.md",
@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "a2b9ae5e14eda23b76b84a4712debf0146c86ecb73216ce3df1fea09d52ea284",
-      "bytes": 35534
+      "sha256": "9f3ce8d2880aeab2104eeeb821bc23ad7ccc93a77f01dfc7e1434c18064edc60",
+      "bytes": 37809
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1522,6 +1522,13 @@
       "bytes": 4917
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-024-cycle3-successor-blob-binding-and-status-correction.md",
+      "title": "EVD-CLOSURE-024 - Maker evidence: cycle-3 successor-blob binding and status correction",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "de6bcd7ae0d5b884a510ba736a82fa71e0e5136f7b8d71824777bd9763ab2d44",
+      "bytes": 8259
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1693,14 +1700,14 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "07f017d33ca1927f55996f258fecc6fcaa6b001357c70f2f728ae9c6b23e2dac",
-      "bytes": 92324
+      "sha256": "d88212cd4cf695acced8dc9f237967a0b7122afba1de025499da9bc8b6d9c5da",
+      "bytes": 92709
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "fe0a7efb2304225b12fb60b5ec9371b52ce9b4e66ad85628b32c3b7177f5c71a",
+      "sha256": "a951969423722bb7c1f5d98016609b4e2305ccfc60ee8a35d3f6e4766e6223a2",
       "bytes": 2566
     },
     {

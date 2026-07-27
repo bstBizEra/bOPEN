@@ -184,3 +184,20 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Track the cycle-2 candidate without marking any correction accepted, any packet signed, or any binding resolved.
 **Benefit of old phase:** The rejection preserved five precise defects as immutable review findings rather than allowing an in-place fixup of a candidate that had already been reviewed.
 **Expected outcome:** Codex reviews this exact candidate branch/commit; C8, C9, merge, PG-P1 and production remain separately gated and unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0002
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 3 after `REJECT_EXACT_SHA` on `17b9075d97c9022c698097e4d88ca628fc9e9c31`
+**Work package:** PG-P0 closure repair, cycle 3 (additive follow-up on `claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0002
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0002
+**Evidence:** EVD-CLOSURE-024
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** candidate `17b9075d97c9022c698097e4d88ca628fc9e9c31` (`REJECT_EXACT_SHA`), preserved in history as the immutable predecessor of this additive commit
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six of seven successor blob ids; replacement of the inherited `authority.effective_at` with the real decision time and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the cycle-3 corrections without marking the proposal signable, the bindings resolved, or any control accepted.
+**Benefit of old phase:** The cycle-2 rejection isolated four specific defects rather than invalidating the closure-binding design, so cycle 3 could be additive.
+**Expected outcome:** The proposal remains verifier-rejected by design until a human resolves the execution bytes; C8, C9, merge, PG-P1 and production remain unauthorized.

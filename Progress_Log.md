@@ -183,3 +183,18 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Remediate five defects that caused the cycle-1 rejection: an insecure optional closure binding that verified unbound mandates; in-place mutation of the frozen signed manifest with a false claim the existing C4 signature still bound it; a factually impossible `refs/heads/main` C9 target (disjoint histories); maker-manufactured consumption and revocation state; and an untruthful commit identity.
 **Benefit of old phase:** The rejected candidate made every defect explicit and reviewable at an exact SHA, which is what allowed a bounded, evidence-bound cycle-2 correction rather than a rewrite.
 **Expected outcome:** An independent (non-maker, non-Claude) checker can review a candidate that changes no signed byte, moves no ref, and honestly reports the one item that remains human-only: the unconstructed C6-C8 execution bytes leaving six of seven successor blob bindings UNRESOLVED.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0002
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 3 after `REJECT_EXACT_SHA` on candidate `17b9075d97c9022c698097e4d88ca628fc9e9c31`
+**Work package:** PG-P0 closure repair, cycle 3 (additive follow-up commit on `claude/PG-P0-closure-repair-c8-v2`; no history rewritten)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0002
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0002
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-024 (EVD-CLOSURE-022/023 remain valid and unedited)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; proposal is DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES
+**Reason:** Remediate four defects found in cycle 2: `successor_blobs` was structurally unvalidated and accepted the literal `UNRESOLVED` while still reaching a VERIFIED verdict; the packet's machine status read READY_FOR_HUMAN_SIGNATURE despite six unresolved bindings; the revocation scaffold's narrative targeted the already-signed closure-001 rather than the proposed closure-002; and the packet published a backdated 2026-07-27 verification time.
+**Benefit of old phase:** Cycle 2 established the closure-binding mechanism and the fail-closed mode, which is what made these four narrower defects visible and separately fixable rather than requiring another rebuild from base.
+**Expected outcome:** Closure-execution verification now binds the exact resulting bytes of all seven permitted effects against a bounded execution root, and correctly rejects the shipped unsigned proposal `SUCCESSOR_BLOBS_UNRESOLVED` — which is the intended state until a human constructs the execution bytes.

@@ -175,3 +175,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** Clear the five defects that produced the cycle-1 rejection without repeating its central error of claiming more than was verified.
 **Benefit of old phase:** The independent rejection identified defects a maker self-review had missed, including one factual impossibility, which is exactly the separation the authority model exists to produce.
 **Expected outcome:** Independent review of this exact candidate. One item remains honestly incomplete: the C6-C8 execution bytes are classifier-blocked for any agent, leaving six of seven successor blob bindings UNRESOLVED, so the packet must not be signed as-is.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0002
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 3 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 3 (additive follow-up on `claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0002
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0002
+**Evidence:** EVD-CLOSURE-024
+**Summary:** Bound `successor_blobs` strictly: keys must equal the seven permitted-effect paths exactly, every value must be a 40-character lowercase git object id, and every id is recomputed from real bytes under a bounded `--execution-root` using git blob hashing. `UNRESOLVED`, non-hex, uppercase, truncated, missing, extra and renamed paths all reject, as do runtime byte mismatch, absent execution root, path traversal and absolute paths. Changed the machine and prose status from READY_FOR_HUMAN_SIGNATURE to DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES, with regression tests asserting the shipped proposal stays rejected. Retargeted the revocation scaffold to the proposed PG-P0-CLOSURE-002 with PENDING_HUMAN_ATTESTATION. Withdrew the backdated 2026-07-27 verification guidance and replaced it with a policy requiring the actual event time, a justification, and a receipt bound to the exact commit and tree.
+**Reason:** Close four defects that would have let an unbound or placeholder closure reach a VERIFIED verdict, or let a reader mistake a blocked draft for a signable one.
+**Benefit of old phase:** A cycle-2 test fixture was itself caught by the new strict rule, which confirmed the control works on real inputs rather than only on purpose-built negatives; the fixture was corrected rather than the control weakened.
+**Expected outcome:** Independent review of the additive commit. The proposal is correctly rejected `SUCCESSOR_BLOBS_UNRESOLVED` today; resolving that is a human-only step.

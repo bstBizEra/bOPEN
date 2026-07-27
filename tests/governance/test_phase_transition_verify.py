@@ -11,6 +11,9 @@ import base64
 import hashlib
 import importlib.util
 import json
+import pathlib
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -98,7 +101,7 @@ def _envelope(mandate, seed=SEED, keyid=KEYID, payload_bytes=None):
 def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust_root=None,
             identity_register=None, verification_time=VTIME, consumed=None, revocations=None,
             closure_manifest_bytes=None, revocation_bytes=None, consumed_bytes=None,
-            require_closure_binding=False):
+            require_closure_binding=False, execution_root=None):
     predecessor = predecessor if predecessor is not None else _predecessor()
     mandate = mandate if mandate is not None else _mandate(predecessor)
     successor = successor if successor is not None else v.recompute_successor(predecessor, mandate)
@@ -109,6 +112,7 @@ def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust
         identity_register if identity_register is not None else _identity_register(),
         verification_time, consumed or {}, revocations or {},
         closure_manifest_bytes, revocation_bytes, consumed_bytes, require_closure_binding,
+        execution_root,
     )
 
 
@@ -295,6 +299,22 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         {"path": "tools/validate_pg_g0_authority_docket.py", "effect": "extend expected state"},
     ]
 
+    def setUp(self):
+        # Closure mode requires every successor blob resolved against real bytes, so this fixture
+        # carries a real execution tree rather than a placeholder.
+        self.exec_root = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.exec_root, True)
+        self.exec_bytes = {}
+        for index, effect in enumerate(self.MANIFEST_EFFECTS):
+            target = self.exec_root / effect["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            data = f"closure execution bytes {index}\n".encode("utf-8")
+            target.write_bytes(data)
+            self.exec_bytes[effect["path"]] = data
+
+    def _resolved_blobs(self):
+        return {path: v.git_blob_oid(data) for path, data in self.exec_bytes.items()}
+
     def _manifest_bytes(self, effects=None):
         obj = {
             "decision_id": "PG-P0-CLOSURE-001",
@@ -321,8 +341,8 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
             "expected_old": "042dda535be70927b73cd1a131b2545349729643",
             "revocation_state_digest": hashlib.sha256(self._revocation_bytes()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._consumed_bytes()).hexdigest(),
-            "successor_blobs": {"docs/00-governance/registers/SCHEDULE-REGISTER.json": "UNRESOLVED"},
-            "successor_blobs_status": "UNRESOLVED_PENDING_HUMAN_EXECUTION_BYTES",
+            "successor_blobs": self._resolved_blobs(),
+            "successor_blobs_status": "RESOLVED",
         }
         binding.update(overrides)
         return binding
@@ -336,6 +356,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
     def _verify_closure(self, pred, mandate, manifest_bytes=None, **kwargs):
         kwargs.setdefault("revocation_bytes", self._revocation_bytes())
         kwargs.setdefault("consumed_bytes", self._consumed_bytes())
+        kwargs.setdefault("execution_root", self.exec_root)
         return _verify(
             predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
             closure_manifest_bytes=manifest_bytes if manifest_bytes is not None else self._manifest_bytes(),
@@ -504,6 +525,216 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         result = _verify()
         self.assertIsNone(result["receipt"]["closure_binding"])
         self.assertFalse(result["receipt"]["closure_execution_verification"])
+
+
+class SuccessorBlobBindingTests(unittest.TestCase):
+    """Closure execution must bind the EXACT resulting bytes of every permitted effect. An
+    unresolved placeholder is a hard rejection, not a tolerated 'pending' state, and every bound
+    object id is recomputed from real bytes under a bounded execution root."""
+
+    EFFECTS = [
+        {"path": "docs/00-governance/registers/SCHEDULE-REGISTER.json", "effect": "apply successor"},
+        {"path": "tools/validate_pg_g0_authority_docket.py", "effect": "extend expected state"},
+        {"path": "docs/CHANGELOG.md", "effect": "append execution note"},
+    ]
+
+    def setUp(self):
+        self.root = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.root, True)
+        self.contents = {}
+        for index, effect in enumerate(self.EFFECTS):
+            target = self.root / effect["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            data = f"execution bytes {index}\n".encode("utf-8")
+            target.write_bytes(data)
+            self.contents[effect["path"]] = data
+
+    def _manifest_bytes(self, effects=None):
+        return json.dumps({
+            "decision_id": "PG-P0-CLOSURE-002",
+            "permitted_effects_at_execution_C8": effects if effects is not None else self.EFFECTS,
+        }, indent=2).encode("utf-8")
+
+    def _rev(self):
+        return json.dumps({"revoked_keyids": [], "revoked_decision_ids": []}).encode("utf-8")
+
+    def _con(self):
+        return json.dumps({}).encode("utf-8")
+
+    def _resolved_blobs(self):
+        return {path: v.git_blob_oid(data) for path, data in self.contents.items()}
+
+    def _mandate(self, blobs=None, manifest_bytes=None):
+        manifest_bytes = manifest_bytes if manifest_bytes is not None else self._manifest_bytes()
+        effects = json.loads(manifest_bytes.decode())["permitted_effects_at_execution_C8"]
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["closure_binding"] = {
+            "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
+            "permitted_effects_digest": v.digest(effects),
+            "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
+            "predecessor_tree": "637af7c870218360c3458b0fb54695a3450dedb5",
+            "target_ref": "refs/heads/pg-p0-closure-lineage",
+            "expected_old": "042dda535be70927b73cd1a131b2545349729643",
+            "revocation_state_digest": hashlib.sha256(self._rev()).hexdigest(),
+            "consumed_state_digest": hashlib.sha256(self._con()).hexdigest(),
+            "successor_blobs": blobs if blobs is not None else self._resolved_blobs(),
+        }
+        return mandate, manifest_bytes
+
+    def _enforce(self, mandate, manifest_bytes, execution_root=None, required=True):
+        return v.enforce_closure_binding(
+            mandate, manifest_bytes, self._rev(), self._con(),
+            required=required,
+            execution_root=execution_root if execution_root is not None else self.root,
+        )
+
+    def _assert_reason(self, reason, mandate, manifest_bytes, **kwargs):
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(mandate, manifest_bytes, **kwargs)
+        self.assertEqual(cm.exception.reason, reason)
+
+    # ---- git blob hashing anchor -----------------------------------------------------
+    def test_git_blob_oid_matches_git_definition(self):
+        # Anchored to git's documented object format: sha1("blob <len>\0" + content).
+        # `git hash-object` on an empty file yields this well-known constant.
+        self.assertEqual(v.git_blob_oid(b""), "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391")
+
+    # ---- happy path ------------------------------------------------------------------
+    def test_fully_resolved_blobs_matching_bytes_accept(self):
+        mandate, manifest_bytes = self._mandate()
+        result = self._enforce(mandate, manifest_bytes)
+        blobs = result["successor_blobs"]
+        self.assertTrue(blobs["successor_blobs_verified"])
+        self.assertEqual(set(blobs["verified_blobs"]), {e["path"] for e in self.EFFECTS})
+
+    # ---- unresolved ------------------------------------------------------------------
+    def test_unresolved_placeholder_rejects(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/CHANGELOG.md"] = "UNRESOLVED"
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_UNRESOLVED, mandate, manifest_bytes)
+
+    def test_all_unresolved_rejects(self):
+        blobs = {e["path"]: "UNRESOLVED" for e in self.EFFECTS}
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_UNRESOLVED, mandate, manifest_bytes)
+
+    def test_non_hex_oid_rejects(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/CHANGELOG.md"] = "z" * 40
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_UNRESOLVED, mandate, manifest_bytes)
+
+    def test_uppercase_oid_rejects(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/CHANGELOG.md"] = blobs["docs/CHANGELOG.md"].upper()
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_UNRESOLVED, mandate, manifest_bytes)
+
+    def test_short_oid_rejects(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/CHANGELOG.md"] = blobs["docs/CHANGELOG.md"][:39]
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_UNRESOLVED, mandate, manifest_bytes)
+
+    # ---- missing / extra paths -------------------------------------------------------
+    def test_missing_path_rejects(self):
+        blobs = self._resolved_blobs()
+        del blobs["docs/CHANGELOG.md"]
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_INCOMPLETE, mandate, manifest_bytes)
+
+    def test_extra_path_rejects(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/00-governance/registers/AUTHORITY-MATRIX.json"] = "a" * 40
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_INCOMPLETE, mandate, manifest_bytes)
+
+    def test_renamed_path_rejects_as_incomplete(self):
+        blobs = self._resolved_blobs()
+        blobs["docs/CHANGELOG-EVIL.md"] = blobs.pop("docs/CHANGELOG.md")
+        mandate, manifest_bytes = self._mandate(blobs)
+        self._assert_reason(v.SUCCESSOR_BLOBS_INCOMPLETE, mandate, manifest_bytes)
+
+    # ---- runtime mismatch ------------------------------------------------------------
+    def test_runtime_byte_mismatch_rejects(self):
+        """The decisive control: the mandate binds honest ids, but the bytes actually present at
+        execution time differ. Only recomputing from real bytes catches this."""
+        mandate, manifest_bytes = self._mandate()
+        (self.root / "docs/CHANGELOG.md").write_bytes(b"tampered after binding\n")
+        self._assert_reason(v.SUCCESSOR_BLOB_MISMATCH, mandate, manifest_bytes)
+
+    def test_missing_execution_file_rejects(self):
+        mandate, manifest_bytes = self._mandate()
+        (self.root / "docs/CHANGELOG.md").unlink()
+        self._assert_reason(v.SUCCESSOR_BLOB_MISMATCH, mandate, manifest_bytes)
+
+    # ---- execution root --------------------------------------------------------------
+    def test_absent_execution_root_rejects_in_closure_mode(self):
+        mandate, manifest_bytes = self._mandate()
+        with self.assertRaises(v.VerifyError) as cm:
+            v.enforce_closure_binding(mandate, manifest_bytes, self._rev(), self._con(),
+                                      required=True, execution_root=None)
+        self.assertEqual(cm.exception.reason, v.EXECUTION_ROOT_REQUIRED)
+
+    def test_path_traversal_rejected(self):
+        effects = self.EFFECTS + [{"path": "../outside.txt", "effect": "escape"}]
+        manifest_bytes = self._manifest_bytes(effects)
+        blobs = self._resolved_blobs()
+        blobs["../outside.txt"] = "b" * 40
+        mandate, _ = self._mandate(blobs, manifest_bytes)
+        self._assert_reason(v.EXECUTION_PATH_UNSAFE, mandate, manifest_bytes)
+
+    def test_absolute_path_rejected(self):
+        effects = self.EFFECTS + [{"path": "/etc/passwd", "effect": "escape"}]
+        manifest_bytes = self._manifest_bytes(effects)
+        blobs = self._resolved_blobs()
+        blobs["/etc/passwd"] = "c" * 40
+        mandate, _ = self._mandate(blobs, manifest_bytes)
+        self._assert_reason(v.EXECUTION_PATH_UNSAFE, mandate, manifest_bytes)
+
+    # ---- non-closure mode reports, never silently asserts -----------------------------
+    def test_unresolved_reported_not_verified_outside_closure_mode(self):
+        blobs = {e["path"]: "UNRESOLVED" for e in self.EFFECTS}
+        mandate, manifest_bytes = self._mandate(blobs)
+        result = self._enforce(mandate, manifest_bytes, required=False)
+        self.assertFalse(result["successor_blobs"]["successor_blobs_verified"])
+        self.assertEqual(len(result["successor_blobs"]["unresolved_paths"]), len(self.EFFECTS))
+
+
+class UnsignedProposalIsNotSignableTests(unittest.TestCase):
+    """The shipped unsigned proposal MUST be rejected by closure-execution verification while its
+    successor blobs are unresolved. This is the intended state, asserted so it cannot regress into
+    a silent pass."""
+
+    def test_shipped_proposal_rejects_in_closure_mode(self):
+        signing = ROOT / "docs" / "00-governance" / "signing"
+        payload_path = signing / "PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.payload.json"
+        manifest_path = signing / "PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json"
+        if not payload_path.is_file() or not manifest_path.is_file():
+            self.skipTest("unsigned proposal artifacts not present in this tree")
+        mandate = json.loads(payload_path.read_bytes())
+        with self.assertRaises(v.VerifyError) as cm:
+            v.enforce_closure_binding(
+                mandate,
+                manifest_path.read_bytes(),
+                (signing / "PG-P0-REVOCATIONS.json").read_bytes(),
+                (signing / "PG-P0-CONSUMED-DECISIONS.json").read_bytes(),
+                required=True,
+                execution_root=ROOT,
+            )
+        self.assertEqual(cm.exception.reason, v.SUCCESSOR_BLOBS_UNRESOLVED)
+
+    def test_shipped_proposal_is_marked_not_signable(self):
+        payload_path = ROOT / "docs" / "00-governance" / "signing" / "PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.payload.json"
+        manifest_path = ROOT / "docs" / "00-governance" / "signing" / "PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json"
+        if not payload_path.is_file():
+            self.skipTest("unsigned proposal artifacts not present in this tree")
+        binding = json.loads(payload_path.read_bytes())["closure_binding"]
+        self.assertEqual(binding["successor_blobs_status"], "BLOCKED_PENDING_EXECUTION_BYTES")
+        manifest = json.loads(manifest_path.read_bytes())
+        self.assertEqual(manifest["_signing_status"], "DRAFT_NOT_SIGNABLE")
 
 
 if __name__ == "__main__":

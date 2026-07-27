@@ -1,6 +1,6 @@
 {
   "_artifact": "PG-P0 closure manifest v2 - UNSIGNED PROPOSAL. Supersedes the frozen C3 manifest for a FUTURE human signature; it is not itself signed, authorized, or effective.",
-  "_status": "READY_FOR_HUMAN_SIGNATURE. Not signed. Not authorized. Not effective. Carries no authority and completes no phase. The frozen C3 manifest remains the only manifest any existing signature binds.",
+  "_status": "DRAFT_NOT_SIGNABLE. Not signed. Not authorized. Not effective. This proposal is BLOCKED_PENDING_EXECUTION_BYTES: the C6-C8 execution bytes do not exist, so six of the seven successor blob object ids cannot be bound. Closure-execution verification REJECTS this proposal by design (SUCCESSOR_BLOBS_UNRESOLVED); that rejection is the correct current state, not a defect.",
   "_supersession_model": "Append-only. The frozen C3 manifest at docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json (raw-bytes sha256 7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a, 6613 bytes) is NOT modified by this proposal and remains byte-identical to its state at commit 27e70fa82e5ae5573658dbb0ca10f622fe232f56 and at base 042dda535be70927b73cd1a131b2545349729643. Corrections are layered here, in a separate artifact, because editing the frozen manifest would break the exact binding the operator's C4 signature already made to it - the defect that caused candidate 2134ea2d53f78b79522b476e78f4b33022595615 to be rejected REJECT_EXACT_SHA.",
   "_requires_new_signature": "Yes. Because this proposal's content differs from the frozen manifest, the existing C4 signature over PG-P0-CLOSURE-001 does NOT and CANNOT bind it. Executing a closure against this proposal requires a NEW operator signature over the accompanying unsigned mandate proposal (PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.json).",
   "_supersedes": {
@@ -9,7 +9,7 @@
     "bytes": 6613,
     "unmodified_by_this_proposal": true
   },
-  "decision_id": "PG-P0-CLOSURE-002-PROPOSAL",
+  "decision_id": "PG-P0-CLOSURE-002",
   "schema_id": "bopen.phase-completion-mandate",
   "operation": "COMPLETE_PHASE",
   "phase_id": "PG-P0",
@@ -80,7 +80,7 @@
     "any move of an authoritative ref by an agent (C9 is the operator expected-old CAS commit)",
     "opening PG-P1, authorizing research or production"
   ],
-  "_decision_id_note": "A NEW decision id. PG-P0-CLOSURE-001 is the operator's already-signed decision bound to the frozen manifest; reusing it here would invite a replay collision and would misrepresent an unsigned proposal as the signed decision.",
+  "_decision_id_note": "A NEW decision id. PG-P0-CLOSURE-001 is the operator's already-signed decision bound to the frozen manifest; reusing it here would invite a replay collision and would misrepresent an unsigned proposal as the signed decision. The proposed decision this artifact belongs to is PG-P0-CLOSURE-002.",
   "c9_ref_move": {
     "_status": "PROPOSED. Human-only act (DEC-0014). No ref is moved by this proposal.",
     "target_ref": "refs/heads/pg-p0-closure-lineage",
@@ -94,6 +94,11 @@
     "consumed_decisions_path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
     "revocations_path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
     "_consumed_note": "EMPTY. The C5 verification (EVD-CLOSURE-014) was advisory and is NOT consumption; only the human's real C8 execution consumes a decision.",
-    "_revocation_note": "Maker-prepared scaffold only. An empty list is NOT a maker attestation of non-revocation; the operator must attest completeness at signing time."
-  }
+    "_revocation_note": "Maker-prepared scaffold targeting PG-P0-CLOSURE-002 and keyid operator-pgp0-completion-1. An empty list is NOT a maker attestation of non-revocation; the operator must attest completeness for PG-P0-CLOSURE-002 at signing time.",
+    "_decision_scope": "These registries scope to the PROPOSED new decision PG-P0-CLOSURE-002, not to the already-signed PG-P0-CLOSURE-001."
+  },
+  "_signing_status": "DRAFT_NOT_SIGNABLE",
+  "_blocking_state": "BLOCKED_PENDING_EXECUTION_BYTES",
+  "_unblocks_when": "All seven successor blob ids are resolved to real 40-character lowercase git object ids recomputed from constructed execution bytes, AND authority.effective_at is replaced with the actual decision time (which changes planned_end and therefore the authorized successor digest, so successor.authorized_schedule_digest_rfc8785_sha256 must be recomputed at that point).",
+  "_verification_time_policy": "The prior draft reproduced 2026-07-27T00:00:00+07:00 as example verification guidance. That is WITHDRAWN as backdating. verification_time is caller-supplied and no wall clock is read, so a stale or convenient value is undetectable from a receipt alone. Any verification of THIS proposal MUST supply the actual wall-clock instant of the verification event, in the register's +07:00 offset, and the receipt MUST record that instant together with a justification of why it is the true event time. Reusing the 2026-07-27 value is a stop condition."
 }
