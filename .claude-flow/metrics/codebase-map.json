@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-27T01:40:57.100Z",
+  "timestamp": "2026-07-27T15:01:41.167Z",
   "projectRoot": "C:\\laragon\\www\\bopen\\.claude\\worktrees\\pg-p0-successor-review-7b24eb",
   "structure": {
     "hasPackageJson": true,
@@ -7,5 +7,5 @@
     "hasClaudeConfig": true,
     "hasClaudeFlow": true
   },
-  "scannedAt": 1785116457100
+  "scannedAt": 1785164501167
 }
