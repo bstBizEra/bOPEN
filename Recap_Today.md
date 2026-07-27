@@ -190,3 +190,18 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** Close four defects that would have let an unbound or placeholder closure reach a VERIFIED verdict, or let a reader mistake a blocked draft for a signable one.
 **Benefit of old phase:** A cycle-2 test fixture was itself caught by the new strict rule, which confirmed the control works on real inputs rather than only on purpose-built negatives; the fixture was corrected rather than the control weakened.
 **Expected outcome:** Independent review of the additive commit. The proposal is correctly rejected `SUCCESSOR_BLOBS_UNRESOLVED` today; resolving that is a human-only step.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0003
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-3 HOLD (independent undeclared-file attack accepted)
+**Work package:** PG-P0 closure repair, cycle 4
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0003
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0003
+**Evidence:** EVD-CLOSURE-025
+**Summary:** Added a required `successor_tree` binding and made closure mode establish scope from the complete tree diff: any added, modified, deleted, renamed, mode-changed or type-changed path outside the seven permitted effects is rejected, both trees must be real git tree objects, each bound blob must exist in the successor tree as a regular-file blob matching its id, and the execution root must be the successor tree exactly. Two findings surfaced while building it: untracked bytes are invisible to a tree diff (so the execution root is compared to the tree in full, which is what actually catches the reported attack), and a symlink is also a blob in git (so entry mode is allow-listed to regular files). 18 tree-scope attack tests added.
+**Reason:** Per-path verification, however strict, cannot establish scope; the missing layer had to be added above it.
+**Benefit of old phase:** The cycle-3 per-path controls were correct and are retained unchanged; only the scope layer was missing.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; resolving the execution bytes and `successor_tree` remains human-only.

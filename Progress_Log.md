@@ -198,3 +198,18 @@ Future events must be appended below this event and must include the same proven
 **Reason:** Remediate four defects found in cycle 2: `successor_blobs` was structurally unvalidated and accepted the literal `UNRESOLVED` while still reaching a VERIFIED verdict; the packet's machine status read READY_FOR_HUMAN_SIGNATURE despite six unresolved bindings; the revocation scaffold's narrative targeted the already-signed closure-001 rather than the proposed closure-002; and the packet published a backdated 2026-07-27 verification time.
 **Benefit of old phase:** Cycle 2 established the closure-binding mechanism and the fail-closed mode, which is what made these four narrower defects visible and separately fixable rather than requiring another rebuild from base.
 **Expected outcome:** Closure-execution verification now binds the exact resulting bytes of all seven permitted effects against a bounded execution root, and correctly rejects the shipped unsigned proposal `SUCCESSOR_BLOBS_UNRESOLVED` — which is the intended state until a human constructs the execution bytes.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0003
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-3 assurance conflict resolved fail-closed to HOLD; independent attack added an undeclared file under the execution root and verification still accepted
+**Work package:** PG-P0 closure repair, cycle 4 (additive commit on `claude/PG-P0-closure-repair-c8-v2`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0003
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0003
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-025 (022/023/024 remain valid and unedited)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; proposal remains DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES
+**Reason:** Per-path verification cannot establish scope. Cycle 3 checked the seven declared paths thoroughly but never enumerated anything else, so an undeclared path was invisible. Scope is now established from the complete predecessor-to-successor tree diff plus a full execution-root-equals-successor-tree comparison, with a required `successor_tree` binding.
+**Benefit of old phase:** The cycle-3 per-path controls remain correct and are retained; cycle 4 adds the missing scope layer above them rather than replacing them.
+**Expected outcome:** An undeclared added, modified, deleted, renamed, mode-changed or type-changed path anywhere in the tree is rejected, as is an extra untracked file under the execution root.

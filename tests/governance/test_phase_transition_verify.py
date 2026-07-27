@@ -13,6 +13,7 @@ import importlib.util
 import json
 import pathlib
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -101,7 +102,7 @@ def _envelope(mandate, seed=SEED, keyid=KEYID, payload_bytes=None):
 def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust_root=None,
             identity_register=None, verification_time=VTIME, consumed=None, revocations=None,
             closure_manifest_bytes=None, revocation_bytes=None, consumed_bytes=None,
-            require_closure_binding=False, execution_root=None):
+            require_closure_binding=False, execution_root=None, repository=None):
     predecessor = predecessor if predecessor is not None else _predecessor()
     mandate = mandate if mandate is not None else _mandate(predecessor)
     successor = successor if successor is not None else v.recompute_successor(predecessor, mandate)
@@ -112,8 +113,42 @@ def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust
         identity_register if identity_register is not None else _identity_register(),
         verification_time, consumed or {}, revocations or {},
         closure_manifest_bytes, revocation_bytes, consumed_bytes, require_closure_binding,
-        execution_root,
+        execution_root, repository,
     )
+
+
+_DEFAULT = object()  # sentinel: "argument not supplied" where None is itself meaningful
+
+# Git's canonical empty tree. Recognised by every git repository without needing to be written, so
+# fixtures can use it as a predecessor tree and have the whole successor tree read as "added".
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+
+
+def _make_git_execution_tree(test_case, relative_paths):
+    """Build a throwaway git repository whose HEAD tree contains exactly `relative_paths`.
+
+    Returns (repo_path, tree_oid, {path: bytes}). Registered for cleanup on the test case."""
+    repo = pathlib.Path(tempfile.mkdtemp())
+    test_case.addCleanup(shutil.rmtree, repo, True)
+
+    def git(*args):
+        return subprocess.run(["git", "-C", str(repo), *args],
+                              capture_output=True, check=True).stdout
+
+    git("init", "-q")
+    git("config", "user.email", "t@example.invalid")
+    git("config", "user.name", "t")
+    contents = {}
+    for index, relative in enumerate(relative_paths):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        data = f"closure execution bytes {index}\n".encode("utf-8")
+        target.write_bytes(data)
+        contents[relative] = data
+    git("add", "-A")
+    git("commit", "-qm", "execution bytes")
+    tree = git("rev-parse", "HEAD^{tree}").decode().strip()
+    return repo, tree, contents
 
 
 class Ed25519Rfc8032Tests(unittest.TestCase):
@@ -300,17 +335,13 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
     ]
 
     def setUp(self):
-        # Closure mode requires every successor blob resolved against real bytes, so this fixture
-        # carries a real execution tree rather than a placeholder.
-        self.exec_root = pathlib.Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.exec_root, True)
-        self.exec_bytes = {}
-        for index, effect in enumerate(self.MANIFEST_EFFECTS):
-            target = self.exec_root / effect["path"]
-            target.parent.mkdir(parents=True, exist_ok=True)
-            data = f"closure execution bytes {index}\n".encode("utf-8")
-            target.write_bytes(data)
-            self.exec_bytes[effect["path"]] = data
+        # Closure mode requires resolved blobs AND a real successor tree, so this fixture carries a
+        # genuine git execution tree rather than a bare directory.
+        if shutil.which("git") is None:
+            self.skipTest("git binary unavailable")
+        self.exec_root, self.succ_tree, self.exec_bytes = _make_git_execution_tree(
+            self, [effect["path"] for effect in self.MANIFEST_EFFECTS]
+        )
 
     def _resolved_blobs(self):
         return {path: v.git_blob_oid(data) for path, data in self.exec_bytes.items()}
@@ -336,13 +367,14 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
             "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
             "permitted_effects_digest": v.digest(effects),
             "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
-            "predecessor_tree": "1732e445c0d05b416223443314e73c5b978ce1be",
+            "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
             "expected_old": "042dda535be70927b73cd1a131b2545349729643",
             "revocation_state_digest": hashlib.sha256(self._revocation_bytes()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._consumed_bytes()).hexdigest(),
             "successor_blobs": self._resolved_blobs(),
             "successor_blobs_status": "RESOLVED",
+            "successor_tree": self.succ_tree,
         }
         binding.update(overrides)
         return binding
@@ -357,6 +389,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         kwargs.setdefault("revocation_bytes", self._revocation_bytes())
         kwargs.setdefault("consumed_bytes", self._consumed_bytes())
         kwargs.setdefault("execution_root", self.exec_root)
+        kwargs.setdefault("repository", self.exec_root)
         return _verify(
             predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
             closure_manifest_bytes=manifest_bytes if manifest_bytes is not None else self._manifest_bytes(),
@@ -539,15 +572,11 @@ class SuccessorBlobBindingTests(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.root = pathlib.Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.root, True)
-        self.contents = {}
-        for index, effect in enumerate(self.EFFECTS):
-            target = self.root / effect["path"]
-            target.parent.mkdir(parents=True, exist_ok=True)
-            data = f"execution bytes {index}\n".encode("utf-8")
-            target.write_bytes(data)
-            self.contents[effect["path"]] = data
+        if shutil.which("git") is None:
+            self.skipTest("git binary unavailable")
+        self.root, self.succ_tree, self.contents = _make_git_execution_tree(
+            self, [effect["path"] for effect in self.EFFECTS]
+        )
 
     def _manifest_bytes(self, effects=None):
         return json.dumps({
@@ -573,20 +602,23 @@ class SuccessorBlobBindingTests(unittest.TestCase):
             "closure_manifest_digest": hashlib.sha256(manifest_bytes).hexdigest(),
             "permitted_effects_digest": v.digest(effects),
             "predecessor_commit": "042dda535be70927b73cd1a131b2545349729643",
-            "predecessor_tree": "637af7c870218360c3458b0fb54695a3450dedb5",
+            "predecessor_tree": EMPTY_TREE,
             "target_ref": "refs/heads/pg-p0-closure-lineage",
             "expected_old": "042dda535be70927b73cd1a131b2545349729643",
             "revocation_state_digest": hashlib.sha256(self._rev()).hexdigest(),
             "consumed_state_digest": hashlib.sha256(self._con()).hexdigest(),
             "successor_blobs": blobs if blobs is not None else self._resolved_blobs(),
+            "successor_tree": self.succ_tree,
         }
         return mandate, manifest_bytes
 
-    def _enforce(self, mandate, manifest_bytes, execution_root=None, required=True):
+    def _enforce(self, mandate, manifest_bytes, execution_root=None, required=True,
+                 repository=_DEFAULT):
         return v.enforce_closure_binding(
             mandate, manifest_bytes, self._rev(), self._con(),
             required=required,
             execution_root=execution_root if execution_root is not None else self.root,
+            repository=self.root if repository is _DEFAULT else repository,
         )
 
     def _assert_reason(self, reason, mandate, manifest_bytes, **kwargs):
@@ -701,6 +733,208 @@ class SuccessorBlobBindingTests(unittest.TestCase):
         result = self._enforce(mandate, manifest_bytes, required=False)
         self.assertFalse(result["successor_blobs"]["successor_blobs_verified"])
         self.assertEqual(len(result["successor_blobs"]["unresolved_paths"]), len(self.EFFECTS))
+
+
+class TreeScopeAttackTests(unittest.TestCase):
+    """Cycle-4 pack. Cycle 3 verified only the DECLARED paths, so an undeclared file added under the
+    execution root was never examined and verification still accepted. Scope is now established from
+    the COMPLETE tree diff and the COMPLETE execution root."""
+
+    PERMITTED = ["docs/CHANGELOG.md", "tools/validate_pg_g0_authority_docket.py"]
+
+    def _git(self, *args):
+        return subprocess.run(["git", "-C", str(self.repo), *args],
+                              capture_output=True, check=True).stdout
+
+    def setUp(self):
+        if shutil.which("git") is None:
+            self.skipTest("git binary unavailable")
+        self.repo = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.repo, True)
+        self._git("init", "-q")
+        self._git("config", "user.email", "t@example.invalid")
+        self._git("config", "user.name", "t")
+        for path in self.PERMITTED + ["docs/UNTOUCHED.md"]:
+            target = self.repo / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(f"base {path}\n".encode())
+        self._git("add", "-A")
+        self._git("commit", "-qm", "base")
+        self.pred_tree = self._git("rev-parse", "HEAD^{tree}").decode().strip()
+
+    def _commit_tree(self, message="succ"):
+        self._git("add", "-A")
+        self._git("commit", "-qm", message)
+        return self._git("rev-parse", "HEAD^{tree}").decode().strip()
+
+    def _effects(self):
+        return [{"path": p, "effect": "permitted"} for p in self.PERMITTED]
+
+    def _manifest_bytes(self):
+        return json.dumps({"decision_id": "PG-P0-CLOSURE-002",
+                           "permitted_effects_at_execution_C8": self._effects()},
+                          indent=2).encode()
+
+    def _rev(self):
+        return json.dumps({"revoked_keyids": [], "revoked_decision_ids": []}).encode()
+
+    def _con(self):
+        return json.dumps({}).encode()
+
+    def _binding(self, succ_tree, **over):
+        blobs = {}
+        for path in self.PERMITTED:
+            blobs[path] = self._git("rev-parse", f"{succ_tree}:{path}").decode().strip()
+        mb = self._manifest_bytes()
+        binding = {
+            "closure_manifest_digest": hashlib.sha256(mb).hexdigest(),
+            "permitted_effects_digest": v.digest(self._effects()),
+            "predecessor_commit": "0" * 40,
+            "predecessor_tree": self.pred_tree,
+            "successor_tree": succ_tree,
+            "target_ref": "refs/heads/pg-p0-closure-lineage",
+            "expected_old": "0" * 40,
+            "revocation_state_digest": hashlib.sha256(self._rev()).hexdigest(),
+            "consumed_state_digest": hashlib.sha256(self._con()).hexdigest(),
+            "successor_blobs": blobs,
+        }
+        binding.update(over)
+        return binding
+
+    def _enforce(self, succ_tree, execution_root=None, **over):
+        mandate = _mandate(_predecessor())
+        mandate["closure_binding"] = self._binding(succ_tree, **over)
+        return v.enforce_closure_binding(
+            mandate, self._manifest_bytes(), self._rev(), self._con(),
+            required=True,
+            execution_root=execution_root if execution_root is not None else self.repo,
+            repository=self.repo,
+        )
+
+    def _assert(self, reason, succ_tree, **kw):
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(succ_tree, **kw)
+        self.assertEqual(cm.exception.reason, reason)
+
+    # ---- happy path -----------------------------------------------------------------
+    def test_only_permitted_paths_changed_accepts(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        result = self._enforce(succ)
+        self.assertTrue(result["successor_tree"]["successor_tree_verified"])
+
+    # ---- THE cycle-3 escape ---------------------------------------------------------
+    def test_undeclared_added_path_rejects(self):
+        """The exact attack that defeated cycle 3."""
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        (self.repo / "docs/SMUGGLED.md").write_bytes(b"undeclared\n")
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_undeclared_modified_path_rejects(self):
+        (self.repo / "docs/UNTOUCHED.md").write_bytes(b"quietly modified\n")
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_undeclared_deleted_path_rejects(self):
+        (self.repo / "docs/UNTOUCHED.md").unlink()
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_undeclared_renamed_path_rejects(self):
+        (self.repo / "docs/UNTOUCHED.md").rename(self.repo / "docs/RENAMED.md")
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_undeclared_mode_change_rejects(self):
+        self._git("update-index", "--chmod=+x", "docs/UNTOUCHED.md")
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_undeclared_type_change_to_symlink_rejects(self):
+        blob = self._git("hash-object", "-w", "--stdin", ).decode().strip() if False else \
+            subprocess.run(["git", "-C", str(self.repo), "hash-object", "-w", "--stdin"],
+                           input=b"target/path", capture_output=True, check=True).stdout.decode().strip()
+        self._git("update-index", "--add", "--cacheinfo", f"120000,{blob},docs/UNTOUCHED.md")
+        self._assert(v.TREE_SCOPE_VIOLATION, self._commit_tree())
+
+    def test_permitted_path_type_changed_to_symlink_rejects(self):
+        blob = subprocess.run(["git", "-C", str(self.repo), "hash-object", "-w", "--stdin"],
+                              input=b"elsewhere", capture_output=True, check=True).stdout.decode().strip()
+        self._git("update-index", "--add", "--cacheinfo", f"120000,{blob},docs/CHANGELOG.md")
+        succ = self._commit_tree()
+        # in-scope path, but it is no longer a regular file: the blob-entry check must catch it
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(succ)
+        self.assertIn(cm.exception.reason,
+                      {v.SUCCESSOR_TREE_ENTRY_INVALID, v.EXECUTION_ROOT_MISMATCH,
+                       v.SUCCESSOR_BLOB_MISMATCH})
+
+    # ---- tree object identity --------------------------------------------------------
+    def test_unresolved_successor_tree_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.SUCCESSOR_TREE_UNRESOLVED, succ, successor_tree="UNRESOLVED")
+
+    def test_blob_oid_used_as_tree_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        blob = self._git("rev-parse", f"{succ}:docs/CHANGELOG.md").decode().strip()
+        self._assert(v.TREE_OBJECT_INVALID, succ, successor_tree=blob)
+
+    def test_nonexistent_tree_oid_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.TREE_OBJECT_INVALID, succ, successor_tree="b" * 40)
+
+    def test_wrong_predecessor_tree_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        self._assert(v.TREE_OBJECT_INVALID, succ, predecessor_tree="c" * 40)
+
+    def test_absent_repository_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        mandate = _mandate(_predecessor())
+        mandate["closure_binding"] = self._binding(succ)
+        with self.assertRaises(v.VerifyError) as cm:
+            v.enforce_closure_binding(mandate, self._manifest_bytes(), self._rev(), self._con(),
+                                      required=True, execution_root=self.repo, repository=None)
+        self.assertEqual(cm.exception.reason, v.REPOSITORY_REQUIRED)
+
+    # ---- successor_tree vs bound blobs ----------------------------------------------
+    def test_bound_blob_not_matching_tree_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        blobs = self._binding(succ)["successor_blobs"]
+        blobs["docs/CHANGELOG.md"] = v.git_blob_oid(b"a different thing\n")
+        # Either the execution-byte check or the tree-blob check may fire first; both are correct
+        # fail-closed rejections of a bound id that matches neither.
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(succ, successor_blobs=blobs)
+        self.assertIn(cm.exception.reason,
+                      {v.SUCCESSOR_TREE_BLOB_MISMATCH, v.SUCCESSOR_BLOB_MISMATCH})
+
+    # ---- execution root must BE the successor tree ------------------------------------
+    def test_extra_untracked_file_in_execution_root_rejects(self):
+        """Untracked bytes are invisible to a tree diff, so the execution root is compared to the
+        successor tree in full."""
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        (self.repo / "docs/UNTRACKED-EXTRA.md").write_bytes(b"smuggled\n")
+        self._assert(v.EXECUTION_ROOT_MISMATCH, succ)
+
+    def test_missing_file_in_execution_root_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        (self.repo / "docs/UNTOUCHED.md").unlink()
+        self._assert(v.EXECUTION_ROOT_MISMATCH, succ)
+
+    def test_dirty_permitted_file_in_execution_root_rejects(self):
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"changed\n")
+        succ = self._commit_tree()
+        (self.repo / "docs/CHANGELOG.md").write_bytes(b"tampered after commit\n")
+        # Two independent controls can catch this (the per-path execution-byte check and the
+        # whole-root-vs-tree check); either is a correct fail-closed rejection.
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(succ)
+        self.assertIn(cm.exception.reason,
+                      {v.EXECUTION_ROOT_MISMATCH, v.SUCCESSOR_BLOB_MISMATCH})
 
 
 class UnsignedProposalIsNotSignableTests(unittest.TestCase):

@@ -1,5 +1,31 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 4 (EVD-CLOSURE-025)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-3 assurance conflict
+  resolved fail-closed to HOLD: an independent attack added an **undeclared file** under the
+  execution root and verification still accepted. Cycle 3 verified the seven declared paths
+  thoroughly but never enumerated anything else, so per-path checks could not establish scope.
+- **Scope now comes from the complete change.** `closure_binding` gains a required `successor_tree`
+  (40-hex git tree id; the proposal carries `UNRESOLVED` and therefore rejects). Closure mode
+  requires a bounded `--repository`, requires both trees to be real git tree objects
+  (`TREE_OBJECT_INVALID`), enumerates the full `predecessor_tree -> successor_tree` diff with
+  `--no-renames` so renames decompose into delete+add, and rejects any added, modified, deleted,
+  renamed, mode-changed or type-changed path outside the seven permitted effects
+  (`TREE_SCOPE_VIOLATION`).
+- **Execution root must BE the successor tree** - no extra file, no missing file, no differing byte
+  (`EXECUTION_ROOT_MISMATCH`). Untracked bytes are invisible to a tree diff, so the root is compared
+  to the tree in full; this is the control that actually catches the reported attack.
+- **A symlink is also a blob in git**, so permitted-effect entries are additionally mode-allow-listed
+  to regular files (`100644`/`100755`); `SUCCESSOR_TREE_ENTRY_INVALID` otherwise.
+- Eight new reason codes; 18 tree-scope attack tests. DSSE suite 84/84.
+- Disclosed dependency change: tree-scope helpers shell out to the `git` binary via `subprocess`
+  (read-only: `cat-file`, `ls-tree`, `diff`, `rev-parse`), mirroring
+  `tools/validate_pg_g0_authority_docket.py`. Tests skip cleanly when git is absent.
+- Preserved: frozen signed artifacts byte-identical to base, `DRAFT_NOT_SIGNABLE` /
+  `BLOCKED_PENDING_EXECUTION_BYTES` status, revocation scaffold scoped to `PG-P0-CLOSURE-002`,
+  withdrawn backdated verification guidance, no Graphify artifacts.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 3 (EVD-CLOSURE-024)
 
 - Additive follow-up commit on `claude/PG-P0-closure-repair-c8-v2` after the independent Codex

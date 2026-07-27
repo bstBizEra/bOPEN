@@ -41,6 +41,7 @@ import argparse
 import base64
 import hashlib
 import json
+import subprocess
 from pathlib import Path, PurePosixPath
 
 
@@ -79,6 +80,17 @@ SUCCESSOR_BLOBS_UNRESOLVED = "SUCCESSOR_BLOBS_UNRESOLVED"
 SUCCESSOR_BLOB_MISMATCH = "SUCCESSOR_BLOB_MISMATCH"
 EXECUTION_ROOT_REQUIRED = "EXECUTION_ROOT_REQUIRED"
 EXECUTION_PATH_UNSAFE = "EXECUTION_PATH_UNSAFE"
+# Tree-scope codes. Verifying only the DECLARED paths is not enough: an attacker can add an
+# undeclared file that no per-path check ever looks at. Scope must be established by enumerating the
+# COMPLETE predecessor->successor tree diff and the COMPLETE execution root, not by spot checks.
+REGULAR_FILE_MODES = {"100644", "100755"}
+REPOSITORY_REQUIRED = "REPOSITORY_REQUIRED"
+TREE_OBJECT_INVALID = "TREE_OBJECT_INVALID"
+TREE_SCOPE_VIOLATION = "TREE_SCOPE_VIOLATION"
+SUCCESSOR_TREE_UNRESOLVED = "SUCCESSOR_TREE_UNRESOLVED"
+SUCCESSOR_TREE_ENTRY_INVALID = "SUCCESSOR_TREE_ENTRY_INVALID"
+SUCCESSOR_TREE_BLOB_MISMATCH = "SUCCESSOR_TREE_BLOB_MISMATCH"
+EXECUTION_ROOT_MISMATCH = "EXECUTION_ROOT_MISMATCH"
 
 
 class VerifyError(Exception):
@@ -421,6 +433,7 @@ CLOSURE_BINDING_REQUIRED_KEYS = {
     "permitted_effects_digest",
     "predecessor_commit",
     "predecessor_tree",
+    "successor_tree",
     "target_ref",
     "expected_old",
     "revocation_state_digest",
@@ -683,6 +696,219 @@ def validate_successor_blobs(binding, permitted_effects, execution_root, *, requ
     return {"successor_blobs_verified": True, "unresolved_paths": [], "verified_blobs": verified}
 
 
+# ---------------------------------------------------------------- git object source
+#
+# NOTE ON DEPENDENCIES: everything above this point is pure standard library. Tree-scope
+# verification needs a real git object database, so these helpers shell out to the `git` binary via
+# subprocess (still stdlib, but an external program). This mirrors tools/validate_pg_g0_authority_
+# docket.py, which already reads git state the same way. git is invoked read-only: cat-file,
+# ls-tree, diff and rev-parse only -- nothing that writes an object, moves a ref, or mutates state.
+
+def _git(repository, arguments):
+    """Run a read-only git command in `repository`. Fails closed on any non-zero exit."""
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repository), *arguments],
+            capture_output=True, check=False,
+        )
+    except (OSError, ValueError) as exc:
+        raise VerifyError(REPOSITORY_REQUIRED, f"cannot invoke git in {repository!r}: {exc}")
+    if proc.returncode != 0:
+        detail = proc.stderr.decode("utf-8", "replace").strip()
+        raise VerifyError(TREE_OBJECT_INVALID, f"git {' '.join(arguments)} failed: {detail}")
+    return proc.stdout
+
+
+def assert_git_repository(repository):
+    if repository is None:
+        raise VerifyError(
+            REPOSITORY_REQUIRED,
+            "closure-execution verification requires a git object source (--repository) so the "
+            "predecessor and successor trees can be resolved and diffed",
+        )
+    path = Path(repository)
+    if not path.is_dir():
+        raise VerifyError(REPOSITORY_REQUIRED, f"repository is not a directory: {repository!r}")
+    _git(path, ["rev-parse", "--git-dir"])
+    return path
+
+
+def assert_tree_object(repository, oid, label):
+    """The bound id must be a REAL tree object in this object database -- not merely 40 hex
+    characters, and not a blob or commit wearing a tree's shape."""
+    kind = _git(repository, ["cat-file", "-t", oid]).decode("ascii", "replace").strip()
+    if kind != "tree":
+        raise VerifyError(TREE_OBJECT_INVALID, f"{label} {oid} is a {kind!r} object, expected a tree")
+    return oid
+
+
+def tree_diff_paths(repository, predecessor_tree, successor_tree):
+    """Every path touched between the two trees, as a set.
+
+    `--no-renames` is deliberate: a rename decomposes into a delete of the old path AND an add of
+    the new one, so BOTH sides are enumerated and a rename that touches anything outside the
+    permitted set cannot hide behind a single similarity-matched record. `-z` avoids any path
+    quoting ambiguity."""
+    raw = _git(
+        repository,
+        ["diff", "--raw", "-z", "--no-renames", "-M0", predecessor_tree, successor_tree],
+    )
+    fields = raw.split(b"\0")
+    touched = {}
+    index = 0
+    while index < len(fields):
+        meta = fields[index]
+        if not meta.startswith(b":"):
+            index += 1
+            continue
+        if index + 1 >= len(fields):
+            raise VerifyError(TREE_OBJECT_INVALID, "malformed git diff --raw record: missing path")
+        parts = meta.decode("utf-8", "replace").split()
+        status = parts[4] if len(parts) >= 5 else "?"
+        path = fields[index + 1].decode("utf-8", "surrogateescape")
+        touched[path] = status
+        index += 2
+    return touched
+
+
+def tree_entries(repository, tree):
+    """Full recursive map path -> (mode, type, oid) for a tree, including submodule/type entries."""
+    raw = _git(repository, ["ls-tree", "-r", "-t", "-z", tree])
+    entries = {}
+    for record in raw.split(b"\0"):
+        if not record:
+            continue
+        header, _, path = record.decode("utf-8", "surrogateescape").partition("\t")
+        pieces = header.split()
+        if len(pieces) != 3:
+            raise VerifyError(TREE_OBJECT_INVALID, f"malformed ls-tree record: {header!r}")
+        mode, kind, oid = pieces
+        entries[path] = (mode, kind, oid)
+    return entries
+
+
+def _walk_execution_files(execution_root):
+    root = Path(execution_root).resolve()
+    found = set()
+    for path in root.rglob("*"):
+        if path.is_dir():
+            continue
+        relative = path.relative_to(root).as_posix()
+        if relative == ".git" or relative.startswith(".git/"):
+            continue
+        found.add(relative)
+    return root, found
+
+
+def validate_successor_tree(
+    binding, permitted_effects, repository, execution_root, *, required
+):
+    """Establish scope over the COMPLETE change, not just the declared paths.
+
+    Cycle-3 verified each of the seven declared paths and nothing else, so an undeclared file added
+    under the execution root was never looked at and verification still accepted. This function
+    closes that by (a) diffing the whole predecessor->successor tree and rejecting ANY touched path
+    outside the permitted set, and (b) requiring the execution root to be EXACTLY the successor
+    tree -- no extra file, no missing file, no differing byte."""
+    successor_tree = binding["successor_tree"]
+    if not _is_lower_hex(successor_tree, 40):
+        if not required:
+            return {"successor_tree_verified": False, "reason": "successor_tree unresolved"}
+        raise VerifyError(
+            SUCCESSOR_TREE_UNRESOLVED,
+            "closure-execution verification requires successor_tree to be a resolved 40-character "
+            f"lowercase git tree object id; got {successor_tree!r}",
+        )
+
+    if not required and repository is None:
+        return {"successor_tree_verified": False, "reason": "no repository supplied"}
+
+    repo = assert_git_repository(repository)
+    predecessor_tree = binding["predecessor_tree"]
+    assert_tree_object(repo, predecessor_tree, "predecessor_tree")
+    assert_tree_object(repo, successor_tree, "successor_tree")
+
+    permitted = {effect["path"] for effect in permitted_effects}
+
+    touched = tree_diff_paths(repo, predecessor_tree, successor_tree)
+    out_of_scope = sorted(path for path in touched if path not in permitted)
+    if out_of_scope:
+        raise VerifyError(
+            TREE_SCOPE_VIOLATION,
+            "tree diff touches paths outside the permitted effects: "
+            + ", ".join(f"{path} ({touched[path]})" for path in out_of_scope),
+        )
+
+    entries = tree_entries(repo, successor_tree)
+    verified = {}
+    if not required and any(
+        not _is_lower_hex(oid, 40) for oid in binding["successor_blobs"].values()
+    ):
+        # Reporting mode with unresolved blobs: the scope check above still ran and still rejects an
+        # out-of-scope tree, but there is nothing to compare per path yet.
+        return {
+            "successor_tree_verified": False,
+            "reason": "successor_blobs unresolved",
+            "touched_paths": sorted(touched),
+        }
+    for path in sorted(binding["successor_blobs"]):
+        entry = entries.get(path)
+        if entry is None:
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} is bound as a successor blob but is absent from successor_tree {successor_tree}",
+            )
+        mode, kind, oid = entry
+        if kind != "blob":
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} is a {kind!r} entry (mode {mode}) in successor_tree, expected a blob",
+            )
+        # A symlink is ALSO a blob in git (mode 120000), and a gitlink is 160000. Checking only the
+        # object kind would let a permitted path be type-changed into a symlink pointing anywhere,
+        # so the mode is allow-listed to regular files.
+        if mode not in REGULAR_FILE_MODES:
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} has mode {mode} in successor_tree; permitted effects must be regular files "
+                f"({'/'.join(sorted(REGULAR_FILE_MODES))})",
+            )
+        if oid != binding["successor_blobs"][path]:
+            raise VerifyError(
+                SUCCESSOR_TREE_BLOB_MISMATCH,
+                f"{path}: mandate binds blob {binding['successor_blobs'][path]}, successor_tree holds {oid}",
+            )
+        verified[path] = oid
+
+    if execution_root is not None:
+        root, on_disk = _walk_execution_files(execution_root)
+        tree_files = {path for path, (_, kind, _) in entries.items() if kind == "blob"}
+        undeclared = sorted(on_disk - tree_files)
+        absent = sorted(tree_files - on_disk)
+        if undeclared or absent:
+            raise VerifyError(
+                EXECUTION_ROOT_MISMATCH,
+                "execution root is not exactly the successor tree; "
+                f"undeclared_extra={undeclared[:10]} missing={absent[:10]}",
+            )
+        for path in sorted(tree_files):
+            actual = git_blob_oid((root / path).read_bytes())
+            expected = entries[path][2]
+            if actual != expected:
+                raise VerifyError(
+                    EXECUTION_ROOT_MISMATCH,
+                    f"{path}: execution bytes hash to {actual}, successor_tree holds {expected}",
+                )
+
+    return {
+        "successor_tree_verified": True,
+        "successor_tree": successor_tree,
+        "predecessor_tree": predecessor_tree,
+        "touched_paths": sorted(touched),
+        "verified_tree_blobs": verified,
+    }
+
+
 def raw_sha256(data):
     """SHA-256 over exact on-disk bytes (not RFC 8785). Closure manifests, revocation registries
     and consumed registries are plain committed files, not signed payloads, so their binding digest
@@ -729,7 +955,7 @@ def validate_closure_binding(binding):
 
 def enforce_closure_binding(
     mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *, required,
-    execution_root=None,
+    execution_root=None, repository=None,
 ):
     """Enforce the closure binding. When `required` is True (closure-execution verification), a
     missing binding or missing manifest bytes is a hard rejection -- never a silent pass. When it is
@@ -811,9 +1037,13 @@ def enforce_closure_binding(
     successor_blob_result = validate_successor_blobs(
         binding, effects, execution_root, required=required
     )
+    successor_tree_result = validate_successor_tree(
+        binding, effects, repository, execution_root, required=required
+    )
 
     return {
         "closure_binding_enforced": True,
+        "successor_tree": successor_tree_result,
         "closure_manifest_digest": actual_manifest_digest,
         "permitted_effects_digest": actual_effects_digest,
         "successor_blobs": successor_blob_result,
@@ -841,6 +1071,7 @@ def verify_transition(
     consumed_bytes=None,
     require_closure_binding=False,
     execution_root=None,
+    repository=None,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
@@ -859,6 +1090,7 @@ def verify_transition(
         consumed_bytes,
         required=require_closure_binding,
         execution_root=execution_root,
+        repository=repository,
     )
     signer_identity = _authority_identity(
         mandate, signer_keyid, trust_root, identity_register, verification_time, revocations
@@ -942,6 +1174,12 @@ def main():
              "with --require-closure-binding. Paths are resolved strictly inside this root.",
     )
     parser.add_argument(
+        "--repository",
+        help="git object source holding predecessor_tree and successor_tree. Required with "
+             "--require-closure-binding: the complete tree diff is enumerated and every touched "
+             "path must fall inside the permitted effects. Used read-only.",
+    )
+    parser.add_argument(
         "--require-closure-binding",
         action="store_true",
         help="closure-execution verification: fail closed unless the mandate's closure_binding is "
@@ -979,6 +1217,7 @@ def main():
             consumed_bytes,
             args.require_closure_binding,
             args.execution_root,
+            args.repository,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")

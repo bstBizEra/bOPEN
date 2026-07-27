@@ -201,3 +201,20 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Track the cycle-3 corrections without marking the proposal signable, the bindings resolved, or any control accepted.
 **Benefit of old phase:** The cycle-2 rejection isolated four specific defects rather than invalidating the closure-binding design, so cycle 3 could be additive.
 **Expected outcome:** The proposal remains verifier-rejected by design until a human resolves the execution bytes; C8, C9, merge, PG-P1 and production remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0003
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-3 HOLD after an independent undeclared-file attack succeeded
+**Work package:** PG-P0 closure repair, cycle 4
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0003
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0003
+**Evidence:** EVD-CLOSURE-025
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-3 candidate `da478428bd5d77ddd56eaf89ec74e1130bbc01ac` (HOLD), preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six blob ids AND `successor_tree`; replacement of the inherited `authority.effective_at` and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the tree-scope correction without marking the proposal signable or any binding resolved.
+**Benefit of old phase:** The independent attack proved a real gap that maker self-review had not found, which is exactly what the checker separation exists to produce.
+**Expected outcome:** Scope is enforced over the complete change; the proposal stays verifier-rejected by design.

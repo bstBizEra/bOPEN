@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-27",
-  "count": 338,
+  "count": 339,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -258,15 +258,15 @@
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.md",
       "title": "PG-P0 Closure Mandate v2 - UNSIGNED DRAFT",
       "status": "",
-      "sha256": "01f2067ce0b482711d9a3edff5c40a4634a2db801e085acd7dd0b54c9f0bf0f0",
-      "bytes": 8017
+      "sha256": "a269b8b6092a0bd18b52eaef1f3940806638d7529c9a370a5f994a02da954c38",
+      "bytes": 8242
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.payload.json",
       "title": "",
       "status": "",
-      "sha256": "5e6967ca19533ff02acea03cc1ee32dc1010091b93d25146cd2ae1608d761403",
-      "bytes": 2258
+      "sha256": "41909b6792ddd0d828c788f26c516f9ca60e3a45bb26404ac4039e1875394bbd",
+      "bytes": 2288
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.dsse.json",
@@ -286,8 +286,8 @@
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json",
       "title": "",
       "status": "",
-      "sha256": "bde8922676f7e2d81cee35f17d5fd7b874bc2af440e5f5989ad836fe3071ac7b",
-      "bytes": 9117
+      "sha256": "2fd049b29f1b27d46a7b0821f607d4c7e8ef43222af9085e59cccf48bdf0e998",
+      "bytes": 9739
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json",
@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "9f3ce8d2880aeab2104eeeb821bc23ad7ccc93a77f01dfc7e1434c18064edc60",
-      "bytes": 37809
+      "sha256": "4acc5fa84381897f43108566af755ae5e4dccfc8aaef5574d9cabdbb1d2c9746",
+      "bytes": 39905
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1529,6 +1529,13 @@
       "bytes": 8259
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-025-cycle4-tree-scope-binding.md",
+      "title": "EVD-CLOSURE-025 - Maker evidence: cycle-4 tree-scope binding",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "111fdf4c98003c4c53c82d0e295370a03f31105caa03db4ec467a23bc6b0859f",
+      "bytes": 5826
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1700,7 +1707,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "a951969423722bb7c1f5d98016609b4e2305ccfc60ee8a35d3f6e4766e6223a2",
+      "sha256": "1817d808123c4e04cfce4a306c5b55458685df79e54c4cbef9ae2664f87e16ad",
       "bytes": 2566
     },
     {
