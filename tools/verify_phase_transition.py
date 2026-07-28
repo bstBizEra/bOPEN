@@ -41,7 +41,8 @@ import argparse
 import base64
 import hashlib
 import json
-from pathlib import Path
+import subprocess
+from pathlib import Path, PurePosixPath
 
 
 # ================================================================ verdicts
@@ -61,6 +62,38 @@ PREDECESSOR_MISMATCH = "PREDECESSOR_MISMATCH"
 SUCCESSOR_MISMATCH = "SUCCESSOR_MISMATCH"
 INVARIANT_VIOLATION = "INVARIANT_VIOLATION"
 MANDATE_INVALID = "MANDATE_INVALID"
+# Closure-execution binding codes. These exist so that verifying a *closure execution* (as opposed
+# to verifying a bare schedule transform) fails closed unless the mandate cryptographically binds
+# the exact closure manifest, the exact permitted effects, the exact predecessor commit/tree, the
+# exact compare-and-swap target, and the exact external revocation/consumed state.
+CLOSURE_BINDING_REQUIRED = "CLOSURE_BINDING_REQUIRED"
+CLOSURE_BINDING_MALFORMED = "CLOSURE_BINDING_MALFORMED"
+CLOSURE_MANIFEST_MISMATCH = "CLOSURE_MANIFEST_MISMATCH"
+PERMITTED_EFFECTS_MISMATCH = "PERMITTED_EFFECTS_MISMATCH"
+REVOCATION_STATE_MISMATCH = "REVOCATION_STATE_MISMATCH"
+CONSUMED_STATE_MISMATCH = "CONSUMED_STATE_MISMATCH"
+# Successor-blob binding codes. A closure execution is only meaningfully authorized if the mandate
+# names the exact resulting bytes of every file the closure may write. An unresolved placeholder is
+# a hard rejection, never a "pending" state that a verifier waves through.
+SUCCESSOR_BLOBS_INCOMPLETE = "SUCCESSOR_BLOBS_INCOMPLETE"
+SUCCESSOR_BLOBS_UNRESOLVED = "SUCCESSOR_BLOBS_UNRESOLVED"
+SUCCESSOR_BLOB_MISMATCH = "SUCCESSOR_BLOB_MISMATCH"
+EXECUTION_ROOT_REQUIRED = "EXECUTION_ROOT_REQUIRED"
+EXECUTION_PATH_UNSAFE = "EXECUTION_PATH_UNSAFE"
+# Tree-scope codes. Verifying only the DECLARED paths is not enough: an attacker can add an
+# undeclared file that no per-path check ever looks at. Scope must be established by enumerating the
+# COMPLETE predecessor->successor tree diff and the COMPLETE execution root, not by spot checks.
+REGULAR_FILE_MODES = {"100644", "100755"}
+REPOSITORY_REQUIRED = "REPOSITORY_REQUIRED"
+TREE_OBJECT_INVALID = "TREE_OBJECT_INVALID"
+TREE_SCOPE_VIOLATION = "TREE_SCOPE_VIOLATION"
+EXPECTED_OLD_MISMATCH = "EXPECTED_OLD_MISMATCH"
+PREDECESSOR_COMMIT_INVALID = "PREDECESSOR_COMMIT_INVALID"
+PREDECESSOR_TREE_MISMATCH = "PREDECESSOR_TREE_MISMATCH"
+SUCCESSOR_TREE_UNRESOLVED = "SUCCESSOR_TREE_UNRESOLVED"
+SUCCESSOR_TREE_ENTRY_INVALID = "SUCCESSOR_TREE_ENTRY_INVALID"
+SUCCESSOR_TREE_BLOB_MISMATCH = "SUCCESSOR_TREE_BLOB_MISMATCH"
+EXECUTION_ROOT_MISMATCH = "EXECUTION_ROOT_MISMATCH"
 
 
 class VerifyError(Exception):
@@ -383,8 +416,41 @@ def _trust_keys(trust_root):
 # ================================================================ mandate model + transform
 
 MANDATE_REQUIRED = {"schema_id", "decision_id", "phase_id", "operation", "predecessor", "transform", "invariants", "authority"}
-MANDATE_ALLOWED = MANDATE_REQUIRED | {"schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties"}
+# `closure_binding` is OPTIONAL in the schema but MANDATORY in closure-execution verification mode
+# (cycle 8: unconditionally). It is deliberately NOT added to MANDATE_REQUIRED: a mandate that
+# authorizes a bare schedule transform is a different, narrower thing than one that authorizes a
+# closure execution, and forcing the field on the former would retroactively invalidate already
+# signed mandates without making anything safer. Safety comes from enforce_closure_binding, which
+# rejects an absent binding unconditionally -- there is no mode or flag that tolerates absence.
+MANDATE_ALLOWED = MANDATE_REQUIRED | {
+    "schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties",
+    "closure_binding",
+}
 MUTATION_ALLOWED_KEYS = {"path", "from", "to", "rule", "value"}
+
+# Every field below must be present and well-formed for a closure binding to be usable. The
+# allow-list is closed: an unknown key is CLOSURE_BINDING_MALFORMED, so a binding cannot smuggle in
+# an unchecked field that a reader might mistake for an enforced control.
+CLOSURE_BINDING_REQUIRED_KEYS = {
+    "closure_manifest_digest",
+    "permitted_effects_digest",
+    "predecessor_commit",
+    "predecessor_tree",
+    "successor_tree",
+    "target_ref",
+    "expected_old",
+    "revocation_state_digest",
+    "consumed_state_digest",
+    "successor_blobs",
+}
+CLOSURE_BINDING_ALLOWED_KEYS = CLOSURE_BINDING_REQUIRED_KEYS | {"successor_blobs_status"}
+_SHA256_HEX_KEYS = {
+    "closure_manifest_digest",
+    "permitted_effects_digest",
+    "revocation_state_digest",
+    "consumed_state_digest",
+}
+_GIT_OID_KEYS = {"predecessor_commit", "predecessor_tree", "expected_old"}
 
 
 def validate_mandate(mandate):
@@ -522,6 +588,548 @@ def _lookup_identity(identity_register, identity_id):
     raise VerifyError(AUTHORITY_DENIED, f"identity {identity_id!r} not found in register")
 
 
+# ================================================================ closure-execution binding
+#
+# A closure execution is broader than the schedule transform the DSSE payload's `transform` field
+# describes: it also rewrites a validator, a test file, a signing record and two derived manifests,
+# and it lands as one commit that a compare-and-swap then publishes. The signed payload alone
+# therefore cannot answer "were exactly these effects, on exactly this base, toward exactly this
+# ref, under exactly this revocation/consumed state, what the human authorized?" -- `closure_binding`
+# is what makes that question answerable, and its unconditional enforcement makes it unskippable.
+
+def _is_lower_hex(value, length):
+    if not isinstance(value, str) or len(value) != length:
+        return False
+    return all(character in "0123456789abcdef" for character in value)
+
+
+def git_blob_oid(data):
+    """Git blob object id for exact file bytes: sha1(b"blob <len>\\0" + data).
+
+    SHA-1 is used here because that is what a git object id IS in this repository's object format --
+    this is content addressing for cross-checking against `git rev-parse HEAD:<path>`, not a
+    security primitive, and it is never used to authenticate anything. The security-bearing digests
+    in this module are SHA-256 (raw_sha256 / digest)."""
+    header = b"blob %d\0" % len(data)
+    return hashlib.sha1(header + data).hexdigest()  # noqa: S324 - git object id, not a security hash
+
+
+def resolve_execution_path(execution_root, relative_path):
+    """Resolve a permitted-effect path inside a bounded execution root.
+
+    Fails closed on absolute paths, drive-qualified paths, and any traversal that would escape the
+    root, so a manifest path can never be used to hash a file outside the tree under review."""
+    if not isinstance(relative_path, str) or not relative_path:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"invalid permitted-effect path: {relative_path!r}")
+    pure = PurePosixPath(relative_path)
+    if pure.is_absolute() or relative_path.startswith("\\") or ".." in pure.parts:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"path escapes the execution root: {relative_path!r}")
+    if len(relative_path) > 1 and relative_path[1] == ":":
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"drive-qualified path rejected: {relative_path!r}")
+    root = Path(execution_root).resolve()
+    candidate = (root / relative_path).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        raise VerifyError(EXECUTION_PATH_UNSAFE, f"path escapes the execution root: {relative_path!r}")
+    return candidate
+
+
+def validate_successor_blobs(binding, permitted_effects, execution_root, *, required):
+    """Bind the exact resulting bytes of every permitted effect.
+
+    In closure-execution mode the successor_blobs map must name EXACTLY the permitted-effect paths
+    (no missing path, no extra path), every value must be a 40-character lowercase git object id
+    (an `UNRESOLVED` placeholder is rejected, not tolerated), and every bound id must equal the git
+    blob id recomputed from the actual bytes on disk under the bounded execution root."""
+    blobs = binding["successor_blobs"]
+    expected_paths = []
+    for effect in permitted_effects:
+        if not isinstance(effect, dict) or "path" not in effect:
+            raise VerifyError(PERMITTED_EFFECTS_MISMATCH, "permitted effect entry has no path")
+        expected_paths.append(effect["path"])
+    expected = set(expected_paths)
+    if len(expected) != len(expected_paths):
+        raise VerifyError(PERMITTED_EFFECTS_MISMATCH, "permitted effects contain duplicate paths")
+    actual = set(blobs)
+
+    missing = sorted(expected - actual)
+    extra = sorted(actual - expected)
+    if missing or extra:
+        raise VerifyError(
+            SUCCESSOR_BLOBS_INCOMPLETE,
+            f"successor_blobs must name exactly the {len(expected)} permitted-effect paths; "
+            f"missing={missing} extra={extra}",
+        )
+
+    unresolved = sorted(path for path, oid in blobs.items() if not _is_lower_hex(oid, 40))
+    if unresolved:
+        if not required:
+            return {"successor_blobs_verified": False, "unresolved_paths": unresolved}
+        raise VerifyError(
+            SUCCESSOR_BLOBS_UNRESOLVED,
+            "closure-execution verification requires every successor blob to be a resolved "
+            f"40-character lowercase git object id; unresolved or malformed: {unresolved}",
+        )
+
+    if execution_root is None:
+        if not required:
+            return {"successor_blobs_verified": False, "unresolved_paths": []}
+        raise VerifyError(
+            EXECUTION_ROOT_REQUIRED,
+            "closure-execution verification requires an execution root so each bound successor blob "
+            "id can be recomputed from the actual file bytes",
+        )
+
+    verified = {}
+    for path in sorted(blobs):
+        resolved = resolve_execution_path(execution_root, path)
+        if not resolved.is_file():
+            raise VerifyError(
+                SUCCESSOR_BLOB_MISMATCH,
+                f"bound successor blob for {path!r} but no such file under the execution root",
+            )
+        recomputed = git_blob_oid(resolved.read_bytes())
+        if recomputed != blobs[path]:
+            raise VerifyError(
+                SUCCESSOR_BLOB_MISMATCH,
+                f"{path}: mandate binds blob {blobs[path]}, actual execution bytes hash to {recomputed}",
+            )
+        verified[path] = recomputed
+    return {"successor_blobs_verified": True, "unresolved_paths": [], "verified_blobs": verified}
+
+
+# ---------------------------------------------------------------- git object source
+#
+# NOTE ON DEPENDENCIES: everything above this point is pure standard library. Tree-scope
+# verification needs a real git object database, so these helpers shell out to the `git` binary via
+# subprocess (still stdlib, but an external program). This mirrors tools/validate_pg_g0_authority_
+# docket.py, which already reads git state the same way. git is invoked read-only: cat-file,
+# ls-tree, diff and rev-parse only -- nothing that writes an object, moves a ref, or mutates state.
+
+def _git(repository, arguments):
+    """Run a read-only git command in `repository`. Fails closed on any non-zero exit."""
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repository), *arguments],
+            capture_output=True, check=False,
+        )
+    except (OSError, ValueError) as exc:
+        raise VerifyError(REPOSITORY_REQUIRED, f"cannot invoke git in {repository!r}: {exc}")
+    if proc.returncode != 0:
+        detail = proc.stderr.decode("utf-8", "replace").strip()
+        raise VerifyError(TREE_OBJECT_INVALID, f"git {' '.join(arguments)} failed: {detail}")
+    return proc.stdout
+
+
+def assert_git_repository(repository):
+    if repository is None:
+        raise VerifyError(
+            REPOSITORY_REQUIRED,
+            "closure-execution verification requires a git object source (--repository) so the "
+            "predecessor and successor trees can be resolved and diffed",
+        )
+    path = Path(repository)
+    if not path.is_dir():
+        raise VerifyError(REPOSITORY_REQUIRED, f"repository is not a directory: {repository!r}")
+    _git(path, ["rev-parse", "--git-dir"])
+    return path
+
+
+def assert_tree_object(repository, oid, label):
+    """The bound id must be a REAL tree object in this object database -- not merely 40 hex
+    characters, and not a blob or commit wearing a tree's shape."""
+    kind = _git(repository, ["cat-file", "-t", oid]).decode("ascii", "replace").strip()
+    if kind != "tree":
+        raise VerifyError(TREE_OBJECT_INVALID, f"{label} {oid} is a {kind!r} object, expected a tree")
+    return oid
+
+
+def tree_diff_paths(repository, predecessor_tree, successor_tree):
+    """Every path touched between the two trees, as {path: status}.
+
+    `--no-renames` MUST be the final rename-related flag. git applies last-option-wins, so an
+    earlier `--no-renames` followed by `-M0` silently RE-ENABLES rename detection: the pair then
+    emits one `R100` record carrying THREE NUL-separated fields (metadata, source, destination)
+    instead of two. A parser that assumes two fields records only the source -- so renaming a
+    PERMITTED path to an UNDECLARED destination reads as an in-scope change and the destination is
+    never enumerated. That was a real escape; the flag order below is load-bearing.
+
+    The parser additionally handles R/C records explicitly and records BOTH paths, so scope is
+    still enforced correctly even if some git version emits a rename despite the flag."""
+    raw = _git(
+        repository,
+        ["diff", "--raw", "-z", "-M0", "--no-renames", predecessor_tree, successor_tree],
+    )
+    fields = raw.split(b"\0")
+    touched = {}
+    index = 0
+    while index < len(fields):
+        meta = fields[index]
+        if not meta.startswith(b":"):
+            index += 1
+            continue
+        parts = meta.decode("utf-8", "replace").split()
+        status = parts[4] if len(parts) >= 5 else "?"
+        # Rename/copy records carry a source AND a destination path; every other status carries one.
+        path_count = 2 if status[:1] in {"R", "C"} else 1
+        if index + path_count >= len(fields):
+            raise VerifyError(
+                TREE_OBJECT_INVALID,
+                f"malformed git diff --raw record: status {status!r} expects {path_count} path(s)",
+            )
+        for offset in range(1, path_count + 1):
+            touched[fields[index + offset].decode("utf-8", "surrogateescape")] = status
+        index += 1 + path_count
+    return touched
+
+
+def assert_predecessor_commit_binds_tree(repository, predecessor_commit, predecessor_tree):
+    """The signed predecessor_commit must be a real commit whose tree IS predecessor_tree.
+
+    Without this, the two fields float free of each other: a mandate could name the genuine signed
+    base commit while pairing it with some OTHER real tree, and every later check -- the diff, the
+    scope test, the blob comparisons -- would run against that substituted baseline and pass. Both
+    fields are inside the signed payload, so they must be proven mutually consistent against the
+    object database, not merely well-formed."""
+    kind = _git(repository, ["cat-file", "-t", predecessor_commit]).decode("ascii", "replace").strip()
+    if kind != "commit":
+        raise VerifyError(
+            PREDECESSOR_COMMIT_INVALID,
+            f"predecessor_commit {predecessor_commit} is a {kind!r} object, expected a commit",
+        )
+    resolved = _git(
+        repository, ["rev-parse", "--verify", f"{predecessor_commit}^{{tree}}"]
+    ).decode("ascii", "replace").strip()
+    if resolved != predecessor_tree:
+        raise VerifyError(
+            PREDECESSOR_TREE_MISMATCH,
+            f"predecessor_commit {predecessor_commit} has tree {resolved}, but the mandate binds "
+            f"predecessor_tree {predecessor_tree}",
+        )
+    return resolved
+
+
+def tree_entries(repository, tree):
+    """Full recursive map path -> (mode, type, oid) for a tree, including submodule/type entries."""
+    raw = _git(repository, ["ls-tree", "-r", "-t", "-z", tree])
+    entries = {}
+    for record in raw.split(b"\0"):
+        if not record:
+            continue
+        header, _, path = record.decode("utf-8", "surrogateescape").partition("\t")
+        pieces = header.split()
+        if len(pieces) != 3:
+            raise VerifyError(TREE_OBJECT_INVALID, f"malformed ls-tree record: {header!r}")
+        mode, kind, oid = pieces
+        entries[path] = (mode, kind, oid)
+    return entries
+
+
+def _walk_execution_files(execution_root):
+    root = Path(execution_root).resolve()
+    found = set()
+    for path in root.rglob("*"):
+        if path.is_dir():
+            continue
+        relative = path.relative_to(root).as_posix()
+        if relative == ".git" or relative.startswith(".git/"):
+            continue
+        found.add(relative)
+    return root, found
+
+
+def validate_successor_tree(
+    binding, permitted_effects, repository, execution_root, *, required
+):
+    """Establish scope over the COMPLETE change, not just the declared paths.
+
+    Cycle-3 verified each of the seven declared paths and nothing else, so an undeclared file added
+    under the execution root was never looked at and verification still accepted. This function
+    closes that by (a) diffing the whole predecessor->successor tree and rejecting ANY touched path
+    outside the permitted set, and (b) requiring the execution root to be EXACTLY the successor
+    tree -- no extra file, no missing file, no differing byte."""
+    successor_tree = binding["successor_tree"]
+    if not _is_lower_hex(successor_tree, 40):
+        if not required:
+            return {"successor_tree_verified": False, "reason": "successor_tree unresolved"}
+        raise VerifyError(
+            SUCCESSOR_TREE_UNRESOLVED,
+            "closure-execution verification requires successor_tree to be a resolved 40-character "
+            f"lowercase git tree object id; got {successor_tree!r}",
+        )
+
+    if not required and repository is None:
+        return {"successor_tree_verified": False, "reason": "no repository supplied"}
+
+    repo = assert_git_repository(repository)
+    predecessor_tree = binding["predecessor_tree"]
+    assert_tree_object(repo, predecessor_tree, "predecessor_tree")
+    assert_tree_object(repo, successor_tree, "successor_tree")
+    # Anchor the baseline BEFORE any diff: the signed predecessor_commit must actually carry the
+    # signed predecessor_tree, or every downstream comparison runs against a substituted baseline.
+    assert_predecessor_commit_binds_tree(repo, binding["predecessor_commit"], predecessor_tree)
+
+    permitted = {effect["path"] for effect in permitted_effects}
+
+    touched = tree_diff_paths(repo, predecessor_tree, successor_tree)
+    out_of_scope = sorted(path for path in touched if path not in permitted)
+    if out_of_scope:
+        raise VerifyError(
+            TREE_SCOPE_VIOLATION,
+            "tree diff touches paths outside the permitted effects: "
+            + ", ".join(f"{path} ({touched[path]})" for path in out_of_scope),
+        )
+
+    entries = tree_entries(repo, successor_tree)
+    verified = {}
+    if not required and any(
+        not _is_lower_hex(oid, 40) for oid in binding["successor_blobs"].values()
+    ):
+        # Reporting mode with unresolved blobs: the scope check above still ran and still rejects an
+        # out-of-scope tree, but there is nothing to compare per path yet.
+        return {
+            "successor_tree_verified": False,
+            "reason": "successor_blobs unresolved",
+            "touched_paths": sorted(touched),
+        }
+    for path in sorted(binding["successor_blobs"]):
+        entry = entries.get(path)
+        if entry is None:
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} is bound as a successor blob but is absent from successor_tree {successor_tree}",
+            )
+        mode, kind, oid = entry
+        if kind != "blob":
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} is a {kind!r} entry (mode {mode}) in successor_tree, expected a blob",
+            )
+        # A symlink is ALSO a blob in git (mode 120000), and a gitlink is 160000. Checking only the
+        # object kind would let a permitted path be type-changed into a symlink pointing anywhere,
+        # so the mode is allow-listed to regular files.
+        if mode not in REGULAR_FILE_MODES:
+            raise VerifyError(
+                SUCCESSOR_TREE_ENTRY_INVALID,
+                f"{path} has mode {mode} in successor_tree; permitted effects must be regular files "
+                f"({'/'.join(sorted(REGULAR_FILE_MODES))})",
+            )
+        if oid != binding["successor_blobs"][path]:
+            raise VerifyError(
+                SUCCESSOR_TREE_BLOB_MISMATCH,
+                f"{path}: mandate binds blob {binding['successor_blobs'][path]}, successor_tree holds {oid}",
+            )
+        verified[path] = oid
+
+    if execution_root is not None:
+        root, on_disk = _walk_execution_files(execution_root)
+        tree_files = {path for path, (_, kind, _) in entries.items() if kind == "blob"}
+        undeclared = sorted(on_disk - tree_files)
+        absent = sorted(tree_files - on_disk)
+        if undeclared or absent:
+            raise VerifyError(
+                EXECUTION_ROOT_MISMATCH,
+                "execution root is not exactly the successor tree; "
+                f"undeclared_extra={undeclared[:10]} missing={absent[:10]}",
+            )
+        for path in sorted(tree_files):
+            actual = git_blob_oid((root / path).read_bytes())
+            expected = entries[path][2]
+            if actual != expected:
+                raise VerifyError(
+                    EXECUTION_ROOT_MISMATCH,
+                    f"{path}: execution bytes hash to {actual}, successor_tree holds {expected}",
+                )
+
+    return {
+        "successor_tree_verified": True,
+        "successor_tree": successor_tree,
+        "predecessor_tree": predecessor_tree,
+        "touched_paths": sorted(touched),
+        "verified_tree_blobs": verified,
+    }
+
+
+def raw_sha256(data):
+    """SHA-256 over exact on-disk bytes (not RFC 8785). Closure manifests, revocation registries
+    and consumed registries are plain committed files, not signed payloads, so their binding digest
+    is over the bytes a reader can independently hash with any tool."""
+    return hashlib.sha256(data).hexdigest()
+
+
+def validate_closure_binding(binding):
+    """Structurally validate a mandate's closure_binding. Fails closed on absence of any required
+    field, any unknown field, and any malformed digest -- including the near-miss shapes that a
+    hand-transcribed value produces (a 63-character digest, an uppercase digest, a truncated OID)."""
+    if not isinstance(binding, dict):
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, "closure_binding must be a JSON object")
+    unknown = set(binding) - CLOSURE_BINDING_ALLOWED_KEYS
+    if unknown:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"unknown closure_binding fields: {sorted(unknown)}")
+    missing = CLOSURE_BINDING_REQUIRED_KEYS - set(binding)
+    if missing:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"missing closure_binding fields: {sorted(missing)}")
+    for key in sorted(_SHA256_HEX_KEYS):
+        if not _is_lower_hex(binding[key], 64):
+            raise VerifyError(
+                CLOSURE_BINDING_MALFORMED,
+                f"closure_binding.{key} must be 64 lowercase hex characters, got {binding[key]!r}",
+            )
+    for key in sorted(_GIT_OID_KEYS):
+        if not _is_lower_hex(binding[key], 40):
+            raise VerifyError(
+                CLOSURE_BINDING_MALFORMED,
+                f"closure_binding.{key} must be a 40-character lowercase git object id, got {binding[key]!r}",
+            )
+    target_ref = binding["target_ref"]
+    if not isinstance(target_ref, str) or not target_ref.startswith("refs/"):
+        raise VerifyError(
+            CLOSURE_BINDING_MALFORMED,
+            f"closure_binding.target_ref must be a fully-qualified ref, got {target_ref!r}",
+        )
+    # expected_old is the C9 compare-and-swap value; predecessor_commit is the baseline the whole
+    # verification diffs from. If they disagree, the transition that gets PROVEN is not the
+    # transition that gets APPLIED: the proof is anchored at one commit while the CAS publishes on
+    # top of another. Both fields are inside the signed payload, so this is a pure consistency
+    # property of the binding itself -- checked here, structurally, in BOTH modes and before any
+    # repository or tree work, so it can never be skipped by a caller that omits --repository.
+    if binding["expected_old"] != binding["predecessor_commit"]:
+        raise VerifyError(
+            EXPECTED_OLD_MISMATCH,
+            f"closure_binding.expected_old {binding['expected_old']} must equal "
+            f"predecessor_commit {binding['predecessor_commit']}: the compare-and-swap baseline and "
+            "the verified baseline must be the same commit",
+        )
+    if not isinstance(binding["successor_blobs"], dict) or not binding["successor_blobs"]:
+        raise VerifyError(
+            CLOSURE_BINDING_MALFORMED, "closure_binding.successor_blobs must be a non-empty object"
+        )
+    return binding
+
+
+def enforce_closure_binding(
+    mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *,
+    execution_root=None, repository=None,
+):
+    """Enforce the closure binding. A closure binding is ALWAYS mandatory: an absent binding, or
+    absent manifest / revocation / consumed bytes, is a hard rejection with no exemption of any kind.
+
+    Cycle 8 (EVD-CLOSURE-030) removed the decision-scoped legacy exemption that cycle 7 introduced.
+    The independent review rejected `1756bad` because that path could still return exit 0 with a
+    VERIFIED_EXACT verdict for a mandate carrying no binding at all -- a green result for the exact
+    condition the control exists to stop. A mandate signed before `closure_binding` existed cannot
+    acquire one without invalidating its signature, so the remedy is a NEWLY BOUND MANDATE, not a
+    verifier that will accept the old one.
+
+    `required` (removed) previously conflated two independent questions, and that conflation is why
+    an exemption seemed necessary at all:
+
+      1. must the mandate CARRY a binding?              -> now always yes, unconditionally
+      2. how DEEPLY is the declared execution verified?  -> set by the inputs the caller supplies
+
+    Depth is decided by evidence, not by a flag: supplying an execution root and/or a repository
+    verifies successor blobs and the successor tree against real bytes; supplying neither validates
+    the binding structurally and records that fact in the receipt. The CLI refuses the structural
+    path outright (see main), so no invocation can report a bound-and-verified closure it did not
+    actually verify."""
+    # Depth of execution verification, decided by what the caller actually supplied. This never
+    # affects whether the binding itself is mandatory.
+    verify_execution = execution_root is not None or repository is not None
+
+    binding = mandate.get("closure_binding")
+    if binding is None:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "the mandate declares no closure_binding; closure binding is mandatory and has no "
+            "exemption. A mandate signed before closure_binding existed cannot be verified by this "
+            "tool: issue and sign a new mandate that carries the binding",
+        )
+    validate_closure_binding(binding)
+
+    if closure_manifest_bytes is None:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "the mandate carries a closure_binding but no closure manifest bytes were supplied, "
+            "so the binding cannot be checked against anything",
+        )
+
+    actual_manifest_digest = raw_sha256(closure_manifest_bytes)
+    if actual_manifest_digest != binding["closure_manifest_digest"]:
+        raise VerifyError(
+            CLOSURE_MANIFEST_MISMATCH,
+            f"mandate binds closure manifest {binding['closure_manifest_digest']}, "
+            f"supplied manifest is {actual_manifest_digest}",
+        )
+
+    try:
+        manifest = parse_strict(closure_manifest_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise VerifyError(CLOSURE_BINDING_MALFORMED, f"closure manifest is not valid JSON: {exc}")
+    effects = manifest.get("permitted_effects_at_execution_C8")
+    if effects is None:
+        raise VerifyError(
+            PERMITTED_EFFECTS_MISMATCH,
+            "closure manifest declares no permitted_effects_at_execution_C8",
+        )
+    # Independent second control. The whole-file digest above already rejects any byte change, but
+    # a manifest legitimately accretes free-text revision notes over its life, so the effects list
+    # gets its own digest: an attacker who alters WHAT MAY BE WRITTEN is caught by this check even
+    # in a future where the whole-file digest is re-issued for an unrelated editorial reason.
+    actual_effects_digest = digest(effects)
+    if actual_effects_digest != binding["permitted_effects_digest"]:
+        raise VerifyError(
+            PERMITTED_EFFECTS_MISMATCH,
+            f"mandate binds permitted effects {binding['permitted_effects_digest']}, "
+            f"supplied manifest's effects are {actual_effects_digest}",
+        )
+
+    if revocation_bytes is None:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "the mandate binds a revocation state but no revocation-state bytes were supplied",
+        )
+    actual = raw_sha256(revocation_bytes)
+    if actual != binding["revocation_state_digest"]:
+        raise VerifyError(
+            REVOCATION_STATE_MISMATCH,
+            f"mandate binds revocation state {binding['revocation_state_digest']}, supplied is {actual}",
+        )
+
+    if consumed_bytes is None:
+        raise VerifyError(
+            CLOSURE_BINDING_REQUIRED,
+            "the mandate binds a consumed state but no consumed-state bytes were supplied",
+        )
+    actual = raw_sha256(consumed_bytes)
+    if actual != binding["consumed_state_digest"]:
+        raise VerifyError(
+            CONSUMED_STATE_MISMATCH,
+            f"mandate binds consumed state {binding['consumed_state_digest']}, supplied is {actual}",
+        )
+
+    successor_blob_result = validate_successor_blobs(
+        binding, effects, execution_root, required=verify_execution
+    )
+    successor_tree_result = validate_successor_tree(
+        binding, effects, repository, execution_root, required=verify_execution
+    )
+
+    return {
+        "closure_binding_enforced": True,
+        "execution_verified": verify_execution,
+        "successor_tree": successor_tree_result,
+        "closure_manifest_digest": actual_manifest_digest,
+        "permitted_effects_digest": actual_effects_digest,
+        "successor_blobs": successor_blob_result,
+        "predecessor_commit": binding["predecessor_commit"],
+        "predecessor_tree": binding["predecessor_tree"],
+        "target_ref": binding["target_ref"],
+        "expected_old": binding["expected_old"],
+        "successor_blobs_status": binding.get("successor_blobs_status", "UNSPECIFIED"),
+    }
+
+
 # ================================================================ verify (core)
 
 def verify_transition(
@@ -533,14 +1141,33 @@ def verify_transition(
     verification_time,
     consumed=None,
     revocations=None,
+    closure_manifest_bytes=None,
+    revocation_bytes=None,
+    consumed_bytes=None,
+    execution_root=None,
+    repository=None,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
-    and a receipt, or raises VerifyError(reason) with a stable rejection code."""
+    and a receipt, or raises VerifyError(reason) with a stable rejection code.
+
+    A closure binding is mandatory and has no exemption (cycle 8, EVD-CLOSURE-030). Execution
+    verification depth follows from `execution_root` / `repository`."""
     consumed = consumed or {}
 
     mandate, signer_keyid = open_signed_mandate(envelope, trust_root)
     validate_mandate(mandate)
+    # Enforced BEFORE authority resolution and before any digest comparison: if the closure binding
+    # is absent/malformed/mismatched, no later check should get the chance to produce a
+    # VERIFIED-looking verdict.
+    closure_binding_result = enforce_closure_binding(
+        mandate,
+        closure_manifest_bytes,
+        revocation_bytes,
+        consumed_bytes,
+        execution_root=execution_root,
+        repository=repository,
+    )
     signer_identity = _authority_identity(
         mandate, signer_keyid, trust_root, identity_register, verification_time, revocations
     )
@@ -587,6 +1214,13 @@ def verify_transition(
         "predecessor_schedule_digest": current_digest,
         "authorized_successor_schedule_digest": recomputed_digest,
         "proposed_successor_schedule_digest": proposed_digest,
+        "closure_binding": closure_binding_result,
+        # The binding is always enforced, so this now records DEPTH, not whether the control ran:
+        # True means successor blobs and tree were checked against real bytes. There is no longer
+        # any field that can report an exempted verification, because no exemption exists.
+        "closure_execution_verification": bool(
+            closure_binding_result.get("execution_verified")
+        ),
         "note": "advisory verification only; no register mutated, nothing signed or consumed",
     }
     consumed_next = dict(consumed)
@@ -610,9 +1244,62 @@ def main():
     parser.add_argument("--verification-time", required=True, help="ISO-8601 time to evaluate validity at")
     parser.add_argument("--consumed", help="consumed-decisions registry JSON (optional)")
     parser.add_argument("--revocations", help="revocations JSON (optional)")
+    parser.add_argument(
+        "--closure-manifest",
+        help="pre-execution closure manifest JSON; required with --require-closure-binding",
+    )
+    parser.add_argument(
+        "--execution-root",
+        help="directory holding the actual execution bytes; each bound successor blob id is "
+             "recomputed from the file at that path (git blob hashing) and must match. Required "
+             "with --require-closure-binding. Paths are resolved strictly inside this root.",
+    )
+    parser.add_argument(
+        "--repository",
+        help="git object source holding predecessor_tree and successor_tree. Required with "
+             "--require-closure-binding: the complete tree diff is enumerated and every touched "
+             "path must fall inside the permitted effects. Used read-only.",
+    )
+    parser.add_argument(
+        "--require-closure-binding",
+        action="store_true",
+        help="DEPRECATED and redundant: closure binding is now required by default. Accepted so "
+             "existing invocations keep working; it changes nothing.",
+    )
     args = parser.parse_args()
+    # An empty string is NOT the same as "not supplied": Path("") is ".", so `--execution-root ""`
+    # would resolve to the process CWD, count as supplied, and produce a green result against a tree
+    # the operator never named -- one unset shell variable in a runbook (`--execution-root "$VAR"`)
+    # away from verifying the wrong repository. Reject it explicitly.
+    for _name, _value in (("--execution-root", args.execution_root),
+                          ("--repository", args.repository)):
+        if _value is not None and not str(_value).strip():
+            print(
+                f"{REJECTED}: {EXECUTION_ROOT_REQUIRED}: {_name} was given an empty value. Pass a "
+                "real path or omit the option; an empty string would silently mean the current "
+                "working directory."
+            )
+            return 1
+    execution_root = args.execution_root
+    repository = args.repository
+    # Removed in cycle 8: --allow-unbound-legacy-mandate. Passing it now fails at argument parsing
+    # with exit 2, which is the intended outcome -- an invocation written against the exempted path
+    # must break loudly rather than quietly verify something weaker than it claims.
     consumed = _load(args.consumed) if args.consumed and Path(args.consumed).is_file() else {}
     revocations = _load(args.revocations) if args.revocations and Path(args.revocations).is_file() else {}
+    closure_manifest_bytes = Path(args.closure_manifest).read_bytes() if args.closure_manifest else None
+    # Bound as exact bytes, not as reparsed objects: the digest a human can reproduce with any
+    # sha256 tool is the one that must match.
+    revocation_bytes = (
+        Path(args.revocations).read_bytes()
+        if args.revocations and Path(args.revocations).is_file()
+        else None
+    )
+    consumed_bytes = (
+        Path(args.consumed).read_bytes()
+        if args.consumed and Path(args.consumed).is_file()
+        else None
+    )
     try:
         result = verify_transition(
             _load(args.predecessor),
@@ -623,9 +1310,25 @@ def main():
             args.verification_time,
             consumed,
             revocations,
+            closure_manifest_bytes,
+            revocation_bytes,
+            consumed_bytes,
+            execution_root,
+            repository,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")
+        return 1
+    # Structural-only verification is a legitimate library mode for tests, but it must never be
+    # what an operator gets from the command line: rc=0 plus VERIFIED_EXACT would then assert a
+    # closure whose successor blobs and tree were never compared to real bytes. The apply gate
+    # reads stdout as well as rc (EVD-CLOSURE-016 H2), so this refuses rather than annotating.
+    if not result["receipt"].get("closure_execution_verification"):
+        print(
+            f"{REJECTED}: {EXECUTION_ROOT_REQUIRED}: the mandate's closure binding was validated "
+            "structurally but execution was not verified. Supply --execution-root and/or "
+            "--repository so successor blobs and tree are checked against real bytes."
+        )
         return 1
     print(f"{result['verdict']}: {result['outcome']}")
     return 0

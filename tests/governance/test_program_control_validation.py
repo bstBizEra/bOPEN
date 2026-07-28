@@ -51,9 +51,9 @@ class ProgramControlValidationTests(unittest.TestCase):
             self.assertEqual(register["approved_by"], "HUMAN-OPERATOR-001")
             self.assertIn("SIGNING-PASS-2.md#append-only-batch-2-signing-record", register["approval_ref"])
         self.assertEqual(schedule["entries"][0]["status"], "COMPLETE")
-        self.assertEqual(schedule["entries"][1]["status"], "COMPLETE")
+        self.assertEqual(schedule["entries"][1]["status"], "ACTIVE")
         self.assertEqual(schedule["entries"][1]["work_item_refs"], ["SKEL-P0-01"])
-        self.assertIn("PG-P0-CLOSURE-MANDATE.md#signed-decision", schedule["entries"][1]["rebaseline_decision_ref"])
+        self.assertIn("SIGNING-PASS-5.md#signed-decision", schedule["entries"][1]["rebaseline_decision_ref"])
         self.assertTrue(all(item["status"] == "NOT_READY" for item in schedule["entries"][2:]))
         self.assertEqual(self.load_register(ROOT, "AGENT-REGISTER.json")["entries"], [])
         self.assertEqual(self.load_register(ROOT, "MODULE-REGISTER.json")["entries"], [])
@@ -63,9 +63,6 @@ class ProgramControlValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_root(temporary)
             register = self.load_register(root, "SCHEDULE-REGISTER.json")
-            # PG-P0 is COMPLETE in the closed repo; restore the ACTIVE precondition locally so the
-            # ACTIVE-phase fail-closed rule is still exercised when its opening evidence is absent.
-            register["entries"][1]["status"] = "ACTIVE"
             register["entries"][1]["evidence_refs"] = []
             self.save_register(root, "SCHEDULE-REGISTER.json", register)
             errors = validate_program_controls(root, AS_OF)

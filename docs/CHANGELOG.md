@@ -1,12 +1,217 @@
 # Documentation Changelog
 
-## 2026-07-28 - C6-C8: PG-P0 ACTIVE -> COMPLETE execution commit
+## Append-only entry - 2026-07-29 - revert the rejected C6-C8 execution; integrate repair cycles 2-8
 
-- Applied the permitted effects of PG-P0-CLOSURE-MANIFEST.json (content sha256 7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a) under the operator-signed Stage-1 mandate PG-P0-CLOSURE-001 (DSSE keyid operator-pgp0-completion-1, recorded at C5). Six paths change in this commit; the seventh permitted path, docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md, was created at C5 and is unchanged here.
-- SCHEDULE-REGISTER.json: PG-P0 status ACTIVE -> COMPLETE, planned_end null -> 2026-07-27T00:00:00+07:00, rebaseline_decision_ref and the sorted evidence_refs set per the manifest successor. The recomputed RFC 8785 digest of the result equals the signed successor digest 1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863 exactly.
-- tools/validate_pg_g0_authority_docket.py: expected state extended per PG-P0-INTERP-002 v0.4 section 5. tests/governance/test_program_control_validation.py: test delta per EVD-CLOSURE-012.
-- docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json then docs/DOCUMENT-MANIFEST.json regenerated in that order (the default manifest indexes GOV-P0-02 by name).
-- This commit moves no ref. C9 (expected-old compare-and-swap), C10 (independent post-execution receipt) and C11 (recognition) remain outstanding. PG-P1 NOT_READY; production NOT_AUTHORIZED; no authority, identity or schema artifact touched.
+- Merges the repair chain (cycles 2 through 8, the C9 rejection record EVD-CLOSURE-031, and the
+  PG-P0-CLOSURE-001 consumption record) into the closure lineage, and reverts
+  docs/00-governance/registers/SCHEDULE-REGISTER.json to PG-P0 status ACTIVE.
+- The register is now byte-identical to its state at 042dda535be70927b73cd1a131b2545349729643 and
+  hashes under RFC 8785 to e80f7b9390d86a7627d6d14bd683296f2314189d145791971fb8aeb2a8d9f1cf.
+- WHY: commit 757f5a13bd675e3813a8549cbb3a1e64a0d23ba8 set PG-P0 to COMPLETE and was published to
+  refs/heads/pg-p0-closure-lineage by an agent under the throwaway identity
+  SIM-EXEC-THROWAWAY <sim@throwaway.invalid>. Independent C10 verification rejected that publication
+  (REJECT_EXECUTION_EXACT_COMMIT, PROHIBITED_AGENT_AUTHORITATIVE_REF_MOVE). The transition is
+  therefore void and the register must not continue to assert COMPLETE.
+- METHOD: append-forward, chosen by HUMAN-OPERATOR-001 over a rewind. 757f5a13 REMAINS in the
+  lineage's ancestry and is not removed, rewritten, or hidden. The invalid act stays permanently
+  visible in the authoritative history; this entry and the reverted register are the correction.
+  This follows the extend-only principle rather than trading auditability for a clean tree.
+- The CHANGELOG entry written by 757f5a13 describing that execution is superseded by this entry and
+  is not carried forward; the commit and its message remain in history.
+- Both document manifests regenerated in order (GOV-P0-02 first, default second).
+- This commit authorizes nothing and signs nothing. PG-P0 returns to ACTIVE, PG-P1 remains
+  NOT_READY, production remains NOT_AUTHORIZED. The verifier on the lineage is now binding-capable
+  (cycle 8, EVD-CLOSURE-030), which is a precondition for any future PG-P0-CLOSURE-002 execution.
+
+## Append-only entry - 2026-07-29 - cycle 8 self-audit remediation (EVD-CLOSURE-030 amendment)
+
+- Maker adversarial self-audit of `fdf0434` found four defects in the maker's own work; three are
+  fixed here. `--execution-root ""` / `--repository ""` silently meant the process CWD and are now
+  refused. The exemption-removal test was vacuous - it asserted against the test helper's signature,
+  not production - and is replaced by a signature assertion plus a sweep proving no optional
+  parameter of `verify_transition` can tolerate an absent binding. The CLI refusal added in cycle 8
+  had no tests at all; five subprocess tests now exercise the real entrypoint on rc and stdout.
+- Recorded, not fixed: EVD-CLOSURE-029's C7 invocation still names the deleted flag and is superseded;
+  a corrected runbook is a separate work item. The `verdict` field still does not encode verification
+  depth, which is latent because no library importer exists; raised for the checker rather than
+  changed unilaterally.
+- 111 tests in the verifier module; full suite green.
+
+## Append-only entry - 2026-07-29 - PG-P0 closure repair, remediation cycle 8 (EVD-CLOSURE-030)
+
+- Removed the cycle-7 unbound-legacy exemption outright: `closure_binding_required`, the
+  `allow_unbound_legacy_decision` parameter, the `--allow-unbound-legacy-mandate` flag and the
+  `legacy_unbound_exemption` receipt field are all deleted. No input can now produce exit 0 with a
+  VERIFIED_EXACT verdict for a mandate carrying no closure binding.
+- Root cause: the removed `required` flag conflated "must a binding exist" with "how deeply is
+  execution verified". A binding is now unconditionally mandatory; depth follows from whether an
+  execution root or repository is supplied, and the CLI refuses a structural-only result.
+- Consequence: `PG-P0-CLOSURE-001` is unverifiable by this tool by design. The closure requires a
+  newly issued and operator-signed mandate carrying a binding.
+- Test fixtures are bound by default; an unbound mandate must be requested explicitly with
+  `bound=False`. Full suite 267 tests OK.
+- Ledgers gain the omitted cycle-7 `-0006` triple (recorded retrospectively) and the cycle-8 `-0007`
+  triple, so the series is unbroken 0001-0007.
+- The cycle-7 verdict was relayed by the operator and is NOT persisted in this repository; the maker
+  did not read it and does not certify it. Persisting it verbatim remains an open control.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 7 (EVD-CLOSURE-028/029)
+
+- Additive commit on `claude/PG-P0-closure-binding-default-cycle7` from cycle-6 tip
+  `2a18ed5352930f7603543cdab00fe397e6b11dc4`. Advisory; independent review required.
+- **Closure binding is now required by DEFAULT.** Cycle 2 built a sound fail-closed control but
+  defaulted `require_closure_binding=False`, so it engaged only when a caller opted in. Against the
+  real signed mandate at the cycle-6 tip, the bare invocation returned `VERIFIED_EXACT` rc=0 while
+  the control sat inert. No validator, docket check or test enforced the flag, and the operative C7
+  apply runbook (`EVD-CLOSURE-012`, inherited unchanged) never passed it - so an operator following
+  the procedure of record would have gotten a clean verdict on an unbound mandate. Same lesson as
+  `EVD-CLOSURE-016` H2: a control that must be switched on will eventually be left off.
+- **Escape hatch is scoped to a decision id, not a boolean.** `--allow-unbound-legacy-mandate
+  <DECISION_ID>` tolerates an absent binding only for a mandate carrying exactly that
+  id, so it cannot wave through an attacker-substituted unbound mandate. `PG-P0-CLOSURE-001` needs
+  it (signed before `closure_binding` existed); nothing else does. A present-but-malformed binding
+  is still rejected under an exemption - absence only is tolerated.
+- **The weaker mode is never invisible.** Receipt carries `legacy_unbound_exemption` and
+  `closure_execution_verification: false`; stdout appends `(UNBOUND_LEGACY_EXEMPTION: <id>)` so the
+  rc-and-stdout apply gate sees it too. `--require-closure-binding` retained as an accepted no-op.
+- **C7 runbook corrected** (`EVD-CLOSURE-029`, superseding only `EVD-CLOSURE-012`'s C7 line): states
+  the two legitimate invocations, requires recording the exemption suffix when present, and names
+  the prohibited "make the rejection go away" resolutions.
+- Tests 96 -> 103. New `ClosureBindingRequiredByDefaultTests` pins the inverted default, the public
+  signature's own default, exemption scoping, receipt disclosure, and predicate semantics.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 6 (EVD-CLOSURE-027)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-5 fail-closed result
+  named one blocker against `d4cd5d594d9b9e25fed8634ef0def5dea18c354a`. Reproduced before fixing.
+- **`expected_old` was never compared to `predecessor_commit`.** They mean different things -
+  `predecessor_commit` is the baseline the whole verification diffs from, `expected_old` is the
+  value the C9 compare-and-swap publishes on top of - and both are only 40-hex-validated. So
+  `expected_old = "f" * 40` passed while both other fields stayed genuine. The transition proven
+  would not have been the transition applied, and every cycle-3-to-5 control inherits that
+  divergence silently because all are anchored to `predecessor_commit`.
+- **Fixed** with new stable reason code `EXPECTED_OLD_MISMATCH`, enforced inside the *structural*
+  validator so it runs in both modes, before any repository or tree work, and cannot be skipped by
+  omitting `--repository`. Needs no I/O: both fields are inside the signed payload.
+- Five tests: positive equality; the all-f attack; `expected_old` naming a **different real commit**;
+  a swapped pair (`predecessor_commit` moved forward, `expected_old` keeping the true baseline); and
+  a structural case with no repository supplied at all. DSSE suite 96/96.
+- Disclosed: three fixtures binding placeholder `expected_old` values now bind the fixture's real
+  base commit, and two cycle-5 tests that override `predecessor_commit` now also override
+  `expected_old` so they still reach their intended reason codes. No control was weakened.
+- Preserved: all cycle-3-to-5 controls; frozen signed artifacts byte-identical to base; unsigned
+  proposal still `DRAFT_NOT_SIGNABLE` / `BLOCKED_PENDING_EXECUTION_BYTES` (its `expected_old` and
+  `predecessor_commit` are both `042dda53...` and already satisfy the new check);
+  `PG-P0-CLOSURE-002` revocation scoping; withdrawn backdated verification guidance; no Graphify
+  artifacts.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 5 (EVD-CLOSURE-026)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex returned `REJECT_EXACT_SHA` on
+  `fc4960fcc99df3cf35aa3140e9a01bf215abfa91`. Two exact defects, both reproduced before fixing.
+- **Rename detection was never actually disabled.** `tree_diff_paths` passed `--no-renames` then
+  `-M0`; git applies last-option-wins, so `-M0` re-enabled it. A rename record carries three
+  NUL-separated fields, not two, so the parser recorded the source and skipped the destination:
+  renaming a **permitted** path to an **undeclared** one enumerated only the permitted source and
+  passed. `--no-renames` is now the final rename-related flag, and the parser handles `R`/`C`
+  records explicitly, recording **both** paths. Regression: `docs/CHANGELOG.md` renamed to
+  `evil.txt` now enumerates the destination and rejects `TREE_SCOPE_VIOLATION`.
+- **`predecessor_commit` was never resolved.** It and `predecessor_tree` floated free, so the signed
+  base commit could be paired with a substituted real tree and every downstream check would run
+  against that baseline. `assert_predecessor_commit_binds_tree()` now runs before any diff: the
+  commit must be a real commit object (`PREDECESSOR_COMMIT_INVALID`) whose `^{tree}` equals the
+  signed `predecessor_tree` (`PREDECESSOR_TREE_MISMATCH`). The negative test substitutes a genuine
+  existing tree object, not a nonexistent id.
+- Two new reason codes; 7 new regression tests. DSSE suite 91/91.
+- Disclosed: adding the predecessor anchor invalidated three fixtures that bound placeholder
+  commits. The helper now creates a real empty base commit whose tree is the empty tree, so fixtures
+  bind a genuinely consistent pair; the check was not weakened.
+- Preserved: all cycle-4 controls, frozen signed artifacts byte-identical to base,
+  `DRAFT_NOT_SIGNABLE` / `BLOCKED_PENDING_EXECUTION_BYTES`, `PG-P0-CLOSURE-002` revocation scoping,
+  withdrawn backdated verification guidance, no Graphify artifacts.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 4 (EVD-CLOSURE-025)
+
+- Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-3 assurance conflict
+  resolved fail-closed to HOLD: an independent attack added an **undeclared file** under the
+  execution root and verification still accepted. Cycle 3 verified the seven declared paths
+  thoroughly but never enumerated anything else, so per-path checks could not establish scope.
+- **Scope now comes from the complete change.** `closure_binding` gains a required `successor_tree`
+  (40-hex git tree id; the proposal carries `UNRESOLVED` and therefore rejects). Closure mode
+  requires a bounded `--repository`, requires both trees to be real git tree objects
+  (`TREE_OBJECT_INVALID`), enumerates the full `predecessor_tree -> successor_tree` diff with
+  `--no-renames` so renames decompose into delete+add, and rejects any added, modified, deleted,
+  renamed, mode-changed or type-changed path outside the seven permitted effects
+  (`TREE_SCOPE_VIOLATION`).
+- **Execution root must BE the successor tree** - no extra file, no missing file, no differing byte
+  (`EXECUTION_ROOT_MISMATCH`). Untracked bytes are invisible to a tree diff, so the root is compared
+  to the tree in full; this is the control that actually catches the reported attack.
+- **A symlink is also a blob in git**, so permitted-effect entries are additionally mode-allow-listed
+  to regular files (`100644`/`100755`); `SUCCESSOR_TREE_ENTRY_INVALID` otherwise.
+- Eight new reason codes; 18 tree-scope attack tests. DSSE suite 84/84.
+- Disclosed dependency change: tree-scope helpers shell out to the `git` binary via `subprocess`
+  (read-only: `cat-file`, `ls-tree`, `diff`, `rev-parse`), mirroring
+  `tools/validate_pg_g0_authority_docket.py`. Tests skip cleanly when git is absent.
+- Preserved: frozen signed artifacts byte-identical to base, `DRAFT_NOT_SIGNABLE` /
+  `BLOCKED_PENDING_EXECUTION_BYTES` status, revocation scaffold scoped to `PG-P0-CLOSURE-002`,
+  withdrawn backdated verification guidance, no Graphify artifacts.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 3 (EVD-CLOSURE-024)
+
+- Additive follow-up commit on `claude/PG-P0-closure-repair-c8-v2` after the independent Codex
+  checker returned `REJECT_EXACT_SHA` on `17b9075d97c9022c698097e4d88ca628fc9e9c31`. That commit is
+  preserved in history; nothing was amended or rebased.
+- **successor_blobs strictly bound.** Closure mode now requires the map's keys to equal the seven
+  manifest permitted-effect paths exactly (missing, extra or renamed paths reject
+  `SUCCESSOR_BLOBS_INCOMPLETE`), every value to be a 40-character lowercase git object id
+  (`UNRESOLVED`, non-hex, uppercase and truncated reject `SUCCESSOR_BLOBS_UNRESOLVED`), an
+  `--execution-root` to be supplied (`EXECUTION_ROOT_REQUIRED`), and every bound id to equal the git
+  blob id recomputed from the real file bytes (`SUCCESSOR_BLOB_MISMATCH`). Path resolution is bounded
+  inside the root; traversal and absolute paths reject `EXECUTION_PATH_UNSAFE`. 18 new negative tests;
+  67/67 DSSE tests pass.
+- **Status corrected to blocked.** `READY_FOR_HUMAN_SIGNATURE` is withdrawn. The V2 manifest carries
+  `_signing_status: DRAFT_NOT_SIGNABLE` and `_blocking_state: BLOCKED_PENDING_EXECUTION_BYTES`; the
+  binding carries `successor_blobs_status: BLOCKED_PENDING_EXECUTION_BYTES`. Regression tests assert
+  the shipped proposal stays rejected `SUCCESSOR_BLOBS_UNRESOLVED` in closure mode - the correct
+  current state, not a defect.
+- **Revocation scaffold retargeted** to the proposed decision `PG-P0-CLOSURE-002` (not the signed
+  `PG-P0-CLOSURE-001`), marked `PENDING_HUMAN_ATTESTATION` and still non-authoritative.
+- **Backdated verification guidance withdrawn.** The `2026-07-27T00:00:00+07:00` example is removed
+  and replaced by a policy requiring the actual verification-event instant, a justification of why it
+  is the true event time, and a receipt bound to the exact commit and tree. Additionally disclosed:
+  the payload's inherited `authority.effective_at` must be replaced at re-issuance, which also
+  changes the authorized successor digest.
+- Frozen signed artifacts unchanged: `PG-P0-CLOSURE-MANIFEST.json` (`7417cc6a...fb33a`),
+  `PG-P0-CLOSURE-MANDATE.md`, `.dsse.json`, `SCHEDULE-REGISTER.json`, `EVD-CLOSURE-014`.
+
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 2 (EVD-CLOSURE-022/023)
+
+- Rebuilt from exact base `042dda535be70927b73cd1a131b2545349729643` on branch
+  `claude/PG-P0-closure-repair-c8-v2` after the independent Codex checker returned
+  `REJECT_EXACT_SHA` on candidate `2134ea2d53f78b79522b476e78f4b33022595615`. Not built atop the
+  rejected candidate; evidence ids EVD-CLOSURE-017..021 stay consumed by it and are not carried over.
+- **Fail-closed closure verification.** `tools/verify_phase_transition.py` gains a `closure_binding`
+  mandate object with a closed required-key set and a `--require-closure-binding` mode: absent,
+  malformed or mismatched bindings are hard rejections, enforced before authority resolution. Six new
+  reason codes. The cycle-1 test asserting an unbound mandate is "not contradicted" is deleted, not
+  replaced. Two semantic attacker negative tests prove that widening `permitted_effects` (e.g. adding
+  a write to `AUTHORITY-MATRIX.json`) is rejected while the transform and signature stay valid.
+  49/49 tests pass.
+- **Frozen artifacts preserved.** `PG-P0-CLOSURE-MANIFEST.json` is byte-identical to base
+  (`7417cc6a...fb33a`, 6613 bytes); cycle 1 had mutated it and wrongly claimed the existing C4
+  signature still bound it. Corrections now live in a new unsigned
+  `PG-P0-CLOSURE-MANIFEST-V2-PROPOSAL.json` under a new decision id, generated programmatically from
+  the frozen file so its seven permitted effects cannot drift.
+- **C9 target corrected.** `refs/heads/main` is withdrawn as factually impossible: `git merge-base`
+  exits 1, `main` is a single-commit orphan history disjoint from the closure lineage. Corrected to
+  `refs/heads/pg-p0-closure-lineage` @ `042dda535be70927b73cd1a131b2545349729643`.
+- **External state corrected.** Consumed registry emptied - the C5 check was advisory verification,
+  not consumption. Revocations relabelled a non-authoritative maker scaffold requiring operator
+  attestation.
+- **Unsigned signing packet** `PG-P0-CLOSURE-MANDATE-V2-PROPOSAL` marked `READY_FOR_HUMAN_SIGNATURE`.
+  Nothing is signed or authorized. Six of seven successor blob bindings remain `UNRESOLVED` because
+  constructing the C6-C8 execution bytes is classifier-blocked for any agent (EVD-CLOSURE-023); the
+  packet must not be signed until they resolve.
 
 ## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
 

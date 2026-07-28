@@ -1,0 +1,11 @@
+{
+  "_artifact": "Revocation state for the PROPOSED decision PG-P0-CLOSURE-002 - external input to VERIFY-P0-01 (--revocations).",
+  "_scope": "PG-P0-CLOSURE-002 (the proposed, UNSIGNED new decision) and keyid operator-pgp0-completion-1. This registry does NOT scope to PG-P0-CLOSURE-001, the operator's already-signed decision bound to the frozen C3 manifest; a prior draft wrongly narrated it as covering closure-001.",
+  "_status": "MAKER-PREPARED SCAFFOLD. NOT AUTHORITATIVE. An empty revocation list here is NOT a maker attestation that nothing is revoked.",
+  "_why_not_authoritative": "A maker agent cannot observe, and has no authority to assert, the revocation state of a human's signing key. Emptiness here means only 'this maker recorded no revocation', never 'the operator confirms none exists'. Treating a maker-authored empty list as proof of non-revocation would let an agent silently vouch for key validity it cannot check - the same class of error as a maker self-certifying its own work.",
+  "_required_before_reliance": "The human operator must attest, at signing time for PG-P0-CLOSURE-002, that the lists below are complete and current for keyid operator-pgp0-completion-1 and for decision id PG-P0-CLOSURE-002. Until that attestation exists, any VERIFY-P0-01 run using this file proves only 'not revoked according to an unattested list'.",
+  "_attestation_status": "PENDING_HUMAN_ATTESTATION",
+  "_schema_note": "Matches tools/verify_phase_transition.py's _authority_identity() lookup exactly: revocations.get('revoked_keyids', []) and revocations.get('revoked_decision_ids', []). Append-only: a future revocation is added here and cited by a durable evidence record naming the reason and the authorizing actor.",
+  "revoked_keyids": [],
+  "revoked_decision_ids": []
+}

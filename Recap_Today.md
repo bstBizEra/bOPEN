@@ -160,3 +160,121 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0001
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 2 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 2 (`claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0001
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0001
+**Evidence:** EVD-CLOSURE-022, EVD-CLOSURE-023
+**Summary:** Rebuilt from exact base rather than atop the rejected candidate. Made closure-execution verification fail closed on absent, malformed or mismatched bindings, deleted the insecure "unbound mandate is not contradicted" test, and added two semantic attacker negative tests proving that widening permitted effects is rejected (49/49 tests pass). Preserved the frozen signed manifest byte-identical and moved all corrections into a new unsigned superseding proposal under a new decision id. Corrected the C9 target to `refs/heads/pg-p0-closure-lineage` after verifying `main` is a disjoint orphan history. Emptied the consumed registry (C5 was advisory verification, not consumption) and relabelled revocations a non-authoritative maker scaffold. Produced an unsigned `READY_FOR_HUMAN_SIGNATURE` packet binding every digest programmatically.
+**Reason:** Clear the five defects that produced the cycle-1 rejection without repeating its central error of claiming more than was verified.
+**Benefit of old phase:** The independent rejection identified defects a maker self-review had missed, including one factual impossibility, which is exactly the separation the authority model exists to produce.
+**Expected outcome:** Independent review of this exact candidate. One item remains honestly incomplete: the C6-C8 execution bytes are classifier-blocked for any agent, leaving six of seven successor blob bindings UNRESOLVED, so the packet must not be signed as-is.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0002
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 3 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 3 (additive follow-up on `claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0002
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0002
+**Evidence:** EVD-CLOSURE-024
+**Summary:** Bound `successor_blobs` strictly: keys must equal the seven permitted-effect paths exactly, every value must be a 40-character lowercase git object id, and every id is recomputed from real bytes under a bounded `--execution-root` using git blob hashing. `UNRESOLVED`, non-hex, uppercase, truncated, missing, extra and renamed paths all reject, as do runtime byte mismatch, absent execution root, path traversal and absolute paths. Changed the machine and prose status from READY_FOR_HUMAN_SIGNATURE to DRAFT_NOT_SIGNABLE / BLOCKED_PENDING_EXECUTION_BYTES, with regression tests asserting the shipped proposal stays rejected. Retargeted the revocation scaffold to the proposed PG-P0-CLOSURE-002 with PENDING_HUMAN_ATTESTATION. Withdrew the backdated 2026-07-27 verification guidance and replaced it with a policy requiring the actual event time, a justification, and a receipt bound to the exact commit and tree.
+**Reason:** Close four defects that would have let an unbound or placeholder closure reach a VERIFIED verdict, or let a reader mistake a blocked draft for a signable one.
+**Benefit of old phase:** A cycle-2 test fixture was itself caught by the new strict rule, which confirmed the control works on real inputs rather than only on purpose-built negatives; the fixture was corrected rather than the control weakened.
+**Expected outcome:** Independent review of the additive commit. The proposal is correctly rejected `SUCCESSOR_BLOBS_UNRESOLVED` today; resolving that is a human-only step.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0003
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-3 HOLD (independent undeclared-file attack accepted)
+**Work package:** PG-P0 closure repair, cycle 4
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0003
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0003
+**Evidence:** EVD-CLOSURE-025
+**Summary:** Added a required `successor_tree` binding and made closure mode establish scope from the complete tree diff: any added, modified, deleted, renamed, mode-changed or type-changed path outside the seven permitted effects is rejected, both trees must be real git tree objects, each bound blob must exist in the successor tree as a regular-file blob matching its id, and the execution root must be the successor tree exactly. Two findings surfaced while building it: untracked bytes are invisible to a tree diff (so the execution root is compared to the tree in full, which is what actually catches the reported attack), and a symlink is also a blob in git (so entry mode is allow-listed to regular files). 18 tree-scope attack tests added.
+**Reason:** Per-path verification, however strict, cannot establish scope; the missing layer had to be added above it.
+**Benefit of old phase:** The cycle-3 per-path controls were correct and are retained unchanged; only the scope layer was missing.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; resolving the execution bytes and `successor_tree` remains human-only.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0004
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-4 `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 5
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0004
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0004
+**Evidence:** EVD-CLOSURE-026
+**Summary:** Reproduced both named defects before fixing. Confirmed `--no-renames -M0` emits a single three-field `R100` record while `-M0 --no-renames` emits separate `D` and `A` records; corrected the flag order and additionally hardened the parser to consume and record both paths of any rename or copy record. Added the named regression: `docs/CHANGELOG.md` renamed to `evil.txt` now enumerates the destination and rejects `TREE_SCOPE_VIOLATION`. Added `assert_predecessor_commit_binds_tree`, run before any diff, requiring `predecessor_commit` to be a real commit whose `^{tree}` equals the signed `predecessor_tree`; the negative test substitutes a genuine existing tree object, not a nonexistent id.
+**Reason:** A scope layer that mis-parses git's output, or that diffs from an unanchored baseline, provides no assurance regardless of how strict its later checks are.
+**Benefit of old phase:** The cycle-4 design held up; only the baseline anchoring and the diff parsing needed correction.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0005
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-5 fail-closed result, one blocker
+**Work package:** PG-P0 closure repair, cycle 6
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0005
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0005
+**Evidence:** EVD-CLOSURE-027
+**Summary:** Reproduced the blocker first: with `expected_old` set to all-f and both `predecessor_commit` and `predecessor_tree` genuine, cycle-5 code accepted. Added the new stable reason code `EXPECTED_OLD_MISMATCH` and enforced `expected_old == predecessor_commit` inside the structural validator, so it runs in both modes, before any repository or tree work, and cannot be skipped by omitting `--repository`. Five tests: positive equality, the all-f attack, a different real commit, a swapped pair, and a no-repository structural case. Two cycle-5 tests that deliberately override `predecessor_commit` now also override `expected_old` so they still reach their intended reason codes.
+**Reason:** If the compare-and-swap baseline and the verified baseline can differ, the transition that is proven is not the transition that is applied, and every scope and anchoring control built in earlier cycles inherits that divergence silently.
+**Benefit of old phase:** The earlier layers were sound; only a cross-field consistency requirement was missing.
+**Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0006
+
+**Timestamp:** 2026-07-28T09:42:17+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-6 verdict; maker-identified default-off defect
+**Work package:** PG-P0 closure repair, cycle 7
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0006
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0006
+**Evidence:** EVD-CLOSURE-028, EVD-CLOSURE-029
+**Summary:** Inverted the closure-binding default so an absent binding is fatal, and added a decision-scoped exemption for `PG-P0-CLOSURE-001`, which was signed before the binding existed. Corrected the runbook invocation in the same commit. The ledger triple for this cycle was omitted at the time and is recorded here retrospectively.
+**Reason:** A control that must be switched on is one that will eventually be left off.
+**Benefit of old phase:** The binding logic needed no change; only its default did.
+**Expected outcome:** Independent review of the additive commit. That review returned REJECT_EXACT_SHA against the exemption.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0007
+
+**Timestamp:** 2026-07-29T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-7 verdict REJECT_EXACT_SHA, relayed by the operator
+**Work package:** PG-P0 closure repair, cycle 8
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0007
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0007
+**Evidence:** EVD-CLOSURE-030
+**Summary:** Deleted the `closure_binding_required` predicate, the `allow_unbound_legacy_decision` parameter, the `--allow-unbound-legacy-mandate` flag and the `legacy_unbound_exemption` receipt field. Root cause addressed: the removed `required` flag conflated "must a binding exist" with "how deeply is execution verified", and that conflation is why an exemption appeared necessary at all. A binding is now unconditionally mandatory, while verification depth follows from whether an execution root or repository is supplied. The CLI refuses a structural-only result outright, so no invocation can report a closure it did not verify against real bytes. Test fixtures are bound by default; a test wanting an unbound mandate passes `bound=False` explicitly. 267 tests pass.
+**Reason:** The exemption could return exit 0 with VERIFIED_EXACT for a mandate carrying no binding, which is a green result for the exact condition the control exists to stop.
+**Benefit of old phase:** Cycle 7 established the correct default; only its escape hatch had to go.
+**Expected outcome:** Independent exact-SHA review. `PG-P0-CLOSURE-001` is now unverifiable by design, so the closure requires a newly issued and signed mandate carrying a binding.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0008
+
+**Timestamp:** 2026-07-29T01:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Maker adversarial self-audit of `fdf0434`
+**Work package:** PG-P0 closure repair, cycle 8 - self-audit remediation
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0008
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0008
+**Evidence:** EVD-CLOSURE-030 (amendment)
+**Summary:** Two adversarial passes over the maker's own candidate found four defects. Fixed: the empty-string execution root that resolved to the process CWD and returned a green verdict against an unnamed tree; the vacuous exemption-removal test, replaced by a production signature assertion plus a sweep of every optional parameter of verify_transition; and the untested CLI refusal, now covered by five subprocess tests asserting rc and stdout. Recorded but not fixed: EVD-CLOSURE-029's C7 invocation is superseded and needs a corrected runbook, and the verdict field still does not encode verification depth. 111 tests in the module; full suite green.
+**Reason:** A test that asserts against its own helper constrains nothing in production, and a design argument that rests on an untested code path is an assertion rather than evidence.
+**Benefit of old phase:** No probe refuted the central control; the removal itself was complete and correct.
+**Expected outcome:** Independent exact-SHA review of the successor commit. Maker self-audit is not independent review and reduces nothing the checker should attempt.

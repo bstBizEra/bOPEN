@@ -167,3 +167,137 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Evidence ref:** docs/evidence/EVD-SKEL-002-skeleton-maker-candidate.md
 **Candidate status:** Proposed; not accepted
 **Scope:** Production implementation, migration, merge, release, deployment, runtime, PG-P0 completion and PG-P1 transition remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0001
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 2 after `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 2 (`claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0001
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0001
+**Evidence:** EVD-CLOSURE-022, EVD-CLOSURE-023
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** candidate `2134ea2d53f78b79522b476e78f4b33022595615` (`REJECT_EXACT_SHA`); evidence ids EVD-CLOSURE-017..021 were consumed by that rejected candidate and are not carried into this lineage
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six of seven successor blob bindings; operator attestation that the revocation state is complete; a new operator signature over a re-issued packet once those blobs resolve.
+**Reason:** Track the cycle-2 candidate without marking any correction accepted, any packet signed, or any binding resolved.
+**Benefit of old phase:** The rejection preserved five precise defects as immutable review findings rather than allowing an in-place fixup of a candidate that had already been reviewed.
+**Expected outcome:** Codex reviews this exact candidate branch/commit; C8, C9, merge, PG-P1 and production remain separately gated and unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0002
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex coordinator instruction to open remediation cycle 3 after `REJECT_EXACT_SHA` on `17b9075d97c9022c698097e4d88ca628fc9e9c31`
+**Work package:** PG-P0 closure repair, cycle 3 (additive follow-up on `claude/PG-P0-closure-repair-c8-v2`)
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0002
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0002
+**Evidence:** EVD-CLOSURE-024
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** candidate `17b9075d97c9022c698097e4d88ca628fc9e9c31` (`REJECT_EXACT_SHA`), preserved in history as the immutable predecessor of this additive commit
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six of seven successor blob ids; replacement of the inherited `authority.effective_at` with the real decision time and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the cycle-3 corrections without marking the proposal signable, the bindings resolved, or any control accepted.
+**Benefit of old phase:** The cycle-2 rejection isolated four specific defects rather than invalidating the closure-binding design, so cycle 3 could be additive.
+**Expected outcome:** The proposal remains verifier-rejected by design until a human resolves the execution bytes; C8, C9, merge, PG-P1 and production remain unauthorized.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0003
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-3 HOLD after an independent undeclared-file attack succeeded
+**Work package:** PG-P0 closure repair, cycle 4
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0003
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0003
+**Evidence:** EVD-CLOSURE-025
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-3 candidate `da478428bd5d77ddd56eaf89ec74e1130bbc01ac` (HOLD), preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six blob ids AND `successor_tree`; replacement of the inherited `authority.effective_at` and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the tree-scope correction without marking the proposal signable or any binding resolved.
+**Benefit of old phase:** The independent attack proved a real gap that maker self-review had not found, which is exactly what the checker separation exists to produce.
+**Expected outcome:** Scope is enforced over the complete change; the proposal stays verifier-rejected by design.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0004
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-4 `REJECT_EXACT_SHA`
+**Work package:** PG-P0 closure repair, cycle 5
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0004
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0004
+**Evidence:** EVD-CLOSURE-026
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-4 candidate `fc4960fcc99df3cf35aa3140e9a01bf215abfa91` (`REJECT_EXACT_SHA`), preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six blob ids and `successor_tree`; replacement of the inherited `authority.effective_at` and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the two bounded corrections without marking the proposal signable or any binding resolved.
+**Benefit of old phase:** Both defects were named precisely enough to be reproduced first and fixed narrowly, with no rebuild required.
+**Expected outcome:** Scope enforcement is now correct for renames and anchored to the signed predecessor commit.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0005
+
+**Timestamp:** 2026-07-28T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-5 fail-closed result, one blocker
+**Work package:** PG-P0 closure repair, cycle 6
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0005
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0005
+**Evidence:** EVD-CLOSURE-027
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-5 candidate `d4cd5d594d9b9e25fed8634ef0def5dea18c354a`, preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review; human construction of the C6-C8 execution bytes to resolve six blob ids and `successor_tree`; replacement of the inherited `authority.effective_at` and recomputation of the authorized successor digest; operator attestation of revocation state for PG-P0-CLOSURE-002; a new operator signature over the re-issued packet.
+**Reason:** Track the single bounded correction without marking the proposal signable or any binding resolved.
+**Benefit of old phase:** The blocker was named precisely enough to reproduce first and fix narrowly, with no rebuild required.
+**Expected outcome:** `expected_old` and `predecessor_commit` are provably the same commit; divergence in either direction hard-rejects `EXPECTED_OLD_MISMATCH`.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0006
+
+**Timestamp:** 2026-07-28T09:42:17+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-6 verdict; maker-identified default-off defect
+**Work package:** PG-P0 closure repair, cycle 7
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0006
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0006
+**Evidence:** EVD-CLOSURE-028, EVD-CLOSURE-029
+**State:** SUPERSEDED BY CYCLE 8 - independent review returned REJECT_EXACT_SHA
+**Superseded:** cycle-6 candidate `2a18ed5352930f7603543cdab00fe397e6b11dc4`, preserved in history
+**Open controls:** Closed by cycle 8 for the exemption defect; all other cycle-7 open controls carry forward unchanged.
+**Reason:** Recorded retrospectively in cycle 8. The triple was omitted when cycle 7 shipped, and the maker declined to amend a SHA that was under review.
+**Benefit of old phase:** The omission was disclosed in the cycle-7 handoff rather than quietly corrected.
+**Expected outcome:** The ledger carries an unbroken 0001-0007 series with no gap at cycle 7.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0007
+
+**Timestamp:** 2026-07-29T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-7 verdict REJECT_EXACT_SHA, relayed by the operator
+**Work package:** PG-P0 closure repair, cycle 8
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0007
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0007
+**Evidence:** EVD-CLOSURE-030
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-7 candidate `1756bad2cea88298a094bcfe20e01d7efd9c8473`, preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review of this commit; issuance and operator signature of a NEW closure mandate carrying a closure binding, since `PG-P0-CLOSURE-001` can no longer be verified by this tool; the cycle-7 verdict itself is still unpersisted as a durable receipt; every pre-existing open control from cycles 2-7 carries forward.
+**Reason:** Remove the exempted path outright rather than narrow it further.
+**Benefit of old phase:** Cycle 7's inverted default is retained in full; only the exemption is removed.
+**Expected outcome:** An unbound mandate is rejected on every path, and the CLI cannot report a closure whose execution it did not verify.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0008
+
+**Timestamp:** 2026-07-29T01:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Maker adversarial self-audit of `fdf0434`
+**Work package:** PG-P0 closure repair, cycle 8 - self-audit remediation
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0008
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0008
+**Evidence:** EVD-CLOSURE-030 (amendment)
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-8 candidate `fdf0434bfee6ff5370a133b5c1b3419649a588f9`, preserved in history
+**Open controls:** Independent exact-SHA review of the successor commit; EVD-CLOSURE-029's superseded C7 invocation still needs a corrected runbook; the `verdict` field still does not encode verification depth; the cycle-7 verdict remains unpersisted; all pre-existing open controls carry forward.
+**Reason:** Fix defects the maker found in its own candidate before the checker spends time on them, and disclose the one it did not fix.
+**Benefit of old phase:** The published candidate was sound in its central control; only its supporting evidence was weak.
+**Expected outcome:** A successor SHA whose test evidence actually constrains production behaviour.
