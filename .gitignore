@@ -38,3 +38,26 @@ graphify-out/
 # reviewed candidate. Anchored to root and suffix-specific so it cannot match the governed
 # docs/02-agents/HANDOFF-CONTRACT.md.
 /HANDOFF-*-TO-CODEX.md
+
+# local agent runtime state: generated and actively mutated; keep on disk, never commit
+/.claude/.proven-config-version
+/.claude/proven-config.json
+/.claude-flow/agents/store.json
+/.claude-flow/daemon-state.json
+/.claude-flow/daemon.pid
+/.claude-flow/harness-active-policy.json
+/.claude-flow/logs/daemon.log
+/.claude-flow/metrics/backup.json
+/.claude-flow/metrics/codebase-map.json
+/.claude-flow/metrics/consolidation.json
+/.claude-flow/metrics/harness-loop.json
+/.claude-flow/metrics/performance.json
+/.claude-flow/metrics/security-audit.json
+/.claude-flow/metrics/test-gaps.json
+/.claude-flow/neural/stats.json
+/.swarm/backups/
+/.swarm/memory.db
+/.swarm/memory.db-shm
+/.swarm/memory.db-wal
+/.swarm/model-router-state.json
+/ruvector.db
