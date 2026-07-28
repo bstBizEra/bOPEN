@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-27",
-  "count": 341,
+  "generated": "2026-07-28",
+  "count": 343,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "ce2a55f222e893d05af5a60be7a90295b62098dcf74fff1fa972f99e39c46a70",
-      "bytes": 44018
+      "sha256": "71880d586f63c62d6754a8a1a22fa94c10123f663cb5be1527f50804a15cd245",
+      "bytes": 46153
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1548,6 +1548,20 @@
       "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
       "sha256": "a04057cf840abfe8970d29f77a9415a7d37d5dfa489f231164f37c5c63016d5a",
       "bytes": 5584
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-028-cycle7-closure-binding-required-by-default.md",
+      "title": "EVD-CLOSURE-028 - Maker evidence: cycle-7 closure binding required by default",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "0f0da9aa227447b0333ac88dfc2ce94ff6e555c3bfb569d21fa4c4b5d1b18b43",
+      "bytes": 6685
+    },
+    {
+      "path": "docs/evidence/EVD-CLOSURE-029-c7-runbook-verifier-invocation.md",
+      "title": "EVD-CLOSURE-029 - Maker evidence: C7 runbook verifier invocation (supersedes EVD-CLOSURE-012 C7)",
+      "status": "Maker-authored runbook correction (advisory; NOT an independent-checker receipt).",
+      "sha256": "c1d4b97b46e5a6f987521f4d7e9f01ab7de21945c1e2788dfaab67e05c751db8",
+      "bytes": 4792
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",

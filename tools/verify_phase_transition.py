@@ -1008,19 +1008,44 @@ def validate_closure_binding(binding):
     return binding
 
 
+def closure_binding_required(mandate, allow_unbound_legacy_decision):
+    """Decide whether an ABSENT closure binding is fatal for this mandate.
+
+    Binding is required by DEFAULT (cycle 7, EVD-CLOSURE-028). Cycle 2 introduced the binding but
+    defaulted `require_closure_binding=False`, so the fail-closed control only engaged if the caller
+    remembered to opt in -- and the operative C7 apply runbook (EVD-CLOSURE-012) never did. A control
+    that must be switched on is one that will eventually be left off; this repo already learned that
+    once in EVD-CLOSURE-016 H2 (a bit-flipped signature passed twelve validators and 189 tests
+    because a single gate checked rc alone). The default is therefore inverted: absence is fatal
+    unless a caller names the specific legacy decision it is exempting.
+
+    The exemption is SCOPED TO A DECISION ID, never a boolean off-switch. `PG-P0-CLOSURE-001` was
+    signed before `closure_binding` existed and cannot acquire one without invalidating the
+    signature, so it needs an escape hatch -- but a blanket `--allow-unbound` would also wave through
+    an attacker-substituted unbound mandate carrying a DIFFERENT decision id. Matching on the id
+    means the hatch covers exactly the one historical artifact it was opened for.
+    """
+    if allow_unbound_legacy_decision is None:
+        return True
+    return mandate.get("decision_id") != allow_unbound_legacy_decision
+
+
 def enforce_closure_binding(
     mandate, closure_manifest_bytes, revocation_bytes, consumed_bytes, *, required,
     execution_root=None, repository=None,
 ):
-    """Enforce the closure binding. When `required` is True (closure-execution verification), a
-    missing binding or missing manifest bytes is a hard rejection -- never a silent pass. When it is
-    False, a binding that IS present is still fully enforced; only its absence is tolerated."""
+    """Enforce the closure binding. When `required` is True, a missing binding or missing manifest
+    bytes is a hard rejection -- never a silent pass. When it is False (only via an explicit,
+    decision-scoped legacy exemption), a binding that IS present is still fully enforced; only its
+    absence is tolerated."""
     binding = mandate.get("closure_binding")
     if binding is None:
         if required:
             raise VerifyError(
                 CLOSURE_BINDING_REQUIRED,
-                "closure-execution verification requested but the mandate declares no closure_binding",
+                "the mandate declares no closure_binding; closure binding is required by default. "
+                "If this is a legacy mandate signed before closure_binding existed, the caller must "
+                "explicitly exempt it by decision id (--allow-unbound-legacy-mandate <decision_id>)",
             )
         return None
     validate_closure_binding(binding)
@@ -1124,13 +1149,16 @@ def verify_transition(
     closure_manifest_bytes=None,
     revocation_bytes=None,
     consumed_bytes=None,
-    require_closure_binding=False,
+    allow_unbound_legacy_decision=None,
     execution_root=None,
     repository=None,
 ):
     """Verify that `proposed_successor` is exactly the transition authorized by the signed
     mandate `envelope` applied to `predecessor`. Returns a result dict with a VERIFIED verdict
-    and a receipt, or raises VerifyError(reason) with a stable rejection code."""
+    and a receipt, or raises VerifyError(reason) with a stable rejection code.
+
+    Closure binding is REQUIRED by default. `allow_unbound_legacy_decision` names the decision
+    id(s) for which an absent binding is tolerated (see closure_binding_required)."""
     consumed = consumed or {}
 
     mandate, signer_keyid = open_signed_mandate(envelope, trust_root)
@@ -1138,12 +1166,13 @@ def verify_transition(
     # Enforced BEFORE authority resolution and before any digest comparison: if the closure binding
     # is required and absent/malformed/mismatched, no later check should get the chance to produce
     # a VERIFIED-looking verdict.
+    required = closure_binding_required(mandate, allow_unbound_legacy_decision)
     closure_binding_result = enforce_closure_binding(
         mandate,
         closure_manifest_bytes,
         revocation_bytes,
         consumed_bytes,
-        required=require_closure_binding,
+        required=required,
         execution_root=execution_root,
         repository=repository,
     )
@@ -1194,7 +1223,13 @@ def verify_transition(
         "authorized_successor_schedule_digest": recomputed_digest,
         "proposed_successor_schedule_digest": proposed_digest,
         "closure_binding": closure_binding_result,
-        "closure_execution_verification": bool(require_closure_binding),
+        "closure_execution_verification": bool(required),
+        # Auditable and never omissible: if the legacy hatch was used, the receipt says so and names
+        # the exempted decision, so a reader can never mistake an exempted verification for a fully
+        # bound one. None means no exemption applied (the default, fully-bound path).
+        "legacy_unbound_exemption": (
+            mandate.get("decision_id") if not required else None
+        ),
         "note": "advisory verification only; no register mutated, nothing signed or consumed",
     }
     consumed_next = dict(consumed)
@@ -1237,9 +1272,17 @@ def main():
     parser.add_argument(
         "--require-closure-binding",
         action="store_true",
-        help="closure-execution verification: fail closed unless the mandate's closure_binding is "
-             "present, well-formed, and matches the supplied closure manifest, revocation state "
-             "and consumed state exactly",
+        help="DEPRECATED and redundant: closure binding is now required by default. Accepted so "
+             "existing invocations keep working; it changes nothing.",
+    )
+    parser.add_argument(
+        "--allow-unbound-legacy-mandate",
+        metavar="DECISION_ID",
+        help="Tolerate an ABSENT closure_binding, but ONLY for a mandate carrying exactly this "
+             "decision id. Exists for PG-P0-CLOSURE-001, signed before closure_binding existed. "
+             "Scoped by design: an unbound mandate with any other decision id is still rejected, so "
+             "this cannot wave through a substituted mandate. The receipt records the exemption in "
+             "`legacy_unbound_exemption`.",
     )
     args = parser.parse_args()
     consumed = _load(args.consumed) if args.consumed and Path(args.consumed).is_file() else {}
@@ -1270,13 +1313,20 @@ def main():
             closure_manifest_bytes,
             revocation_bytes,
             consumed_bytes,
-            args.require_closure_binding,
+            args.allow_unbound_legacy_mandate,
             args.execution_root,
             args.repository,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")
         return 1
+    exempted = result["receipt"].get("legacy_unbound_exemption")
+    if exempted is not None:
+        # Never let an exempted run look like a fully bound one on a glance at stdout. The apply
+        # gate reads stdout as well as rc (EVD-CLOSURE-016 H2), so the weaker mode must be visible
+        # there, not only inside the receipt JSON.
+        print(f"{result['verdict']}: {result['outcome']} (UNBOUND_LEGACY_EXEMPTION: {exempted})")
+        return 0
     print(f"{result['verdict']}: {result['outcome']}")
     return 0
 

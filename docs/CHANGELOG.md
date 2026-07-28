@@ -1,5 +1,30 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 7 (EVD-CLOSURE-028/029)
+
+- Additive commit on `claude/PG-P0-closure-binding-default-cycle7` from cycle-6 tip
+  `2a18ed5352930f7603543cdab00fe397e6b11dc4`. Advisory; independent review required.
+- **Closure binding is now required by DEFAULT.** Cycle 2 built a sound fail-closed control but
+  defaulted `require_closure_binding=False`, so it engaged only when a caller opted in. Against the
+  real signed mandate at the cycle-6 tip, the bare invocation returned `VERIFIED_EXACT` rc=0 while
+  the control sat inert. No validator, docket check or test enforced the flag, and the operative C7
+  apply runbook (`EVD-CLOSURE-012`, inherited unchanged) never passed it - so an operator following
+  the procedure of record would have gotten a clean verdict on an unbound mandate. Same lesson as
+  `EVD-CLOSURE-016` H2: a control that must be switched on will eventually be left off.
+- **Escape hatch is scoped to a decision id, not a boolean.** `--allow-unbound-legacy-mandate
+  <DECISION_ID>` tolerates an absent binding only for a mandate carrying exactly that
+  id, so it cannot wave through an attacker-substituted unbound mandate. `PG-P0-CLOSURE-001` needs
+  it (signed before `closure_binding` existed); nothing else does. A present-but-malformed binding
+  is still rejected under an exemption - absence only is tolerated.
+- **The weaker mode is never invisible.** Receipt carries `legacy_unbound_exemption` and
+  `closure_execution_verification: false`; stdout appends `(UNBOUND_LEGACY_EXEMPTION: <id>)` so the
+  rc-and-stdout apply gate sees it too. `--require-closure-binding` retained as an accepted no-op.
+- **C7 runbook corrected** (`EVD-CLOSURE-029`, superseding only `EVD-CLOSURE-012`'s C7 line): states
+  the two legitimate invocations, requires recording the exemption suffix when present, and names
+  the prohibited "make the rejection go away" resolutions.
+- Tests 96 -> 103. New `ClosureBindingRequiredByDefaultTests` pins the inverted default, the public
+  signature's own default, exemption scoping, receipt disclosure, and predicate semantics.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 6 (EVD-CLOSURE-027)
 
 - Additive commit on `claude/PG-P0-closure-repair-c8-v2` after Codex's cycle-5 fail-closed result

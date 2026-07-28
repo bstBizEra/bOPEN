@@ -64,6 +64,11 @@ def _identity_register(roles=None, actions=None, valid_from="2026-01-01T00:00:00
     }
 
 
+# Decision ids used by this file's legacy-shaped (unbound) fixtures. Exempted in _verify so
+# pre-cycle-7 tests keep exercising what they were written to exercise.
+_LEGACY_TEST_DECISION = "PG-P0-COMPLETE-001"
+
+
 def _mandate(predecessor, decision_id="PG-P0-COMPLETE-001"):
     return {
         "schema_id": "bopen.phase-completion-mandate",
@@ -102,7 +107,13 @@ def _envelope(mandate, seed=SEED, keyid=KEYID, payload_bytes=None):
 def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust_root=None,
             identity_register=None, verification_time=VTIME, consumed=None, revocations=None,
             closure_manifest_bytes=None, revocation_bytes=None, consumed_bytes=None,
-            require_closure_binding=False, execution_root=None, repository=None):
+            allow_unbound_legacy_decision=_LEGACY_TEST_DECISION, execution_root=None,
+            repository=None):
+    """Test helper. NOTE (cycle 7): closure binding is now REQUIRED by default in production. Most
+    pre-cycle-7 tests here exercise unrelated controls (canonicalization, authority, replay) with
+    legacy-shaped unbound mandates, so this helper exempts those tests' own decision ids by default
+    to preserve their original intent. Tests that assert the NEW default behaviour pass
+    allow_unbound_legacy_decision=None explicitly -- see ClosureBindingRequiredByDefaultTests."""
     predecessor = predecessor if predecessor is not None else _predecessor()
     mandate = mandate if mandate is not None else _mandate(predecessor)
     successor = successor if successor is not None else v.recompute_successor(predecessor, mandate)
@@ -112,7 +123,7 @@ def _verify(predecessor=None, successor=None, mandate=None, envelope=None, trust
         trust_root if trust_root is not None else _trust_root(),
         identity_register if identity_register is not None else _identity_register(),
         verification_time, consumed or {}, revocations or {},
-        closure_manifest_bytes, revocation_bytes, consumed_bytes, require_closure_binding,
+        closure_manifest_bytes, revocation_bytes, consumed_bytes, allow_unbound_legacy_decision,
         execution_root, repository,
     )
 
@@ -397,7 +408,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         return _verify(
             predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
             closure_manifest_bytes=manifest_bytes if manifest_bytes is not None else self._manifest_bytes(),
-            require_closure_binding=True, **kwargs
+            allow_unbound_legacy_decision=None, **kwargs
         )
 
     def _assert_reason(self, reason, pred, mandate, manifest_bytes=None, **kwargs):
@@ -427,7 +438,7 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         with self.assertRaises(v.VerifyError) as cm:
             _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
                     closure_manifest_bytes=None, revocation_bytes=self._revocation_bytes(),
-                    consumed_bytes=self._consumed_bytes(), require_closure_binding=True)
+                    consumed_bytes=self._consumed_bytes(), allow_unbound_legacy_decision=None)
         self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
 
     def test_absent_revocation_state_rejects_in_closure_mode(self):
@@ -555,13 +566,90 @@ class ClosureBindingFailClosedTests(unittest.TestCase):
         mandate["closure_binding"]["closure_manifest_digest"] = "3" * 64
         with self.assertRaises(v.VerifyError) as cm:
             _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate),
-                    closure_manifest_bytes=self._manifest_bytes(), require_closure_binding=False)
+                    closure_manifest_bytes=self._manifest_bytes(), allow_unbound_legacy_decision=_LEGACY_TEST_DECISION)
         self.assertEqual(cm.exception.reason, v.CLOSURE_MANIFEST_MISMATCH)
 
     def test_non_closure_mode_reports_no_binding(self):
         result = _verify()
         self.assertIsNone(result["receipt"]["closure_binding"])
         self.assertFalse(result["receipt"]["closure_execution_verification"])
+
+
+class ClosureBindingRequiredByDefaultTests(unittest.TestCase):
+    """Cycle 7 (EVD-CLOSURE-028): closure binding is required BY DEFAULT.
+
+    Cycle 2 built the fail-closed control but defaulted it off, so it engaged only when a caller
+    remembered `--require-closure-binding` -- and the operative C7 apply runbook (EVD-CLOSURE-012)
+    never passed it. These tests pin the inverted default and, more importantly, pin that the legacy
+    escape hatch is SCOPED TO A DECISION ID and therefore cannot be repurposed into a blanket
+    bypass."""
+
+    def _unbound(self, decision_id="PG-P0-COMPLETE-001"):
+        pred = _predecessor()
+        mandate = _mandate(pred, decision_id=decision_id)
+        self.assertNotIn("closure_binding", mandate)
+        return pred, mandate
+
+    def _run(self, pred, mandate, **kwargs):
+        return _verify(predecessor=pred, mandate=mandate, envelope=_envelope(mandate), **kwargs)
+
+    def test_unbound_mandate_rejected_by_default(self):
+        # THE regression this cycle exists to prevent: no flag, no binding -> hard rejection.
+        pred, mandate = self._unbound()
+        with self.assertRaises(v.VerifyError) as cm:
+            self._run(pred, mandate, allow_unbound_legacy_decision=None)
+        self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
+
+    def test_library_default_argument_is_fail_closed(self):
+        # Not just "when None is passed" -- the actual default of the public function signature.
+        # A caller who omits the argument entirely must still get the fail-closed behaviour.
+        pred, mandate = self._unbound()
+        with self.assertRaises(v.VerifyError) as cm:
+            v.verify_transition(
+                pred, v.recompute_successor(pred, mandate), _envelope(mandate),
+                _trust_root(), _identity_register(), VTIME,
+            )
+        self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
+
+    def test_named_legacy_decision_is_exempted(self):
+        pred, mandate = self._unbound("PG-P0-CLOSURE-001")
+        result = self._run(pred, mandate, allow_unbound_legacy_decision="PG-P0-CLOSURE-001")
+        self.assertEqual(result["verdict"], v.VERIFIED)
+
+    def test_exemption_does_not_cover_a_different_decision_id(self):
+        # The security property that makes this a hatch rather than an off-switch: an attacker who
+        # substitutes a DIFFERENT unbound mandate is still rejected, even though an exemption for
+        # the legacy decision is active.
+        pred, mandate = self._unbound("ATTACKER-SUBSTITUTED-001")
+        with self.assertRaises(v.VerifyError) as cm:
+            self._run(pred, mandate, allow_unbound_legacy_decision="PG-P0-CLOSURE-001")
+        self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
+
+    def test_receipt_records_the_exemption(self):
+        pred, mandate = self._unbound("PG-P0-CLOSURE-001")
+        receipt = self._run(
+            pred, mandate, allow_unbound_legacy_decision="PG-P0-CLOSURE-001"
+        )["receipt"]
+        self.assertEqual(receipt["legacy_unbound_exemption"], "PG-P0-CLOSURE-001")
+        self.assertFalse(receipt["closure_execution_verification"])
+
+    def test_predicate_semantics(self):
+        # Direct unit test of the decision predicate, so the default cannot be flipped back without
+        # a test failing here regardless of how verify_transition is wired.
+        mandate = _mandate(_predecessor(), decision_id="PG-P0-CLOSURE-001")
+        self.assertTrue(v.closure_binding_required(mandate, None))
+        self.assertFalse(v.closure_binding_required(mandate, "PG-P0-CLOSURE-001"))
+        self.assertTrue(v.closure_binding_required(mandate, "SOME-OTHER-DECISION"))
+
+    def test_exemption_never_weakens_a_present_binding(self):
+        # If a binding IS present, naming the decision in the hatch must not skip its enforcement:
+        # the hatch tolerates absence only. Here the binding is present but malformed.
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["closure_binding"] = {"closure_manifest_digest": "0" * 64}  # missing required keys
+        with self.assertRaises(v.VerifyError) as cm:
+            self._run(pred, mandate, allow_unbound_legacy_decision="PG-P0-COMPLETE-001")
+        self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_MALFORMED)
 
 
 class SuccessorBlobBindingTests(unittest.TestCase):
