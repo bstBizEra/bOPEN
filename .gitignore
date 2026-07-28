@@ -30,3 +30,6 @@ research/upstream/*
 # generated validation evidence
 artifacts/validation/*
 !artifacts/validation/README.md
+
+# third-party code-graph scan output: regenerable, never committed
+graphify-out/
