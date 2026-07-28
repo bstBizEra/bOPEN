@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 292,
+  "generated": "2026-07-28",
+  "count": 295,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1382,6 +1382,13 @@
       "bytes": 3456
     },
     {
+      "path": "docs/evidence/EVD-SKEL-003-a2-model-routing-intake.md",
+      "title": "EVD-SKEL-003 \u2014 SKEL-P0-01-A2 Model-Routing Recommendation Intake",
+      "status": "Draft intake evidence; disabled; not accepted",
+      "sha256": "b35a21744084b0d3645767f923ed1c8caab66282a52cc980f4c4f72e8c8ef278",
+      "bytes": 2109
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
@@ -1408,6 +1415,13 @@
       "status": "Draft operational convention pending DEC-0012",
       "sha256": "c15a259a3e882b712d8351846f9916cb7ed52f5a73f96c114094eef816ec3ba7",
       "bytes": 792
+    },
+    {
+      "path": "docs/manifests/SKEL-P0-01-A2-traceability.json",
+      "title": "",
+      "status": "",
+      "sha256": "f6c95ebd44a014a9d7a0ec84c1f3f6fce94c068009580cf44dea45501b7a20e6",
+      "bytes": 1213
     },
     {
       "path": "docs/manifests/SKEL-P0-01-traceability.json",
@@ -2031,6 +2045,13 @@
       "status": "Proposed; not accepted",
       "sha256": "c2b30aaf43922cf602dc2035ee38f84376edeb5e28f19fa4a5ed5e3714d7b6af",
       "bytes": 13173
+    },
+    {
+      "path": "docs/work-packages/SKEL-P0-01-A2.md",
+      "title": "SKEL-P0-01-A2 \u2014 Adaptive Dual-Provider Model Routing, Stability and Delivery Control",
+      "status": "Proposed; disabled; not accepted",
+      "sha256": "4b1f743862f63df4cbfb614e6acb9bacc29cb6d40760bab947a59657e386b617",
+      "bytes": 9764
     },
     {
       "path": "docs/work-packages/SKEL-P0-01.md",

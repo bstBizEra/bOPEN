@@ -1,0 +1,32 @@
+{
+  "artifactId": "SKEL-P0-01-A2-TRACEABILITY",
+  "version": "0.1.0",
+  "status": "draft-disabled-not-accepted",
+  "owner": "Engineering Authority",
+  "workPackage": "SKEL-P0-01",
+  "amendment": "SKEL-P0-01-A2",
+  "candidateBase": "ca92c7c9796824213fa68db280131bc87e6b2cfb",
+  "source": {
+    "path": "C:/Users/ounkh/Downloads/SKEL-P0-01-A2_Model_Routing_Recommendation.md",
+    "sha256": "f00d302bbd16e11ef15dd5d386ffc6d2d41b056a10bd78ff60dcbd8a7f7dbb56",
+    "bytes": 13665,
+    "receivedAt": "2026-07-24T09:03:56+07:00"
+  },
+  "parentDependency": {
+    "artifactId": "SKEL-P0-01-A1",
+    "suppliedBundleCandidate": "6d0cdced9a76957961d7424920dfad91268a41f6",
+    "suppliedBundleBase": "9a80f9d042f1ed176c9939bae57953443d0c5964",
+    "status": "unresolved-obsolete-lineage-not-imported",
+    "acceptanceBlocker": true
+  },
+  "governingArtifacts": [
+    "Roadmap.md",
+    "Master_Standards.md",
+    "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md",
+    "docs/work-packages/SKEL-P0-01.md"
+  ],
+  "implementationStatus": "planned-not-executed",
+  "runtimeActivation": false,
+  "mergeReleaseDeployAuthorized": false,
+  "configChange": "none; /opt/bizera-smartthink/config remains an unresolved external dependency"
+}
