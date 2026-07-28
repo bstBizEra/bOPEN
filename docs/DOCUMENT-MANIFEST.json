@@ -314,8 +314,8 @@
       "path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
       "title": "",
       "status": "",
-      "sha256": "c176b8540a2c09219656a71e75582064263bd0dcf97e5026053a58a7cc2d0f52",
-      "bytes": 1864
+      "sha256": "d416ea4bc564afceaac15fed4ed94c78966b84824eb589d2a836dca86116a4b5",
+      "bytes": 3300
     },
     {
       "path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
@@ -1749,7 +1749,7 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "7d78376efcf654af440a315fb63275649c8f527847375608fe127adc48cf8ac8",
+      "sha256": "cc32a4d16acf9dadf21a2d41293405c25da06f8468a31397aa82150ae601402f",
       "bytes": 95496
     },
     {

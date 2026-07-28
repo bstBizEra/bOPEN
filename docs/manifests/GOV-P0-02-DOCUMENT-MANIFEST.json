@@ -314,8 +314,8 @@
       "path": "docs/00-governance/signing/PG-P0-CONSUMED-DECISIONS.json",
       "title": "",
       "status": "",
-      "sha256": "c176b8540a2c09219656a71e75582064263bd0dcf97e5026053a58a7cc2d0f52",
-      "bytes": 1864
+      "sha256": "d416ea4bc564afceaac15fed4ed94c78966b84824eb589d2a836dca86116a4b5",
+      "bytes": 3300
     },
     {
       "path": "docs/00-governance/signing/PG-P0-REVOCATIONS.json",
