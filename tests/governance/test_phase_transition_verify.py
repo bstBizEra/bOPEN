@@ -1370,6 +1370,24 @@ class CommandLineRefusalTests(unittest.TestCase):
     def _write(self, name, obj):
         (self.dir / name).write_text(json.dumps(obj), encoding="utf-8")
 
+    def _run_only(self, option, value):
+        """Run with all inputs valid except `option`, which is forced to `value`."""
+        base = {
+            "--predecessor": str(self.dir / "predecessor.json"),
+            "--successor": str(self.dir / "successor.json"),
+            "--mandate": str(self.dir / "mandate.dsse.json"),
+            "--trust-root": str(self.dir / "trust-root.json"),
+            "--identity-register": str(self.dir / "identity-register.json"),
+            "--closure-manifest": str(self.dir / "manifest.json"),
+            "--revocations": str(self.dir / "revocations.json"),
+            "--consumed": str(self.dir / "consumed.json"),
+        }
+        base[option] = value
+        argv = [sys.executable, str(self.TOOL), "--verification-time", VTIME]
+        for key, val in base.items():
+            argv += [key, val]
+        return subprocess.run(argv, capture_output=True, text=True)
+
     def _run(self, *extra):
         argv = [
             sys.executable, str(self.TOOL),
@@ -1438,12 +1456,31 @@ class CommandLineRefusalTests(unittest.TestCase):
         self._write("mandate.dsse.json", _envelope(mandate))
         self._write("successor.json", v.recompute_successor(pred, mandate))
         (self.dir / "manifest.json").write_bytes(manifest)
-        proc = self._run("--execution-root", str(root), "--repository", str(root))
+        # TWO DISTINCT directories. Passing the same path twice made the assertion satisfiable by a
+        # value the fixture supplied twice: mutants that swapped the two stdout fields, or populated
+        # the receipt's execution_root from repository, both survived. Separate paths bind them.
+        exec_copy = pathlib.Path(tempfile.mkdtemp(prefix="execroot"))
+        self.addCleanup(shutil.rmtree, exec_copy, True)
+        for rel, data in contents.items():
+            target = exec_copy / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+        proc = self._run("--execution-root", str(exec_copy), "--repository", str(root))
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("VERIFIED_EXACT", proc.stdout)
-        # The verdict line must name the tree that was verified, otherwise a reader cannot tell
-        # which root produced it.
-        self.assertIn(str(root), proc.stdout)
+        # Each field must name ITS OWN root, in the right order.
+        self.assertIn(f"execution_root={exec_copy.resolve()}", proc.stdout)
+        self.assertIn(f"repository={pathlib.Path(root).resolve()}", proc.stdout)
+
+    def test_noncanonical_root_is_reported_canonically(self):
+        paths = ["docs/00-governance/registers/SCHEDULE-REGISTER.json"]
+        root, _succ, contents, _base = _make_git_execution_tree(self, paths)
+        noncanonical = str(pathlib.Path(root) / "docs" / "..")
+        proc = self._run("--execution-root", noncanonical, "--repository", str(root))
+        # Whatever the verdict, the printed root must be the canonical form: `<root>` and
+        # `<root>/docs/..` are the same tree, and a gate comparing strings must not see two.
+        self.assertNotIn(r"docs\..", proc.stdout)
+        self.assertNotIn("docs/..", proc.stdout)
 
     def test_structural_refusal_is_distinguishable_from_the_empty_value_refusal(self):
         # Both refusals previously shared a reason code, so asserting the code alone could not tell
@@ -1451,6 +1488,42 @@ class CommandLineRefusalTests(unittest.TestCase):
         proc = self._run()
         self.assertEqual(proc.returncode, 1)
         self.assertNotIn("empty value", proc.stdout)
+
+    def test_every_path_option_reports_rejected_not_a_traceback(self):
+        """Constrains the whole argument-validation block.
+
+        Mutations that deleted the required-file loop, the optional-file loop, both, or that changed
+        the reason code, ALL survived the suite: the block was shipped untested. `--closure-manifest`
+        was worse than untested - it was read before its own guard ran, so a directory argument still
+        produced rc=1 with EMPTY stdout and a PermissionError about '.', the exact symptom the commit
+        message declared gone."""
+        options = ["--predecessor", "--successor", "--mandate", "--trust-root",
+                   "--identity-register", "--closure-manifest", "--revocations", "--consumed"]
+        a_directory = str(self.dir)
+        missing = str(self.dir / "not-here.json")
+        for option in options:
+            for bad, label in ((a_directory, "directory"), (missing, "missing"), ("", "empty")):
+                with self.subTest(option=option, kind=label):
+                    proc = self._run_only(option, bad)
+                    self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+                    self.assertTrue(
+                        proc.stdout.startswith("REJECTED: "),
+                        f"{option} {label}: expected a REJECTED line, got stdout={proc.stdout!r} "
+                        f"stderr={proc.stderr[-200:]!r}",
+                    )
+                    self.assertIn(option, proc.stdout)
+                    self.assertNotIn("Traceback", proc.stderr)
+
+    def test_reason_code_names_the_option_at_fault(self):
+        # The previous revision reported MANDATE_INVALID for every file option, including
+        # --trust-root - the same code/option contradiction it had just criticised for --repository.
+        for option, code in (("--trust-root", v.UNTRUSTED_KEY),
+                             ("--identity-register", v.AUTHORITY_DENIED),
+                             ("--consumed", v.CONSUMED_STATE_MISMATCH),
+                             ("--revocations", v.REVOCATION_STATE_MISMATCH)):
+            with self.subTest(option=option):
+                proc = self._run_only(option, str(self.dir / "not-here.json"))
+                self.assertIn(code, proc.stdout)
 
     def test_unbound_mandate_is_refused_through_the_cli(self):
         pred = _predecessor()
@@ -1471,8 +1544,6 @@ class AmbiguousExecutionPathTests(unittest.TestCase):
     just as `""` does, and the realistic runbook shapes of the same unset-variable mistake
     (`"./$ROOT"`, `"${ROOT:-.}"`) went straight through it. It was also CLI-only, so
     `verify_transition(execution_root="")` was never guarded at all."""
-
-    MANIFEST = None
 
     def setUp(self):
         self.man = _closure_manifest_bytes()

@@ -96,6 +96,23 @@ SUCCESSOR_TREE_BLOB_MISMATCH = "SUCCESSOR_TREE_BLOB_MISMATCH"
 EXECUTION_ROOT_MISMATCH = "EXECUTION_ROOT_MISMATCH"
 
 
+def PATH_OPTIONS(args):
+    """(option, value, required, reason_code) for every path argument the CLI accepts.
+
+    One table so that adding an option cannot quietly skip validation, and so the reason code names
+    the option at fault rather than a generic one."""
+    return (
+        ("--predecessor", args.predecessor, True, PREDECESSOR_MISMATCH),
+        ("--successor", args.successor, True, SUCCESSOR_MISMATCH),
+        ("--mandate", args.mandate, True, MANDATE_INVALID),
+        ("--trust-root", args.trust_root, True, UNTRUSTED_KEY),
+        ("--identity-register", args.identity_register, True, AUTHORITY_DENIED),
+        ("--closure-manifest", args.closure_manifest, False, CLOSURE_MANIFEST_MISMATCH),
+        ("--revocations", args.revocations, False, REVOCATION_STATE_MISMATCH),
+        ("--consumed", args.consumed, False, CONSUMED_STATE_MISMATCH),
+    )
+
+
 class VerifyError(Exception):
     """A fail-closed verification rejection carrying a stable reason code."""
 
@@ -757,7 +774,9 @@ def require_named_directory(value, option, reason):
         )
     if not path.is_dir():
         raise VerifyError(reason, f"{option} is not an existing directory: {text!r}")
-    return path
+    # Canonical form: `<root>` and `<root>/docs/..` are the same tree but different strings, and a
+    # gate comparing the printed root against an expected one is defeated by the difference.
+    return path.resolve()
 
 
 def assert_git_repository(repository):
@@ -1313,12 +1332,33 @@ def main():
     )
     args = parser.parse_args()
 
-    def _fail(message):
+    def _fail(reason, message):
         # Every failure must produce a REJECTED line on stdout, not a traceback. An apply gate reads
         # rc AND stdout (EVD-CLOSURE-016 H2); an uncaught exception gives it rc=1 with empty stdout
-        # and a message about the current directory rather than about the argument at fault.
-        print(f"{REJECTED}: {MANDATE_INVALID}: {message}")
+        # and a message about the current directory rather than about the argument at fault. The
+        # reason code names the option at fault: reporting MANDATE_INVALID for --trust-root would
+        # repeat the exact code/option contradiction this file criticised one revision earlier.
+        print(f"{REJECTED}: {reason}: {message}")
         return 1
+
+    # Validated HERE, before ANY file is read. The previous revision put this loop below the reads,
+    # so --closure-manifest was already read and its guard entry was dead code -- three call sites
+    # reaching one enforcement point and only two arriving. Nothing above this line may touch a path.
+    for _opt, _val, _required, _reason in PATH_OPTIONS(args):
+        if _val is None:
+            if _required:
+                return _fail(_reason, f"{_opt} is required")
+            continue
+        if not str(_val).strip():
+            return _fail(_reason, f"{_opt} was given an empty value")
+        if not Path(_val).is_file():
+            return _fail(
+                _reason,
+                f"{_opt} is not an existing file: {_val!r}"
+                + ("" if _required else
+                   ". Omit the option if you mean 'not supplied'; supplying an unreadable path is "
+                   "not the same thing"),
+            )
 
     # Path validation lives in require_named_directory (called from enforce_closure_binding) so
     # that library callers get the same rule; main() only forwards the arguments.
@@ -1342,19 +1382,6 @@ def main():
         if args.consumed and Path(args.consumed).is_file()
         else None
     )
-    for _opt, _val in (("--predecessor", args.predecessor), ("--successor", args.successor),
-                       ("--mandate", args.mandate), ("--trust-root", args.trust_root),
-                       ("--identity-register", args.identity_register)):
-        if not str(_val).strip() or not Path(_val).is_file():
-            return _fail(f"{_opt} is not an existing file: {_val!r}")
-    for _opt, _val in (("--closure-manifest", args.closure_manifest),
-                       ("--revocations", args.revocations), ("--consumed", args.consumed)):
-        if _val is not None and (not str(_val).strip() or not Path(_val).is_file()):
-            return _fail(
-                f"{_opt} was supplied but is not an existing file: {_val!r}. Omit the option if you "
-                "mean 'not supplied'; supplying an unreadable path is not the same thing"
-            )
-
     try:
         result = verify_transition(
             _load(args.predecessor),
