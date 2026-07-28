@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-28",
-  "count": 344,
+  "count": 347,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -255,6 +255,20 @@
       "bytes": 2739
     },
     {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-002-RECONSTRUCTION-NOTE.md",
+      "title": "PG-P0-CLOSURE-002 - resolved payload and execution bytes",
+      "status": "UNSIGNED candidate. Carries no signature and authorizes nothing.",
+      "sha256": "aa42bdd484937f78465e931275d02082c0c0f95852982bfba53b32b0b0df38d7",
+      "bytes": 4053
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-002-execution.patch",
+      "title": "",
+      "status": "",
+      "sha256": "e94ce4a41630793128ddacd47ab74a36669ff0dda600b7085e2910a1e12ffa42",
+      "bytes": 16870
+    },
+    {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-PROPOSAL.md",
       "title": "PG-P0 Closure Mandate v2 - UNSIGNED DRAFT",
       "status": "",
@@ -267,6 +281,13 @@
       "status": "",
       "sha256": "41909b6792ddd0d828c788f26c516f9ca60e3a45bb26404ac4039e1875394bbd",
       "bytes": 2288
+    },
+    {
+      "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE-V2-RESOLVED.payload.json",
+      "title": "",
+      "status": "",
+      "sha256": "32a5d39b0e1ea93d95a4b057204f0cfe26b8a0dc4ab4544d5af465e37f2daba5",
+      "bytes": 2423
     },
     {
       "path": "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.dsse.json",

@@ -1,0 +1,254 @@
+diff --git a/docs/00-governance/registers/SCHEDULE-REGISTER.json b/docs/00-governance/registers/SCHEDULE-REGISTER.json
+index e4325a6..bae4f04 100644
+--- a/docs/00-governance/registers/SCHEDULE-REGISTER.json
++++ b/docs/00-governance/registers/SCHEDULE-REGISTER.json
+@@ -10,7 +10,7 @@
+   "approval_ref": "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23",
+   "entries": [
+     {"schedule_id":"PG-G0","phase_id":"PG-G0","title":"Governance Bootstrap","status":"COMPLETE","depends_on":[],"owner_authority":"Product Authority","work_item_refs":[],"planned_start":"2026-07-23T00:45:00+07:00","planned_end":"2026-07-24T00:20:36+07:00","rebaseline_decision_ref":"docs/00-governance/signing/SIGNING-PASS-4.md#signed-gate-decision","evidence_refs":["docs/00-governance/signing/SIGNING-PASS-4.md","docs/evidence/EVD-GOV-015-docket-v04-remediation-v3-acceptance.md"]},
+-    {"schedule_id":"PG-P0","phase_id":"PG-P0","title":"Platform Skeleton","status":"ACTIVE","depends_on":["PG-G0"],"owner_authority":"Architecture Authority","work_item_refs":["SKEL-P0-01"],"planned_start":"2026-07-24T01:15:27+07:00","planned_end":null,"rebaseline_decision_ref":"docs/00-governance/signing/SIGNING-PASS-5.md#signed-decision","evidence_refs":["docs/00-governance/signing/SIGNING-PASS-5.md","docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md"]},
++    {"schedule_id":"PG-P0","phase_id":"PG-P0","title":"Platform Skeleton","status":"COMPLETE","depends_on":["PG-G0"],"owner_authority":"Architecture Authority","work_item_refs":["SKEL-P0-01"],"planned_start":"2026-07-24T01:15:27+07:00","planned_end":"2026-07-27T00:00:00+07:00","rebaseline_decision_ref":"docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision","evidence_refs":["docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md","docs/00-governance/signing/SIGNING-PASS-10.md","docs/00-governance/signing/SIGNING-PASS-8.md"]},
+     {"schedule_id":"PG-P1","phase_id":"PG-P1","title":"Core Multi-Tenant Kernel","status":"NOT_READY","depends_on":["PG-P0"],"owner_authority":"Architecture Authority","work_item_refs":[],"planned_start":null,"planned_end":null,"rebaseline_decision_ref":null,"evidence_refs":[]},
+     {"schedule_id":"PG-P2","phase_id":"PG-P2","title":"Module Platform","status":"NOT_READY","depends_on":["PG-P1"],"owner_authority":"Architecture Authority","work_item_refs":[],"planned_start":null,"planned_end":null,"rebaseline_decision_ref":null,"evidence_refs":[]},
+     {"schedule_id":"PG-P3","phase_id":"PG-P3","title":"Common Business Foundation","status":"NOT_READY","depends_on":["PG-P2"],"owner_authority":"Product Authority","work_item_refs":[],"planned_start":null,"planned_end":null,"rebaseline_decision_ref":null,"evidence_refs":[]},
+diff --git a/docs/CHANGELOG.md b/docs/CHANGELOG.md
+index abdf4e7..eac28f2 100644
+--- a/docs/CHANGELOG.md
++++ b/docs/CHANGELOG.md
+@@ -1,5 +1,14 @@
+ # Documentation Changelog
+ 
++## 2026-07-29 - C6-C8 execution under PG-P0-CLOSURE-002: PG-P0 ACTIVE -> COMPLETE
++
++- Applies the permitted effects of PG-P0-CLOSURE-MANIFEST-V2 (content sha256 2fd049b29f1b27d46a7b0821f607d4c7e8ef43222af9085e59cccf48bdf0e998) under the operator-signed byte-bound mandate PG-P0-CLOSURE-002. Six paths change in this commit; the seventh permitted path, docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md, was created at C5 and is unchanged here.
++- SCHEDULE-REGISTER.json: PG-P0 status ACTIVE -> COMPLETE, planned_end null -> 2026-07-27T00:00:00+07:00, rebaseline_decision_ref and the sorted evidence_refs set per the manifest successor. The recomputed RFC 8785 digest of the result equals the authorized successor digest 1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863 exactly.
++- tools/validate_pg_g0_authority_docket.py: expected state extended per PG-P0-INTERP-002 v0.4 section 5. tests/governance/test_program_control_validation.py: test delta per EVD-CLOSURE-012.
++- docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json then docs/DOCUMENT-MANIFEST.json regenerated in that order (the default manifest indexes GOV-P0-02 by name).
++- Unlike the superseded PG-P0-CLOSURE-001 path, this execution is authorized by a mandate whose closure_binding pins the manifest digest, the permitted-effects digest, the predecessor commit and tree, the successor tree and blobs, the target ref and the expected-old value. The verifier requires that binding unconditionally (EVD-CLOSURE-030, cycle 8); there is no exemption.
++- This commit moves no ref. C9 (expected-old compare-and-swap), C10 (independent post-execution receipt) and C11 (recognition) remain outstanding and are operator acts. PG-P1 NOT_READY; production NOT_AUTHORIZED.
++
+ ## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
+ 
+ - EVD-CLOSURE-015 (INDEPENDENT BST-Codex-Motor): adversarial fail-proof of the C6-C9 apply pipeline = PIPELINE_FAILS_CLOSED. 9/9 negative cases rejected (forged sig, swapped payload, wrong key, missing mandate, tampered patch, wrong-parent CAS, validator-only apply, schedule-only apply, reversed manifest order) + happy-path control accepted. Binds PATCH_SHA256 1A9FF63B...499D88BE, maker-verified to match the on-disk apply patch. No commit or ref movement on any failing case; source repo untouched.
+diff --git a/docs/DOCUMENT-MANIFEST.json b/docs/DOCUMENT-MANIFEST.json
+index 2c53965..47be3cb 100644
+--- a/docs/DOCUMENT-MANIFEST.json
++++ b/docs/DOCUMENT-MANIFEST.json
+@@ -1,5 +1,5 @@
+ {
+-  "generated": "2026-07-27",
++  "generated": "2026-07-28",
+   "count": 331,
+   "documents": [
+     {
+@@ -237,8 +237,8 @@
+       "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+       "title": "",
+       "status": "",
+-      "sha256": "cee8954f35076d4acb4936edee46aed33c7c8672ed6c77fcad5fba6d7d06d71c",
+-      "bytes": 2782
++      "sha256": "387721d460f7cb3e96c8b27dd95238230bfe7dc6d6a3d917c779188b46e89016",
++      "bytes": 2857
+     },
+     {
+       "path": "docs/00-governance/registers/SKILL-REGISTER.json",
+@@ -1126,8 +1126,8 @@
+       "path": "docs/CHANGELOG.md",
+       "title": "Documentation Changelog",
+       "status": "",
+-      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
+-      "bytes": 33194
++      "sha256": "7f8dc778e9960a0c1d5e68d7143f0ebbd7383035d79e9827d505b654451a3974",
++      "bytes": 34927
+     },
+     {
+       "path": "docs/DOCUMENT-COVERAGE.md",
+@@ -1644,7 +1644,7 @@
+       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
+       "title": "",
+       "status": "",
+-      "sha256": "34e62d40f17427beaaad265f410ac6ac1e75b15f020ab1e01f3345b94e65fcc8",
++      "sha256": "9de8b7da4719e43e17aaabd1a65decc6c01ec746b3b880c99be6a91bef4d728b",
+       "bytes": 90240
+     },
+     {
+diff --git a/docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json b/docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json
+index 16ac82b..e15aaf0 100644
+--- a/docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json
++++ b/docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json
+@@ -1,5 +1,5 @@
+ {
+-  "generated": "2026-07-27",
++  "generated": "2026-07-28",
+   "count": 330,
+   "documents": [
+     {
+@@ -237,8 +237,8 @@
+       "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
+       "title": "",
+       "status": "",
+-      "sha256": "cee8954f35076d4acb4936edee46aed33c7c8672ed6c77fcad5fba6d7d06d71c",
+-      "bytes": 2782
++      "sha256": "387721d460f7cb3e96c8b27dd95238230bfe7dc6d6a3d917c779188b46e89016",
++      "bytes": 2857
+     },
+     {
+       "path": "docs/00-governance/registers/SKILL-REGISTER.json",
+@@ -1126,8 +1126,8 @@
+       "path": "docs/CHANGELOG.md",
+       "title": "Documentation Changelog",
+       "status": "",
+-      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
+-      "bytes": 33194
++      "sha256": "7f8dc778e9960a0c1d5e68d7143f0ebbd7383035d79e9827d505b654451a3974",
++      "bytes": 34927
+     },
+     {
+       "path": "docs/DOCUMENT-COVERAGE.md",
+diff --git a/tests/governance/test_program_control_validation.py b/tests/governance/test_program_control_validation.py
+index 901dd8a..56c1240 100644
+--- a/tests/governance/test_program_control_validation.py
++++ b/tests/governance/test_program_control_validation.py
+@@ -51,9 +51,9 @@ class ProgramControlValidationTests(unittest.TestCase):
+             self.assertEqual(register["approved_by"], "HUMAN-OPERATOR-001")
+             self.assertIn("SIGNING-PASS-2.md#append-only-batch-2-signing-record", register["approval_ref"])
+         self.assertEqual(schedule["entries"][0]["status"], "COMPLETE")
+-        self.assertEqual(schedule["entries"][1]["status"], "ACTIVE")
++        self.assertEqual(schedule["entries"][1]["status"], "COMPLETE")
+         self.assertEqual(schedule["entries"][1]["work_item_refs"], ["SKEL-P0-01"])
+-        self.assertIn("SIGNING-PASS-5.md#signed-decision", schedule["entries"][1]["rebaseline_decision_ref"])
++        self.assertIn("PG-P0-CLOSURE-MANDATE.md#signed-decision", schedule["entries"][1]["rebaseline_decision_ref"])
+         self.assertTrue(all(item["status"] == "NOT_READY" for item in schedule["entries"][2:]))
+         self.assertEqual(self.load_register(ROOT, "AGENT-REGISTER.json")["entries"], [])
+         self.assertEqual(self.load_register(ROOT, "MODULE-REGISTER.json")["entries"], [])
+@@ -63,6 +63,9 @@ class ProgramControlValidationTests(unittest.TestCase):
+         with tempfile.TemporaryDirectory() as temporary:
+             root = self.make_root(temporary)
+             register = self.load_register(root, "SCHEDULE-REGISTER.json")
++            # PG-P0 is COMPLETE in the closed repo; restore the ACTIVE precondition locally so the
++            # ACTIVE-phase fail-closed rule is still exercised when its opening evidence is absent.
++            register["entries"][1]["status"] = "ACTIVE"
+             register["entries"][1]["evidence_refs"] = []
+             self.save_register(root, "SCHEDULE-REGISTER.json", register)
+             errors = validate_program_controls(root, AS_OF)
+diff --git a/tools/validate_pg_g0_authority_docket.py b/tools/validate_pg_g0_authority_docket.py
+index ef386a8..40b0531 100644
+--- a/tools/validate_pg_g0_authority_docket.py
++++ b/tools/validate_pg_g0_authority_docket.py
+@@ -47,6 +47,16 @@ P0_OPEN_EVIDENCE_REFS = {
+     "docs/00-governance/signing/SIGNING-PASS-5.md",
+     "docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md",
+ }
++# PG-P0 closure (ACTIVE -> COMPLETE), authorized by the signed Stage-1 mandate PG-P0-CLOSURE-001
++# under PG-P0-INTERP-002 v0.4. These pin the SIGNED completed outcome (mirrors the P0_OPEN_* pins that
++# recorded the opening outcome; precedent commit 29949f46).
++P0_COMPLETED_AT = "2026-07-27T00:00:00+07:00"
++P0_COMPLETE_DECISION_REF = "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision"
++P0_COMPLETE_EVIDENCE_REFS = {
++    "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
++    "docs/00-governance/signing/SIGNING-PASS-10.md",
++    "docs/00-governance/signing/SIGNING-PASS-8.md",
++}
+ V03_SIGNED_AT = "2026-07-23T00:45:00+07:00"
+ V03_SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
+ V03_SIGNED_EVIDENCE_REFS = {
+@@ -728,11 +738,12 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
+                     })
+                 elif entry.get("schedule_id") == "PG-P0":
+                     entry.update({
+-                        "status": "ACTIVE",
++                        "status": "COMPLETE",
+                         "work_item_refs": ["SKEL-P0-01"],
+                         "planned_start": P0_OPENED_AT,
+-                        "rebaseline_decision_ref": P0_OPEN_DECISION_REF,
+-                        "evidence_refs": sorted(P0_OPEN_EVIDENCE_REFS),
++                        "planned_end": P0_COMPLETED_AT,
++                        "rebaseline_decision_ref": P0_COMPLETE_DECISION_REF,
++                        "evidence_refs": sorted(P0_COMPLETE_EVIDENCE_REFS),
+                     })
+         if relative == AUTHORITY_MATRIX_PATH.as_posix():
+             for entry in expected.get("entries", []):
+@@ -1116,6 +1127,75 @@ def _validate_current_window(
+     return errors
+ 
+ 
++def validate_pg_p0_closure_authorization(root: Path = ROOT) -> list[str]:
++    """PG-P0-INTERP-002 v0.4 section 5 anti-self-validation.
++
++    Enforced ONLY once PG-P0 is COMPLETE (a no-op while PG-P0 is ACTIVE / pre-closure). Confirms the
++    live completed state is backed by an EXTERNAL signed closure decision and its bound manifest -- not
++    merely that the expected-state constants now say COMPLETE. Cryptographic signature verification is
++    intentionally out of scope here (that is VERIFY-P0-01 / tools/verify_phase_transition.py)."""
++    errors: list[str] = []
++    schedule_path = root / "docs/00-governance/registers/SCHEDULE-REGISTER.json"
++    try:
++        schedule = json.loads(schedule_path.read_text(encoding="utf-8"))
++    except (OSError, ValueError) as exc:
++        return [f"pg-p0 closure: cannot read schedule register: {exc}"]
++    entries = {e.get("schedule_id"): e for e in schedule.get("entries", []) if isinstance(e, dict)}
++    pg_p0 = entries.get("PG-P0", {})
++    if pg_p0.get("status") != "COMPLETE":
++        return errors  # pre-closure: not applicable
++    if pg_p0.get("planned_end") != P0_COMPLETED_AT:
++        errors.append("pg-p0 closure: planned_end does not equal the signed P0_COMPLETED_AT")
++    if pg_p0.get("rebaseline_decision_ref") != P0_COMPLETE_DECISION_REF:
++        errors.append("pg-p0 closure: rebaseline_decision_ref does not equal the signed decision ref")
++    if pg_p0.get("evidence_refs") != sorted(P0_COMPLETE_EVIDENCE_REFS):
++        errors.append("pg-p0 closure: evidence_refs are not the canonical signed evidence set")
++    if entries.get("PG-P1", {}).get("status") != "NOT_READY":
++        errors.append("pg-p0 closure: PG-P1 must remain NOT_READY")
++    record_path = root / "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md"
++    try:
++        record = record_path.read_text(encoding="utf-8")
++    except OSError as exc:
++        errors.append(f"pg-p0 closure: closure signing record unreadable: {exc}")
++        record = ""
++    if not record.strip():
++        errors.append("pg-p0 closure: closure signing record is empty")
++    manifest_path = root / "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json"
++    try:
++        manifest_sha = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
++    except OSError as exc:
++        errors.append(f"pg-p0 closure: closure manifest unreadable: {exc}")
++        manifest_sha = ""
++    for token in ("APPROVE_PROGRAM_REGISTERS", "APPROVE_GOVERNANCE_BASELINE"):
++        if token not in record:
++            errors.append(f"pg-p0 closure: signing record does not name authorizing action {token}")
++    if manifest_sha and manifest_sha not in record:
++        errors.append("pg-p0 closure: signing record does not name the closure-manifest SHA-256")
++    for ref in P0_COMPLETE_EVIDENCE_REFS:
++        if not (root / ref).is_file():
++            errors.append(f"pg-p0 closure: evidence ref missing: {ref}")
++    id_path = root / "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
++    op = None
++    try:
++        id_reg = json.loads(id_path.read_text(encoding="utf-8"))
++        op = next((e for e in id_reg.get("entries", []) if e.get("identity_id") == "HUMAN-OPERATOR-001"), None)
++    except (OSError, ValueError) as exc:
++        errors.append(f"pg-p0 closure: identity register unreadable: {exc}")
++    if op is None:
++        errors.append("pg-p0 closure: HUMAN-OPERATOR-001 not in identity register")
++    else:
++        if op.get("status") != "approved":
++            errors.append("pg-p0 closure: signer identity not approved")
++        vf, ex, rv = op.get("valid_from"), op.get("expires_at"), op.get("revoked_at")
++        if vf is not None and P0_COMPLETED_AT < vf:
++            errors.append("pg-p0 closure: completion precedes signer valid_from")
++        if ex is not None and P0_COMPLETED_AT >= ex:
++            errors.append("pg-p0 closure: completion at/after signer expires_at")
++        if rv is not None and P0_COMPLETED_AT >= rv:
++            errors.append("pg-p0 closure: signer revoked before completion")
++    return errors
++
++
+ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = None) -> list[str]:
+     as_of = as_of or datetime.now(timezone.utc)
+     if as_of.tzinfo is None:
+@@ -1148,6 +1228,7 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None =
+     if docket.get("status") != "gate_passed" or docket.get("state") != "DISPOSED":
+         errors.append("v0.5 terminal docket must remain gate_passed and DISPOSED")
+     errors.extend(validate_signed_artifact_transforms(root))
++    errors.extend(validate_pg_p0_closure_authorization(root))
+ 
+     updated_at = parse_datetime(docket.get("updated_at"))
+     expires_at = parse_datetime(docket.get("expires_at"))
