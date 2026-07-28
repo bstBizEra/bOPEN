@@ -1,5 +1,13 @@
 # Documentation Changelog
 
+## 2026-07-28 - C6-C8: PG-P0 ACTIVE -> COMPLETE execution commit
+
+- Applied the permitted effects of PG-P0-CLOSURE-MANIFEST.json (content sha256 7417cc6a7bdffc6cac0b3707be293fb01ec17434f848d831c2383f374cafb33a) under the operator-signed Stage-1 mandate PG-P0-CLOSURE-001 (DSSE keyid operator-pgp0-completion-1, recorded at C5). Six paths change in this commit; the seventh permitted path, docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md, was created at C5 and is unchanged here.
+- SCHEDULE-REGISTER.json: PG-P0 status ACTIVE -> COMPLETE, planned_end null -> 2026-07-27T00:00:00+07:00, rebaseline_decision_ref and the sorted evidence_refs set per the manifest successor. The recomputed RFC 8785 digest of the result equals the signed successor digest 1f8d183e4bbcd2acc82148b659d5e0b74e2ea48bfc6dc4c0ceccc69e2b3ff863 exactly.
+- tools/validate_pg_g0_authority_docket.py: expected state extended per PG-P0-INTERP-002 v0.4 section 5. tests/governance/test_program_control_validation.py: test delta per EVD-CLOSURE-012.
+- docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json then docs/DOCUMENT-MANIFEST.json regenerated in that order (the default manifest indexes GOV-P0-02 by name).
+- This commit moves no ref. C9 (expected-old compare-and-swap), C10 (independent post-execution receipt) and C11 (recognition) remain outstanding. PG-P1 NOT_READY; production NOT_AUTHORIZED; no authority, identity or schema artifact touched.
+
 ## 2026-07-27 - EVD-CLOSURE-015/016: pre-apply fail-proof evidence
 
 - EVD-CLOSURE-015 (INDEPENDENT BST-Codex-Motor): adversarial fail-proof of the C6-C9 apply pipeline = PIPELINE_FAILS_CLOSED. 9/9 negative cases rejected (forged sig, swapped payload, wrong key, missing mandate, tampered patch, wrong-parent CAS, validator-only apply, schedule-only apply, reversed manifest order) + happy-path control accepted. Binds PATCH_SHA256 1A9FF63B...499D88BE, maker-verified to match the on-disk apply patch. No commit or ref movement on any failing case; source repo untouched.

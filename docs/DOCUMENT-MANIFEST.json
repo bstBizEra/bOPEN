@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-27",
+  "generated": "2026-07-28",
   "count": 331,
   "documents": [
     {
@@ -237,8 +237,8 @@
       "path": "docs/00-governance/registers/SCHEDULE-REGISTER.json",
       "title": "",
       "status": "",
-      "sha256": "cee8954f35076d4acb4936edee46aed33c7c8672ed6c77fcad5fba6d7d06d71c",
-      "bytes": 2782
+      "sha256": "387721d460f7cb3e96c8b27dd95238230bfe7dc6d6a3d917c779188b46e89016",
+      "bytes": 2857
     },
     {
       "path": "docs/00-governance/registers/SKILL-REGISTER.json",
@@ -1126,8 +1126,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "227ff90983ec4dd31b3713479c9a9aee6f5a32608add5e8f4f0b0456f2b2fa5f",
-      "bytes": 33194
+      "sha256": "ef8afcf1c402144bf7796e1f8422d5ac1a0334c7cdfe5b8ba73c4a5e7ee64a1f",
+      "bytes": 34614
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1644,7 +1644,7 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "34e62d40f17427beaaad265f410ac6ac1e75b15f020ab1e01f3345b94e65fcc8",
+      "sha256": "0df282d58fe1ed39d64bcaaa228e001207c0e0fe0eb6884d176ca97e20175b2b",
       "bytes": 90240
     },
     {

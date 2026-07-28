@@ -47,6 +47,16 @@ P0_OPEN_EVIDENCE_REFS = {
     "docs/00-governance/signing/SIGNING-PASS-5.md",
     "docs/evidence/EVD-GOV-017-terminal-gate-passed-review.md",
 }
+# PG-P0 closure (ACTIVE -> COMPLETE), authorized by the signed Stage-1 mandate PG-P0-CLOSURE-001
+# under PG-P0-INTERP-002 v0.4. These pin the SIGNED completed outcome (mirrors the P0_OPEN_* pins that
+# recorded the opening outcome; precedent commit 29949f46).
+P0_COMPLETED_AT = "2026-07-27T00:00:00+07:00"
+P0_COMPLETE_DECISION_REF = "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md#signed-decision"
+P0_COMPLETE_EVIDENCE_REFS = {
+    "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md",
+    "docs/00-governance/signing/SIGNING-PASS-10.md",
+    "docs/00-governance/signing/SIGNING-PASS-8.md",
+}
 V03_SIGNED_AT = "2026-07-23T00:45:00+07:00"
 V03_SIGNED_DECISION_REF = "docs/00-governance/signing/SIGNING-PASS-2.md#append-only-batch-2-signing-record--2026-07-23"
 V03_SIGNED_EVIDENCE_REFS = {
@@ -728,11 +738,12 @@ def validate_signed_artifact_transforms(root: Path) -> list[str]:
                     })
                 elif entry.get("schedule_id") == "PG-P0":
                     entry.update({
-                        "status": "ACTIVE",
+                        "status": "COMPLETE",
                         "work_item_refs": ["SKEL-P0-01"],
                         "planned_start": P0_OPENED_AT,
-                        "rebaseline_decision_ref": P0_OPEN_DECISION_REF,
-                        "evidence_refs": sorted(P0_OPEN_EVIDENCE_REFS),
+                        "planned_end": P0_COMPLETED_AT,
+                        "rebaseline_decision_ref": P0_COMPLETE_DECISION_REF,
+                        "evidence_refs": sorted(P0_COMPLETE_EVIDENCE_REFS),
                     })
         if relative == AUTHORITY_MATRIX_PATH.as_posix():
             for entry in expected.get("entries", []):
@@ -1116,6 +1127,75 @@ def _validate_current_window(
     return errors
 
 
+def validate_pg_p0_closure_authorization(root: Path = ROOT) -> list[str]:
+    """PG-P0-INTERP-002 v0.4 section 5 anti-self-validation.
+
+    Enforced ONLY once PG-P0 is COMPLETE (a no-op while PG-P0 is ACTIVE / pre-closure). Confirms the
+    live completed state is backed by an EXTERNAL signed closure decision and its bound manifest -- not
+    merely that the expected-state constants now say COMPLETE. Cryptographic signature verification is
+    intentionally out of scope here (that is VERIFY-P0-01 / tools/verify_phase_transition.py)."""
+    errors: list[str] = []
+    schedule_path = root / "docs/00-governance/registers/SCHEDULE-REGISTER.json"
+    try:
+        schedule = json.loads(schedule_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return [f"pg-p0 closure: cannot read schedule register: {exc}"]
+    entries = {e.get("schedule_id"): e for e in schedule.get("entries", []) if isinstance(e, dict)}
+    pg_p0 = entries.get("PG-P0", {})
+    if pg_p0.get("status") != "COMPLETE":
+        return errors  # pre-closure: not applicable
+    if pg_p0.get("planned_end") != P0_COMPLETED_AT:
+        errors.append("pg-p0 closure: planned_end does not equal the signed P0_COMPLETED_AT")
+    if pg_p0.get("rebaseline_decision_ref") != P0_COMPLETE_DECISION_REF:
+        errors.append("pg-p0 closure: rebaseline_decision_ref does not equal the signed decision ref")
+    if pg_p0.get("evidence_refs") != sorted(P0_COMPLETE_EVIDENCE_REFS):
+        errors.append("pg-p0 closure: evidence_refs are not the canonical signed evidence set")
+    if entries.get("PG-P1", {}).get("status") != "NOT_READY":
+        errors.append("pg-p0 closure: PG-P1 must remain NOT_READY")
+    record_path = root / "docs/00-governance/signing/PG-P0-CLOSURE-MANDATE.md"
+    try:
+        record = record_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        errors.append(f"pg-p0 closure: closure signing record unreadable: {exc}")
+        record = ""
+    if not record.strip():
+        errors.append("pg-p0 closure: closure signing record is empty")
+    manifest_path = root / "docs/00-governance/signing/PG-P0-CLOSURE-MANIFEST.json"
+    try:
+        manifest_sha = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        errors.append(f"pg-p0 closure: closure manifest unreadable: {exc}")
+        manifest_sha = ""
+    for token in ("APPROVE_PROGRAM_REGISTERS", "APPROVE_GOVERNANCE_BASELINE"):
+        if token not in record:
+            errors.append(f"pg-p0 closure: signing record does not name authorizing action {token}")
+    if manifest_sha and manifest_sha not in record:
+        errors.append("pg-p0 closure: signing record does not name the closure-manifest SHA-256")
+    for ref in P0_COMPLETE_EVIDENCE_REFS:
+        if not (root / ref).is_file():
+            errors.append(f"pg-p0 closure: evidence ref missing: {ref}")
+    id_path = root / "docs/00-governance/registers/AUTHORITY-IDENTITY-REGISTER.json"
+    op = None
+    try:
+        id_reg = json.loads(id_path.read_text(encoding="utf-8"))
+        op = next((e for e in id_reg.get("entries", []) if e.get("identity_id") == "HUMAN-OPERATOR-001"), None)
+    except (OSError, ValueError) as exc:
+        errors.append(f"pg-p0 closure: identity register unreadable: {exc}")
+    if op is None:
+        errors.append("pg-p0 closure: HUMAN-OPERATOR-001 not in identity register")
+    else:
+        if op.get("status") != "approved":
+            errors.append("pg-p0 closure: signer identity not approved")
+        vf, ex, rv = op.get("valid_from"), op.get("expires_at"), op.get("revoked_at")
+        if vf is not None and P0_COMPLETED_AT < vf:
+            errors.append("pg-p0 closure: completion precedes signer valid_from")
+        if ex is not None and P0_COMPLETED_AT >= ex:
+            errors.append("pg-p0 closure: completion at/after signer expires_at")
+        if rv is not None and P0_COMPLETED_AT >= rv:
+            errors.append("pg-p0 closure: signer revoked before completion")
+    return errors
+
+
 def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = None) -> list[str]:
     as_of = as_of or datetime.now(timezone.utc)
     if as_of.tzinfo is None:
@@ -1148,6 +1228,7 @@ def validate_pg_g0_authority_docket(root: Path = ROOT, as_of: datetime | None = 
     if docket.get("status") != "gate_passed" or docket.get("state") != "DISPOSED":
         errors.append("v0.5 terminal docket must remain gate_passed and DISPOSED")
     errors.extend(validate_signed_artifact_transforms(root))
+    errors.extend(validate_pg_p0_closure_authorization(root))
 
     updated_at = parse_datetime(docket.get("updated_at"))
     expires_at = parse_datetime(docket.get("expires_at"))
