@@ -33,3 +33,8 @@ artifacts/validation/*
 
 # third-party code-graph scan output: regenerable, never committed
 graphify-out/
+
+# agent-to-agent handoff coordination artifacts at the repo root: transient, never part of a
+# reviewed candidate. Anchored to root and suffix-specific so it cannot match the governed
+# docs/02-agents/HANDOFF-CONTRACT.md.
+/HANDOFF-*-TO-CODEX.md
