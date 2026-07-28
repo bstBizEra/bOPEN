@@ -285,3 +285,19 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Remove the exempted path outright rather than narrow it further.
 **Benefit of old phase:** Cycle 7's inverted default is retained in full; only the exemption is removed.
 **Expected outcome:** An unbound mandate is rejected on every path, and the CLI cannot report a closure whose execution it did not verify.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0008
+
+**Timestamp:** 2026-07-29T01:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Maker adversarial self-audit of `fdf0434`
+**Work package:** PG-P0 closure repair, cycle 8 - self-audit remediation
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0008
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0008
+**Evidence:** EVD-CLOSURE-030 (amendment)
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-8 candidate `fdf0434bfee6ff5370a133b5c1b3419649a588f9`, preserved in history
+**Open controls:** Independent exact-SHA review of the successor commit; EVD-CLOSURE-029's superseded C7 invocation still needs a corrected runbook; the `verdict` field still does not encode verification depth; the cycle-7 verdict remains unpersisted; all pre-existing open controls carry forward.
+**Reason:** Fix defects the maker found in its own candidate before the checker spends time on them, and disclose the one it did not fix.
+**Benefit of old phase:** The published candidate was sound in its central control; only its supporting evidence was weak.
+**Expected outcome:** A successor SHA whose test evidence actually constrains production behaviour.

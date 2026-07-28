@@ -264,3 +264,17 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** The exemption could return exit 0 with VERIFIED_EXACT for a mandate carrying no binding, which is a green result for the exact condition the control exists to stop.
 **Benefit of old phase:** Cycle 7 established the correct default; only its escape hatch had to go.
 **Expected outcome:** Independent exact-SHA review. `PG-P0-CLOSURE-001` is now unverifiable by design, so the closure requires a newly issued and signed mandate carrying a binding.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0008
+
+**Timestamp:** 2026-07-29T01:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Maker adversarial self-audit of `fdf0434`
+**Work package:** PG-P0 closure repair, cycle 8 - self-audit remediation
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0008
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0008
+**Evidence:** EVD-CLOSURE-030 (amendment)
+**Summary:** Two adversarial passes over the maker's own candidate found four defects. Fixed: the empty-string execution root that resolved to the process CWD and returned a green verdict against an unnamed tree; the vacuous exemption-removal test, replaced by a production signature assertion plus a sweep of every optional parameter of verify_transition; and the untested CLI refusal, now covered by five subprocess tests asserting rc and stdout. Recorded but not fixed: EVD-CLOSURE-029's C7 invocation is superseded and needs a corrected runbook, and the verdict field still does not encode verification depth. 111 tests in the module; full suite green.
+**Reason:** A test that asserts against its own helper constrains nothing in production, and a design argument that rests on an untested code path is an assertion rather than evidence.
+**Benefit of old phase:** No probe refuted the central control; the removal itself was complete and correct.
+**Expected outcome:** Independent exact-SHA review of the successor commit. Maker self-audit is not independent review and reduces nothing the checker should attempt.

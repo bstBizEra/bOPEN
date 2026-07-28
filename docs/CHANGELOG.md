@@ -1,5 +1,19 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-29 - cycle 8 self-audit remediation (EVD-CLOSURE-030 amendment)
+
+- Maker adversarial self-audit of `fdf0434` found four defects in the maker's own work; three are
+  fixed here. `--execution-root ""` / `--repository ""` silently meant the process CWD and are now
+  refused. The exemption-removal test was vacuous - it asserted against the test helper's signature,
+  not production - and is replaced by a signature assertion plus a sweep proving no optional
+  parameter of `verify_transition` can tolerate an absent binding. The CLI refusal added in cycle 8
+  had no tests at all; five subprocess tests now exercise the real entrypoint on rc and stdout.
+- Recorded, not fixed: EVD-CLOSURE-029's C7 invocation still names the deleted flag and is superseded;
+  a corrected runbook is a separate work item. The `verdict` field still does not encode verification
+  depth, which is latent because no library importer exists; raised for the checker rather than
+  changed unilaterally.
+- 111 tests in the verifier module; full suite green.
+
 ## Append-only entry - 2026-07-29 - PG-P0 closure repair, remediation cycle 8 (EVD-CLOSURE-030)
 
 - Removed the cycle-7 unbound-legacy exemption outright: `closure_binding_required`, the

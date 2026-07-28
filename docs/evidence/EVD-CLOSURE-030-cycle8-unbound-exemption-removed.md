@@ -107,3 +107,72 @@ This is a deliberate loss of capability. Any runbook step, evidence document or 
 - `EVD-CLOSURE-016` H4/H5 (duplicate keyid ingest, small-order keys, lexical time comparison) are
   **untouched** and remain open. They are a separate finding and folding them in would put two
   unrelated changes under one review.
+
+---
+
+## Append-only amendment - 2026-07-29 - maker self-audit findings and their remediation
+
+Before independent review began, the maker ran two adversarial passes over its own candidate
+`fdf0434bfee6ff5370a133b5c1b3419649a588f9`. Both are maker-side and carry no independence. They did
+not refute the central claim - no input produced a VERIFIED verdict for an unbound mandate - but they
+found four defects in the maker's own work, three of which are fixed in the successor commit.
+
+**A1 - `--execution-root ""` silently meant the current working directory. FIXED.**
+`main()` passed the argument through unchecked, and `Path("")` is `.`, so an empty string counted as
+"supplied" and resolved to the process CWD. Demonstrated: `--execution-root "" --repository ""` with
+the CWD set to a fixture repository returned `rc=0 VERIFIED: VERIFIED_EXACT`. Real bytes were
+compared, so the literal claim held - but against a tree the operator never named, which in a runbook
+is one unset shell variable (`--execution-root "$VAR"`) away from a green result describing the wrong
+repository. Cycle 8 made both roots mandatory, which made this the sole path to `rc=0` and therefore
+raised its exposure. Both options now reject an empty or whitespace-only value.
+
+**A2 - the exemption-removal test was VACUOUS. FIXED, and this is the most serious of the four.**
+`test_exemption_parameter_no_longer_exists` called the test file's own `_verify(...)` helper, so the
+`TypeError` it asserted came from the helper's signature and production was never entered. Proven by
+mutation: re-adding a working `allow_unbound_legacy_decision` parameter to `verify_transition` left
+the test passing. Worse, a functioning opt-in exemption re-introduced under a *different* parameter
+name failed **0 of 105** tests. The test now asserts against `inspect.signature(v.verify_transition)`
+and calls production directly, and a new test sweeps every optional parameter of `verify_transition`
+with truthy probes to prove none of them can tolerate an absent binding.
+
+The regression this cycle exists to prevent was never unguarded: restoring cycle 7's default-ON
+behaviour does fail `test_the_legacy_decision_id_is_not_special`. Only the opt-in-under-a-new-name
+variant was unguarded.
+
+**A3 - the new CLI refusal shipped with zero tests. FIXED.**
+This commit's argument that a structural-only library mode is safe rests on `main()` refusing it, and
+nothing in the repository invoked `main()`. Five subprocess tests now exercise the real entrypoint:
+structural-only is refused, the removed flag exits 2, an empty execution root or repository is
+refused, and an unbound mandate is refused end to end. Each asserts on rc **and** stdout, because an
+apply gate reads both (EVD-CLOSURE-016 H2).
+
+**A4 - `EVD-CLOSURE-029` still prescribes the deleted flag. NOT fixed here; recorded.**
+`EVD-CLOSURE-029` is the operative record of procedure for step C7 and still specifies
+`--allow-unbound-legacy-mandate PG-P0-CLOSURE-001` with an expected `rc == 0`. That invocation now
+exits 2. The original text of this document acknowledged the invalidation only in generic prose; it
+is stated explicitly here instead: **EVD-CLOSURE-029's C7 invocation is superseded and must not be
+run.** `EVD-CLOSURE-029` is append-only evidence and has not been edited. A corrected runbook is a
+separate work item and is not in this commit's scope.
+
+### Known and deliberately not changed
+
+**The `verdict` field still does not encode verification depth.** `verify_transition` returns
+`VERIFIED` / `VERIFIED_EXACT` for a structural-only run; only the separate
+`closure_execution_verification: false` records that execution was never checked. The CLI refuses
+that combination, and no library importer exists in this repository today (`grep` finds only the test
+file), so the risk is latent rather than live. Encoding depth in the verdict itself would change the
+meaning of a value that appears in signed and reviewed evidence, so it is raised for the checker to
+rule on rather than changed unilaterally.
+
+**Pre-existing findings, unchanged and fail-closed:** the execution root must be a pristine checkout
+(ignored files such as `__pycache__` trip `EXECUTION_ROOT_MISMATCH`); `ALREADY_VERIFIED_EXACT` is
+unreachable in closure mode because `consumed_state_digest` is fixed at signing time; a missing
+optional input reports `CLOSURE_BINDING_REQUIRED`, which reads as though the mandate were at fault;
+and a manifest whose effects value is a non-iterable raises `TypeError` rather than a `VerifyError`,
+which is ungraceful but not attacker-reachable and still non-zero.
+
+### Verification after the amendment
+
+111 tests in the verifier module (106 + 5 new CLI subprocess tests); full suite re-run; validators and
+manifests re-checked. The maker self-audit is not independent review and does not reduce what the
+checker should attempt.

@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "134287492b46442cae7da841ed664c06b421efd8b8240492a531bac621b9d432",
-      "bytes": 47518
+      "sha256": "45dc57c9051fe32cfd2c7bef9023e9dfdeb88269bb4ffd558a70de01e0717dfb",
+      "bytes": 48581
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1567,8 +1567,8 @@
       "path": "docs/evidence/EVD-CLOSURE-030-cycle8-unbound-exemption-removed.md",
       "title": "EVD-CLOSURE-030 - Maker evidence: cycle 8 removes the unbound-legacy exemption",
       "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
-      "sha256": "dbd6884ea2dcda5328cbdc433320bc73a6602c51a0fe474b8f41185b7d5156db",
-      "bytes": 6298
+      "sha256": "2f2b286ff3b706c9decea1c836028d33a4c195cc9104cf7ee2c71accd82683ac",
+      "bytes": 11156
     },
     {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
@@ -1742,7 +1742,7 @@
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "9bf964661e60879c22f66fc833a59159eed8ed71371f546c350f2d80638037f0",
+      "sha256": "3ca6fbceb89f85527f35d7273ec88453409a5ff5757412ac8707b33efe4ab433",
       "bytes": 2566
     },
     {

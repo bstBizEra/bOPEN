@@ -14,6 +14,7 @@ import json
 import pathlib
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -661,11 +662,60 @@ class ClosureBindingRequiredByDefaultTests(unittest.TestCase):
         self.assertEqual(cm.exception.reason, v.CLOSURE_BINDING_REQUIRED)
 
     def test_exemption_parameter_no_longer_exists(self):
-        # Cycle 8 removed the hatch outright. A caller written against it must fail loudly rather
-        # than silently fall back to some weaker mode.
+        """Cycle 8 removed the hatch outright; a caller written against it must fail loudly.
+
+        This asserts against PRODUCTION, not against the test helper. The first version of this
+        test called the module-level `_verify(...)` helper, so the TypeError came from the helper's
+        own signature and the verifier was never entered - it passed even with a working exemption
+        re-added to `verify_transition`. Assert on the real signature and the real call."""
+        import inspect
+
+        params = inspect.signature(v.verify_transition).parameters
+        self.assertNotIn("allow_unbound_legacy_decision", params)
+        self.assertFalse(
+            [name for name in params if "unbound" in name or "exempt" in name or "legacy" in name],
+            "verify_transition grew a parameter that looks like a re-introduced exemption",
+        )
+
         pred, mandate = self._unbound()
         with self.assertRaises(TypeError):
-            self._run(pred, mandate, allow_unbound_legacy_decision="PG-P0-CLOSURE-001")
+            v.verify_transition(
+                pred, v.recompute_successor(pred, mandate), _envelope(mandate),
+                _trust_root(), _identity_register(), VTIME,
+                allow_unbound_legacy_decision="PG-P0-CLOSURE-001",
+            )
+
+    def test_no_parameter_can_tolerate_an_absent_binding(self):
+        """Guards the variant the removal test alone does not catch: an exemption re-introduced
+        under a DIFFERENT name. Every optional parameter of verify_transition is passed a truthy
+        value in turn; none may cause an unbound mandate to verify."""
+        import inspect
+
+        pred, mandate = self._unbound("PG-P0-CLOSURE-001")
+        successor = v.recompute_successor(pred, mandate)
+        base = (pred, successor, _envelope(mandate), _trust_root(), _identity_register(), VTIME)
+        optional = [
+            name for name, param in inspect.signature(v.verify_transition).parameters.items()
+            if param.default is not inspect.Parameter.empty
+        ]
+        self.assertTrue(optional, "expected verify_transition to have optional parameters")
+        for name in optional:
+            for probe in ("PG-P0-CLOSURE-001", True):
+                with self.subTest(parameter=name, value=probe):
+                    try:
+                        v.verify_transition(*base, **{name: probe})
+                    except v.VerifyError as exc:
+                        self.assertNotEqual(
+                            exc.reason, v.VERIFIED,
+                            f"{name}={probe!r} produced a verified verdict for an unbound mandate",
+                        )
+                    except (TypeError, ValueError, AttributeError, OSError):
+                        pass  # wrong-typed probe for this parameter; not an exemption
+                    else:
+                        self.fail(
+                            f"verify_transition({name}={probe!r}) ACCEPTED a mandate carrying no "
+                            "closure_binding - an exemption path exists under that name"
+                        )
 
     def test_library_default_argument_is_fail_closed(self):
         # Not just "when None is passed" -- the actual default of the public function signature.
@@ -1274,3 +1324,82 @@ class UnsignedProposalIsNotSignableTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CommandLineRefusalTests(unittest.TestCase):
+    """The CLI is a security boundary and had NO tests until now.
+
+    Cycle 8's docstring argues the library may keep a structural-only mode because `main()` refuses
+    it. That argument was resting on an unverified assertion: nothing in the repository invoked
+    `main()`. These tests run the real entrypoint in a subprocess so rc and stdout are checked the
+    way an apply gate checks them (EVD-CLOSURE-016 H2: a gate reading rc alone missed a bit-flip)."""
+
+    TOOL = ROOT / "tools" / "verify_phase_transition.py"
+
+    def setUp(self):
+        self.dir = pathlib.Path(tempfile.mkdtemp(prefix="cli"))
+        self.addCleanup(shutil.rmtree, self.dir, True)
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        self._write("predecessor.json", pred)
+        self._write("successor.json", v.recompute_successor(pred, mandate))
+        self._write("mandate.dsse.json", _envelope(mandate))
+        self._write("trust-root.json", _trust_root())
+        self._write("identity-register.json", _identity_register())
+        (self.dir / "manifest.json").write_bytes(_closure_manifest_bytes())
+        (self.dir / "revocations.json").write_bytes(_rev_bytes())
+        (self.dir / "consumed.json").write_bytes(_con_bytes())
+
+    def _write(self, name, obj):
+        (self.dir / name).write_text(json.dumps(obj), encoding="utf-8")
+
+    def _run(self, *extra):
+        argv = [
+            sys.executable, str(self.TOOL),
+            "--predecessor", str(self.dir / "predecessor.json"),
+            "--successor", str(self.dir / "successor.json"),
+            "--mandate", str(self.dir / "mandate.dsse.json"),
+            "--trust-root", str(self.dir / "trust-root.json"),
+            "--identity-register", str(self.dir / "identity-register.json"),
+            "--verification-time", VTIME,
+            "--closure-manifest", str(self.dir / "manifest.json"),
+            "--revocations", str(self.dir / "revocations.json"),
+            "--consumed", str(self.dir / "consumed.json"),
+        ]
+        return subprocess.run(argv + list(extra), capture_output=True, text=True)
+
+    def test_structural_only_run_is_refused(self):
+        # No --execution-root and no --repository: the binding is valid but execution was never
+        # compared to real bytes, so the CLI must NOT report success.
+        proc = self._run()
+        self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+        self.assertIn(v.EXECUTION_ROOT_REQUIRED, proc.stdout)
+        self.assertNotIn("VERIFIED_EXACT", proc.stdout)
+
+    def test_removed_exemption_flag_is_not_accepted(self):
+        proc = self._run("--allow-unbound-legacy-mandate", "PG-P0-CLOSURE-001")
+        self.assertEqual(proc.returncode, 2, proc.stdout + proc.stderr)
+        self.assertNotIn("VERIFIED", proc.stdout)
+
+    def test_empty_execution_root_is_refused(self):
+        # Path("") is ".", so an empty string would silently mean the process CWD.
+        proc = self._run("--execution-root", "", "--repository", str(self.dir))
+        self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+        self.assertIn("empty value", proc.stdout)
+        self.assertNotIn("VERIFIED_EXACT", proc.stdout)
+
+    def test_empty_repository_is_refused(self):
+        proc = self._run("--execution-root", str(self.dir), "--repository", "")
+        self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+        self.assertIn("empty value", proc.stdout)
+        self.assertNotIn("VERIFIED_EXACT", proc.stdout)
+
+    def test_unbound_mandate_is_refused_through_the_cli(self):
+        pred = _predecessor()
+        unbound = _mandate(pred, bound=False)
+        self._write("mandate.dsse.json", _envelope(unbound))
+        self._write("successor.json", v.recompute_successor(pred, unbound))
+        proc = self._run("--execution-root", str(self.dir), "--repository", str(self.dir))
+        self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+        self.assertIn(v.CLOSURE_BINDING_REQUIRED, proc.stdout)
+        self.assertNotIn("VERIFIED_EXACT", proc.stdout)

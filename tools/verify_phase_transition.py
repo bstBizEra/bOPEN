@@ -417,11 +417,11 @@ def _trust_keys(trust_root):
 
 MANDATE_REQUIRED = {"schema_id", "decision_id", "phase_id", "operation", "predecessor", "transform", "invariants", "authority"}
 # `closure_binding` is OPTIONAL in the schema but MANDATORY in closure-execution verification mode
-# (see require_closure_binding). It is deliberately NOT added to MANDATE_REQUIRED: a mandate that
+# (cycle 8: unconditionally). It is deliberately NOT added to MANDATE_REQUIRED: a mandate that
 # authorizes a bare schedule transform is a different, narrower thing than one that authorizes a
 # closure execution, and forcing the field on the former would retroactively invalidate already
-# signed mandates without making anything safer. Safety comes from the *mode*: a caller verifying a
-# closure execution MUST pass require_closure_binding=True, and then absence is a hard rejection.
+# signed mandates without making anything safer. Safety comes from enforce_closure_binding, which
+# rejects an absent binding unconditionally -- there is no mode or flag that tolerates absence.
 MANDATE_ALLOWED = MANDATE_REQUIRED | {
     "schema_version", "program_id", "accepted_work_item", "integration", "segregation_of_duties",
     "closure_binding",
@@ -595,7 +595,7 @@ def _lookup_identity(identity_register, identity_id):
 # and it lands as one commit that a compare-and-swap then publishes. The signed payload alone
 # therefore cannot answer "were exactly these effects, on exactly this base, toward exactly this
 # ref, under exactly this revocation/consumed state, what the human authorized?" -- `closure_binding`
-# is what makes that question answerable, and require_closure_binding is what makes it unskippable.
+# is what makes that question answerable, and its unconditional enforcement makes it unskippable.
 
 def _is_lower_hex(value, length):
     if not isinstance(value, str) or len(value) != length:
@@ -1267,6 +1267,21 @@ def main():
              "existing invocations keep working; it changes nothing.",
     )
     args = parser.parse_args()
+    # An empty string is NOT the same as "not supplied": Path("") is ".", so `--execution-root ""`
+    # would resolve to the process CWD, count as supplied, and produce a green result against a tree
+    # the operator never named -- one unset shell variable in a runbook (`--execution-root "$VAR"`)
+    # away from verifying the wrong repository. Reject it explicitly.
+    for _name, _value in (("--execution-root", args.execution_root),
+                          ("--repository", args.repository)):
+        if _value is not None and not str(_value).strip():
+            print(
+                f"{REJECTED}: {EXECUTION_ROOT_REQUIRED}: {_name} was given an empty value. Pass a "
+                "real path or omit the option; an empty string would silently mean the current "
+                "working directory."
+            )
+            return 1
+    execution_root = args.execution_root
+    repository = args.repository
     # Removed in cycle 8: --allow-unbound-legacy-mandate. Passing it now fails at argument parsing
     # with exit 2, which is the intended outcome -- an invocation written against the exempted path
     # must break loudly rather than quietly verify something weaker than it claims.
@@ -1298,8 +1313,8 @@ def main():
             closure_manifest_bytes,
             revocation_bytes,
             consumed_bytes,
-            args.execution_root,
-            args.repository,
+            execution_root,
+            repository,
         )
     except VerifyError as exc:
         print(f"{REJECTED}: {exc.reason}: {exc.message}")

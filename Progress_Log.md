@@ -272,3 +272,17 @@ Future events must be appended below this event and must include the same proven
 **Reason:** The cycle-7 exemption could still return exit 0 with a VERIFIED_EXACT verdict for a mandate carrying no closure binding at all - a green result for exactly the condition the control exists to stop. A hatch that produces a passing verdict is not a narrower control; it is the same fail-open behind a longer command line.
 **Benefit of old phase:** Cycle 7 correctly inverted the default and established that absence must be fatal; the residual defect was the exemption it kept, not the inversion.
 **Expected outcome:** No input to this verifier can produce a VERIFIED verdict for an unbound mandate. Verifying the PG-P0 closure now requires a newly issued and signed mandate that carries the binding.
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0008
+
+**Timestamp:** 2026-07-29T01:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Maker adversarial self-audit of cycle-8 candidate `fdf0434bfee6ff5370a133b5c1b3419649a588f9`
+**Work package:** PG-P0 closure repair, cycle 8 - self-audit remediation
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0008
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0008
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-030 (append-only amendment)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING; supersedes `fdf0434` as the review subject
+**Reason:** The maker's own removal test was vacuous - it asserted a TypeError against the test helper's signature rather than production, so an exemption re-introduced under a different parameter name failed zero of 105 tests. The CLI refusal the design argument depends on had no tests. An empty-string execution root silently meant the process CWD and produced a green verdict against an unnamed tree.
+**Benefit of old phase:** The central control was already correct and no probe refuted it; the defects were in the evidence for it, not in the control.
+**Expected outcome:** The removal is pinned against production rather than against a test fixture, the CLI boundary is exercised by subprocess tests on rc and stdout, and no empty path can stand in for a named one.
