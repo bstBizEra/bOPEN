@@ -1,5 +1,23 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-29 - PG-P0 closure repair, remediation cycle 8 (EVD-CLOSURE-030)
+
+- Removed the cycle-7 unbound-legacy exemption outright: `closure_binding_required`, the
+  `allow_unbound_legacy_decision` parameter, the `--allow-unbound-legacy-mandate` flag and the
+  `legacy_unbound_exemption` receipt field are all deleted. No input can now produce exit 0 with a
+  VERIFIED_EXACT verdict for a mandate carrying no closure binding.
+- Root cause: the removed `required` flag conflated "must a binding exist" with "how deeply is
+  execution verified". A binding is now unconditionally mandatory; depth follows from whether an
+  execution root or repository is supplied, and the CLI refuses a structural-only result.
+- Consequence: `PG-P0-CLOSURE-001` is unverifiable by this tool by design. The closure requires a
+  newly issued and operator-signed mandate carrying a binding.
+- Test fixtures are bound by default; an unbound mandate must be requested explicitly with
+  `bound=False`. Full suite 267 tests OK.
+- Ledgers gain the omitted cycle-7 `-0006` triple (recorded retrospectively) and the cycle-8 `-0007`
+  triple, so the series is unbroken 0001-0007.
+- The cycle-7 verdict was relayed by the operator and is NOT persisted in this repository; the maker
+  did not read it and does not certify it. Persisting it verbatim remains an open control.
+
 ## Append-only entry - 2026-07-28 - PG-P0 closure repair, remediation cycle 7 (EVD-CLOSURE-028/029)
 
 - Additive commit on `claude/PG-P0-closure-binding-default-cycle7` from cycle-6 tip

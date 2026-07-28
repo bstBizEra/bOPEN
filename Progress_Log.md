@@ -243,3 +243,32 @@ Future events must be appended below this event and must include the same proven
 **Reason:** `expected_old` (the C9 compare-and-swap baseline) and `predecessor_commit` (the baseline the whole verification diffs from) were never compared, so an all-f or otherwise divergent `expected_old` passed while both other fields stayed genuine. The transition proven would not have been the transition applied, and every cycle-3-to-5 control inherits that divergence silently because they are all anchored to `predecessor_commit`.
 **Benefit of old phase:** Cycles 3-5 built the scope and anchoring layers this check completes; the gap was a missing cross-field consistency requirement, not a design fault in those layers.
 **Expected outcome:** The compare-and-swap baseline and the verified baseline are provably the same commit, enforced structurally in both modes and before any repository work.
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0006
+
+**Timestamp:** 2026-07-28T09:42:17+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-6 verdict; maker-identified default-off defect
+**Work package:** PG-P0 closure repair, cycle 7 (commit `1756bad2cea88298a094bcfe20e01d7efd9c8473`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0006
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0006
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-028, EVD-CLOSURE-029 (022-027 remain valid and unedited)
+**Status:** RECORDED RETROSPECTIVELY IN CYCLE 8. Cycle 7 shipped without its ledger triple; the maker declined to amend `1756bad` because that SHA was the subject under independent review. Subsequent state: REJECT_EXACT_SHA.
+**Reason:** Cycle 2 introduced the closure binding but defaulted `require_closure_binding=False`, so the control engaged only if a caller opted in, and the operative apply runbook never did.
+**Benefit of old phase:** The binding itself was correct; only its default was wrong.
+**Expected outcome:** Absence of a binding becomes fatal by default, with a decision-scoped exemption for the one legacy mandate. That exemption is what the independent review then rejected.
+
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0007
+
+**Timestamp:** 2026-07-29T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-7 verdict REJECT_EXACT_SHA on `1756bad2cea88298a094bcfe20e01d7efd9c8473`, relayed by the operator
+**Work package:** PG-P0 closure repair, cycle 8 (additive commit on `claude/PG-P0-closure-cycle8`)
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0007
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0007
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-030 (022-029 remain valid and unedited)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Reason:** The cycle-7 exemption could still return exit 0 with a VERIFIED_EXACT verdict for a mandate carrying no closure binding at all - a green result for exactly the condition the control exists to stop. A hatch that produces a passing verdict is not a narrower control; it is the same fail-open behind a longer command line.
+**Benefit of old phase:** Cycle 7 correctly inverted the default and established that absence must be fatal; the residual defect was the exemption it kept, not the inversion.
+**Expected outcome:** No input to this verifier can produce a VERIFIED verdict for an unbound mandate. Verifying the PG-P0 closure now requires a newly issued and signed mandate that carries the binding.

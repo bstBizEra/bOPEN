@@ -235,3 +235,32 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** If the compare-and-swap baseline and the verified baseline can differ, the transition that is proven is not the transition that is applied, and every scope and anchoring control built in earlier cycles inherits that divergence silently.
 **Benefit of old phase:** The earlier layers were sound; only a cross-field consistency requirement was missing.
 **Expected outcome:** Independent review of the additive commit. The proposal is still correctly unsignable; the execution bytes remain human-only.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0006
+
+**Timestamp:** 2026-07-28T09:42:17+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-6 verdict; maker-identified default-off defect
+**Work package:** PG-P0 closure repair, cycle 7
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0006
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0006
+**Evidence:** EVD-CLOSURE-028, EVD-CLOSURE-029
+**Summary:** Inverted the closure-binding default so an absent binding is fatal, and added a decision-scoped exemption for `PG-P0-CLOSURE-001`, which was signed before the binding existed. Corrected the runbook invocation in the same commit. The ledger triple for this cycle was omitted at the time and is recorded here retrospectively.
+**Reason:** A control that must be switched on is one that will eventually be left off.
+**Benefit of old phase:** The binding logic needed no change; only its default did.
+**Expected outcome:** Independent review of the additive commit. That review returned REJECT_EXACT_SHA against the exemption.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0007
+
+**Timestamp:** 2026-07-29T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-7 verdict REJECT_EXACT_SHA, relayed by the operator
+**Work package:** PG-P0 closure repair, cycle 8
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0007
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0007
+**Evidence:** EVD-CLOSURE-030
+**Summary:** Deleted the `closure_binding_required` predicate, the `allow_unbound_legacy_decision` parameter, the `--allow-unbound-legacy-mandate` flag and the `legacy_unbound_exemption` receipt field. Root cause addressed: the removed `required` flag conflated "must a binding exist" with "how deeply is execution verified", and that conflation is why an exemption appeared necessary at all. A binding is now unconditionally mandatory, while verification depth follows from whether an execution root or repository is supplied. The CLI refuses a structural-only result outright, so no invocation can report a closure it did not verify against real bytes. Test fixtures are bound by default; a test wanting an unbound mandate passes `bound=False` explicitly. 267 tests pass.
+**Reason:** The exemption could return exit 0 with VERIFIED_EXACT for a mandate carrying no binding, which is a green result for the exact condition the control exists to stop.
+**Benefit of old phase:** Cycle 7 established the correct default; only its escape hatch had to go.
+**Expected outcome:** Independent exact-SHA review. `PG-P0-CLOSURE-001` is now unverifiable by design, so the closure requires a newly issued and signed mandate carrying a binding.

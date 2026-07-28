@@ -252,3 +252,36 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Track the single bounded correction without marking the proposal signable or any binding resolved.
 **Benefit of old phase:** The blocker was named precisely enough to reproduce first and fix narrowly, with no rebuild required.
 **Expected outcome:** `expected_old` and `predecessor_commit` are provably the same commit; divergence in either direction hard-rejects `EXPECTED_OLD_MISMATCH`.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0006
+
+**Timestamp:** 2026-07-28T09:42:17+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-6 verdict; maker-identified default-off defect
+**Work package:** PG-P0 closure repair, cycle 7
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0006
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0006
+**Evidence:** EVD-CLOSURE-028, EVD-CLOSURE-029
+**State:** SUPERSEDED BY CYCLE 8 - independent review returned REJECT_EXACT_SHA
+**Superseded:** cycle-6 candidate `2a18ed5352930f7603543cdab00fe397e6b11dc4`, preserved in history
+**Open controls:** Closed by cycle 8 for the exemption defect; all other cycle-7 open controls carry forward unchanged.
+**Reason:** Recorded retrospectively in cycle 8. The triple was omitted when cycle 7 shipped, and the maker declined to amend a SHA that was under review.
+**Benefit of old phase:** The omission was disclosed in the cycle-7 handoff rather than quietly corrected.
+**Expected outcome:** The ledger carries an unbroken 0001-0007 series with no gap at cycle 7.
+
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0007
+
+**Timestamp:** 2026-07-29T00:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Codex cycle-7 verdict REJECT_EXACT_SHA, relayed by the operator
+**Work package:** PG-P0 closure repair, cycle 8
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0007
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0007
+**Evidence:** EVD-CLOSURE-030
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-7 candidate `1756bad2cea88298a094bcfe20e01d7efd9c8473`, preserved in history
+**Open controls:** Independent (non-maker, non-Claude) exact-SHA review of this commit; issuance and operator signature of a NEW closure mandate carrying a closure binding, since `PG-P0-CLOSURE-001` can no longer be verified by this tool; the cycle-7 verdict itself is still unpersisted as a durable receipt; every pre-existing open control from cycles 2-7 carries forward.
+**Reason:** Remove the exempted path outright rather than narrow it further.
+**Benefit of old phase:** Cycle 7's inverted default is retained in full; only the exemption is removed.
+**Expected outcome:** An unbound mandate is rejected on every path, and the CLI cannot report a closure whose execution it did not verify.

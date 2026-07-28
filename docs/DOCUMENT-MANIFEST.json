@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-28",
-  "count": 344,
+  "count": 345,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1161,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "71880d586f63c62d6754a8a1a22fa94c10123f663cb5be1527f50804a15cd245",
-      "bytes": 46153
+      "sha256": "134287492b46442cae7da841ed664c06b421efd8b8240492a531bac621b9d432",
+      "bytes": 47518
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1564,6 +1564,13 @@
       "bytes": 4792
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-030-cycle8-unbound-exemption-removed.md",
+      "title": "EVD-CLOSURE-030 - Maker evidence: cycle 8 removes the unbound-legacy exemption",
+      "status": "Maker-authored remediation evidence (advisory; NOT an independent-checker receipt).",
+      "sha256": "dbd6884ea2dcda5328cbdc433320bc73a6602c51a0fe474b8f41185b7d5156db",
+      "bytes": 6298
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1735,14 +1742,14 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "645ba2cb718b627e1721b14f5cbd3856968ef4d116cf932db2895671dca9c1ec",
-      "bytes": 94709
+      "sha256": "10e8cb7f61e41ab38eb4caf02ceff5280b3769af165865efb21f42ae8a3752c0",
+      "bytes": 95109
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "158e7c4b19c791d5326def4c5343deaf78289562e5ffdbe34a20d27dbc8c2c09",
+      "sha256": "9bf964661e60879c22f66fc833a59159eed8ed71371f546c350f2d80638037f0",
       "bytes": 2566
     },
     {
