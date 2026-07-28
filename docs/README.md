@@ -22,7 +22,7 @@
 
 ## Navigation
 
-- [`00-governance/`](00-governance/) — document, agent and decision governance
+- [`00-governance/`](00-governance/) — document, agent and decision governance (see [`AGENT-ALIGNMENT.md`](00-governance/AGENT-ALIGNMENT.md) & [`multi-agent-orchestration.md`](00-governance/multi-agent-orchestration.md))
 - [`01-product/`](01-product/) — product vision and ecosystem boundaries
 - [`02-requirements/`](02-requirements/) — product requirements
 - [`03-architecture/`](03-architecture/) — platform architecture

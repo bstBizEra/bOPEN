@@ -1,4 +1,4 @@
-# dependencies and build
+# Node & Package Build Dependencies
 node_modules/
 .pnpm-store/
 .turbo/
@@ -9,55 +9,49 @@ coverage/
 __pycache__/
 *.pyc
 
-# local environments
+# Local Environments & Virtualenvs
 .env
 .env.*
 !.env.example
 .venv/
 venv/
+env/
 
-# editors and OS
+# Editors & Operating System Files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
-# research clones: never commit upstream source
+# Clean-Room Research Clones (Never commit unapproved external source)
 research/upstream/*
 !research/upstream/README.md
 !research/upstream/.gitkeep
 
-# generated validation evidence
+# Generated Validation Evidence & Scratch Artifacts
 artifacts/validation/*
 !artifacts/validation/README.md
+artifacts/scratch/
+artifacts/audit-output/
 
-# third-party code-graph scan output: regenerable, never committed
+# Local Vector DBs, Databases & AST Indexes
 graphify-out/
-
-# agent-to-agent handoff coordination artifacts at the repo root: transient, never part of a
-# reviewed candidate. Anchored to root and suffix-specific so it cannot match the governed
-# docs/02-agents/HANDOFF-CONTRACT.md.
-/HANDOFF-*-TO-CODEX.md
-
-# local agent runtime state: generated and actively mutated; keep on disk, never commit
-/.claude/.proven-config-version
-/.claude/proven-config.json
-/.claude-flow/agents/store.json
-/.claude-flow/daemon-state.json
-/.claude-flow/daemon.pid
-/.claude-flow/harness-active-policy.json
-/.claude-flow/logs/daemon.log
-/.claude-flow/metrics/backup.json
-/.claude-flow/metrics/codebase-map.json
-/.claude-flow/metrics/consolidation.json
-/.claude-flow/metrics/harness-loop.json
-/.claude-flow/metrics/performance.json
-/.claude-flow/metrics/security-audit.json
-/.claude-flow/metrics/test-gaps.json
-/.claude-flow/neural/stats.json
-/.swarm/backups/
-/.swarm/memory.db
-/.swarm/memory.db-shm
-/.swarm/memory.db-wal
-/.swarm/model-router-state.json
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
 /ruvector.db
+
+# Agent Handoffs & Transient Coordination Files
+/HANDOFF-*.md
+/HANDOFF-*-TO-*.md
+*.log
+*.tmp
+
+# Agent Runtime State Directories (Keep on disk, never commit)
+/.claude/
+/.claude-flow/
+/.swarm/
+/.codex/
+/.gemini/

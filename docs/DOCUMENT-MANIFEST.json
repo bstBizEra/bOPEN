@@ -1,7 +1,14 @@
 {
   "generated": "2026-07-12",
-  "count": 208,
+  "count": 220,
   "documents": [
+    {
+      "path": "docs/00-governance/AGENT-ALIGNMENT.md",
+      "title": "bOPEN Agent Alignment & Context Register v1.0",
+      "status": "Operational",
+      "sha256": "c5fddeb607c2a84311f0d0b04717d829ec389dcdb49be35d0827211108cbcb91",
+      "bytes": 2815
+    },
     {
       "path": "docs/00-governance/agent-governance.md",
       "title": "Agent Governance",
@@ -59,11 +66,39 @@
       "bytes": 207
     },
     {
+      "path": "docs/00-governance/handoffs/HANDOFF-C10-INDEPENDENT-TO-CODEX.md",
+      "title": "WITHDRAWN - do not action",
+      "status": "WITHDRAWN by the maker, 2026-07-28, before any work was started on it.",
+      "sha256": "6eeafd7631dba5ed83926349d779f1f119cc19cc89bbaffb65b2d87c59308e14",
+      "bytes": 3432
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-CYCLE7-TO-CODEX.md",
+      "title": "Handoff \u2014 PG-P0 closure repair cycle 7 \u2192 Codex independent review",
+      "status": "",
+      "sha256": "30036b03facb61475bbe19ea9482143a30332a76c31c8af3e3c94801148aa72e",
+      "bytes": 8194
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-CYCLE8-TO-CODEX.md",
+      "title": "Handoff - PG-P0 closure repair cycle 8 -> Codex independent review",
+      "status": "",
+      "sha256": "1abf71a9cef7482c49d5543e077f001fc512883bc38cac6a7783aead8a495584",
+      "bytes": 11845
+    },
+    {
       "path": "docs/00-governance/license-strategy.md",
       "title": "License Strategy",
       "status": "",
       "sha256": "ee8732b2d01cf522efaddc4d5508dd939d390c0a6d72d9ac629f003b0b690e48",
       "bytes": 302
+    },
+    {
+      "path": "docs/00-governance/multi-agent-orchestration.md",
+      "title": "Multi-LLM & Agent Orchestration Specification v1.0",
+      "status": "Approved for agent operations",
+      "sha256": "2fa8396b925f695586e5f4f969190e67f0125317df3202788732491bb8315d64",
+      "bytes": 3188
     },
     {
       "path": "docs/00-governance/raci.md",
@@ -136,6 +171,13 @@
       "bytes": 4078
     },
     {
+      "path": "docs/02-requirements/BOPEN-REQ-001.md",
+      "title": "BOPEN-REQ-001 \u2014 bOPEN Product Requirements Specification v1.0",
+      "status": "Approved for Phase 1 implementation",
+      "sha256": "864d134bbad67e6750d05e7f94de970d8e51894ec3a706edf2936b774c064186",
+      "bytes": 863
+    },
+    {
       "path": "docs/02-requirements/functional/README.md",
       "title": "Functional Requirements",
       "status": "",
@@ -176,6 +218,13 @@
       "status": "Draft \u2014 no implementation authority",
       "sha256": "75c058fe46a1ae92acab484fec9ff0b9e7c4ca013878f26e5cec855db1fafee8",
       "bytes": 2118
+    },
+    {
+      "path": "docs/03-architecture/BOPEN-ARCH-001.md",
+      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel Architecture v1.0",
+      "status": "Approved for Phase 1 implementation",
+      "sha256": "679c266517726e38a34b1fbd2f2ccfa8f204fac978f0147184f9e015627f9ff9",
+      "bytes": 1007
     },
     {
       "path": "docs/03-architecture/bounded-contexts.md",
@@ -234,11 +283,25 @@
       "bytes": 944
     },
     {
+      "path": "docs/04-platform/BOPEN-AUTHZ-001.md",
+      "title": "BOPEN-AUTHZ-001 \u2014 bOPEN Authorization & Policy Specification v1.0",
+      "status": "Approved for Phase 1 implementation",
+      "sha256": "d5693934f01c633fcf7665bb409ab702e664d308cf3bf4089abdd0266b0de66e",
+      "bytes": 685
+    },
+    {
       "path": "docs/04-platform/BOPEN-ENT-001-DRAFT.md",
       "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification v1.0",
       "status": "Draft \u2014 no implementation authority",
       "sha256": "e9c52c32ecc9928328008a850725ecd9729d0d3bdd737aa120ac5fd63378daaa",
       "bytes": 760
+    },
+    {
+      "path": "docs/04-platform/BOPEN-IDP-001-DRAFT.md",
+      "title": "BOPEN-IDP-001 \u2014 Enterprise SSO, Identity Provider & Token Specification v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "030c3ff6aad15748030ebbadaa97a662e3e09135ab5c6cad1859180d770e2fcd",
+      "bytes": 1965
     },
     {
       "path": "docs/04-platform/BOPEN-MOD-001-DRAFT.md",
@@ -253,6 +316,13 @@
       "status": "Draft \u2014 no implementation authority",
       "sha256": "d8163f2a39b6c56537c8186d55fb7ef5c8ec827dfd81411d8c4195d2afe1156c",
       "bytes": 1135
+    },
+    {
+      "path": "docs/04-platform/BOPEN-TENANT-001.md",
+      "title": "BOPEN-TENANT-001 \u2014 bOPEN Tenant, Organization & Isolation Specification v1.0",
+      "status": "Approved for Phase 1 implementation",
+      "sha256": "05e262dd1629a216912877e5c9f4aca275d05f418b29bfb81674236562b96380",
+      "bytes": 763
     },
     {
       "path": "docs/04-platform/capability/capability-registry.md",
@@ -860,8 +930,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "0637587129a674a98c2ce7efad5d9e836e3d3600655b6274b953e60502528434",
-      "bytes": 930
+      "sha256": "632e468fe3c0bccf536fe4ea7de4d72167eacbf94b1d1b280c55ee190e55aa79",
+      "bytes": 938
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -869,6 +939,13 @@
       "status": "",
       "sha256": "4d00064a3477f9082b7b9b2547e39edd98105273c88154e03e2046b11d448e2d",
       "bytes": 1556
+    },
+    {
+      "path": "docs/evidence/EVD-RES-001-gate-g7-clearance.md",
+      "title": "Evidence Record: BOPEN-RES-001 Clean-Room Gate G7 Clearance",
+      "status": "Approved \u2014 Gate G7 Clear",
+      "sha256": "0114d5027d233f7b6b5490d660977c7e9935726a4551fc310632ba28162c6a60",
+      "bytes": 1141
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
@@ -888,8 +965,8 @@
       "path": "docs/README.md",
       "title": "bOPEN Documentation System",
       "status": "",
-      "sha256": "70fc7f482a52af549042a53fcd2bccddf542c3fc0311c4a389b3255c40474ef1",
-      "bytes": 1829
+      "sha256": "f6143817a6e13f3db2c041d348dca0831585529fd0fc51b568f3b94788bdf93b",
+      "bytes": 1971
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
@@ -1450,6 +1527,13 @@
       "status": "",
       "sha256": "aad0393d3becdb20497d2074d4d8dee9dbc090a8487d3ad31f12bd3f241bbf7f",
       "bytes": 1193
+    },
+    {
+      "path": "docs/work-packages/PACK-SUMMARY.md",
+      "title": "BOPEN-BOOT-001 Full Pack Summary",
+      "status": "",
+      "sha256": "a1d2f7136a52bb9a39033c397496016b07b2833b9a91f584ae36675f0266f87e",
+      "bytes": 570
     },
     {
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",

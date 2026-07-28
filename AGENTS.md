@@ -35,14 +35,9 @@ bOPEN shall not embed forklift, property valuation, insurance claim, coffee proc
 
 ## 3. Current implementation gate
 
-Repository bootstrap, documentation, research and contract drafting are authorized. Production kernel implementation is not authorized until:
+**GATE G7 CLEARED (EVD-RES-001-G7)**. Normative specifications `BOPEN-REQ-001`, `BOPEN-ARCH-001`, `BOPEN-TENANT-001`, and `BOPEN-AUTHZ-001` are **Approved**. 
 
-1. BOPEN-RES-001 Gate G7 passes;
-2. applicable normative artifacts are approved;
-3. an implementation work package is accepted;
-4. required contracts and acceptance tests exist.
-
-Creating empty directories, interfaces, schemas marked draft, test harnesses and documentation is allowed. Implementing production business logic before the gate is prohibited.
+Production kernel implementation for **Phase 1 Platform Kernel Vertical Slice** (principal, tenant, membership, context, authorization, and audit) in `packages/` and `services/` is **AUTHORIZED**. All code must satisfy deny-by-default access, PostgreSQL Row-Level Security, and contract test fixtures.
 
 ## 4. Mandatory source-of-truth hierarchy
 
@@ -60,7 +55,7 @@ Never use an upstream project, UI mockup, comment or prompt as a substitute for 
 
 ## 5. Required workflow for every change
 
-1. Read the root and all scoped `AGENTS.md` files.
+1. Read the root and all scoped `AGENTS.md` files and [`docs/00-governance/AGENT-ALIGNMENT.md`](docs/00-governance/AGENT-ALIGNMENT.md).
 2. Identify the accepted work-package ID.
 3. Identify governing artifact, requirement and ADR IDs.
 4. Inspect existing contracts and tests.
@@ -249,3 +244,30 @@ At completion, report:
 - evidence path;
 - residual risks;
 - decisions still required.
+
+## 18. Repository-local skill registry
+
+Canonical bOPEN skills live under `.agents/skills/<skill-name>/`. Register only
+packages that contain a validated `SKILL.md`; harness-specific or user-global
+copies are adapters and must not silently replace repository-local bytes.
+
+Skill installation grants no approval, activation, merge, release, deployment
+or production authority.
+
+| Skill | Entrypoint | Status | Operating boundary |
+| --- | --- | --- | --- |
+| `git-provenance-audit` | `.agents/skills/git-provenance-audit/SKILL.md` | Installed | Read-only provenance assurance; it does not mutate Git or forge state and cannot create authority. |
+
+## 19. Multi-LLM and multi-agent execution guidelines
+
+This repository supports collaborative execution across multiple AI models and agent runtimes (e.g. Gemini, Claude, Codex, Kimi, DeepSeek). All participating engines shall observe these rules:
+
+1. **Single-workspace execution policy**: All agents shall perform edits, tests, and commits directly in the primary workspace on an explicit target branch. Agents shall not spin up uncoordinated parallel Git worktrees unless explicitly authorized by governance.
+2. **Prohibition of transient handoff artifacts**: Agents shall not write untracked coordination files (e.g., `/HANDOFF-*-TO-CODEX.md`) to the repository root. All progress, decisions, and handoffs must be recorded in governed documentation (`docs/CHANGELOG.md`, `docs/DOCUMENT-MANIFEST.json`, or accepted work-package logs).
+3. **Model role specialization**:
+   - **Gemini / Antigravity**: Architecture synthesis, system design, initial planning, and workspace-wide governance audit.
+   - **Claude**: Complex multi-file refactoring, deep unit test suite development, and contract validation.
+   - **Codex**: Precise logic implementation, script execution, and verification tool maintenance.
+   - **Kimi / DeepSeek**: Long-context research, upstream source inspection, and documentation synthesis.
+4. **Mandatory validation engine**: Every agent—regardless of engine or harness—must run `python tools/validate_repository.py` and `python tools/check_clean_room.py` before marking any work package as complete.
+5. **No verification deadlocks**: Agents shall not invent self-referential gate assertions or refuse valid transitions over unverified metadata assumptions. If a gate check fails, the agent must fix the underlying logic or log an explicit decision request.
