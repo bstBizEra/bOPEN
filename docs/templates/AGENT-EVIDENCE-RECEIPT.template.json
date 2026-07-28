@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "status": "PROPOSED_TEMPLATE_NON_EFFECTIVE",
+  "receipt_id": "EVD-<phase>-<sequence>",
+  "work_package_id": "WP-<phase>-<sequence>",
+  "phase_id": "<phase>",
+  "evidence_class": "E0|E1|E2|E3|E4|E5|E6|E7",
+  "repository": "<owner/repository>",
+  "base": {
+    "commit": "<40-hex>",
+    "tree": "<40-hex>"
+  },
+  "candidate": {
+    "commit": "<40-hex>",
+    "tree": "<40-hex>",
+    "patch_sha256": "<64-lowercase-hex>"
+  },
+  "agent": {
+    "agent_id": "<bound-run-id>",
+    "role": "maker|checker|evidence_steward|integration_maker|integration_checker",
+    "model_family": "Codex|Claude|other",
+    "model_version": "<runtime-reported>",
+    "toolchain": []
+  },
+  "authority": {
+    "source": "<immutable-reference>",
+    "valid_at_execution": false,
+    "expires_at": "<RFC3339>",
+    "revocation_checked_at": "<RFC3339>",
+    "revocation_status": "CLEAR|REVOKED|UNKNOWN"
+  },
+  "scope": {
+    "allowed_paths": [],
+    "changed_paths": [],
+    "allowed_operations": [],
+    "deviations": []
+  },
+  "checks": [
+    {
+      "command": "<exact-command>",
+      "tool_versions": {},
+      "exit_code": 0,
+      "output_ref": "<path-or-evidence-id>",
+      "output_sha256": "<64-lowercase-hex>"
+    }
+  ],
+  "references": [
+    {
+      "id": "<governing-artifact-id>",
+      "path": "<candidate-tree-path>",
+      "blob_oid": "<git-object-id>",
+      "resolved_in_tree": true
+    }
+  ],
+  "findings": [],
+  "residual_risks": [],
+  "dissent_refs": [],
+  "disposition": "PASS|FAIL|BLOCKED|SUPERSEDED",
+  "created_at": "<RFC3339>"
+}

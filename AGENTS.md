@@ -249,3 +249,50 @@ At completion, report:
 - evidence path;
 - residual risks;
 - decisions still required.
+
+## 18. Multi-agent technical assurance
+
+Codex, Claude and subagents may work in parallel only inside an authorized
+phase and bounded work-package scope. Parallel execution does not enlarge
+authority.
+
+Before delegation, the coordinator shall record:
+
+- the exact base commit and tree;
+- dependency order and shared-file ownership;
+- one maker and one independent checker per candidate;
+- allowed paths, operations and acceptance commands;
+- evidence destination, expiry, revocation channel and stop conditions.
+
+Concurrent makers shall not edit the same file. Shared registers, manifests,
+changelogs, indexes and lockfiles belong to a named integration package unless
+the work-package contract assigns them explicitly.
+
+Agent review outcomes are technical recommendations only. A recommendation,
+panel, quorum or model-family agreement shall not:
+
+- approve or complete a phase;
+- sign for a human or organization;
+- authorize merge, release, deployment or production;
+- mutate an authoritative register or ref;
+- waive missing evidence, failed checks or a substantiated blocking finding.
+
+When a work package explicitly adopts
+`docs/00-governance/BOPEN-EVIDENCE-VOTING-001.md`, reviewers may use
+`APPROVE_TECHNICAL`, `REJECT_TECHNICAL` and
+`ABSTAIN_INSUFFICIENT_EVIDENCE`. These dispositions remain candidate-specific,
+expire when bytes change, and feed the existing human gate; they do not create
+a new authority mechanism.
+
+After a technically accepted set is integrated, dependent artifacts shall be
+rebuilt on one reviewable successor base. The integration maker must preserve
+accepted input digests, reconcile shared files once, regenerate derived
+artifacts deterministically and obtain an independent exact-candidate review.
+
+The supporting governance pack is proposal-only until separately activated:
+
+- `docs/00-governance/BOPEN-AGENT-TEAM-001.md`;
+- `docs/00-governance/BOPEN-EVIDENCE-VOTING-001.md`;
+- `docs/01-program/BOPEN-PHASE-EXECUTION-001-PROPOSAL.md`;
+- `docs/04-skills/BOPEN-EVIDENCE-TO-SKILL-001-PROPOSAL.md`;
+- `docs/04-skills/BOPEN-SKILL-UPGRADE-PROPOSAL-001.md`.

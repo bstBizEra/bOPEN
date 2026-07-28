@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1",
+  "status": "PROPOSED_TEMPLATE_NON_EFFECTIVE",
+  "vote_id": "VOTE-<phase>-<sequence>",
+  "work_package_id": "WP-<phase>-<sequence>",
+  "candidate_commit": "<40-hex>",
+  "candidate_tree": "<40-hex>",
+  "patch_sha256": "<64-lowercase-hex>",
+  "evidence_index_sha256": "<64-lowercase-hex>",
+  "voter": {
+    "agent_id": "<bound-run-id>",
+    "model_family": "Codex|Claude|other",
+    "model_version": "<runtime-reported>",
+    "independence_basis": "<why-voter-is-independent-of-maker>",
+    "conflicts": []
+  },
+  "vote": "APPROVE_TECHNICAL|REJECT_TECHNICAL|ABSTAIN_INSUFFICIENT_EVIDENCE",
+  "criteria": [
+    {
+      "criterion_id": "<id>",
+      "result": "PASS|FAIL|NOT_VERIFIED",
+      "evidence_refs": []
+    }
+  ],
+  "findings": [],
+  "residual_risks": [],
+  "rationale": "<concise-rationale>",
+  "non_authority_statement": "This technical recommendation does not authorize merge, activation, release, signing, register mutation, ref movement or phase completion.",
+  "created_at": "<RFC3339>"
+}
