@@ -176,3 +176,103 @@ which is ungraceful but not attacker-reachable and still non-zero.
 111 tests in the verifier module (106 + 5 new CLI subprocess tests); full suite re-run; validators and
 manifests re-checked. The maker self-audit is not independent review and does not reduce what the
 checker should attempt.
+
+---
+
+## Append-only amendment 2 - 2026-07-29 - the A1 fix was incomplete; fixed at the enforcement point
+
+A third maker self-audit found that the A1 remedy in the previous amendment **closed one spelling of
+the hazard rather than the class it belongs to**. This is recorded in full because the first fix was
+published and would have been reviewed as adequate.
+
+**What was wrong with the A1 fix.** It rejected empty and whitespace-only values in `main()`. But
+`Path("")` is `.` for exactly the same reason `.`, `./`, `..` and `docs/..` are - they all resolve
+against the process working directory. Measured against the previous commit, with the CWD set to a
+fixture repository, every one of these returned **`rc=0 VERIFIED: VERIFIED_EXACT`**:
+
+    --execution-root .        --execution-root ./       --execution-root ..
+    --execution-root docs/..  --execution-root "./$ROOT"  (ROOT unset)
+    --execution-root "${ROOT:-.}"                         (ROOT unset)
+
+The last two are the realistic runbook shapes of the very unset-variable mistake the guard's own
+comment cited. Only the bare `"$ROOT"` spelling was caught.
+
+**Two further gaps in that fix:**
+
+- **It was CLI-only.** `verify_transition(execution_root="", repository="")` was never guarded and
+  returned `VERIFIED_EXACT` with `closure_execution_verification: true`. The remedy sat at the
+  outermost layer while the enforcement point went untouched.
+- **The reason code was wrong for one option.** `--repository ""` reported
+  `EXECUTION_ROOT_REQUIRED`, so the code and the option name contradicted each other in one line.
+  The test written alongside it asserted only the substring `"empty value"`, so it could not catch
+  that - a test shaped to pass rather than to constrain.
+
+**The fix now applied.** A single validator, `require_named_directory`, is called from
+`enforce_closure_binding` - the library enforcement point, so every caller is covered. It requires a
+path that names one tree unambiguously: non-empty, **absolute**, and an existing **directory**. A
+CWD-relative value is ambiguous by construction; the tree verified depends on where the process
+happened to start, and that is not recorded in the verdict. For a control whose entire purpose is to
+prove which bytes were verified, that ambiguity is the defect.
+
+Reason codes now match the option: `--execution-root` reports `EXECUTION_ROOT_REQUIRED`,
+`--repository` reports `REPOSITORY_REQUIRED`.
+
+**Deliberate behaviour change:** a legitimate *relative* execution root is now refused. That is a
+real loss of convenience, accepted because a relative path cannot be audited from the verdict alone.
+
+**The verdict line now names the verified tree.** Previously `main()` printed only the verdict and
+outcome, so a gate reading rc and stdout could not distinguish `<REPO>` from `.` from `..`. It now
+prints the resolved `execution_root` and `repository`. That is what made the bypass invisible.
+
+**Uncaught tracebacks with empty stdout are gone.** Five required and three optional path options
+previously raised `PermissionError: '.'` out of `_load()` - rc=1 with **empty stdout** and a message
+about the current directory rather than the argument at fault. Every failure now prints a `REJECTED:`
+line, which is the contract the CLI tests were written against. Supplying an unreadable path to an
+optional option is also no longer silently equivalent to omitting it.
+
+### Test-suite defects found in the same audit round, fixed here
+
+A parallel mutation audit of the tests written in the previous commit found that they were not
+vacuous - all seven were killed by at least one mutant reproducing the defect they claim to prevent -
+but it found one blocking defect and two blind spots, all in the maker's own test code.
+
+**T1 - BLOCKING: ten tests never ran under one of the two runners.** `if __name__ == "__main__":
+unittest.main()` sat ABOVE `CommandLineRefusalTests` and `AmbiguousExecutionPathTests`, so
+`python tests/governance/test_phase_transition_verify.py` executed `unittest.main()` before those
+classes existed: **106 tests** that way versus **116** under `python -m unittest`. Verified by
+mutation: deleting the structural-only refusal from `main()`, and restoring the empty-path bypass,
+both reported OK under direct execution and FAILED only under `-m unittest`. The entire "untested CLI
+gate" remediation was invisible to a plausible runner. This is the same class of defect as a test
+that asserts against its own helper - the guard exists but is not wired in. The `__main__` block now
+sits last, with a comment saying why. Both runners now report the same count.
+
+**T2 - the exemption sweep was blind to magic-value exemptions.** It probed only
+`("PG-P0-CLOSURE-001", True)` against a fixture whose decision id was the same string. Two mutants
+survived all 111 tests: an exemption firing on `binding_policy == "GRANDFATHERED"`, and one scoped to
+a decision-id allowlist hardcoded to the OTHER real legacy id. The sweep now iterates both real
+decision ids and ten probe values including allowlist-shaped ones. Re-verified by rebuilding the
+magic-value mutant: it now FAILS the suite where it previously passed.
+
+**T3 - no CLI positive control.** A mutant making `main()` refuse unconditionally left four of the
+five refusal tests passing; a tool incapable of ever returning 0 would have looked healthy. Added a
+positive control that builds a real git execution tree and asserts `rc=0`, `VERIFIED_EXACT`, and that
+the resolved root appears in stdout. Added a discriminator asserting the structural refusal does not
+carry the empty-value message, since both refusals share a reason code.
+
+**T4/T5 - minor, fixed.** The runtime clause of the removal test is one mutant wide (it catches only
+a `**kwargs` catch-all, which `inspect` never reports as an optional parameter); that is now stated
+rather than implied, and its probe uses the mandate's own decision id instead of a mismatched one. A
+dead assertion (`exc.reason != v.VERIFIED` - a verdict is never a rejection reason, so it could never
+fire) is removed, and the sweep's `except` no longer swallows `ValueError`/`AttributeError`/`OSError`,
+which would have masked a future exemption path that raised one of them after accepting.
+
+**Verification:** 280 tests in the full suite, 118 in this module, and both runners agree. New
+`AmbiguousExecutionPathTests` covers the class - empty,
+whitespace, `.`, `./`, `..`, `docs/..`, bare relative, nonexistent absolute, a file rather than a
+directory, both options' reason codes, and the library-level call that the previous fix missed.
+
+**Lesson recorded against the maker.** Two fixes in a row addressed the demonstrated instance rather
+than the class: `git apply --check` earlier in this lineage, and now the empty string. The pattern is
+fixing what was shown rather than asking what else reaches the same state. The remedy that held was
+to move enforcement to the point every caller passes through, and to make the output name the thing
+that was verified.

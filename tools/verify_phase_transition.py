@@ -722,6 +722,44 @@ def _git(repository, arguments):
     return proc.stdout
 
 
+def require_named_directory(value, option, reason):
+    """Require a path that names ONE tree unambiguously: absolute, existing, a directory.
+
+    Cycle 8's first attempt guarded only the empty string in `main()`. That closed one SPELLING of
+    the hazard, not the class it belongs to. `Path("")` is `.`, but so are `.`, `./`, `..` and
+    `docs/..`, and every one of them resolved to the process CWD and returned rc=0 VERIFIED_EXACT
+    against a tree the operator never named. The realistic runbook shapes of the same unset-variable
+    mistake - `--execution-root "./$ROOT"` and `--execution-root "${ROOT:-.}"` - both survived the
+    string check.
+
+    A CWD-relative value is ambiguous by construction: the tree verified depends on where the
+    process happened to start, which is not recorded in the verdict. For a control whose entire job
+    is to prove WHICH bytes were verified, that ambiguity is the defect. So the requirement is
+    absolute-and-existing, enforced here rather than in `main()` so it covers library callers too -
+    `verify_transition(execution_root="")` previously returned VERIFIED_EXACT with no guard at all.
+    """
+    if value is None:
+        return None
+    text = value if isinstance(value, str) else str(value)
+    if not text.strip():
+        raise VerifyError(
+            reason,
+            f"{option} was given an empty value; an empty string resolves to the current working "
+            "directory. Pass an absolute path, or omit the option entirely",
+        )
+    path = Path(text)
+    if not path.is_absolute():
+        raise VerifyError(
+            reason,
+            f"{option} must be an ABSOLUTE path, got {text!r}. A relative value resolves against "
+            "the process working directory, so it does not name one tree unambiguously - "
+            f"'.', './' and '..' all silently mean 'wherever this happened to run'",
+        )
+    if not path.is_dir():
+        raise VerifyError(reason, f"{option} is not an existing directory: {text!r}")
+    return path
+
+
 def assert_git_repository(repository):
     if repository is None:
         raise VerifyError(
@@ -1036,6 +1074,11 @@ def enforce_closure_binding(
     # Depth of execution verification, decided by what the caller actually supplied. This never
     # affects whether the binding itself is mandatory.
     verify_execution = execution_root is not None or repository is not None
+    # Validated HERE, not in main(), so library callers are covered by the same rule.
+    execution_root = require_named_directory(
+        execution_root, "--execution-root", EXECUTION_ROOT_REQUIRED
+    )
+    repository = require_named_directory(repository, "--repository", REPOSITORY_REQUIRED)
 
     binding = mandate.get("closure_binding")
     if binding is None:
@@ -1118,6 +1161,8 @@ def enforce_closure_binding(
     return {
         "closure_binding_enforced": True,
         "execution_verified": verify_execution,
+        "execution_root": str(execution_root) if execution_root is not None else None,
+        "repository": str(repository) if repository is not None else None,
         "successor_tree": successor_tree_result,
         "closure_manifest_digest": actual_manifest_digest,
         "permitted_effects_digest": actual_effects_digest,
@@ -1267,19 +1312,16 @@ def main():
              "existing invocations keep working; it changes nothing.",
     )
     args = parser.parse_args()
-    # An empty string is NOT the same as "not supplied": Path("") is ".", so `--execution-root ""`
-    # would resolve to the process CWD, count as supplied, and produce a green result against a tree
-    # the operator never named -- one unset shell variable in a runbook (`--execution-root "$VAR"`)
-    # away from verifying the wrong repository. Reject it explicitly.
-    for _name, _value in (("--execution-root", args.execution_root),
-                          ("--repository", args.repository)):
-        if _value is not None and not str(_value).strip():
-            print(
-                f"{REJECTED}: {EXECUTION_ROOT_REQUIRED}: {_name} was given an empty value. Pass a "
-                "real path or omit the option; an empty string would silently mean the current "
-                "working directory."
-            )
-            return 1
+
+    def _fail(message):
+        # Every failure must produce a REJECTED line on stdout, not a traceback. An apply gate reads
+        # rc AND stdout (EVD-CLOSURE-016 H2); an uncaught exception gives it rc=1 with empty stdout
+        # and a message about the current directory rather than about the argument at fault.
+        print(f"{REJECTED}: {MANDATE_INVALID}: {message}")
+        return 1
+
+    # Path validation lives in require_named_directory (called from enforce_closure_binding) so
+    # that library callers get the same rule; main() only forwards the arguments.
     execution_root = args.execution_root
     repository = args.repository
     # Removed in cycle 8: --allow-unbound-legacy-mandate. Passing it now fails at argument parsing
@@ -1300,6 +1342,19 @@ def main():
         if args.consumed and Path(args.consumed).is_file()
         else None
     )
+    for _opt, _val in (("--predecessor", args.predecessor), ("--successor", args.successor),
+                       ("--mandate", args.mandate), ("--trust-root", args.trust_root),
+                       ("--identity-register", args.identity_register)):
+        if not str(_val).strip() or not Path(_val).is_file():
+            return _fail(f"{_opt} is not an existing file: {_val!r}")
+    for _opt, _val in (("--closure-manifest", args.closure_manifest),
+                       ("--revocations", args.revocations), ("--consumed", args.consumed)):
+        if _val is not None and (not str(_val).strip() or not Path(_val).is_file()):
+            return _fail(
+                f"{_opt} was supplied but is not an existing file: {_val!r}. Omit the option if you "
+                "mean 'not supplied'; supplying an unreadable path is not the same thing"
+            )
+
     try:
         result = verify_transition(
             _load(args.predecessor),
@@ -1330,7 +1385,13 @@ def main():
             "--repository so successor blobs and tree are checked against real bytes."
         )
         return 1
-    print(f"{result['verdict']}: {result['outcome']}")
+    # Name the verified tree on stdout. Without this a gate reading rc+stdout cannot tell which
+    # root produced the verdict, which is what made the CWD-relative bypass invisible.
+    binding = result["receipt"].get("closure_binding") or {}
+    print(
+        f"{result['verdict']}: {result['outcome']} "
+        f"(execution_root={binding.get('execution_root')} repository={binding.get('repository')})"
+    )
     return 0
 
 

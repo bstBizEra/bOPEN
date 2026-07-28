@@ -1,5 +1,24 @@
 # Documentation Changelog
 
+## Append-only entry - 2026-07-29 - cycle 8: empty-path guard replaced by a path-identity rule
+
+- The previous empty-string guard was incomplete: `.`, `./`, `..`, `docs/..` and the runbook shapes
+  `"./$ROOT"` / `"${ROOT:-.}"` all resolved to the process CWD and returned rc=0 VERIFIED_EXACT. It
+  was also CLI-only, so `verify_transition(execution_root="")` was unguarded entirely.
+- Replaced with `require_named_directory`, enforced inside `enforce_closure_binding`: an execution
+  root or repository must be absolute and an existing directory. Relative values are now refused -
+  a deliberate loss of convenience, because a relative path cannot be audited from the verdict.
+- `--repository` now reports REPOSITORY_REQUIRED instead of EXECUTION_ROOT_REQUIRED.
+- The success line now names the resolved execution root and repository, so a gate reading stdout can
+  tell which tree was verified.
+- All path options now emit a REJECTED line instead of an uncaught traceback with empty stdout.
+- Test-suite defects found in the same round and fixed: `unittest.main()` sat above two test classes,
+  so direct file execution ran 106 tests instead of 116 and the whole CLI-gate remediation was
+  invisible to that runner; the exemption sweep was blind to magic-value and allowlist-shaped
+  exemptions (two mutants survived all 111 tests, now killed); there was no CLI positive control, so a
+  tool incapable of returning 0 would have looked healthy.
+- 280 tests (was 273), 118 in the verifier module, and both runners now report the same count.
+
 ## Append-only entry - 2026-07-29 - cycle 8 self-audit remediation (EVD-CLOSURE-030 amendment)
 
 - Maker adversarial self-audit of `fdf0434` found four defects in the maker's own work; three are

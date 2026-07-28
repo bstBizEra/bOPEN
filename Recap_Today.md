@@ -278,3 +278,17 @@ Encoded the five operator-signed B8 decisions from `7834c48f84c01be8a03cf00380dd
 **Reason:** A test that asserts against its own helper constrains nothing in production, and a design argument that rests on an untested code path is an assertion rather than evidence.
 **Benefit of old phase:** No probe refuted the central control; the removal itself was complete and correct.
 **Expected outcome:** Independent exact-SHA review of the successor commit. Maker self-audit is not independent review and reduces nothing the checker should attempt.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0009
+
+**Timestamp:** 2026-07-29T02:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Third maker self-audit
+**Work package:** PG-P0 closure repair, cycle 8 - path-identity enforcement
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0009
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0009
+**Evidence:** EVD-CLOSURE-030 (amendment 2)
+**Summary:** An audit of the previous commit's own fix found it closed one spelling of the hazard rather than the class: `.`, `./`, `..`, `docs/..` and two realistic unset-variable runbook shapes all returned rc=0 VERIFIED_EXACT against the process working directory, the guard never applied to library callers, and --repository reported the wrong reason code while the accompanying test asserted only a substring. Replaced by require_named_directory, enforced inside enforce_closure_binding: absolute, existing directory, correct per-option reason codes. The success line now names the resolved roots, and every path option emits a REJECTED line instead of an uncaught traceback with empty stdout. 278 tests.
+**Reason:** A control that proves which bytes were verified cannot accept a path whose meaning depends on where the process started.
+**Benefit of old phase:** The hazard and its premise were established by execution; only the remedy's scope was wrong.
+**Expected outcome:** Independent exact-SHA review. Three maker self-audits have each found defects in the maker's own work; the checker should assume more remain.

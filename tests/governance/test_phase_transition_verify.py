@@ -677,7 +677,12 @@ class ClosureBindingRequiredByDefaultTests(unittest.TestCase):
             "verify_transition grew a parameter that looks like a re-introduced exemption",
         )
 
-        pred, mandate = self._unbound()
+        # The runtime clause buys exactly one thing the signature assertions cannot: it catches a
+        # **kwargs catch-all, which inspect reports as VAR_KEYWORD with no default and so never
+        # appears in the optional-parameter sweep either. Narrow, but not redundant. The mandate's
+        # own decision id is used so the probe would be meaningful against a decision-scoped
+        # exemption rather than mismatched against it.
+        pred, mandate = self._unbound("PG-P0-CLOSURE-001")
         with self.assertRaises(TypeError):
             v.verify_transition(
                 pred, v.recompute_successor(pred, mandate), _envelope(mandate),
@@ -691,26 +696,40 @@ class ClosureBindingRequiredByDefaultTests(unittest.TestCase):
         value in turn; none may cause an unbound mandate to verify."""
         import inspect
 
-        pred, mandate = self._unbound("PG-P0-CLOSURE-001")
-        successor = v.recompute_successor(pred, mandate)
-        base = (pred, successor, _envelope(mandate), _trust_root(), _identity_register(), VTIME)
         optional = [
             name for name, param in inspect.signature(v.verify_transition).parameters.items()
             if param.default is not inspect.Parameter.empty
         ]
         self.assertTrue(optional, "expected verify_transition to have optional parameters")
-        for name in optional:
-            for probe in ("PG-P0-CLOSURE-001", True):
-                with self.subTest(parameter=name, value=probe):
+        # Probe values chosen to defeat a magic-value or allowlist-shaped exemption, not just a
+        # boolean one: both real legacy decision ids appear, because an exemption hardcoded to the
+        # OTHER id than the fixture's would otherwise never fire during the sweep.
+        probes = (
+            "PG-P0-CLOSURE-001", "PG-P0-COMPLETE-001", True, 1,
+            "GRANDFATHERED", "LEGACY", "ALL", "*",
+            ["PG-P0-CLOSURE-001", "PG-P0-COMPLETE-001"],
+            {"PG-P0-CLOSURE-001", "PG-P0-COMPLETE-001"},
+        )
+        for decision_id in ("PG-P0-CLOSURE-001", "PG-P0-COMPLETE-001"):
+          pred, mandate = self._unbound(decision_id)
+          successor = v.recompute_successor(pred, mandate)
+          base = (pred, successor, _envelope(mandate), _trust_root(), _identity_register(), VTIME)
+          for name in optional:
+            for probe in probes:
+                with self.subTest(decision=decision_id, parameter=name, value=probe):
                     try:
                         v.verify_transition(*base, **{name: probe})
-                    except v.VerifyError as exc:
-                        self.assertNotEqual(
-                            exc.reason, v.VERIFIED,
-                            f"{name}={probe!r} produced a verified verdict for an unbound mandate",
-                        )
-                    except (TypeError, ValueError, AttributeError, OSError):
-                        pass  # wrong-typed probe for this parameter; not an exemption
+                    except v.VerifyError:
+                        # Any fail-closed rejection is acceptable; the point is that it did not
+                        # verify. (An earlier version asserted exc.reason != v.VERIFIED here, which
+                        # could never fire - VERIFIED is a verdict, never a rejection reason.)
+                        pass
+                    except TypeError:
+                        # Wrong-typed probe for this parameter; not an exemption path. Deliberately
+                        # narrow: ValueError/AttributeError/OSError were swallowed here too, which
+                        # would mask a future parameter whose exemption path raises one of them
+                        # AFTER accepting the mandate.
+                        pass
                     else:
                         self.fail(
                             f"verify_transition({name}={probe!r}) ACCEPTED a mandate carrying no "
@@ -1322,8 +1341,6 @@ class UnsignedProposalIsNotSignableTests(unittest.TestCase):
         self.assertEqual(manifest["_signing_status"], "DRAFT_NOT_SIGNABLE")
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 class CommandLineRefusalTests(unittest.TestCase):
@@ -1394,6 +1411,47 @@ class CommandLineRefusalTests(unittest.TestCase):
         self.assertIn("empty value", proc.stdout)
         self.assertNotIn("VERIFIED_EXACT", proc.stdout)
 
+    def test_cli_can_still_succeed(self):
+        """Positive control. Without one, a mutation that makes main() ALWAYS refuse leaves four of
+        the five refusal tests passing - a tool incapable of ever returning 0 would look healthy."""
+        paths = ["docs/00-governance/registers/SCHEDULE-REGISTER.json"]
+        root, succ_tree, contents, base_commit = _make_git_execution_tree(self, paths)
+        effects = [{"path": paths[0], "effect": "apply successor"}]
+        manifest = json.dumps(
+            {"decision_id": "PG-P0-COMPLETE-001",
+             "permitted_effects_at_execution_C8": effects}, indent=2).encode("utf-8")
+        rev, con = _rev_bytes(), _con_bytes()
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        mandate["closure_binding"] = {
+            "closure_manifest_digest": hashlib.sha256(manifest).hexdigest(),
+            "permitted_effects_digest": v.digest(effects),
+            "predecessor_commit": base_commit,
+            "predecessor_tree": EMPTY_TREE,
+            "target_ref": "refs/heads/pg-p0-closure-lineage",
+            "expected_old": base_commit,
+            "revocation_state_digest": hashlib.sha256(rev).hexdigest(),
+            "consumed_state_digest": hashlib.sha256(con).hexdigest(),
+            "successor_blobs": {path: v.git_blob_oid(data) for path, data in contents.items()},
+            "successor_tree": succ_tree,
+        }
+        self._write("mandate.dsse.json", _envelope(mandate))
+        self._write("successor.json", v.recompute_successor(pred, mandate))
+        (self.dir / "manifest.json").write_bytes(manifest)
+        proc = self._run("--execution-root", str(root), "--repository", str(root))
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        self.assertIn("VERIFIED_EXACT", proc.stdout)
+        # The verdict line must name the tree that was verified, otherwise a reader cannot tell
+        # which root produced it.
+        self.assertIn(str(root), proc.stdout)
+
+    def test_structural_refusal_is_distinguishable_from_the_empty_value_refusal(self):
+        # Both refusals previously shared a reason code, so asserting the code alone could not tell
+        # them apart - and a main() that always printed the empty-value message would pass.
+        proc = self._run()
+        self.assertEqual(proc.returncode, 1)
+        self.assertNotIn("empty value", proc.stdout)
+
     def test_unbound_mandate_is_refused_through_the_cli(self):
         pred = _predecessor()
         unbound = _mandate(pred, bound=False)
@@ -1403,3 +1461,79 @@ class CommandLineRefusalTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
         self.assertIn(v.CLOSURE_BINDING_REQUIRED, proc.stdout)
         self.assertNotIn("VERIFIED_EXACT", proc.stdout)
+
+
+class AmbiguousExecutionPathTests(unittest.TestCase):
+    """A path that does not name ONE tree unambiguously must be refused.
+
+    The first attempt at this guard checked only the empty string, in `main()`. That closed one
+    spelling and left the class open: `.`, `./`, `..` and `docs/..` all resolve to the process CWD
+    just as `""` does, and the realistic runbook shapes of the same unset-variable mistake
+    (`"./$ROOT"`, `"${ROOT:-.}"`) went straight through it. It was also CLI-only, so
+    `verify_transition(execution_root="")` was never guarded at all."""
+
+    MANIFEST = None
+
+    def setUp(self):
+        self.man = _closure_manifest_bytes()
+        self.rev = _rev_bytes()
+        self.con = _con_bytes()
+        pred = _predecessor()
+        self.mandate = _mandate(pred)
+
+    def _enforce(self, **kw):
+        return v.enforce_closure_binding(self.mandate, self.man, self.rev, self.con, **kw)
+
+    def test_cwd_relative_execution_roots_are_refused(self):
+        for value in ("", " ", "	", ".", "./", "..", "docs/..", "tools", "./x"):
+            with self.subTest(execution_root=value):
+                with self.assertRaises(v.VerifyError) as cm:
+                    self._enforce(execution_root=value)
+                self.assertEqual(cm.exception.reason, v.EXECUTION_ROOT_REQUIRED)
+
+    def test_cwd_relative_repositories_are_refused(self):
+        for value in ("", " ", ".", "..", "tools"):
+            with self.subTest(repository=value):
+                with self.assertRaises(v.VerifyError) as cm:
+                    self._enforce(repository=value)
+                # The reason code must name the option at fault: --repository reports
+                # REPOSITORY_REQUIRED, not EXECUTION_ROOT_REQUIRED.
+                self.assertEqual(cm.exception.reason, v.REPOSITORY_REQUIRED)
+
+    def test_nonexistent_absolute_path_is_refused(self):
+        missing = str(pathlib.Path(tempfile.gettempdir()) / "definitely-not-here-cycle8")
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(execution_root=missing)
+        self.assertEqual(cm.exception.reason, v.EXECUTION_ROOT_REQUIRED)
+
+    def test_a_file_is_not_a_directory(self):
+        handle = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+        handle.close()
+        self.addCleanup(lambda: pathlib.Path(handle.name).unlink(missing_ok=True))
+        with self.assertRaises(v.VerifyError) as cm:
+            self._enforce(execution_root=handle.name)
+        self.assertEqual(cm.exception.reason, v.EXECUTION_ROOT_REQUIRED)
+
+    def test_guard_is_at_the_library_level_not_only_the_cli(self):
+        # The regression that made the first fix incomplete: main() was guarded, the library was not.
+        pred = _predecessor()
+        mandate = _mandate(pred)
+        with self.assertRaises(v.VerifyError) as cm:
+            v.verify_transition(
+                pred, v.recompute_successor(pred, mandate), _envelope(mandate),
+                _trust_root(), _identity_register(), VTIME,
+                closure_manifest_bytes=_closure_manifest_bytes(),
+                revocation_bytes=_rev_bytes(), consumed_bytes=_con_bytes(),
+                execution_root="", repository="",
+            )
+        self.assertEqual(cm.exception.reason, v.EXECUTION_ROOT_REQUIRED)
+
+
+# Kept LAST on purpose. This block previously sat above CommandLineRefusalTests and
+# AmbiguousExecutionPathTests, so `python tests/governance/test_phase_transition_verify.py`
+# executed unittest.main() before those classes were defined and silently ran 106 tests instead
+# of 116 - the CLI gate and the path-identity rule were both invisible to that runner. Same
+# class of defect as a test that asserts against its own helper: the guard exists but is not
+# wired in. Any new class must be added ABOVE this block.
+if __name__ == "__main__":
+    unittest.main()

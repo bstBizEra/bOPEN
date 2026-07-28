@@ -286,3 +286,17 @@ Future events must be appended below this event and must include the same proven
 **Reason:** The maker's own removal test was vacuous - it asserted a TypeError against the test helper's signature rather than production, so an exemption re-introduced under a different parameter name failed zero of 105 tests. The CLI refusal the design argument depends on had no tests. An empty-string execution root silently meant the process CWD and produced a green verdict against an unnamed tree.
 **Benefit of old phase:** The central control was already correct and no probe refuted it; the defects were in the evidence for it, not in the control.
 **Expected outcome:** The removal is pinned against production rather than against a test fixture, the CLI boundary is exercised by subprocess tests on rc and stdout, and no empty path can stand in for a named one.
+## PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0009
+
+**Timestamp:** 2026-07-29T02:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Third maker self-audit; the A1 remedy published in the previous commit was incomplete
+**Work package:** PG-P0 closure repair, cycle 8 - path-identity enforcement
+**Backlog event:** PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0009
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0009
+**Roadmap state:** PG-P0 ACTIVE; PG-P1 NOT_READY; production not authorized; unchanged by this event
+**Evidence:** EVD-CLOSURE-030 (append-only amendment 2)
+**Status:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Reason:** The empty-string guard closed one spelling, not the class. `.`, `./`, `..`, `docs/..` and the runbook shapes `"./$ROOT"` and `"${ROOT:-.}"` all resolved to the process working directory and returned rc=0 VERIFIED_EXACT against a tree the operator never named. The guard was also CLI-only, so the library call was unguarded, and the reason code contradicted the option name for --repository.
+**Benefit of old phase:** The hazard was correctly identified and its premise proven; only the remedy was scoped to the demonstrated instance instead of to the class.
+**Expected outcome:** An execution root or repository must name one tree unambiguously - absolute and existing - enforced where every caller passes through, with the verified tree named on stdout.

@@ -301,3 +301,19 @@ Append-only execution record: Signing Pass 3 B8 approvals are encoded at the v0.
 **Reason:** Fix defects the maker found in its own candidate before the checker spends time on them, and disclose the one it did not fix.
 **Benefit of old phase:** The published candidate was sound in its central control; only its supporting evidence was weak.
 **Expected outcome:** A successor SHA whose test evidence actually constrains production behaviour.
+## Event PG-P0-CLOSURE-REPAIR-C8-V2-BACKLOG-0009
+
+**Timestamp:** 2026-07-29T02:00:00+07:00
+**Agent ID:** Claude Opus 5 (BST-SA Motor worker agent), sole maker
+**Source:** Third maker self-audit
+**Work package:** PG-P0 closure repair, cycle 8 - path-identity enforcement
+**Roadmap:** Roadmap.md / PG-P0 ACTIVE / PG-P1 NOT_READY
+**Progress event:** PG-P0-CLOSURE-REPAIR-C8-V2-PROGRESS-0009
+**Recap event:** PG-P0-CLOSURE-REPAIR-C8-V2-RECAP-0009
+**Evidence:** EVD-CLOSURE-030 (amendment 2)
+**State:** MAKER_CANDIDATE_INDEPENDENT_REVIEW_PENDING
+**Superseded:** cycle-8 candidate `c0abb2b3e6444c36f16596674b843026931cb22e`, preserved in history
+**Open controls:** Independent exact-SHA review; the operator's PG-P0-CLOSURE-002 branch is built on the earlier `fdf0434` and does not carry these fixes; EVD-CLOSURE-029's C7 invocation still needs a corrected runbook; the verdict field still does not encode verification depth; the cycle-7 verdict remains unpersisted; all pre-existing open controls carry forward.
+**Reason:** Fix the class rather than the demonstrated instance, at the point every caller passes through.
+**Benefit of old phase:** The bypass premise was proven by execution before either remedy was written.
+**Expected outcome:** No CWD-relative value can stand in for a named tree, from the CLI or the library.
