@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "count": 290,
+  "generated": "2026-07-28",
+  "count": 291,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-MATRIX-0.2.0-PROPOSAL.json",
@@ -1352,6 +1352,13 @@
       "status": "Candidate; independent exact-SHA review pending",
       "sha256": "7964cd3a405c5a8679597c8b205b799e2ea1ca110579f03d12f24952b27c7fc6",
       "bytes": 772
+    },
+    {
+      "path": "docs/evidence/EVD-GOV-P0-AUTONOMY-HANDOFF-001.md",
+      "title": "EVD-GOV-P0-AUTONOMY-HANDOFF-001 \u2014 Bounded Claude/Codex Collaboration",
+      "status": "Draft; advisory only; independent review pending",
+      "sha256": "6a6bfcb9170d86257706cdcf516ae3ceb3b7f02972ce8634770fc16f4549ffcc",
+      "bytes": 8840
     },
     {
       "path": "docs/evidence/EVD-RES-002-r0-control-establishment.md",
