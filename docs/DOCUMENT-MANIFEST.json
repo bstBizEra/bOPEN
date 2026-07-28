@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 208,
+  "count": 210,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -871,6 +871,13 @@
       "bytes": 1556
     },
     {
+      "path": "docs/evidence/EVD-SKILL-002-schema-diff-admission.md",
+      "title": "EVD-SKILL-002 \u2014 bOPEN Schema Diff Skill Admission",
+      "status": "Quarantined / Not admitted",
+      "sha256": "ad2012c2d986dc10b6f3e761d1290727990f219d0f8d1fe39e98f9f73c8e0b6d",
+      "bytes": 2658
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
@@ -890,6 +897,13 @@
       "status": "",
       "sha256": "70fc7f482a52af549042a53fcd2bccddf542c3fc0311c4a389b3255c40474ef1",
       "bytes": 1829
+    },
+    {
+      "path": "docs/registers/skill-registry.json",
+      "title": "",
+      "status": "",
+      "sha256": "56b776c297ef3dc6e4e69fdd43906bab762e54b9c12359a09ac7ad6bab1eb560",
+      "bytes": 2807
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
