@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-27",
-  "count": 331,
+  "generated": "2026-07-28",
+  "count": 332,
   "documents": [
     {
       "path": "docs/00-governance/AUTHORITY-INTERPRETATION-ACCEPT-EVIDENCE-INTEGRATED-BASE.md",
@@ -1473,6 +1473,13 @@
       "bytes": 6311
     },
     {
+      "path": "docs/evidence/EVD-CLOSURE-AUTH-001-pg-p0-preparation-decision-support.md",
+      "title": "EVD-CLOSURE-AUTH-001 -- PG-P0 preparation decision support",
+      "status": "",
+      "sha256": "9cc32f5ccdde3e6ef6d8367e87418dba9414f95f584ce9cfce4f32a772852739",
+      "bytes": 7202
+    },
+    {
       "path": "docs/evidence/EVD-DEV-001-multitenant-readiness.md",
       "title": "EVD-DEV-001 - Multi-tenant development readiness contracts",
       "status": "",
@@ -1644,8 +1651,8 @@
       "path": "docs/manifests/GOV-P0-02-DOCUMENT-MANIFEST.json",
       "title": "",
       "status": "",
-      "sha256": "34e62d40f17427beaaad265f410ac6ac1e75b15f020ab1e01f3345b94e65fcc8",
-      "bytes": 90240
+      "sha256": "9adb5c40c2587592d4beb1d59272850e9827a83993559b819f8f49ac87ce1545",
+      "bytes": 90544
     },
     {
       "path": "docs/manifests/GOV-P0-03-PACKAGE-MANIFEST.json",
