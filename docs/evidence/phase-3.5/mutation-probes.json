@@ -1,0 +1,75 @@
+{
+  "purpose": "Establish that the isolation suite can fail. Under BOPEN-GOV-EBIV-001 §4 a proposition must state the mechanism whose removal makes its evidence fail; a test that passes whether or not the mechanism is present verifies nothing. Each probe below removes one mechanism, runs the suite, and restores it.",
+  "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
+  "executed": "2026-07-30",
+  "target": "postgresql://bopen_app@127.0.0.1:5433/bopen_dev",
+  "baseline": {
+    "command": "python -m unittest discover -s tests/isolation -p \"test_rls*.py\"",
+    "result": "OK",
+    "tests": 13
+  },
+  "probes": [
+    {
+      "id": "MUT-A",
+      "mechanism_removed": "policy tenant_isolation_resources on tenant_resources",
+      "mutation_sql": "DROP POLICY tenant_isolation_resources ON tenant_resources;",
+      "suite_result": "FAILED",
+      "detail": "13 errors",
+      "detected": true,
+      "legible": false,
+      "assessment": "Detection holds but the message does not name the defect. With row-level security enabled and no policy present, the seeding INSERT in setUp is itself refused, so every test errors during setup rather than one assertion reporting 'tenant A read a row belonging to tenant B'. Recorded as a known gap rather than presented as a clean result. A verifier may reasonably classify this as insufficient legibility under R5; that disagreement is invited in the handoff.",
+      "restored": true
+    },
+    {
+      "id": "MUT-B",
+      "mechanism_removed": "FORCE ROW LEVEL SECURITY on active_contexts",
+      "mutation_sql": "ALTER TABLE active_contexts NO FORCE ROW LEVEL SECURITY;",
+      "suite_result": "FAILED",
+      "detail": "1 failure",
+      "observed_message": "AssertionError: False is not true : active_contexts does not FORCE row level security",
+      "detected": true,
+      "legible": true,
+      "assessment": "Clean single-assertion failure naming the exact table and the exact missing property.",
+      "restored": true
+    },
+    {
+      "id": "MUT-C",
+      "mechanism_removed": "absence of a DELETE policy on audit_events (append-only guard)",
+      "mutation_sql": "CREATE POLICY audit_delete_hole ON audit_events FOR DELETE USING (true);",
+      "suite_result": "FAILED",
+      "detail": "1 failure",
+      "observed_message": "AssertionError: 3 != 0 : an audit record was deleted",
+      "detected": true,
+      "legible": true,
+      "assessment": "Clean single-assertion failure. Incidentally informative: the permissive USING (true) clause deleted three rows rather than the one belonging to the session tenant, demonstrating that a carelessly written DELETE policy on this table would permit cross-tenant destruction of audit records, not merely local mutation.",
+      "restored": true
+    }
+  ],
+  "post_restore": {
+    "command": "python -m unittest discover -s tests/isolation -p \"test_rls*.py\"",
+    "result": "OK",
+    "tests": 13
+  },
+  "supplementary_probes": [
+    {
+      "id": "PRIV-01",
+      "question": "Is the application role genuinely unable to bypass row-level security?",
+      "method": "SELECT rolsuper, rolbypassrls FROM pg_roles; SELECT tablename, tableowner FROM pg_tables WHERE schemaname='public'",
+      "result": "bopen_app: rolsuper=false, rolbypassrls=false, owns none of the 11 tables (all owned by postgres)",
+      "why_it_matters": "A superuser, a role with BYPASSRLS, or the table owner without FORCE would make every passing isolation result meaningless. This probe is what licenses reading the green suite as evidence."
+    },
+    {
+      "id": "LEAK-01",
+      "question": "Can a tenant context survive its transaction and leak to the next user of a pooled connection?",
+      "method": "Open one connection, run a tenant_session for tenant A, then query the same connection outside any tenant_session",
+      "result": "current_setting returned NULL and the row count was 0 — no leak",
+      "why_it_matters": "platform_kernel.db claims that set_config(..., is_local => true) confines the tenant to one transaction so a pooled connection cannot carry tenant A's context into tenant B's work. That claim is a code comment until executed; this probe executes it."
+    }
+  ],
+  "provenance": {
+    "executed_by": "Claude (agent, Motor role) — Maker of WP-P35-01",
+    "authority": "Maker record. Carries no verdict weight under BOPEN-GOV-EBIV-001 §3. Recorded so a verifier can re-run these probes rather than reconstruct them.",
+    "execution_authority": false,
+    "approval_authority": false
+  }
+}

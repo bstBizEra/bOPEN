@@ -1,0 +1,98 @@
+{
+  "phase": "Phase 3.5 — Runtime Realization",
+  "work_package_id": "BOPEN-P35-001",
+  "deliverable_scope": "WP-P35-01 — persistence and tenant-scoped session layer (D-01..D-05)",
+  "status": "MAKER_SUBMISSION_AWAITING_VERIFICATION",
+  "issued": "2026-07-30",
+  "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
+  "tree_oid": "434bc7302711efd5ed01b4a133a35a48cb994986",
+  "branch": "claude/BOPEN-P35-001-runtime-realization",
+  "anchor_provenance": "emitted by `python tools/check_evidence_anchors.py --emit`; not transcribed by an agent (EBIV R3)",
+  "normative_specs": [
+    "BOPEN-TENANT-001",
+    "BOPEN-AUTHZ-001",
+    "BOPEN-ARCH-PLAN-001"
+  ],
+  "admissibility_standard": "BOPEN-GOV-EBIV-001",
+  "execution_environment": {
+    "postgresql_version": "PostgreSQL 17.10 on x86_64-windows",
+    "cluster_path": "C:\\laragon\\data\\bopen-verify",
+    "listen": "127.0.0.1:5433",
+    "note": "Dedicated verification cluster, separate from the unidentified server on 5432. Binds loopback only.",
+    "application_role": "bopen_app",
+    "role_is_superuser": false,
+    "role_has_bypassrls": false,
+    "role_owns_tables": false,
+    "table_owner": "postgres",
+    "why_this_matters": "A superuser or table owner bypasses Row-Level Security. Had bopen_app held either property, every passing result below would be worthless. Verified directly against pg_roles and pg_tables."
+  },
+  "migrations_applied": [
+    "001_tenant_isolation_baseline.sql",
+    "002_phase3_entitlement_metering.sql",
+    "003_phase1_context_audit.sql"
+  ],
+  "test_results": {
+    "command": "python tools/run_tests.py",
+    "total": 182,
+    "passed": 182,
+    "failed": 0,
+    "categories": {
+      "unit": 139,
+      "integration": 14,
+      "contracts": 8,
+      "isolation": 16,
+      "governance": 5
+    },
+    "note": "Pass count is an input to admissibility, not a verdict (EBIV §4). The mutation probes below are what establish that these assertions can fail."
+  },
+  "checks": {
+    "repository_validation": "PASS",
+    "clean_room": "PASS",
+    "evidence_anchors": "PASS",
+    "gitleaks": "PASS — no leaks across 227 commits"
+  },
+  "admissibility_self_assessment": {
+    "R1_executed_not_simulated": true,
+    "R2_traced_invariants": true,
+    "R3_machine_anchored": true,
+    "R4_adversarial_probes": true,
+    "R5_fails_loudly": true,
+    "detail": {
+      "R1": "All isolation assertions execute SQL against PostgreSQL 17.10 with migrations 001-003 applied. No Python data structure substitutes for a policy.",
+      "R2": "invariant-traceability.csv names a test ID for every invariant in scope.",
+      "R3": "commit_oid and tree_oid emitted by tool from git.",
+      "R4": "Cross-tenant read, cross-tenant write, unset context, unknown tenant, audit mutation, and four database constraints each carry a negative probe. Three schema mutations recorded in mutation-probes.json.",
+      "R5": "With BOPEN_DATABASE_URL unset the isolation suite fails rather than skipping; verified before the database was provisioned."
+    },
+    "caveat": "This is the Maker's self-assessment. Under EBIV §3 it carries no verdict weight. It is recorded so a verifier can check the claim rather than reconstruct it."
+  },
+  "acceptance_criteria": {
+    "A-01_isolation_enforced_by_database": "met",
+    "A-02_deny_by_default_at_database": "met",
+    "A-03_cross_tenant_write_refused": "met",
+    "A-04_force_rls_effective_against_owner": "met",
+    "A-05_evidence_executed_not_simulated": "met",
+    "A-06_migration_reversible": "NOT MET — 003 was applied forward against a database already carrying 001 and 002, but the rollback script was never executed. Recorded as unmet rather than assumed.",
+    "A-07_evidence_anchoring_machine_emitted": "met"
+  },
+  "roles": {
+    "maker": "Claude (agent, Motor role)",
+    "eligible_verifiers": ["Codex Agent IDE", "Gemini / Antigravity"],
+    "ballots_cast": 0,
+    "quorum_required": 2,
+    "quorum_status": "NOT MET",
+    "quorum_note": "EBIV §6.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under §3. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md."
+  },
+  "known_gaps": [
+    "A-06 unmet: migration 003 rollback not executed.",
+    "Mutation A (dropping tenant_isolation_resources) is detected, but as 13 setUp errors rather than one named assertion failure, because the seed INSERT is itself refused when RLS is enabled with no policy present. Detection holds; legibility is weaker than mutations B and C.",
+    "Findings F-4 through F-7 of the Phase 3 review remain open. They are entitlement-module defects outside WP-P35-01 scope and are not addressed here.",
+    "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md §14. Pre-existing; not corrected by this work package."
+  ],
+  "evidence_files": [
+    "docs/evidence/phase-3.5/maker-submission.md",
+    "docs/evidence/phase-3.5/invariant-traceability.csv",
+    "docs/evidence/phase-3.5/mutation-probes.json",
+    "docs/evidence/phase-3.5/ballots.jsonl"
+  ]
+}
