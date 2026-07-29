@@ -1,0 +1,18 @@
+# bOPEN Python runtime dependencies
+#
+# Dependency record per AGENTS.md section 13.
+# Technology selections are bound by BOPEN-ARCH-TECH-001 (TECHNOLOGY-MATRIX.md) and
+# BOPEN-ARCH-PLAN-001 (FINAL-TECH-PLAN.md) section 3. Nothing here is a new selection;
+# each line implements a driver or library already chosen by an approved decision.
+#
+# Install:  python -m pip install -r requirements.txt
+
+# Blueprint layer 4 — Database & Persistence.
+# psycopg3 is named in FINAL-TECH-PLAN.md section 3. The binary distribution avoids
+# requiring a local PostgreSQL build toolchain on contributor machines.
+# License: LGPL-3.0-or-later (driver), used unmodified via its public API.
+psycopg[binary]==3.3.4
+
+# Contract validation. Already used by tests/contracts and tests/unit.
+# License: MIT
+jsonschema==4.26.0
