@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 250,
+  "count": 252,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1049,8 +1049,8 @@
       "path": "docs/decisions/DEC-P3-ENTRY.md",
       "title": "DEC-P3-ENTRY \u2014 Evidence-Driven Phase 3 Entry Gate Decision Record",
       "status": "**GO ON EVIDENCE (PHASE 3 IMPLEMENTATION AUTHORIZED)**",
-      "sha256": "a1ee2041743ff35b8ab71475f828d91facff4eeca77abc8d6d657510db677865",
-      "bytes": 3119
+      "sha256": "70e02c9df8644dfa6c4c5b56ec2ab83288c3e8fdb623cc7f6d1682de519291a8",
+      "bytes": 3121
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1137,11 +1137,25 @@
       "bytes": 9775
     },
     {
+      "path": "docs/evidence/phase-3/completion-decision.md",
+      "title": "Phase 3 \u2014 Capability & Commercial Entitlement Kernel Completion Decision",
+      "status": "**TECHNICAL VERIFICATION COMPLETED (GO ON EVIDENCE)**",
+      "sha256": "3d34f1799491be3834e54f29c458ac6ca0e2c11ec6c29999177304cd244bfaf8",
+      "bytes": 2142
+    },
+    {
       "path": "docs/evidence/phase-3/entry-gate-receipt.json",
       "title": "",
       "status": "",
-      "sha256": "3de5dc5138cf798b2b2afe7943a988e008bf969413918e370f1aa76817f3318a",
+      "sha256": "b3e863326d34efe651296eab885b661be5134d7e50711d15a0a2f983910c1696",
       "bytes": 1272
+    },
+    {
+      "path": "docs/evidence/phase-3/manifest.json",
+      "title": "",
+      "status": "",
+      "sha256": "0d810fc869d23e63c14e69349d469ececc58526f802a0bbb6bbd7c0c03c9e488",
+      "bytes": 828
     },
     {
       "path": "docs/GLOSSARY.md",

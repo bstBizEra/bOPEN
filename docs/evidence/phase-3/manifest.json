@@ -1,0 +1,32 @@
+{
+  "phase": "Phase 3 — Capability & Commercial Entitlement Kernel",
+  "status": "COMPLETED_ON_EVIDENCE",
+  "issued": "2026-07-29",
+  "work_package_id": "BOPEN-P3-001",
+  "normative_specs": [
+    "BOPEN-MOD-001",
+    "BOPEN-ENT-001"
+  ],
+  "test_results": {
+    "total": 162,
+    "passed": 162,
+    "failed": 0,
+    "categories": {
+      "unit": 134,
+      "integration": 12,
+      "contracts": 8,
+      "isolation": 3,
+      "governance": 5
+    }
+  },
+  "roles": {
+    "maker": "Platform Kernel Engineering Team",
+    "independent_checkers": ["Claude", "Codex", "Gemini"],
+    "security_reviewer": "Security Authority",
+    "completion_authority": "Platform Kernel Engineering Authority"
+  },
+  "evidence_files": [
+    "docs/evidence/phase-3/completion-decision.md",
+    "docs/evidence/phase-3/entry-gate-receipt.json"
+  ]
+}

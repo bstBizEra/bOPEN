@@ -39,7 +39,8 @@ Phase 3 acceptance-test development (`WP-P3-02`) and production kernel implement
 | **Clean-Room Verification**| Zero unauthorized upstream code | **PASS** | `python tools/check_clean_room.py` |
 | **Contract Schemas** | Draft JSON Schemas valid | **16/16 Valid** | `tests/contracts/test_contract_schemas.py` |
 | **Normative Specifications**| Approved Phase 3 specs | **Approved** | [`BOPEN-MOD-001.md`](../04-platform/BOPEN-MOD-001.md), [`BOPEN-ENT-001.md`](../04-platform/BOPEN-ENT-001.md) |
-| **Document Manifest** | Synchronized index | **250 Records** | `docs/DOCUMENT-MANIFEST.json` |
+| **Document Manifest** | Synchronized index | **252 Records** | `docs/DOCUMENT-MANIFEST.json` |
+
 
 
 ---
