@@ -78,6 +78,11 @@ def admin_url() -> str:
 def forward_migrations() -> list[tuple[str, Path]]:
     found = []
     for path in sorted(MIGRATIONS_DIR.glob("*.sql")):
+        # Rollback scripts are excluded by suffix rather than by a lookahead in the
+        # pattern: `003_x.down.sql` still matches `^(\d{3})_(.+)\.sql$`, so a pattern-only
+        # exclusion silently applied every rollback as a forward migration.
+        if path.name.endswith(".down.sql"):
+            continue
         match = MIGRATION_PATTERN.match(path.name)
         if match:
             found.append((match.group(1), path))
@@ -92,8 +97,19 @@ def rollback_migration(number: str) -> Path | None:
     return None
 
 
-def app_url(password: str, database: str = DEFAULT_DB) -> str:
-    return f"postgresql://{DEFAULT_ROLE}:{password}@127.0.0.1:5432/{database}"
+def host_port(url: str) -> str:
+    """Extract host:port from a connection URL.
+
+    Derived from the admin URL rather than assumed, so a verification instance running on a
+    non-default port is not silently reported as 5432 in the URL this tool prints.
+    """
+    match = re.search(r"@([^/@]+)/", url)
+    return match.group(1) if match else "127.0.0.1:5432"
+
+
+def app_url(password: str, database: str = DEFAULT_DB, admin: str | None = None) -> str:
+    location = host_port(admin or os.environ.get(ENV_ADMIN_URL, ""))
+    return f"postgresql://{DEFAULT_ROLE}:{password}@{location}/{database}"
 
 
 def cmd_status() -> int:
