@@ -16,3 +16,21 @@ psycopg[binary]==3.3.4
 # Contract validation. Already used by tests/contracts and tests/unit.
 # License: MIT
 jsonschema==4.26.0
+
+# Blueprint layer 3 — Platform Kernel Core.
+# FastAPI and Pydantic v2 are both named in FINAL-TECH-PLAN.md section 3.
+# License: MIT (fastapi), MIT (pydantic)
+fastapi==0.121.2
+# The [email] extra pulls email-validator, required by pydantic.EmailStr. Principal
+# registration validates the address at the boundary because migration 001 declares
+# `email VARCHAR(255) UNIQUE NOT NULL` with no format constraint, so nothing below this layer
+# would reject a malformed address.
+pydantic[email]==2.12.4
+
+# ASGI server for running the kernel, and the transport used by the HTTP integration tests.
+# httpx is required by fastapi.testclient; the tests drive the app through a real ASGI
+# transport rather than calling handler functions directly, so routing, header validation and
+# status codes are exercised rather than bypassed.
+# License: BSD-3-Clause (uvicorn), BSD-3-Clause (httpx)
+uvicorn==0.40.0
+httpx==0.28.1
