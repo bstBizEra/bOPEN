@@ -5,6 +5,22 @@ class TestTenantIsolationPolicy(unittest.TestCase):
     """
     Automated negative unit test suite validating tenant isolation rules,
     context validation, and deny-by-default cross-tenant access.
+
+    NOT ADMISSIBLE EVIDENCE FOR TENANT ISOLATION — recorded 2026-07-30.
+
+    The fixture below is a Python list and the query function is a list comprehension. This
+    suite therefore demonstrates that Python filtering works. It demonstrates nothing about
+    the PostgreSQL Row-Level Security policies in `infrastructure/database/`, which govern
+    the actual isolation invariant of BOPEN-TENANT-001.
+
+    Under BOPEN-GOV-EBIV-001 R1 evidence for an infrastructure-enforced invariant must be
+    produced by executing against that infrastructure. Admissible evidence for tenant
+    isolation lives in `test_rls_database_behavior.py`.
+
+    Retained rather than deleted, per AGENTS.md section 11: it is a valid unit test of the
+    deny-by-default *shape* the application layer is expected to preserve, and removing it
+    would erase the record of what was previously counted as isolation evidence. It is
+    reclassified, not weakened.
     """
 
     def setUp(self):
