@@ -39,6 +39,28 @@ bOPEN shall not embed forklift, property valuation, insurance claim, coffee proc
 
 Production kernel implementation for **Phase 1 Platform Kernel Vertical Slice** (principal, tenant, membership, context, authorization, and audit) in `packages/` and `services/` is **AUTHORIZED**. All code must satisfy deny-by-default access, PostgreSQL Row-Level Security, and contract test fixtures.
 
+### 3.1 Phase 2 — contract freeze only, implementation held
+
+`BOPEN-IDP-001` is **Approved for Phase 2 implementation** and supersedes `BOPEN-IDP-001-DRAFT`.
+`BOPEN-P2-001` is bound as the accepted Phase 2 work package governing `MILE-2.1`..`MILE-2.5`.
+
+**Phase 2 code mutation is NOT yet authorized.** Per `BOPEN-P2-001` §26, the disposition is
+*"APPROVED FOR PHASE 2 CONTRACT FREEZE; IMPLEMENTATION HOLD UNTIL ENTRY GATE"*, and §1 states
+coding begins only after the entry gate, ADRs, contracts, token/security profile, test matrix,
+baseline and authority scope are frozen. `BOPEN-IDP-001` §21 makes its own effectiveness
+conditional on the same ADR resolution.
+
+Before any agent creates `membership.py`, `idp_bridge.py`, `context.ts`, `context.py` or other
+Phase 2 sources, the following must be recorded:
+
+- `ADR-P2-001`..`ADR-P2-010` resolved;
+- `D-P2-001`..`D-P2-015` resolved or explicitly classified non-blocking by the Engineering Authority (§21);
+- WP-P2-00 baseline receipt and named maker, independent checker, security reviewer and completion authority;
+- the §23 entry-gate decision recorded as **GO** or **GO WITH RECORDED CONDITIONS**.
+
+Implementing ahead of this gate silently resolves reserved architecture decisions by code default
+and is prohibited. Phase 2 completion does not authorize production activation.
+
 ## 4. Mandatory source-of-truth hierarchy
 
 ```text

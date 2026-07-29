@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/audit-event.json",
+  "title": "AuditEvent",
+  "version": "1.0.0",
+  "description": "Standardized schema for bOPEN security and compliance audit logs v1.0.0",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "timestamp",
+    "actor_id",
+    "tenant_id",
+    "resource_type",
+    "resource_id",
+    "action",
+    "status",
+    "correlation_id"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "example": "security.authorization.decision"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "context_id": {
+      "type": ["string", "null"]
+    },
+    "resource_type": {
+      "type": "string"
+    },
+    "resource_id": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SUCCESS", "DENIED", "ERROR"]
+    },
+    "ip_address": {
+      "type": ["string", "null"]
+    },
+    "user_agent": {
+      "type": ["string", "null"]
+    },
+    "correlation_id": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

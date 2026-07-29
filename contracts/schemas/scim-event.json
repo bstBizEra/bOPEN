@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/scim-event.json",
+  "title": "ScimEvent",
+  "version": "1.0.0",
+  "description": "Normalized SCIM 2.0 directory event accepted by the bOPEN IdP bridge v1.0.0. Governing artifacts BOPEN-IDP-001 section 10 and BOPEN-P2-001 section 12.5. Raw broker payloads and bearer tokens are prohibited.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "directory_id",
+    "tenant_id",
+    "resource_type",
+    "resource_id",
+    "observed_at"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "description": "Single-use identifier for replay control" },
+    "event_type": {
+      "type": "string",
+      "enum": ["user.created", "user.updated", "user.deprovisioned", "group.changed"]
+    },
+    "directory_id": { "type": "string" },
+    "tenant_id": { "type": "string", "description": "Exact owning tenant; never inferred from email domain" },
+    "resource_type": { "type": "string", "enum": ["User", "Group"] },
+    "resource_id": { "type": "string", "description": "Broker/provider resource reference; never a bOPEN Principal ID" },
+    "external_id": { "type": ["string", "null"], "description": "Tenant-scoped external correlation value" },
+    "user_name": { "type": ["string", "null"], "description": "Directory identifier; confidential" },
+    "email_normalized": { "type": ["string", "null"], "description": "Profile snapshot only; never establishes identity equivalence" },
+    "display_name": { "type": ["string", "null"] },
+    "active": { "type": ["boolean", "null"], "description": "Provisioning signal mapped through membership policy" },
+    "groups": { "type": "array", "items": { "type": "string" }, "description": "Group external identifiers; no authorization effect unless mapped" },
+    "sequence": { "type": ["integer", "null"], "minimum": 0, "description": "Provider version or monotonic observation counter for ordering guard" },
+    "observed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

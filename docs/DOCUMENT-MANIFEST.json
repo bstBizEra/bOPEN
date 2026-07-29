@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 220,
+  "count": 234,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -115,11 +115,32 @@
       "bytes": 242
     },
     {
+      "path": "docs/01-product/CAPABILITY-MATRIX.md",
+      "title": "bOPEN Capability & Architecture Matrix v1.0",
+      "status": "Approved Specification",
+      "sha256": "271439edc0915304ff8caaa2c0b659df04a5dee989618e766f3e3f4e073c4cae",
+      "bytes": 6012
+    },
+    {
       "path": "docs/01-product/ecosystem-map.md",
       "title": "Ecosystem Map",
       "status": "",
       "sha256": "c8b58dee8317c502f0eb4aa02ebf630c4e46a08242f8274fcd3d4c35d75fbfbc",
       "bytes": 289
+    },
+    {
+      "path": "docs/01-product/FUTURE-DEVELOPMENT-PLAN.md",
+      "title": "bOPEN Future Development Plan v1.0",
+      "status": "Approved Roadmap Plan",
+      "sha256": "02118b04c023f57ba8f4f9b15d6c88e3f362723c28261d24c68a9df787ca4bbe",
+      "bytes": 3616
+    },
+    {
+      "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
+      "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
+      "status": "Approved Master Specification",
+      "sha256": "3a47e7b407e9ffa02966400565efd002716940974f48da84ac30f993ed35e13b",
+      "bytes": 7877
     },
     {
       "path": "docs/01-product/principles.md",
@@ -248,6 +269,13 @@
       "bytes": 204
     },
     {
+      "path": "docs/03-architecture/FINAL-TECH-PLAN.md",
+      "title": "bOPEN Final Integrated Technology & Language Architecture Plan v1.0",
+      "status": "Approved Master Architecture Plan",
+      "sha256": "ff9f1ba418ed824c37c7e0be8586191537429b465f27dc09b88e9a4f44de04ae",
+      "bytes": 6576
+    },
+    {
       "path": "docs/03-architecture/quality-attributes.md",
       "title": "Quality Attributes",
       "status": "",
@@ -260,6 +288,13 @@
       "status": "",
       "sha256": "216eb8d3f48a7408041554ed202ec3af1319ac934694496a049c45f1200d9ad4",
       "bytes": 272
+    },
+    {
+      "path": "docs/03-architecture/TECHNOLOGY-MATRIX.md",
+      "title": "bOPEN Technology Matrix & Scoring Measure Specification v1.0",
+      "status": "Approved Specification",
+      "sha256": "b5079844796ea02f62576d82db85c222e070abe6fec08576878badcac93d132a",
+      "bytes": 4723
     },
     {
       "path": "docs/04-platform/agents/agent-principal.md",
@@ -299,9 +334,16 @@
     {
       "path": "docs/04-platform/BOPEN-IDP-001-DRAFT.md",
       "title": "BOPEN-IDP-001 \u2014 Enterprise SSO, Identity Provider & Token Specification v1.0",
-      "status": "Draft \u2014 no implementation authority",
-      "sha256": "030c3ff6aad15748030ebbadaa97a662e3e09135ab5c6cad1859180d770e2fcd",
-      "bytes": 1965
+      "status": "Superseded \u2014 no implementation authority",
+      "sha256": "20b2e5847d79a7919f7650eb39761191f46a3b6b73f2f3197f53189cd48e0ae0",
+      "bytes": 2497
+    },
+    {
+      "path": "docs/04-platform/BOPEN-IDP-001.md",
+      "title": "BOPEN-IDP-001 \u2014 Enterprise Identity, Federation, Provisioning, and Session Claims Standard",
+      "status": "APPROVED FOR PHASE 2 IMPLEMENTATION",
+      "sha256": "8e53b45d6a189e520081c41ad9e5173beda712f030b7b6bc4933cc2b01c31aae",
+      "bytes": 26369
     },
     {
       "path": "docs/04-platform/BOPEN-MOD-001-DRAFT.md",
@@ -640,6 +682,13 @@
       "bytes": 178
     },
     {
+      "path": "docs/08-engineering/PROGRAMMING-LANGUAGES-MATRIX.md",
+      "title": "bOPEN Programming Language Stacks Matrix & Scoring Measure Specification v1.0",
+      "status": "Approved Specification",
+      "sha256": "b87e9d3b207b574882ec1dcf365ce195813b2eb5d1350b6d214db2bfc091fb26",
+      "bytes": 4059
+    },
+    {
       "path": "docs/08-engineering/release-management.md",
       "title": "Release Management",
       "status": "",
@@ -659,6 +708,13 @@
       "status": "",
       "sha256": "6b34a80d3f1d9d60665131248244a1548296428cc05080b4732e8fe541cc5824",
       "bytes": 180
+    },
+    {
+      "path": "docs/08-engineering/VERSION-POLICY.md",
+      "title": "bOPEN Version Control & Semantic Versioning Policy v1.0",
+      "status": "Approved Specification",
+      "sha256": "b094d669463e6913a7daf3209a9abad1f5daa824d126cc84b504da1201e1bf41",
+      "bytes": 1957
     },
     {
       "path": "docs/08-engineering/versioning.md",
@@ -902,36 +958,36 @@
       "path": "docs/ARTIFACT-REGISTER.md",
       "title": "Artifact Register",
       "status": "",
-      "sha256": "2fc40f41fc20dc5c438870282067a8f2a07ccf566a43a4f341295a6e10f26ba3",
-      "bytes": 1317
+      "sha256": "fb8fdb65952e716a06a6e963642fffddcaf4355641c995d8f4aab14a74420f35",
+      "bytes": 2179
     },
     {
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "7c097b6c843bc73cea4b3ff126826c2ceb31ec3e28beaad9c4a424845e29d4f4",
-      "bytes": 385
+      "sha256": "973aaba9cc42f18e1cecc54dc21bad790753c2b4eafe0d5a86f7064d2cc32c8f",
+      "bytes": 1459
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "001502f14b439c0c012f6106321f3e0544c3d3a46ff3af4d47c85cde206681c3",
-      "bytes": 584
+      "sha256": "ff659271dd97c1a337ad5467a34bc1bd68f7e93839f9d4517669c6af656f6e7e",
+      "bytes": 1879
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "22ec75e0664e39f8f2668a7ccfe65b7b54a28a339bd2d1d59df55b1f88be215a",
-      "bytes": 1105
+      "sha256": "ac39e9318cd80a3e28ac09911067cb642b44ad3ad0d55ba5cf6681231d45c301",
+      "bytes": 1454
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "632e468fe3c0bccf536fe4ea7de4d72167eacbf94b1d1b280c55ee190e55aa79",
-      "bytes": 938
+      "sha256": "f11b22c77e2a5fdd3e794083cb95fb586fa61f415ab4f933be4619993d5d19ab",
+      "bytes": 1322
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -955,6 +1011,34 @@
       "bytes": 595
     },
     {
+      "path": "docs/evidence/phase-1/completion-decision.md",
+      "title": "Phase 1 Platform Kernel Vertical Slice Completion Decision",
+      "status": "**COMPLETED & VERIFIED**",
+      "sha256": "9c4102efeaf7447d51c00ec481464278144ca196c6671306534bdbcd8c13aa1a",
+      "bytes": 1269
+    },
+    {
+      "path": "docs/evidence/phase-1/invariant-traceability.csv",
+      "title": "",
+      "status": "",
+      "sha256": "0df45f90ad777ffc0a853374f2be6dc656424ad505b3584dfb5ceb122d5f1aea",
+      "bytes": 1141
+    },
+    {
+      "path": "docs/evidence/phase-1/manifest.json",
+      "title": "",
+      "status": "",
+      "sha256": "179b7845b5fa80c42c84f550eb17efb6acf6ceda3af675a3fa0f8623023657f2",
+      "bytes": 901
+    },
+    {
+      "path": "docs/evidence/phase-2/provisional-decisions.md",
+      "title": "EVD-P2-PROVISIONAL \u2014 Phase 2 Provisional Decisions & Authority Deviation Record",
+      "status": "Maker record \u2014 awaiting independent check",
+      "sha256": "676f59025ef02c6b7988e23e3ed6b052f474dc5026d88bba1c4b0556a58c934e",
+      "bytes": 9108
+    },
+    {
       "path": "docs/GLOSSARY.md",
       "title": "bOPEN Glossary",
       "status": "",
@@ -965,8 +1049,8 @@
       "path": "docs/README.md",
       "title": "bOPEN Documentation System",
       "status": "",
-      "sha256": "f6143817a6e13f3db2c041d348dca0831585529fd0fc51b568f3b94788bdf93b",
-      "bytes": 1971
+      "sha256": "297b9b73c51e0711ec0af701acf7b839282fd1ef966ae021d2b2572cb3faf147",
+      "bytes": 2438
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
@@ -1427,8 +1511,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "808be1c1aaa9bb29414ce2c7abe02c6252f2c79ec1fa173b1f63e04101840436",
-      "bytes": 1136
+      "sha256": "6396beb2b5c834e2ad7f587559c70298b7d750ed874dedf5566d4e54b544d45d",
+      "bytes": 1557
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1522,6 +1606,20 @@
       "bytes": 753
     },
     {
+      "path": "docs/work-packages/BOPEN-P1-001-EXECUTION-PLAN.md",
+      "title": "BOPEN-P1-001 \u2014 Platform Kernel Vertical Slice Execution Plan",
+      "status": "PROPOSED / READY FOR REVIEW",
+      "sha256": "e5a0190e20165ea41f30568b71ed9a9a196d34d8bdd7e2039d2205cc8353323a",
+      "bytes": 37489
+    },
+    {
+      "path": "docs/work-packages/BOPEN-P2-001-EXECUTION-PLAN.md",
+      "title": "BOPEN-P2-001 \u2014 Membership & Enterprise Onboarding Execution Plan",
+      "status": "APPROVED FOR CONTRACT FREEZE / IMPLEMENTATION NOT STARTED",
+      "sha256": "680a3e4b7bd3ef70546296a956d27d35853bc6fc12dd5f32861796982ace6322",
+      "bytes": 41387
+    },
+    {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
@@ -1539,8 +1637,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "be26f9cd78ef9aeb51982775b5e5e0fa7354667be194b741399b1a2279b63acc",
-      "bytes": 1532
+      "sha256": "af786f8bcf2eb1a219c336ee8458242f62f3f963114362d83a5cef785af40a8c",
+      "bytes": 2091
     }
   ]
 }

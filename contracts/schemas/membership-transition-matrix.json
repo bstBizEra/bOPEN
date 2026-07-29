@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/membership-transition-matrix.json",
+  "title": "MembershipTransitionMatrix",
+  "contract_version": "1.0.0",
+  "description": "Pinned canonical bOPEN membership transition matrix. Governing artifact BOPEN-IDP-001 section 6.5 and BOPEN-P2-001 section 10.3. Any transition absent from this file MUST be rejected with INVALID_TRANSITION.",
+  "governing_artifacts": [
+    "BOPEN-IDP-001 6.5",
+    "BOPEN-P2-001 10.2, 10.3, 10.6"
+  ],
+  "states": [
+    "invited",
+    "active",
+    "suspended",
+    "revoked",
+    "expired",
+    "left",
+    "removed"
+  ],
+  "terminal_states": [
+    "revoked",
+    "expired",
+    "left",
+    "removed"
+  ],
+  "actor_types": [
+    "tenant_admin",
+    "security_control",
+    "scim_directory",
+    "invitation_service",
+    "expiry_scheduler",
+    "principal"
+  ],
+  "conditions": [
+    "tenant_active",
+    "membership_version_match",
+    "invitation_valid",
+    "reinstatement_preconditions_checked"
+  ],
+  "transitions": [
+    {
+      "from": "invited",
+      "to": "active",
+      "action": "membership.activate",
+      "allowed_actor_types": ["invitation_service", "scim_directory"],
+      "required_conditions": ["tenant_active", "membership_version_match", "invitation_valid"],
+      "terminal": false,
+      "reason_codes": ["INVITATION_ACCEPTED", "SCIM_PROVISION"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": false,
+      "grant_action": "none"
+    },
+    {
+      "from": "invited",
+      "to": "expired",
+      "action": "membership.expire",
+      "allowed_actor_types": ["expiry_scheduler", "security_control"],
+      "required_conditions": ["membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["INVITATION_EXPIRED", "RELATIONSHIP_EXPIRED"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "expire"
+    },
+    {
+      "from": "invited",
+      "to": "removed",
+      "action": "membership.remove",
+      "allowed_actor_types": ["tenant_admin"],
+      "required_conditions": ["tenant_active", "membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["ADMIN_REMOVAL"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    },
+    {
+      "from": "active",
+      "to": "suspended",
+      "action": "membership.suspend",
+      "allowed_actor_types": ["tenant_admin", "security_control", "scim_directory"],
+      "required_conditions": ["tenant_active", "membership_version_match"],
+      "terminal": false,
+      "reason_codes": ["ADMIN_SUSPENSION", "SCIM_DEPROVISION", "SECURITY_HOLD"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "none"
+    },
+    {
+      "from": "active",
+      "to": "revoked",
+      "action": "membership.revoke",
+      "allowed_actor_types": ["security_control", "tenant_admin"],
+      "required_conditions": ["membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["SECURITY_REVOCATION", "AUTHORITY_REVOCATION", "SCIM_DEPROVISION"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    },
+    {
+      "from": "active",
+      "to": "expired",
+      "action": "membership.expire",
+      "allowed_actor_types": ["expiry_scheduler"],
+      "required_conditions": ["membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["RELATIONSHIP_EXPIRED"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "expire"
+    },
+    {
+      "from": "active",
+      "to": "left",
+      "action": "membership.leave",
+      "allowed_actor_types": ["principal"],
+      "required_conditions": ["tenant_active", "membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["PRINCIPAL_LEFT"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    },
+    {
+      "from": "active",
+      "to": "removed",
+      "action": "membership.remove",
+      "allowed_actor_types": ["tenant_admin"],
+      "required_conditions": ["tenant_active", "membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["ADMIN_REMOVAL"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    },
+    {
+      "from": "suspended",
+      "to": "active",
+      "action": "membership.reinstate",
+      "allowed_actor_types": ["tenant_admin"],
+      "required_conditions": [
+        "tenant_active",
+        "membership_version_match",
+        "reinstatement_preconditions_checked"
+      ],
+      "terminal": false,
+      "reason_codes": ["ADMIN_REINSTATEMENT"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": false,
+      "grant_action": "none"
+    },
+    {
+      "from": "suspended",
+      "to": "revoked",
+      "action": "membership.revoke",
+      "allowed_actor_types": ["security_control", "tenant_admin"],
+      "required_conditions": ["membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["SECURITY_REVOCATION", "AUTHORITY_REVOCATION", "SCIM_DEPROVISION"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    },
+    {
+      "from": "suspended",
+      "to": "removed",
+      "action": "membership.remove",
+      "allowed_actor_types": ["tenant_admin"],
+      "required_conditions": ["tenant_active", "membership_version_match"],
+      "terminal": true,
+      "reason_codes": ["ADMIN_REMOVAL"],
+      "event_type": "membership.transitioned",
+      "context_invalidation": true,
+      "grant_action": "revoke"
+    }
+  ]
+}

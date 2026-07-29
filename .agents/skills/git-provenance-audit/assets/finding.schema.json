@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.local/schemas/git-provenance-finding.schema.json",
+  "title": "Git Provenance Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "finding_id", "control_id", "claim", "verdict", "mandatory", "evidence",
+    "basis", "limitations", "remediation", "authorization_status"
+  ],
+  "properties": {
+    "finding_id": {"type": "string", "minLength": 1},
+    "control_id": {"type": "string", "minLength": 1},
+    "claim": {"type": "string", "minLength": 1},
+    "verdict": {
+      "enum": [
+        "PASS", "PASS_WITH_GAPS", "FAIL", "INDETERMINATE",
+        "BLOCKED_ACCESS", "NOT_APPLICABLE"
+      ]
+    },
+    "mandatory": {"type": "boolean"},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "basis": {"type": "string"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "remediation": {"type": "array", "items": {"type": "string"}},
+    "authorization_status": {"enum": ["PROVEN", "NOT_PROVEN", "OUT_OF_SCOPE"]}
+  }
+}

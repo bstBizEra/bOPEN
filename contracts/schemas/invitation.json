@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/invitation.json",
+  "title": "Invitation",
+  "version": "1.0.0",
+  "description": "Schema for bOPEN principal invitation records v1.0.0. Governing artifact BOPEN-IDP-001 section 6.4. The raw invitation token is never represented in this schema (INV-P2-002).",
+  "type": "object",
+  "required": [
+    "invitation_id",
+    "tenant_id",
+    "email_normalized",
+    "state",
+    "token_digest",
+    "token_digest_scheme",
+    "invited_by_principal_id",
+    "issued_at",
+    "expires_at",
+    "version"
+  ],
+  "properties": {
+    "invitation_id": { "type": "string", "description": "Immutable opaque identifier" },
+    "tenant_id": { "type": "string", "description": "Target tenant boundary" },
+    "email_normalized": { "type": "string", "description": "Confidential normalized destination" },
+    "purpose": { "type": "string", "description": "Invitation purpose discriminator for duplicate policy" },
+    "requested_roles": { "type": "array", "items": { "type": "string" } },
+    "requested_scopes": { "type": "array", "items": { "type": "string" } },
+    "state": { "type": "string", "enum": ["invited", "active", "declined", "expired"] },
+    "token_digest": { "type": "string", "description": "One-way digest; raw token is never stored" },
+    "token_digest_scheme": { "type": "string", "description": "Versioned digest scheme identifier" },
+    "invited_by_principal_id": { "type": "string" },
+    "principal_id": { "type": ["string", "null"], "description": "Set after secure acceptance/linking" },
+    "membership_id": { "type": ["string", "null"], "description": "Set on successful activation" },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "accepted_at": { "type": ["string", "null"], "format": "date-time" },
+    "declined_at": { "type": ["string", "null"], "format": "date-time" },
+    "version": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": false
+}

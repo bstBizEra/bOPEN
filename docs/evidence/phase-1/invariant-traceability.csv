@@ -1,0 +1,13 @@
+Invariant_ID,Requirement,Test_ID,Verification_File,Status
+INV-P1-001,Principal ID is globally unique & immutable,P1-T001,tests/unit/test_types.py,PASSED
+INV-P1-002,Tenant ID is globally unique & immutable,P1-T004,tests/unit/test_types.py,PASSED
+INV-P1-003,Membership binds principal and tenant,P1-T005,tests/unit/test_types.py,PASSED
+INV-P1-004,Active membership uniqueness,P1-T005,tests/unit/test_types.py,PASSED
+INV-P1-005,Initial owner membership created,P1-T005,tests/integration/test_phase1_vertical_slice.py,PASSED
+INV-P1-006,Context relationship chain validation,P1-T006,tests/integration/test_phase1_vertical_slice.py,PASSED
+INV-P1-007,Resource tenant equals context tenant,P1-T009,tests/unit/test_evaluator.py,PASSED
+INV-P1-008,Only active entities authorized,P1-T010,tests/unit/test_evaluator.py,PASSED
+INV-P1-009,Unknown action/resource denied,P1-T013,tests/unit/test_evaluator.py,PASSED
+INV-P1-010,Decision envelope fields,P1-T007,tests/unit/test_evaluator.py,PASSED
+INV-P1-011,Correlated audit event emitted,P1-T018,tests/unit/test_audit.py,PASSED
+INV-P1-012,Fail-closed on audit failure,P1-T020,tests/unit/test_audit.py,PASSED

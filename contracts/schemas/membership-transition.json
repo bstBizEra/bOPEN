@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/membership-transition.json",
+  "title": "MembershipTransition",
+  "version": "1.0.0",
+  "description": "Schema for bOPEN principal-to-tenant membership state machine transitions v1.0.0",
+  "type": "object",
+  "required": [
+    "membership_id",
+    "principal_id",
+    "tenant_id",
+    "previous_state",
+    "new_state",
+    "triggered_by",
+    "transition_timestamp"
+  ],
+  "properties": {
+    "membership_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "principal_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "previous_state": {
+      "type": "string",
+      "enum": ["none", "invited", "active", "suspended", "declined", "expired", "revoked", "left", "removed"]
+    },
+    "new_state": {
+      "type": "string",
+      "enum": ["invited", "active", "suspended", "declined", "expired", "revoked", "left", "removed"]
+    },
+    "triggered_by": {
+      "type": "string"
+    },
+    "reason": {
+      "type": ["string", "null"]
+    },
+    "transition_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

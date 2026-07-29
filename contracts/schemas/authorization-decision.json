@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/authorization-decision.json",
+  "title": "AuthorizationDecision",
+  "version": "1.0.0",
+  "description": "Schema for bOPEN ReBAC/ABAC deny-by-default authorization decisions v1.0.0",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "principal_id",
+    "tenant_id",
+    "action",
+    "resource_type",
+    "resource_id",
+    "decision",
+    "reason_code",
+    "policy_version",
+    "evaluated_at"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "principal_id": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    },
+    "context_id": {
+      "type": ["string", "null"]
+    },
+    "action": {
+      "type": "string",
+      "example": "tenant:read"
+    },
+    "resource_type": {
+      "type": "string",
+      "example": "tenant"
+    },
+    "resource_id": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "DENY"]
+    },
+    "reason_code": {
+      "type": "string",
+      "example": "MEMBERSHIP_ROLE_PERMITTED"
+    },
+    "policy_version": {
+      "type": "string",
+      "example": "1.0.0"
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

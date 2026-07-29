@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/delegated-grant.json",
+  "title": "DelegatedGrant",
+  "version": "1.0.0",
+  "description": "Schema for bOPEN time-bounded delegated cross-tenant access grants v1.0.0. Governing artifact BOPEN-IDP-001 section 14.1. Wildcard tenant and wildcard scope values are prohibited (INV-P2-015).",
+  "type": "object",
+  "required": [
+    "grant_id",
+    "grant_type",
+    "source_principal_id",
+    "target_tenant_id",
+    "approved_roles",
+    "approved_scopes",
+    "reason_code",
+    "starts_at",
+    "expires_at",
+    "state",
+    "version"
+  ],
+  "properties": {
+    "grant_id": { "type": "string", "description": "Immutable opaque identifier" },
+    "grant_type": { "type": "string", "enum": ["partner", "support"] },
+    "source_principal_id": { "type": "string", "description": "Receiving principal" },
+    "target_tenant_id": { "type": "string", "description": "Exact target tenant; wildcards prohibited" },
+    "approved_roles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "approved_scopes": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "reason_code": { "type": "string" },
+    "case_reference": { "type": ["string", "null"], "description": "Support case or partner contract reference" },
+    "created_by": { "type": "string" },
+    "approved_by": { "type": ["string", "null"], "description": "Authorized approver; must differ from created_by where separation of duties applies" },
+    "starts_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "state": { "type": "string", "enum": ["pending", "active", "revoked", "expired"] },
+    "revoked_at": { "type": ["string", "null"], "format": "date-time" },
+    "revoked_by": { "type": ["string", "null"] },
+    "version": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": false
+}

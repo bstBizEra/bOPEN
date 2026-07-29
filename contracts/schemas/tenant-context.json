@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/tenant-context.json",
+  "title": "TenantContext",
+  "version": "1.0.0",
+  "description": "Machine-readable contract schema for validated bOPEN tenant context payloads v1.0.0",
+  "type": "object",
+  "required": [
+    "principal_id",
+    "tenant_id",
+    "active_membership_id",
+    "context_id",
+    "issued_at",
+    "expires_at"
+  ],
+  "properties": {
+    "context_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this validated execution context"
+    },
+    "principal_id": {
+      "type": "string",
+      "description": "Identifier of the authenticated principal (human, service, device, agent)"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Identifier of the active commercial and security tenant boundary"
+    },
+    "organization_id": {
+      "type": ["string", "null"],
+      "description": "Optional organization identifier within the tenant boundary"
+    },
+    "workspace_id": {
+      "type": ["string", "null"],
+      "description": "Optional workspace identifier within the tenant boundary"
+    },
+    "active_membership_id": {
+      "type": "string",
+      "description": "Identifier of the active principal-to-tenant membership"
+    },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Assigned roles within active tenant context"
+    },
+    "scopes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Granted scope strings"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when context was validated and issued"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when context validity expires"
+    }
+  },
+  "additionalProperties": false
+}

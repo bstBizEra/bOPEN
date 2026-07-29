@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Provenance Audit"
+  short_description: "Audit Git history and chain of custody"
+  default_prompt: "Use $git-provenance-audit to audit this repository read-only and report provenance claims separately."

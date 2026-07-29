@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.local/schemas/git-provenance-audit-manifest.schema.json",
+  "title": "Git Provenance Audit Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at_utc", "files", "checksum_root_sha256"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "generated_at_utc": {"type": "string", "format": "date-time"},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "bytes": {"type": "integer", "minimum": 0},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "checksum_root_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
