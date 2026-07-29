@@ -2,7 +2,7 @@
 """
 bOPEN Authority & Bootstrap Verification Script (bopen-authority-bootstrap-check)
 Validates repository governance, evidence-driven gate realization, document manifest,
-clean-room status, and canonical test suite results.
+clean-room status, document status harmony, and canonical test suite results.
 """
 
 import json
@@ -44,6 +44,28 @@ def check_normative_specs():
         if not (ROOT / rel).exists():
             errors.append(f"Approved normative spec missing: {rel}")
 
+def check_governance_harmony():
+    """Verify zero contradiction across status registers and execution artifacts."""
+    alignment = (ROOT / "docs/00-governance/AGENT-ALIGNMENT.md").read_text(encoding="utf-8")
+    if "Phase 3" not in alignment:
+        errors.append("AGENT-ALIGNMENT.md is not updated to Phase 3")
+
+    p3_wp = (ROOT / "docs/work-packages/BOPEN-P3-001-EXECUTION-PLAN.md").read_text(encoding="utf-8")
+    if "DRAFT — IMPLEMENTATION HOLD" in p3_wp:
+        errors.append("BOPEN-P3-001-EXECUTION-PLAN.md still contains stale IMPLEMENTATION HOLD status")
+
+    mod_spec = (ROOT / "docs/04-platform/BOPEN-MOD-001.md").read_text(encoding="utf-8")
+    if "APPROVED FOR PHASE 3 IMPLEMENTATION" not in mod_spec:
+        errors.append("BOPEN-MOD-001.md status header not updated to APPROVED FOR PHASE 3 IMPLEMENTATION")
+
+    ent_spec = (ROOT / "docs/04-platform/BOPEN-ENT-001.md").read_text(encoding="utf-8")
+    if "APPROVED FOR PHASE 3 IMPLEMENTATION" not in ent_spec:
+        errors.append("BOPEN-ENT-001.md status header not updated to APPROVED FOR PHASE 3 IMPLEMENTATION")
+
+    dec_entry = (ROOT / "docs/decisions/DEC-P3-ENTRY.md").read_text(encoding="utf-8")
+    if "GO ON EVIDENCE" not in dec_entry:
+        errors.append("DEC-P3-ENTRY.md status is not GO ON EVIDENCE")
+
 def check_manifest():
     manifest_file = ROOT / "docs" / "DOCUMENT-MANIFEST.json"
     if not manifest_file.exists():
@@ -63,6 +85,7 @@ def main():
     print("Executing bOPEN Authority Bootstrap & Evidence Realization Check...")
     check_agents_md()
     check_normative_specs()
+    check_governance_harmony()
     
     run_script(["tools/generate_document_manifest.py"], "generate_document_manifest.py")
     check_manifest()
@@ -77,7 +100,7 @@ def main():
         sys.exit(1)
 
     print("bOPEN Authority Bootstrap Check: PASS")
-    print("Evidence-Driven Gate Realization baseline verified.")
+    print("Evidence-Driven Gate Realization baseline & governance harmony verified.")
 
 if __name__ == "__main__":
     main()

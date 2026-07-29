@@ -15,10 +15,10 @@ Every AI agent starting a session in bOPEN **must** read this single section to 
 
 ```text
 Repository: bOPEN (Open Business Platform Kernel)
-Current Phase: Phase 0 — Govern, Research & Normative Specification Drafting
-Current Gate: Pre-G7 Clean-Room Research & Architecture Approval
+Current Phase: Phase 3 — Capability & Commercial Entitlement Kernel
+Current Gate: DEC-P3-ENTRY Authorized via Evidence-Driven Gate Realization (AGENTS.md §19.6)
 Primary Workspace: c:/laragon/www/bopen (Single-Workspace Policy)
-Active Implementation Authority: Documentation, Tooling & Schema Contracts Only
+Active Implementation Authority: BOPEN-P3-001 Authorized for Implementation (WP-P3-02..WP-P3-06)
 ```
 
 ---
@@ -28,10 +28,10 @@ Active Implementation Authority: Documentation, Tooling & Schema Contracts Only
 | Concern | Primary Document / Path | Description |
 | :--- | :--- | :--- |
 | **Product Roadmap** | [`docs/01-product/roadmap.md`](../01-product/roadmap.md) | 5 Strategic Phases (Phase 0 to Phase 4). |
-| **Backlog Register** | [`docs/work-packages/WORK-PACKAGE-REGISTER.md`](../work-packages/WORK-PACKAGE-REGISTER.md) | Active & proposed work packages (`BOOT-P0-01` to `BOOT-P0-12`). |
-| **Current Document Status** | [`docs/DOCUMENT-STATUS.md`](../DOCUMENT-STATUS.md) | Status of all normative drafts and implementation gates. |
-| **First Vertical Slice Spec** | [`docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md`](../work-packages/FIRST-VERTICAL-SLICE-SPEC.md) | Specs for Phase 1 execution (Principal -> Tenant -> Membership -> Context -> Authz -> Audit). |
-| **Platform Glossary** | [`docs/GLOSSARY.md`](../GLOSSARY.md) | Domain terminology (`Principal`, `Tenant`, `Membership`, `Context`, `Capability`). |
+| **Backlog Register** | [`docs/work-packages/WORK-PACKAGE-REGISTER.md`](../work-packages/WORK-PACKAGE-REGISTER.md) | Active & proposed work packages (`BOPEN-P3-001`). |
+| **Current Document Status** | [`docs/DOCUMENT-STATUS.md`](../DOCUMENT-STATUS.md) | Status of all normative specs and implementation gates. |
+| **Phase 3 Execution Spec** | [`docs/work-packages/BOPEN-P3-001-EXECUTION-PLAN.md`](../work-packages/BOPEN-P3-001-EXECUTION-PLAN.md) | Specs for Phase 3 execution (Capability -> Entitlement -> Metering -> Outbox -> RLS). |
+| **Platform Glossary** | [`docs/GLOSSARY.md`](../GLOSSARY.md) | Domain terminology (`Principal`, `Tenant`, `Membership`, `Context`, `Capability`, `Entitlement`). |
 | **Change History** | [`docs/CHANGELOG.md`](../CHANGELOG.md) | Audit trail of session updates. |
 | **Multi-Agent Rules** | [`AGENTS.md`](../../AGENTS.md) & [`docs/00-governance/multi-agent-orchestration.md`](multi-agent-orchestration.md) | Operating rules & single-workspace policy. |
 
@@ -49,4 +49,5 @@ Whenever an AI agent starts or resumes work:
    python tools/generate_document_manifest.py
    python tools/validate_repository.py
    python tools/check_clean_room.py
+   python tools/check_authority_bootstrap.py
    ```

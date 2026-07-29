@@ -6,8 +6,8 @@
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
       "title": "bOPEN Agent Alignment & Context Register v1.0",
       "status": "Operational",
-      "sha256": "c5fddeb607c2a84311f0d0b04717d829ec389dcdb49be35d0827211108cbcb91",
-      "bytes": 2815
+      "sha256": "f95d5a2bf23947174e4268a5ee0b574d6cce737029f98b99b0dc2ae999748edc",
+      "bytes": 2890
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -327,9 +327,9 @@
     {
       "path": "docs/04-platform/BOPEN-ENT-001.md",
       "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification",
-      "status": "APPROVED FOR PHASE 3 PLANNING & CONTRACT FREEZE",
-      "sha256": "81ecd812471893ecb05b2e30a51191b49a358db781626f715d28297cdd8ec13f",
-      "bytes": 4125
+      "status": "APPROVED FOR PHASE 3 IMPLEMENTATION",
+      "sha256": "c9f3a37002b97f7756b93baeaad4cae75ec11737bd2bb87a93acb05252615a31",
+      "bytes": 4174
     },
     {
       "path": "docs/04-platform/BOPEN-IDP-001-DRAFT.md",
@@ -348,9 +348,9 @@
     {
       "path": "docs/04-platform/BOPEN-MOD-001.md",
       "title": "BOPEN-MOD-001 \u2014 Product, Module, Feature & Capability Contracts Specification",
-      "status": "APPROVED FOR PHASE 3 PLANNING & CONTRACT FREEZE",
-      "sha256": "56ace02dcf32d3df477f5e1c7910c865f82c49984d394d67a92591c26e5a307f",
-      "bytes": 3367
+      "status": "APPROVED FOR PHASE 3 IMPLEMENTATION",
+      "sha256": "727abb37d4962f0e71a70ed5c7900f6898e53e035d372c4b042fb7727fb496fe",
+      "bytes": 3409
     },
     {
       "path": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md",
@@ -1118,9 +1118,9 @@
     {
       "path": "docs/evidence/phase-2/completion-decision.md",
       "title": "Phase 2 \u2014 Membership & Enterprise Onboarding Completion Decision",
-      "status": "**CORRECTED MAKER EVIDENCE / AUTHORITY ACCEPTANCE NOT PROVEN**",
-      "sha256": "8a6ecb15171825e86423a24f642f6ca96b79a9bf1e492fba9bf2050807f9914a",
-      "bytes": 4299
+      "status": "**TECHNICAL VERIFICATION COMPLETED (GO ON EVIDENCE)**",
+      "sha256": "25f8dcbe9a4673db54695eb50e5c96eb387c0d1db0a027c9885f13a59403d5bc",
+      "bytes": 2525
     },
     {
       "path": "docs/evidence/phase-2/manifest.json",
@@ -1720,9 +1720,9 @@
     {
       "path": "docs/work-packages/BOPEN-P3-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P3-001 Work Package \u2014 Phase 3 Capability & Commercial Entitlement Kernel Execution Plan",
-      "status": "DRAFT \u2014 IMPLEMENTATION HOLD UNTIL CONTRACT FREEZE & ENTRY GATE",
-      "sha256": "9d8434c763b4e009f3e7552676368e9f7f5feab2aecc2f5fc4515b70d6dccdfb",
-      "bytes": 3110
+      "status": "APPROVED FOR EXECUTION (GO ON EVIDENCE)",
+      "sha256": "b2a5da95a5651a5c8bbed5f4ab2929238c57f4e2f5532a76034d66052f8138e2",
+      "bytes": 3118
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

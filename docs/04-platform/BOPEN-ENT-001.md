@@ -1,11 +1,12 @@
 # BOPEN-ENT-001 — bOPEN Entitlement, Usage & Commercial Kernel Specification
 
-**Document ID:** `BOPEN-ENT-001`  
-**Version:** `1.0.0`  
-**Status:** APPROVED FOR PHASE 3 PLANNING & CONTRACT FREEZE  
-**Issued:** 2026-07-29  
-**Owner:** Architecture Authority & Engineering Authority  
-**Classification:** Normative Architecture & Commercial Entitlement Specification  
+**Document ID:** `BOPEN-ENT-001`
+**Version:** `1.0.0`
+**Status:** APPROVED FOR PHASE 3 IMPLEMENTATION
+
+**Issued:** 2026-07-29
+**Owner:** Architecture Authority & Engineering Authority
+**Classification:** Normative Architecture & Commercial Entitlement Specification
 
 ---
 
