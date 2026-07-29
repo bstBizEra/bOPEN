@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 252,
+  "count": 255,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -36,6 +36,13 @@
       "status": "",
       "sha256": "ee77a910213462d2425eb1255551f4206c02cb2ac2bde5dfd91fce3020144039",
       "bytes": 249
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
+      "title": "BOPEN-GOV-EBIV-001 \u2014 Evidence-Bound Independent Verification",
+      "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
+      "sha256": "0e85b6e78ae1e89c18209d15332c36d59ff509fdd3e33fab114affed7f5a7390",
+      "bytes": 11322
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -139,8 +146,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "3a47e7b407e9ffa02966400565efd002716940974f48da84ac30f993ed35e13b",
-      "bytes": 7877
+      "sha256": "5938de580826d0bd64eac347892926a5f83a49b7c550f41d862b9c11ae96da2f",
+      "bytes": 11160
     },
     {
       "path": "docs/01-product/principles.md",
@@ -160,8 +167,8 @@
       "path": "docs/01-product/roadmap.md",
       "title": "Strategic Roadmap",
       "status": "",
-      "sha256": "e0d46f195d2799912fa19f567a6156717a19aeea81b0be2e620dcc70b5ac3272",
-      "bytes": 709
+      "sha256": "36358e7f4429d3bd4616810a43ef9a42e22719b8f577fa827da547e3ee8fecff",
+      "bytes": 1199
     },
     {
       "path": "docs/01-product/success-metrics.md",
@@ -1053,11 +1060,18 @@
       "bytes": 3121
     },
     {
+      "path": "docs/decisions/DEC-P35-RUNTIME.md",
+      "title": "DEC-P35-RUNTIME \u2014 Runtime Realization Gate and Evidence Anchoring Correction",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
+      "sha256": "24d94d07f6f837b39dea2cffcdccb4deaf04b0effb114931191c24c0a11996f0",
+      "bytes": 11024
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "6d98450b885a9db4ae98f83cd086937eaf8e4e8d28979e2406c5d3e4602eacd5",
-      "bytes": 2280
+      "sha256": "508ec8a1bf71d3eff7822c0e25f9a36992c591368a8b26cde0fd5dbb0cf726b9",
+      "bytes": 2608
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1139,9 +1153,9 @@
     {
       "path": "docs/evidence/phase-3/completion-decision.md",
       "title": "Phase 3 \u2014 Capability & Commercial Entitlement Kernel Completion Decision",
-      "status": "**TECHNICAL VERIFICATION COMPLETED (GO ON EVIDENCE)**",
-      "sha256": "a3847557d49e72ea41b8b4aca509dab58b880d2519ab9b9ee84255029eca5f92",
-      "bytes": 2971
+      "status": "**IMPLEMENTED_UNVERIFIED \u2014 prior GO ON EVIDENCE withdrawn 2026-07-30**",
+      "sha256": "364ecf2dff4f4f454eb49f11355a6037007db4912f75a259b29c5b24e0d28a40",
+      "bytes": 8494
     },
     {
       "path": "docs/evidence/phase-3/entry-gate-receipt.json",
@@ -1154,8 +1168,8 @@
       "path": "docs/evidence/phase-3/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "561d1083b0d8ae4c5e95e31b6eb287f6ead8b8f9efec70101369077ff6dfa279",
-      "bytes": 898
+      "sha256": "51fadf412a8071286b21018cb236e5b8991565717d327f799ed2d4df73592e18",
+      "bytes": 3713
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1744,6 +1758,13 @@
       "status": "APPROVED FOR EXECUTION (GO ON EVIDENCE)",
       "sha256": "b2a5da95a5651a5c8bbed5f4ab2929238c57f4e2f5532a76034d66052f8138e2",
       "bytes": 3118
+    },
+    {
+      "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
+      "title": "BOPEN-P35-001 \u2014 Phase 3.5 Runtime Realization",
+      "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
+      "sha256": "80549020dcbecb9ba929f8b938fd18de9beb2a14b4e839c3b21fb455d5bf43ae",
+      "bytes": 7531
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
