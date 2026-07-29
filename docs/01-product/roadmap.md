@@ -16,6 +16,17 @@ Invitations, tenant switching, SSO/SCIM boundaries, service principals and deleg
 
 Module registry, entitlement decisions, usage events and product composition.
 
+## Phase 3.5 — Runtime realization
+
+Persistence on PostgreSQL with enforced row-level isolation, kernel HTTP surface, signed
+context token, API gateway and enterprise IdP integration. Turns the kernel from an
+in-process model into a service that satellite products can call.
+
+Inserted 2026-07-30 under `BOPEN-P35-001`, pending `DEC-P35-RUNTIME`.
+
 ## Phase 4 — Common business foundation and first product packs
 
 Party, organization, document, location and initial bPro/bFleet compositions.
+
+Blocked until Phase 3.5 reports admissible evidence: these products consume the kernel
+across a network boundary, which does not yet exist.

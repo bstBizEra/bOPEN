@@ -14,3 +14,4 @@
 | DEC-0010 | Record `ADR-P2-00X` plan labels as aliases of `ADR-0010`..`ADR-0019` | **Approved** ([DEC-P2-DOCKET](DEC-P2-DOCKET.md) §2) | Architecture Authority |
 | DEC-0011 | Accept implementation deltas arising from `D-P2-002`, `D-P2-007` and `D-P2-015` | **Approved** ([DEC-P2-DOCKET](DEC-P2-DOCKET.md) §4) | Engineering/Security Authorities |
 | DEC-P3-ENTRY | Authorize Phase 3 Implementation via Evidence-Driven Gate Realization (`AGENTS.md` §19.6) | **Approved (GO ON EVIDENCE)** ([DEC-P3-ENTRY](DEC-P3-ENTRY.md)) | Engineering/Architecture Authorities |
+| DEC-P35-RUNTIME | Insert Phase 3.5 Runtime Realization before Phase 4; bound `AGENTS.md` §19.6 with an evidence admissibility floor and independent verification quorum (`BOPEN-GOV-EBIV-001`); reconcile conflicting gate registers | **Proposed** ([DEC-P35-RUNTIME](DEC-P35-RUNTIME.md)) | Engineering/Architecture Authorities |

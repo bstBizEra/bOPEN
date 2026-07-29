@@ -1,11 +1,23 @@
 # bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0
 
 **Document ID:** `BOPEN-PROD-OUTLINE-001`  
-**Version:** `1.0`  
+**Version:** `1.1`  
 **Status:** Approved Master Specification  
 **Issued:** 2026-07-29  
+**Corrected:** 2026-07-30  
 **Owner:** Product Authority & Architecture Authority  
 **Classification:** Master Roadmap Execution Outline  
+
+> **STATUS RECONCILIATION — 2026-07-30.** The per-phase `Status` lines in v1.0 had drifted
+> out of agreement with `DECISION-REGISTER` and with the working tree: Phase 2 was recorded
+> as "NEXT IMMEDIATE FOCUS" and Phase 3 as "FUTURE MILESTONE" while both had been
+> implemented and authorized. Statuses below are reconciled against
+> [`AGENTS.md` §20.2](../../AGENTS.md), which is the single operative gate register.
+>
+> Statuses now carry two independent axes, because conflating them is what allowed the
+> drift: **authorization** (may work proceed) and **verification** (is the result proven).
+> A phase can be authorized and implemented while remaining unverified. That is the current
+> state of Phases 1 through 3.
 
 ---
 
@@ -34,7 +46,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 ---
 
 ### Phase 1 — Platform Kernel Vertical Slice
-**Status**: **COMPLETED & OPERATIONAL**
+**Authorization**: **AUTHORIZED** (`AGENTS.md` §3)
+**Verification**: **IMPLEMENTED_UNVERIFIED** — the slice runs in-process only. No evidence has been executed against PostgreSQL, so the isolation guarantee it depends on is asserted rather than proven. "Operational" in v1.0 described the test suite, not a running service.
 
 * **Objective**: Build the minimum governed relationship chain without billing, workflows, or industry logic.
 * **Key Execution Chain**:
@@ -51,7 +64,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 ---
 
 ### Phase 2 — Membership & Enterprise Onboarding
-**Status**: **NEXT IMMEDIATE FOCUS**
+**Authorization**: **AUTHORIZED** — implementation hold discharged by `DEC-0009`..`DEC-0011` (`DEC-P2-DOCKET`) and `DEC-P3-ENTRY`
+**Verification**: **IMPLEMENTED_UNVERIFIED** — `EVD-P2-PROVISIONAL-001` records the independent checker and the security reviewer as NOT ASSIGNED. Under `BOPEN-GOV-EBIV-001` §6.1 a panel below two verifiers cannot realize a verdict.
 
 * **Objective**: Full lifecycle membership state machines, tenant switching APIs, enterprise SSO / SCIM provisioning, and delegated cross-tenant access.
 * **Key Execution Outline**:
@@ -64,7 +78,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 ---
 
 ### Phase 3 — Capability & Commercial Entitlement Kernel
-**Status**: **FUTURE MILESTONE**
+**Authorization**: **AUTHORIZED** — `DEC-P3-ENTRY`
+**Verification**: **IMPLEMENTED_UNVERIFIED** — completion evidence assessed INADMISSIBLE against `BOPEN-GOV-EBIV-001` §5 (fails R1–R5). See [`docs/evidence/phase-3/completion-decision.md`](../evidence/phase-3/completion-decision.md) §4.
 
 * **Objective**: Commercial licensing, plan tiers, dynamic capability registry, feature rollout flags, and real-time usage metering.
 * **Key Execution Outline**:
@@ -75,8 +90,25 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 
 ---
 
+### Phase 3.5 — Runtime Realization *(inserted 2026-07-30)*
+**Authorization**: **PROPOSED** — [`BOPEN-P35-001`](../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md), pending [`DEC-P35-RUNTIME`](../decisions/DEC-P35-RUNTIME.md)
+**Verification**: not started
+
+* **Objective**: Convert the specification model into a running multi-tenant service. `BOPEN-ARCH-PLAN-001` §2 binds a five-layer production blueprint; four of those five layers currently have no implementation.
+* **Rationale**: Phase 4 satellite products must call the kernel across a network boundary. On the current baseline they could only `import kernel_core` in-process, giving each product its own copy of tenant, membership and entitlement state — which would make the kernel a shared library rather than an isolation boundary.
+* **Key Execution Outline**:
+  1. **WP-P35-01 Persistence & tenant-scoped session layer** — psycopg3, `SET LOCAL app.current_tenant_id` per transaction, RLS conformance executed against a live PostgreSQL instance.
+  2. **WP-P35-02 Kernel HTTP surface** — FastAPI + Pydantic v2 over `contracts/schemas/`.
+  3. **WP-P35-03 Signed context token** — `sub`, `tid`, `mid`, `roles`, `scopes`; active context survives a process boundary.
+  4. **WP-P35-04 API gateway** — Hono + Zod bound to `HTTP_HEADER_SPEC.md`.
+  5. **WP-P35-05 Enterprise IdP bridge** — replace the simulated SSO surface with BoxyHQ Jackson.
+* **Deferred**: Go event microservices (blueprint layer 5). Not cancelled; revisited when metering throughput is measured rather than projected.
+
+---
+
 ### Phase 4 — Common Business Foundations & Satellite Products
-**Status**: **FUTURE MILESTONE**
+**Authorization**: **NOT AUTHORIZED** — blocked pending Phase 3.5 (`AGENTS.md` §20.2)
+**Verification**: not started
 
 * **Objective**: Build reusable business foundation microservices and integrate initial satellite products.
 * **Key Execution Outline**:

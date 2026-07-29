@@ -41,6 +41,12 @@ Production kernel implementation for **Phase 1 Platform Kernel Vertical Slice** 
 
 ### 3.1 Phase 2 — contract freeze only, implementation held
 
+> **SUPERSEDED 2026-07-30 — see §20.2.** The implementation hold recorded in this subsection
+> was discharged by `DEC-0009`..`DEC-0011` (`DEC-P2-DOCKET`) and by `DEC-P3-ENTRY`. The text
+> below is retained for provenance under the extend-only rule and **must not be read as a
+> current prohibition**. Agents following §5 step 1 shall read §20.2 for the operative gate
+> state.
+
 `BOPEN-IDP-001` is **Approved for Phase 2 implementation** and supersedes `BOPEN-IDP-001-DRAFT`.
 `BOPEN-P2-001` is bound as the accepted Phase 2 work package governing `MILE-2.1`..`MILE-2.5`.
 
@@ -296,4 +302,96 @@ This repository supports collaborative execution across multiple AI models and a
 4. **Mandatory validation engine**: Every agent—regardless of engine or harness—must run `python tools/validate_repository.py` and `python tools/check_clean_room.py` before marking any work package as complete.
 5. **No verification deadlocks**: Agents shall not invent self-referential gate assertions or refuse valid transitions over unverified metadata assumptions. If a gate check fails, the agent must fix the underlying logic or log an explicit decision request.
 6. **Evidence-Driven Gate Realization**: Gate authorization, work-package entry, and phase progression shall be realized directly through empirical technical evidence (100% passing automated test suites, contract schema validation, repository validation tools, clean-room checks, and evidence packages), rather than requiring manual human sign-off receipts or external human quorum assertions.
+
+   > **QUALIFIED 2026-07-30 — see §20.3.** This clause governs *who signs*. It does not
+   > define what evidence is admissible or who is entitled to judge it. Both are now
+   > governed by [`BOPEN-GOV-EBIV-001`](docs/00-governance/BOPEN-GOV-EBIV-001.md). Read
+   > §19.6 and §20.3 together.
+
+---
+
+## 20. Amendment 2026-07-30 — conflict reconciliation and independent verification
+
+> **Change note (extend-only, per BST rule 5).**
+> **Reason**: three rank-1 conflicts were found between this file, the decision register and
+> the working tree, and the evidence model in §19.6 was found to have no admissibility floor.
+> **Benefit of the prior state**: §19.6 removed the human quorum bottleneck and let agents
+> progress phases autonomously. That property is retained in full.
+> **Expected outcome**: agents continue to progress phases without human sign-off, but a
+> verdict now requires evidence that can fail and a verifier that did not write the code.
+> **Raised under**: [`DEC-P35-RUNTIME`](docs/decisions/DEC-P35-RUNTIME.md).
+> **Authority**: proposed by an agent in an advisory capacity. §20.2 records facts already
+> decided by the authorities. §20.3 and §20.4 do not bind until the Engineering Authority
+> and Architecture Authority approve `DEC-P35-RUNTIME`.
+
+### 20.1 The conflicts being reconciled
+
+| # | Conflict | Reconciliation |
+| :--- | :--- | :--- |
+| C-1 | §3.1 prohibits creating `membership.py`, `idp_bridge.py`, `context.ts`, `context.py`; all four exist | The prohibition was discharged by `DEC-0009`..`DEC-0011` and `DEC-P3-ENTRY`. §3.1 was never updated. Marked superseded; operative state in §20.2 |
+| C-2 | `PHASE-OUTLINE-SPEC.md` records Phase 2 as "NEXT IMMEDIATE FOCUS" and Phase 3 as "FUTURE MILESTONE"; the phase-3 evidence records Phase 3 as completed | Status registers reconciled in §20.2 and in that document |
+| C-3 | §19.6 makes a passing suite the gate authority; nothing constrains the suite's strength or its independence from the implementer | Bounded by `BOPEN-GOV-EBIV-001`; see §20.3 |
+| C-4 | §19.3 assigns verification-adjacent roles by model identity, which would permanently fix who may verify whom | Clarified in §20.4 as capability guidance, not per-work-package role assignment |
+
+### 20.2 Operative implementation gate
+
+This subsection is the single operative statement of gate state. Where any other passage in
+this file, in `PHASE-OUTLINE-SPEC.md`, or in a phase evidence package disagrees, this
+subsection governs until the next amendment.
+
+| Phase | Implementation authorization | Verification state |
+| :--- | :--- | :--- |
+| Phase 1 — Platform kernel vertical slice | **AUTHORIZED** (§3) | `IMPLEMENTED_UNVERIFIED` — no evidence executed against PostgreSQL |
+| Phase 2 — Membership and enterprise onboarding | **AUTHORIZED** — hold discharged by `DEC-0009`..`DEC-0011`, `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — independent checker and security reviewer recorded as NOT ASSIGNED in `EVD-P2-PROVISIONAL-001` |
+| Phase 3 — Capability and entitlement kernel | **AUTHORIZED** — `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — completion evidence inadmissible under EBIV R1 and R3 |
+| Phase 3.5 — Runtime realization | **PROPOSED** — `BOPEN-P35-001`, pending `DEC-P35-RUNTIME` | not started |
+| Phase 4 — Foundations and satellite products | **NOT AUTHORIZED** | blocked pending Phase 3.5 |
+
+`IMPLEMENTED_UNVERIFIED` means the code exists and is specification-shaped, but no
+admissible evidence establishes that it satisfies its governing invariant. It is neither an
+accusation nor a retraction of the work. It is the honest state, and it is recoverable by
+producing admissible evidence rather than by re-asserting completion.
+
+`COMPLETED_ON_EVIDENCE` shall not be recorded for any phase whose evidence package fails
+`tools/check_evidence_anchors.py`.
+
+### 20.3 Independent verification is now required for a verdict
+
+`BOPEN-GOV-EBIV-001` binds. In summary, and without replacing that document:
+
+1. **The Maker does not vote.** An agent that authored any part of an artifact — including
+   its tests — may not cast a verdict on it.
+2. **Verifiers are blind to each other.** Ballots are collected before any is disclosed.
+   Sequential verifiers who can read prior verdicts count as one verifier.
+3. **Propositions are falsifiable.** A verdict is cast on one invariant at one commit, with
+   a named test, and a stated mechanism whose removal would make that test fail.
+4. **Evidence must be admissible before it is counted** — executed not simulated, traced to
+   invariants, machine-anchored to real git objects, adversarial, and loud on failure.
+5. **Refutation outranks majority.** One `REFUTED` ballot carrying a reproducible probe
+   blocks. It is discharged only by a failed reproduction, never by re-assertion.
+6. **A quorum verifies; it never authorizes.** Production activation, specification
+   amendment, and permission widening remain outside agent authority regardless of vote.
+
+### 20.4 Model role specialization is guidance, not role assignment
+
+§19.3 describes what each engine tends to be good at. It does not assign EBIV roles.
+
+Roles under `BOPEN-GOV-EBIV-001` §3 are assigned **per work package** and are exclusive
+within it. Any engine may be Maker on one work package and Verifier on another. No engine
+holds a standing verification role, and no engine is permanently disqualified.
+
+Reading §19.3 as a standing assignment would make the implementer of a given artifact type
+its permanent judge, which is the condition this amendment exists to remove.
+
+### 20.5 Enforcement
+
+| Rule | Enforced by | Status |
+| :--- | :--- | :--- |
+| EBIV R3 — machine-anchored OIDs | `tools/check_evidence_anchors.py` | delivered with this amendment |
+| EBIV R1 — executed not simulated | `tests/isolation/` conformance suite executing against PostgreSQL | `BOPEN-P35-001` D-04 |
+| EBIV R2 — traced invariants | invariant-traceability CSV per phase | required by `BOPEN-P35-001` |
+| EBIV R4, R5 | review under this standard | manual pending tooling |
+
+A governance rule that is not machine-checkable is a preference. Rules are promoted to
+enforced status as tooling lands; the table above records which are which, honestly.
 
