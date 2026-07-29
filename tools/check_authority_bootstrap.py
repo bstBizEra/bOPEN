@@ -66,6 +66,14 @@ def check_governance_harmony():
     if "GO ON EVIDENCE" not in dec_entry:
         errors.append("DEC-P3-ENTRY.md status is not GO ON EVIDENCE")
 
+    receipt = ROOT / "docs/evidence/phase-3/entry-gate-receipt.json"
+    if not receipt.exists():
+        errors.append("docs/evidence/phase-3/entry-gate-receipt.json is missing")
+    else:
+        receipt_data = json.loads(receipt.read_text(encoding="utf-8"))
+        if receipt_data.get("disposition") != "GO_ON_EVIDENCE":
+            errors.append("entry-gate-receipt.json disposition is not GO_ON_EVIDENCE")
+
 def check_manifest():
     manifest_file = ROOT / "docs" / "DOCUMENT-MANIFEST.json"
     if not manifest_file.exists():

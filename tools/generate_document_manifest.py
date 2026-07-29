@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import json, hashlib, re
-ROOT=Path(__file__).resolve().parents[1]
-records=[]
-for p in sorted((ROOT/'docs').rglob('*')):
-    if not p.is_file() or p.name=='DOCUMENT-MANIFEST.json': continue
-    data=p.read_bytes()
-    text=data.decode('utf-8','replace') if p.suffix in {'.md','.json','.yaml','.yml'} else ''
-    title=''
+
+ROOT = Path(__file__).resolve().parents[1]
+records = []
+for p in sorted((ROOT / 'docs').rglob('*')):
+    if not p.is_file() or p.name == 'DOCUMENT-MANIFEST.json': continue
+    data = p.read_bytes()
+    text = data.decode('utf-8', 'replace') if p.suffix in {'.md', '.json', '.yaml', '.yml'} else ''
+    title = ''
     for line in text.splitlines():
-        if line.startswith('# '): title=line[2:].strip(); break
-    status=''
-    m=re.search(r'\*\*Status:\*\*\s*([^\n]+)',text)
-    if m: status=m.group(1).strip()
-    records.append({'path':str(p.relative_to(ROOT)).replace('\\','/'),'title':title,'status':status,'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
-out={'generated':'2026-07-12','count':len(records),'documents':records}
-(ROOT/'docs/DOCUMENT-MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
-print(f'Wrote {len(records)} records')
+        if line.startswith('# '): title = line[2:].strip(); break
+    status = ''
+    m = re.search(r'\*\*Status:\*\*\s*([^\n]+)', text)
+    if m: status = m.group(1).strip()
+    records.append({'path': str(p.relative_to(ROOT)).replace('\\', '/'), 'title': title, 'status': status, 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)})
+
+out = {'generated': '2026-07-29', 'count': len(records), 'documents': records}
+new_content = json.dumps(out, indent=2) + '\n'
+manifest_path = ROOT / 'docs/DOCUMENT-MANIFEST.json'
+
+if not manifest_path.exists() or manifest_path.read_text(encoding='utf-8') != new_content:
+    manifest_path.write_text(new_content, encoding='utf-8')
+    print(f'Wrote {len(records)} records')
+else:
+    print(f'Manifest current ({len(records)} records)')
