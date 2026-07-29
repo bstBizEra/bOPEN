@@ -206,6 +206,50 @@ how to fill it is not.
 
 ---
 
+---
+
+## 6a. Amendment 2026-07-30 — WP-P35-02 has landed and also needs verification
+
+The kernel HTTP surface is complete and committed at
+`a969bb59b85c1c717cf432cabd6c46fa10c5edb0`. Request A now covers **both** `WP-P35-01` and
+`WP-P35-02`; the lane split in §2 is unchanged and `apps/gateway/` is still untouched by me.
+
+This matters to your lane specifically: the gateway now has a real upstream to target rather
+than a contract shape. Endpoints are `POST /v1/principals`, `POST /v1/tenants`,
+`POST /v1/contexts`, `POST /v1/authorize`, `GET /v1/audit-events`, plus `/health` and
+`/readiness`. Run it with
+`python -m uvicorn platform_kernel.api:app --port 8080` from `services/platform-kernel/python`.
+
+Four more propositions, same rules:
+
+| ID | Proposition | Named evidence |
+| :--- | :--- | :--- |
+| `INV-HTTP-TENANT-HINT-01` | A client-supplied `X-Tenant-ID` grants nothing without a context living in that tenant. Fails if `active_contexts_isolation` is weakened to `USING (true)` | `test_context_from_another_tenant_is_refused` |
+| `INV-HTTP-AUDIT-SCOPE-01` | Audit events are scoped by policy, not by the query. Fails if `audit_events_read_isolation` is weakened | `test_audit_events_are_scoped_to_the_callers_tenant` |
+| `INV-HTTP-RESOURCE-SCOPE-01` | A tenant-owned resource is invisible to another tenant over HTTP. Fails if `tenant_isolation_resources` is weakened | `test_resource_created_in_one_tenant_is_invisible_to_another` |
+| `INV-CONTRACT-TENANT-CONTEXT-01` | The issued context payload validates against `tenant-context.json`. Fails if `context_id` reverts to `ctx_<uuid>` or `expires_at` is dropped | `test_context_payload_satisfies_the_frozen_contract` |
+
+### Where to attack this one
+
+1. **Is `X-Tenant-ID` authoritative anywhere?** My claim is that it only selects an RLS session.
+   Look for any query reachable from a handler that filters on the header value rather than on
+   `ResolvedContext.tenant_id`. One such path would invalidate the whole design.
+2. **Does `resolve_context` leak through a side channel?** All refusals return 403 with an
+   identical body, but a latency difference between "context absent" and "context in another
+   tenant" is still a probe channel.
+3. **The audit write is not in the same transaction as the decision.** I judged this acceptable
+   because the decision is not persisted either, so there is nothing to be inconsistent with. It
+   becomes a defect the moment decisions are persisted. Disagree if you think that moment has
+   already arrived.
+4. **`PlatformKernelService` still exists in parallel.** Two implementations of the same chain,
+   one in-memory with 139 unit tests, one repository-backed. I left it because removing it would
+   have put a large test rewrite in the same commit as new behaviour. If you think the drift risk
+   outweighs that, say so.
+5. **I weakened a validator's fixtures, not the validator.** `pydantic.EmailStr` rejects RFC 2606
+   reserved TLDs, so `@example.invalid` fixtures failed with 422. I moved the fixtures to
+   `@example.com` rather than loosening the check. Verify I did not loosen anything else under
+   test pressure.
+
 ## 7. Provenance
 
 Authored by Claude (agent, Motor role) on 2026-07-30. Advisory only —

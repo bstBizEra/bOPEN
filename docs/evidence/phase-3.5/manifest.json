@@ -1,7 +1,7 @@
 {
-  "phase": "Phase 3.5 — Runtime Realization",
+  "phase": "Phase 3.5 \u2014 Runtime Realization",
   "work_package_id": "BOPEN-P35-001",
-  "deliverable_scope": "WP-P35-01 — persistence and tenant-scoped session layer (D-01..D-05)",
+  "deliverable_scope": "WP-P35-01 (D-01..D-05) and WP-P35-02 (D-06, D-07)",
   "status": "MAKER_SUBMISSION_AWAITING_VERIFICATION",
   "issued": "2026-07-30",
   "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
@@ -33,23 +33,23 @@
   ],
   "test_results": {
     "command": "python tools/run_tests.py",
-    "total": 182,
-    "passed": 182,
+    "total": 198,
+    "passed": 198,
     "failed": 0,
     "categories": {
       "unit": 139,
-      "integration": 14,
+      "integration": 30,
       "contracts": 8,
       "isolation": 16,
       "governance": 5
     },
-    "note": "Pass count is an input to admissibility, not a verdict (EBIV §4). The mutation probes below are what establish that these assertions can fail."
+    "note": "Pass count is an input to admissibility, not a verdict (EBIV \u00a74). The mutation probes below are what establish that these assertions can fail."
   },
   "checks": {
     "repository_validation": "PASS",
     "clean_room": "PASS",
     "evidence_anchors": "PASS",
-    "gitleaks": "PASS — no leaks across 227 commits"
+    "gitleaks": "PASS \u2014 no leaks across 227 commits"
   },
   "admissibility_self_assessment": {
     "R1_executed_not_simulated": true,
@@ -64,7 +64,7 @@
       "R4": "Cross-tenant read, cross-tenant write, unset context, unknown tenant, audit mutation, and four database constraints each carry a negative probe. Three schema mutations recorded in mutation-probes.json.",
       "R5": "With BOPEN_DATABASE_URL unset the isolation suite fails rather than skipping; verified before the database was provisioned."
     },
-    "caveat": "This is the Maker's self-assessment. Under EBIV §3 it carries no verdict weight. It is recorded so a verifier can check the claim rather than reconstruct it."
+    "caveat": "This is the Maker's self-assessment. Under EBIV \u00a73 it carries no verdict weight. It is recorded so a verifier can check the claim rather than reconstruct it."
   },
   "acceptance_criteria": {
     "A-01_isolation_enforced_by_database": "met",
@@ -72,27 +72,51 @@
     "A-03_cross_tenant_write_refused": "met",
     "A-04_force_rls_effective_against_owner": "met",
     "A-05_evidence_executed_not_simulated": "met",
-    "A-06_migration_reversible": "NOT MET — 003 was applied forward against a database already carrying 001 and 002, but the rollback script was never executed. Recorded as unmet rather than assumed.",
+    "A-06_migration_reversible": "NOT MET \u2014 003 was applied forward against a database already carrying 001 and 002, but the rollback script was never executed. Recorded as unmet rather than assumed.",
     "A-07_evidence_anchoring_machine_emitted": "met"
   },
   "roles": {
     "maker": "Claude (agent, Motor role)",
-    "eligible_verifiers": ["Codex Agent IDE", "Gemini / Antigravity"],
+    "eligible_verifiers": [
+      "Codex Agent IDE",
+      "Gemini / Antigravity"
+    ],
     "ballots_cast": 0,
     "quorum_required": 2,
     "quorum_status": "NOT MET",
-    "quorum_note": "EBIV §6.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under §3. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md."
+    "quorum_note": "EBIV \u00a76.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under \u00a73. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md."
   },
   "known_gaps": [
     "A-06 unmet: migration 003 rollback not executed.",
     "Mutation A (dropping tenant_isolation_resources) is detected, but as 13 setUp errors rather than one named assertion failure, because the seed INSERT is itself refused when RLS is enabled with no policy present. Detection holds; legibility is weaker than mutations B and C.",
     "Findings F-4 through F-7 of the Phase 3 review remain open. They are entitlement-module defects outside WP-P35-01 scope and are not addressed here.",
-    "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md §14. Pre-existing; not corrected by this work package."
+    "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing; not corrected by this work package.",
+    "Authorization: Bearer is not enforced by the HTTP surface. HTTP_HEADER_SPEC.md makes it mandatory but no issuer exists (WP-P35-03). An unverified bearer token is deliberately not accepted either.",
+    "HTTP_HEADER_SPEC.md contradicts itself: X-Tenant-ID is described as a UUID while its own example is tnt_<uuid>. Both forms are accepted and normalised; the contradiction needs a decision.",
+    "PlatformKernelService remains as a parallel in-memory path superseded by the repository-backed one. Removing it in this increment would have exceeded AGENTS.md \u00a715. Recorded as debt.",
+    "The audit write is not in the same transaction as the authorization decision. Acceptable while decisions are not persisted; a defect once they are."
   ],
   "evidence_files": [
-    "docs/evidence/phase-3.5/maker-submission.md",
+    "docs/evidence/phase-3.5/ballots.jsonl",
     "docs/evidence/phase-3.5/invariant-traceability.csv",
+    "docs/evidence/phase-3.5/maker-submission.md",
     "docs/evidence/phase-3.5/mutation-probes.json",
-    "docs/evidence/phase-3.5/ballots.jsonl"
+    "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md"
+  ],
+  "deliverables": [
+    {
+      "id": "WP-P35-01",
+      "title": "Persistence and tenant-scoped session layer",
+      "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
+      "tree_oid": "434bc7302711efd5ed01b4a133a35a48cb994986",
+      "record": "docs/evidence/phase-3.5/maker-submission.md"
+    },
+    {
+      "id": "WP-P35-02",
+      "title": "Kernel HTTP surface (Phase 1 vertical slice)",
+      "commit_oid": "a969bb59b85c1c717cf432cabd6c46fa10c5edb0",
+      "tree_oid": "93daf415759363a0a891a2e7abda652a2fb01b82",
+      "record": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md"
+    }
   ]
 }

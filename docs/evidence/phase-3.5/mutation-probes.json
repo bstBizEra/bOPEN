@@ -50,6 +50,84 @@
     "result": "OK",
     "tests": 13
   },
+  "http_layer_probes": {
+    "scope": "WP-P35-02 — the Phase 1 HTTP slice",
+    "commit_oid": "a969bb59b85c1c717cf432cabd6c46fa10c5edb0",
+    "command": "python -m unittest discover -s tests/integration -p \"test_phase1_http*.py\"",
+    "baseline": { "result": "OK", "tests": 16 },
+    "coarse_probes": [
+      {
+        "id": "MUT-D",
+        "mechanism_removed": "policy active_contexts_isolation",
+        "mutation_sql": "DROP POLICY active_contexts_isolation ON active_contexts;",
+        "suite_result": "FAILED",
+        "detected": true,
+        "legible": false,
+        "assessment": "Cascading errors. Removing the policy entirely also blocks the INSERT that establishes a context, so the suite cannot reach the assertion it was meant to test. Same limitation as MUT-A. Superseded by MUT-G, which is the probe that actually isolates the read path."
+      },
+      {
+        "id": "MUT-E",
+        "mechanism_removed": "policy audit_events_read_isolation",
+        "mutation_sql": "DROP POLICY audit_events_read_isolation ON audit_events;",
+        "suite_result": "FAILED",
+        "detected": true,
+        "legible": false,
+        "assessment": "Cascading errors for the same reason. Superseded by MUT-H."
+      },
+      {
+        "id": "MUT-F",
+        "mechanism_removed": "policy tenant_isolation_resources",
+        "mutation_sql": "DROP POLICY tenant_isolation_resources ON tenant_resources;",
+        "suite_result": "FAILED",
+        "detail": "1 error",
+        "detected": true,
+        "legible": false,
+        "assessment": "Single test affected, but as an error during resource creation rather than the cross-tenant read assertion. Superseded by MUT-I."
+      }
+    ],
+    "surgical_probes": [
+      {
+        "id": "MUT-G",
+        "mechanism_weakened": "active_contexts_isolation read scope",
+        "mutation_sql": "ALTER POLICY active_contexts_isolation ON active_contexts USING (true);",
+        "why_this_probe_is_better": "Simulates a policy that is present but written wrongly, rather than one that is absent. Writes keep working, so the suite reaches the assertion it exists to make. A 'does a policy exist' check would pass against this mutation; the test does not.",
+        "suite_result": "FAILED",
+        "detail": "1 failure",
+        "observed_message": "AssertionError: 200 != 403 — tenant A's context was accepted under tenant B's X-Tenant-ID and a full ALLOW decision was returned",
+        "detected": true,
+        "legible": true,
+        "restored": true
+      },
+      {
+        "id": "MUT-H",
+        "mechanism_weakened": "audit_events_read_isolation read scope",
+        "mutation_sql": "ALTER POLICY audit_events_read_isolation ON audit_events USING (true);",
+        "suite_result": "FAILED",
+        "detail": "1 failure",
+        "observed_message": "AssertionError: tenant A read an audit event belonging to tenant B",
+        "detected": true,
+        "legible": true,
+        "restored": true,
+        "note": "GET /v1/audit-events contains no tenant filter in its query. This probe is what establishes that the policy — and not the handler — is what scopes the result."
+      },
+      {
+        "id": "MUT-I",
+        "mechanism_weakened": "tenant_isolation_resources read scope",
+        "mutation_sql": "ALTER POLICY tenant_isolation_resources ON tenant_resources USING (true);",
+        "suite_result": "FAILED",
+        "detail": "1 failure",
+        "observed_message": "AssertionError: 200 != 404 : tenant B read a resource owned by tenant A",
+        "detected": true,
+        "legible": true,
+        "restored": true
+      }
+    ],
+    "post_restore": {
+      "command": "python tools/run_tests.py",
+      "result": "OK",
+      "tests": 198
+    }
+  },
   "supplementary_probes": [
     {
       "id": "PRIV-01",
