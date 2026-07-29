@@ -1049,8 +1049,8 @@
       "path": "docs/decisions/DEC-P3-ENTRY.md",
       "title": "DEC-P3-ENTRY \u2014 Evidence-Driven Phase 3 Entry Gate Decision Record",
       "status": "**GO ON EVIDENCE (PHASE 3 IMPLEMENTATION AUTHORIZED)**",
-      "sha256": "9a422ee1d01784a409ae1f575add5fcc173e844347975402d24691c3bcf27141",
-      "bytes": 3079
+      "sha256": "a1ee2041743ff35b8ab71475f828d91facff4eeca77abc8d6d657510db677865",
+      "bytes": 3119
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
