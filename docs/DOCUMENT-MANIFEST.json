@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 255,
+  "count": 262,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -92,6 +92,13 @@
       "status": "",
       "sha256": "1abf71a9cef7482c49d5543e077f001fc512883bc38cac6a7783aead8a495584",
       "bytes": 11845
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
+      "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
+      "status": "Open \u2014 action requested",
+      "sha256": "9ea6f06bf89e91bcb8341c797372b7166f3d9aaf20baf468fb7ab981f75800a9",
+      "bytes": 11716
     },
     {
       "path": "docs/00-governance/license-strategy.md",
@@ -610,6 +617,13 @@
       "status": "",
       "sha256": "8375eb2e135804cafe70e4c8080dffe7880dc643363bcce12d252268e5af483c",
       "bytes": 207
+    },
+    {
+      "path": "docs/07-security/secrets/BOPEN-SEC-VAULT-001.md",
+      "title": "BOPEN-SEC-VAULT-001 \u2014 Credential and Connection Registry",
+      "status": "Active",
+      "sha256": "22f26d92892900d9d37282f252c975fa0bf0c278dc7e65a76ece4bb6d39e02db",
+      "bytes": 8844
     },
     {
       "path": "docs/07-security/secrets/secrets-management.md",
@@ -1170,6 +1184,41 @@
       "status": "",
       "sha256": "51fadf412a8071286b21018cb236e5b8991565717d327f799ed2d4df73592e18",
       "bytes": 3713
+    },
+    {
+      "path": "docs/evidence/phase-3.5/ballots.jsonl",
+      "title": "",
+      "status": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
+      "title": "",
+      "status": "",
+      "sha256": "353a917c2fd95b1b3ba16d4b6bbb16e3e359a48d47a0056bdebf139750aa568e",
+      "bytes": 4591
+    },
+    {
+      "path": "docs/evidence/phase-3.5/maker-submission.md",
+      "title": "EVD-P35-01-MAKER \u2014 WP-P35-01 Maker Submission",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 this is not a completion decision",
+      "sha256": "410e91ad3db71b9a06201b032058587afa1a07821f2118060a4ab77f56b8faca",
+      "bytes": 6762
+    },
+    {
+      "path": "docs/evidence/phase-3.5/manifest.json",
+      "title": "",
+      "status": "",
+      "sha256": "82abc24086ef770d9b2699b3bf294012b7c4d3f613e891b7bb12a0087a8b9a85",
+      "bytes": 5080
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mutation-probes.json",
+      "title": "",
+      "status": "",
+      "sha256": "86cc6271bc5574dc0fdd742c4ecc8d00f987e06077b00fc6b18fb5ec18830268",
+      "bytes": 4520
     },
     {
       "path": "docs/GLOSSARY.md",
