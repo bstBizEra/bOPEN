@@ -89,27 +89,29 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
         from platform_kernel import db
 
         cls.db = db
-        cls.conn = db.connect(autocommit=False)
-
-        cls.tenant_a = str(uuid.uuid4())
-        cls.tenant_b = str(uuid.uuid4())
-        cls.principal_a = str(uuid.uuid4())
-        cls.principal_b = str(uuid.uuid4())
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.conn.close()
 
     def setUp(self):
-        """Seed two tenants inside a transaction that is discarded after each test.
+        """Seed a fresh pair of tenants for each test on its own connection.
 
-        Rolling back rather than deleting matters here: the audit table is append-only by
-        policy, so the application role cannot delete from it. A cleanup path that needed
-        DELETE would have to weaken the very policy under test.
+        Each test gets its own tenant and principal identifiers rather than sharing
+        class-level ones, and its own connection rather than nesting transactions inside a
+        shared outer one. The nested-transaction approach failed for a reason worth
+        recording: when an assertion fired inside the outer context, cleanup raised
+        `Explicit rollback() forbidden within a Transaction context` and every subsequent
+        test errored with that instead of its own message. A suite whose real failure is
+        buried under harness noise violates the same legibility rule (EBIV R5) that this
+        file exists to enforce.
+
+        Rows are therefore left committed in the verification database. That is acceptable
+        because the instance is disposable and every identifier is unique per test, and it
+        avoids a cleanup path that would need DELETE on the append-only audit table — which
+        would mean weakening the very policy under test.
         """
-        self.conn.rollback()
-        self.outer = self.conn.transaction(force_rollback=True)
-        self.outer.__enter__()
+        self.conn = self.db.connect(autocommit=True)
+        self.tenant_a = str(uuid.uuid4())
+        self.tenant_b = str(uuid.uuid4())
+        self.principal_a = str(uuid.uuid4())
+        self.principal_b = str(uuid.uuid4())
 
         with self.db.system_session(connection=self.conn) as cur:
             for tenant_id, name in (
@@ -138,7 +140,7 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
                 )
 
     def tearDown(self):
-        self.outer.__exit__(None, None, None)
+        self.conn.close()
 
     # -- A-01 ---------------------------------------------------------------------
 
@@ -198,10 +200,15 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
         """
         import psycopg
 
+        # A WITH CHECK violation surfaces as InsufficientPrivilege (SQLSTATE 42501), not
+        # CheckViolation (23514). The distinction is worth asserting precisely: 23514 would
+        # mean an ordinary CHECK constraint refused the row, which is a different guarantee
+        # and would leave the isolation policy untested. Catching a broad DatabaseError here
+        # would let a typo in the statement pass as if isolation had held.
         with self.assertRaises(
-            psycopg.errors.CheckViolation,
+            psycopg.errors.InsufficientPrivilege,
             msg="tenant A was allowed to insert a row owned by tenant B",
-        ):
+        ) as caught:
             with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
                 cur.execute(
                     "INSERT INTO active_contexts "
@@ -209,6 +216,12 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
                     "VALUES (%s, %s, %s, %s, now() + interval '1 hour')",
                     (self.tenant_b, self.principal_b, str(uuid.uuid4()), "corr-probe"),
                 )
+
+        self.assertIn(
+            "row-level security",
+            str(caught.exception).lower(),
+            "the write was refused, but not by the row-level security policy",
+        )
 
     def test_cross_tenant_update_cannot_reach_foreign_rows(self):
         """A-03. UPDATE is constrained by the same visibility rule as SELECT."""
