@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/entitlement-reason-codes.json",
+  "title": "EntitlementReasonCode",
+  "version": "1.0.0",
+  "type": "string",
+  "enum": [
+    "ENTITLEMENT_ALLOWED",
+    "DENY_INVALID_CONTEXT",
+    "DENY_UNSUPPORTED_CAPABILITY",
+    "DENY_NOT_ENTITLED",
+    "DENY_FEATURE_DISABLED",
+    "DENY_QUOTA_EXCEEDED",
+    "DENY_RATE_LIMIT_EXCEEDED"
+  ],
+  "x-bopen-http-status-map": {
+    "ENTITLEMENT_ALLOWED": 200,
+    "DENY_INVALID_CONTEXT": 403,
+    "DENY_UNSUPPORTED_CAPABILITY": 403,
+    "DENY_NOT_ENTITLED": 403,
+    "DENY_FEATURE_DISABLED": 403,
+    "DENY_QUOTA_EXCEEDED": 429,
+    "DENY_RATE_LIMIT_EXCEEDED": 429
+  }
+}

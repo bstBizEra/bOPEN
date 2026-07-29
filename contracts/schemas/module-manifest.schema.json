@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/module-manifest.json",
+  "title": "ModuleManifest",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "module_id",
+    "name",
+    "version",
+    "min_platform_version",
+    "capabilities",
+    "resources"
+  ],
+  "properties": {
+    "module_id": {
+      "type": "string",
+      "pattern": "^mod_[a-z0-9_]+$",
+      "description": "Unique module identifier."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable module name."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version string."
+    },
+    "min_platform_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Minimum bOPEN kernel platform version required."
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^cap_[a-z0-9_]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Declared capability IDs exported by this module."
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^res_[a-z0-9_]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Declared resource types owned by this module."
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module_id", "version_constraint"],
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "pattern": "^mod_[a-z0-9_]+$"
+          },
+          "version_constraint": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true,
+      "description": "Prerequisite module dependencies."
+    }
+  },
+  "additionalProperties": false
+}

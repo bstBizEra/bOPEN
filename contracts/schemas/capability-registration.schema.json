@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/capability-registration.json",
+  "title": "CapabilityRegistration",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "capability_id",
+    "module_id",
+    "resource_type",
+    "action",
+    "registered_at",
+    "status"
+  ],
+  "properties": {
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_[a-z0-9_]+$"
+    },
+    "module_id": {
+      "type": "string",
+      "pattern": "^mod_[a-z0-9_]+$"
+    },
+    "resource_type": {
+      "type": "string",
+      "pattern": "^res_[a-z0-9_]+$"
+    },
+    "action": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["registered", "validated", "approved", "available", "deprecated", "revoked"]
+    }
+  },
+  "additionalProperties": false
+}

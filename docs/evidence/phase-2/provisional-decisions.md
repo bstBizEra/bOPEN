@@ -33,8 +33,8 @@ token/security profile, test matrix, baseline and authority scope are frozen.
 | Maker, checker, security reviewer, completion authority named | **Not named** |
 | `BOPEN-IDP-001` canonical and approved for Phase 2 | ✅ Satisfied (WP-P2-01 complete) |
 | `membership-transition.json` schema and version approved | ⚠️ See §3 deviation |
-| `ADR-P2-001`..`ADR-P2-010` resolved | **Not resolved** |
-| `D-P2-001`..`D-P2-015` resolved or classified | **All OPEN** — see §2 |
+| `ADR-P2-001`..`ADR-P2-010` resolved | **Content authored 2026-07-29** as `ADR-0010`..`ADR-0019`, all **Proposed**. Unratified — see [`DEC-P2-DOCKET`](../../decisions/DEC-P2-DOCKET.md) |
+| `D-P2-001`..`D-P2-015` resolved or classified | **Resolutions proposed 2026-07-29**, unratified — see docket §3. 13 of 15 ratify at zero code cost; 3 carry deltas |
 | Token and key-management contract approved | **Not approved** — see §4 |
 | Broker version and dependency lock frozen | **Not frozen** (no broker dependency added) |
 | Acceptance matrix and evidence plan reviewed | Not recorded |
@@ -56,6 +56,12 @@ change. Nothing here should be read as an approved decision.
 
 Each value below is the plan's **own §21 recommended default**. No alternative
 architecture was invented.
+
+> **Update 2026-07-29.** Reasoned resolutions for all fifteen decisions and all ten ADRs
+> have since been authored — see [`DEC-P2-DOCKET`](../../decisions/DEC-P2-DOCKET.md) and
+> `docs/adr/ADR-0010.md`..`ADR-0019.md`. They remain **Proposed**; the table below still
+> describes what the code actually does. Where a proposed resolution differs from the
+> implemented default (D-P2-002, D-P2-007, D-P2-015) the docket §4 records the delta.
 
 | ID | Decision | Value implemented | Where |
 |---|---|---|---|

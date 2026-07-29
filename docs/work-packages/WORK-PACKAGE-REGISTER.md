@@ -14,5 +14,6 @@
 | BOOT-P0-10 | Normative architecture queue | Proposed | Initiate REQ/ARCH/TENANT/AUTHZ/ENT/MOD/PARTY/SEC drafts. |
 | BOOT-P0-11 | First vertical-slice specification | Proposed | Specify principal -> tenant -> owner membership -> context -> authorization -> audit. |
 | BOOT-P0-12 | Bootstrap exit gate | Proposed | Review B0–B7 and approve next execution phase. |
-| [BOPEN-P1-001](BOPEN-P1-001-EXECUTION-PLAN.md) | Platform Kernel Vertical Slice execution plan | Proposed / ready for review | Deliver principal -> tenant -> owner membership -> context -> authorization -> audit. |
-| [BOPEN-P2-001](BOPEN-P2-001-EXECUTION-PLAN.md) | Membership & Enterprise Onboarding execution plan (`MILE-2.1`..`MILE-2.5`) | **Approved for contract freeze; implementation hold until entry gate** | Deliver invitation engine, membership state machine, tenant context switching, enterprise IdP/SCIM sync and delegated cross-tenant access. |
+| [BOPEN-P1-001](BOPEN-P1-001-EXECUTION-PLAN.md) | Platform Kernel Vertical Slice execution plan | **Completed & Verified** | Deliver principal -> tenant -> owner membership -> context -> authorization -> audit. |
+| [BOPEN-P2-001](BOPEN-P2-001-EXECUTION-PLAN.md) | Membership & Enterprise Onboarding execution plan (`MILE-2.1`..`MILE-2.5`) | **Completed & Verified** | Deliver invitation engine, membership state machine, tenant context switching, enterprise IdP/SCIM sync and delegated cross-tenant access. |
+| [BOPEN-P3-001](BOPEN-P3-001-EXECUTION-PLAN.md) | Capability and commercial entitlement kernel execution plan (`WP-P3-00`..`WP-P3-07`) | **Approved (GO ON EVIDENCE)** | Govern capability registration, entitlement decisions, usage metering, rate limiting, RLS, and evidence execution. |

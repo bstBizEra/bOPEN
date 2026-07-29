@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/rate-limit-decision.json",
+  "title": "RateLimitDecision",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "tenant_id",
+    "capability_id",
+    "correlation_id",
+    "reason_code",
+    "status_code",
+    "allowed",
+    "current_rate",
+    "limit_rate",
+    "reset_in_seconds",
+    "evaluated_at"
+  ],
+  "properties": {
+    "decision_id": { "type": "string" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_[a-z0-9_]+$"
+    },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "reason_code": {
+      "type": "string",
+      "enum": ["ENTITLEMENT_ALLOWED", "DENY_RATE_LIMIT_EXCEEDED"]
+    },
+    "status_code": { "type": "integer", "enum": [200, 429] },
+    "allowed": { "type": "boolean" },
+    "current_rate": { "type": "integer", "minimum": 0 },
+    "limit_rate": { "type": "integer", "minimum": 1 },
+    "reset_in_seconds": { "type": "integer", "minimum": 0 },
+    "evaluated_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

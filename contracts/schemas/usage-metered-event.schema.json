@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/usage-metered-event.json",
+  "title": "UsageMeteredEvent",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "event_id",
+    "tenant_id",
+    "principal_id",
+    "context_id",
+    "capability_id",
+    "quantity",
+    "unit",
+    "timestamp",
+    "correlation_id",
+    "idempotency_key"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "principal_id": { "type": "string", "minLength": 1 },
+    "context_id": { "type": "string", "minLength": 1 },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_[a-z0-9_]+$"
+    },
+    "quantity": { "type": "integer", "minimum": 1 },
+    "unit": { "type": "string", "enum": ["requests", "bytes", "seats", "seconds"] },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "idempotency_key": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

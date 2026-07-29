@@ -279,6 +279,8 @@ or production authority.
 | Skill | Entrypoint | Status | Operating boundary |
 | --- | --- | --- | --- |
 | `git-provenance-audit` | `.agents/skills/git-provenance-audit/SKILL.md` | Installed | Read-only provenance assurance; it does not mutate Git or forge state and cannot create authority. |
+| `bopen-authority` | `.agents/skills/bopen-authority/SKILL.md` | Installed | Governance, contract freeze, evidence-driven gate realization, and multi-agent authority verification. |
+
 
 ## 19. Multi-LLM and multi-agent execution guidelines
 
@@ -293,3 +295,5 @@ This repository supports collaborative execution across multiple AI models and a
    - **Kimi / DeepSeek**: Long-context research, upstream source inspection, and documentation synthesis.
 4. **Mandatory validation engine**: Every agent—regardless of engine or harness—must run `python tools/validate_repository.py` and `python tools/check_clean_room.py` before marking any work package as complete.
 5. **No verification deadlocks**: Agents shall not invent self-referential gate assertions or refuse valid transitions over unverified metadata assumptions. If a gate check fails, the agent must fix the underlying logic or log an explicit decision request.
+6. **Evidence-Driven Gate Realization**: Gate authorization, work-package entry, and phase progression shall be realized directly through empirical technical evidence (100% passing automated test suites, contract schema validation, repository validation tools, clean-room checks, and evidence packages), rather than requiring manual human sign-off receipts or external human quorum assertions.
+

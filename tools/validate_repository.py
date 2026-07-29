@@ -9,11 +9,17 @@ required=[
 'AGENTS.md','BOPEN-BOOT-001.md','README.md','CONTRIBUTING.md','SECURITY.md','GOVERNANCE.md',
 'docs/README.md','docs/DOCUMENT-STATUS.md','docs/DOCUMENT-COVERAGE.md','docs/GLOSSARY.md','docs/TRACEABILITY-MATRIX.md',
 'apps/AGENTS.md','services/AGENTS.md','packages/AGENTS.md','contracts/AGENTS.md','infrastructure/AGENTS.md','tests/AGENTS.md','research/AGENTS.md','docs/AGENTS.md',
-'docs/02-requirements/BOPEN-REQ-001-DRAFT.md','docs/03-architecture/BOPEN-ARCH-001-DRAFT.md',
-'docs/04-platform/BOPEN-TENANT-001-DRAFT.md','docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md',
-'docs/04-platform/BOPEN-ENT-001-DRAFT.md','docs/04-platform/BOPEN-MOD-001-DRAFT.md','docs/07-security/BOPEN-SEC-001-DRAFT.md']
+'docs/07-security/BOPEN-SEC-001-DRAFT.md']
+
 for rel in required:
     if not (ROOT/rel).exists(): errors.append(f'MISSING: {rel}')
+
+# Check for approved or draft specs for core specifications
+for spec_name in ['BOPEN-REQ-001', 'BOPEN-ARCH-001', 'BOPEN-TENANT-001', 'BOPEN-AUTHZ-001', 'BOPEN-ENT-001', 'BOPEN-MOD-001']:
+    has_appr = (ROOT/f'docs/02-requirements/{spec_name}.md').exists() or (ROOT/f'docs/03-architecture/{spec_name}.md').exists() or (ROOT/f'docs/04-platform/{spec_name}.md').exists()
+    has_draft = (ROOT/f'docs/02-requirements/{spec_name}-DRAFT.md').exists() or (ROOT/f'docs/03-architecture/{spec_name}-DRAFT.md').exists() or (ROOT/f'docs/04-platform/{spec_name}-DRAFT.md').exists()
+    if not (has_appr or has_draft):
+        errors.append(f'MISSING SPEC: {spec_name}')
 
 root_agents=(ROOT/'AGENTS.md').read_text(encoding='utf-8') if (ROOT/'AGENTS.md').exists() else ''
 for phrase in ['Clean-room controls','Architectural invariants','Stop conditions','Tenant data safety']:
@@ -42,4 +48,4 @@ if errors:
     for e in errors: print('-',e)
     sys.exit(1)
 print('bOPEN repository validation: PASS')
-print(f'Checked {len(required)} mandatory paths and governance invariants.')
+print(f'Checked mandatory paths and governance invariants.')

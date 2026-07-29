@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/entitlement-decision.json",
+  "title": "EntitlementDecision",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "context_id",
+    "principal_id",
+    "tenant_id",
+    "capability_id",
+    "decision",
+    "reason_code",
+    "evaluated_at",
+    "correlation_id"
+  ],
+  "properties": {
+    "decision_id": { "type": "string", "minLength": 1 },
+    "context_id": { "type": "string", "minLength": 1 },
+    "principal_id": { "type": "string", "minLength": 1 },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_[a-z0-9_]+$"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "DENY", "THROTTLED"]
+    },
+    "reason_code": {
+      "type": "string",
+      "enum": [
+        "ENTITLEMENT_ALLOWED",
+        "DENY_INVALID_CONTEXT",
+        "DENY_UNSUPPORTED_CAPABILITY",
+        "DENY_NOT_ENTITLED",
+        "DENY_FEATURE_DISABLED",
+        "DENY_QUOTA_EXCEEDED",
+        "DENY_RATE_LIMIT_EXCEEDED"
+      ]
+    },
+    "evaluated_at": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string" },
+    "requested_quantity": { "type": "integer", "minimum": 1 },
+    "remaining_quota": { "type": "integer", "minimum": 0 },
+    "quota_window": { "type": "string", "enum": ["daily", "monthly"] }
+  },
+  "additionalProperties": false
+}

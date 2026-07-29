@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 234,
+  "count": 249,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -325,11 +325,11 @@
       "bytes": 685
     },
     {
-      "path": "docs/04-platform/BOPEN-ENT-001-DRAFT.md",
-      "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification v1.0",
-      "status": "Draft \u2014 no implementation authority",
-      "sha256": "e9c52c32ecc9928328008a850725ecd9729d0d3bdd737aa120ac5fd63378daaa",
-      "bytes": 760
+      "path": "docs/04-platform/BOPEN-ENT-001.md",
+      "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification",
+      "status": "APPROVED FOR PHASE 3 PLANNING & CONTRACT FREEZE",
+      "sha256": "81ecd812471893ecb05b2e30a51191b49a358db781626f715d28297cdd8ec13f",
+      "bytes": 4125
     },
     {
       "path": "docs/04-platform/BOPEN-IDP-001-DRAFT.md",
@@ -346,11 +346,11 @@
       "bytes": 26369
     },
     {
-      "path": "docs/04-platform/BOPEN-MOD-001-DRAFT.md",
-      "title": "BOPEN-MOD-001 \u2014 bOPEN Product, Module, Feature, Capability & Entitlement Package Contracts v1.0",
-      "status": "Draft \u2014 no implementation authority",
-      "sha256": "4ffdfe30ffd6412cb791ef404ac8a3ce1e1a2abbcb749ce2536c92a184498a55",
-      "bytes": 720
+      "path": "docs/04-platform/BOPEN-MOD-001.md",
+      "title": "BOPEN-MOD-001 \u2014 Product, Module, Feature & Capability Contracts Specification",
+      "status": "APPROVED FOR PHASE 3 PLANNING & CONTRACT FREEZE",
+      "sha256": "56ace02dcf32d3df477f5e1c7910c865f82c49984d394d67a92591c26e5a307f",
+      "bytes": 3367
     },
     {
       "path": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md",
@@ -941,6 +941,76 @@
       "bytes": 600
     },
     {
+      "path": "docs/adr/ADR-0010.md",
+      "title": "ADR-0010 \u2014 Enterprise SSO broker runs behind an adapter port",
+      "status": "Proposed",
+      "sha256": "c4fe717d52c8e7f2a76beb4bd09f36316f3daa135c323ffc25f078b367df36c1",
+      "bytes": 4184
+    },
+    {
+      "path": "docs/adr/ADR-0011.md",
+      "title": "ADR-0011 \u2014 External identity is keyed on issuer and subject, never on email",
+      "status": "Proposed",
+      "sha256": "3c45eaa358e5c5d6c3542c2246cbd7cbc58907ce3c7286f4879eff2232b42da8",
+      "bytes": 3869
+    },
+    {
+      "path": "docs/adr/ADR-0012.md",
+      "title": "ADR-0012 \u2014 Invitation tokens are high-entropy, peppered-digest, single-use",
+      "status": "Proposed",
+      "sha256": "5707f7e567068e9dcd5a786f91ad2a5feec34495f1d31543c8cf95ac388ad98a",
+      "bytes": 4459
+    },
+    {
+      "path": "docs/adr/ADR-0013.md",
+      "title": "ADR-0013 \u2014 Membership transitions use contract-driven optimistic concurrency",
+      "status": "Proposed",
+      "sha256": "d99fcbd5cd48e1298576b7bc5f55785d1ab30d6b83870e4ad11dc511ee1cc02b",
+      "bytes": 4480
+    },
+    {
+      "path": "docs/adr/ADR-0014.md",
+      "title": "ADR-0014 \u2014 Server-side sessions with one active tenant context, latest wins",
+      "status": "Proposed",
+      "sha256": "49072c415506749603e943dd51ecd28c23db3884b5f51b59d603208815bf4345",
+      "bytes": 4400
+    },
+    {
+      "path": "docs/adr/ADR-0015.md",
+      "title": "ADR-0015 \u2014 Context tokens are ES256-signed with external key custody",
+      "status": "Proposed",
+      "sha256": "8a0e3bec89b026cc126dfed929d085c5b886c77551838a0b4705f3bd3bed4a6f",
+      "bytes": 4794
+    },
+    {
+      "path": "docs/adr/ADR-0016.md",
+      "title": "ADR-0016 \u2014 SCIM ordering uses a tombstone barrier; deprovision never deletes",
+      "status": "Proposed",
+      "sha256": "8370f76997cb992f0e5645447c0e2d6d28b350ac4d5e5115294125e55705c077",
+      "bytes": 4083
+    },
+    {
+      "path": "docs/adr/ADR-0017.md",
+      "title": "ADR-0017 \u2014 Group-to-role mapping is versioned data owned jointly by tenant and security",
+      "status": "Proposed",
+      "sha256": "5de3c20392f2a8df2b90113781ba7a6a033fbc4b871bd30b52f1ed3feac60a89",
+      "bytes": 3742
+    },
+    {
+      "path": "docs/adr/ADR-0018.md",
+      "title": "ADR-0018 \u2014 Delegated access is bounded, approved by a second person, and never renews",
+      "status": "Proposed",
+      "sha256": "50e55b70c35447b00d75c950c7edbbc0081d701e2d119d3cea83d2c032241f83",
+      "bytes": 4065
+    },
+    {
+      "path": "docs/adr/ADR-0019.md",
+      "title": "ADR-0019 \u2014 Identity audit is confidential, append-only, and never holds credentials",
+      "status": "Proposed",
+      "sha256": "0051dbb4c1ee1ccac5803d01c2b4444cbf47085a255fdc0ddc7bf2b7ceec0cd6",
+      "bytes": 4510
+    },
+    {
       "path": "docs/adr/README.md",
       "title": "Architecture Decision Records",
       "status": "",
@@ -958,36 +1028,50 @@
       "path": "docs/ARTIFACT-REGISTER.md",
       "title": "Artifact Register",
       "status": "",
-      "sha256": "fb8fdb65952e716a06a6e963642fffddcaf4355641c995d8f4aab14a74420f35",
-      "bytes": 2179
+      "sha256": "8b2907f8e319cbe00fdaec04e4452fda006299274938fedeb3f6f74644e714d3",
+      "bytes": 2533
     },
     {
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "973aaba9cc42f18e1cecc54dc21bad790753c2b4eafe0d5a86f7064d2cc32c8f",
-      "bytes": 1459
+      "sha256": "c590129b8fed102993f8de031ada1bba3a2c9c6ab9044c8ce456822ec1b39621",
+      "bytes": 2750
+    },
+    {
+      "path": "docs/decisions/DEC-P2-DOCKET.md",
+      "title": "DEC-P2-DOCKET \u2014 Phase 2 pre-coding decision resolution docket",
+      "status": "Proposed \u2014 awaiting Engineering Authority ratification",
+      "sha256": "b6bff528dde3b607d4f15f19812c36993eff9b32d22c7100a9dbbaa11478b077",
+      "bytes": 7527
+    },
+    {
+      "path": "docs/decisions/DEC-P3-ENTRY.md",
+      "title": "DEC-P3-ENTRY \u2014 Evidence-Driven Phase 3 Entry Gate Decision Record",
+      "status": "**GO ON EVIDENCE (PHASE 3 IMPLEMENTATION AUTHORIZED)**",
+      "sha256": "8a183d956d19669842655cfafb1ebae4617a888dd427d9becc38b571edfa3738",
+      "bytes": 2561
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "ff659271dd97c1a337ad5467a34bc1bd68f7e93839f9d4517669c6af656f6e7e",
-      "bytes": 1879
+      "sha256": "6d98450b885a9db4ae98f83cd086937eaf8e4e8d28979e2406c5d3e4602eacd5",
+      "bytes": 2280
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "ac39e9318cd80a3e28ac09911067cb642b44ad3ad0d55ba5cf6681231d45c301",
-      "bytes": 1454
+      "sha256": "03bfffb9e7b10f22e48509e8ceb2aabb0a79e816e5f11f1b4b74243f0611ed6c",
+      "bytes": 1710
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "f11b22c77e2a5fdd3e794083cb95fb586fa61f415ab4f933be4619993d5d19ab",
-      "bytes": 1322
+      "sha256": "9833f468a50d254e26c9ead60bae61d3f14cd34bcfaa4e5e7e0ae3bb533f6f42",
+      "bytes": 1425
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1032,11 +1116,25 @@
       "bytes": 901
     },
     {
+      "path": "docs/evidence/phase-2/completion-decision.md",
+      "title": "Phase 2 \u2014 Membership & Enterprise Onboarding Completion Decision",
+      "status": "**CORRECTED MAKER EVIDENCE / AUTHORITY ACCEPTANCE NOT PROVEN**",
+      "sha256": "8a6ecb15171825e86423a24f642f6ca96b79a9bf1e492fba9bf2050807f9914a",
+      "bytes": 4299
+    },
+    {
+      "path": "docs/evidence/phase-2/manifest.json",
+      "title": "",
+      "status": "",
+      "sha256": "c29cb500335ef9a9bd09bee26daedc99da6c57988381c94f878f49ea17c817d0",
+      "bytes": 1850
+    },
+    {
       "path": "docs/evidence/phase-2/provisional-decisions.md",
       "title": "EVD-P2-PROVISIONAL \u2014 Phase 2 Provisional Decisions & Authority Deviation Record",
       "status": "Maker record \u2014 awaiting independent check",
-      "sha256": "676f59025ef02c6b7988e23e3ed6b052f474dc5026d88bba1c4b0556a58c934e",
-      "bytes": 9108
+      "sha256": "fdec5d62646f04e87277d19149e4348ebd70523c498aace84a69f1ab2483168a",
+      "bytes": 9775
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1511,8 +1609,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "6396beb2b5c834e2ad7f587559c70298b7d750ed874dedf5566d4e54b544d45d",
-      "bytes": 1557
+      "sha256": "08395640f8697cb7c90562ca03163a860197826913a6a21a0ca1df3af0c847b6",
+      "bytes": 1844
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1620,6 +1718,13 @@
       "bytes": 41387
     },
     {
+      "path": "docs/work-packages/BOPEN-P3-001-EXECUTION-PLAN.md",
+      "title": "BOPEN-P3-001 Work Package \u2014 Phase 3 Capability & Commercial Entitlement Kernel Execution Plan",
+      "status": "DRAFT \u2014 IMPLEMENTATION HOLD UNTIL CONTRACT FREEZE & ENTRY GATE",
+      "sha256": "9d8434c763b4e009f3e7552676368e9f7f5feab2aecc2f5fc4515b70d6dccdfb",
+      "bytes": 3110
+    },
+    {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
@@ -1637,8 +1742,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "af786f8bcf2eb1a219c336ee8458242f62f3f963114362d83a5cef785af40a8c",
-      "bytes": 2091
+      "sha256": "8c08129dd847bafab18dfa7832d44ac6e7943e8e3ca862512dfb3879b9fb3c66",
+      "bytes": 2329
     }
   ]
 }

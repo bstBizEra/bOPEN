@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/v1/quota-reservation.json",
+  "title": "QuotaReservation",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "reservation_id",
+    "tenant_id",
+    "capability_id",
+    "reserved_quantity",
+    "quota_window",
+    "window_starts_at",
+    "window_ends_at",
+    "expires_at",
+    "status",
+    "correlation_id",
+    "idempotency_key"
+  ],
+  "properties": {
+    "reservation_id": { "type": "string" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "capability_id": {
+      "type": "string",
+      "pattern": "^cap_[a-z0-9_]+$"
+    },
+    "reserved_quantity": { "type": "integer", "minimum": 1 },
+    "quota_window": { "type": "string", "enum": ["daily", "monthly"] },
+    "window_starts_at": { "type": "string", "format": "date-time" },
+    "window_ends_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["pending", "committed", "released", "expired"] },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "idempotency_key": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

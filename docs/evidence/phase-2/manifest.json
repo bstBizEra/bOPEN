@@ -1,0 +1,57 @@
+{
+  "phase": "Phase 2 — Membership & Enterprise Onboarding",
+  "version": "1.0.1",
+  "status": "MAKER_VERIFIED_AUTHORITY_PENDING",
+  "issued": "2026-07-29",
+  "corrected_at_utc": "2026-07-29T06:57:43Z",
+  "work_package_id": "BOPEN-P2-001",
+  "normative_spec": "BOPEN-IDP-001",
+  "baseline": {
+    "repository": "C:\\laragon\\www\\bopen",
+    "target_branch": "claude/BOPEN-P2-001-membership-onboarding",
+    "base_commit": "e65baf1dcfd84a101513719594dccf34bf8eacbc",
+    "base_tree": "9aad32031278f9a0a0beba01b57442ed0b6016b8",
+    "candidate_binding": "UNCOMMITTED_WORKTREE"
+  },
+  "test_results": {
+    "command": "python tools/run_tests.py",
+    "total": 151,
+    "passed": 151,
+    "failed": 0,
+    "categories": {
+      "unit": 124,
+      "integration": 11,
+      "contracts": 8,
+      "isolation": 3,
+      "governance": 5
+    }
+  },
+  "authority": {
+    "status": "NOT_PROVEN",
+    "maker": "Platform Kernel Engineering Team",
+    "technical_verifier": "Codex",
+    "independent_checker": null,
+    "security_reviewer": null,
+    "completion_authority": null,
+    "production_authority": false,
+    "phase3_implementation_authority": false
+  },
+  "open_conditions": [
+    "D-P2-002",
+    "D-P2-007",
+    "D-P2-015",
+    "DEC-0009",
+    "ADR-0010..ADR-0019"
+  ],
+  "evidence_files": [
+    "docs/evidence/phase-2/completion-decision.md",
+    "docs/evidence/phase-2/provisional-decisions.md"
+  ],
+  "correction": {
+    "agent_id": "Codex",
+    "source": "Direct repository inspection and deterministic local verification",
+    "reason": "Correct unsupported authority and checker claims, outbox evidence, and canonical test totals",
+    "benefit_of_old_phase": "Collected intended roles, risks, and verification commands",
+    "expected_outcome": "Preserve usable technical evidence without creating approval or implementation authority"
+  }
+}

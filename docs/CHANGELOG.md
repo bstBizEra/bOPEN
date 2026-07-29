@@ -1,5 +1,23 @@
 # Documentation Changelog
 
+## 2026-07-29 — Evidence and Phase 3 contract-control repair
+
+- Corrected `EVD-P2-DECISION-001` from an unsupported conditional-acceptance claim to
+  maker-side technical evidence with independent, security, and completion authority pending.
+- Corrected `D-P2-015`: migration `001_tenant_isolation_baseline.sql` contains no durable
+  transactional outbox.
+- Repaired `tools/run_tests.py` so contracts are mandatory and category totals are reported.
+- Added six Phase 3 schema-control tests and tightened the seven Phase 3 schemas for lifecycle,
+  context, idempotency, quota, reason-code, and rate-limit consistency.
+- Aligned artifact, coverage, status, traceability, and work-package registers with the
+  Phase 3 implementation hold. No Phase 3 production source or migration was created.
+- **Source:** Direct repository inspection and deterministic local verification.
+  **Timestamp:** `2026-07-29T06:57:43Z`. **Agent ID:** `Codex`.
+- **Reason:** Repair evidence-integrity and contract-test gaps before any Phase 3 entry gate.
+  **Benefit of old phase:** Earlier artifacts collected the intended milestones, roles, and
+  risks. **Expected outcome:** Verifiable contract-freeze evidence that cannot be mistaken for
+  approval, production authority, or Phase 3 implementation authority.
+
 ## 2026-07-29 — Phase 2 entry and implementation
 
 - Bound `BOPEN-IDP-001` (Approved for Phase 2) into `docs/04-platform/`; marked

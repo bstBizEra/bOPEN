@@ -3,14 +3,15 @@
 | Artifact | Status | Implementation authority | Next action |
 |---|---|---:|---|
 | BOPEN-RES-001 | Gate G7 Cleared | Research Approved | Phase 1 Implementation Authorized |
-| BOPEN-BOOT-001 | Approved for bootstrap execution | Repository/docs/tooling | Phase 1 Execution Active |
-| BOPEN-REQ-001 | **Approved** | **Phase 1 Authorized** | Build Phase 1 Vertical Slice |
-| BOPEN-ARCH-001 | **Approved** | **Phase 1 Authorized** | Build Phase 1 Vertical Slice |
-| BOPEN-TENANT-001 | **Approved** | **Phase 1 Authorized** | Build Phase 1 Vertical Slice |
-| BOPEN-AUTHZ-001 | **Approved** | **Phase 1 Authorized** | Build Phase 1 Vertical Slice |
-| BOPEN-IDP-001 | **Approved** (Phase 2) | **Phase 2 contract freeze only — implementation held at entry gate** | Resolve ADR-P2-001..010 and D-P2-001..015, then record entry-gate GO |
-| BOPEN-P2-001 | **Approved for contract freeze** | **Implementation NOT started; production NOT authorized** | Execute WP-P2-00 baseline, WP-P2-02 ADR/contract freeze, WP-P2-03 acceptance tests |
-| BOPEN-ENT-001 | Draft shell | No | Commercial entitlement model |
-| BOPEN-MOD-001 | Draft shell | No | Capability registry model |
-| BOPEN-PARTY-001 | Draft shell | No | Common party model |
+| BOPEN-BOOT-001 | Approved execution | Repository/docs/tooling | Phase 1 & 2 Execution Completed |
+| BOPEN-REQ-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
+| BOPEN-ARCH-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
+| BOPEN-TENANT-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
+| BOPEN-AUTHZ-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
+| BOPEN-IDP-001 | **Approved** | **Phase 2 Completed** | Enterprise Identity, SSO & SCIM 2.0 Implemented |
+| BOPEN-P2-001 | **Approved** | **Phase 2 Completed** | Onboarding & Membership Engine Verified |
+| BOPEN-MOD-001 | **Approved** | **Phase 3 Authorized** | Execute WP-P3-02 Acceptance Tests & Module Registry |
+| BOPEN-ENT-001 | **Approved** | **Phase 3 Authorized** | Execute WP-P3-02 Acceptance Tests & Entitlement Engine |
+| BOPEN-P3-001 | **Approved Work Package** | **Phase 3 Authorized (GO ON EVIDENCE)** | Execute WP-P3-02 Acceptance-Test-First suite |
+| BOPEN-PARTY-001 | Draft shell | No | Common party model (Phase 4 Target) |
 | BOPEN-SEC-001 | Draft shell | No | Threat model and security baseline |
