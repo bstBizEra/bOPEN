@@ -1140,8 +1140,8 @@
       "path": "docs/evidence/phase-3/completion-decision.md",
       "title": "Phase 3 \u2014 Capability & Commercial Entitlement Kernel Completion Decision",
       "status": "**TECHNICAL VERIFICATION COMPLETED (GO ON EVIDENCE)**",
-      "sha256": "3d34f1799491be3834e54f29c458ac6ca0e2c11ec6c29999177304cd244bfaf8",
-      "bytes": 2142
+      "sha256": "a3847557d49e72ea41b8b4aca509dab58b880d2519ab9b9ee84255029eca5f92",
+      "bytes": 2971
     },
     {
       "path": "docs/evidence/phase-3/entry-gate-receipt.json",
@@ -1154,8 +1154,8 @@
       "path": "docs/evidence/phase-3/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "0d810fc869d23e63c14e69349d469ececc58526f802a0bbb6bbd7c0c03c9e488",
-      "bytes": 828
+      "sha256": "561d1083b0d8ae4c5e95e31b6eb287f6ead8b8f9efec70101369077ff6dfa279",
+      "bytes": 898
     },
     {
       "path": "docs/GLOSSARY.md",

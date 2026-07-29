@@ -2,18 +2,19 @@
   "phase": "Phase 3 — Capability & Commercial Entitlement Kernel",
   "status": "COMPLETED_ON_EVIDENCE",
   "issued": "2026-07-29",
+  "candidate_commit_oid": "f59bbd289196b02a2818967b2d5a32b0728c306d",
   "work_package_id": "BOPEN-P3-001",
   "normative_specs": [
     "BOPEN-MOD-001",
     "BOPEN-ENT-001"
   ],
   "test_results": {
-    "total": 162,
-    "passed": 162,
+    "total": 169,
+    "passed": 169,
     "failed": 0,
     "categories": {
-      "unit": 134,
-      "integration": 12,
+      "unit": 139,
+      "integration": 14,
       "contracts": 8,
       "isolation": 3,
       "governance": 5
