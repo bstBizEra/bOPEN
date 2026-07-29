@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 262,
+  "count": 263,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -97,8 +97,8 @@
       "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
       "status": "Open \u2014 action requested",
-      "sha256": "9ea6f06bf89e91bcb8341c797372b7166f3d9aaf20baf468fb7ab981f75800a9",
-      "bytes": 11716
+      "sha256": "35b5d956cfb0444a0a38a886dff30db80b44f05db06cd7dc868a7fa4fc19abc5",
+      "bytes": 14849
     },
     {
       "path": "docs/00-governance/license-strategy.md",
@@ -1196,8 +1196,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "353a917c2fd95b1b3ba16d4b6bbb16e3e359a48d47a0056bdebf139750aa568e",
-      "bytes": 4591
+      "sha256": "17a116337f72aa7360194159c453631670a051129538a4a2dfc0e09e7e64d66d",
+      "bytes": 7080
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1210,15 +1210,22 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "82abc24086ef770d9b2699b3bf294012b7c4d3f613e891b7bb12a0087a8b9a85",
-      "bytes": 5080
+      "sha256": "8e14828562e878a55ab772fd3234ce637d253d6e6e75f2e8a51c8101065df61f",
+      "bytes": 6648
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
       "title": "",
       "status": "",
-      "sha256": "86cc6271bc5574dc0fdd742c4ecc8d00f987e06077b00fc6b18fb5ec18830268",
-      "bytes": 4520
+      "sha256": "abd00fdc0dff94e2589d6a955e1527ad49234e2f0269b515eee38f482ccc8244",
+      "bytes": 8253
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
+      "title": "EVD-P35-02-MAKER \u2014 WP-P35-02 Maker Submission (Kernel HTTP Surface)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "48d1c318080bb149bcd1751133f0fe55c690fbd8480736af5eadba9d33831efe",
+      "bytes": 9649
     },
     {
       "path": "docs/GLOSSARY.md",
