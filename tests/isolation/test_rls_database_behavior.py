@@ -34,10 +34,31 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "services" / "platform-kernel" / "python"))
 
 TENANT_SCOPED_TABLES = (
+    # Migration 001 and 003 family — tenant_id is UUID with a foreign key.
     "memberships",
     "tenant_resources",
     "active_contexts",
     "audit_events",
+    # Migration 002 family — tenant_id is VARCHAR(64) with no foreign key. Added 2026-07-30.
+    # These five had row-level security enabled and forced since 002 and had never been
+    # executed against by any test: the earlier tuple listed only the 001/003 family, so a
+    # whole family of tenant-scoped tables sat outside the isolation suite while the phase
+    # that created them was recorded as complete.
+    "tenant_entitlement_plans",
+    "tenant_entitlement_overrides",
+    "usage_meter_balances",
+    "quota_reservations",
+    "usage_outbox",
+)
+
+# The 002 family stores tenant_id as text rather than UUID, so a repository writing to them
+# needs the identifier as a string in canonical lowercase form.
+TEXT_TENANT_TABLES = (
+    "tenant_entitlement_plans",
+    "tenant_entitlement_overrides",
+    "usage_meter_balances",
+    "quota_reservations",
+    "usage_outbox",
 )
 
 
@@ -284,6 +305,108 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
 
             cur.execute("DELETE FROM audit_events")
             self.assertEqual(cur.rowcount, 0, "an audit record was deleted")
+
+    # -- Tenant identity agreement across the two policy families ------------------
+
+    def test_both_policy_families_agree_on_tenant_identity_regardless_of_case(self):
+        """Regression for the defect migration 004 closes. Fails if 004 is rolled back.
+
+        Migration 002 compared tenant identity as case-sensitive TEXT while 001 and 003 compared
+        it as UUID, which normalises case. Migration 003's shape constraint used `~*`, so
+        mixed-case UUID text was admissible in the first place.
+
+        Measured before 004, with one identifier stored uppercase: the lowercase context saw 0
+        rows in the 002 family and 1 row in the 003 family, in the same session, with no error.
+        The same tenant could not see its own entitlements while seeing its own resources.
+
+        That mattered more than a missing row: `FeatureRolloutEvaluator.is_feature_enabled`
+        returns True when it finds no toggle, so a tenant whose toggle rows were invisible was
+        granted every feature. A silent read-path isolation defect became an entitlement
+        fail-open.
+        """
+        lower = self.tenant_a.lower()
+        upper = self.tenant_a.upper()
+        self.assertNotEqual(lower, upper, "fixture identifier has no letters to change case on")
+
+        with self.db.tenant_session(lower, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO tenant_entitlement_plans (tenant_id, plan_id) VALUES (%s, %s)",
+                (lower, "plan_free"),
+            )
+
+        with self.db.tenant_session(lower, connection=self.conn) as cur:
+            cur.execute("SELECT count(*) FROM tenant_entitlement_plans")
+            seen_lower = cur.fetchone()[0]
+
+        with self.db.tenant_session(upper, connection=self.conn) as cur:
+            cur.execute("SELECT count(*) FROM tenant_entitlement_plans")
+            seen_upper = cur.fetchone()[0]
+
+        self.assertEqual(seen_lower, 1, "the tenant cannot see its own entitlement row")
+        self.assertEqual(
+            seen_upper,
+            seen_lower,
+            "the two policy families disagree on tenant identity: the same tenant sees a "
+            "different number of rows depending only on the case of its identifier",
+        )
+
+    def test_a_non_canonical_tenant_identifier_cannot_be_stored(self):
+        """Migration 004 §3 tightened the shape constraint from `~*` to `~`.
+
+        Case normalisation at write time is defence in depth rather than the primary control —
+        the policies no longer care about case. It keeps the column canonical so the eventual
+        conversion to a real UUID column is a pure cast with no data cleanup.
+        """
+        import psycopg
+
+        with self.assertRaises(psycopg.errors.CheckViolation):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute(
+                    "INSERT INTO tenant_entitlement_plans (tenant_id, plan_id) VALUES (%s, %s)",
+                    (self.tenant_a.upper(), "plan_free"),
+                )
+
+    def test_the_002_family_refuses_a_cross_tenant_write(self):
+        """Migration 002 omitted WITH CHECK and relied on PostgreSQL defaulting it to USING.
+
+        That default holds, but it is implicit: an edit to the read-side expression alone would
+        silently remove the write-side constraint. Migration 004 states both clauses explicitly
+        on all five policies, and this probe is what would notice if either were lost.
+        """
+        import psycopg
+
+        with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute(
+                    "INSERT INTO tenant_entitlement_plans (tenant_id, plan_id) VALUES (%s, %s)",
+                    (self.tenant_b, "plan_free"),
+                )
+
+    def test_the_002_family_is_scoped_on_read(self):
+        """Tenant A must not read tenant B's entitlement rows.
+
+        These tables carried policies from migration 002 onward and no test had ever executed
+        one of them.
+        """
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO tenant_entitlement_plans (tenant_id, plan_id) VALUES (%s, %s)",
+                (self.tenant_a, "plan_free"),
+            )
+        with self.db.tenant_session(self.tenant_b, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO tenant_entitlement_plans (tenant_id, plan_id) VALUES (%s, %s)",
+                (self.tenant_b, "plan_pro"),
+            )
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT tenant_id FROM tenant_entitlement_plans")
+            visible = {row[0] for row in cur.fetchall()}
+
+        self.assertIn(self.tenant_a, visible)
+        self.assertNotIn(
+            self.tenant_b, visible, "tenant A read tenant B's entitlement plan"
+        )
 
     # -- Database-enforced domain constraints -------------------------------------
 
