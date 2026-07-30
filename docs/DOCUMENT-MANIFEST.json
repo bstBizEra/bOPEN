@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 263,
+  "count": 265,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -99,6 +99,13 @@
       "status": "Open \u2014 action requested",
       "sha256": "35b5d956cfb0444a0a38a886dff30db80b44f05db06cd7dc868a7fa4fc19abc5",
       "bytes": 14849
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
+      "title": "HANDOFF-P35-VERIFY-TO-GEMINI-KIMI \u2014 Second and third verifier seats for Phase 3.5",
+      "status": "Open \u2014 action requested",
+      "sha256": "3afce53c5254fa3b532f648ef5ef5e90f18b6c6b2dc650e3ead11d9c1605c781",
+      "bytes": 9530
     },
     {
       "path": "docs/00-governance/license-strategy.md",
@@ -622,8 +629,8 @@
       "path": "docs/07-security/secrets/BOPEN-SEC-VAULT-001.md",
       "title": "BOPEN-SEC-VAULT-001 \u2014 Credential and Connection Registry",
       "status": "Active",
-      "sha256": "22f26d92892900d9d37282f252c975fa0bf0c278dc7e65a76ece4bb6d39e02db",
-      "bytes": 8844
+      "sha256": "67be4f93614875c0f94bd22d5e69000e9a88bda2a851342f14a3e5da949953e1",
+      "bytes": 9654
     },
     {
       "path": "docs/07-security/secrets/secrets-management.md",
@@ -1196,8 +1203,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "17a116337f72aa7360194159c453631670a051129538a4a2dfc0e09e7e64d66d",
-      "bytes": 7080
+      "sha256": "e8d4a0b516ae45346050493c4fa1a5ce706899b04ab1b783be3d6d80683cbd2f",
+      "bytes": 10436
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1210,15 +1217,15 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "8e14828562e878a55ab772fd3234ce637d253d6e6e75f2e8a51c8101065df61f",
-      "bytes": 6648
+      "sha256": "22b937ff7a462bdf7dedfd026cb195aaf948ac36c81681ac0922314ebd6cfc89",
+      "bytes": 7901
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
       "title": "",
       "status": "",
-      "sha256": "abd00fdc0dff94e2589d6a955e1527ad49234e2f0269b515eee38f482ccc8244",
-      "bytes": 8253
+      "sha256": "9748fc21a4431ad00519859bea8a2cad9be9ec97ee4621ef58aedf0ac21e1144",
+      "bytes": 10808
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
@@ -1226,6 +1233,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "48d1c318080bb149bcd1751133f0fe55c690fbd8480736af5eadba9d33831efe",
       "bytes": 9649
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-03-maker-submission.md",
+      "title": "EVD-P35-03-MAKER \u2014 WP-P35-03 Maker Submission (Context Access Token)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "d961ba4d3ac70e702f7572ac7f724de260500abc78bfd064258969bbaf418974",
+      "bytes": 8939
     },
     {
       "path": "docs/GLOSSARY.md",
