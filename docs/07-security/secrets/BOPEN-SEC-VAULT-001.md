@@ -119,6 +119,37 @@ overlap period must be shorter than the maximum token lifetime (5 minutes) plus 
 
 No API keys, package registry tokens, or webhook secrets are in use at this commit.
 
+### 3.4 Operator workstation key material
+
+Not a bOPEN credential, but it bears on `BOPEN-GOV-IDENT-001` §6 and is recorded here because
+this registry is where credential state is looked up.
+
+| ID | What | Location | Owner | State |
+| :--- | :--- | :--- | :--- | :--- |
+| `CRED-WORKSTATION-SSH` | Operator SSH private key | `~/.ssh/id_ed25519` | Operator | **`rotate_now`** — see §4.4 |
+
+### 4.4 `CRED-WORKSTATION-SSH` has permissive file permissions
+
+Measured 2026-07-30: mode **`644`** — readable by every process on the workstation, not only by
+the owner. `ssh` normally refuses to use a private key with permissions this loose
+(`UNPROTECTED PRIVATE KEY FILE`).
+
+Two consequences, and they are separate:
+
+1. **On its own terms** this is an exposure. Any process running as this user — including every
+   coding agent — can read the key. Fix regardless of anything else:
+
+   ```bash
+   chmod 600 ~/.ssh/id_ed25519
+   ```
+
+   If the key has been readable for a long period on a shared or agent-heavy machine, rotating it
+   and re-registering the public half with GitHub is the safer course.
+
+2. **For governance** it is the concrete reason `BOPEN-GOV-IDENT-001` §6 declines to adopt local
+   commit signing. Per-agent key custody cannot be achieved by adding more key files to a
+   location every agent can read.
+
 ---
 
 ## 4. Exposure and rotation notes

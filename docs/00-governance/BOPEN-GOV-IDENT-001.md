@@ -134,10 +134,55 @@ This register defeats accidental collapse — two ballots that look independent 
 verifier that is really the maker, an operator misreading who verified. It does not defeat
 deliberate forgery.
 
-The only mechanism that would is cryptographic signing: per-agent SSH or GPG keys, an
-`allowed_signers` file, and `git log --show-signature`. An SSH key already exists on the
-operator's machine, so this is available rather than theoretical. It is **not in use**, and this
-section exists so that no reader mistakes what §4 guarantees.
+The obvious next step would be cryptographic signing: per-agent SSH or GPG keys, an
+`allowed_signers` file, and `git log --show-signature`.
+
+**It would not work in this deployment, and adopting it would make things worse.** Corrected
+2026-07-30 after measuring rather than assuming — an earlier draft of this section called local
+signing "available rather than theoretical", which was wrong.
+
+### 6.1 Why local signing does not attribute here
+
+Every agent runs on the same workstation as the same OS user. A key file placed there for
+"claude" is readable by Codex, by Gemini, and by every other process that user starts. A
+signature would therefore establish *"something on this machine that could read the key signed
+this"* — which is everything.
+
+Measured on 2026-07-30: `~/.ssh/id_ed25519` is mode **644**, world-readable. `ssh` itself refuses
+keys with permissions that loose. That is a defect to fix on its own terms, and it is also a
+demonstration of the general point: per-agent key custody cannot be achieved by putting more key
+files in the same place.
+
+Adopting signing under these conditions would attach a verified marker to commits whose author
+is no better established than before. Readers would stop looking precisely where looking still
+matters. That is a worse outcome than the current state, in which the limit is visible.
+
+### 6.2 What does work
+
+Signing attributes only when the key is held by a **genuinely separate principal**.
+
+This repository already contains one working example. Commit `9a80f9d0` ("Initial commit") is the
+only verified commit in the most recent hundred, and it is verified because its committer is
+`GitHub`, signed with GitHub's own PGP key. No participant on this machine holds that key, which
+is exactly why the signature carries information.
+
+That is the same mechanism a GitHub App provides. Commits an agent makes **through its App's
+API** are authored as that App and signed GitHub-side. Commits the same agent makes by running
+`git commit` locally in an IDE are not — the App is irrelevant to them. Any adoption plan has to
+be explicit about which of the two path it covers, because they look identical in a log and
+differ completely in what they prove.
+
+### 6.3 Recorded position
+
+Local signing is **not adopted**, and the reason is recorded so that a future reader does not
+mistake the absence for an oversight. Revisit when either holds:
+
+1. agents run under separate OS users or separate hosts, so key custody is real; or
+2. agent commits reach the repository through per-agent App or CI identities whose keys are held
+   server-side.
+
+Until then §4's cross-binding is the strongest available check, and §6's opening statement stands
+unchanged: it defeats accidental collapse, not deliberate forgery.
 
 Stating the limit is the point. A governance rule that claims more assurance than its mechanism
 delivers is worse than no rule, because it stops people looking.
