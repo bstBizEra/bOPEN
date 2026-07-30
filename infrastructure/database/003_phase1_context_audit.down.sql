@@ -3,6 +3,12 @@
 -- Version: 1.0.0
 -- Work package: BOPEN-P35-001 (WP-P35-01, deliverable D-01)
 --
+-- NOT ROUND-TRIPPABLE ALONE. This script drops CHECK constraints. While they are absent the
+-- system accepts rows that violate them, and those rows then block re-application of 003 with
+-- "check constraint ... is violated by some row". Observed on 2026-07-30: six such rows were
+-- committed during a rollback window. Run 003_phase1_context_audit.compensate.sql before
+-- re-applying, via `python tools/db_bootstrap.py --compensate 003`.
+--
 -- Required by AGENTS.md section 14: every migration must have a forward, rollback or
 -- compensating strategy.
 --
