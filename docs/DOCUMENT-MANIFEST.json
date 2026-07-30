@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 265,
+  "count": 267,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -15,6 +15,13 @@
       "status": "",
       "sha256": "7fd837e1ecdffbc52d5257e8cd74be49e5fd2b3188d3c425821a3d0536e13a4a",
       "bytes": 267
+    },
+    {
+      "path": "docs/00-governance/agent-identity-register.json",
+      "title": "",
+      "status": "",
+      "sha256": "27b376ce8e6a4e696bc54fc04e5b1afda0ebbf5285b9f607547434719270c1b4",
+      "bytes": 5204
     },
     {
       "path": "docs/00-governance/agent-role-catalog.md",
@@ -41,8 +48,15 @@
       "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
       "title": "BOPEN-GOV-EBIV-001 \u2014 Evidence-Bound Independent Verification",
       "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
-      "sha256": "0e85b6e78ae1e89c18209d15332c36d59ff509fdd3e33fab114affed7f5a7390",
-      "bytes": 11322
+      "sha256": "b5119dbebd942f244b9e0f95c28d875182c23f25370b8a8221ff01ac465f9ddf",
+      "bytes": 12976
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-IDENT-001.md",
+      "title": "BOPEN-GOV-IDENT-001 \u2014 Agent Commit Identity Register",
+      "status": "Proposed",
+      "sha256": "5c9994c4eeb2534beb7be3446bf9c7e45714971395860c4635852d5c5a8e74a1",
+      "bytes": 8195
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -629,8 +643,8 @@
       "path": "docs/07-security/secrets/BOPEN-SEC-VAULT-001.md",
       "title": "BOPEN-SEC-VAULT-001 \u2014 Credential and Connection Registry",
       "status": "Active",
-      "sha256": "67be4f93614875c0f94bd22d5e69000e9a88bda2a851342f14a3e5da949953e1",
-      "bytes": 9654
+      "sha256": "b9a20aa22236c16347cdccdb96c26727b90d44966619b044e172b5b55b749041",
+      "bytes": 9723
     },
     {
       "path": "docs/07-security/secrets/secrets-management.md",
