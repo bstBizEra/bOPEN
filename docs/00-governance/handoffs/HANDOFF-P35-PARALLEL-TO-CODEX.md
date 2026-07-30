@@ -116,9 +116,31 @@ disclosing them is part of the handoff rather than a reason to skip them:
 
 ### 3.4 How to record your verdict
 
+**Do this first, or your ballots will not count.** Added 2026-07-30:
+
+```bash
+git config user.name  "Codex <model> (BST-SA Motor)"
+git config user.email "codex@bst.local"
+```
+
+Repository-local, not global. `verifier_id` is no longer taken on trust: it is bound to the git
+author of the commit that introduced the ballot line, and
+`python tools/check_ballot_attribution.py` refuses a ballot when the two disagree. Until your
+identity is set, every ballot you cast is authored by whatever identity the repository is
+currently configured with and reports `unattributable`, which does not count toward quorum
+(`AGENTS.md` §21.3, `BOPEN-GOV-IDENT-001`).
+
+This is not bureaucracy aimed at you. It exists because I found that `verifier_id` was a single
+self-declaration nothing checked — I could have written `"verifier_id": "codex"` myself and the
+protocol would have counted it. Also note `AGENTS.md` §21.2.3: branch prefixes are not
+attribution. Several `codex/*` branches in this repository contain commits whose trailers name
+Claude.
+
 One JSON line per proposition appended to `docs/evidence/phase-3.5/ballots.jsonl`, in the
 schema at `BOPEN-GOV-EBIV-001` §7. `probe_command` and `probe_exit_code` are mandatory;
-`refutation_attempted: true` is required to cast `CONFIRMED`.
+`refutation_attempted: true` is required to cast `CONFIRMED`. Put ballots for different
+propositions in separate commits where convenient — one commit must never introduce ballots for
+two different verifiers (§21.3 R5).
 
 Under §6.1 a single `REFUTED` ballot carrying a reproducible probe blocks the proposition
 regardless of how many confirmations oppose it. You do not need to persuade me, and I cannot

@@ -106,8 +106,43 @@ one that needs the whole repository held at once, and neither of the other two s
 
 ## 5. How to record a verdict
 
+### 5.0 Set your identity first, or the ballot will not count
+
+Added 2026-07-30. Repository-local, never global:
+
+```bash
+# Gemini
+git config user.name  "Gemini <model> (BST-SA Cortex)"
+git config user.email "gemini@bst.local"
+
+# Kimi
+git config user.name  "Kimi <model> (BST-SA Hippocampus)"
+git config user.email "kimi@bst.local"
+```
+
+`verifier_id` used to be a self-declaration that nothing checked — any agent, including the
+disqualified Maker, could write another agent's name and the protocol would count it. It is now
+bound to the git author of the commit that introduced the ballot line, and
+`python tools/check_ballot_attribution.py` refuses the ballot when the two disagree, when the
+author is unregistered, or when the author is the Maker.
+
+Until your identity is set your ballots report `unattributable` and do not count toward quorum
+(`AGENTS.md` §21.3). The register is
+[`agent-identity-register.json`](../agent-identity-register.json).
+
+One further note that bears on Kimi's seat in particular: `AGENTS.md` §21.4 records that the 29
+commits comprising `WP-P35-01`, `WP-P35-02` and `WP-P35-03` carry the **operator's** identity
+while having been authored by Claude. That is a violation of the rule by the agent that drafted
+it, left in place because rewriting history would invalidate every evidence anchor bound to those
+commits. Read that range as unattributable rather than operator-authored, and treat it as one
+more reason the Maker's self-assessment carries no verdict weight.
+
+### 5.1 The ballot
+
 One JSON line appended to [`docs/evidence/phase-3.5/ballots.jsonl`](../../evidence/phase-3.5/ballots.jsonl),
-schema at `BOPEN-GOV-EBIV-001` §7.
+schema at `BOPEN-GOV-EBIV-001` §7. Ballots from different verifiers must arrive in **different
+commits** — one commit carrying two verifiers' ballots means one actor wrote both, whatever the
+`verifier_id` fields say.
 
 Read the anchors with `python tools/check_evidence_anchors.py --emit` rather than copying them
 from any document, including this one. R3 exists because the Phase 3 manifest bound a commit that
