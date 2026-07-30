@@ -408,6 +408,79 @@ class TestPhase1HttpSlice(unittest.TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json()["detail"], "context is not valid")
 
+    def test_context_issuance_is_refused_unless_the_deployment_affirms_it_is_not_production(self):
+        """The guard over an authentication gap that Phase 1 cannot close.
+
+        `POST /v1/contexts` mints a signed bearer token after verifying that a membership exists
+        in the named tenant, belongs to the named principal, and is active. It cannot verify that
+        the caller *is* that principal, because Phase 1 has no authentication mechanism —
+        `BOPEN-P1-001` puts authentication in Phase 2 with the IdP bridge.
+
+        A security review demonstrated the consequence end to end on 2026-07-30: a client with no
+        prior state and no credential header received 201, a token carrying `roles: ["owner"]`,
+        and an ALLOW on `/v1/authorize`.
+
+        The identifiers involved are UUIDv4 and no endpoint echoes them, so there is no in-band
+        harvest path — but that is a property of the current endpoint set, not a control. What
+        makes the gap dangerous is that the surface looks finished: signed tokens, a JWKS
+        endpoint, row-level security, an audit trail. The missing half is invisible from outside.
+
+        So the kernel refuses by default and the operator must affirm otherwise, in the same shape
+        `BOPEN_DB_NON_PRODUCTION` guards the destructive rollback. A deployment that forgets is
+        refused rather than silently open.
+
+        503 rather than 401 is deliberate: no credential the caller could supply would change the
+        answer, and 401 would imply one exists.
+        """
+        import os
+
+        from platform_kernel.api import ENV_ALLOW_UNAUTHENTICATED_CONTEXT
+
+        principal_id = self._register_principal()
+        tenant_id, membership_id = self._provision_tenant(principal_id)
+
+        previous = os.environ.pop(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, None)
+        try:
+            response = self.client.post(
+                "/v1/contexts",
+                json={"principal_id": principal_id, "membership_id": membership_id},
+                headers={"X-Tenant-ID": tenant_id, "X-Correlation-ID": corr()},
+            )
+        finally:
+            if previous is not None:
+                os.environ[ENV_ALLOW_UNAUTHENTICATED_CONTEXT] = previous
+
+        self.assertEqual(
+            response.status_code, 503,
+            "an unaffirmed deployment issued a bearer token to an unauthenticated caller",
+        )
+        detail = response.json()["detail"]
+        self.assertIn(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, detail["remediation"])
+        self.assertIn("WP-P35-05", detail["resolved_by"])
+
+    def test_the_affirmation_does_not_weaken_any_other_check(self):
+        """Setting the flag permits issuance; it must not turn off validation.
+
+        A guard that also disabled the membership checks would trade one hole for a wider one, so
+        the same refusals are asserted with the affirmation in place.
+        """
+        a = self._new_tenant_with_context()
+        b = self._new_tenant_with_context()
+
+        crossed = self.client.post(
+            "/v1/contexts",
+            json={"principal_id": a["principal_id"], "membership_id": a["membership_id"]},
+            headers={"X-Tenant-ID": b["tenant_id"], "X-Correlation-ID": corr()},
+        )
+        self.assertEqual(crossed.status_code, 403)
+
+        mismatched = self.client.post(
+            "/v1/contexts",
+            json={"principal_id": b["principal_id"], "membership_id": a["membership_id"]},
+            headers={"X-Tenant-ID": a["tenant_id"], "X-Correlation-ID": corr()},
+        )
+        self.assertEqual(mismatched.status_code, 403)
+
     def test_health_does_not_require_the_database(self):
         """A health probe that opens a connection turns a database blip into a rolling
         restart of every replica."""

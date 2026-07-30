@@ -65,6 +65,7 @@ Divergences from HTTP_HEADER_SPEC.md, recorded rather than silently resolved
 
 from __future__ import annotations
 
+import os
 import re
 import uuid
 from datetime import datetime, timezone
@@ -84,6 +85,37 @@ from platform_kernel import tokens
 from platform_kernel.db import DatabaseNotConfiguredError
 
 API_VERSION = "1.0.0"
+
+# --------------------------------------------------------------------------------------
+# Unauthenticated context issuance — the gap, and the guard over it
+# --------------------------------------------------------------------------------------
+# `POST /v1/contexts` mints a signed bearer token. It verifies that the membership exists in the
+# named tenant, belongs to the named principal, and is active. It does **not** verify that the
+# caller *is* that principal, because Phase 1 has no authentication mechanism to verify it with —
+# no password, no IdP, no session. `BOPEN-P1-001` specifies the chain as register, provision,
+# establish context, authorize; authentication arrives with the IdP bridge in Phase 2.
+#
+# So knowledge of three identifiers — tenant, principal, membership — is sufficient to obtain an
+# `owner` token. Confirmed by execution 2026-07-30: a client with no prior state and no credential
+# header received 201, a signed token with `roles: ["owner"]`, and an ALLOW on `/v1/authorize`.
+#
+# None of those identifiers is treated as a secret anywhere in this system. They are UUIDv4 and
+# therefore unguessable, and no endpoint echoes them back, so there is no in-band harvest path
+# today. That is a property of the current endpoint set, not a control.
+#
+# The danger is that this looks finished. There is a signed-token issuer, a JWKS endpoint,
+# row-level security and an audit trail — a reader has every reason to think the surface is
+# complete, and the missing half is invisible from outside.
+#
+# Hence the guard below rather than a comment alone. The kernel refuses to issue credentials
+# unless the operator has affirmed that this deployment is not production. The same shape as
+# `BOPEN_DB_NON_PRODUCTION` guarding the destructive rollback in `tools/db_bootstrap.py`: a
+# deployment that forgets is refused, not silently open.
+ENV_ALLOW_UNAUTHENTICATED_CONTEXT = "BOPEN_ALLOW_UNAUTHENTICATED_CONTEXT"
+
+
+def unauthenticated_context_issuance_permitted() -> bool:
+    return os.environ.get(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, "").strip() == "1"
 
 _PREFIXED_ID = re.compile(
     r"^(?:usr|tnt|mem|ctx|corr)_([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
@@ -552,10 +584,37 @@ def establish_context(
 ) -> EstablishContextResponse:
     """Establish an active context for a principal in a tenant.
 
+    **This endpoint issues a credential without authenticating the caller.** See the note above
+    `ENV_ALLOW_UNAUTHENTICATED_CONTEXT` for why Phase 1 has nothing to authenticate with, and why
+    the guard exists rather than a comment alone.
+
     The membership is read under the target tenant's isolation policy, so a caller naming a
     membership that belongs to a different tenant gets the same refusal as one naming a
     membership that does not exist.
     """
+    if not unauthenticated_context_issuance_permitted():
+        # Refused rather than served. Phase 1 cannot authenticate the caller, so honouring this
+        # would mint an owner bearer token for anyone holding three non-secret identifiers.
+        # 503 rather than 401: there is no credential the caller could have supplied that would
+        # change the answer, and 401 would imply there is.
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "context issuance is disabled",
+                "reason": (
+                    "This kernel cannot authenticate the caller. Phase 1 has no authentication "
+                    "mechanism, so issuing a context here would grant an owner bearer token to "
+                    "anyone who knows a tenant, principal and membership identifier."
+                ),
+                "remediation": (
+                    f"Set {ENV_ALLOW_UNAUTHENTICATED_CONTEXT}=1 to affirm that this deployment "
+                    f"is not production. Do not set it on any deployment reachable by a party "
+                    f"you would not hand an owner token to."
+                ),
+                "resolved_by": "WP-P35-05 — the enterprise IdP bridge",
+            },
+        )
+
     principal_id = normalise_id(body.principal_id, "principal_id")
     membership_id = normalise_id(body.membership_id, "membership_id")
 
