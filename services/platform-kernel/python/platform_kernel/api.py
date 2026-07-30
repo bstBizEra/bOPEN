@@ -27,17 +27,24 @@ How the tenant is established, and why the client is not trusted
 `AGENTS.md` section 8: *"Never trust tenant IDs supplied by clients without server-side context
 validation."*
 
-`X-Tenant-ID` is treated as an unauthenticated **routing hint**: it selects which tenant's
-row-level security session to open, and nothing more. Authority comes from `X-Context-ID`,
-which must resolve to a live, unrevoked context row *inside that tenant* — a read that is
-itself performed under the tenant's isolation policy.
+There are two ways to establish the tenant, in strict precedence order.
 
-A client that lies about `X-Tenant-ID` therefore gains nothing: the context lookup runs in the
-claimed tenant, the context is not there, and the request is refused. To pass, the caller must
-present a context that genuinely lives in the tenant it claims.
+**Preferred — `Authorization: Bearer <context access token>`.** The tenant comes from the
+token's signed `tid` claim (`BOPEN-IDP-001` §12.2). `X-Tenant-ID` is not consulted at all on
+this path; if present and contradictory, the request is refused rather than resolved in either
+direction. The tenant identity is *attested by a signature* rather than asserted and then
+checked, which is what lets a gateway or a satellite product verify the claim independently
+against the published JWKS without calling back into the kernel.
 
-`WP-P35-03` replaces the lookup with a signed token carrying a `tid` claim, at which point the
-header becomes redundant rather than merely unauthoritative.
+**Legacy — `X-Context-ID` with `X-Tenant-ID`.** Here the header is an unauthenticated routing
+hint: it selects which tenant's row-level security session to open, and nothing more. Authority
+comes from the context row, read inside that tenant's own isolation policy. A client that lies
+about `X-Tenant-ID` gains nothing, because the lookup runs in the tenant it claimed and the
+context is not there.
+
+Both paths re-read the stored context row. The token attests the tenant identity; it does not
+attest that the context is still live. Skipping the read would leave a window equal to the token
+lifetime in which a revoked context keeps working.
 
 --------------------------------------------------------------------------------------------
 Divergences from HTTP_HEADER_SPEC.md, recorded rather than silently resolved
@@ -47,11 +54,13 @@ Divergences from HTTP_HEADER_SPEC.md, recorded rather than silently resolved
    `tnt_<uuid>` does not cast. This module accepts either form and normalises to the bare UUID.
    The contradiction is in the spec and needs a decision, not a silent choice.
 
-2. The spec makes `Authorization: Bearer <JWT>` mandatory. No issuer exists yet —
-   `WP-P35-03` builds it. This module therefore does **not** enforce it, and deliberately does
-   not accept an unverified bearer token either. A code path that accepts any bearer value
-   without verifying a signature is a hole that reads as a feature; leaving it absent is
-   honest, whereas accepting it unverified would be worse than not having it at all.
+2. The spec makes `Authorization: Bearer <JWT>` mandatory. `WP-P35-03` now issues and verifies
+   it, but the header is accepted rather than required, because the `X-Context-ID` path predates
+   it and removing that path would break any caller written against the earlier surface. What
+   this module will never do is accept a bearer value it has not verified: an unsigned token, an
+   unknown `kid`, or `alg=none` is refused, and no code path treats an unverified token as
+   present-therefore-valid. Making the header mandatory is a one-line change once every caller
+   has migrated, and is deliberately left as a decision rather than taken silently.
 """
 
 from __future__ import annotations
@@ -71,6 +80,7 @@ from kernel_core.types import (
     DecisionResult,
 )
 from platform_kernel import repositories as repo
+from platform_kernel import tokens
 from platform_kernel.db import DatabaseNotConfiguredError
 
 API_VERSION = "1.0.0"
@@ -168,6 +178,27 @@ class TenantContextResponse(BaseModel):
     expires_at: str
 
 
+class EstablishContextResponse(BaseModel):
+    """Envelope carrying the contract-shaped context and the credential for it.
+
+    The token is a sibling of `context`, never a field inside it. `tenant-context.json` declares
+    `additionalProperties: false`, so adding `access_token` to the payload would put the response
+    permanently out of conformance with its own frozen contract — the exact class of defect this
+    work package exists to remove, and one that would have been introduced while adding a
+    security feature.
+
+    Keeping them separate is also the better shape: `context` is the view a client may inspect,
+    `access_token` is the credential it presents back. Merging them would force a client to parse
+    a credential in order to read its own context.
+    """
+
+    context: TenantContextResponse
+    access_token: Optional[str] = None
+    token_type: str = "Bearer"
+    expires_in: Optional[int] = None
+    token_status: str = "issued"
+
+
 class AuthorizeRequest(BaseModel):
     action: str = Field(min_length=1)
     resource_type: str = Field(min_length=1)
@@ -231,27 +262,25 @@ def require_tenant_hint(
     return normalise_id(x_tenant_id, "X-Tenant-ID")
 
 
-def resolve_context(
-    tenant_hint: Annotated[str, Depends(require_tenant_hint)],
-    correlation_id: Annotated[str, Depends(require_correlation_id)],
-    x_context_id: Annotated[Optional[str], Header(alias="X-Context-ID")] = None,
-) -> ResolvedContext:
-    """Turn the caller's claims into a server-validated context, or refuse.
+def _bearer_token(authorization: Optional[str]) -> Optional[str]:
+    if not authorization:
+        return None
+    parts = authorization.split(None, 1)
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        return None
+    return parts[1].strip() or None
 
-    Every refusal below returns 403 with the same body. Distinguishing "no such context" from
-    "that context belongs to another tenant" would confirm the existence of another tenant's
-    context to a caller who cannot read it.
+
+def _load_validated_context(tenant_id: str, context_id: str) -> ResolvedContext:
+    """Confirm the context row is still live and its membership still exists.
+
+    Performed even when a signed token was presented. The token attests the tenant identity;
+    it does not attest that the context is still valid, and a five-minute lifetime would
+    otherwise leave a five-minute window in which a revoked context keeps working. Checking the
+    row makes revocation immediate at the cost of one scoped read.
     """
-    if not x_context_id or not x_context_id.strip():
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="X-Context-ID is required for this operation",
-        )
-
-    context_id = normalise_id(x_context_id, "X-Context-ID")
-
     try:
-        stored = contexts.get(tenant_hint, context_id)
+        stored = contexts.get(tenant_id, context_id)
     except repo.ContextNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="context is not valid"
@@ -274,9 +303,88 @@ def resolve_context(
         context_id=stored.id,
         principal_id=stored.principal_id,
         membership_id=stored.membership_id,
-        correlation_id=correlation_id,
+        correlation_id="",
         roles=[membership.role],
     )
+
+
+def resolve_context(
+    correlation_id: Annotated[str, Depends(require_correlation_id)],
+    authorization: Annotated[Optional[str], Header(alias="Authorization")] = None,
+    x_tenant_id: Annotated[Optional[str], Header(alias="X-Tenant-ID")] = None,
+    x_context_id: Annotated[Optional[str], Header(alias="X-Context-ID")] = None,
+) -> ResolvedContext:
+    """Turn the caller's claims into a server-validated context, or refuse.
+
+    Two paths, in strict precedence order:
+
+    **1. `Authorization: Bearer <context access token>` — preferred.** The tenant is taken from
+    the token's signed `tid` claim. `X-Tenant-ID` is not consulted at all on this path, and if it
+    is present and disagrees the request is refused rather than resolved in either direction: a
+    caller sending contradictory tenant claims is either confused or probing, and neither
+    deserves a best-effort interpretation.
+
+    **2. `X-Context-ID` with `X-Tenant-ID` — legacy, retained for compatibility.** Here the
+    header is an unauthenticated routing hint and the context row is the authority. A caller who
+    lies about the tenant gains nothing, because the lookup runs in the tenant it claimed and the
+    context is not there.
+
+    Path 1 is stronger in a way path 2 cannot be: the tenant identity is *attested by a
+    signature* rather than *asserted and then checked*. That difference matters once the gateway
+    and satellite products sit between the caller and this kernel, because each hop can verify
+    the claim independently against the published JWKS without querying the kernel.
+
+    Every refusal returns 403 with an identical body. Distinguishing "no such context" from
+    "belongs to another tenant" would confirm another tenant's context to someone who cannot
+    read it.
+    """
+    raw_token = _bearer_token(authorization)
+
+    if raw_token is not None:
+        try:
+            claims = tokens.verify_context_token(raw_token)
+        except tokens.TokenNotConfiguredError:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="kernel token verification is not configured",
+            )
+        except tokens.TokenVerificationError:
+            # The specific reason (expired, bad signature, unknown key) is deliberately not
+            # returned. It belongs in an audit record, not in a response that an attacker can
+            # use to refine a forgery.
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="token is not valid"
+            )
+
+        if x_tenant_id and x_tenant_id.strip():
+            if normalise_id(x_tenant_id, "X-Tenant-ID") != claims.tenant_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="tenant claim conflict",
+                )
+
+        resolved = _load_validated_context(claims.tenant_id, claims.context_id)
+
+        # The token attests membership and roles at issuance; the stored row is authoritative
+        # now. A mismatch means the membership changed after the token was minted, so the token
+        # is stale and must not be honoured.
+        if resolved.membership_id != claims.membership_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="context is not valid"
+            )
+
+        return resolved.model_copy(update={"correlation_id": correlation_id})
+
+    if not x_context_id or not x_context_id.strip():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="an Authorization bearer token or X-Context-ID is required",
+        )
+
+    tenant_hint = require_tenant_hint(x_tenant_id)
+    context_id = normalise_id(x_context_id, "X-Context-ID")
+    resolved = _load_validated_context(tenant_hint, context_id)
+    return resolved.model_copy(update={"correlation_id": correlation_id})
 
 
 # --------------------------------------------------------------------------------------
@@ -330,6 +438,23 @@ def readiness() -> dict:
             detail=f"persistence unavailable: {type(exc).__name__}",
         )
     return {"status": "ready", "version": API_VERSION}
+
+
+@app.get("/.well-known/jwks.json")
+def jwks() -> dict:
+    """Publish the public verification keys (BOPEN-IDP-001 §12.4).
+
+    Public key material only, and safe to serve unauthenticated — that is what makes it useful.
+    The gateway and any satellite product can verify a context token's `tid` claim on their own
+    against this document, without calling back into the kernel and without holding a shared
+    secret. A shared secret would let every verifier also mint tokens, which is precisely why
+    §12.4 mandates asymmetric keys.
+
+    Returns an empty key set rather than an error when no key is configured, because that is the
+    truthful answer to "which keys do you sign with": none. A consumer that receives an empty set
+    correctly refuses every token, whereas a 500 invites a retry loop.
+    """
+    return tokens.registry().jwks()
 
 
 @app.post(
@@ -417,14 +542,14 @@ def provision_tenant(
 
 @app.post(
     "/v1/contexts",
-    response_model=TenantContextResponse,
+    response_model=EstablishContextResponse,
     status_code=status.HTTP_201_CREATED,
 )
 def establish_context(
     body: EstablishContextRequest,
     tenant_hint: Annotated[str, Depends(require_tenant_hint)],
     correlation_id: Annotated[str, Depends(require_correlation_id)],
-) -> TenantContextResponse:
+) -> EstablishContextResponse:
     """Establish an active context for a principal in a tenant.
 
     The membership is read under the target tenant's isolation policy, so a caller naming a
@@ -474,7 +599,7 @@ def establish_context(
         resource_id=stored.id,
     )
 
-    return TenantContextResponse(
+    payload = TenantContextResponse(
         context_id=stored.id,
         principal_id=stored.principal_id,
         tenant_id=stored.tenant_id,
@@ -483,6 +608,35 @@ def establish_context(
         scopes=[],
         issued_at=stored.established_at.isoformat(),
         expires_at=stored.expires_at.isoformat(),
+    )
+
+    # BOPEN-IDP-001 section 12.3 requires roles and scopes to be derived from authoritative
+    # bOPEN state at issuance. They are: `membership` was read two steps above under this
+    # tenant's own isolation policy, which is the only point at which the sub/tid/mid chain is
+    # known to be real.
+    try:
+        access_token, claims = tokens.issue_context_token(
+            principal_id=stored.principal_id,
+            tenant_id=stored.tenant_id,
+            membership_id=stored.membership_id,
+            context_id=stored.id,
+            roles=[membership.role],
+            scopes=[],
+        )
+        token_status = "issued"
+        expires_in = int((claims.expires_at - claims.issued_at).total_seconds())
+    except tokens.TokenNotConfiguredError:
+        # The context itself is valid and usable through the X-Context-ID path, so refusing the
+        # whole request would break a working deployment over an unconfigured optional key.
+        # `token_status` says plainly that no credential was minted rather than returning a
+        # null field a client might read as "token not needed".
+        access_token, expires_in, token_status = None, None, "unconfigured"
+
+    return EstablishContextResponse(
+        context=payload,
+        access_token=access_token,
+        expires_in=expires_in,
+        token_status=token_status,
     )
 
 

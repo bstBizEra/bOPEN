@@ -104,6 +104,13 @@ class TestPhase1HttpSlice(unittest.TestCase):
         return body["tenant_id"], body["owner_membership_id"]
 
     def _establish_context(self, tenant_id: str, principal_id: str, membership_id: str) -> dict:
+        """Return the envelope from POST /v1/contexts.
+
+        The contract-shaped payload is at `["context"]` and the credential is its sibling.
+        They are separate because tenant-context.json declares `additionalProperties: false`,
+        so a token field inside the payload would put the response out of conformance with its
+        own frozen contract.
+        """
         response = self.client.post(
             "/v1/contexts",
             json={"principal_id": principal_id, "membership_id": membership_id},
@@ -115,12 +122,13 @@ class TestPhase1HttpSlice(unittest.TestCase):
     def _new_tenant_with_context(self) -> dict:
         principal_id = self._register_principal()
         tenant_id, membership_id = self._provision_tenant(principal_id)
-        context = self._establish_context(tenant_id, principal_id, membership_id)
+        envelope = self._establish_context(tenant_id, principal_id, membership_id)
         return {
             "principal_id": principal_id,
             "tenant_id": tenant_id,
             "membership_id": membership_id,
-            "context": context,
+            "context": envelope["context"],
+            "envelope": envelope,
         }
 
     # -- the slice ----------------------------------------------------------------
@@ -129,7 +137,8 @@ class TestPhase1HttpSlice(unittest.TestCase):
         """The whole chain, ending in an audit row that the tenant can read back."""
         principal_id = self._register_principal()
         tenant_id, membership_id = self._provision_tenant(principal_id)
-        context = self._establish_context(tenant_id, principal_id, membership_id)
+        envelope = self._establish_context(tenant_id, principal_id, membership_id)
+        context = envelope["context"]
 
         correlation = corr()
         decision = self.client.post(
