@@ -1,5 +1,5 @@
 {
-  "purpose": "Establish that the isolation suite can fail. Under BOPEN-GOV-EBIV-001 §4 a proposition must state the mechanism whose removal makes its evidence fail; a test that passes whether or not the mechanism is present verifies nothing. Each probe below removes one mechanism, runs the suite, and restores it.",
+  "purpose": "Establish that the isolation suite can fail. Under BOPEN-GOV-EBIV-001 \u00a74 a proposition must state the mechanism whose removal makes its evidence fail; a test that passes whether or not the mechanism is present verifies nothing. Each probe below removes one mechanism, runs the suite, and restores it.",
   "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
   "executed": "2026-07-30",
   "target": "postgresql://bopen_app@127.0.0.1:5433/bopen_dev",
@@ -51,10 +51,13 @@
     "tests": 13
   },
   "http_layer_probes": {
-    "scope": "WP-P35-02 — the Phase 1 HTTP slice",
+    "scope": "WP-P35-02 \u2014 the Phase 1 HTTP slice",
     "commit_oid": "a969bb59b85c1c717cf432cabd6c46fa10c5edb0",
     "command": "python -m unittest discover -s tests/integration -p \"test_phase1_http*.py\"",
-    "baseline": { "result": "OK", "tests": 16 },
+    "baseline": {
+      "result": "OK",
+      "tests": 16
+    },
     "coarse_probes": [
       {
         "id": "MUT-D",
@@ -93,7 +96,7 @@
         "why_this_probe_is_better": "Simulates a policy that is present but written wrongly, rather than one that is absent. Writes keep working, so the suite reaches the assertion it exists to make. A 'does a policy exist' check would pass against this mutation; the test does not.",
         "suite_result": "FAILED",
         "detail": "1 failure",
-        "observed_message": "AssertionError: 200 != 403 — tenant A's context was accepted under tenant B's X-Tenant-ID and a full ALLOW decision was returned",
+        "observed_message": "AssertionError: 200 != 403 \u2014 tenant A's context was accepted under tenant B's X-Tenant-ID and a full ALLOW decision was returned",
         "detected": true,
         "legible": true,
         "restored": true
@@ -108,7 +111,7 @@
         "detected": true,
         "legible": true,
         "restored": true,
-        "note": "GET /v1/audit-events contains no tenant filter in its query. This probe is what establishes that the policy — and not the handler — is what scopes the result."
+        "note": "GET /v1/audit-events contains no tenant filter in its query. This probe is what establishes that the policy \u2014 and not the handler \u2014 is what scopes the result."
       },
       {
         "id": "MUT-I",
@@ -140,14 +143,54 @@
       "id": "LEAK-01",
       "question": "Can a tenant context survive its transaction and leak to the next user of a pooled connection?",
       "method": "Open one connection, run a tenant_session for tenant A, then query the same connection outside any tenant_session",
-      "result": "current_setting returned NULL and the row count was 0 — no leak",
+      "result": "current_setting returned NULL and the row count was 0 \u2014 no leak",
       "why_it_matters": "platform_kernel.db claims that set_config(..., is_local => true) confines the tenant to one transaction so a pooled connection cannot carry tenant A's context into tenant B's work. That claim is a code comment until executed; this probe executes it."
     }
   ],
   "provenance": {
-    "executed_by": "Claude (agent, Motor role) — Maker of WP-P35-01",
-    "authority": "Maker record. Carries no verdict weight under BOPEN-GOV-EBIV-001 §3. Recorded so a verifier can re-run these probes rather than reconstruct them.",
+    "executed_by": "Claude (agent, Motor role) \u2014 Maker of WP-P35-01",
+    "authority": "Maker record. Carries no verdict weight under BOPEN-GOV-EBIV-001 \u00a73. Recorded so a verifier can re-run these probes rather than reconstruct them.",
     "execution_authority": false,
     "approval_authority": false
+  },
+  "code_layer_probes": {
+    "scope": "WP-P35-03 \u2014 context access token defences",
+    "commit_oid": "767cb8143fa296f8ef92c7ea1be21dd376c0fe9f",
+    "command": "python -m unittest discover -s tests/integration -p \"test_context_token.py\"",
+    "why_a_second_kind_of_probe_is_needed": "MUT-A through MUT-I weaken database policies. A policy probe cannot reach a defence written in Python, and a code probe cannot reach one written in SQL. Both kinds are required for the suite to be adversarial across the whole stack.",
+    "probes": [
+      {
+        "id": "MUT-J",
+        "control_removed": "unknown-kid rejection (falls back to the signing key)",
+        "detected_before_fix": false,
+        "detected_after_fix": true,
+        "caught_by": "test_a_correctly_signed_token_with_a_foreign_kid_is_refused",
+        "finding": "The original test signed with a foreign key AND named a foreign kid, so it passed on the signature check alone even with the kid control removed. It was not testing what its name claimed, and the kid control had no isolating test. A test that passes for the wrong reason is indistinguishable from one that passes for the right reason until something removes the control and nothing goes red. Same failure shape as Phase 3 reporting 169/169 while RateLimitDecision violated its schema - reproduced in work written specifically to prevent it."
+      },
+      {
+        "id": "MUT-K",
+        "control_removed": "mandatory-claim check (BOPEN-IDP-001 \u00a712.2)",
+        "detected_before_fix": true,
+        "caught_by": "test_a_token_missing_a_mandatory_claim_is_refused"
+      },
+      {
+        "id": "MUT-L",
+        "control_removed": "tenant-conflict check between token tid and X-Tenant-ID",
+        "detected_before_fix": true,
+        "caught_by": "test_a_contradictory_tenant_header_is_refused_not_reconciled"
+      },
+      {
+        "id": "MUT-M",
+        "control_removed": "stored-context re-read on the bearer path",
+        "detected_before_fix": true,
+        "caught_by": "test_revoking_the_context_invalidates_an_unexpired_token",
+        "note": "Establishes that revocation is immediate rather than delayed until token expiry."
+      }
+    ],
+    "post_restore": {
+      "command": "python tools/run_tests.py",
+      "result": "OK",
+      "tests": 217
+    }
   }
 }

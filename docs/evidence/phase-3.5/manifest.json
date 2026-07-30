@@ -1,7 +1,7 @@
 {
   "phase": "Phase 3.5 \u2014 Runtime Realization",
   "work_package_id": "BOPEN-P35-001",
-  "deliverable_scope": "WP-P35-01 (D-01..D-05) and WP-P35-02 (D-06, D-07)",
+  "deliverable_scope": "WP-P35-01 (D-01..D-05), WP-P35-02 (D-06, D-07), WP-P35-03 (D-08)",
   "status": "MAKER_SUBMISSION_AWAITING_VERIFICATION",
   "issued": "2026-07-30",
   "commit_oid": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
@@ -33,12 +33,12 @@
   ],
   "test_results": {
     "command": "python tools/run_tests.py",
-    "total": 198,
-    "passed": 198,
+    "total": 217,
+    "passed": 217,
     "failed": 0,
     "categories": {
       "unit": 139,
-      "integration": 30,
+      "integration": 48,
       "contracts": 8,
       "isolation": 16,
       "governance": 5
@@ -84,7 +84,12 @@
     "ballots_cast": 0,
     "quorum_required": 2,
     "quorum_status": "NOT MET",
-    "quorum_note": "EBIV \u00a76.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under \u00a73. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md."
+    "quorum_note": "EBIV \u00a76.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under \u00a73. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md.",
+    "seats_issued": {
+      "V1_Codex": "reproducibility and privilege",
+      "V2_Gemini": "contract and architecture conformance",
+      "V3_Kimi": "cross-artifact consistency"
+    }
   },
   "known_gaps": [
     "A-06 unmet: migration 003 rollback not executed.",
@@ -94,14 +99,19 @@
     "Authorization: Bearer is not enforced by the HTTP surface. HTTP_HEADER_SPEC.md makes it mandatory but no issuer exists (WP-P35-03). An unverified bearer token is deliberately not accepted either.",
     "HTTP_HEADER_SPEC.md contradicts itself: X-Tenant-ID is described as a UUID while its own example is tnt_<uuid>. Both forms are accepted and normalised; the contradiction needs a decision.",
     "PlatformKernelService remains as a parallel in-memory path superseded by the repository-backed one. Removing it in this increment would have exceeded AGENTS.md \u00a715. Recorded as debt.",
-    "The audit write is not in the same transaction as the authorization decision. Acceptable while decisions are not persisted; a defect once they are."
+    "The audit write is not in the same transaction as the authorization decision. Acceptable while decisions are not persisted; a defect once they are.",
+    "MUT-J showed that test_a_token_signed_by_an_unknown_key_is_refused passed on the signature check alone and did not isolate the kid control. Fixed by adding an isolating test; recorded because it proves the probe set was not exhaustive.",
+    "sid is set to the context identifier because Phase 1 has no authentication session distinct from the context. A divergence from BOPEN-IDP-001 \u00a712.2 intent, referred to Kimi for a ruling.",
+    "jti is emitted but never checked; there is no replay cache. A captured token is reusable within its five-minute lifetime.",
+    "Key rotation is supported by kid-based resolution but no test exercises two live keys."
   ],
   "evidence_files": [
     "docs/evidence/phase-3.5/ballots.jsonl",
     "docs/evidence/phase-3.5/invariant-traceability.csv",
     "docs/evidence/phase-3.5/maker-submission.md",
     "docs/evidence/phase-3.5/mutation-probes.json",
-    "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md"
+    "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
+    "docs/evidence/phase-3.5/wp-p35-03-maker-submission.md"
   ],
   "deliverables": [
     {
@@ -117,6 +127,13 @@
       "commit_oid": "a969bb59b85c1c717cf432cabd6c46fa10c5edb0",
       "tree_oid": "93daf415759363a0a891a2e7abda652a2fb01b82",
       "record": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md"
+    },
+    {
+      "id": "WP-P35-03",
+      "title": "Context access token (Ed25519, BOPEN-IDP-001 \u00a712)",
+      "commit_oid": "767cb8143fa296f8ef92c7ea1be21dd376c0fe9f",
+      "tree_oid": "f4859ff001d5ee926df7e2f8127baaf63d8d761c",
+      "record": "docs/evidence/phase-3.5/wp-p35-03-maker-submission.md"
     }
   ]
 }
