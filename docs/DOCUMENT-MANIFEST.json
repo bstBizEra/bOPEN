@@ -55,8 +55,8 @@
       "path": "docs/00-governance/BOPEN-GOV-IDENT-001.md",
       "title": "BOPEN-GOV-IDENT-001 \u2014 Agent Commit Identity Register",
       "status": "Proposed",
-      "sha256": "5c9994c4eeb2534beb7be3446bf9c7e45714971395860c4635852d5c5a8e74a1",
-      "bytes": 8195
+      "sha256": "8cdbe9228f505a8d42686a4c4c5a354083ddf80fca31a634ce87a0771ca9fb5f",
+      "bytes": 10624
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -643,8 +643,8 @@
       "path": "docs/07-security/secrets/BOPEN-SEC-VAULT-001.md",
       "title": "BOPEN-SEC-VAULT-001 \u2014 Credential and Connection Registry",
       "status": "Active",
-      "sha256": "b9a20aa22236c16347cdccdb96c26727b90d44966619b044e172b5b55b749041",
-      "bytes": 9723
+      "sha256": "4f3a65124a550ced1adcd01c6aab92831ea7525e3350813efd1e5c19ac9d0864",
+      "bytes": 11050
     },
     {
       "path": "docs/07-security/secrets/secrets-management.md",
