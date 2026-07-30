@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 268,
+  "count": 269,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1102,6 +1102,13 @@
       "bytes": 6580
     },
     {
+      "path": "docs/decisions/DEC-P35-PHASE2-STORAGE.md",
+      "title": "DEC-P35-PHASE2-STORAGE \u2014 Decisions required before Phase 2 can be persisted",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
+      "sha256": "c2ab13aecb5e3c73f4ec91cc6566ae97c2d8cac301de019e48f66aaf908fc7fd",
+      "bytes": 14733
+    },
+    {
       "path": "docs/decisions/DEC-P35-RUNTIME.md",
       "title": "DEC-P35-RUNTIME \u2014 Runtime Realization Gate and Evidence Anchoring Correction",
       "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
@@ -1112,8 +1119,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "6b1cfd6ee740ce04317363ef915ee7cbc5e54c38a59ce3260c20559fbefdafac",
-      "bytes": 2926
+      "sha256": "c65b4378c3cc667ab633c9df0f164a5fbf69453554f505745fe61426d8d53e9e",
+      "bytes": 3272
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
