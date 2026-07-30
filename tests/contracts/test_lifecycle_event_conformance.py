@@ -17,7 +17,8 @@ emits was being checked against `audit-event.json`, which describes a different 
 (`AuditDispatcher.dispatch`, audit.py:70) and rejects the lifecycle envelope with seven errors.
 That mismatch was recorded in `contracts/contract-conformance-baseline.json` as a producer
 defect. It was not one: the producer is coherent and every one of its eight call sites emits
-the identical thirteen-key object. What was missing was a contract, so a contract was written
+the identical fourteen-key object (thirteen until `tenant_scope` was added on
+2026-07-30, for reasons `TenantScopeTests` records). What was missing was a contract, so a contract was written
 from the producer outward rather than the producer bent toward a foreign contract.
 
 The schema was authored against observed output, not against intent. Where the producer is
@@ -72,6 +73,7 @@ import jsonschema  # noqa: E402
 from kernel_core.audit import (  # noqa: E402
     PHASE2_EVENT_TYPES,
     PROHIBITED_METADATA_KEYS,
+    TENANT_SCOPES,
     AuditContractError,
     AuditDispatcher,
 )
@@ -527,7 +529,14 @@ class OutcomeAndSubjectVocabularyTests(_LifecycleTestCase):
         """
         actors = {event["actor_principal_id"] for event in self.events}
         self.assertTrue({"anonymous", "security_control", "expiry_scheduler"} <= actors)
+        # `tenant_id` still repeats the scope word when no tenant resolved, so the schema
+        # keeps its `minLength: 1` string type. What changed is that this is now derived
+        # from `tenant_scope` rather than being the thing a consumer has to recognise.
         self.assertIn("unknown", {event["tenant_id"] for event in self.events})
+        self.assertEqual(
+            {e["tenant_id"] for e in self.events if e["tenant_scope"] != "tenant"},
+            {e["tenant_scope"] for e in self.events if e["tenant_scope"] != "tenant"},
+        )
         for event in self.events:
             validate(event, self.schema)
 
@@ -626,6 +635,73 @@ class MetadataBoundaryTests(_LifecycleTestCase):
         for prohibited in PROHIBITED_METADATA_KEYS:
             for event in self.events:
                 self.assertNotIn(prohibited, {k.lower() for k in event["metadata"]})
+
+
+class TenantScopeTests(_LifecycleTestCase):
+    """
+    `tenant_scope` says whether the event belongs to a tenant, and if not, why.
+
+    The envelope did not carry it until 2026-07-30, although `lifecycle_events` has constrained
+    the same three values since migration 005. The sink therefore recovered the scope by matching
+    `tenant_id` against the strings `unknown` and `scoped` — and on the context-switch denial path
+    that value is the request body's tenant field, so a caller who named their tenant `unknown`
+    filed their own denial under a NULL tenant, which no SELECT policy reached.
+    """
+
+    def _emit(self, **overrides):
+        params = dict(
+            event_type="identity.linked", correlation_id=CORRELATION, actor_id="usr_a",
+            tenant_id="tnt_alpha", subject_type="external_identity", subject_id="eid_1",
+            outcome="success", reason_code="LINKED",
+        )
+        params.update(overrides)
+        return AuditDispatcher(CollectingLifecycleSink()).emit_lifecycle_event(**params)
+
+    def test_the_schema_enum_is_exactly_the_producers_vocabulary(self):
+        """
+        A copy that drifts is worse than no copy: it would read as a control while permitting
+        whatever value the producer had since added. The sink keeps a third copy, checked against
+        this one and against the database constraint in the persistence suite.
+        """
+        declared = set(self.schema["properties"]["tenant_scope"]["enum"])
+        self.assertEqual(declared, set(TENANT_SCOPES))
+
+    def test_every_emitted_event_declares_a_scope_from_that_vocabulary(self):
+        for event in self.events:
+            self.assertIn(event["tenant_scope"], TENANT_SCOPES)
+            validate(event, self.schema)
+
+    def test_a_scope_outside_the_vocabulary_is_refused(self):
+        for scope in ("Tenant", "none", "", "admin"):
+            with self.subTest(scope=scope):
+                with self.assertRaises(AuditContractError):
+                    self._emit(tenant_scope=scope)
+
+    def test_declaring_tenant_scope_without_a_tenant_is_refused(self):
+        """
+        The default is `tenant`, so a producer that says nothing is asserting the event belongs
+        to a resolved tenant. Defaulting the other way would file events where nobody looks; this
+        way the mistake is loud.
+        """
+        for missing in (None, "", "   "):
+            with self.subTest(tenant_id=missing):
+                with self.assertRaises(AuditContractError):
+                    self._emit(tenant_id=missing)
+
+    def test_the_identifier_is_derived_from_the_scope_and_cannot_disagree_with_it(self):
+        """
+        A producer with no tenant has nothing meaningful to put in the identifier field, and
+        letting it supply one is precisely how a request-controlled string reached the routing
+        decision. Whatever is passed is discarded and the envelope value is derived, so the two
+        fields cannot contradict each other however the caller is written.
+        """
+        for scope in ("unknown", "scoped"):
+            for supplied in ("tnt_alpha", "unknown", "scoped", None, "attacker-chosen"):
+                with self.subTest(scope=scope, supplied=supplied):
+                    event = self._emit(tenant_id=supplied, tenant_scope=scope)
+                    self.assertEqual(event["tenant_scope"], scope)
+                    self.assertEqual(event["tenant_id"], scope)
+                    validate(event, self.schema)
 
 
 class MetadataDepthTests(_LifecycleTestCase):

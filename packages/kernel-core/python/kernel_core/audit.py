@@ -47,6 +47,29 @@ PROHIBITED_METADATA_KEYS = frozenset({
     "client_secret", "private_key", "api_key", "credential", "cookie",
 })
 
+# Whether an event belongs to a tenant is a statement the *producer* makes, not something a
+# consumer should reconstruct by inspecting the identifier.
+#
+#   tenant   the event belongs to a resolved tenant, and tenant_id identifies it
+#   unknown  no tenant could be resolved — an authentication failure, an absent membership
+#   scoped   deliberately not tenant-specific — a revocation sweep across contexts
+#
+# `lifecycle_events` has modelled this correctly since migration 005: `chk_lifecycle_scope`
+# constrains the column to these three values and `chk_lifecycle_tenant_agreement` requires the
+# identifier and the scope to agree. The envelope did not carry the field, so the sink had to
+# rebuild it by matching `tenant_id` against a list of magic strings — and on the context-switch
+# denial path that identifier comes straight from the request body. Security review on
+# 2026-07-30 found the consequence and it reproduces: a caller who names their tenant with the
+# literal string `unknown` moves their own denial into the bucket the tenant cannot read.
+#
+#     same denial, tenant_id = <the real tenant>   -> visible in the tenant's audit trail
+#     same denial, tenant_id = "unknown"           -> written with a NULL tenant, unreadable
+#
+# Carrying the scope explicitly is what removes the magic word: `unknown` becomes one
+# unresolvable string among infinitely many, and which bucket an event lands in is decided by
+# the producer parsing the value, never by the caller choosing it.
+TENANT_SCOPES = frozenset({"tenant", "unknown", "scoped"})
+
 _JWT_LIKE = re.compile(r"^ey[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.")
 _SAML_LIKE = re.compile(r"<\s*(saml[0-9]*:)?(Assertion|Response)\b", re.IGNORECASE)
 
@@ -254,17 +277,45 @@ class AuditDispatcher:
         reason_code: str,
         metadata: Optional[Dict[str, Any]] = None,
         causation_id: Optional[str] = None,
+        tenant_scope: str = "tenant",
     ) -> Dict[str, Any]:
         """
         Emit a bounded Phase 2 lifecycle audit event (BOPEN-IDP-001 15).
 
         Enforces INV-P2-017 (all security-relevant outcomes audited) and
         INV-P2-018 (no credential, assertion or token in evidence).
+
+        `tenant_scope` defaults to `tenant`, so a producer that says nothing is asserting the
+        event belongs to a resolved tenant, and the sink will refuse to store it if `tenant_id`
+        is not a tenant identifier. That default is the safe one: the failure it produces is a
+        loud persistence error naming the producer, whereas defaulting to `unknown` would file
+        the event where nobody is looking. See `TENANT_SCOPES`.
+
+        A producer that cannot resolve a tenant passes the scope explicitly. It does not need
+        to pass a matching `tenant_id`: the envelope value is derived from the scope below, so
+        the two cannot disagree, and whatever the caller actually supplied belongs in
+        `metadata` where it is evidence rather than routing.
         """
         if event_type not in PHASE2_EVENT_TYPES:
             raise AuditContractError(f"Unknown Phase 2 audit event type: {event_type}")
         if outcome not in {"success", "deny", "failure"}:
             raise AuditContractError(f"Unsupported audit outcome: {outcome}")
+        if tenant_scope not in TENANT_SCOPES:
+            raise AuditContractError(
+                f"Unsupported tenant scope: {tenant_scope!r}. Expected one of "
+                f"{sorted(TENANT_SCOPES)}."
+            )
+        if tenant_scope == "tenant" and not str(tenant_id or "").strip():
+            raise AuditContractError(
+                "an event declaring tenant scope must carry a tenant identifier; pass "
+                "tenant_scope='unknown' if no tenant could be resolved"
+            )
+
+        # Derived, never passed through. A producer with no tenant has nothing meaningful to put
+        # here, and letting it supply one is exactly how a request-controlled string reached the
+        # routing decision.
+        if tenant_scope != "tenant":
+            tenant_id = tenant_scope
 
         bounded = dict(metadata or {})
         _reject_prohibited(bounded)
@@ -278,6 +329,7 @@ class AuditDispatcher:
             "causation_id": causation_id,
             "actor_principal_id": actor_id,
             "tenant_id": tenant_id,
+            "tenant_scope": tenant_scope,
             "subject_type": subject_type,
             "subject_id": subject_id,
             "outcome": outcome,

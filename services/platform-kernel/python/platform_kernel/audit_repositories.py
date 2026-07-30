@@ -21,10 +21,16 @@ from typing import Any, Dict, Optional, Sequence
 
 from platform_kernel import db
 
-# The producer emits these in the tenant position on paths that run before a tenant is resolved.
-# They are not identifiers and must not reach a UUID column — the same class of error as
-# `mem_<uuid>` in a uuid column, which is an open finding elsewhere in this repository.
+# Scopes a producer can declare when no tenant applies. These reach the `tenant_scope` column;
+# the identifier column is NULL, which `chk_lifecycle_tenant_agreement` in migration 005
+# requires. They are no longer looked for in the tenant position — see `record`.
 UNSCOPED_TENANT_SENTINELS = {"unknown", "scoped"}
+
+# The full vocabulary, matching `chk_lifecycle_scope` in migration 005 and `TENANT_SCOPES` in
+# `kernel_core.audit`. Kept as a literal rather than imported from the check constraint for the
+# usual reason a copy is acceptable here: this one is asserted equal to the producer's list by
+# the contract suite, so drift fails a test rather than widening a control.
+ALLOWED_TENANT_SCOPES = {"tenant"} | UNSCOPED_TENANT_SENTINELS
 
 
 class LifecycleEventPersistenceError(RuntimeError):
@@ -46,23 +52,46 @@ class PostgresLifecycleEventSink:
     """
 
     def record(self, event: Dict[str, Any]) -> None:
-        tenant_value = str(event.get("tenant_id") or "").strip()
+        """Route the event by the scope its producer declared.
 
-        if tenant_value in UNSCOPED_TENANT_SENTINELS:
+        This used to decide by matching `tenant_id` against `UNSCOPED_TENANT_SENTINELS`. On the
+        context-switch denial path that identifier is the request body's tenant field, so the
+        caller chose the route: naming your tenant `unknown` filed your own denial under a NULL
+        tenant, where no SELECT policy reaches it. Reproduced end to end on 2026-07-30 — of two
+        identical denials, the one whose requested tenant was the literal string `unknown`
+        vanished from the tenant's audit trail.
+
+        The scope is now the producer's word, and the producer reaches it by parsing rather than
+        by recognising a magic value, so `unknown` is one unresolvable string among infinitely
+        many and carries no special power.
+        """
+        tenant_scope = str(event.get("tenant_scope") or "").strip()
+
+        if tenant_scope not in ALLOWED_TENANT_SCOPES:
+            raise LifecycleEventPersistenceError(
+                f"lifecycle event declares an unusable tenant scope: {tenant_scope!r}. "
+                f"Expected one of {sorted(ALLOWED_TENANT_SCOPES)}. The producer sets this; an "
+                f"event arriving without it was built by something that bypassed "
+                f"AuditDispatcher.emit_lifecycle_event."
+            )
+
+        if tenant_scope in UNSCOPED_TENANT_SENTINELS:
             # A pre-resolution event: the tenant is genuinely not known yet. It is written with a
-            # null identifier and the sentinel preserved as scope, under the policy migration 006
-            # adds. Migration 005 alone refused these rows outright, which lost exactly the audit
+            # null identifier and the scope preserved, under the policy migration 006 adds.
+            # Migration 005 alone refused these rows outright, which lost exactly the audit
             # records describing failures that occur before a tenant is established.
-            self._insert(event, tenant_id=None, tenant_scope=tenant_value, scoped_write=False)
+            self._insert(event, tenant_id=None, tenant_scope=tenant_scope, scoped_write=False)
             return
 
+        tenant_value = str(event.get("tenant_id") or "").strip()
         try:
             tenant_id = str(uuid.UUID(tenant_value))
         except ValueError:
             raise LifecycleEventPersistenceError(
-                f"lifecycle event carries a tenant value that is neither a UUID nor a known "
-                f"scope sentinel: {tenant_value!r}. Recognised sentinels are "
-                f"{sorted(UNSCOPED_TENANT_SENTINELS)}."
+                f"lifecycle event declares tenant scope but carries {tenant_value!r} in the "
+                f"tenant position, which is not a tenant identifier. This is a producer defect "
+                f"and is deliberately loud: silently rerouting it to the unscoped bucket is the "
+                f"behaviour that made caller-supplied values a routing decision."
             )
 
         self._insert(event, tenant_id=tenant_id, tenant_scope="tenant", scoped_write=True)

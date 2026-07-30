@@ -3,7 +3,7 @@
   "$id": "https://bopen.io/schemas/v1/lifecycle-event.json",
   "title": "LifecycleEvent",
   "version": "1.0.0",
-  "description": "Phase 2 lifecycle audit envelope emitted by AuditDispatcher.emit_lifecycle_event (packages/kernel-core/python/kernel_core/audit.py:120) v1.0.0. Governing artifacts: docs/work-packages/BOPEN-P1-001-EXECUTION-PLAN.md section 10.2 (Audit envelope), BOPEN-IDP-001 section 15, BOPEN-P2-001. This schema is written from the producer outward: every property below was observed on real events from all eight call sites (invitation, membership, IdP connection, SSO, identity linking, SCIM, context switching, delegation), which emit one uniform thirteen-key object with no variation. It is a SECOND audit envelope, distinct from audit-event.json and not a replacement for it. audit-event.json describes AuditDispatcher.dispatch (audit.py:70), which reports authorization decisions with `timestamp`, `actor_id` and `status` in {SUCCESS, DENIED, ERROR}. This envelope reports lifecycle outcomes with `occurred_at`, `actor_principal_id` and `outcome` in {success, deny, failure}. The two vocabularies name the same idea in different words and both producers are live; the divergence is recorded here rather than resolved, because audit-event.json is frozen, so a consumer reading both streams must map `status` and `outcome` onto a single domain itself. Note which side matches the specification: BOPEN-P1-001 section 10.2 specifies `event_version`, `occurred_at`, `causation_id`, `actor_principal_id`, `subject_type`/`subject_id` and `outcome` in {success, deny, failure} by those exact names, as does docs/06-contracts/events/event-envelope.md. This envelope implements that table; audit-event.json's field names appear in neither document. Two fields BOPEN-P1-001 section 10.2 does specify are absent from the producer and therefore from this schema: `policy_version` (specified as required for authorization events, which these are not) and `integrity_version`. They are recorded here as a known gap rather than declared, because a schema requiring a field the producer never writes is unsatisfiable by correct code. INV-P2-018 forbids credentials, assertions, authorization codes and tokens anywhere in this envelope; `metadata.propertyNames` enforces the key half of that prohibition.",
+  "description": "Phase 2 lifecycle audit envelope emitted by AuditDispatcher.emit_lifecycle_event (packages/kernel-core/python/kernel_core/audit.py:120) v1.0.0. Governing artifacts: docs/work-packages/BOPEN-P1-001-EXECUTION-PLAN.md section 10.2 (Audit envelope), BOPEN-IDP-001 section 15, BOPEN-P2-001. This schema is written from the producer outward: every property below was observed on real events from all eight call sites (invitation, membership, IdP connection, SSO, identity linking, SCIM, context switching, delegation), which emit one uniform fourteen-key object with no variation. The fourteenth, `tenant_scope`, was added on 2026-07-30: the table had carried the concept since migration 005 but the envelope had not, so the sink recovered it by matching `tenant_id` against magic strings — and on the context-switch denial path that value is request body, which made the routing a caller's choice. It is a SECOND audit envelope, distinct from audit-event.json and not a replacement for it. audit-event.json describes AuditDispatcher.dispatch (audit.py:70), which reports authorization decisions with `timestamp`, `actor_id` and `status` in {SUCCESS, DENIED, ERROR}. This envelope reports lifecycle outcomes with `occurred_at`, `actor_principal_id` and `outcome` in {success, deny, failure}. The two vocabularies name the same idea in different words and both producers are live; the divergence is recorded here rather than resolved, because audit-event.json is frozen, so a consumer reading both streams must map `status` and `outcome` onto a single domain itself. Note which side matches the specification: BOPEN-P1-001 section 10.2 specifies `event_version`, `occurred_at`, `causation_id`, `actor_principal_id`, `subject_type`/`subject_id` and `outcome` in {success, deny, failure} by those exact names, as does docs/06-contracts/events/event-envelope.md. This envelope implements that table; audit-event.json's field names appear in neither document. Two fields BOPEN-P1-001 section 10.2 does specify are absent from the producer and therefore from this schema: `policy_version` (specified as required for authorization events, which these are not) and `integrity_version`. They are recorded here as a known gap rather than declared, because a schema requiring a field the producer never writes is unsatisfiable by correct code. INV-P2-018 forbids credentials, assertions, authorization codes and tokens anywhere in this envelope; `metadata.propertyNames` enforces the key half of that prohibition.",
   "type": "object",
   "required": [
     "event_id",
@@ -14,6 +14,7 @@
     "causation_id",
     "actor_principal_id",
     "tenant_id",
+    "tenant_scope",
     "subject_type",
     "subject_id",
     "outcome",
@@ -73,7 +74,10 @@
       "description": "Caller-supplied trace identifier, passed through unvalidated. Call sites supply either a request correlation id or, in ContextSwitchService, the idempotency key (context_service.py:350, 454) — so this value is not drawn from a single namespace across producers."
     },
     "causation_id": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Identifier of the command or prior event that caused this one. Always present as a key and, at the time of writing, always null: the parameter defaults to None at audit.py:131 and no caller in packages/kernel-core or services/platform-kernel passes it. Typed nullable rather than dropped because the producer always writes the key, and the causal chain it exists to carry is not yet threaded through."
     },
     "actor_principal_id": {
@@ -84,7 +88,16 @@
     "tenant_id": {
       "type": "string",
       "minLength": 1,
-      "description": "Owning tenant boundary. The literal 'unknown' is emitted on paths that deny before a tenant is established (membership.py:523, idp_bridge.py:407), so this value is not always a resolvable tenant and must not be treated as one by a consumer."
+      "description": "Owning tenant boundary. Reads as a resolvable tenant only when `tenant_scope` is 'tenant'; otherwise it repeats the scope value and identifies nothing. It previously carried the literal 'unknown' with no accompanying field to say so, which meant a consumer had to infer scope by recognising that string — and the PostgreSQL sink did exactly that, on a path where this value came from the request body. See `tenant_scope`."
+    },
+    "tenant_scope": {
+      "type": "string",
+      "enum": [
+        "tenant",
+        "unknown",
+        "scoped"
+      ],
+      "description": "Whether the event belongs to a tenant, and if not, why. 'tenant' means tenant_id identifies one; 'unknown' means none could be resolved, such as an authentication failure or an absent membership; 'scoped' means the event is deliberately not tenant-specific, such as a revocation sweep across contexts. This mirrors chk_lifecycle_scope on the lifecycle_events table, which has modelled the distinction since migration 005 while the envelope did not carry it. Stated by the producer and never derived from tenant_id: deriving it is what let a caller choose where their own denial was filed."
     },
     "subject_type": {
       "type": "string",
@@ -98,7 +111,11 @@
     },
     "outcome": {
       "type": "string",
-      "enum": ["success", "deny", "failure"],
+      "enum": [
+        "success",
+        "deny",
+        "failure"
+      ],
       "description": "Lifecycle result. The producer rejects anything outside this set with AuditContractError (audit.py:141), and the set is exactly the one BOPEN-P1-001 section 10.2 specifies for this field. 'failure' is declared and reachable through emit_lifecycle_event but is emitted by no Phase 2 call site: every producer passes 'success' or 'deny'. Distinct in both spelling and membership from audit-event.json's `status` enum {SUCCESS, DENIED, ERROR}, which no governing document names."
     },
     "reason_code": {

@@ -317,15 +317,24 @@ class IdpBridge:
     # -- helpers -----------------------------------------------------------------
 
     def _emit(
-        self, event_type: str, correlation_id: str, actor_id: str, tenant_id: str,
+        self, event_type: str, correlation_id: str, actor_id: str, tenant_id: Optional[str],
         subject_type: str, subject_id: str, outcome: str, reason_code: str,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
+        """Emit a lifecycle event, declaring the tenant scope rather than implying it.
+
+        `tenant_id=None` means the caller could not resolve a tenant — an SSO callback whose
+        connection is unrecognised, for instance. That is now said in the scope field instead of
+        being spelled as the string `unknown` in the identifier field, because the sink used to
+        route on that string and any producer passing a caller-influenced value through could
+        therefore let the caller choose the routing.
+        """
         return self.audit.emit_lifecycle_event(
             event_type=event_type,
             correlation_id=correlation_id,
             actor_id=actor_id,
             tenant_id=tenant_id,
+            tenant_scope="tenant" if tenant_id else "unknown",
             subject_type=subject_type,
             subject_id=subject_id,
             outcome=outcome,
@@ -404,7 +413,8 @@ class IdpBridge:
         (BOPEN-IDP-001 18).
         """
         connection = self.store.connections.get(result.connection_id)
-        tenant_id = connection.tenant_id if connection else "unknown"
+        # None rather than "unknown": the scope is declared in `_emit`, not spelled here.
+        tenant_id = connection.tenant_id if connection else None
 
         def deny(reason: str) -> None:
             self._emit(

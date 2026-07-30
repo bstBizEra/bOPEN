@@ -345,16 +345,37 @@ class ContextSwitchService:
         self.token_lifetime = token_lifetime
 
     def _deny(self, command: SwitchContextCommand, reason_code: str, actor_id: str = "unknown") -> None:
+        """Audit a denied switch.
+
+        `command.tenant_id` is request body. It was previously passed straight into the tenant
+        position of the audit envelope, and the sink decided where to file the event by matching
+        that value against the strings `unknown` and `scoped` — so a caller who asked to switch
+        to a tenant named `unknown` filed their own denial under a NULL tenant, which no SELECT
+        policy reaches. Two identical denials, one visible in the tenant's trail and one not,
+        chosen by the attacker. Found by security review on 2026-07-30 and reproduced.
+
+        The scope is now decided here, by whether the requested value is a tenant identifier at
+        all, and `unknown` is simply one of the many strings that are not. The raw request value
+        stays in metadata, where it is evidence about what was attempted rather than an input to
+        where the evidence is filed.
+        """
+        try:
+            uuid.UUID(str(command.tenant_id))
+            resolvable = True
+        except (ValueError, AttributeError, TypeError):
+            resolvable = False
+
         self.audit.emit_lifecycle_event(
             event_type="context.switch_denied",
             correlation_id=command.idempotency_key,
             actor_id=actor_id,
-            tenant_id=command.tenant_id,
+            tenant_id=command.tenant_id if resolvable else None,
+            tenant_scope="tenant" if resolvable else "unknown",
             subject_type="context",
             subject_id=command.expected_context_id or "none",
             outcome="deny",
             reason_code=reason_code,
-            metadata={"requested_tenant": command.tenant_id},
+            metadata={"requested_tenant": str(command.tenant_id)},
         )
 
     def switch(self, command: SwitchContextCommand) -> IssuedContext:
@@ -474,7 +495,8 @@ class ContextSwitchService:
                 event_type="context.revoked",
                 correlation_id=correlation_id,
                 actor_id="security_control",
-                tenant_id="scoped",
+                tenant_id=None,
+                tenant_scope="scoped",
                 subject_type="context",
                 subject_id=context_id,
                 outcome="success",
@@ -490,7 +512,8 @@ class ContextSwitchService:
                 event_type="context.revoked",
                 correlation_id=correlation_id,
                 actor_id="security_control",
-                tenant_id="scoped",
+                tenant_id=None,
+                tenant_scope="scoped",
                 subject_type="context",
                 subject_id=context_id,
                 outcome="success",

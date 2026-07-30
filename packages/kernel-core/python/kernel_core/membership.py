@@ -520,7 +520,8 @@ class MembershipStateMachine:
             event_type="membership.transition_denied",
             correlation_id=command.correlation_id,
             actor_id=command.actor_id,
-            tenant_id=membership.tenant_id if membership else "unknown",
+            tenant_id=membership.tenant_id if membership else None,
+            tenant_scope="tenant" if membership else "unknown",
             subject_type="membership",
             subject_id=command.membership_id,
             outcome="deny",
@@ -761,17 +762,19 @@ class InvitationEngine:
         event_type: str,
         correlation_id: str,
         actor_id: str,
-        tenant_id: str,
+        tenant_id: Optional[str],
         subject_id: str,
         outcome: str,
         reason_code: str,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
+        """`tenant_id=None` declares that no tenant could be resolved. See `TENANT_SCOPES`."""
         return self.audit.emit_lifecycle_event(
             event_type=event_type,
             correlation_id=correlation_id,
             actor_id=actor_id,
             tenant_id=tenant_id,
+            tenant_scope="tenant" if tenant_id else "unknown",
             subject_type="invitation",
             subject_id=subject_id,
             outcome=outcome,
@@ -789,7 +792,7 @@ class InvitationEngine:
         invitation = self.invitations.find_by_digest(self.hasher.hash(raw_token))
         if invitation is None:
             self._emit(
-                "invitation.validation_failed", correlation_id, "anonymous", "unknown",
+                "invitation.validation_failed", correlation_id, "anonymous", None,
                 "unknown", "deny", "INVITATION_INVALID",
             )
             raise InvitationInvalid("Invitation is not valid")

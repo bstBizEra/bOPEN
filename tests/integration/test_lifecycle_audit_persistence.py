@@ -95,7 +95,7 @@ class LifecycleAuditPersistenceTests(unittest.TestCase):
         match = re.search(r"/([^/?]+)(?:\?.*)?$", os.environ["BOPEN_DATABASE_URL"])
         return match.group(1) if match else "bopen_dev"
 
-    def _emit(self, tenant_id: str, **overrides):
+    def _emit(self, tenant_id, **overrides):
         params = dict(
             event_type="invitation.issued",
             correlation_id=f"corr-{uuid.uuid4().hex[:12]}",
@@ -142,50 +142,39 @@ class LifecycleAuditPersistenceTests(unittest.TestCase):
     def test_an_event_with_no_resolved_tenant_is_still_written(self):
         """Migration 005 refused these rows outright and this test is why 006 exists.
 
-        The producer emits `unknown` in the tenant position on paths that run before a tenant is
-        resolved — a failed SSO assertion, for instance. 005's only INSERT policy required
-        `tenant_id` to equal the session tenant, and `NULL = anything` is never true, so the
-        record could not be written at all.
+        A producer that cannot resolve a tenant declares `tenant_scope="unknown"`. 005's only
+        INSERT policy required `tenant_id` to equal the session tenant, and `NULL = anything` is
+        never true, so the record could not be written at all.
 
         These are precisely the audit records a post-incident review needs: the ones describing a
         failure that happened before anyone knew whose tenant it was.
+
+        This test used to read the row back through an administrative connection, because
+        `db.system_session` runs as the unprivileged application role and is subject to FORCE ROW
+        LEVEL SECURITY like every other role — so before migration 008 it could not read this row
+        either, and only a connection bypassing the policies could confirm the write. That was
+        the administrative gap migration 005 recorded and 006 restated, and it is what made the
+        unscoped bucket a place evidence could be hidden. 008 closes it: unscoped rows are
+        readable from a session that is itself unscoped. Reading through `system_session` here is
+        the assertion that it did.
         """
-        event = self._emit("unknown", outcome="failure", reason_code="SSO_ASSERTION_INVALID")
+        event = self._emit(
+            None, tenant_scope="unknown", outcome="failure", reason_code="SSO_ASSERTION_INVALID"
+        )
 
-        # Verified through an administrative connection, and that detail is the finding rather
-        # than a test convenience. `db.system_session` runs as the unprivileged application role,
-        # which is subject to FORCE ROW LEVEL SECURITY like every other role — so it cannot read
-        # this row either. Only a connection that bypasses the policies can confirm the write.
-        #
-        # That is exactly the administrative path migration 005 records as not yet existing. The
-        # first draft of this test read through `system_session` and failed, which is how the
-        # limitation stopped being a sentence in a migration comment and became something the
-        # suite demonstrates.
-        admin_url = os.environ.get("BOPEN_ADMIN_DATABASE_URL", "").strip()
-        if not admin_url:
-            self.skipTest(
-                "BOPEN_ADMIN_DATABASE_URL is not set; an unscoped row is unreadable without it"
+        with self.db.system_session() as cur:
+            cur.execute(
+                "SELECT tenant_id, tenant_scope, outcome FROM lifecycle_events "
+                "WHERE event_id = %s",
+                (event["event_id"],),
             )
+            row = cur.fetchone()
 
-        import re
-
-        import psycopg
-
-        # The admin URL points at the maintenance database, because that is where CREATE DATABASE
-        # has to run. Swapping the database name is the same thing `tools/db_bootstrap.py` does
-        # for the same reason.
-        target = re.sub(r"/[^/]*$", "/" + self._database_name(), admin_url)
-
-        with psycopg.connect(target, autocommit=True) as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    "SELECT tenant_id, tenant_scope, outcome FROM lifecycle_events "
-                    "WHERE event_id = %s",
-                    (event["event_id"],),
-                )
-                row = cur.fetchone()
-
-        self.assertIsNotNone(row, "an unscoped lifecycle event was not written")
+        self.assertIsNotNone(
+            row,
+            "an unscoped lifecycle event was not readable from an unscoped session; migration "
+            "008 is what makes this bucket reachable at all",
+        )
         self.assertIsNone(row[0], "an unscoped event was stored with a tenant identifier")
         self.assertEqual(row[1], "unknown")
         self.assertEqual(row[2], "failure")
@@ -194,10 +183,12 @@ class LifecycleAuditPersistenceTests(unittest.TestCase):
         """Durable and unreadable is the intended state, not an accident.
 
         A pre-resolution event belongs to no tenant. Returning it to whichever tenant asked would
-        be inventing an owner. Reading them needs an administrative path that does not exist yet,
-        and that gap is recorded rather than closed by a policy that would guess.
+        be inventing an owner. Migration 008 makes these rows readable from an unscoped session
+        and deliberately not from a tenant one, so this assertion is what keeps 008 from having
+        widened anything: it would fail if the new SELECT policy had omitted its unscoped-session
+        condition and exposed every deployment-wide authentication failure to every tenant.
         """
-        self._emit("scoped", outcome="deny", reason_code="CONTEXT_REVOKED")
+        self._emit(None, tenant_scope="scoped", outcome="deny", reason_code="CONTEXT_REVOKED")
 
         for tenant_id in (self.tenant_a, self.tenant_b):
             rows = self.sink.list_for_tenant(tenant_id)
@@ -206,17 +197,152 @@ class LifecycleAuditPersistenceTests(unittest.TestCase):
                 "an unscoped event was visible to a tenant",
             )
 
-    def test_a_tenant_value_that_is_neither_uuid_nor_sentinel_is_refused(self):
+    def test_a_tenant_value_that_is_not_an_identifier_is_refused_not_rerouted(self):
         """Silence here would be the worst outcome available.
 
         A sink that swallowed what it could not write would produce a trail that looks complete.
-        The refusal names the offending value and the recognised sentinels, because a caller
-        hitting this needs to know which of the two mistakes it made.
+        Rerouting is the second-worst: the sink used to send anything matching `unknown` or
+        `scoped` to the unscoped bucket, and on the context-switch denial path that value is
+        request body, so a caller could pick the destination of their own denial. Refusing loudly
+        is the behaviour that leaves a producer defect visible.
         """
         with self.assertRaises(self.PersistenceError) as caught:
             self._emit("tnt_alpha")
 
         self.assertIn("tnt_alpha", str(caught.exception))
+
+    def test_the_old_sentinel_string_no_longer_buys_a_different_destination(self):
+        """The evasion, asserted directly.
+
+        `unknown` in the tenant position, with the scope left at its default, must now be treated
+        exactly like any other non-identifier: refused. It is one unresolvable string among
+        infinitely many and has no special power. Declaring the scope is the only way to reach
+        the unscoped bucket, and a request body cannot declare it.
+        """
+        for value in ("unknown", "scoped", "tnt_alpha", "not-a-uuid"):
+            with self.subTest(value=value):
+                with self.assertRaises(self.PersistenceError):
+                    self._emit(value)
+
+    def test_the_scope_vocabulary_is_identical_in_all_three_places_that_define_it(self):
+        """
+        The producer, the sink and the table each hold a copy of the same three values.
+
+        Three copies are acceptable only while something proves they agree. If the producer
+        gained a fourth scope the sink did not know, every event carrying it would fail to
+        persist; if the table's CHECK constraint disagreed, it would fail at the INSERT instead.
+        Both are outages in the audit path, which is the component least able to afford one.
+        """
+        from kernel_core.audit import TENANT_SCOPES
+        from platform_kernel.audit_repositories import ALLOWED_TENANT_SCOPES
+
+        self.assertEqual(set(TENANT_SCOPES), set(ALLOWED_TENANT_SCOPES))
+
+        with self.db.system_session() as cur:
+            cur.execute(
+                "SELECT pg_get_constraintdef(oid) FROM pg_constraint "
+                "WHERE conname = 'chk_lifecycle_scope'"
+            )
+            row = cur.fetchone()
+
+        self.assertIsNotNone(row, "chk_lifecycle_scope is missing from lifecycle_events")
+        for scope in TENANT_SCOPES:
+            self.assertIn(
+                f"'{scope}'", row[0],
+                f"the producer can emit {scope!r} but the table's CHECK constraint does not "
+                f"permit it; every such event would fail to persist",
+            )
+
+    def test_an_event_built_without_a_declared_scope_is_refused(self):
+        """
+        `emit_lifecycle_event` always sets `tenant_scope`, so reaching the sink without one means
+        something constructed the envelope by hand and bypassed the producer's checks. The sink
+        refuses rather than assuming, because the assumption it would have to make is the routing
+        decision that this whole change exists to take away from the caller.
+        """
+        event = self._emit(self.tenant_a)
+        for missing in (None, "", "Tenant", "admin"):
+            with self.subTest(scope=missing):
+                raw = dict(event, event_id=str(uuid.uuid4()))
+                if missing is None:
+                    raw.pop("tenant_scope")
+                else:
+                    raw["tenant_scope"] = missing
+                with self.assertRaises(self.PersistenceError):
+                    self.sink.record(raw)
+
+    def test_a_denied_switch_for_a_real_tenant_stays_in_that_tenants_trail(self):
+        """
+        The attack path itself, driven through the service rather than the sink.
+
+        `ContextSwitchService._deny` audits with `command.tenant_id`, which is request body. It
+        used to pass that value into the tenant position, and the sink routed on it — so naming
+        your tenant `unknown` filed your own denial where no SELECT policy reached. The scope is
+        now decided here by parsing, so both halves have to be asserted together: a denial naming
+        a real tenant must land in that tenant's trail, and a denial naming an unresolvable one
+        must land in the operator bucket and be readable there.
+
+        Asserting only the second would pass against a producer that filed everything as
+        unscoped, which is what made this the mutation that survived the first run.
+        """
+        from kernel_core.membership import InMemoryMembershipRepository
+        from platform_kernel.context_service import (
+            ContextDenied,
+            ContextSwitchService,
+            DeterministicTestSigner,
+            InMemorySessionStore,
+            SwitchContextCommand,
+        )
+
+        service = ContextSwitchService(
+            memberships=InMemoryMembershipRepository(),
+            sessions=InMemorySessionStore(),
+            signer=DeterministicTestSigner(),
+            audit=self.dispatcher,
+            issuer="https://bopen.local/kernel",
+            audience="https://bopen.local/api",
+        )
+
+        keys = {}
+        for label, requested in (("real", self.tenant_a), ("magic", "unknown")):
+            keys[label] = f"f3-{label}-{uuid.uuid4().hex[:10]}"
+            with self.assertRaises(ContextDenied):
+                service.switch(SwitchContextCommand(
+                    session_id="sess-does-not-exist",
+                    tenant_id=requested,
+                    idempotency_key=keys[label],
+                ))
+
+        with self.db.tenant_session(self.tenant_a) as cur:
+            cur.execute(
+                "SELECT correlation_id, tenant_scope FROM lifecycle_events "
+                "WHERE correlation_id IN (%s, %s)",
+                (keys["real"], keys["magic"]),
+            )
+            in_tenant = dict(cur.fetchall())
+
+        with self.db.system_session() as cur:
+            cur.execute(
+                "SELECT correlation_id, tenant_scope FROM lifecycle_events "
+                "WHERE correlation_id IN (%s, %s)",
+                (keys["real"], keys["magic"]),
+            )
+            in_operator = dict(cur.fetchall())
+
+        self.assertEqual(
+            in_tenant.get(keys["real"]), "tenant",
+            "a denial naming a real tenant did not reach that tenant's audit trail; the "
+            "producer is filing resolvable tenants as unscoped",
+        )
+        self.assertNotIn(
+            keys["magic"], in_tenant,
+            "an event with no resolvable tenant was shown to a tenant, which invents an owner",
+        )
+        self.assertEqual(
+            in_operator.get(keys["magic"]), "unknown",
+            "the denial the caller tried to file away is readable by nobody; this is the "
+            "evasion, and migration 008 is what closes it",
+        )
 
     # -- append-only --------------------------------------------------------------
 
