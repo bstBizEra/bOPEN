@@ -3,6 +3,7 @@ bOPEN Correlated Audit Dispatcher v1.0
 Dispatches structured security audit events matching contracts/schemas/audit-event.json v1.0.0
 """
 
+import math
 import re
 import uuid
 from datetime import datetime, timezone
@@ -55,12 +56,112 @@ class AuditContractError(Exception):
     code = "AUDIT_REQUIRED"
 
 
+# Metadata nests no deeper than this. Every shape produced by the kernel today is one
+# level (scalars, and arrays of scalars), so the bound is not a constraint on real callers;
+# it exists so that a self-referential structure terminates as a contract error rather than
+# as a RecursionError, which would not be an AuditContractError and would surface as a 500.
+_MAX_METADATA_DEPTH = 4
+
+
 def _reject_prohibited(metadata: Dict[str, Any]) -> None:
-    for key, value in metadata.items():
-        if key.lower() in PROHIBITED_METADATA_KEYS:
-            raise AuditContractError(f"Prohibited audit metadata key: {key}")
-        if isinstance(value, str) and (_JWT_LIKE.match(value) or _SAML_LIKE.search(value)):
-            raise AuditContractError(f"Prohibited credential-like value in metadata key: {key}")
+    """Refuse metadata that is credential-bearing, unstorable, or unbounded.
+
+    INV-P2-018 says no raw credential, assertion, authorization code or token may be logged
+    or evidenced. This is the enforcement point: the last thing between a producer's mistake
+    and a durable row.
+
+    It previously walked `metadata.items()` once and applied `isinstance(value, str)`, so it
+    saw only the top level. Security review on 2026-07-30 reproduced the consequence, and
+    measurement widened it — ten of twelve probe shapes were accepted, including:
+
+        {'token': jwt}                 -> refused      (the only shape it was written for)
+        {'d': {'token': jwt}}          -> ACCEPTED     credential persisted
+        {'d': [jwt]}                   -> ACCEPTED     credential persisted
+        {'d': [{'password': '...'}]}   -> ACCEPTED     credential persisted
+        {'d': {1: jwt}}                -> ACCEPTED     and json.dumps coerced the key to '1'
+        {'d': b'...'} / {'d': object()}-> ACCEPTED     sink raises TypeError, event lost
+        {'d': float('nan')}            -> ACCEPTED     json.dumps emits bare NaN, which is
+                                                       not JSON; PostgreSQL refuses the
+                                                       insert (measured), event lost
+
+    The root cause is one decision, not three bugs: the check enumerated what is forbidden
+    and let everything else through. A deny-list over an open value space is incomplete by
+    construction, and every future container type reopens it.
+
+    So the check now bounds what is *permitted*. Metadata is stored as `jsonb`, and the JSON
+    value space is exactly object / array / string / number / bool / null — a closed set.
+    Anything outside it cannot be stored faithfully anyway: a tuple reads back as a list, an
+    int key reads back as a string, bytes and arbitrary objects do not serialise at all. The
+    walk therefore recurses through objects and arrays applying the key prohibition and the
+    credential-shape scan at every depth, and refuses any other type outright.
+
+    That closes the enumeration in the direction that matters: a shape nobody anticipated is
+    now refused rather than accepted. Errors name the path (`metadata.d[0].token`) so the
+    producer can find it.
+
+    Two limits worth stating plainly. The key list and the value patterns remain heuristics —
+    a credential in a key named `note`, with no JWT or SAML shape, still passes, and no
+    check at this layer can find it; not putting credentials in audit metadata remains the
+    producer's obligation and this is a net beneath it, not a substitute. And refusal is
+    total: a violating event is not written at all, so INV-P2-018 is enforced at the cost of
+    INV-P2-017 for that event. That trade is deliberate — a lost audit row is recoverable
+    from the operation that failed with it, a leaked credential in an append-only table is
+    not — but it means a producer bug takes down the operation, which is the correct
+    pressure to put on a producer bug.
+    """
+    _walk_metadata(metadata, "metadata", 0)
+
+
+def _walk_metadata(value: Any, path: str, depth: int) -> None:
+    if depth > _MAX_METADATA_DEPTH:
+        raise AuditContractError(
+            f"Audit metadata nests deeper than {_MAX_METADATA_DEPTH} levels at {path}. "
+            f"Flatten it, or check for a self-referential structure."
+        )
+
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise AuditContractError(
+                    f"Audit metadata key at {path} is {type(key).__name__}, not str: {key!r}. "
+                    f"json.dumps would coerce it to a string, so the stored key would differ "
+                    f"from the one written — and a non-string key cannot be matched against "
+                    f"the prohibited-key list."
+                )
+            if key.lower() in PROHIBITED_METADATA_KEYS:
+                raise AuditContractError(f"Prohibited audit metadata key: {path}.{key}")
+            _walk_metadata(item, f"{path}.{key}", depth + 1)
+        return
+
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            _walk_metadata(item, f"{path}[{index}]", depth + 1)
+        return
+
+    if isinstance(value, str):
+        if _JWT_LIKE.match(value) or _SAML_LIKE.search(value):
+            raise AuditContractError(f"Prohibited credential-like value at {path}")
+        return
+
+    # bool before int: bool is a subclass of int, and both are storable, so the order only
+    # matters for readability here — but it matters for the float branch below.
+    if value is None or isinstance(value, (bool, int)):
+        return
+
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise AuditContractError(
+                f"Audit metadata value at {path} is {value!r}, which json.dumps emits as a "
+                f"bare NaN/Infinity token. That is not valid JSON and PostgreSQL refuses the "
+                f"insert, so the event would be lost rather than recorded."
+            )
+        return
+
+    raise AuditContractError(
+        f"Unsupported audit metadata type at {path}: {type(value).__name__}. Metadata is "
+        f"stored as jsonb, so values must be object, array, string, number, bool or null. "
+        f"Convert it at the call site, where its meaning is known."
+    )
 
 
 class LifecycleEventSink(Protocol):

@@ -628,6 +628,106 @@ class MetadataBoundaryTests(_LifecycleTestCase):
                 self.assertNotIn(prohibited, {k.lower() for k in event["metadata"]})
 
 
+class MetadataDepthTests(_LifecycleTestCase):
+    """
+    The INV-P2-018 check used to see only the top level of `metadata`.
+
+    Security review on 2026-07-30 reported that one level of nesting walked straight past it,
+    and reproduction widened that to ten of twelve probe shapes. Each case below was ACCEPTED
+    before the fix and persisted through to the sink; the last three were accepted here and
+    then destroyed the event downstream instead, which is the same defect wearing a different
+    failure. They are kept as separate cases rather than one loop because they fail for
+    different reasons and a single parametrised assertion would hide which one regressed.
+    """
+
+    def _emit(self, metadata):
+        return AuditDispatcher(CollectingLifecycleSink()).emit_lifecycle_event(
+            event_type="identity.linked", correlation_id=CORRELATION,
+            actor_id="usr_a", tenant_id="tnt_alpha", subject_type="external_identity",
+            subject_id="eid_1", outcome="success", reason_code="LINKED", metadata=metadata,
+        )
+
+    def test_a_credential_key_nested_one_level_down_is_refused(self):
+        """The reported bypass, verbatim: `{'d': {'token': jwt}}` reached the table."""
+        with self.assertRaises(AuditContractError) as caught:
+            self._emit({"detail": {"token": "eyJhbGciOi.AAAAAAAAAA.sig"}})
+        self.assertIn("metadata.detail.token", str(caught.exception))
+
+    def test_a_credential_shaped_value_inside_an_array_is_refused(self):
+        """Arrays of strings are a real metadata shape (`applied_roles`), so this path is live."""
+        with self.assertRaises(AuditContractError) as caught:
+            self._emit({"detail": ["eyJhbGciOi.AAAAAAAAAA.sig"]})
+        self.assertIn("metadata.detail[0]", str(caught.exception))
+
+    def test_a_credential_key_inside_an_array_of_objects_is_refused(self):
+        with self.assertRaises(AuditContractError) as caught:
+            self._emit({"detail": [{"password": "hunter2"}]})
+        self.assertIn("metadata.detail[0].password", str(caught.exception))
+
+    def test_a_saml_assertion_nested_one_level_down_is_refused(self):
+        with self.assertRaises(AuditContractError):
+            self._emit({"detail": {"body": '<saml2:Assertion a="b">x</saml2:Assertion>'}})
+
+    def test_a_non_string_key_is_refused_rather_than_silently_coerced(self):
+        """
+        `json.dumps({1: x})` stores the key as `"1"`, so the stored event differs from the one
+        the producer wrote — and a non-string key cannot be lowercased against the prohibited
+        list, so recursing without this check would have turned the bypass into an
+        AttributeError and a 500.
+        """
+        with self.assertRaises(AuditContractError) as caught:
+            self._emit({"detail": {1: "eyJhbGciOi.AAAAAAAAAA.sig"}})
+        self.assertIn("not str", str(caught.exception))
+
+    def test_a_value_that_cannot_be_serialised_is_refused_here_not_at_the_sink(self):
+        """
+        `bytes` and bare objects raise TypeError inside the sink's `json.dumps`. That is not an
+        AuditContractError, so it escapes as a 500 and the event is lost — the producer's
+        mistake becomes an availability fault rather than a rejected write.
+        """
+        for value in (b"\x00", object(), {"nested"}):
+            with self.subTest(value=type(value).__name__):
+                with self.assertRaises(AuditContractError) as caught:
+                    self._emit({"detail": value})
+                self.assertIn("Unsupported audit metadata type", str(caught.exception))
+
+    def test_a_non_finite_number_is_refused_because_postgresql_refuses_it(self):
+        """
+        `json.dumps(float('nan'))` emits a bare `NaN`, which is not JSON. Measured against the
+        verification database: `'{"d": NaN}'::jsonb` raises InvalidTextRepresentation, so the
+        INSERT fails and the audit row is lost.
+        """
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value):
+                with self.assertRaises(AuditContractError):
+                    self._emit({"detail": value})
+
+    def test_a_self_referential_structure_terminates_as_a_contract_error(self):
+        """
+        Without a depth bound this recurses until RecursionError, which is not an
+        AuditContractError and so would surface as a 500 rather than a refused write.
+        """
+        cyclic = {}
+        cyclic["self"] = cyclic
+        with self.assertRaises(AuditContractError) as caught:
+            self._emit({"detail": cyclic})
+        self.assertIn("nests deeper", str(caught.exception))
+
+    def test_the_shapes_real_call_sites_produce_are_still_accepted(self):
+        """
+        The bound is on the value space, not on nesting itself. If this fails, the fix has
+        stopped being a security control and started being an outage: every shape here is one
+        the kernel emits today, taken from the observed-types test above.
+        """
+        event = self._emit({
+            "reason": "linked", "resulting_version": 3, "ratio": 0.5, "ok": True,
+            "delegated_grant_id": None, "applied_roles": ["owner", "member"],
+            "nested": {"inner": ["a", 1]},
+        })
+        validate(event, self.schema)
+        self.assertEqual(event["metadata"]["applied_roles"], ["owner", "member"])
+
+
 class ValidationIsNotVacuousTests(_LifecycleTestCase):
     """
     Proof that this schema constrains something.

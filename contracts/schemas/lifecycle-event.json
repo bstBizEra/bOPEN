@@ -108,7 +108,7 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Bounded per-event detail. Always present, sometimes empty. Observed value types are string, integer, null and array-of-string; no nested object appears at any call site, but none is forbidden, so this stays open rather than pretending to a flatness the producer does not enforce.",
+      "description": "Bounded per-event detail. Always present, sometimes empty. Observed value types are string, integer, null and array-of-string. Nesting is permitted but no longer unexamined: this description previously recorded that no nested object appears at any call site and that none is forbidden, which was accurate about the producer and was exactly the gap security review walked through on 2026-07-30 — the producer's INV-P2-018 check saw only the top level, so a credential one level down was accepted and stored. The producer now walks the whole structure and constrains values to the JSON value space; this schema still constrains only top-level property names, for the reasons below.",
       "additionalProperties": true,
       "propertyNames": {
         "not": {
