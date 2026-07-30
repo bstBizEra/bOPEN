@@ -27,6 +27,14 @@ fastapi==0.121.2
 # would reject a malformed address.
 pydantic[email]==2.12.4
 
+# Context access token issuance and verification (BOPEN-IDP-001 section 12).
+# Section 12.4 mandates asymmetric signing keys, which the standard library cannot provide, so
+# this dependency is required rather than convenient. PyJWT is used with an explicit algorithm
+# allowlist and never reads `alg` from the token; the [crypto] extra pulls `cryptography` for
+# Ed25519.
+# License: MIT (pyjwt), Apache-2.0 OR BSD-3-Clause (cryptography)
+pyjwt[crypto]==2.12.1
+
 # ASGI server for running the kernel, and the transport used by the HTTP integration tests.
 # httpx is required by fastapi.testclient; the tests drive the app through a real ASGI
 # transport rather than calling handler functions directly, so routing, header validation and
