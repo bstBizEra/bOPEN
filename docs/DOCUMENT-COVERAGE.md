@@ -5,6 +5,9 @@
 | Research and clean room | BOPEN-RES-001 | Approved (`EVD-RES-001-G7`) | Cleared | **Gate G7 Passed** |
 | Repository governance | BOPEN-BOOT-001 | Approved | Operational | **B7 Passed** |
 | Product requirements | Initial catalog | BOPEN-REQ-001 | **Approved** | **Phase 1 Completed** |
+| Runtime assurance requirements | Review-driven completion controls | BOPEN-PRD-P35-001 | **Proposed** | No authority; assists proposed Phase 3.5 plan |
+| Phase 3.5 entry decisions | Runtime, storage, identity, audit, and PRD dispositions | DEC-P35-DOCKET-001 | **Proposed** | Designated authority ratification required |
+| Phase 2 storage ambiguity | Mapping revision and delegated-grant overlap semantics | DEC-P35-PHASE2-STORAGE-ADD-001 | **Proposed advisory** | Architecture, Engineering, Security, and Product disposition required |
 | Platform architecture | Layer & master plan | BOPEN-ARCH-001 / BOPEN-ARCH-PLAN-001 | **Approved** | **Phase 1 Completed** |
 | Tenant and membership | Concept & isolation | BOPEN-TENANT-001 | **Approved** | **Phase 2 technically verified; acceptance pending** |
 | Authorization | Deny-by-default ReBAC | BOPEN-AUTHZ-001 | **Approved** | **Phase 1 Completed** |

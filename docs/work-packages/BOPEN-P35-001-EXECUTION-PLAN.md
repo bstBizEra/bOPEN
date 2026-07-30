@@ -163,9 +163,16 @@ reversible by deletion.
 
 ## Completion record
 
-*`WP-P35-01`..`WP-P35-03` implemented, `IMPLEMENTED_UNVERIFIED`, zero ballots cast.
-`WP-P35-04`, `WP-P35-05` not started. Completion is recorded only against executed evidence
-meeting A-01..A-07.*
+*`WP-P35-01`..`WP-P35-04` implemented, all `IMPLEMENTED_UNVERIFIED`, zero ballots cast.
+`WP-P35-05` not started and blocked by `D-P35-011`..`D-P35-014`. Completion is recorded only
+against executed evidence meeting A-01..A-07.*
+
+| Deliverable | State | Evidence |
+| :--- | :--- | :--- |
+| D-01..D-06 (`WP-P35-01`) | implemented, unverified | [`maker-submission.md`](../evidence/phase-3.5/maker-submission.md) |
+| D-07 (`WP-P35-02`) | implemented, unverified | [`wp-p35-02-maker-submission.md`](../evidence/phase-3.5/wp-p35-02-maker-submission.md) |
+| D-08 (`WP-P35-03`) | implemented, unverified | [`wp-p35-03-maker-submission.md`](../evidence/phase-3.5/wp-p35-03-maker-submission.md) |
+| D-09 (`WP-P35-04`) | implemented, unverified — 31 tests, 3 mutation probes | [`wp-p35-04-maker-submission.md`](../evidence/phase-3.5/wp-p35-04-maker-submission.md) |
 
 Roles are assigned per work package and alternate, so that each engine stays eligible to verify
 the other's work. Assigned 2026-07-31.

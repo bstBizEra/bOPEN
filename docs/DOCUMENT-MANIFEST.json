@@ -1,13 +1,13 @@
 {
   "generated": "2026-07-29",
-  "count": 269,
+  "count": 276,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
       "title": "bOPEN Agent Alignment & Context Register v1.0",
       "status": "Operational",
-      "sha256": "f95d5a2bf23947174e4268a5ee0b574d6cce737029f98b99b0dc2ae999748edc",
-      "bytes": 2890
+      "sha256": "cedc9b9e316bb1b395ed6345c16ea4ab3d9e3297ebb57314f364ca170f9e0dd6",
+      "bytes": 3403
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -108,11 +108,18 @@
       "bytes": 11845
     },
     {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md",
+      "title": "HANDOFF-P35-MAKER-SPLIT-TO-CODEX \u2014 Phase 3.5 maker split",
+      "status": "Active \u2014 issued 2026-07-31",
+      "sha256": "a287497c50417c160ca1ab4724293746cb74700e7f167e831c341d978face85f",
+      "bytes": 9064
+    },
+    {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
-      "status": "Stood down 2026-07-30 \u2014 retained as a record",
-      "sha256": "8543030ec1bdf3b750341ae053793a3b1d940b7186707c0bda95493df66f3d3e",
-      "bytes": 17306
+      "status": "Stood down 2026-07-30; **superseded 2026-07-31** by [`HANDOFF-P35-MAKER-SPLIT-TO-CODEX`](HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md) \u2014 retained as a record, do not execute",
+      "sha256": "a162a0ad549c69c7f1342bb6c820b8f07db2fa40f38e3b6c79c203c3751d5930",
+      "bytes": 17426
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
@@ -218,6 +225,13 @@
       "status": "",
       "sha256": "fe1b91e58b6b10402456f49672a1dd956e4c632c799b9abbb907f69119660ad9",
       "bytes": 105
+    },
+    {
+      "path": "docs/02-requirements/BOPEN-PRD-P35-001.md",
+      "title": "BOPEN-PRD-P35-001 - Runtime Assurance and Completion Product Requirements",
+      "status": "Proposed - assists `BOPEN-P35-001`; no implementation authority",
+      "sha256": "9a82d59f8655d2c903a8f1dae58201bbea02436a7de0b89a242a4a579a7ee989",
+      "bytes": 20611
     },
     {
       "path": "docs/02-requirements/BOPEN-REQ-001-DRAFT.md",
@@ -1070,15 +1084,15 @@
       "path": "docs/ARTIFACT-REGISTER.md",
       "title": "Artifact Register",
       "status": "",
-      "sha256": "8b2907f8e319cbe00fdaec04e4452fda006299274938fedeb3f6f74644e714d3",
-      "bytes": 2533
+      "sha256": "a7f1250c0511671bc55710bc2f44d8064e759a1980424bcc2dfb07801c2959cf",
+      "bytes": 3042
     },
     {
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "c590129b8fed102993f8de031ada1bba3a2c9c6ab9044c8ce456822ec1b39621",
-      "bytes": 2750
+      "sha256": "0185a17bc63788656e941d766278b2ccb3111a317c66d55f864f14611ec13e4d",
+      "bytes": 14326
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1102,39 +1116,60 @@
       "bytes": 6580
     },
     {
+      "path": "docs/decisions/DEC-P35-AUTH-BOUNDARY.md",
+      "title": "DEC-P35-AUTH-BOUNDARY \u2014 Where the kernel stops and the identity provider starts",
+      "status": "Advisory. Recommends; does not decide.",
+      "sha256": "728b74f2b960f21e71dd70e57333e15e8d3c210051347575a4ae461d837d4b4e",
+      "bytes": 12235
+    },
+    {
+      "path": "docs/decisions/DEC-P35-DOCKET.md",
+      "title": "DEC-P35-DOCKET - Phase 3.5 entry decision docket",
+      "status": "Partially ratified 2026-07-31 - `D-P35-001`..`D-P35-003` accepted (\u00a76.1); `D-P35-004`..`D-P35-018` awaiting designated authority decisions",
+      "sha256": "96eeabfc938eba0bddbcd426e996c28bb510a910b537c1e2942fb0d3ea609c00",
+      "bytes": 17363
+    },
+    {
+      "path": "docs/decisions/DEC-P35-PHASE2-STORAGE-ADDENDUM.md",
+      "title": "DEC-P35-PHASE2-STORAGE-ADDENDUM - Mapping and grant ambiguity",
+      "status": "Proposed advisory addendum - authority decision pending",
+      "sha256": "f19acedb1b978617c6e797d028fea358f5230d292038c97317fcdde14c491b7a",
+      "bytes": 6177
+    },
+    {
       "path": "docs/decisions/DEC-P35-PHASE2-STORAGE.md",
       "title": "DEC-P35-PHASE2-STORAGE \u2014 Decisions required before Phase 2 can be persisted",
       "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
-      "sha256": "94509932641bc0186a7bd1da26da5c996f46f8f479f715a37355773e2ddaa226",
-      "bytes": 20389
+      "sha256": "1656f160a9dee94bad197207602892007929450d94ddba663f04b4143fc4bc04",
+      "bytes": 24902
     },
     {
       "path": "docs/decisions/DEC-P35-RUNTIME.md",
       "title": "DEC-P35-RUNTIME \u2014 Runtime Realization Gate and Evidence Anchoring Correction",
-      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
-      "sha256": "24d94d07f6f837b39dea2cffcdccb4deaf04b0effb114931191c24c0a11996f0",
-      "bytes": 11024
+      "status": "**Approved \u2014 Option C adopted 2026-07-31 (see \u00a78)**",
+      "sha256": "07c91802bc77b872b3ffedca465e10a5ffda704e385bdc4eebed9a3f6f221cdd",
+      "bytes": 12514
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "c65b4378c3cc667ab633c9df0f164a5fbf69453554f505745fe61426d8d53e9e",
-      "bytes": 3272
+      "sha256": "0fb2bca714413e098fc668cbfb52cbbd7c193c5ecc2f2cf03e4db3da0eb076ed",
+      "bytes": 4171
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "03bfffb9e7b10f22e48509e8ceb2aabb0a79e816e5f11f1b4b74243f0611ed6c",
-      "bytes": 1710
+      "sha256": "7c47f748e4f99af9e524a9821f1c78c0d3bb261ef77bc972ab4775a8b6a65460",
+      "bytes": 2249
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "9833f468a50d254e26c9ead60bae61d3f14cd34bcfaa4e5e7e0ae3bb533f6f42",
-      "bytes": 1425
+      "sha256": "e0fa8b307571c6af2113cb094ffc941de4dcd0b6d882087d9af772572adbc3d4",
+      "bytes": 2162
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1151,11 +1186,18 @@
       "bytes": 1141
     },
     {
+      "path": "docs/evidence/EVD-SEC-001-kernel-security-review.md",
+      "title": "Evidence Record: Platform Kernel Adversarial Security Review",
+      "status": "Seven findings closed, one recorded and not closed",
+      "sha256": "9a8f5f1885c6e485e81b7e4175674d3580b74d2a30350207906b181ca8ee8bb0",
+      "bytes": 35747
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "ac2a76cb3b50c141046c1e2d795166116afe43a48624ed3956cbb7545f6d0c95",
-      "bytes": 595
+      "sha256": "31b10aa57e06655d4c81b6bdfc8ad0580a43ed9da52314dcdc03df3babc78e86",
+      "bytes": 789
     },
     {
       "path": "docs/evidence/phase-1/completion-decision.md",
@@ -1203,8 +1245,8 @@
       "path": "docs/evidence/phase-3/completion-decision.md",
       "title": "Phase 3 \u2014 Capability & Commercial Entitlement Kernel Completion Decision",
       "status": "**IMPLEMENTED_UNVERIFIED \u2014 prior GO ON EVIDENCE withdrawn 2026-07-30**",
-      "sha256": "364ecf2dff4f4f454eb49f11355a6037007db4912f75a259b29c5b24e0d28a40",
-      "bytes": 8494
+      "sha256": "d1e66ac2086b96af5b485df546450dd3bd0d26262bcfbd1a6fe73d2966a5a9ab",
+      "bytes": 8970
     },
     {
       "path": "docs/evidence/phase-3/entry-gate-receipt.json",
@@ -1268,6 +1310,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "d961ba4d3ac70e702f7572ac7f724de260500abc78bfd064258969bbaf418974",
       "bytes": 8939
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",
+      "title": "EVD-P35-04-MAKER \u2014 WP-P35-04 Maker Submission (API Gateway)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "2974a8a221b681d86a197c7716851412e1e09a5d3c85647cf72f267b49fe65ad",
+      "bytes": 8544
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1742,8 +1791,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "08395640f8697cb7c90562ca03163a860197826913a6a21a0ca1df3af0c847b6",
-      "bytes": 1844
+      "sha256": "63a42fbe577e3b7dc26cdf6aa408cf0ac21fa491c7326f98d7d47ace5458cdc1",
+      "bytes": 3576
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",
@@ -1860,9 +1909,9 @@
     {
       "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P35-001 \u2014 Phase 3.5 Runtime Realization",
-      "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
-      "sha256": "80549020dcbecb9ba929f8b938fd18de9beb2a14b4e839c3b21fb455d5bf43ae",
-      "bytes": 7531
+      "status": "**Accepted and authorized 2026-07-31** \u2014 bound by `DEC-P35-RUNTIME` \u00a78 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`",
+      "sha256": "aa42848dd19496d81c1466566c61697824ac99c1abab58ee6e61bd72d5f425ac",
+      "bytes": 9375
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

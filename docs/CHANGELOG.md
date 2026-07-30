@@ -1,5 +1,165 @@
 # Documentation Changelog
 
+## 2026-07-31 - WP-P35-04 API gateway implemented
+
+- Built `apps/gateway` — a Hono reverse proxy validating the `HTTP_HEADER_SPEC.md` contract at
+  the platform edge. This closes blueprint layer 1, which `DEC-P35-RUNTIME` §3.1 recorded as
+  having no implementation at all.
+- 31 tests pass with no kernel process required. Written to EBIV R4: every rule carries a
+  negative probe, because a happy-path test passes just as well once the mechanism is deleted.
+- Executed three mutation probes to establish the suite can fail — relaxing the correlation-ID
+  limit, stripping identifier prefixes on forward, and dropping `.strict()` from the contract
+  binding each broke exactly one test. Tree restored and re-verified at 31/31 after each.
+- **Defect found and recorded:** the identifiers documented in `HTTP_HEADER_SPEC.md` are not
+  RFC 9562 conformant — `tnt_88a11b22-44c3-55d6-77e8-99f00a11b22c` carries variant nibble `5`.
+  Zod 4's `z.uuid()` enforces the RFC and made the gateway stricter than the kernel it fronts,
+  rejecting requests the kernel would have served, including the repository's own examples. The
+  gateway validates UUID shape only and a test locks that in. Whether bOPEN identifiers should
+  be RFC-conformant is left with `D-P35-004` rather than answered in a regex.
+- Recorded what the gateway declines to do and why: it never rewrites or injects `X-Tenant-ID`,
+  never strips prefixes, never truncates `X-Correlation-ID`, never reports kernel health from
+  its own endpoint, never echoes an offending value in a 400, and never reinterprets an upstream
+  status. Each would break something specific; the reasons are in `apps/gateway/README.md` §3.
+- Added `EVD-P35-04-MAKER` with 12 falsifiable propositions, each naming a test and the
+  mechanism whose removal makes it fail. Anchors read from git with `git rev-parse`, not
+  transcribed, per EBIV R3 and `A-07`.
+- Three runtime dependencies pinned exactly (`hono`, `@hono/node-server`, `zod`); Node 24 native
+  type stripping means no build step and no transpiler in the tree.
+- **Not established:** any end-to-end path. The suite injects the upstream, so no request has
+  been executed through the live kernel to PostgreSQL and back. Also unaddressed: upstream
+  timeouts, retries, rate limiting and TLS. Recorded in the submission §6.
+- `WP-P35-04` is `IMPLEMENTED_UNVERIFIED` with zero ballots. Eligible verifier: Codex, Gemini or
+  Kimi. A maker reporting a green suite carries no verdict weight (EBIV §8).
+- **Authority:** implementation by Claude (agent, Motor role) as assigned maker.
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Executed baseline measured, and a correction
+
+- Executed the canonical suite against the real PostgreSQL verification instance with
+  `.env.local` sourced: **414 of 414 pass** in 85s — unit 139, integration 125, contracts 101,
+  isolation 38, governance 11. Migrations `001`..`009` are applied to `bopen_dev` on port 5433.
+- All governance checks pass with the environment sourced: repository validation, clean-room,
+  authority bootstrap, evidence anchors, ballot attribution, and contract conformance
+  (11 of 16 constrainable schemas covered, 5 recorded as debt).
+- **Correction.** Two earlier reports in this session — the handoff §3 and the maker-split
+  changelog entry — stated that the suite fails on an unset `BOPEN_DATABASE_URL` and that no
+  admissible evidence existed for the tenancy invariant. Both were wrong. The cause was a shell
+  that had not sourced `.env.local`, not a missing database. The 38 isolation tests do execute
+  against PostgreSQL, so EBIV R1 and acceptance criterion `A-05` are satisfied for tenancy. The
+  wrong text is corrected in place with the error left visible rather than removed.
+- **No phase status changes.** `WP-P35-01`..`WP-P35-03` stay `IMPLEMENTED_UNVERIFIED`, but the
+  reason is now different and should be read differently: it was *evidence cannot be produced*;
+  it is now *evidence exists and no independent verifier has ruled on it*. Zero ballots are
+  recorded. `BOPEN-GOV-EBIV-001` §8 holds that a maker reporting a green suite carries no
+  verdict weight, and this entry is a maker report.
+- Redirected Codex's remediation scope accordingly: the work is not to make the tests pass, but
+  to establish what a green suite is not covering — the 5 uncovered schemas, the unclassified
+  `membership-transition-matrix.json`, invariant traceability, and whether `003`'s rollback has
+  been executed rather than merely written.
+- **Authority:** measurement and reporting by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Phase 3.5 maker split and Codex handoff
+
+- Replaced the sole-maker assignment with an alternating split, so Claude and Codex both
+  implement: Codex makes `WP-P35-01`..`WP-P35-03` (remediation), Claude makes `WP-P35-04`.
+  `WP-P35-05` stays unassigned because it is blocked.
+- Rationale recorded rather than assumed: `BOPEN-GOV-EBIV-001` §3 excludes a verifier who
+  authored any artifact under review, so each additional maker on a package removes an eligible
+  checker. Co-making everything would have left every Phase 3.5 ballot resting on Gemini and
+  Kimi, neither of which has cast a ballot or holds a commit identity here. Alternating keeps
+  each engine eligible on the other's work.
+- Confirmed against the standard before assigning: roles are per work package and mutually
+  exclusive within it (`BOPEN-GOV-EBIV-001` §3), so co-makers are permitted; the constraint is
+  on verifier eligibility, not on the number of makers.
+- Added `HANDOFF-P35-MAKER-SPLIT-TO-CODEX` in `docs/00-governance/handoffs/` — tracked
+  governed documentation, not an untracked root file per `AGENTS.md` §19.2. It names the
+  assignment, the unratified decisions that remain off-limits, and the commit-identity
+  requirement.
+- **Corrected same day:** this entry and handoff §3 originally reported that the canonical
+  suite fails on an unset `BOPEN_DATABASE_URL` and that no admissible evidence existed for
+  tenancy. Both were wrong — the failures came from a shell that had not sourced `.env.local`.
+  See the 2026-07-31 executed-baseline entry below for the measured state.
+- Marked `HANDOFF-P35-PARALLEL-TO-CODEX` superseded. It proposed the opposite split (Codex on
+  `WP-P35-04`) and is retained as a record only.
+- Updated `AGENTS.md` §22.3, `DEC-P35-DOCKET` §5.1-§5.3, `BOPEN-P35-001` completion record and
+  the agent alignment register to carry the same table.
+- No decision status changed. No contract, migration, or production source changed. All five
+  packages' verification state is unaffected; assigning a maker verifies nothing.
+- **Authority:** operator decision transcribed by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Phase 3.5 gate ratified and maker assigned
+
+- Operator ratified `D-P35-001`..`D-P35-003` as Architecture and Engineering Authority.
+  `DEC-P35-RUNTIME` moves Proposed to Approved (Option C); `BOPEN-P35-001` becomes the accepted
+  Phase 3.5 work package. Recorded in `DEC-P35-DOCKET` §6.1 and `DEC-P35-RUNTIME` §8.
+- Assigned **Codex** as maker for all Phase 3.5 work packages, including remediation of
+  `WP-P35-01`..`WP-P35-03`. Codex's verifier seat on that evidence record — stood down by the
+  operator on 2026-07-30 — is released deliberately rather than left recorded as unreached.
+- Recorded the consequence rather than smoothing it: under `AGENTS.md` §20.3 item 1 Codex may
+  now cast no Phase 3.5 verdict, and Claude is disqualified on `WP-P35-01`..`WP-P35-03` by
+  authorship, so the independent checker there must be Gemini or Kimi. Neither has cast a
+  ballot or holds a commit identity in this repository. Logged as an open risk.
+- Added `AGENTS.md` §22 (extend-only) and updated the §20.2 gate table. §22.1 records that no
+  rule ever restricted which engine may write code — §19.3 already names Codex as the
+  implementer and §20.4 already makes specialization guidance rather than assignment. No
+  amendment to either was made.
+- Left `D-P35-004`..`D-P35-018` undecided. Phase 2 persistence migration design, `WP-P35-05`,
+  audit-envelope convergence, and acceptance of `BOPEN-PRD-P35-001` all remain blocked.
+  Security Authority and Product Authority concurrence is absent and is recorded as absent.
+- Phases 1-3 and `WP-P35-01`..`WP-P35-03` remain `IMPLEMENTED_UNVERIFIED`. No evidence artifact
+  was edited; opening a gate verifies nothing already written.
+- No contract, migration, or production source changed in this entry.
+- **Authority:** operator decision transcribed by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Phase 3.5 storage ambiguity recommendations
+
+- Added `DEC-P35-PHASE2-STORAGE-ADD-001` with advisory closure recommendations for the two
+  unresolved Phase 2 storage semantics.
+- Recommended one effective group-role mapping per directory/group, with
+  `mapping_policy_version` retained as an auditable revision stamp and prior revisions kept
+  as history.
+- Recommended prohibiting overlapping usable delegated-grant intervals for one
+  principal/tenant because the approved delegated-context contract carries one `dgr`.
+- Executed an order-reversal probe that reproduced first-row selection for both mappings and
+  grants; no repository or database state was changed by the probe.
+- Updated the docket and document controls without accepting either recommendation,
+  authorizing a migration, or changing production code.
+- **Authority:** Advisory design preparation only.
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Phase 3.5 entry decision docket
+
+- Added `DEC-P35-DOCKET-001` as the bounded next step in `BOPEN-PRD-P35-001`
+  sequence 0.
+- Consolidated the four proposed Phase 3.5 decision records into one review surface with
+  dependency order, proposed dispositions, required authority concurrence, entry effects,
+  role assignments, and explicit ratification fields.
+- Preserved unresolved choices for group-role mapping version semantics and overlapping
+  delegated grants rather than selecting them by implementation default. Advisory
+  recommendations were added subsequently and remain pending authority disposition.
+- Registered and traced the docket without changing any source decision, contract, migration,
+  production source, phase status, or authority field.
+- **Authority:** Advisory decision preparation only.
+  `execution_authority: false`; `approval_authority: false`.
+
+## 2026-07-31 - Review-driven Phase 3.5 product requirements candidate
+
+- Added `BOPEN-PRD-P35-001`, a proposed and non-authorizing PRD that converts the
+  independently reproduced authorization, identity-binding, metering provenance, module
+  lifecycle, transactionality, contract, dependency, and status-control gaps into falsifiable
+  requirements and acceptance tests.
+- Mapped the requirements to the existing `BOPEN-P35-001` sequence without opening Phase 4,
+  approving `DEC-P35-RUNTIME`, amending approved specifications, or granting production authority.
+- Registered the candidate in the artifact, coverage, status, and traceability controls.
+- **Source:** Live working-tree review at commit
+  `4e1bcedeb62e5b0c3a6e14915ac44083d251f017`, with the two pre-existing modified paths
+  disclosed in the PRD provenance.
+- **Authority:** Advisory document preparation only.
+  `execution_authority: false`; `approval_authority: false`.
+
 ## 2026-07-29 — Evidence and Phase 3 contract-control repair
 
 - Corrected `EVD-P2-DECISION-001` from an unsupported conditional-acceptance claim to

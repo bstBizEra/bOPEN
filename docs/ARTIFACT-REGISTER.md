@@ -5,6 +5,9 @@
 | BOPEN-RES-001 | Open-Source Platform Kernel Research & Clean-Room Study Plan | Normative | **Gate G7 Cleared** (`EVD-RES-001-G7`) | Research Authority |
 | BOPEN-BOOT-001 | Repository Bootstrap, AGENTS.md & Engineering Controls Pack | Normative | Approved Execution | Engineering Authority |
 | BOPEN-REQ-001 | Product Requirements Specification | Normative | **Approved** | Product Authority |
+| BOPEN-PRD-P35-001 | Runtime Assurance and Completion Product Requirements | Requirements candidate | **Proposed; assists BOPEN-P35-001; no implementation authority** | Product Authority |
+| DEC-P35-DOCKET-001 | Phase 3.5 Entry Decision Docket | Decision candidate | **Proposed; no implementation authority** | Engineering Authority |
+| DEC-P35-PHASE2-STORAGE-ADD-001 | Mapping and Grant Ambiguity Addendum | Decision addendum candidate | **Proposed; no implementation authority** | Architecture Authority |
 | BOPEN-ARCH-001 | Platform Kernel Architecture Specification | Normative | **Approved** | Architecture Authority |
 | BOPEN-TENANT-001 | Tenant, Organization, Membership, Context & Isolation Spec | Normative | **Approved** | Architecture/Data Authorities |
 | BOPEN-AUTHZ-001 | Authorization, Scope, Delegation & Policy Specification | Normative | **Approved** | Security/Architecture Authorities |
