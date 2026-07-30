@@ -6,7 +6,7 @@ Dispatches structured security audit events matching contracts/schemas/audit-eve
 import re
 import uuid
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Protocol
 
 # Phase 2 audit event catalog (BOPEN-IDP-001 15). Unknown event types are rejected.
 PHASE2_EVENT_TYPES = frozenset({
@@ -63,9 +63,33 @@ def _reject_prohibited(metadata: Dict[str, Any]) -> None:
             raise AuditContractError(f"Prohibited credential-like value in metadata key: {key}")
 
 
+class LifecycleEventSink(Protocol):
+    """Where lifecycle audit events are made durable.
+
+    A Protocol because `kernel_core` imports `platform_kernel` zero times and must keep doing so.
+    The PostgreSQL implementation lives in `platform_kernel.audit_repositories`.
+    """
+
+    def record(self, event: Dict[str, Any]) -> None:
+        ...
+
+
 class AuditDispatcher:
-    def __init__(self):
+    """Emits audit events and hands them to a sink.
+
+    The sink is required and has no default, which is a deliberate departure from how this class
+    used to work. It previously appended to `self.logs` and nothing else, so every Phase 2 audit
+    record — invitation, membership transition, SCIM, context switch, delegation — was lost on
+    restart and differed per worker. An audit trail that does not survive the process it
+    describes is not an audit trail, and a default sink would let that state return quietly.
+
+    `self.logs` remains as an in-process view for callers that inspect what was emitted during a
+    single operation. It is not storage and must not be read as such.
+    """
+
+    def __init__(self, sink: LifecycleEventSink):
         self.logs: List[Dict[str, Any]] = []
+        self._sink = sink
 
     def dispatch(
         self,
@@ -160,6 +184,7 @@ class AuditDispatcher:
             "metadata": bounded,
         }
         self.logs.append(event)
+        self._sink.record(event)
         return event
 
     def events_of_type(self, event_type: str) -> List[Dict[str, Any]]:

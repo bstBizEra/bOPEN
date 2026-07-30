@@ -14,15 +14,28 @@ from kernel_core.types import (
     AuthorizationRequest, AuthorizationDecision, DecisionResult
 )
 from kernel_core.evaluator import AuthorizationEvaluator
-from kernel_core.audit import AuditDispatcher
+from kernel_core.audit import AuditDispatcher, LifecycleEventSink
 
 class PlatformKernelService:
-    def __init__(self):
+    def __init__(self, audit_sink: LifecycleEventSink):
+        """
+        The audit sink is required and injected.
+
+        Production code cannot reach a test double, and this class must not carry its own
+        in-memory default: `AuditDispatcher` used to append to a list and nothing else, which is
+        how every Phase 2 audit record came to be lost on restart. Requiring the sink means the
+        caller states where the trail goes.
+
+        Note that this service is itself the in-memory Phase 1 path, superseded by the
+        repository-backed one behind `platform_kernel.api`. It is retained because 139 unit tests
+        exercise it and removing it would put a large test rewrite in the same change as new
+        behaviour. That is recorded debt, not design.
+        """
         self.principals: Dict[str, Principal] = {}
         self.tenants: Dict[str, Tenant] = {}
         self.memberships: Dict[str, Membership] = {}
         self.evaluator = AuthorizationEvaluator()
-        self.audit_dispatcher = AuditDispatcher()
+        self.audit_dispatcher = AuditDispatcher(audit_sink)
 
     def register_principal(self, email: str, principal_type: PrincipalType = PrincipalType.HUMAN) -> Principal:
         principal_id = f"usr_{uuid.uuid4()}"
