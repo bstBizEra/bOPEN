@@ -434,12 +434,12 @@ class TestPhase1HttpSlice(unittest.TestCase):
         """
         import os
 
-        from platform_kernel.api import ENV_ALLOW_UNAUTHENTICATED_CONTEXT
+        from platform_kernel.api import ENV_ALLOW_UNAUTHENTICATED_IDENTITY
 
         principal_id = self._register_principal()
         tenant_id, membership_id = self._provision_tenant(principal_id)
 
-        previous = os.environ.pop(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, None)
+        previous = os.environ.pop(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, None)
         try:
             response = self.client.post(
                 "/v1/contexts",
@@ -448,15 +448,100 @@ class TestPhase1HttpSlice(unittest.TestCase):
             )
         finally:
             if previous is not None:
-                os.environ[ENV_ALLOW_UNAUTHENTICATED_CONTEXT] = previous
+                os.environ[ENV_ALLOW_UNAUTHENTICATED_IDENTITY] = previous
 
         self.assertEqual(
             response.status_code, 503,
             "an unaffirmed deployment issued a bearer token to an unauthenticated caller",
         )
         detail = response.json()["detail"]
-        self.assertIn(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, detail["remediation"])
+        self.assertIn(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, detail["remediation"])
         self.assertIn("WP-P35-05", detail["resolved_by"])
+
+    def test_provisioning_a_tenant_is_refused_on_an_unaffirmed_deployment(self):
+        """
+        The same gap as context issuance, on the endpoint it was missed on.
+
+        The guard was written after a finding that named only `POST /v1/contexts`. Following it
+        up on 2026-07-30 showed `POST /v1/tenants` has the same hole: it creates a tenant and its
+        owner membership from a principal identifier the caller supplies, and Phase 1 cannot
+        check that the caller is that principal. Naming someone else's principal returned 201 —
+        a tenant exists with a third party bound to it as owner, who never agreed. Phase 2's
+        invitation engine models that consent, invited then accepted, and this path went around
+        it.
+
+        A test asserting the refusal on one endpoint and not the other is what let this sit, so
+        the flag is now named for the assertion rather than for either endpoint.
+        """
+        import os
+
+        from platform_kernel.api import ENV_ALLOW_UNAUTHENTICATED_IDENTITY
+
+        principal_id = self._register_principal()
+
+        previous = os.environ.pop(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, None)
+        try:
+            response = self.client.post(
+                "/v1/tenants",
+                json={"name": "Unaffirmed", "owner_principal_id": principal_id},
+                headers={"X-Correlation-ID": corr()},
+            )
+        finally:
+            if previous is not None:
+                os.environ[ENV_ALLOW_UNAUTHENTICATED_IDENTITY] = previous
+
+        self.assertEqual(
+            response.status_code, 503,
+            "an unaffirmed deployment bound a principal it could not authenticate to a new "
+            "tenant as its owner",
+        )
+        detail = response.json()["detail"]
+        self.assertIn(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, detail["remediation"])
+        self.assertIn("WP-P35-05", detail["resolved_by"])
+
+    def test_one_flag_governs_every_endpoint_that_acts_on_an_unproven_identity(self):
+        """
+        Both endpoints must answer to the same affirmation.
+
+        If a future endpoint checks a different variable, or none, the operator's single
+        affirmation stops meaning what it says. Removing the flag must silence the whole surface
+        that trusts an identity claim it cannot verify — and must leave the rest working, since a
+        guard that disabled registration too would be an outage wearing a security fix.
+        """
+        import os
+
+        from platform_kernel.api import ENV_ALLOW_UNAUTHENTICATED_IDENTITY
+
+        previous = os.environ.pop(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, None)
+        try:
+            registration = self.client.post(
+                "/v1/principals",
+                json={"email": f"g-{uuid.uuid4().hex[:12]}@example.com", "type": "human"},
+                headers={"X-Correlation-ID": corr()},
+            )
+            provisioning = self.client.post(
+                "/v1/tenants",
+                json={"name": "G", "owner_principal_id": registration.json()["principal_id"]},
+                headers={"X-Correlation-ID": corr()},
+            )
+            context = self.client.post(
+                "/v1/contexts",
+                json={"principal_id": str(uuid.uuid4()), "membership_id": str(uuid.uuid4())},
+                headers={"X-Tenant-ID": str(uuid.uuid4()), "X-Correlation-ID": corr()},
+            )
+            health = self.client.get("/health", headers={"X-Correlation-ID": corr()})
+        finally:
+            if previous is not None:
+                os.environ[ENV_ALLOW_UNAUTHENTICATED_IDENTITY] = previous
+
+        self.assertEqual(provisioning.status_code, 503)
+        self.assertEqual(context.status_code, 503)
+        self.assertEqual(
+            registration.status_code, 201,
+            "registration is legitimately unauthenticated — it asserts no identity it has not "
+            "just created — and must keep working",
+        )
+        self.assertEqual(health.status_code, 200)
 
     def test_the_affirmation_does_not_weaken_any_other_check(self):
         """Setting the flag permits issuance; it must not turn off validation.

@@ -88,7 +88,7 @@ from platform_kernel.db import DatabaseNotConfiguredError
 API_VERSION = "1.0.0"
 
 # --------------------------------------------------------------------------------------
-# Unauthenticated context issuance — the gap, and the guard over it
+# Unauthenticated identity assertions — the gap, and the guard over it
 # --------------------------------------------------------------------------------------
 # `POST /v1/contexts` mints a signed bearer token. It verifies that the membership exists in the
 # named tenant, belongs to the named principal, and is active. It does **not** verify that the
@@ -108,15 +108,55 @@ API_VERSION = "1.0.0"
 # row-level security and an audit trail — a reader has every reason to think the surface is
 # complete, and the missing half is invisible from outside.
 #
-# Hence the guard below rather than a comment alone. The kernel refuses to issue credentials
-# unless the operator has affirmed that this deployment is not production. The same shape as
-# `BOPEN_DB_NON_PRODUCTION` guarding the destructive rollback in `tools/db_bootstrap.py`: a
-# deployment that forgets is refused, not silently open.
-ENV_ALLOW_UNAUTHENTICATED_CONTEXT = "BOPEN_ALLOW_UNAUTHENTICATED_CONTEXT"
+# Hence the guard below rather than a comment alone. The kernel refuses to act on an identity
+# claim it cannot check, unless the operator has affirmed that this deployment is not
+# production. The same shape as `BOPEN_DB_NON_PRODUCTION` guarding the destructive rollback in
+# `tools/db_bootstrap.py`: a deployment that forgets is refused, not silently open.
+#
+# It gates two endpoints, not one. `POST /v1/contexts` lets a caller assert "I am this
+# principal, give me a token". `POST /v1/tenants` lets a caller assert "I am this principal,
+# make me the owner of a new tenant" — and that second one was missed when the guard was first
+# written, because the finding that prompted it named only context issuance. Following it up
+# showed the endpoint has the same hole and reproduces over HTTP:
+#
+#     POST /v1/tenants  owner_principal_id = <a principal belonging to someone else>  -> 201
+#
+# A tenant is created naming a third party as its owner, with no step at which that party
+# agrees. Phase 2's invitation engine exists precisely to model that consent — invited, then
+# accepted — and this path goes around it. It also answers whether a principal identifier
+# exists at all, 201 against 422, which is the same oracle as `POST /v1/principals`.
+#
+# The variable is named for the assertion rather than for either endpoint, so the next endpoint
+# that trusts an unproven identity claim has an obvious place to attach.
+ENV_ALLOW_UNAUTHENTICATED_IDENTITY = "BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION"
 
 
-def unauthenticated_context_issuance_permitted() -> bool:
-    return os.environ.get(ENV_ALLOW_UNAUTHENTICATED_CONTEXT, "").strip() == "1"
+def unauthenticated_identity_assertion_permitted() -> bool:
+    return os.environ.get(ENV_ALLOW_UNAUTHENTICATED_IDENTITY, "").strip() == "1"
+
+
+def _refuse_unauthenticated(action: str, consequence: str) -> None:
+    """Refuse an unverifiable identity claim with 503.
+
+    503 rather than 401: there is no credential the caller could have supplied that would change
+    the answer, and 401 would imply there is one.
+    """
+    raise HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail={
+            "error": f"{action} is disabled",
+            "reason": (
+                f"This kernel cannot authenticate the caller. Phase 1 has no authentication "
+                f"mechanism, so {consequence}"
+            ),
+            "remediation": (
+                f"Set {ENV_ALLOW_UNAUTHENTICATED_IDENTITY}=1 to affirm that this deployment is "
+                f"not production. Do not set it on any deployment reachable by a party you "
+                f"would not hand an owner token to."
+            ),
+            "resolved_by": "WP-P35-05 — the enterprise IdP bridge",
+        },
+    )
 
 _PREFIXED_ID = re.compile(
     r"^(?:usr|tnt|mem|ctx|corr)_([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
@@ -561,7 +601,7 @@ def register_principal(
     created one. Removing the oracle means making registration asynchronous behind an address
     verification step, which is the enterprise identity bridge's work (WP-P35-05), and the same
     work package that gives this endpoint any authentication at all — see
-    BOPEN_ALLOW_UNAUTHENTICATED_CONTEXT. Returning 201 for a duplicate would hide the oracle
+    BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION. Returning 201 for a duplicate would hide the oracle
     from a reader of this file without closing it, since timing and the absent identifier both
     still answer the question.
     """
@@ -600,7 +640,21 @@ def provision_tenant(
     no member is unreachable: no principal could establish a context in it, so nothing could
     ever administer it. Creating both keeps the boundary reachable by exactly one principal at
     the moment it exists.
+
+    That design assumes the caller is the principal it names, and Phase 1 cannot check it. Naming
+    someone else's principal as owner returns 201 — a tenant exists with a third party bound to
+    it as owner, at no point having agreed. Phase 2's invitation engine models exactly that
+    consent, invited then accepted, and this path goes around it. Confirmed over HTTP on
+    2026-07-30 while following up the context-issuance finding, which had named only that
+    endpoint.
     """
+    if not unauthenticated_identity_assertion_permitted():
+        _refuse_unauthenticated(
+            "tenant provisioning",
+            "provisioning a tenant here would bind a principal the caller has not proved it is "
+            "to a new tenant as its owner, without that principal agreeing.",
+        )
+
     owner_id = normalise_id(body.owner_principal_id, "owner_principal_id")
 
     try:
@@ -648,34 +702,18 @@ def establish_context(
     """Establish an active context for a principal in a tenant.
 
     **This endpoint issues a credential without authenticating the caller.** See the note above
-    `ENV_ALLOW_UNAUTHENTICATED_CONTEXT` for why Phase 1 has nothing to authenticate with, and why
+    `ENV_ALLOW_UNAUTHENTICATED_IDENTITY` for why Phase 1 has nothing to authenticate with, and why
     the guard exists rather than a comment alone.
 
     The membership is read under the target tenant's isolation policy, so a caller naming a
     membership that belongs to a different tenant gets the same refusal as one naming a
     membership that does not exist.
     """
-    if not unauthenticated_context_issuance_permitted():
-        # Refused rather than served. Phase 1 cannot authenticate the caller, so honouring this
-        # would mint an owner bearer token for anyone holding three non-secret identifiers.
-        # 503 rather than 401: there is no credential the caller could have supplied that would
-        # change the answer, and 401 would imply there is.
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail={
-                "error": "context issuance is disabled",
-                "reason": (
-                    "This kernel cannot authenticate the caller. Phase 1 has no authentication "
-                    "mechanism, so issuing a context here would grant an owner bearer token to "
-                    "anyone who knows a tenant, principal and membership identifier."
-                ),
-                "remediation": (
-                    f"Set {ENV_ALLOW_UNAUTHENTICATED_CONTEXT}=1 to affirm that this deployment "
-                    f"is not production. Do not set it on any deployment reachable by a party "
-                    f"you would not hand an owner token to."
-                ),
-                "resolved_by": "WP-P35-05 — the enterprise IdP bridge",
-            },
+    if not unauthenticated_identity_assertion_permitted():
+        _refuse_unauthenticated(
+            "context issuance",
+            "issuing a context here would grant an owner bearer token to anyone who knows a "
+            "tenant, principal and membership identifier.",
         )
 
     principal_id = normalise_id(body.principal_id, "principal_id")
