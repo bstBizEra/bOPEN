@@ -110,16 +110,16 @@
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
-      "status": "Open \u2014 action requested",
-      "sha256": "7e8b3b418c8cc5c3784f789dbc4ebfc7d4340ac1f70ea01d773100c01c6f3b11",
-      "bytes": 16047
+      "status": "Stood down 2026-07-30 \u2014 retained as a record",
+      "sha256": "8543030ec1bdf3b750341ae053793a3b1d940b7186707c0bda95493df66f3d3e",
+      "bytes": 17306
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
       "title": "HANDOFF-P35-VERIFY-TO-GEMINI-KIMI \u2014 Second and third verifier seats for Phase 3.5",
-      "status": "Open \u2014 action requested",
-      "sha256": "ed26daae222121a3404b260a7afbdb26ccce1f51178ed57182a46426af12a16e",
-      "bytes": 11236
+      "status": "Stood down 2026-07-30 \u2014 retained as a record",
+      "sha256": "b25a99b8501cda3dedd43fa230cb047902ba7fd6e7cf1081e53a80b29192cc9d",
+      "bytes": 12415
     },
     {
       "path": "docs/00-governance/license-strategy.md",
@@ -1231,8 +1231,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "3bac3502d9a0d361cbd481a51d08b92eb48426879fa970d8f4d509aabcc5cff0",
-      "bytes": 8815
+      "sha256": "138e1c4f6c7036fbdbc217d329626226201c927b50402f204e3064dd8ad67fc0",
+      "bytes": 10693
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
