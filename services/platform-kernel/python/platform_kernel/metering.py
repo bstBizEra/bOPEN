@@ -7,8 +7,9 @@ Matches contracts/schemas/usage-metered-event.schema.json.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+import hashlib
+from dataclasses import dataclass, field, replace
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import uuid
@@ -20,6 +21,63 @@ class MeteredUnit(str, Enum):
     BYTES = "bytes"
     SEATS = "seats"
     SECONDS = "seconds"
+
+
+class QuotaWindow(str, Enum):
+    """Billing window a reservation belongs to. Mirrors the `quota_window` enum in
+    contracts/schemas/quota-reservation.schema.json."""
+    DAILY = "daily"
+    MONTHLY = "monthly"
+
+
+def _window_bounds(window: QuotaWindow, at: datetime) -> Tuple[datetime, datetime]:
+    """
+    Compute the half-open [start, end) bounds of the billing window containing `at`.
+
+    These are calculated from the calendar rather than stored as caller input, so the
+    reservation's declared window is the window it actually falls in. Bounds are UTC
+    because billing windows must not shift with the server's local timezone.
+    """
+    at = at.astimezone(timezone.utc)
+    if window is QuotaWindow.DAILY:
+        start = at.replace(hour=0, minute=0, second=0, microsecond=0)
+        return start, start + timedelta(days=1)
+
+    start = at.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    if start.month == 12:
+        return start, start.replace(year=start.year + 1, month=1)
+    return start, start.replace(month=start.month + 1)
+
+
+def _derive_idempotency_key(
+    tenant_id: str,
+    capability_id: str,
+    reserved_quantity: int,
+    quota_window: QuotaWindow,
+    window_starts_at: datetime,
+    correlation_id: str
+) -> str:
+    """
+    Derive a content-addressed idempotency key when the caller supplies none.
+
+    This is a deterministic fingerprint of the reservation's identifying content, so the
+    same request in the same window yields the same key. It is NOT a random token: a
+    random value under the name `idempotency_key` would satisfy the schema while making
+    the field meaningless.
+
+    Callers that own a real request-level key should pass it explicitly. See the module
+    note on `create_quota_reservation` — the reservation path currently has no dedup index
+    keyed on this value, unlike `record_event`.
+    """
+    fingerprint = "|".join([
+        tenant_id,
+        capability_id,
+        str(reserved_quantity),
+        quota_window.value,
+        window_starts_at.isoformat(),
+        correlation_id,
+    ])
+    return f"qres_{hashlib.sha256(fingerprint.encode('utf-8')).hexdigest()[:32]}"
 
 
 class CrossTenantIdempotencyViolationError(Exception):
@@ -67,13 +125,41 @@ class MeteredEvent:
 
 @dataclass(frozen=True)
 class QuotaReservation:
+    """
+    An atomic hold on quota, named to match contracts/schemas/quota-reservation.schema.json.
+
+    The schema sets `additionalProperties: false` and requires eleven properties, so
+    `to_dict()` must emit exactly those eleven. Before this change the type had no
+    `to_dict()` at all, which is why the divergence was invisible: a contract test that
+    never serializes an instance cannot detect that the instance is unserializable.
+    """
+
     reservation_id: str
     tenant_id: str
     capability_id: str
     reserved_quantity: int
+    quota_window: QuotaWindow
+    window_starts_at: datetime
+    window_ends_at: datetime
     expires_at: datetime
     status: str
     correlation_id: str
+    idempotency_key: str
+
+    def to_dict(self) -> dict:
+        return {
+            "reservation_id": self.reservation_id,
+            "tenant_id": self.tenant_id,
+            "capability_id": self.capability_id,
+            "reserved_quantity": self.reserved_quantity,
+            "quota_window": self.quota_window.value,
+            "window_starts_at": self.window_starts_at.isoformat(),
+            "window_ends_at": self.window_ends_at.isoformat(),
+            "expires_at": self.expires_at.isoformat(),
+            "status": self.status,
+            "correlation_id": self.correlation_id,
+            "idempotency_key": self.idempotency_key
+        }
 
 
 class OutboxDispatcher:
@@ -161,19 +247,42 @@ class UsageMeterService:
         capability_id: str,
         reserved_quantity: int,
         expires_at: datetime,
-        correlation_id: str
+        correlation_id: str,
+        quota_window: QuotaWindow = QuotaWindow.MONTHLY,
+        idempotency_key: Optional[str] = None
     ) -> QuotaReservation:
+        """
+        Place a pending hold on quota.
+
+        `quota_window` defaults to monthly to match the `window` declared by the metered
+        allowance plan tiers this service reserves against; pass it explicitly for daily
+        capabilities. Window bounds are computed from the creation instant rather than
+        accepted as input, so they always describe the window the reservation is in.
+
+        `idempotency_key` is content-derived when absent. Note this service does not yet
+        index reservations by that key, so two identical calls produce two reservations
+        with the same key and different `reservation_id`s. That is a real gap in the
+        reservation path, not something the key derivation papers over.
+        """
         if reserved_quantity <= 0:
             raise InvalidQuantityError(f"Reserved quantity must be a positive integer > 0, got {reserved_quantity}")
         res_id = f"res_{uuid.uuid4().hex[:12]}"
+        window_starts_at, window_ends_at = _window_bounds(quota_window, datetime.now(timezone.utc))
         reservation = QuotaReservation(
             reservation_id=res_id,
             tenant_id=tenant_id,
             capability_id=capability_id,
             reserved_quantity=reserved_quantity,
+            quota_window=quota_window,
+            window_starts_at=window_starts_at,
+            window_ends_at=window_ends_at,
             expires_at=expires_at,
             status="pending",
-            correlation_id=correlation_id
+            correlation_id=correlation_id,
+            idempotency_key=idempotency_key or _derive_idempotency_key(
+                tenant_id, capability_id, reserved_quantity,
+                quota_window, window_starts_at, correlation_id
+            )
         )
         self._reservations[res_id] = reservation
         return reservation
@@ -181,32 +290,16 @@ class UsageMeterService:
     def commit_reservation(self, reservation_id: str) -> QuotaReservation:
         if reservation_id not in self._reservations:
             raise QuotaReservationError(f"Reservation {reservation_id} not found")
-        old = self._reservations[reservation_id]
-        committed = QuotaReservation(
-            reservation_id=old.reservation_id,
-            tenant_id=old.tenant_id,
-            capability_id=old.capability_id,
-            reserved_quantity=old.reserved_quantity,
-            expires_at=old.expires_at,
-            status="committed",
-            correlation_id=old.correlation_id
-        )
+        # `replace` copies every field by construction. Enumerating fields by hand is how a
+        # transition silently drops a property that was added to the dataclass later.
+        committed = replace(self._reservations[reservation_id], status="committed")
         self._reservations[reservation_id] = committed
         return committed
 
     def release_reservation(self, reservation_id: str) -> QuotaReservation:
         if reservation_id not in self._reservations:
             raise QuotaReservationError(f"Reservation {reservation_id} not found")
-        old = self._reservations[reservation_id]
-        released = QuotaReservation(
-            reservation_id=old.reservation_id,
-            tenant_id=old.tenant_id,
-            capability_id=old.capability_id,
-            reserved_quantity=old.reserved_quantity,
-            expires_at=old.expires_at,
-            status="released",
-            correlation_id=old.correlation_id
-        )
+        released = replace(self._reservations[reservation_id], status="released")
         self._reservations[reservation_id] = released
         return released
 

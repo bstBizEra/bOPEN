@@ -84,28 +84,49 @@ class EntitlementDecision:
 
 @dataclass(frozen=True)
 class RateLimitDecision:
+    """
+    A rate limiting verdict, named to match contracts/schemas/rate-limit-decision.schema.json.
+
+    Field names here are the schema's names, not convenient shorthands, because `to_dict()`
+    is the wire form and the schema sets `additionalProperties: false`. Any field named
+    differently from the schema is both a missing required property and a forbidden extra one.
+
+    `current_rate` is the number of calls CONSUMED in the current window. It is not the
+    headroom. The two are complements (`current_rate + remaining == limit_rate`), so
+    serializing headroom under the name `current_rate` would validate cleanly against the
+    frozen schema while reporting the inverse of the truth. The `remaining` property below
+    exists to make that relationship explicit and derived, so the two can never drift apart.
+    """
+
     decision_id: str
     tenant_id: str
     capability_id: str
+    correlation_id: str
     allowed: bool
-    limit: int
-    remaining: int
-    reset_seconds: int
+    limit_rate: int
+    current_rate: int
+    reset_in_seconds: int
     reason_code: str
-    http_status: int
+    status_code: int
     evaluated_at: datetime
+
+    @property
+    def remaining(self) -> int:
+        """Headroom left in the window. Derived from the consumed count, never stored."""
+        return max(0, self.limit_rate - self.current_rate)
 
     def to_dict(self) -> dict:
         return {
             "decision_id": self.decision_id,
             "tenant_id": self.tenant_id,
             "capability_id": self.capability_id,
+            "correlation_id": self.correlation_id,
             "allowed": self.allowed,
-            "limit": self.limit,
-            "remaining": self.remaining,
-            "reset_seconds": self.reset_seconds,
+            "limit_rate": self.limit_rate,
+            "current_rate": self.current_rate,
+            "reset_in_seconds": self.reset_in_seconds,
             "reason_code": self.reason_code,
-            "http_status": self.http_status,
+            "status_code": self.status_code,
             "evaluated_at": self.evaluated_at.isoformat()
         }
 
@@ -129,23 +150,32 @@ class RateLimiter:
     def set_limit(self, capability_id: str, max_per_minute: int):
         self._limits[capability_id] = max_per_minute
 
-    def evaluate(self, tenant_id: str, capability_id: str) -> RateLimitDecision:
+    def evaluate(self, tenant_id: str, capability_id: str, correlation_id: str) -> RateLimitDecision:
+        """
+        Evaluate the window for one call.
+
+        `correlation_id` is required rather than defaulted. The schema requires it with
+        `minLength: 1`, and a default here would be a placeholder invented by the producer
+        instead of the request identity carried by the caller.
+        """
         now = datetime.now(timezone.utc)
         decision_id = f"rat_dec_{uuid.uuid4().hex[:12]}"
         limit = self._limits.get(capability_id, 10000)
         current = self._counts.get(tenant_id, {}).get(capability_id, 0)
 
         if current >= limit:
+            # Denied: nothing is consumed by this call, so the consumed count is unchanged.
             return RateLimitDecision(
                 decision_id=decision_id,
                 tenant_id=tenant_id,
                 capability_id=capability_id,
+                correlation_id=correlation_id,
                 allowed=False,
-                limit=limit,
-                remaining=0,
-                reset_seconds=60,
+                limit_rate=limit,
+                current_rate=current,
+                reset_in_seconds=60,
                 reason_code="DENY_RATE_LIMIT_EXCEEDED",
-                http_status=429,
+                status_code=429,
                 evaluated_at=now
             )
 
@@ -153,16 +183,18 @@ class RateLimiter:
             self._counts[tenant_id] = {}
         self._counts[tenant_id][capability_id] = current + 1
 
+        # Allowed: this call consumes one unit, so the consumed count includes it.
         return RateLimitDecision(
             decision_id=decision_id,
             tenant_id=tenant_id,
             capability_id=capability_id,
+            correlation_id=correlation_id,
             allowed=True,
-            limit=limit,
-            remaining=limit - (current + 1),
-            reset_seconds=60,
+            limit_rate=limit,
+            current_rate=current + 1,
+            reset_in_seconds=60,
             reason_code="ENTITLEMENT_ALLOWED",
-            http_status=200,
+            status_code=200,
             evaluated_at=now
         )
 
@@ -229,7 +261,7 @@ class EntitlementEvaluator:
         decision_id = f"ent_dec_{uuid.uuid4().hex[:12]}"
 
         # 3. Check rate limiter
-        rate_dec = self._rate_limiter.evaluate(context.tenant_id, capability_id)
+        rate_dec = self._rate_limiter.evaluate(context.tenant_id, capability_id, correlation_id)
         if not rate_dec.allowed:
             return EntitlementDecision(
                 decision_id=decision_id,
@@ -237,7 +269,7 @@ class EntitlementEvaluator:
                 capability_id=capability_id,
                 decision=DecisionOutcome.THROTTLED,
                 reason_code=rate_dec.reason_code,
-                http_status=rate_dec.http_status,
+                http_status=rate_dec.status_code,
                 evaluated_at=now,
                 context_id=context.context_id,
                 principal_id=context.principal_id,
