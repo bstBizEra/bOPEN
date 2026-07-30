@@ -1,0 +1,48 @@
+{
+  "purpose": "Frozen schemas with no test validating a real instance against them. This is recorded debt, not an exemption. tools/check_contract_conformance.py fails when a schema loses coverage or appears with no entry here; removing an entry is how the debt is paid.",
+  "why_this_file_exists": "Phase 3 reported 169 of 169 tests green while RateLimitDecision violated its own frozen schema on nine points. The contract suite opened the schema documents and asserted properties of them, and never validated an object the code produces. A schema that no instance is checked against is a document, not a contract \u2014 and the difference does not show up in a pass count. Thirteen of sixteen schemas were in that state when this file was created.",
+  "measured": "2026-07-30, by tools/check_contract_conformance.py, which wraps jsonschema.validate and records what the canonical suite actually passes to it. Coverage is observed at runtime, not inferred from imports.",
+  "covered_at_baseline": [
+    "context-switch.json",
+    "delegated-grant.json",
+    "entitlement-decision.schema.json",
+    "invitation.json",
+    "module-manifest.schema.json",
+    "quota-reservation.schema.json",
+    "rate-limit-decision.schema.json",
+    "scim-event.json",
+    "tenant-context.json",
+    "usage-metered-event.schema.json"
+  ],
+  "uncovered": {
+    "capability-registration.schema.json": "No producing type exists anywhere in the codebase. The registry stores capabilities as Dict[str, str] mapping capability_id to module_id, with no resource_type, action, registered_at or status. This schema describes a record the code never constructs. Writing a type to satisfy a test would be inventing a contract rather than honouring one, so it stays uncovered pending a decision on whether the registry should emit these records.",
+    "entitlement-reason-codes.json": "Appears to be a controlled vocabulary rather than a message shape. Whether an instance test is meaningful for it has not been established.",
+    "audit-event.json": "AuditDispatcher.dispatch emits one surplus field, `reason_code`, which additionalProperties:false forbids \u2014 a single-error divergence. More importantly, AuditDispatcher.emit_lifecycle_event emits a completely different envelope (actor_principal_id, subject_type, subject_id, outcome, causation_id, occurred_at, event_version) that NO frozen schema describes. That is not a broken producer; it is a correct producer with no contract, and it is the envelope every Phase 2 module actually emits. See findings.",
+    "authorization-decision.json": "The schema requires `policy_version`. That property appears nowhere in any Python file in the repository \u2014 the evaluator has no notion of a versioned policy to report. The HTTP response model carries context_id and audit_event_id, which the schema forbids. Semantic gap, not a rename.",
+    "membership-transition.json": "TransitionReceipt diverges on six points. Three are pure renames (from_state/to_state/effective_at vs previous_state/new_state/transition_timestamp). One is structural: the receipt splits actor into actor_type + actor_id, which the schema's single `triggered_by` cannot represent. One is a production defect: UuidIdentifierFactory.new_id returns f'{prefix}_{uuid4}' so membership_id is 'mem_<uuid>' and can never satisfy format:uuid \u2014 not a fixture artifact. And the schema admits states the code refuses: previous_state/new_state allow `declined`, which MembershipState deliberately excludes as an Invitation state."
+  },
+  "note_on_phase_2_entries": "Eight of the thirteen belong to Phase 2, which AGENTS.md \u00a720.2 records as IMPLEMENTED_UNVERIFIED. Their absence from contract testing is one concrete reason that status is correct rather than merely cautious.",
+  "debt_paid": {
+    "2026-07-30": {
+      "schemas": [
+        "rate-limit-decision.schema.json",
+        "quota-reservation.schema.json",
+        "module-manifest.schema.json",
+        "invitation.json",
+        "delegated-grant.json",
+        "context-switch.json",
+        "scim-event.json"
+      ],
+      "how": "RateLimitDecision was repaired to emit its schema's field names, with current_rate carrying the consumed count rather than the headroom \u2014 serialising headroom under that name would validate cleanly while reporting the inverse of the truth. QuotaReservation gained a to_dict() and its four missing fields. module-manifest is covered by a characterization test that pins the schema/loader contradiction over `status` rather than resolving it.",
+      "remaining_note": "module-manifest's coverage is a characterization test, not a conformance pass. The schema forbids `status` while ModuleManifest.from_dict honours it, letting a caller set a module to `available` at load time and bypass the registered -> validated -> approved -> available transitions. The test asserts both halves so the contradiction shows up in test output; it should be deleted when governance rules on it."
+    }
+  },
+  "not_instance_schemas": {
+    "membership-transition-matrix.json": "Declares no `type` and no `properties`, so it accepts every instance \u2014 {}, 42, \"a string\" and null alike, verified by probe. It is a data document read by MembershipTransitionContract.load, not a message shape. It is recorded here rather than as debt because an instance test for it would report green while asserting nothing, which is strictly worse than no test. This also exposed a hole in tools/check_contract_conformance.py: coverage counted any call to jsonschema.validate, so a vacuous call against this file marked it covered and invited its debt entry to be struck. The tool now refuses to classify schemas that cannot constrain."
+  },
+  "findings": {
+    "undeclared_phase2_lifecycle_envelope": "The highest-value finding from this sweep. AuditDispatcher.emit_lifecycle_event produces the Phase 2 lifecycle envelope with causation chaining and a bounded metadata map, and every Phase 2 module \u2014 invitation, membership, SCIM, context, delegation \u2014 emits it. No schema in contracts/schemas/ describes it. `status` in {SUCCESS, DENIED, ERROR} and `outcome` in {success, deny, failure} are different vocabularies for the same idea. This needs a schema authored, not a producer repaired, and it cannot be closed by editing code.",
+    "context_switch_request_half_has_no_producer": "context-switch.json declares a `request` half and no route exists that accepts it. SwitchContextCommand's docstring claims conformance to that schema; the claim is false. A test now asserts the mismatch so the docstring cannot be assumed true, and it will fail the moment a real serialiser appears.",
+    "only_three_serialisers_exist": "Repo-wide there are three to_dict() methods, all Phase 3. No Phase 1 or Phase 2 type except IssuedContext owns a serialiser, so the conformance tests supply a shared encoder derived from dataclasses.fields(). EncoderFidelityTests pins that the encoder cannot rename, drop or add a key \u2014 without that, every Phase 1/2 verdict would be a statement about the encoder rather than about the producer."
+  }
+}
