@@ -306,6 +306,66 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
             cur.execute("DELETE FROM audit_events")
             self.assertEqual(cur.rowcount, 0, "an audit record was deleted")
 
+    # -- Session nesting: the leak a security review found --------------------------
+
+    def test_a_session_cannot_be_nested_inside_one_scoped_to_another_tenant(self):
+        """Regression for a complete isolation bypass, found 2026-07-30 and reproduced.
+
+        `set_config(..., is_local => true)` is discarded when its transaction ends. But
+        psycopg's `conn.transaction()`, entered on a connection already inside a transaction,
+        emits a SAVEPOINT — and PostgreSQL reverts `SET LOCAL` on savepoint ROLLBACK but **not**
+        on savepoint RELEASE.
+
+        So a nested session that exited *cleanly* left the inner tenant in force. Measured before
+        the guard: an outer block scoped to B read zero rows, a nested block for A exited
+        normally, and the same outer block then read A's row and wrote a row owned by A. Row-level
+        security was fully enabled the whole time; it was simply being told the wrong tenant.
+
+        The inner-raises path was always correct, because savepoint rollback does revert the
+        setting. Only the clean exit leaked, which is exactly why no existing test caught it —
+        every test that nested sessions either did not nest across tenants or raised.
+        """
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as _cur:
+            with self.assertRaises(self.db.TenantScopeReentryError) as caught:
+                with self.db.tenant_session(self.tenant_b, connection=self.conn):
+                    pass
+
+        self.assertIn(self.tenant_b, str(caught.exception))
+        self.assertIn(self.tenant_a, str(caught.exception))
+
+    def test_re_entry_with_the_same_tenant_is_permitted(self):
+        """Composing several same-tenant statements on one connection is the reason
+        `connection=` exists, and it cannot produce a scope mismatch. Refusing it would push
+        callers toward opening extra connections, which is a worse outcome than the bug."""
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as outer:
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as inner:
+                inner.execute("SELECT count(*) FROM tenant_resources")
+                self.assertGreaterEqual(inner.fetchone()[0], 1)
+
+            outer.execute("SELECT NULLIF(current_setting('app.current_tenant_id', true), '')")
+            self.assertEqual(outer.fetchone()[0], self.tenant_a, "the outer scope was altered")
+
+    def test_a_system_session_cannot_be_nested_inside_a_tenant_session(self):
+        """This direction fails closed rather than open — the setting is cleared, so the
+        enclosing block sees nothing and reads it as 'this tenant has no data'.
+
+        It is refused anyway. A correctness bug that presents as missing data is the failure
+        mode migration 004 was written to remove, and a rule with an exception is a rule
+        somebody has to remember.
+        """
+        with self.db.tenant_session(self.tenant_a, connection=self.conn):
+            with self.assertRaises(self.db.TenantScopeReentryError):
+                with self.db.system_session(connection=self.conn):
+                    pass
+
+    def test_a_tenant_session_cannot_be_nested_inside_a_system_session(self):
+        """This direction fails open: the tenant would stay in force and the enclosing block
+        would read that tenant's rows while believing it was unscoped."""
+        with self.db.system_session(connection=self.conn):
+            with self.assertRaises(self.db.TenantScopeReentryError):
+                with self.db.tenant_session(self.tenant_a, connection=self.conn):
+                    pass
+
     # -- Tenant identity agreement across the two policy families ------------------
 
     def test_both_policy_families_agree_on_tenant_identity_regardless_of_case(self):

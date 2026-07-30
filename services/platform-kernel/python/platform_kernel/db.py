@@ -48,6 +48,40 @@ class TenantContextError(RuntimeError):
     """Raised when a tenant-scoped session is opened without a usable tenant identifier."""
 
 
+class TenantScopeReentryError(RuntimeError):
+    """Raised when a session is nested inside another with a different scope in force.
+
+    This closes a complete isolation bypass, found by security review on 2026-07-30 and
+    reproduced end to end.
+
+    `set_config(..., is_local => true)` is discarded when the transaction it belongs to ends.
+    But psycopg3's `conn.transaction()`, entered on a connection that is *already* inside a
+    transaction, emits a SAVEPOINT rather than opening a new one — and PostgreSQL reverts a
+    `SET LOCAL` on savepoint ROLLBACK but **not** on savepoint RELEASE.
+
+    So a nested `tenant_session` that exits *cleanly* left the inner tenant in force in the
+    enclosing block. Measured, with real rows:
+
+        outer opened for B, reads          -> 0 rows          (correct)
+        nested session for A, exits cleanly
+        outer, same block, reads           -> ['A-SECRET']    (tenant A's row)
+        tenant in force in the outer block -> A
+
+    Cross-tenant read and write, in both directions, with row-level security fully enabled and
+    fully intact — because the policy was being told the wrong tenant. That is precisely the
+    failure this module's docstring calls void-if-broken.
+
+    The inner-raises path was already correct: savepoint ROLLBACK does revert the setting. Only
+    the clean exit leaked, which is why no test caught it.
+
+    Re-entry with the *same* scope is permitted, because composing several same-tenant
+    operations onto one connection is the reason the `connection=` parameter exists and it
+    cannot produce a mismatch. Anything else is refused rather than repaired: restoring the
+    outer value on exit would work, but it would leave nesting looking safe and make the next
+    variant of this bug quiet again.
+    """
+
+
 def database_url() -> str:
     """Return the configured connection URL, or raise with actionable remediation."""
     url = os.environ.get(ENV_DATABASE_URL, "").strip()
@@ -66,6 +100,41 @@ def database_url() -> str:
 def connect(url: str | None = None, *, autocommit: bool = False) -> "psycopg.Connection":
     """Open a connection. Callers should prefer `tenant_session` or `system_session`."""
     return psycopg.connect(url or database_url(), autocommit=autocommit)
+
+
+def _reject_conflicting_scope(conn: "psycopg.Connection", desired: str) -> None:
+    """Refuse to nest a session inside another with a different scope in force.
+
+    Only relevant when the connection is already inside a transaction — that is exactly when
+    `conn.transaction()` becomes a savepoint, and a savepoint RELEASE does not revert
+    `set_config(..., true)`. Outside a transaction there is nothing to conflict with.
+
+    The comparison is against what PostgreSQL currently holds rather than against anything this
+    module tracks, so it cannot drift from reality.
+    """
+    if conn.info.transaction_status == psycopg.pq.TransactionStatus.IDLE:
+        return
+
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT COALESCE(current_setting(%s, true), '')", (TENANT_SETTING,))
+        row = cursor.fetchone()
+    current = (row[0] if row else "") or ""
+
+    if current == desired:
+        return
+
+    raise TenantScopeReentryError(
+        f"refusing to open a session for {desired or '<system>'!r} inside one already scoped to "
+        f"{current or '<system>'!r} on the same connection.\n"
+        f"\n"
+        f"A nested session that exits cleanly does NOT restore the enclosing scope: psycopg "
+        f"emits a SAVEPOINT, and PostgreSQL reverts SET LOCAL on savepoint rollback but not on "
+        f"release. The enclosing block would continue with the inner tenant in force and read "
+        f"and write that tenant's rows while believing it was scoped to its own.\n"
+        f"\n"
+        f"Restructure so the two scopes do not overlap, or pass no `connection=` so each opens "
+        f"its own. Re-entry with the same scope is allowed."
+    )
 
 
 @contextmanager
@@ -88,6 +157,9 @@ def tenant_session(
        next tenant's transaction. Session-scoped settings leak across checkouts; that leak
        is silent and grants cross-tenant read access.
 
+    Point 2 holds for the *outermost* transaction and, as originally written, was relied on for
+    a case where it does not hold. See `_reject_conflicting_scope` — nesting is now refused.
+
     The transaction commits on clean exit and rolls back on any exception.
     """
     if not tenant_id or not str(tenant_id).strip():
@@ -101,6 +173,7 @@ def tenant_session(
     owns_connection = connection is None
     conn = connection or connect()
     try:
+        _reject_conflicting_scope(conn, str(tenant_id))
         with conn.transaction():
             with conn.cursor() as cursor:
                 cursor.execute(
@@ -123,10 +196,20 @@ def system_session(
     the policies in `infrastructure/database/`, tenant-scoped tables return zero rows in
     this state. That is the intended behaviour and is asserted by the isolation suite: an
     unset context must read as "no access", never as "all access".
+
+    Nesting is refused here for the same reason as in `tenant_session`, and the direction of
+    the failure differs in a way worth naming. A system session nested inside a tenant session
+    fails *closed* — it clears the setting, so the enclosing block afterwards sees nothing and
+    reads it as "this tenant has no data". A tenant session nested inside a system session
+    fails *open* — the tenant stays in force and the enclosing block reads that tenant's rows
+    while believing it is unscoped. One is a correctness bug and the other is a disclosure, and
+    both are refused rather than only the second, because a rule with an exception is a rule
+    somebody has to remember.
     """
     owns_connection = connection is None
     conn = connection or connect()
     try:
+        _reject_conflicting_scope(conn, "")
         with conn.transaction():
             with conn.cursor() as cursor:
                 cursor.execute("SELECT set_config(%s, '', true)", (TENANT_SETTING,))
