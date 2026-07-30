@@ -325,3 +325,85 @@ acceptable for the current phase, or block it.
 - Secrets: [BOPEN-SEC-VAULT-001](../07-security/secrets/BOPEN-SEC-VAULT-001.md) — credential registry
 - Migrations: `infrastructure/database/007_registry_table_isolation.sql`,
   `infrastructure/database/008_lifecycle_unscoped_read.sql`
+
+---
+
+# Addendum A — F10, found while pricing the identifier decision, 2026-07-30
+
+Appended rather than folded into section 2, under the extend-only rule. The record above stands
+as issued.
+
+## A.1 What was measured
+
+Pricing `DEC-P35-PHASE2-STORAGE` §2.1 required knowing what the absence of a foreign key actually
+costs, so the live schema was audited for rows a foreign key would have refused:
+
+| table | rows | orphaned | share |
+|---|---|---|---|
+| `usage_meter_balances` | 2812 | 2812 | **100%** |
+| `quota_reservations` | 2510 | 2510 | **100%** |
+| `usage_outbox` | 1215 | 1215 | **100%** |
+| `tenant_entitlement_plans` | 354 | 0 | 0% |
+| `memberships` (control, has FK) | 5607 | 0 | 0% |
+| `tenant_resources` (control, has FK) | 4868 | 0 | 0% |
+
+6,537 rows name a tenant that does not exist in `tenants`.
+
+The 100%-versus-0% split needed explaining before it could be called anything, since a uniform
+result usually means the query is wrong. It is not the identifier format: sampled values from both
+groups are canonical lowercase UUIDs, and a case-variance check returned zero across all five
+text-keyed tables.
+
+## A.2 The mechanism, demonstrated side by side
+
+One session, one tenant identifier that exists nowhere, two tables:
+
+```
+tenant 8b56258a-… exists in tenants: False
+  usage_meter_balances (text tenant_id, no FK) -> ACCEPTED
+  tenant_resources     (uuid tenant_id, FK)    -> refused, ForeignKeyViolation
+
+a session for a tenant that does not exist reads back 1 of its own metering rows
+```
+
+Row-level security does not help here and was never going to: `set_config` sets a value, it does
+not assert that the value names anything. The only control that would have refused the write is
+the foreign key, and the foreign key is impossible because `tenant_id` is `VARCHAR(64)` while
+`tenants.id` is `UUID`.
+
+## A.3 Severity, stated conservatively
+
+**LOW-MEDIUM. Not a cross-tenant disclosure.** Every read is still scoped by the policy, and the
+orphaned rows belong to a tenant nobody can open a session for, so nothing leaks. This is a
+lifecycle and integrity defect, not an isolation one.
+
+What it does cost:
+
+- **Tenant deletion strands data silently.** `memberships` and `tenant_resources` cascade from
+  `tenants`; the five text-keyed tables cannot, so a deleted tenant's usage counters, quota
+  reservations and outbox entries persist with no owner, no reader and no sweep. The 6,537 rows
+  are that, already happening in the verification instance.
+- **Nothing detects it.** Absent the foreign key, the first thing that notices is a query somebody
+  writes on purpose. This one was written to price a decision, not to find a defect.
+
+## A.4 Deliberately not fixed
+
+Fixing it means adding a foreign key, which means changing `tenant_id` from `VARCHAR(64)` to
+`UUID` on five populated tables. That is §2.1's decision, and it is the operator's. Taking it here
+by writing the migration would resolve a reserved decision by code default, which is what
+`DEC-P35-RUNTIME` exists to prevent.
+
+So F10 changes nothing about the recommendation and everything about its weight. §2.1 argued that
+Option B forfeits referential integrity; Addendum B showed five tables that had already forfeited
+it; this shows the forfeit has been collecting rows the whole time. The eight Phase 2 tables
+inherit this if the same choice is made again.
+
+The orphaned rows are left in place. They are the evidence, and removing them would leave the
+claim resting on this document alone.
+
+## A.5 Provenance
+
+Source — read-only audit of the verification instance on 2026-07-30 via `pg_constraint` and
+per-table `NOT EXISTS` counts, run as a `BYPASSRLS` role so the policies could not hide the rows
+being counted; plus one write probe whose two rows were removed. Advisory only —
+`execution_authority: false`, `approval_authority: false`.
