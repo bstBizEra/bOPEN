@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 267,
+  "count": 268,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1095,6 +1095,13 @@
       "bytes": 3121
     },
     {
+      "path": "docs/decisions/DEC-P35-AUDIT-ENVELOPE.md",
+      "title": "DEC-P35-AUDIT-ENVELOPE \u2014 Which audit envelope is the contract",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (two approved artifacts conflict)**",
+      "sha256": "6fe1e9d15b58e851aeaf837c56319fd884e7ccf195dc0f80df8e6fb11f5f323f",
+      "bytes": 6580
+    },
+    {
       "path": "docs/decisions/DEC-P35-RUNTIME.md",
       "title": "DEC-P35-RUNTIME \u2014 Runtime Realization Gate and Evidence Anchoring Correction",
       "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
@@ -1105,8 +1112,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "508ec8a1bf71d3eff7822c0e25f9a36992c591368a8b26cde0fd5dbb0cf726b9",
-      "bytes": 2608
+      "sha256": "6b1cfd6ee740ce04317363ef915ee7cbc5e54c38a59ce3260c20559fbefdafac",
+      "bytes": 2926
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
