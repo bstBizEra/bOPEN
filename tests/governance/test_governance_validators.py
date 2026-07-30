@@ -79,6 +79,31 @@ class GovernanceValidatorTests(unittest.TestCase):
             ),
         )
 
+    def test_contract_conformance_has_not_regressed(self):
+        """EBIV R2/R4 — no frozen schema loses instance coverage, and none goes unaccounted for.
+
+        Measured by observation: the tool wraps `jsonschema.validate`, runs the suite, and records
+        which schemas were actually passed to it. Static analysis cannot answer this, because
+        `validate(schema=self.decision_schema)` gives no syntactic clue which file that came from —
+        and a heuristic reading "this test opened that schema, so it must validate against it"
+        would credit exactly the Phase 3 pattern of opening a schema and never using it.
+
+        Thirteen of sixteen schemas are uncovered, recorded with reasons in
+        `contracts/contract-conformance-baseline.json`. This test fails on regression rather than
+        on the debt itself: a check that starts out red gets silenced, and a silenced check is
+        worse than none because it reads as coverage.
+        """
+        result = run_tool("tools/check_contract_conformance.py")
+        self.assertEqual(
+            result.returncode,
+            0,
+            msg=(
+                "contract conformance regressed — a schema lost its instance test, or a new "
+                f"schema has neither coverage nor a recorded reason:\n\n"
+                f"{result.stdout}\n{result.stderr}"
+            ),
+        )
+
     def test_identity_register_is_valid_and_agrees_with_its_document(self):
         """The machine-readable register and its normative document must not drift apart.
 
