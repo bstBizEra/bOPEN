@@ -364,3 +364,89 @@ cannot be limited to the table it was written for.
 
 Probes were run against the verification instance and their fixtures removed. Advisory only —
 `execution_authority: false`, `approval_authority: false`.
+
+---
+
+# Addendum B — §2.1 priced by measurement, 2026-07-30
+
+§2.1 recommended Option A and stated Option B's cost as an inference: *"foreign keys into
+`tenants`, `principals` and `memberships` become impossible without a cast."* That was reasoning.
+The repository can be measured instead, because it already contains tables that took Option B.
+
+## B.1 What the live schema shows
+
+Every identifier column in the `public` schema, grouped by type, and the foreign-key count of the
+table it belongs to:
+
+| table | uuid id-columns | varchar id-columns | foreign keys |
+|---|---|---|---|
+| `quota_reservations` | 0 | 4 | **0** |
+| `tenant_entitlement_overrides` | 0 | 3 | **0** |
+| `tenant_entitlement_plans` | 0 | 2 | **0** |
+| `usage_meter_balances` | 0 | 3 | **0** |
+| `usage_outbox` | 0 | 6 | **0** |
+| `memberships` | 3 | 0 | 2 |
+| `tenant_resources` | 2 | 0 | 1 |
+| `active_contexts` | 4 | 1 | 3 |
+| `audit_events` | 4 | 2 | 3 |
+| `lifecycle_events` | 2 | 4 | 1 |
+
+The five tables with no uuid identifier column have no referential integrity at all. Every
+foreign key in the schema sits on a uuid column. `lifecycle_events` shows the mechanism plainly
+within a single table: its uuid columns carry the foreign key, its varchar ones do not.
+
+The cause is specific and worth stating precisely, because the general claim would be wrong.
+`VARCHAR` columns can perfectly well carry foreign keys. These do not, because the keys they
+would have to reference — `tenants.id` and `principals.id` — are `UUID`, and PostgreSQL will not
+create a foreign key across those types. Option B does not forbid referential integrity in
+general; it forbids it *against the tables Phase 2 must reference*, which is every one of them.
+
+Those five tables are the migration 002 family. They are not a hypothetical: they are what
+Option B looks like eighteen months in.
+
+## B.2 The cast, measured
+
+```
+identifier as Phase 2 mints it: inv_decadffb-b654-4990-8b0c-850046e0761c   (40 chars)
+  prefixed -> uuid column   InvalidTextRepresentation
+  bare     -> uuid column   OK
+```
+
+The prefixed form is not a formatting preference that a column type could be widened to accept.
+It is not a UUID, and no `UUID` column will take it.
+
+## B.3 What this changes and what it does not
+
+It changes nothing about the recommendation, which was already A. It changes the standing of the
+argument: the cost of B is no longer predicted, it is observed on five existing tables, and the
+count of tables that would join them is eight rather than the eleven §2.1 estimated — the Phase 2
+concept inventory has since been measured directly (`invitations`, `idp_connections`,
+`external_identities`, `sso_transactions`, `scim_directories`, `group_role_mappings`,
+`delegated_grants`, `authentication_sessions`).
+
+It does not make the decision. A is a recommendation with a measured price attached to its
+alternative; choosing to pay that price is a product decision, and the operator may have reasons
+this document cannot see — a satellite product already storing prefixed identifiers, for one.
+
+## B.4 Two further facts the same measurement surfaced
+
+**`delegated_grants` names its tenant column `target_tenant_id`.** Every row-level-security policy
+in the schema compares a column named `tenant_id`. A policy over a differently-named column has
+to be written differently, and differing policy text across otherwise-identical policies is where
+mistakes live — F5 in `EVD-SEC-001` was a table whose policy was simply never written. Renaming to
+`tenant_id` at the storage boundary, or adding it alongside, is a decision that belongs with §2.1
+because it is the same kind of decision: whether the storage layer speaks one identifier
+vocabulary or several.
+
+**`group_role_mappings` carries no tenant column at all.** It hangs off `directory_id`. Under the
+classification introduced by migration 007 it is therefore genuinely unclassified: either it
+denormalises `tenant_id` and becomes tenant-scoped like the rest, or its policy is written as an
+`EXISTS` subquery against `scim_directories`. Both work. They differ in whether a future reader
+can tell what the policy protects by looking at the table. This is §2.5's neighbour and should be
+decided with it.
+
+## B.5 Provenance
+
+Source — measured against the verification instance on 2026-07-30 via `information_schema.columns`
+and `pg_constraint`, after migrations 001–008. No fixtures created; the queries are read-only.
+Advisory only — `execution_authority: false`, `approval_authority: false`.
