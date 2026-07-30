@@ -496,5 +496,101 @@ class TestContextTokenSecurity(unittest.TestCase):
         self.assertNotIn(signature[:20], response.text)
 
 
+class TestContextTokenClaimTypes(unittest.TestCase):
+    """
+    Claim types, checked after the signature and before the claims are used.
+
+    `roles` and `scopes` were type-checked; `sub`, `tid`, `mid`, `ctx`, `sid` and `jti` were not.
+    Security review raised this on 2026-07-30 and rated it low, correctly — forging a token needs
+    the Ed25519 private key, so nothing arrives here unsigned. It is fixed anyway because the
+    omission was an inconsistency rather than a decision, and because the consequence leaves this
+    module: `tid` flows into `db.tenant_session`, which would bind a non-string through `str()`,
+    match no policy, and be read by the caller as "this tenant has no data" rather than as an
+    error.
+
+    Every token below is signed with the real signing key, so nothing here is testing signature
+    verification.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import time
+
+        from cryptography.hazmat.primitives import serialization
+
+        from platform_kernel import tokens
+
+        cls.tokens = tokens
+        cls.time = time
+        registry = tokens.registry()
+        if not registry.is_configured():
+            raise unittest.SkipTest("BOPEN_CONTEXT_TOKEN_KEY is not set")
+        cls.kid = registry.signing_kid
+        cls.private_pem = registry.private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        ).decode("ascii")
+
+    def _forge(self, **overrides) -> str:
+        import jwt as pyjwt
+
+        now = int(self.time.time())
+        claims = {
+            "iss": self.tokens.issuer(),
+            "aud": self.tokens.audience(),
+            "sub": str(uuid.uuid4()),
+            "tid": str(uuid.uuid4()),
+            "mid": str(uuid.uuid4()),
+            "ctx": str(uuid.uuid4()),
+            "sid": str(uuid.uuid4()),
+            "jti": str(uuid.uuid4()),
+            "roles": ["owner"],
+            "scopes": ["tenant:read"],
+            "iat": now,
+            "nbf": now,
+            "exp": now + 300,
+        }
+        claims.update(overrides)
+        return pyjwt.encode(
+            claims, self.private_pem, algorithm="EdDSA", headers={"kid": self.kid}
+        )
+
+    def test_a_correctly_shaped_token_still_verifies(self):
+        """
+        The control. Without it every assertion below is satisfied by a function that rejects
+        everything, which is a way of passing a security test while breaking the product.
+        """
+        claims = self.tokens.verify_context_token(self._forge())
+        self.assertIsInstance(claims.tenant_id, str)
+        self.assertEqual(claims.roles, ("owner",))
+
+    def test_an_identifier_claim_that_is_not_a_string_is_refused(self):
+        for claim in ("sub", "tid", "mid", "ctx", "sid", "jti"):
+            for value in ({"$ne": None}, 12345, ["a"], None, "", "   "):
+                with self.subTest(claim=claim, value=value):
+                    with self.assertRaises(self.tokens.TokenVerificationError):
+                        self.tokens.verify_context_token(self._forge(**{claim: value}))
+
+    def test_a_role_or_scope_that_is_not_a_string_is_refused(self):
+        """
+        A non-string member compares unequal to every real role, so it fails closed — but
+        silently, and it would then be written into the audit record as something no reviewer
+        could match against anything.
+        """
+        for override in (
+            {"roles": [{"role": "owner"}]},
+            {"roles": [1]},
+            {"roles": ["owner", None]},
+            {"roles": "owner"},
+            {"scopes": [1]},
+            {"scopes": [["tenant:read"]]},
+            {"scopes": ""},
+        ):
+            with self.subTest(**override):
+                with self.assertRaises(self.tokens.TokenVerificationError):
+                    self.tokens.verify_context_token(self._forge(**override))
+
+
 if __name__ == "__main__":
     unittest.main()

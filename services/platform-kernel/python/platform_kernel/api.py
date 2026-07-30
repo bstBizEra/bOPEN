@@ -71,7 +71,8 @@ import uuid
 from datetime import datetime, timezone
 from typing import Annotated, Optional
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
+import psycopg
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, status
 from pydantic import BaseModel, EmailStr, Field
 
 from kernel_core.evaluator import AuthorizationEvaluator
@@ -148,6 +149,38 @@ def normalise_id(value: str, field_name: str) -> str:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"{field_name} must be a UUID, optionally prefixed (e.g. tnt_<uuid>)",
         )
+
+
+# --------------------------------------------------------------------------------------
+# Storage limits
+# --------------------------------------------------------------------------------------
+# Column widths in `audit_events` and `tenant_resources` (migrations 003 and 001). Every value
+# the authorization path accepts is written into one of these columns, so a request carrying a
+# longer one cannot be audited — and BOPEN-AUTHZ-001 requires that both allow and deny outcomes
+# are audited, without exception.
+#
+# The path used to handle that in two different wrong ways, both found by security review on
+# 2026-07-30 and both reproduced:
+#
+#   body     a 256-character resource_id was accepted, the decision was evaluated, and the
+#            audit INSERT then raised StringDataRightTruncation. The caller got a 500 and the
+#            decision that had already been made was recorded nowhere. An unauditable decision
+#            is worse than a refused request, because the refusal leaves no unrecorded act.
+#
+#   header   X-Correlation-ID was silently truncated to 64 characters. The docstring on
+#            `require_correlation_id` explains that the header is rejected rather than
+#            generated when absent, so that an audit trail which cannot be joined to the
+#            caller's own logs does not look as though it can be. Silent truncation produces
+#            exactly the trail that reasoning exists to prevent.
+#
+# So the limits are declared here, enforced at the boundary, and asserted equal to the live
+# column widths by the integration suite. Over-length input is now a 422 or 400 before any
+# decision is evaluated: the request is refused, nothing happens, and nothing goes unrecorded.
+AUDIT_CORRELATION_ID_MAX = 64    # audit_events.correlation_id
+AUDIT_ACTION_MAX = 128           # audit_events.action
+AUDIT_RESOURCE_TYPE_MAX = 128    # audit_events.resource_type
+AUDIT_RESOURCE_ID_MAX = 255      # audit_events.resource_id
+RESOURCE_NAME_MAX = 255          # tenant_resources.resource_name
 
 
 # --------------------------------------------------------------------------------------
@@ -232,9 +265,9 @@ class EstablishContextResponse(BaseModel):
 
 
 class AuthorizeRequest(BaseModel):
-    action: str = Field(min_length=1)
-    resource_type: str = Field(min_length=1)
-    resource_id: str
+    action: str = Field(min_length=1, max_length=AUDIT_ACTION_MAX)
+    resource_type: str = Field(min_length=1, max_length=AUDIT_RESOURCE_TYPE_MAX)
+    resource_id: str = Field(max_length=AUDIT_RESOURCE_ID_MAX)
 
 
 class AuthorizationDecisionResponse(BaseModel):
@@ -274,13 +307,29 @@ def require_correlation_id(
 
     Rejected rather than generated when absent. Generating one server-side would make an
     audit trail that cannot be joined to the caller's own logs look as though it can be.
+
+    Over-length is rejected for the same reason, rather than truncated. This used to return
+    `value[:64]`, so a longer identifier was accepted and a different one was recorded — which
+    is the trail the paragraph above exists to prevent, arrived at by a different route. The
+    caller who cannot join their logs to it is no better off for the request having succeeded.
     """
     if not x_correlation_id or not x_correlation_id.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="X-Correlation-ID is mandatory (HTTP_HEADER_SPEC.md)",
         )
-    return x_correlation_id.strip()[:64]
+
+    correlation_id = x_correlation_id.strip()
+    if len(correlation_id) > AUDIT_CORRELATION_ID_MAX:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"X-Correlation-ID must be at most {AUDIT_CORRELATION_ID_MAX} characters; "
+                f"the audit record stores it at that width and a truncated identifier would "
+                f"not match the one you logged"
+            ),
+        )
+    return correlation_id
 
 
 def require_tenant_hint(
@@ -503,16 +552,30 @@ def register_principal(
     No tenant context is required or accepted: a principal exists before it belongs to any
     tenant. `BOPEN-TENANT-001` invariant 1 — a principal is broader than a human user, and
     invariant 4 — membership, not registration, is what binds a principal to a tenant.
+
+    KNOWN AND NOT CLOSED: this endpoint is an account-existence oracle. 409 for an address
+    already registered and 201 for one that is not are distinguishable by anyone, with no
+    credential, and security review confirmed it by execution on 2026-07-30. It is recorded
+    rather than patched because the fix is not available at this layer: a registration call
+    that returns the new principal's identifier synchronously must tell the caller whether it
+    created one. Removing the oracle means making registration asynchronous behind an address
+    verification step, which is the enterprise identity bridge's work (WP-P35-05), and the same
+    work package that gives this endpoint any authentication at all — see
+    BOPEN_ALLOW_UNAUTHENTICATED_CONTEXT. Returning 201 for a duplicate would hide the oracle
+    from a reader of this file without closing it, since timing and the absent identifier both
+    still answer the question.
     """
     try:
         created = principals.create(email=str(body.email), principal_type=body.type)
-    except Exception as exc:
-        if "unique" in str(exc).lower() or "duplicate" in str(exc).lower():
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="a principal with that email already exists",
-            )
-        raise
+    except psycopg.errors.UniqueViolation:
+        # Caught by type, not by searching the driver's message for "unique" or "duplicate".
+        # That test passed only because of the wording psycopg happens to use today: a driver
+        # upgrade or a non-English server locale would have turned every duplicate address into
+        # an unhandled 500, and the endpoint would have looked fine until it was in production.
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="a principal with that email already exists",
+        )
 
     return PrincipalResponse(
         principal_id=created.id,
@@ -784,7 +847,7 @@ def list_audit_events(
 @app.post("/v1/resources", status_code=status.HTTP_201_CREATED)
 def create_resource(
     ctx: Annotated[ResolvedContext, Depends(resolve_context)],
-    resource_name: str,
+    resource_name: Annotated[str, Query(min_length=1, max_length=RESOURCE_NAME_MAX)],
 ) -> dict:
     """Create a tenant-owned resource, used by the slice as an authorization target."""
     resource_id = resources.create(ctx.tenant_id, resource_name)

@@ -386,7 +386,29 @@ def verify_context_token(token: str) -> ContextClaims:
             "token is not valid", reason=f"missing_claims:{','.join(missing)}"
         )
 
+    # Type checks on every claim that leaves this function, not only the two collections.
+    #
+    # `roles` and `scopes` were already checked; `sub`, `tid`, `mid`, `ctx` and `sid` were not,
+    # and JWT claims are whatever JSON says they are — a number, an object, a list. Security
+    # review raised it on 2026-07-30 and rated it low, correctly: forging a token requires the
+    # Ed25519 private key, so nothing reaches here unsigned. But the omission was an
+    # inconsistency rather than a decision, and the consequence is not confined to this module.
+    # `tid` flows into `db.tenant_session`, which interpolates nothing and would bind a
+    # non-string via `str()` — so a dict would become the text of its repr and match no policy,
+    # and the caller would read that as "this tenant has no data" rather than as an error. A
+    # value that cannot be an identifier should be refused where it is first seen.
+    for claim in ("sub", "tid", "mid", "ctx", "sid", "jti"):
+        value = claims.get(claim)
+        if not isinstance(value, str) or not value.strip():
+            raise TokenVerificationError("token is not valid", reason="malformed_claims")
+
     if not isinstance(claims["roles"], list) or not isinstance(claims["scopes"], list):
+        raise TokenVerificationError("token is not valid", reason="malformed_claims")
+
+    if not all(isinstance(item, str) and item.strip() for item in claims["roles"] + claims["scopes"]):
+        # A role list is compared against and carried into decisions. A non-string member would
+        # compare unequal to every real role, which fails closed here but silently, and would
+        # then be serialised into the audit record as something no reviewer could match.
         raise TokenVerificationError("token is not valid", reason="malformed_claims")
 
     return ContextClaims(

@@ -502,5 +502,198 @@ class TestPhase1HttpSlice(unittest.TestCase):
         self.assertEqual(response.status_code, 422, response.text)
 
 
+class TestAuditableInputBoundary(unittest.TestCase):
+    """
+    Nothing may be accepted that cannot then be audited.
+
+    BOPEN-AUTHZ-001 requires both allow and deny outcomes to be audited, with no exception. The
+    authorization path used to break that in two directions, both reproduced on 2026-07-30:
+
+        body     a 256-character resource_id was accepted, the decision was evaluated, and the
+                 audit INSERT raised StringDataRightTruncation. HTTP 500, and the decision that
+                 had already been made was recorded nowhere.
+
+        header   X-Correlation-ID was silently truncated to 64 characters, so the audit row
+                 carried an identifier the caller had never sent. `require_correlation_id`
+                 rejects an absent header precisely so a trail that cannot be joined to the
+                 caller's logs does not look joinable; truncation produced that trail anyway.
+
+    Both are now refused at the boundary, before any decision is evaluated. The refusal is the
+    point: a rejected request leaves no unrecorded act behind it.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from fastapi.testclient import TestClient
+
+        from platform_kernel.api import app
+
+        cls.client = TestClient(app)
+
+    def _context(self) -> dict:
+        principal = self.client.post(
+            "/v1/principals",
+            json={"email": f"b-{uuid.uuid4().hex[:12]}@example.com", "type": "human"},
+            headers={"X-Correlation-ID": corr()},
+        )
+        principal_id = principal.json()["principal_id"]
+        tenant = self.client.post(
+            "/v1/tenants",
+            json={"name": f"B{uuid.uuid4().hex[:8]}", "owner_principal_id": principal_id},
+            headers={"X-Correlation-ID": corr()},
+        )
+        body = tenant.json()
+        envelope = self.client.post(
+            "/v1/contexts",
+            json={"principal_id": principal_id, "membership_id": body["owner_membership_id"]},
+            headers={"X-Tenant-ID": body["tenant_id"], "X-Correlation-ID": corr()},
+        )
+        return {
+            "tenant_id": body["tenant_id"],
+            "context_id": envelope.json()["context"]["context_id"],
+        }
+
+    def _authorize(self, ctx, correlation, **overrides):
+        payload = {
+            "action": "tenant_resource:read",
+            "resource_type": "tenant_resource",
+            "resource_id": str(uuid.uuid4()),
+        }
+        payload.update(overrides)
+        return self.client.post(
+            "/v1/authorize",
+            json=payload,
+            headers={
+                "X-Tenant-ID": ctx["tenant_id"],
+                "X-Context-ID": ctx["context_id"],
+                "X-Correlation-ID": correlation,
+            },
+        )
+
+    def _audit_rows(self, ctx, correlation):
+        events = self.client.get(
+            "/v1/audit-events",
+            headers={
+                "X-Tenant-ID": ctx["tenant_id"],
+                "X-Context-ID": ctx["context_id"],
+                "X-Correlation-ID": corr(),
+            },
+        )
+        self.assertEqual(events.status_code, 200, events.text)
+        return [e for e in events.json()["events"] if e["correlation_id"] == correlation]
+
+    def test_a_request_that_fits_is_decided_and_audited(self):
+        """The control: the limits must not have made the endpoint refuse ordinary work."""
+        ctx = self._context()
+        correlation = corr()
+        response = self._authorize(ctx, correlation)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(len(self._audit_rows(ctx, correlation)), 1)
+
+    def test_a_value_too_long_for_the_audit_column_is_refused_before_any_decision(self):
+        from platform_kernel.api import (
+            AUDIT_ACTION_MAX,
+            AUDIT_RESOURCE_ID_MAX,
+            AUDIT_RESOURCE_TYPE_MAX,
+        )
+
+        ctx = self._context()
+        for field, limit in (
+            ("resource_id", AUDIT_RESOURCE_ID_MAX),
+            ("action", AUDIT_ACTION_MAX),
+            ("resource_type", AUDIT_RESOURCE_TYPE_MAX),
+        ):
+            with self.subTest(field=field):
+                correlation = corr()
+                response = self._authorize(ctx, correlation, **{field: "A" * (limit + 1)})
+                self.assertEqual(
+                    response.status_code, 422,
+                    f"an over-length {field} was accepted; the decision it produces cannot be "
+                    f"stored, so the request must not be",
+                )
+                self.assertEqual(
+                    self._audit_rows(ctx, correlation), [],
+                    "a refused request left an audit row behind it",
+                )
+
+    def test_an_over_length_correlation_id_is_refused_rather_than_truncated(self):
+        from platform_kernel.api import AUDIT_CORRELATION_ID_MAX
+
+        ctx = self._context()
+        oversized = "c" * (AUDIT_CORRELATION_ID_MAX + 1)
+        response = self._authorize(ctx, oversized)
+        self.assertEqual(response.status_code, 400, response.text)
+
+        truncated = oversized[:AUDIT_CORRELATION_ID_MAX]
+        self.assertEqual(
+            self._audit_rows(ctx, truncated), [],
+            "the header was truncated and an audit row was written under an identifier the "
+            "caller never sent",
+        )
+
+    def test_the_declared_limits_match_the_live_column_widths(self):
+        """
+        Three constants, each a copy of a column width in a migration. A copy is acceptable only
+        while something proves it agrees: if a migration widened `resource_id` the API would
+        keep refusing valid input, and if one narrowed it the 500 this class exists to prevent
+        would come straight back.
+        """
+        from platform_kernel import db
+        from platform_kernel.api import (
+            AUDIT_ACTION_MAX,
+            AUDIT_CORRELATION_ID_MAX,
+            AUDIT_RESOURCE_ID_MAX,
+            AUDIT_RESOURCE_TYPE_MAX,
+            RESOURCE_NAME_MAX,
+        )
+
+        expected = {
+            ("audit_events", "correlation_id"): AUDIT_CORRELATION_ID_MAX,
+            ("audit_events", "action"): AUDIT_ACTION_MAX,
+            ("audit_events", "resource_type"): AUDIT_RESOURCE_TYPE_MAX,
+            ("audit_events", "resource_id"): AUDIT_RESOURCE_ID_MAX,
+            ("tenant_resources", "resource_name"): RESOURCE_NAME_MAX,
+        }
+
+        with db.system_session() as cur:
+            for (table, column), declared in expected.items():
+                cur.execute(
+                    "SELECT character_maximum_length FROM information_schema.columns "
+                    "WHERE table_name = %s AND column_name = %s AND table_schema = "
+                    "current_schema()",
+                    (table, column),
+                )
+                row = cur.fetchone()
+                self.assertIsNotNone(row, f"{table}.{column} does not exist")
+                self.assertEqual(
+                    row[0], declared,
+                    f"{table}.{column} is {row[0]} wide but the API accepts {declared}",
+                )
+
+    def test_registering_an_address_twice_is_a_conflict_not_a_server_error(self):
+        """
+        The 409 arrives via `psycopg.errors.UniqueViolation`, caught by type. It used to be
+        caught by searching the driver's message for "unique" or "duplicate", which worked only
+        because of the wording psycopg happens to use: a driver upgrade or a non-English server
+        locale would have turned every duplicate address into an unhandled 500.
+
+        This does not close the account-existence oracle — 409 against 201 still answers
+        "is this address registered?" to anyone who asks, which security review confirmed and
+        `register_principal` records. Removing it means making registration asynchronous behind
+        address verification, which belongs to WP-P35-05 along with authenticating this endpoint
+        at all.
+        """
+        email = f"dup-{uuid.uuid4().hex[:12]}@example.com"
+        payload = {"email": email, "type": "human"}
+
+        first = self.client.post("/v1/principals", json=payload,
+                                 headers={"X-Correlation-ID": corr()})
+        second = self.client.post("/v1/principals", json=payload,
+                                  headers={"X-Correlation-ID": corr()})
+
+        self.assertEqual(first.status_code, 201, first.text)
+        self.assertEqual(second.status_code, 409, second.text)
+
+
 if __name__ == "__main__":
     unittest.main()
