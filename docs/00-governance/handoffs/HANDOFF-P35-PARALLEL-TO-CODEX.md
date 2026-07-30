@@ -1,12 +1,27 @@
 # HANDOFF-P35-PARALLEL-TO-CODEX — Parallel execution split for Phase 3.5
 
-**Status:** Open — action requested
+**Status:** Stood down 2026-07-30 — retained as a record
 **Issued:** 2026-07-30
 **Maker of this handoff:** Claude (agent, Motor role)
 **Addressed to:** Codex Agent IDE (VS Code)
 **Work package:** [`BOPEN-P35-001`](../../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md)
 **Governing standards:** [`BOPEN-GOV-EBIV-001`](../BOPEN-GOV-EBIV-001.md), `AGENTS.md` §19, §20.3
 **Decision:** [`DEC-P35-RUNTIME`](../../decisions/DEC-P35-RUNTIME.md) — Proposed, not yet approved
+
+> **SEAT STOOD DOWN — 2026-07-30.** The operator has stood this handoff down for now: the
+> addressed agents did not pick it up, and blocking on them was holding work that has no other
+> dependency on them.
+>
+> **This does not verify anything.** `BOPEN-GOV-EBIV-001` §6.3 is explicit that fewer than two
+> admissible ballots escalates to the Completion Authority and *never* auto-passes. Standing the
+> verifiers down changes only the reason the quorum is unmet — from *awaiting ballots* to
+> *quorum unreachable* — and moves the decision to the operator acting as Completion Authority
+> on a zero-verifier record, with the shortfall on the face of the evidence.
+>
+> The document is retained rather than deleted. It records what was asked, of whom, and on what
+> propositions, and it is the starting point if a verifier becomes available. Re-activating it
+> needs nothing but an agent reading it and setting its identity per §5.0.
+
 
 ---
 

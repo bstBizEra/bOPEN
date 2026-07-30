@@ -29,19 +29,20 @@
   "migrations_applied": [
     "001_tenant_isolation_baseline.sql",
     "002_phase3_entitlement_metering.sql",
-    "003_phase1_context_audit.sql"
+    "003_phase1_context_audit.sql",
+    "004_tenant_identity_policy_alignment.sql"
   ],
   "test_results": {
     "command": "python tools/run_tests.py",
-    "total": 217,
-    "passed": 217,
+    "total": 225,
+    "passed": 225,
     "failed": 0,
     "categories": {
       "unit": 139,
       "integration": 48,
       "contracts": 8,
-      "isolation": 16,
-      "governance": 5
+      "isolation": 20,
+      "governance": 10
     },
     "note": "Pass count is an input to admissibility, not a verdict (EBIV \u00a74). The mutation probes below are what establish that these assertions can fail."
   },
@@ -83,16 +84,20 @@
     ],
     "ballots_cast": 0,
     "quorum_required": 2,
-    "quorum_status": "NOT MET",
-    "quorum_note": "EBIV \u00a76.1 requires a minimum of two verifiers to realize a confirmation. Claude authored this work package and is disqualified under \u00a73. Handoff issued at docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md.",
+    "quorum_status": "UNREACHABLE \u2014 verifier seats stood down 2026-07-30",
+    "quorum_note": "The three verifier seats (Codex, Gemini, Kimi) were stood down by the operator on 2026-07-30 after none picked up its handoff. Under BOPEN-GOV-EBIV-001 \u00a76.3 fewer than two admissible ballots escalates to the Completion Authority and never auto-passes, so this changes only the reason the quorum is unmet \u2014 from awaiting ballots to unreachable. The decision now sits with the operator acting as Completion Authority on a zero-verifier record. Status remains IMPLEMENTED_UNVERIFIED; standing verifiers down does not verify anything.",
     "seats_issued": {
       "V1_Codex": "reproducibility and privilege",
       "V2_Gemini": "contract and architecture conformance",
       "V3_Kimi": "cross-artifact consistency"
-    }
+    },
+    "escalated_to": "Operator, as Completion Authority (EBIV \u00a76.3)",
+    "handoffs_retained": [
+      "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
+      "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md"
+    ]
   },
   "known_gaps": [
-    "Mutation A (dropping tenant_isolation_resources) is detected, but as 13 setUp errors rather than one named assertion failure, because the seed INSERT is itself refused when RLS is enabled with no policy present. Detection holds; legibility is weaker than mutations B and C.",
     "Findings F-4 through F-7 of the Phase 3 review remain open. They are entitlement-module defects outside WP-P35-01 scope and are not addressed here.",
     "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing; not corrected by this work package.",
     "Authorization: Bearer is not enforced by the HTTP surface. HTTP_HEADER_SPEC.md makes it mandatory but no issuer exists (WP-P35-03). An unverified bearer token is deliberately not accepted either.",
@@ -104,7 +109,12 @@
     "jti is emitted but never checked; there is no replay cache. A captured token is reusable within its five-minute lifetime.",
     "Key rotation is supported by kid-based resolution but no test exercises two live keys.",
     "Migration 003's rollback is not round-trippable alone: dropping CHECK constraints admits rows that then block re-application. Six such rows were committed during the observed rollback window. Mitigated by 003_phase1_context_audit.compensate.sql, which DELETES rows and refuses to run without BOPEN_DB_NON_PRODUCTION=1.",
-    "Migrations 001 and 002 still have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing and now visible in `db_bootstrap --status` as NO ROLLBACK."
+    "Migrations 001 and 002 still have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing and now visible in `db_bootstrap --status` as NO ROLLBACK.",
+    "13 of 16 schemas in contracts/schemas/ have no test validating a real instance against them. Only tenant-context, entitlement-decision and usage-metered-event do. This is the F-4 defect class unaddressed at scale: the contract suite opens six Phase 3 schemas and asserts things about the schema documents, never about an instance.",
+    "No production code path reads or writes any of the five tables migration 002 created. The tables are correct and unused; the entitlement module still holds all state in memory.",
+    "RateLimitDecision produces 9 validation errors against its frozen schema, not 5: five required properties missing plus four forbidden by additionalProperties:false. current_rate is a semantic inversion of remaining, not a rename.",
+    "QuotaReservation has no to_dict() at all and lacks four schema-required fields. capability-registration.schema.json has no producing type anywhere in the codebase.",
+    "Migration 002 columns remain VARCHAR(64) with no foreign key to tenants(id). Migration 004 aligned the policy semantics but the type conversion is destructive and stays raised as a decision."
   ],
   "evidence_files": [
     "docs/evidence/phase-3.5/ballots.jsonl",
@@ -141,6 +151,13 @@
       "title": "Migration ledger, compensation strategy, append-only checksum guard",
       "commit_oid": "c88c7bbe54751546c777b9db0583c4c4899d2d2e",
       "tree_oid": "b9314cfb6b261894ab46ed0d2bd426b3aafc1773",
+      "record": "docs/evidence/phase-3.5/maker-submission.md"
+    },
+    {
+      "id": "WP-P35-01 / migration 004",
+      "title": "Tenant identity policy alignment \u2014 closes a demonstrated cross-family isolation defect",
+      "commit_oid": "01ebc8716fd226b3f554eaf8de1625d70ab9a045",
+      "tree_oid": "3db1dcadb7efa4da69ab06d643e4c8681e2392b4",
       "record": "docs/evidence/phase-3.5/maker-submission.md"
     }
   ]
