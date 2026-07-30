@@ -334,6 +334,208 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
             cur.execute("DELETE FROM audit_events")
             self.assertEqual(cur.rowcount, 0, "an audit record was deleted")
 
+    def test_the_append_only_guarantee_survives_its_documented_carve_outs(self):
+        """
+        `audit_events` is called append-only because it has SELECT and INSERT policies and no
+        UPDATE or DELETE policy. That is true and `test_audit_events_cannot_be_modified_or_deleted`
+        above asserts it — for the one path everybody tests.
+
+        PostgreSQL documents three ways past a policy, and only that path was covered. The other
+        two are asserted here:
+
+          TRUNCATE   is not reachable by the application role, which holds no TRUNCATE privilege.
+                     RLS is not what stops it, so the grant has to be asserted rather than assumed.
+          FK actions are performed by the system and are not subject to row security.
+
+        The second one was live. `audit_events.context_id` referenced `active_contexts`
+        ON DELETE SET NULL, and `active_contexts` carried a FOR ALL policy, which grants DELETE.
+        So a tenant could null the context binding on its own audit records from an ordinary
+        session, using only the application role, with no write to `audit_events` at all —
+        reproduced on 2026-07-30 and closed by migration 009.
+        """
+        import psycopg
+
+        context_id = str(uuid.uuid4())
+        membership_id = str(uuid.uuid4())
+        correlation = f"carve-{uuid.uuid4().hex[:10]}"
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (id, tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, %s, 'active', 'owner')",
+                (membership_id, self.tenant_a, self.principal_a),
+            )
+            cur.execute(
+                "INSERT INTO active_contexts (id, tenant_id, principal_id, membership_id, "
+                " correlation_id, expires_at) "
+                "VALUES (%s, %s, %s, %s, %s, now() + interval '5 min')",
+                (context_id, self.tenant_a, self.principal_a, membership_id, correlation),
+            )
+            cur.execute(
+                "INSERT INTO audit_events (tenant_id, principal_id, context_id, correlation_id, "
+                " event_type, action, resource_type, decision, reason_code) "
+                "VALUES (%s, %s, %s, %s, 'authorization', 'delete', 'tenant_resource', "
+                "        'allow', 'ALLOW_OWNER')",
+                (self.tenant_a, self.principal_a, context_id, correlation),
+            )
+
+        # Carve-out 1: TRUNCATE. Closed by privilege, not by policy.
+        with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute("TRUNCATE audit_events")
+
+        # Carve-out 2: a referential action reaching an audit row.
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("DELETE FROM active_contexts WHERE id = %s", (context_id,))
+            self.assertEqual(
+                cur.rowcount, 0,
+                "a tenant deleted a context row; migration 009 removed the DELETE policy "
+                "precisely because nothing needs it and it reached the audit trail",
+            )
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "SELECT context_id FROM audit_events WHERE correlation_id = %s", (correlation,)
+            )
+            self.assertEqual(
+                str(cur.fetchone()[0]), context_id,
+                "the context binding was erased from an audit record without any write to the "
+                "audit table",
+            )
+
+    def test_an_audit_record_outlives_the_context_it_names(self):
+        """
+        The reason migration 009 dropped the foreign key rather than only the DELETE policy.
+
+        A context lives five minutes. Something must eventually reap expired ones, and under
+        ON DELETE SET NULL that job would strip `context_id` from every audit row referencing
+        what it reaped — no attack, just housekeeping destroying evidence while passing every
+        test. So the audit row keeps the identifier and carries no referential action.
+
+        The reaper is simulated here with an administrative delete, because no such job exists
+        yet; the point is that the trail is already safe for one to be written.
+
+        This is deliberately the opposite of F10's reasoning, which prices the absence of a
+        foreign key at 6,537 orphaned metering rows. A metering row's tenant names a live
+        relationship and an orphan there is a defect. An audit row's context names something that
+        happened, and the referent is expected to disappear.
+        """
+        import os
+        import re
+
+        import psycopg
+
+        admin_url = os.environ.get("BOPEN_ADMIN_DATABASE_URL", "").strip()
+        if not admin_url:
+            self.skipTest("BOPEN_ADMIN_DATABASE_URL is not set; cannot simulate a reaper")
+        target = re.sub(r"/[^/?]+(\?|$)", r"/bopen_dev\1", admin_url)
+
+        context_id = str(uuid.uuid4())
+        membership_id = str(uuid.uuid4())
+        correlation = f"reap-{uuid.uuid4().hex[:10]}"
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (id, tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, %s, 'active', 'owner')",
+                (membership_id, self.tenant_a, self.principal_a),
+            )
+            cur.execute(
+                "INSERT INTO active_contexts (id, tenant_id, principal_id, membership_id, "
+                " correlation_id, expires_at) "
+                "VALUES (%s, %s, %s, %s, %s, now() + interval '5 min')",
+                (context_id, self.tenant_a, self.principal_a, membership_id, correlation),
+            )
+            cur.execute(
+                "INSERT INTO audit_events (tenant_id, principal_id, context_id, correlation_id, "
+                " event_type, action, resource_type, decision, reason_code) "
+                "VALUES (%s, %s, %s, %s, 'authorization', 'read', 'tenant_resource', "
+                "        'allow', 'ALLOW_OWNER')",
+                (self.tenant_a, self.principal_a, context_id, correlation),
+            )
+
+        with psycopg.connect(target, autocommit=True) as conn:
+            with conn.cursor() as cur:
+                # `chk_context_window` forbids inserting an already-expired context, so the
+                # reaper is simulated by deleting the row rather than by ageing it. The point
+                # under test is the deletion, not the criterion a real reaper would use.
+                cur.execute("DELETE FROM active_contexts WHERE id = %s", (context_id,))
+                self.assertEqual(cur.rowcount, 1, "the simulated reaper deleted nothing")
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "SELECT context_id FROM audit_events WHERE correlation_id = %s", (correlation,)
+            )
+            self.assertEqual(
+                str(cur.fetchone()[0]), context_id,
+                "reaping an expired context erased its identifier from the audit trail",
+            )
+
+    def test_a_context_is_retired_by_revocation_and_not_by_deletion(self):
+        """
+        Removing DELETE must not have removed the operation the code actually performs.
+        `repositories.py` revokes by UPDATE on `revoked_at`; that path has to keep working, or
+        this migration traded an evidence defect for an outage.
+        """
+        context_id = str(uuid.uuid4())
+        membership_id = str(uuid.uuid4())
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (id, tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, %s, 'active', 'owner')",
+                (membership_id, self.tenant_a, self.principal_a),
+            )
+            cur.execute(
+                "INSERT INTO active_contexts (id, tenant_id, principal_id, membership_id, "
+                " correlation_id, expires_at) "
+                "VALUES (%s, %s, %s, %s, 'corr-revoke', now() + interval '5 min')",
+                (context_id, self.tenant_a, self.principal_a, membership_id),
+            )
+            cur.execute(
+                "UPDATE active_contexts SET revoked_at = now() WHERE id = %s", (context_id,)
+            )
+            self.assertEqual(cur.rowcount, 1, "revocation by UPDATE stopped working")
+
+            cur.execute("SELECT revoked_at FROM active_contexts WHERE id = %s", (context_id,))
+            self.assertIsNotNone(cur.fetchone()[0])
+
+    def test_a_tenant_cannot_move_a_context_to_another_tenant(self):
+        """
+        A tenant cannot move its context row to another tenant.
+
+        This asserts the behaviour, not the syntax that produces it. An earlier version of this
+        docstring credited the explicit WITH CHECK on the UPDATE policy; that is wrong, and
+        mutation testing showed it — removing WITH CHECK leaves this test green, because
+        PostgreSQL supplies an identical one when it is omitted. The guarantee comes from the
+        policy existing at all. Both clauses are still written out in migration 009 so that a
+        future edit to the read-side expression cannot silently change the write-side.
+        """
+        context_id = str(uuid.uuid4())
+        membership_id = str(uuid.uuid4())
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (id, tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, %s, 'active', 'owner')",
+                (membership_id, self.tenant_a, self.principal_a),
+            )
+            cur.execute(
+                "INSERT INTO active_contexts (id, tenant_id, principal_id, membership_id, "
+                " correlation_id, expires_at) "
+                "VALUES (%s, %s, %s, %s, 'corr-move', now() + interval '5 min')",
+                (context_id, self.tenant_a, self.principal_a, membership_id),
+            )
+
+        import psycopg
+
+        with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute(
+                    "UPDATE active_contexts SET tenant_id = %s WHERE id = %s",
+                    (self.tenant_b, context_id),
+                )
+
     # -- Session nesting: the leak a security review found --------------------------
 
     def test_a_session_cannot_be_nested_inside_one_scoped_to_another_tenant(self):

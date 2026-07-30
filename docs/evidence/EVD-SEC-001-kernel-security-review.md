@@ -407,3 +407,113 @@ Source — read-only audit of the verification instance on 2026-07-30 via `pg_co
 per-table `NOT EXISTS` counts, run as a `BYPASSRLS` role so the policies could not hide the rows
 being counted; plus one write probe whose two rows were removed. Advisory only —
 `execution_authority: false`, `approval_authority: false`.
+
+---
+
+# Addendum B — F11, the append-only trail was mutable from inside a tenant, 2026-07-30
+
+Appended under the extend-only rule. Found by taking a verified research claim and testing it
+against this repository rather than accepting that the repository already complied.
+
+## B.1 The claim that prompted it
+
+Design research into Phase 2 persistence returned, verified 3-0 against PostgreSQL's own
+documentation, that append-only-by-absent-policy is real but has **three named carve-outs**:
+`TRUNCATE`, referential-integrity actions, and `BYPASSRLS`/owner. Section 2 of this record, and
+migration 003's own comment, both assert that `audit_events` is append-only. Neither had tested
+the carve-outs. Only the first path — direct `UPDATE` and `DELETE` by the application role — was
+covered by any assertion.
+
+## B.2 What the probe found
+
+Two of three were already closed, and the third was live.
+
+```
+app role UPDATE / DELETE   0 rows      append-only holds on the tested path
+app role TRUNCATE          refused     InsufficientPrivilege — closed by grant, not by policy
+delete a principal         actor NULL  the FK action reached an existing audit row
+```
+
+Then the reachable one. `audit_events.context_id` was `REFERENCES active_contexts(id) ON DELETE
+SET NULL`, and `active_contexts` carried a single `FOR ALL` policy — which grants `DELETE`.
+Reproduced end to end inside one ordinary tenant session, using only the application role:
+
+```
+audit record written    context_id=e0615e21-…  action=delete
+direct DELETE on audit  0 rows                 (append-only holds)
+DELETE own context      1 row                  (permitted by the FOR ALL policy)
+audit record now reads  context_id=NULL        action=delete
+```
+
+A tenant erased the context binding from its own audit record **without any write to
+`audit_events`**. Migration 003 reasoned about exactly this hazard for `tenant_id`, chose
+`ON DELETE RESTRICT`, and wrote a comment explaining why. It did not carry that reasoning to the
+two adjacent columns.
+
+## B.3 Severity, and why the attack is the less important half
+
+**MEDIUM.** No code path deletes a context, so nothing is exploiting this. Reaching it requires
+issuing SQL as the application role, which is not something the HTTP surface offers.
+
+The reason to fix it now is not the attacker. A context lives five minutes. Something must
+eventually reap expired ones, and under `ON DELETE SET NULL` that job would strip `context_id`
+from every audit row referencing what it reaped — no attack, just housekeeping destroying
+evidence, passing every existing test while doing it. The defect would have been introduced by
+someone doing obviously correct work.
+
+## B.4 The fix — migration 009
+
+Two halves, either of which alone would have closed the reproduction:
+
+- **The foreign key is dropped and the column kept.** An audit record is a historical statement,
+  not a live relationship; it must outlive what it names. This is deliberately the opposite of
+  F10's reasoning, and the distinction is what the column means — a metering row's `tenant_id`
+  names a live relationship and an orphan there is a defect, while an audit row's `context_id`
+  names something that happened and the referent is expected to disappear.
+- **`active_contexts`' `FOR ALL` policy is split into SELECT, INSERT and UPDATE.** No DELETE
+  policy: `repositories.py` performs the other three and never DELETE, so the capability that
+  made this reachable was one nothing needed. A context is retired by setting `revoked_at`.
+
+`audit_events.principal_id` is deliberately left as `ON DELETE SET NULL` and recorded as a
+decision, not fixed. Nulling the actor on erasure is one of the recognised reconciliations
+between an append-only trail and a data-subject erasure request; migration 003 does not say
+whether it was intended as one, and the two readings lead to opposite changes.
+
+## B.5 A correction this work produced
+
+Migration 009's first draft justified writing `WITH CHECK` on the UPDATE policy by claiming that
+omitting it would let an update move a row to another tenant. **That is wrong.** PostgreSQL
+supplies an identical `WITH CHECK` when one is omitted — which is exactly what research finding 3
+states, and what migration 003 already said correctly. The error was caught by mutation testing:
+removing `WITH CHECK` left the suite green, and a surviving mutation on a claim is the claim
+failing. Both the migration comment and the test docstring now say why the clauses are written
+out — so a later edit to the read-side cannot silently change the write-side — rather than
+crediting them with a guarantee they do not provide.
+
+The mutation harness itself needed a correction first. Two mutations initially reported as
+survivors, and one of them had simply failed to apply: the harness swallowed SQL errors, so a
+mutation that never took effect was indistinguishable from one the tests failed to catch. That is
+the same defect as a check reporting success when it could not run, in the tool built to audit
+for it. It now reports non-application as a failure.
+
+## B.6 Verification
+
+Reproduction re-run after the fix: `DELETE own context` affects 0 rows, and the audit record is
+unchanged. Four regression tests added, covering both carve-outs, the reaper case, and that
+revocation-by-UPDATE still works — the last because a fix that removed the operation the code
+performs would have traded an evidence defect for an outage.
+
+Mutation-verified: restoring the `FOR ALL` policy, adding a DELETE policy back, and granting
+TRUNCATE to the application role are each caught. Restoring the `ON DELETE SET NULL` foreign key
+**cannot be applied** — the database already holds audit rows whose context has been deleted, and
+the pre-009 schema cannot represent them. That is not a coverage gap; it is the fix demonstrating
+its own necessity, and the rollback script handles it by detaching those rows first.
+
+Round trip executed: rollback restores the SET NULL foreign key and the FOR ALL policy, re-apply
+removes them.
+
+## B.7 Provenance
+
+Source — verified research claim tested against the verification instance on 2026-07-30, probe
+rows removed. Migration 009 applied, rolled back and re-applied. Advisory only —
+`execution_authority: false`, `approval_authority: false`.
