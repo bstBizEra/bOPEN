@@ -1105,8 +1105,8 @@
       "path": "docs/decisions/DEC-P35-PHASE2-STORAGE.md",
       "title": "DEC-P35-PHASE2-STORAGE \u2014 Decisions required before Phase 2 can be persisted",
       "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
-      "sha256": "c2ab13aecb5e3c73f4ec91cc6566ae97c2d8cac301de019e48f66aaf908fc7fd",
-      "bytes": 14733
+      "sha256": "94509932641bc0186a7bd1da26da5c996f46f8f479f715a37355773e2ddaa226",
+      "bytes": 20389
     },
     {
       "path": "docs/decisions/DEC-P35-RUNTIME.md",

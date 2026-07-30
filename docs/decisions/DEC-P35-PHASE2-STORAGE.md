@@ -258,3 +258,109 @@ This is a decision request. No agent has the authority to resolve any item in §
 
 Raised by Claude (agent, SARCHI) on 2026-07-30. Advisory only —
 `execution_authority: false`, `approval_authority: false`, `risk_class: high`.
+
+---
+
+# Addendum A — §2.2 and §2.3 resolved by measurement, 2026-07-30
+
+Two of the six blocking items were open because the standard remedy was assumed rather than
+tested. Both were tested against PostgreSQL 17.10 on the verification instance, and one
+assumption turned out to be wrong in a way that matters.
+
+## A.1 `SECURITY DEFINER` is a total row-level-security bypass, not a narrow one
+
+§2.3 proposed a `SECURITY DEFINER` function so the delegated-grant lookup could see a row the
+caller's tenant context hides. That is the conventional answer. It is also far more dangerous
+here than the framing suggested.
+
+**Probe.** Two tenants, one row each in `tenant_feature_toggles`. The application role queries
+directly, then through a `SECURITY DEFINER` function owned by the superuser — same session, same
+tenant context:
+
+| Path | Rows returned |
+| :--- | ---: |
+| Direct query, tenant A context | **1** |
+| Same query inside a superuser-owned `SECURITY DEFINER` function | **2** |
+
+The function returned both tenants' rows. `FORCE ROW LEVEL SECURITY` did not prevent it, because
+inside the function `current_user` is the owner, and PostgreSQL states that *"superusers and
+roles with the BYPASSRLS attribute always bypass the row security system"*.
+
+The consequence the original proposal understated: **the bypass cannot be scoped to one table.**
+`BYPASSRLS` is a role attribute and superuser status is global, so any function built this way
+holds the capability to read every tenant's rows in every table, however narrow its body is. Add
+the `search_path` hijack PostgreSQL documents for exactly this function class, and a flaw in one
+narrow function becomes a whole-database disclosure.
+
+## A.2 The lookup does not need a bypass at all
+
+The premise was that a `target_tenant_id` policy hides the row authorizing a context switch,
+because the switch happens before a context exists for that tenant.
+
+True — and the remedy is smaller than it looked. **The requested tenant is known**: it is
+`command.tenant_id`, the tenant being switched to. Opening a session for *that* tenant makes the
+policy match, with no bypass and no privileged code path.
+
+**Probe.** A session opened for tenant B, used for three queries:
+
+| Query inside a session opened for B | Rows |
+| :--- | ---: |
+| B's own row | **1** |
+| A's row | **0** |
+| Unqualified count over the table | **1** |
+
+The session reaches exactly one tenant's rows — precisely what the grant lookup needs and nothing
+more.
+
+**Why this does not weaken isolation.** The caller does not set the session variable; the kernel
+does, from the tenant the request is already about. The lookup is a parameterised match on
+`(source_principal_id, target_tenant_id)` returning a row only when a grant genuinely exists, so
+it discloses exactly the fact the authorization decision was about to disclose anyway. There is
+no enumeration: an attacker must already know both identifiers and learns only the answer to the
+question asked.
+
+**The discipline that makes it safe** is that the session is used for one query and closed. A
+session opened for an unvalidated tenant is safe only while nothing else runs inside it, so the
+repository method must not grow a second statement. That is a reviewable property of one
+function, not a capability living in the database.
+
+**Recommendation for §2.3: no `SECURITY DEFINER`.** Resolve the grant inside a
+`tenant_session(command.tenant_id)` restricted to a single parameterised lookup.
+
+## A.3 §2.2 — the session table, answered the same way
+
+`authentication_sessions` has no tenant by design, so it cannot carry the policy every other
+table carries. PostgreSQL's default-deny confirms the trap: *"If no policy exists for the table, a
+default-deny policy is used"* — enabling row security without a policy denies everything,
+including the kernel's own reads.
+
+The correct policy is principal-scoped, matching `BOPEN-IDP-001` §12.1's "restricted to the
+principal and client". It needs an `app.current_principal_id` setting no migration establishes
+today.
+
+The objection in §2.2 was that a connection path forgetting to set it returns silently empty —
+the failure mode migration 004 calls "missing data, not a fault".
+
+**That objection has an answer, and the precedent is already here.**
+`platform_kernel.db.tenant_session` refuses an empty tenant identifier rather than opening a
+session that would match nothing, precisely so absence fails loudly instead of reading as "this
+tenant has no data". A `principal_session` helper built the same way carries the same protection.
+The risk was never the second variable; it was a helper that tolerates an empty one, and this
+codebase already declines to build that.
+
+**Recommendation for §2.2:** principal-scoped policy plus a `principal_session` helper that
+refuses an empty principal, mirroring `tenant_session`. It remains a change to the isolation
+model and a designated review item under `AGENTS.md` §15 — what changes is that the objection
+making it look unsafe now has a precedent-backed answer.
+
+## A.4 What this addendum does not do
+
+It does not resolve §2.1, §2.4, §2.5 or §2.6, and it does not approve §2.2 or §2.3. It replaces
+two assumed remedies with measured ones and narrows what is being asked for.
+
+The `SECURITY DEFINER` finding stands on its own regardless of any decision: **that pattern
+should not enter this repository for tenant-scoped reads**, because the capability it creates
+cannot be limited to the table it was written for.
+
+Probes were run against the verification instance and their fixtures removed. Advisory only —
+`execution_authority: false`, `approval_authority: false`.
