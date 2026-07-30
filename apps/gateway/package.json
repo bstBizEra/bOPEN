@@ -1,0 +1,19 @@
+{
+  "name": "@bopen/gateway",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "bOPEN API gateway - header contract validation at the platform edge (WP-P35-04, D-09)",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/index.ts",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.0.12",
+    "hono": "4.12.32",
+    "zod": "4.4.3"
+  }
+}
