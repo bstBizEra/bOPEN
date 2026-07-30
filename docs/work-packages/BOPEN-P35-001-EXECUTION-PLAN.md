@@ -1,6 +1,6 @@
 # BOPEN-P35-001 — Phase 3.5 Runtime Realization
 
-**Status:** Proposed — pending `DEC-P35-RUNTIME`
+**Status:** **Accepted and authorized 2026-07-31** — bound by `DEC-P35-RUNTIME` §8 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`
 **Version:** `1.0.0`
 **Issued:** 2026-07-30
 **Owner:** Engineering Authority
@@ -163,14 +163,28 @@ reversible by deletion.
 
 ## Completion record
 
-*Not started. To be completed only against executed evidence meeting A-01..A-07.*
+*`WP-P35-01`..`WP-P35-03` implemented, `IMPLEMENTED_UNVERIFIED`, zero ballots cast.
+`WP-P35-04`, `WP-P35-05` not started. Completion is recorded only against executed evidence
+meeting A-01..A-07.*
+
+Roles are assigned per work package and alternate, so that each engine stays eligible to verify
+the other's work. Assigned 2026-07-31.
+
+| Work package | Maker | Eligible independent checker |
+| :--- | :--- | :--- |
+| `WP-P35-01` | **Codex** (`codex@bst.local`) — remediation | Gemini or Kimi only |
+| `WP-P35-02` | **Codex** — remediation | Gemini or Kimi only |
+| `WP-P35-03` | **Codex** — remediation | Gemini or Kimi only |
+| `WP-P35-04` | **Claude** (`claude@bst.local`) | Codex, Gemini or Kimi |
+| `WP-P35-05` | *named when unblocked* | *determined then* |
 
 | Role | Assignee |
 | :--- | :--- |
-| Maker | *unassigned* |
-| Independent checker | *unassigned — must not be the maker* |
 | Security reviewer | *unassigned* |
-| Completion authority | *unassigned* |
+| Completion authority | **Operator** (`BizEra <ounkhamvilay@gmail.com>`) |
 
-Under `DEC-P35-RUNTIME` §5.1 the independent checker may not be the agent that authored the
-implementation or its tests.
+Under `DEC-P35-RUNTIME` §5.1 and `BOPEN-GOV-EBIV-001` §3 the independent checker may not be the
+agent that authored the implementation or its tests. Claude authored `WP-P35-01`..`WP-P35-03`
+and Codex now remediates them, so both are excluded from that checker seat and it is genuinely
+open rather than pending paperwork. Codex does not touch `WP-P35-04`, which is what keeps it
+eligible to verify it. Rationale: [`DEC-P35-DOCKET`](../decisions/DEC-P35-DOCKET.md) §5.1-§5.3.

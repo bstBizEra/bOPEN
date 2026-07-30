@@ -2,8 +2,9 @@
 
 **Decision ID:** `DEC-P35-RUNTIME`
 **Version:** `1.0.0`
-**Status:** **Proposed — decision request raised under `AGENTS.md` §16**
+**Status:** **Approved — Option C adopted 2026-07-31 (see §8)**
 **Issued:** 2026-07-30
+**Decided:** 2026-07-31
 **Owner:** Architecture Authority & Engineering Authority
 **Due date:** Before any Phase 4 work package is opened
 **Governing artifacts:** `AGENTS.md` §4, §11, §14, §16, §19.6; `BOPEN-ARCH-PLAN-001`; `BOPEN-TENANT-001`
@@ -198,10 +199,25 @@ multi-tenant customer data, across five products at once.
 
 | Field | Value |
 | :--- | :--- |
-| **Decision** | *Pending* |
-| **Approver** | *Not assigned — Architecture Authority & Engineering Authority* |
-| **Security review** | *Not assigned* |
-| **Agent authority** | Advisory only. `execution_authority: false`, `approval_authority: false` |
+| **Decision** | **ACCEPT — Option C.** Phase 3.5 is inserted before Phase 4 and `BOPEN-P35-001` is bound as its implementation plan. The §5.1 admissibility floor and the independent-verifier requirement are retained unchanged. Go event microservices remain deferred. |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — acting as Architecture Authority and Engineering Authority |
+| **Decision timestamp** | 2026-07-31T02:24:53+07:00 |
+| **Security review** | Not separately assigned. The security-bearing items in this record are §5.1 items 1 and 4, both accepted unchanged; no security constraint is relaxed by this decision. Items requiring a distinct security concurrence (`D-P35-004`..`D-P35-016`) are **not** ratified here and remain Proposed. |
+| **Recorded by** | Claude (agent, Motor role) at operator direction. Transcription of a decision made by the operator; the agent claims no approval authority. `execution_authority: false`, `approval_authority: false` |
+
+### 8.1 What this decision does not do
+
+Ratification covers docket rows `D-P35-001`, `D-P35-002` and `D-P35-003` only. It does not
+accept the Phase 2 storage decisions (`D-P35-004`..`D-P35-010`), the authentication-boundary
+decisions (`D-P35-011`..`D-P35-014`), the audit-envelope decisions (`D-P35-015`,
+`D-P35-016`), or the PRD (`D-P35-017`, `D-P35-018`). Those remain Proposed, so:
+
+- Phase 2 persistence migration design remains blocked (`DEC-P35-DOCKET` §4.2).
+- `WP-P35-05` remains blocked (`DEC-P35-DOCKET` §4.3).
+- Audit-envelope convergence remains blocked (`DEC-P35-DOCKET` §4.4).
+
+Phases 1 through 3 stay `IMPLEMENTED_UNVERIFIED`. Opening the gate authorizes implementation;
+it does not verify anything already written.
 
 ---
 

@@ -344,7 +344,7 @@ subsection governs until the next amendment.
 | Phase 1 — Platform kernel vertical slice | **AUTHORIZED** (§3) | `IMPLEMENTED_UNVERIFIED` — no evidence executed against PostgreSQL |
 | Phase 2 — Membership and enterprise onboarding | **AUTHORIZED** — hold discharged by `DEC-0009`..`DEC-0011`, `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — independent checker and security reviewer recorded as NOT ASSIGNED in `EVD-P2-PROVISIONAL-001` |
 | Phase 3 — Capability and entitlement kernel | **AUTHORIZED** — `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — completion evidence inadmissible under EBIV R1 and R3 |
-| Phase 3.5 — Runtime realization | **PROPOSED** — `BOPEN-P35-001`, pending `DEC-P35-RUNTIME` | not started |
+| Phase 3.5 — Runtime realization | **AUTHORIZED 2026-07-31** — `DEC-P35-RUNTIME` approved (Option C); `BOPEN-P35-001` bound. Scope limits in §22.2 | `WP-P35-01`..`WP-P35-03` `IMPLEMENTED_UNVERIFIED`, zero ballots; `WP-P35-04`, `WP-P35-05` not started |
 | Phase 4 — Foundations and satellite products | **NOT AUTHORIZED** | blocked pending Phase 3.5 |
 
 `IMPLEMENTED_UNVERIFIED` means the code exists and is specification-shaped, but no
@@ -468,4 +468,78 @@ deliberate forgery; only signed commits would, and they are not in use.
 
 Recording that limit is deliberate. A rule that claims more assurance than its mechanism
 delivers is worse than no rule, because it stops people looking.
+
+---
+
+## 22. Amendment 2026-07-31 — Phase 3.5 gate opened and maker assigned
+
+> **Change note (extend-only, per BST rule 5).**
+> **Reason**: Phase 3.5 was recorded as `PROPOSED` in §20.2 while `WP-P35-01`..`WP-P35-03` had
+> already been implemented, and no maker was assigned to anything. The gate was blocking every
+> engine, not any particular one.
+> **Benefit of the prior state**: an unopened gate cannot be walked through by accident, and it
+> held the line while `DEC-P35-RUNTIME` was still an open question.
+> **Expected outcome**: implementation proceeds under a named maker and a recorded decision,
+> instead of proceeding anyway and being reconciled afterwards.
+> **Ratified by**: the operator on 2026-07-31 — [`DEC-P35-DOCKET`](docs/decisions/DEC-P35-DOCKET.md) §6.1,
+> [`DEC-P35-RUNTIME`](docs/decisions/DEC-P35-RUNTIME.md) §8.
+> **Recorded by**: Claude (agent, Motor role), transcribing an operator decision. The agent
+> holds no approval authority and claims none here.
+
+### 22.1 No rule ever restricted which engine may write code
+
+This is recorded because it was misread as a restriction, and a misread rule is a defect in the
+rule. §19.3 and `multi-agent-orchestration.md` §2.2 name Codex as the precision implementer;
+§20.4 already states that model specialization is capability guidance, not role assignment.
+
+What blocked implementation was the §20.2 gate state plus the absence of an assigned maker.
+Neither is about model identity. **No amendment to §19.3 or §20.4 is made or needed.**
+
+The one constraint that does bind by engine is `BOPEN-GOV-EBIV-001` and §20.3 item 1: whichever
+engine makes an artifact may not vote on it. That is a per-work-package exclusion earned by
+authorship, not a standing property of an engine.
+
+### 22.2 What was and was not authorized
+
+Ratified: `D-P35-001`, `D-P35-002`, `D-P35-003`. Phase 3.5 is inserted before Phase 4,
+`BOPEN-P35-001` is the bound plan, the §20.3 evidence floor is retained unchanged, and Go event
+microservices remain deferred.
+
+Not ratified, and therefore still blocking their dependent work:
+
+| Docket rows | Blocks |
+| :--- | :--- |
+| `D-P35-004`..`D-P35-010` | Phase 2 persistence migration design |
+| `D-P35-011`..`D-P35-014` | `WP-P35-05` enterprise IdP bridge |
+| `D-P35-015`, `D-P35-016` | audit-envelope convergence |
+| `D-P35-017`, `D-P35-018` | acceptance of `BOPEN-PRD-P35-001` as bound requirements |
+
+Phases 1 through 3 remain `IMPLEMENTED_UNVERIFIED`. Production activation remains unauthorized.
+Opening a gate authorizes writing; it verifies nothing already written.
+
+### 22.3 Roles
+
+**The maker alternates by work package.** Both Claude and Codex implement; neither is confined
+to governance work, and neither becomes the sole author of the phase.
+
+| Work package | Maker | Eligible checker |
+| :--- | :--- | :--- |
+| `WP-P35-01`, `WP-P35-02`, `WP-P35-03` | **Codex** (remediation) | Gemini or Kimi only |
+| `WP-P35-04` | **Claude** | Codex, Gemini or Kimi |
+| `WP-P35-05` | named when unblocked | determined then |
+
+The reason is arithmetic, not preference. §20.3 item 1 and `BOPEN-GOV-EBIV-001` §3 exclude a
+verifier who authored any artifact under review, so each additional maker on a package removes
+an eligible checker. Co-making everything would leave every Phase 3.5 ballot resting on Gemini
+and Kimi, neither of which has cast a ballot or holds a commit identity here. Alternating keeps
+each engine eligible on the other's work.
+
+Codex's verifier seat on `WP-P35-01`..`WP-P35-03` — already stood down by the operator on
+2026-07-30 — is released deliberately. Claude authored those packages and Codex now remediates
+them, so **their checker must be Gemini or Kimi**. That is an open risk, recorded as one.
+
+Security reviewer remains unassigned. Completion authority is the operator.
+
+Full table and its consequences: [`DEC-P35-DOCKET`](docs/decisions/DEC-P35-DOCKET.md) §5.1-§5.3.
+Active handoff: [`HANDOFF-P35-MAKER-SPLIT-TO-CODEX`](docs/00-governance/handoffs/HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md).
 

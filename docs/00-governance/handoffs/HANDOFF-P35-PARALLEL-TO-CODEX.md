@@ -1,6 +1,6 @@
 # HANDOFF-P35-PARALLEL-TO-CODEX — Parallel execution split for Phase 3.5
 
-**Status:** Stood down 2026-07-30 — retained as a record
+**Status:** Stood down 2026-07-30; **superseded 2026-07-31** by [`HANDOFF-P35-MAKER-SPLIT-TO-CODEX`](HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md) — retained as a record, do not execute
 **Issued:** 2026-07-30
 **Maker of this handoff:** Claude (agent, Motor role)
 **Addressed to:** Codex Agent IDE (VS Code)

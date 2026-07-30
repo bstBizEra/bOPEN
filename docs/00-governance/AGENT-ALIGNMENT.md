@@ -15,11 +15,19 @@ Every AI agent starting a session in bOPEN **must** read this single section to 
 
 ```text
 Repository: bOPEN (Open Business Platform Kernel)
-Current Phase: Phase 3 — Capability & Commercial Entitlement Kernel
-Current Gate: DEC-P3-ENTRY Authorized via Evidence-Driven Gate Realization (AGENTS.md §19.6)
+Current Phase: Phase 3.5 — Runtime Realization
+Current Gate: DEC-P35-RUNTIME Approved 2026-07-31 (Option C) — DEC-P35-DOCKET §6.1
 Primary Workspace: c:/laragon/www/bopen (Single-Workspace Policy)
-Active Implementation Authority: BOPEN-P3-001 Authorized for Implementation (WP-P3-02..WP-P3-06)
+Active Implementation Authority: BOPEN-P35-001 Authorized (WP-P35-01..WP-P35-04)
+Maker WP-P35-01..03: Codex (remediation) — checker must be Gemini or Kimi
+Maker WP-P35-04:     Claude — checker may be Codex, Gemini or Kimi
+Rule: an engine that edits a package cannot vote on it (EBIV §3). Record your row before writing
+Still Blocked: WP-P35-05, Phase 2 persistence migrations, audit-envelope convergence
+Verification State: Phases 1-3 and WP-P35-01..03 are IMPLEMENTED_UNVERIFIED, zero ballots
 ```
+
+Read [`AGENTS.md`](../../AGENTS.md) §20.2 and §22 before starting. Authorization to write code
+is not a verdict on code already written.
 
 ---
 
