@@ -220,6 +220,30 @@ without a runnable probe is inadmissible under R1.
 
 `independent_of_maker: false` voids the ballot.
 
+### 7.1 `verifier_id` is checked, not taken on trust *(added 2026-07-30)*
+
+As first written, §7 left `verifier_id` as a single self-declaration in a single place. Nothing
+compared it to anything, so any agent — including the disqualified Maker — could write
+`"verifier_id": "Codex"` and the protocol would count it. That is the same defect this standard
+was created to remove: a claim with nothing to verify it against.
+
+[`BOPEN-GOV-IDENT-001`](BOPEN-GOV-IDENT-001.md) closes it. `verifier_id` is now bound to the git
+author of the commit that introduced the ballot line, which is a second record written by a
+different mechanism at a different time. `python tools/check_ballot_attribution.py` refuses a
+ballot when the two disagree, when the author is unregistered, when the author is the Maker, or
+when one commit introduces ballots for two different verifiers.
+
+An unattributable ballot **does not count toward quorum under §6.1**. That is a refusal to
+pretend rather than an obstruction: a ballot whose author cannot be established carries no
+evidence about who cast it, and who cast it is the only thing §3 needs from it.
+
+**The limit, stated plainly.** Local git identity is self-declared. This binding defeats
+accidental collapse — two ballots that look independent but are not, a verifier that is really
+the Maker, an operator misreading who verified. It does **not** defeat deliberate forgery. Only
+signed commits would, and they are not yet in use. §6.1's quorum should be read with that in
+mind: it establishes that distinct registered identities cast the ballots, not that the parties
+behind them were genuinely unable to collude.
+
 ---
 
 ## 8. Worked example — why this protocol was needed
