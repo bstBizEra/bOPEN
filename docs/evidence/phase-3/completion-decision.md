@@ -12,7 +12,11 @@
 **Admissibility Standard:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md)
 **Completion Authority:** Platform Kernel Engineering Authority (`AGENTS.md` §19.6, as qualified by §20.3)
 
+<!-- anchors:off -->
 > **CORRECTION NOTICE — 2026-07-30.**
+> The identifier quoted below is the fabricated one, retained deliberately. It is exempted from
+> the anchor check by the region marker above rather than removed: a correction notice that
+> cannot name the wrong value records nothing. The exemption is reported in the check's output.
 > Version 1.0.1 of this document recorded status *TECHNICAL VERIFICATION COMPLETED
 > (GO ON EVIDENCE)* and bound candidate commit `f59bbd289196b02a2818967b2d5a32b0728c306d`.
 > **That object does not exist in this repository.** Only the seven-character prefix
@@ -22,6 +26,7 @@
 > Sections 1 to 3 are retained verbatim under the extend-only rule so the original claim
 > remains auditable. They record what the maker asserted. They do not record a verified
 > outcome. Section 4 states what independent review established.
+<!-- anchors:on -->
 
 ---
 

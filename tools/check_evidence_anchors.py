@@ -161,18 +161,40 @@ def check_json_file(path: Path) -> list[Finding]:
     return walk_json(data, path)
 
 
-def check_markdown_file(path: Path) -> list[Finding]:
+# A document sometimes has to quote an identifier that does not resolve — a correction notice
+# recording a fabricated OID is the reason this exists, and suppressing the quote to satisfy the
+# check would erase the record of the error. The exemption is explicit, regional, and reported in
+# the summary, so switching the check off cannot be silent and every exemption is greppable.
+ANCHORS_OFF = "<!-- anchors:off -->"
+ANCHORS_ON = "<!-- anchors:on -->"
+
+
+def check_markdown_file(path: Path) -> tuple[list[Finding], int]:
     findings: list[Finding] = []
+    exempted = 0
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
     except OSError as exc:
-        return [Finding(path, "<file>", "-", f"unreadable evidence document: {exc}")]
+        return [Finding(path, "<file>", "-", f"unreadable evidence document: {exc}")], 0
 
+    anchors_enabled = True
     for number, line in enumerate(lines, start=1):
+        if ANCHORS_OFF in line:
+            anchors_enabled = False
+        elif ANCHORS_ON in line:
+            anchors_enabled = True
+
+        if not anchors_enabled:
+            exempted += len(FULL_OID.findall(line))
+            continue
+
         lowered = line.lower()
+        labelled = False
+
         for label, expected in MARKDOWN_OID_LABELS.items():
             if label not in lowered:
                 continue
+            labelled = True
             candidates = FULL_OID.findall(line) or [
                 match
                 for match in ABBREVIATED_OID.findall(line)
@@ -185,7 +207,36 @@ def check_markdown_file(path: Path) -> list[Finding]:
                     findings.append(finding)
             break
 
-    return findings
+        if labelled:
+            continue
+
+        # Unlabelled full-length identifiers are checked too, for existence but not for type.
+        #
+        # Until 2026-07-30 only labelled lines were examined, so an OID recorded in a table cell
+        # or in prose was invisible to this check. That was found by mutating a real evidence
+        # record: a per-finding remediation table was given a commit OID with one digit altered
+        # and this tool still reported PASS, because nothing on that line matched a label. The
+        # record looked machine-anchored and was not — which is the exact condition R3 exists to
+        # prevent, arrived at through the tool meant to prevent it.
+        #
+        # Existence only, deliberately. Without a label there is nothing to say whether a commit
+        # or a tree was intended, and guessing would produce failures that are wrong rather than
+        # strict. Forty hex characters is the discriminator: repository checksums are SHA-256 and
+        # twice that length, so a forty-character run in an evidence file is git-shaped.
+        for oid in FULL_OID.findall(line):
+            if object_type(oid) is None:
+                findings.append(
+                    Finding(
+                        path,
+                        f"line {number} (unlabelled)",
+                        oid,
+                        "does not resolve to any object in this repository. Full-length "
+                        "identifiers are checked wherever they appear, not only on labelled "
+                        "lines; add a recognised label if the object type should be checked too",
+                    )
+                )
+
+    return findings, exempted
 
 
 def collect_evidence_files() -> list[Path]:
@@ -250,14 +301,27 @@ def main() -> int:
         return 2
 
     findings: list[Finding] = []
+    exempted = 0
+    exempting_files: list[str] = []
     for path in files:
         if path.suffix == ".json":
             findings.extend(check_json_file(path))
         else:
-            findings.extend(check_markdown_file(path))
+            file_findings, file_exempted = check_markdown_file(path)
+            findings.extend(file_findings)
+            if file_exempted:
+                exempted += file_exempted
+                exempting_files.append(path.relative_to(ROOT).as_posix())
 
     print(f"bOPEN evidence anchor check (EBIV R3)")
     print(f"- evidence files scanned: {len(files)}")
+
+    # Reported whether or not anything failed. An exemption that only appears in the source of a
+    # document is an exemption nobody reviewing the check output knows about.
+    if exempted:
+        print(f"- identifiers exempted by an anchors:off region: {exempted}")
+        for name in exempting_files:
+            print(f"    {name}")
 
     if findings:
         print(f"- unresolvable anchors: {len(findings)}\n")

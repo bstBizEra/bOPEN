@@ -63,6 +63,83 @@ class GovernanceValidatorTests(unittest.TestCase):
             ),
         )
 
+    def test_the_anchor_check_actually_fails_on_a_bad_anchor(self):
+        """
+        The check above only proves the tree is clean. It cannot distinguish a validator that
+        works from one that examines nothing, and this validator has been both.
+
+        It reported PASS on an evidence record carrying seven-character SHAs, because unlabelled
+        abbreviations were not recognised as anchors. Rewritten at full length, it reported PASS
+        again with a digit of a commit OID altered inside a table, because only labelled lines
+        were examined. Each time the record looked machine-anchored and was not — R3's own
+        failure mode, reached through the tool built to prevent it.
+
+        So the tool is exercised against a deliberately bad anchor rather than only against a
+        good tree. A validator with no negative test is a validator that can stop validating
+        without anyone noticing, which is the same defect one layer up.
+        """
+        import tempfile
+
+        evidence_dir = ROOT / "docs" / "evidence"
+        nonexistent = "0" * 40
+
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".md", dir=evidence_dir, delete=False, encoding="utf-8"
+        ) as handle:
+            probe = Path(handle.name)
+            handle.write(
+                "# Anchor validator probe\n\n"
+                "Written by the governance suite and removed in the same test. If this file is\n"
+                "present on disk, a test run was interrupted; deleting it is safe.\n\n"
+                f"Reviewed commit oid: `{nonexistent}`\n"
+            )
+
+        try:
+            labelled = run_tool("tools/check_evidence_anchors.py")
+
+            probe.write_text(
+                "# Anchor validator probe\n\n"
+                f"| finding | commit |\n|---|---|\n| probe | `{nonexistent}` |\n",
+                encoding="utf-8",
+            )
+            unlabelled = run_tool("tools/check_evidence_anchors.py")
+
+            probe.write_text(
+                "# Anchor validator probe\n\n"
+                "<!-- anchors:off -->\n"
+                f"Quoted deliberately: `{nonexistent}`\n"
+                "<!-- anchors:on -->\n",
+                encoding="utf-8",
+            )
+            exempted = run_tool("tools/check_evidence_anchors.py")
+        finally:
+            probe.unlink(missing_ok=True)
+
+        self.assertNotEqual(
+            labelled.returncode, 0,
+            msg=f"a labelled anchor pointing at no object passed:\n{labelled.stdout}",
+        )
+        self.assertNotEqual(
+            unlabelled.returncode, 0,
+            msg=(
+                "an unresolvable identifier in a table cell passed. Only labelled lines are "
+                f"being examined, which is the regression this test exists for:\n"
+                f"{unlabelled.stdout}"
+            ),
+        )
+        self.assertEqual(
+            exempted.returncode, 0,
+            msg=f"an explicitly exempted region was still failed:\n{exempted.stdout}",
+        )
+        self.assertIn(
+            "exempted by an anchors:off region", exempted.stdout,
+            "the exemption was honoured without being reported; an exemption visible only in a "
+            "document's source is one nobody reviewing the output knows about",
+        )
+
+        # The tree must be clean again, or this test has left the next one a false failure.
+        self.assertEqual(run_tool("tools/check_evidence_anchors.py").returncode, 0)
+
     def test_ballot_attribution_holds(self):
         """BOPEN-GOV-IDENT-001 §4 — every ballot binds to a registered agent that is not the Maker.
 
