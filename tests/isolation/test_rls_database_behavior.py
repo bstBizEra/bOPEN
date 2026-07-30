@@ -49,6 +49,34 @@ TENANT_SCOPED_TABLES = (
     "usage_meter_balances",
     "quota_reservations",
     "usage_outbox",
+    # Migrations 003, 005 and 006. Added 2026-07-30 by
+    # `test_every_table_in_the_schema_is_classified_and_protected`, on the first run of that
+    # test — it enumerates the live schema rather than this tuple, so it reported these four
+    # as tables no assertion in this file had ever named. All four already had row security
+    # enabled, forced and policied, so unlike the registry tables below they were never a
+    # disclosure. They were simply outside the suite, which is the same condition `tenants`
+    # and `principals` were in and is only harmless until it isn't.
+    "lifecycle_events",
+    "rate_limit_counters",
+    "rate_limit_policies",
+    "tenant_feature_toggles",
+)
+
+# Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the
+# usual policy is inexpressible on them. Migration 001 created both with no row security at
+# all, and six migrations passed without anyone noticing, because every test in this file
+# asserted against a table that already had a policy. Security review measured the result on
+# 2026-07-30: a session scoped to one tenant read 7631 rows from `tenants` and 6657 principal
+# email addresses, while correctly reading exactly 1 row from `tenant_resources`. Closed by
+# migration 007.
+REGISTRY_TABLES = (
+    "tenants",
+    "principals",
+)
+
+# Not data. Readable only outside a tenant scope.
+INFRASTRUCTURE_TABLES = (
+    "schema_migrations",
 )
 
 # The 002 family stores tenant_id as text rather than UUID, so a repository writing to them
@@ -536,6 +564,233 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
                     "        now() + interval '30 days')",
                     (str(uuid.uuid4()), self.tenant_a),
                 )
+
+
+class TestRegistryTableIsolation(unittest.TestCase):
+    """
+    The registry tables — the ones that had no policy at all until migration 007.
+
+    `tenants` and `principals` carry no `tenant_id`, so `tenant_id = current_tenant` cannot be
+    written for them. Migration 001 took inexpressible to mean inapplicable and left both
+    world-readable to every tenant on the deployment. These probes are written against the
+    measured disclosure rather than against the policy text.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        from platform_kernel import db
+
+        cls.db = db
+
+    def setUp(self):
+        self.conn = self.db.connect(autocommit=True)
+        self.tenant_a = str(uuid.uuid4())
+        self.tenant_b = str(uuid.uuid4())
+        self.principal_a = str(uuid.uuid4())
+        self.principal_b = str(uuid.uuid4())
+
+        with self.db.system_session(connection=self.conn) as cur:
+            for tenant_id, name in ((self.tenant_a, "Registry A"), (self.tenant_b, "Registry B")):
+                cur.execute(
+                    "INSERT INTO tenants (id, name, status) VALUES (%s, %s, 'active')",
+                    (tenant_id, name),
+                )
+            for principal_id in (self.principal_a, self.principal_b):
+                cur.execute(
+                    "INSERT INTO principals (id, type, email) VALUES (%s, 'human', %s)",
+                    (principal_id, f"reg-{principal_id[:8]}@example.com"),
+                )
+        # Each principal is a member of its own tenant only. The principals policy is defined
+        # in terms of membership, so without this the table would read as empty for the wrong
+        # reason and the probes below would pass vacuously.
+        for tenant_id, principal_id in (
+            (self.tenant_a, self.principal_a),
+            (self.tenant_b, self.principal_b),
+        ):
+            with self.db.tenant_session(tenant_id, connection=self.conn) as cur:
+                cur.execute(
+                    "INSERT INTO memberships (tenant_id, principal_id, state, role) "
+                    "VALUES (%s, %s, 'active', 'owner')",
+                    (tenant_id, principal_id),
+                )
+
+    def tearDown(self):
+        self.conn.close()
+
+    def test_a_tenant_cannot_enumerate_the_customer_list(self):
+        """The disclosure as measured: 7631 tenant rows visible from inside one tenant."""
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT id FROM tenants")
+            visible = {str(row[0]) for row in cur.fetchall()}
+
+        self.assertEqual(
+            visible, {self.tenant_a},
+            "a tenant session read tenant rows other than its own; the deployment's customer "
+            "list is readable by any tenant on it",
+        )
+
+    def test_a_tenant_cannot_read_another_tenants_people(self):
+        """`principals.email` is the column this protects. It is every user's address."""
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT id FROM principals")
+            visible = {str(row[0]) for row in cur.fetchall()}
+
+        self.assertIn(self.principal_a, visible, "a tenant cannot see its own member")
+        self.assertNotIn(
+            self.principal_b, visible,
+            "a tenant session read a principal belonging to another tenant",
+        )
+
+    def test_the_other_direction_also_holds(self):
+        with self.db.tenant_session(self.tenant_b, connection=self.conn) as cur:
+            cur.execute("SELECT id FROM tenants")
+            self.assertEqual({str(r[0]) for r in cur.fetchall()}, {self.tenant_b})
+            cur.execute("SELECT id FROM principals")
+            self.assertNotIn(self.principal_a, {str(r[0]) for r in cur.fetchall()})
+
+    def test_a_tenant_cannot_lift_its_own_suspension(self):
+        """
+        The reason reads and writes are separate policies rather than one `FOR ALL`.
+
+        `FOR ALL` with a single `USING` reuses that expression as the `WITH CHECK`, so the
+        read permission granted above would have carried UPDATE with it — on the table whose
+        `status` column holds 'suspended' and 'terminated'.
+
+        RLS denies this silently: the row falls outside the UPDATE policy's `USING`, so it is
+        not visible to the statement and the result is zero rows affected rather than an
+        error. The status assertion is therefore the real one; `rowcount` alone would also be
+        satisfied by a statement that matched nothing for an unrelated reason.
+        """
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute("UPDATE tenants SET status = 'suspended' WHERE id = %s", (self.tenant_a,))
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("UPDATE tenants SET status = 'active' WHERE id = %s", (self.tenant_a,))
+            self.assertEqual(cur.rowcount, 0)
+
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute("SELECT status FROM tenants WHERE id = %s", (self.tenant_a,))
+            self.assertEqual(
+                cur.fetchone()[0], "suspended",
+                "a tenant reactivated itself; suspension is not enforceable",
+            )
+
+    def test_a_tenant_cannot_rename_another_tenant(self):
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("UPDATE tenants SET name = 'seized' WHERE id = %s", (self.tenant_b,))
+            self.assertEqual(cur.rowcount, 0)
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute("SELECT name FROM tenants WHERE id = %s", (self.tenant_b,))
+            self.assertEqual(cur.fetchone()[0], "Registry B")
+
+    def test_a_tenant_cannot_insert_a_registry_row(self):
+        """Provisioning is an unscoped operation. A tenant session must not be able to do it."""
+        import psycopg
+
+        with self.assertRaises(psycopg.errors.InsufficientPrivilege):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute(
+                    "INSERT INTO principals (id, type, email) VALUES (%s, 'human', %s)",
+                    (str(uuid.uuid4()), f"smuggled-{uuid.uuid4().hex[:8]}@example.com"),
+                )
+
+    def test_provisioning_through_an_unscoped_session_still_works(self):
+        """
+        The failure mode opposite to the one being fixed. A policy that closed the disclosure
+        by also blocking tenant creation would take the kernel from leaking to unusable, and
+        every probe above would still pass.
+        """
+        tenant_id = str(uuid.uuid4())
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO tenants (id, name, status) VALUES (%s, 'Provisioned', 'active')",
+                (tenant_id,),
+            )
+            cur.execute("SELECT name FROM tenants WHERE id = %s", (tenant_id,))
+            self.assertEqual(cur.fetchone()[0], "Provisioned")
+
+    def test_the_migration_ledger_is_not_readable_from_a_tenant_scope(self):
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT count(*) FROM schema_migrations")
+            self.assertEqual(cur.fetchone()[0], 0)
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute("SELECT count(*) FROM schema_migrations")
+            self.assertGreater(cur.fetchone()[0], 0, "the ledger is unreadable to the kernel too")
+
+    def test_referential_integrity_still_holds_against_rows_the_session_cannot_see(self):
+        """
+        PostgreSQL evaluates foreign-key checks with row security bypassed, deliberately, so
+        that a policy cannot be used to corrupt data. This asserts that property directly,
+        because migration 007 depends on it: `memberships.principal_id` references a table the
+        session can now only partly read, and if the check were subject to the policy, valid
+        writes would start failing as integrity violations.
+
+        The same behaviour is a covert channel — the two outcomes below differ, so existence
+        is observable without read access. That is a documented PostgreSQL limitation, it is
+        recorded in migration 007, and it is asserted here so it stays a known property rather
+        than becoming a surprise.
+        """
+        import psycopg
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT count(*) FROM principals WHERE id = %s", (self.principal_b,))
+            self.assertEqual(cur.fetchone()[0], 0, "precondition: B's principal must be hidden")
+
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, 'active', 'member')",
+                (self.tenant_a, self.principal_b),
+            )
+            self.assertEqual(cur.rowcount, 1)
+
+        with self.assertRaises(psycopg.errors.ForeignKeyViolation):
+            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+                cur.execute(
+                    "INSERT INTO memberships (tenant_id, principal_id, state, role) "
+                    "VALUES (%s, %s, 'active', 'member')",
+                    (self.tenant_a, str(uuid.uuid4())),
+                )
+
+    def test_every_table_in_the_schema_is_classified_and_protected(self):
+        """
+        The structural check, and the one that matters most in this class.
+
+        Every other probe here tests a policy that exists. What let `tenants` and `principals`
+        sit open through six migrations was that no test asserted anything about a table with
+        no policy — absence was invisible. This enumerates the live schema instead of a list,
+        so a new table added without row security fails here rather than being discovered by
+        the next security review.
+
+        A table that belongs in none of the three classes is a failure too, not a pass: the
+        point is that somebody has to decide which it is.
+        """
+        classified = set(TENANT_SCOPED_TABLES) | set(REGISTRY_TABLES) | set(INFRASTRUCTURE_TABLES)
+
+        with self.db.system_session(connection=self.conn) as cur:
+            cur.execute(
+                "SELECT c.relname, c.relrowsecurity, c.relforcerowsecurity "
+                "FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace "
+                "WHERE n.nspname = current_schema() AND c.relkind = 'r'"
+            )
+            live = {name: (enabled, forced) for name, enabled, forced in cur.fetchall()}
+
+        unclassified = sorted(set(live) - classified)
+        self.assertEqual(
+            unclassified, [],
+            f"tables exist that this suite has never classified: {unclassified}. Add each to "
+            f"TENANT_SCOPED_TABLES, REGISTRY_TABLES or INFRASTRUCTURE_TABLES and give it a "
+            f"policy. This assertion is what would have caught the 007 disclosure in 001.",
+        )
+
+        missing = sorted(t for t in classified if t in live and not all(live[t]))
+        self.assertEqual(
+            missing, [],
+            f"tables without ENABLE and FORCE row level security: {missing}",
+        )
+
+        stale = sorted(classified - set(live))
+        self.assertEqual(stale, [], f"this suite names tables that no longer exist: {stale}")
 
 
 if __name__ == "__main__":
