@@ -24,12 +24,26 @@ from kernel_core.entitlement import (
     StructurallyInvalidContextError,
 )
 
+# Test doubles. They live in the test tree because a fallback store reachable from production
+# would reintroduce finding F-7 as a convenience — see tests/support/stores.py.
+from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
+
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class EntitlementEvaluatorUnitTests(unittest.TestCase):
     def setUp(self):
-        self.evaluator = EntitlementEvaluator()
+        # F-7: the stores are required and have no default. An in-memory double is legitimate
+        # here because these are unit tests of decision logic; what is refused is a fallback
+        # reachable from production. See tests/support/stores.py.
+        # One tenant per test class. The doubles are tenant-keyed, so a test that forgot to
+        # pass it would fail rather than silently exercise the global behaviour F-7 records.
+        self.tenant_id = "tnt_alpha"
+        self.toggles = FakeFeatureToggleStore()
+        self.rate_limits = FakeRateLimitStore()
+        self.evaluator = EntitlementEvaluator(
+            feature_toggle_store=self.toggles, rate_limit_store=self.rate_limits
+        )
         self.context = ContextPayload(
             context_id="ctx_456",
             principal_id="usr_alice",
@@ -98,7 +112,7 @@ class EntitlementEvaluatorUnitTests(unittest.TestCase):
 
     def test_disabled_feature_rollout_toggle_denies_execution(self):
         # Finding 6 & 7 feature rollout test
-        self.evaluator.set_feature_toggle("cap_invoice_create", False)
+        self.evaluator.set_feature_toggle(self.tenant_id, "cap_invoice_create", False)
         decision = self.evaluator.evaluate(self.context, "cap_invoice_create")
         self.assertEqual(decision.decision, DecisionOutcome.DENY)
         self.assertEqual(decision.reason_code, "DENY_FEATURE_DISABLED")
@@ -106,7 +120,7 @@ class EntitlementEvaluatorUnitTests(unittest.TestCase):
 
     def test_rate_limit_burst_threshold_exceeded(self):
         # Finding 6 & 7 rate limit test
-        self.evaluator.set_rate_limit("cap_invoice_create", 2)
+        self.evaluator.set_rate_limit(self.tenant_id, "cap_invoice_create", 2)
         dec1 = self.evaluator.evaluate(self.context, "cap_invoice_create")
         dec2 = self.evaluator.evaluate(self.context, "cap_invoice_create")
         dec3 = self.evaluator.evaluate(self.context, "cap_invoice_create")

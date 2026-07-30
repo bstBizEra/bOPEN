@@ -54,6 +54,8 @@ from platform_kernel.metering import (
     QuotaReservationError,
 )
 
+from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
+
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -61,7 +63,15 @@ class Phase3EntitlementMeteringIntegrationTests(unittest.TestCase):
     def setUp(self):
         self.registry = ModuleRegistry()
         self.resolver = CapabilityResolver(self.registry)
-        self.evaluator = EntitlementEvaluator()
+        # Doubles rather than the PostgreSQL stores, deliberately. This suite exercises the
+        # metering and entitlement flow; rollout storage is a different concern with its own
+        # integration tests. The Postgres stores also require a real row in `tenants`, and these
+        # fixtures intentionally do not create one — migration 002's tables carry no foreign key
+        # to it, and that gap is something these tests exercise rather than paper over.
+        self.evaluator = EntitlementEvaluator(
+            feature_toggle_store=FakeFeatureToggleStore(),
+            rate_limit_store=FakeRateLimitStore(),
+        )
         self.meter_service = UsageMeterService()
 
         # Load schema for contract compliance verification (Finding 4)

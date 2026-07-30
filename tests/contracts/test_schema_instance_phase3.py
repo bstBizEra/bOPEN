@@ -49,6 +49,9 @@ from kernel_core.types import ContextPayload
 from platform_kernel.metering import QuotaWindow, UsageMeterService
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# Test doubles — see tests/support/stores.py for why they are not shipped in the package.
+from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
 SCHEMA_DIR = ROOT / "contracts" / "schemas"
 
 
@@ -86,7 +89,9 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
     def setUp(self):
         self.schema = load_schema("rate-limit-decision.schema.json")
         self.reason_codes = load_schema("entitlement-reason-codes.json")
-        self.limiter = RateLimiter()
+        self.tenant_id = "tnt_alpha"
+        self.rate_limits = FakeRateLimitStore()
+        self.limiter = RateLimiter(self.rate_limits)
 
     def test_allowed_decision_validates(self):
         """
@@ -95,8 +100,8 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         `additionalProperties: false` means a misnamed field fails twice — once as a missing
         required property, once as a forbidden extra one.
         """
-        self.limiter.set_limit("cap_invoice_create", 5)
-        decision = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-allow-1")
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 5)
+        decision = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-allow-1")
 
         self.assertTrue(decision.allowed)
         validate(decision.to_dict(), self.schema)
@@ -106,9 +111,9 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         The deny path carries the 429 and is what a client sees when throttled, so it has to
         serialize at least as well as the allow path.
         """
-        self.limiter.set_limit("cap_invoice_create", 1)
-        self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-deny-1")
-        decision = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-deny-2")
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 1)
+        self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-deny-1")
+        decision = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-deny-2")
 
         self.assertFalse(decision.allowed)
         validate(decision.to_dict(), self.schema)
@@ -125,9 +130,9 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         Three calls against a limit of ten: consumption is 3, headroom is 7. If those are ever
         swapped, this fails and the two validation tests above still pass.
         """
-        self.limiter.set_limit("cap_invoice_create", 10)
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 10)
         for i in range(3):
-            decision = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", f"corr-{i}")
+            decision = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", f"corr-{i}")
 
         payload = decision.to_dict()
         self.assertEqual(payload["current_rate"], 3, "current_rate must count calls consumed")
@@ -146,12 +151,12 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         past `limit_rate` on every retry and the reported figure would describe attempts
         rather than usage — which is what a customer gets billed against.
         """
-        self.limiter.set_limit("cap_invoice_create", 2)
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 2)
         for i in range(2):
-            self.limiter.evaluate("tnt_alpha", "cap_invoice_create", f"corr-fill-{i}")
+            self.limiter.evaluate(self.tenant_id, "cap_invoice_create", f"corr-fill-{i}")
 
-        first_denial = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-x")
-        second_denial = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-y")
+        first_denial = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-x")
+        second_denial = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-y")
 
         self.assertEqual(first_denial.current_rate, 2)
         self.assertEqual(second_denial.current_rate, 2, "a denied call must not consume quota")
@@ -165,8 +170,8 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         because a constant would validate while destroying the request tracing the field
         exists to provide.
         """
-        self.limiter.set_limit("cap_invoice_create", 5)
-        decision = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-traceable-42")
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 5)
+        decision = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-traceable-42")
 
         self.assertEqual(decision.to_dict()["correlation_id"], "corr-traceable-42")
         validate(decision.to_dict(), self.schema)
@@ -180,10 +185,10 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         rather than against a number restated in the test.
         """
         status_map = self.reason_codes["x-bopen-http-status-map"]
-        self.limiter.set_limit("cap_invoice_create", 1)
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 1)
 
-        allowed = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-map-1")
-        throttled = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-map-2")
+        allowed = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-map-1")
+        throttled = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-map-2")
 
         for decision in (allowed, throttled):
             payload = decision.to_dict()
@@ -197,8 +202,8 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
 
     def test_timestamp_carries_an_offset(self):
         """See `assert_rfc3339` — the installed jsonschema cannot enforce `format: date-time`."""
-        self.limiter.set_limit("cap_invoice_create", 5)
-        decision = self.limiter.evaluate("tnt_alpha", "cap_invoice_create", "corr-ts")
+        self.rate_limits.set_policy(self.tenant_id, "cap_invoice_create", 5)
+        decision = self.limiter.evaluate(self.tenant_id, "cap_invoice_create", "corr-ts")
         assert_rfc3339(self, decision.to_dict()["evaluated_at"], "evaluated_at")
 
     def test_decision_reached_through_the_evaluator_validates(self):
@@ -207,7 +212,10 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
         drives it. This runs the real path so that the `correlation_id` threading is exercised
         as wired, not as constructed by a test.
         """
-        evaluator = EntitlementEvaluator()
+        rate_limits = FakeRateLimitStore()
+        evaluator = EntitlementEvaluator(
+            feature_toggle_store=FakeFeatureToggleStore(), rate_limit_store=rate_limits
+        )
         evaluator.register_plan(
             PlanTier(
                 plan_id="plan_free",
@@ -216,7 +224,7 @@ class RateLimitDecisionInstanceTests(unittest.TestCase):
             )
         )
         evaluator.assign_tenant_plan("tnt_alpha", "plan_free")
-        evaluator.set_rate_limit("cap_invoice_create", 1)
+        evaluator.set_rate_limit("tnt_alpha", "cap_invoice_create", 1)
         context = ContextPayload(
             context_id="ctx_456",
             principal_id="usr_alice",
