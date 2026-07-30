@@ -395,3 +395,77 @@ its permanent judge, which is the condition this amendment exists to remove.
 A governance rule that is not machine-checkable is a preference. Rules are promoted to
 enforced status as tooling lands; the table above records which are which, honestly.
 
+---
+
+## 21. Amendment 2026-07-30 — agent commit identity
+
+> **Change note (extend-only, per BST rule 5).**
+> **Reason**: §20.3 requires a verifier to be independent of the maker, but nothing in this
+> repository could tell one agent's commits from another's, so the requirement was
+> unenforceable. Investigation found the practice had existed and lapsed rather than being
+> absent.
+> **Benefit of the prior state**: a single shared identity is simpler to configure and never
+> blocks a commit.
+> **Expected outcome**: independence claims become checkable against a second, independently
+> written record instead of resting on a single self-declaration.
+> **Governed by**: [`BOPEN-GOV-IDENT-001`](docs/00-governance/BOPEN-GOV-IDENT-001.md).
+
+### 21.1 Every agent commits under its own identity
+
+Set **per repository**, never globally:
+
+```bash
+git config user.name  "<Agent> <model> (BST-SA <role>)"
+git config user.email "<agent>@bst.local"
+```
+
+Registered addresses are `claude@bst.local`, `codex@bst.local`, `gemini@bst.local`,
+`kimi@bst.local`. The full register, including legacy identities that remain recognised so that
+existing history stays attributable, is [`agent-identity-register.json`](docs/00-governance/agent-identity-register.json).
+
+This refines the example in the global agent rules, which shows a single shared
+`agent@bizera-smartthink.local`. A shared local-part leaves the whole signal resting on the
+display name; a per-agent address means either field alone identifies the agent, and a
+disagreement between them is itself detectable.
+
+### 21.2 Prohibitions
+
+1. **No agent commits under the operator's identity.** The operator holds authority no agent
+   holds, so a commit attributed to the operator carries a claim the agent cannot make. This is
+   the one misattribution that changes what a commit *means*, not merely who wrote it.
+2. **No throwaway identities.** Ten commits in this repository's history were made under
+   `SIM-EXEC-THROWAWAY` and `BST-DryRun-Throwaway`. A commit its author designed to be
+   untraceable has no place in a governed repository.
+3. **Branch prefixes are not attribution.** Branches named `codex/*` contain commits whose
+   trailers name Claude. A prefix records who opened the lane, not who wrote the commit, and
+   must never be read as identity.
+
+### 21.3 Ballots bind to commits
+
+A `verifier_id` in `ballots.jsonl` must match the git author of the commit that introduced that
+ballot line, and ballots from different verifiers must arrive in different commits. Checked by
+`python tools/check_ballot_attribution.py`.
+
+An unattributable ballot **does not count toward quorum**. That is a refusal to pretend rather
+than an obstruction: a ballot whose author cannot be established carries no evidence about who
+cast it, which is the only thing §20.3 needs from it.
+
+### 21.4 Disclosed violation
+
+Commits from 2026-07-29 to 2026-07-30 — the whole of `WP-P35-01`, `WP-P35-02` and `WP-P35-03` —
+carry the operator's identity while having been authored by Claude. That is a violation of
+§21.2.1 by the agent that drafted it.
+
+History is not rewritten, because doing so would invalidate every evidence anchor emitted
+against those commits and trade a disclosed defect for a silent one. The range is recorded in
+`BOPEN-GOV-IDENT-001` §5 and should be read as **unattributable**, not as operator-authored.
+
+### 21.5 What this does not do
+
+Local git identity is self-declared. This amendment defeats accidental collapse — two ballots
+that appear independent but are not, a verifier that is really the maker. It does **not** defeat
+deliberate forgery; only signed commits would, and they are not in use.
+
+Recording that limit is deliberate. A rule that claims more assurance than its mechanism
+delivers is worse than no rule, because it stops people looking.
+

@@ -115,7 +115,7 @@ overlap period must be shorter than the maximum token lifetime (5 minutes) plus 
 
 | ID | Purpose | Identifier | Value store | Owner | Rotation |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `CRED-GIT-COMMITTER` | Git author identity for agent commits | `BizEra` / `agent@bizera-smartthink.local` | git config — not a secret | Operator | n/a |
+| `CRED-GIT-COMMITTER` | Git author identity, per agent | see [`BOPEN-GOV-IDENT-001`](../../00-governance/BOPEN-GOV-IDENT-001.md) §3 — `<agent>@bst.local` | repository-local `git config` — not a secret | Operator | n/a |
 
 No API keys, package registry tokens, or webhook secrets are in use at this commit.
 

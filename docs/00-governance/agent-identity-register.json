@@ -1,0 +1,112 @@
+{
+  "register_id": "BOPEN-GOV-IDENT-001",
+  "version": "1.0.0",
+  "status": "Proposed",
+  "issued": "2026-07-30",
+  "owner": "Engineering Authority",
+  "domain_note": "Canonical addresses use @bst.local, which already appears in this repository history (bot3@bst.local). Entries under legacy_recognised keep their original @bizera-smartthink.local and @openai.local addresses verbatim: those are facts about commits that exist, and rewriting them would make the register disagree with the history it describes.",
+  "purpose": "Machine-readable list of commit identities that may be attributed to an agent. Consumed by tools/check_ballot_attribution.py to bind an EBIV ballot to the commit that introduced it. The normative text is BOPEN-GOV-IDENT-001.md; this file is its executable form and must stay in agreement with it.",
+  "agents": [
+    {
+      "agent_id": "claude",
+      "display": "Claude (Anthropic)",
+      "canonical": {
+        "name_prefix": "Claude",
+        "email": "claude@bst.local"
+      },
+      "legacy_recognised": [
+        "Claude Opus 5 (BST-SA Motor sole maker) <noreply@anthropic.com>",
+        "Claude Opus 4.8 (BST-SA Motor) <noreply@anthropic.com>",
+        "Claude Opus 4.8 (BST-SA Motor maker) <noreply@anthropic.com>",
+        "Claude Opus 4.8 (BST-SA Motor integrator) <noreply@anthropic.com>",
+        "Claude Opus 4.8 (BST-SA Motor sole maker) <noreply@anthropic.com>",
+        "BST-Claude-Motor <agent@bizera-smartthink.local>"
+      ],
+      "notes": "Four display variants encoded the model revision and the role in the same field. Canonical form separates them: the role belongs in the work package, not in the git ident."
+    },
+    {
+      "agent_id": "codex",
+      "display": "Codex Agent IDE (OpenAI)",
+      "canonical": {
+        "name_prefix": "Codex",
+        "email": "codex@bst.local"
+      },
+      "legacy_recognised": [
+        "BST-Codex-Motor <agent@bizera-smartthink.local>",
+        "BST-Codex-Motor (gpt-5.6-sol via codex-cli) <agent@bizera-smartthink.local>",
+        "Codex bOPEN Maker <codex@openai.local>",
+        "Codex bOPEN Hygiene <codex@openai.local>"
+      ],
+      "notes": "The largest contributor in this repository by commit count (117). Two email domains were in use concurrently."
+    },
+    {
+      "agent_id": "gemini",
+      "display": "Gemini / Antigravity (Google)",
+      "canonical": {
+        "name_prefix": "Gemini",
+        "email": "gemini@bst.local"
+      },
+      "legacy_recognised": [],
+      "notes": "Authored Phase 3 implementation but has no commit identity in this repository's history. Its work is presently indistinguishable from the operator's."
+    },
+    {
+      "agent_id": "kimi",
+      "display": "Kimi",
+      "canonical": {
+        "name_prefix": "Kimi",
+        "email": "kimi@bst.local"
+      },
+      "legacy_recognised": [],
+      "notes": "No commit identity yet. Seated as verifier V3."
+    },
+    {
+      "agent_id": "operator",
+      "display": "Human operator",
+      "canonical": {
+        "name_prefix": "BizEra",
+        "email": "ounkhamvilay@gmail.com"
+      },
+      "legacy_recognised": [],
+      "is_human": true,
+      "notes": "The operator holds authority no agent holds. This ident must therefore never be used by an agent — a commit attributed to the operator carries an authority claim the agent cannot make. 46 commits currently sit under it, including 27 authored by Claude on 2026-07-30. See BOPEN-GOV-IDENT-001.md section 4."
+    }
+  ],
+  "forbidden": [
+    {
+      "pattern": "SIM-EXEC-THROWAWAY <sim@throwaway.invalid>",
+      "observed_commits": 7,
+      "reason": "A throwaway identity is a commit deliberately made untraceable. Recorded as a control failure in the prior closure review, not merely an audit-trail defect."
+    },
+    {
+      "pattern": "BST-DryRun-Throwaway <dryrun@throwaway.local>",
+      "observed_commits": 2,
+      "reason": "As above."
+    },
+    {
+      "pattern": "BST-DryRun-Throwaway <throwaway@local>",
+      "observed_commits": 1,
+      "reason": "As above."
+    }
+  ],
+  "unclassified": [
+    {
+      "pattern": "REV <bot3@bst.local>",
+      "observed_commits": 4,
+      "note": "Four commits on 2026-07-13. Origin not established from the repository alone. Recorded rather than guessed at."
+    }
+  ],
+  "attribution_gaps": [
+    {
+      "range": "2026-07-29 to 2026-07-30",
+      "ident": "BizEra <ounkhamvilay@gmail.com>",
+      "commits": 29,
+      "actual_author": "Claude (agent, Motor role)",
+      "detail": "The per-agent convention lapsed and Claude committed the whole of WP-P35-01, WP-P35-02 and WP-P35-03 under the operator's identity. History is not rewritten; the gap is recorded so a verifier reads these commits as unattributable rather than as operator-authored."
+    }
+  ],
+  "verification": {
+    "tool": "python tools/check_ballot_attribution.py",
+    "binds": "EBIV ballot verifier_id -> git author of the commit that introduced the ballot line -> this register",
+    "limits": "Local git identity is self-declared. This register catches accidental collapse and misattribution; it does not prevent deliberate forgery. Signed commits are the only mechanism that would, and are recorded as not yet in use."
+  }
+}
