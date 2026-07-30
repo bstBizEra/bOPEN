@@ -154,12 +154,28 @@ def observe_validated_fingerprints() -> tuple[set[str], bool, int]:
     original_validate = jsonschema.validate
 
     def recording_validate(instance, schema, *args, **kwargs):
+        """Record the schema only when the instance actually conformed.
+
+        The fingerprint is taken AFTER the call returns, never before. That ordering is the
+        whole point and it closes the third hole reviewers found in this tool.
+
+        The first two were measuring a moving tree and counting vacuous schemas. This one is
+        subtler: a test that asserts an instance does NOT conform still calls `validate`, and
+        recording on entry credited the schema on the strength of a proof that its producer is
+        broken. It happened twice — once against `membership-transition-matrix.json`, once
+        against `audit-event.json`, both times inviting a debt entry to be struck by a test
+        demonstrating the opposite of what the entry claimed.
+
+        Coverage has to mean "some instance validated successfully against this schema". A
+        raised ValidationError is evidence about the producer, not coverage of the contract.
+        """
+        result = original_validate(instance, schema, *args, **kwargs)
         try:
             seen.add(fingerprint(schema))
         except (TypeError, ValueError):
             # A schema that is not JSON-serialisable cannot be matched to a file anyway.
             pass
-        return original_validate(instance, schema, *args, **kwargs)
+        return result
 
     jsonschema.validate = recording_validate
 
