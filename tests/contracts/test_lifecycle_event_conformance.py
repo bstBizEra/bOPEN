@@ -93,6 +93,7 @@ from platform_kernel.idp_bridge import (  # noqa: E402
     ScimEvent,
 )
 from tests.support.phase2_fixtures import build_phase2_env, onboard_active_member  # noqa: E402
+from tests.support.stores import CollectingLifecycleSink
 
 SCHEMA_DIR = ROOT / "contracts" / "schemas"
 CORRELATION = "corr-lifecycle-contract"
@@ -479,7 +480,7 @@ class OutcomeAndSubjectVocabularyTests(_LifecycleTestCase):
         than overlooked, and constructs the instance through the real dispatcher rather than by
         editing a dict, so the claim is about the producer.
         """
-        dispatcher = AuditDispatcher()
+        dispatcher = AuditDispatcher(CollectingLifecycleSink())
         event = dispatcher.emit_lifecycle_event(
             event_type="scim.event_denied", correlation_id=CORRELATION,
             actor_id="scim_directory", tenant_id="tnt_alpha", subject_type="scim_event",
@@ -495,7 +496,7 @@ class OutcomeAndSubjectVocabularyTests(_LifecycleTestCase):
         which is the difference between a contract and a comment.
         """
         with self.assertRaises(AuditContractError):
-            AuditDispatcher().emit_lifecycle_event(
+            AuditDispatcher(CollectingLifecycleSink()).emit_lifecycle_event(
                 event_type="context.issued", correlation_id=CORRELATION, actor_id="usr_a",
                 tenant_id="tnt_alpha", subject_type="context", subject_id="ctx_1",
                 outcome="ERROR", reason_code="X",
@@ -551,7 +552,7 @@ class CausationIdTests(_LifecycleTestCase):
         only really tested by constructing it. If it did not validate, the field would be
         nullable in name and null-only in fact.
         """
-        dispatcher = AuditDispatcher()
+        dispatcher = AuditDispatcher(CollectingLifecycleSink())
         event = dispatcher.emit_lifecycle_event(
             event_type="membership.transitioned", correlation_id=CORRELATION,
             actor_id="usr_owner", tenant_id="tnt_alpha", subject_type="membership",
@@ -606,7 +607,7 @@ class MetadataBoundaryTests(_LifecycleTestCase):
         for key in ("access_token", "saml_assertion", "private_key"):
             with self.subTest(key=key):
                 with self.assertRaises(AuditContractError):
-                    AuditDispatcher().emit_lifecycle_event(
+                    AuditDispatcher(CollectingLifecycleSink()).emit_lifecycle_event(
                         event_type="identity.linked", correlation_id=CORRELATION,
                         actor_id="usr_a", tenant_id="tnt_alpha",
                         subject_type="external_identity", subject_id="eid_1",
@@ -812,7 +813,7 @@ class TwoAuditEnvelopesTests(_LifecycleTestCase):
         someone holding a `dispatch` event. The two are disjoint in both directions, so neither
         can serve as the other's contract.
         """
-        dispatcher = AuditDispatcher()
+        dispatcher = AuditDispatcher(CollectingLifecycleSink())
         legacy = dispatcher.dispatch(
             actor_id="usr_alice", tenant_id="tnt_alpha", action="membership:read",
             resource_type="membership", resource_id="mem_1", status="SUCCESS",
@@ -831,7 +832,7 @@ class TwoAuditEnvelopesTests(_LifecycleTestCase):
         authorization decision and nothing else in that envelope carries it) rests on an
         executable fact rather than on a reading.
         """
-        legacy = AuditDispatcher().dispatch(
+        legacy = AuditDispatcher(CollectingLifecycleSink()).dispatch(
             actor_id="usr_alice", tenant_id="tnt_alpha", action="membership:read",
             resource_type="membership", resource_id="mem_1", status="DENIED",
             correlation_id=CORRELATION, reason_code="MEMBERSHIP_ROLE_DENIED",

@@ -22,6 +22,8 @@ No test depends on wall clock, randomness, network access or production credenti
 
 import json
 import unittest
+
+from tests.support.stores import CollectingLifecycleSink
 from datetime import timedelta
 
 from kernel_core.audit import AuditContractError
@@ -293,7 +295,7 @@ class Phase2OnboardingChainTests(unittest.TestCase):
         """Phase 1 regression must remain green (BOPEN-P2-001 section 24)."""
         from platform_kernel.service import PlatformKernelService
 
-        service = PlatformKernelService()
+        service = PlatformKernelService(CollectingLifecycleSink())
         principal = service.register_principal("owner@acme.test")
         tenant, membership = service.provision_tenant("Acme", principal.id)
         context = service.establish_context(principal.id, tenant.id, membership.id)

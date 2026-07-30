@@ -1,4 +1,6 @@
 import unittest
+
+from tests.support.stores import CollectingLifecycleSink
 import sys
 import uuid
 from pathlib import Path
@@ -17,7 +19,7 @@ class TestPhase1VerticalSliceIntegration(unittest.TestCase):
     """
 
     def setUp(self):
-        self.service = PlatformKernelService()
+        self.service = PlatformKernelService(CollectingLifecycleSink())
 
     def test_P1_T001_to_T007_happy_path_vertical_slice(self):
         # P1-T001: Valid principal registration

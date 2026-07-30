@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional
 
 from kernel_core.audit import AuditDispatcher
+from tests.support.stores import CollectingLifecycleSink
 from kernel_core.delegation import DelegatedAccessService, InMemoryGrantRepository
 from kernel_core.membership import (
     InMemoryIdempotencyStore,
@@ -120,7 +121,7 @@ class Phase2Env:
 def build_phase2_env(active_tenants=("tnt_alpha", "tnt_beta")) -> Phase2Env:
     clock = FakeClock()
     ids = CountingIdentifierFactory()
-    audit = AuditDispatcher()
+    audit = AuditDispatcher(CollectingLifecycleSink())
 
     memberships = InMemoryMembershipRepository()
     invitations = InMemoryInvitationRepository()

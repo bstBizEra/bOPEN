@@ -85,3 +85,23 @@ class FakeRateLimitStore:
         # and never here — a test proving atomicity against this class would prove nothing.
         self._counters[key] = consumed + 1
         return RateLimitOutcome(allowed=True, consumed=consumed + 1, window_ends_at=end)
+
+
+class CollectingLifecycleSink:
+    """A lifecycle sink that keeps events in a list.
+
+    Implements `kernel_core.audit.LifecycleEventSink`. It exists so that a test which only checks
+    the envelope's shape does not need a database, and it lives here rather than in the package
+    for the reason at the top of this module: a default sink reachable from production would let
+    `AuditDispatcher` go back to losing every Phase 2 audit record on restart, quietly.
+
+    Passing this is a statement that the caller does not want durability. That is legitimate in a
+    shape test and never legitimate in a running kernel, and requiring it to be named makes the
+    difference visible at each construction site instead of hidden in a default argument.
+    """
+
+    def __init__(self) -> None:
+        self.events: list = []
+
+    def record(self, event: dict) -> None:
+        self.events.append(event)

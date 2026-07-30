@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "packages" / "kernel-core" / "python"))
 
 from kernel_core.audit import AuditDispatcher
+from tests.support.stores import CollectingLifecycleSink
 from kernel_core.types import DecisionResult
 
 class TestAuditDispatcherUnit(unittest.TestCase):
@@ -15,7 +16,7 @@ class TestAuditDispatcherUnit(unittest.TestCase):
     """
 
     def setUp(self):
-        self.audit = AuditDispatcher()
+        self.audit = AuditDispatcher(CollectingLifecycleSink())
         self.p_id = f"usr_{uuid.uuid4()}"
         self.t_id = f"tnt_{uuid.uuid4()}"
         self.correlation_id = f"corr_{uuid.uuid4()}"
