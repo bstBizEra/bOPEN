@@ -111,15 +111,15 @@
       "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
       "status": "Open \u2014 action requested",
-      "sha256": "35b5d956cfb0444a0a38a886dff30db80b44f05db06cd7dc868a7fa4fc19abc5",
-      "bytes": 14849
+      "sha256": "7e8b3b418c8cc5c3784f789dbc4ebfc7d4340ac1f70ea01d773100c01c6f3b11",
+      "bytes": 16047
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
       "title": "HANDOFF-P35-VERIFY-TO-GEMINI-KIMI \u2014 Second and third verifier seats for Phase 3.5",
       "status": "Open \u2014 action requested",
-      "sha256": "3afce53c5254fa3b532f648ef5ef5e90f18b6c6b2dc650e3ead11d9c1605c781",
-      "bytes": 9530
+      "sha256": "ed26daae222121a3404b260a7afbdb26ccce1f51178ed57182a46426af12a16e",
+      "bytes": 11236
     },
     {
       "path": "docs/00-governance/license-strategy.md",
