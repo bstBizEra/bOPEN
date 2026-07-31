@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 289,
+  "count": 291,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -113,6 +113,13 @@
       "status": "",
       "sha256": "1abf71a9cef7482c49d5543e077f001fc512883bc38cac6a7783aead8a495584",
       "bytes": 11845
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-04-BALLOT-R2-TO-CODEX.md",
+      "title": "HANDOFF-P35-04-BALLOT-R2-TO-CODEX \u2014 Ballot `WP-P35-04` at the corrected commit",
+      "status": "**Active \u2014 issued 2026-08-01**",
+      "sha256": "5b5c1c0a921224fb966ee13cdc8b90024a8f2981ba82f631650811d6c3438090",
+      "bytes": 5227
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-BALLOTS-TO-CODEX.md",
@@ -1382,11 +1389,18 @@
       "bytes": 8939
     },
     {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r2.md",
+      "title": "EVD-P35-04-MAKER-R2 \u2014 WP-P35-04 Maker Submission, revision 2 (API Gateway)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "44a0c8c99aa4f13288d04084a85cca1863b1965e5069ada48972e3b3f9305187",
+      "bytes": 9782
+    },
+    {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",
       "title": "EVD-P35-04-MAKER \u2014 WP-P35-04 Maker Submission (API Gateway)",
-      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "2974a8a221b681d86a197c7716851412e1e09a5d3c85647cf72f267b49fe65ad",
-      "bytes": 8544
+      "status": "**WITHDRAWN 2026-08-01 \u2014 superseded by [`EVD-P35-04-MAKER-R2`](wp-p35-04-maker-submission-r2.md). Do not ballot.**",
+      "sha256": "9269986f4d291cfda824cc4397328c2c8bebeacd6b5e3bc4870b0e2579d3b338",
+      "bytes": 9148
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",

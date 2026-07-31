@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-04-MAKER`
 **Version:** `1.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **WITHDRAWN 2026-08-01 — superseded by [`EVD-P35-04-MAKER-R2`](wp-p35-04-maker-submission-r2.md). Do not ballot.**
 **Issued:** 2026-07-31
 **Work package:** [`BOPEN-P35-001`](../../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md) — `WP-P35-04`, deliverable D-09
 **Commit OID:** `c03cd4f423d6afa9ee1441e340f5720f184db08c`
@@ -13,8 +13,16 @@
 **Governing artifacts:** `sdk/headers/HTTP_HEADER_SPEC.md` v1.0, `BOPEN-AUTHZ-001`, `BOPEN-IDP-001` §12, `BOPEN-ARCH-PLAN-001` §2 layer 1
 **Admissibility standard:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md)
 
-> Zero ballots cast. Eligible verifiers: **Codex, Gemini or Kimi** — any engine that did not
-> author this. Status stays `IMPLEMENTED_UNVERIFIED`.
+> **WITHDRAWN.** The commit this record anchors, `c03cd4f…`, contains an unauthenticated SSRF:
+> the caller could select the upstream host and have the client's bearer token forwarded to it.
+> Found by adversarial sweep 2026-07-31, after this submission was issued with 31 passing tests
+> and three mutation probes that all bit.
+>
+> Codex refused to ballot it (`EVD-P35-CODEX-PREFLIGHT-001` §2, verdict `SUPERSEDED`). Rule on
+> [`EVD-P35-04-MAKER-R2`](wp-p35-04-maker-submission-r2.md) at `88e6ed2…` instead.
+>
+> Retained unedited under the extend-only rule. Everything below was true of `c03cd4f…` and the
+> package was still critically defective — which is the most useful thing this file records.
 
 OIDs above were read from git with `git rev-parse` at submission time, not transcribed, per
 EBIV R3 and acceptance criterion `A-07`.
