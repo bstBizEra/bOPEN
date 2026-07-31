@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-04-MAKER-R2`
 **Version:** `2.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **BLOCKED then SUPERSEDED 2026-08-01** — refuted on `P35-04R-15` and `P35-04R-16` (`8041701`); succeeded by [`EVD-P35-04-MAKER-R3`](wp-p35-04-maker-submission-r3.md) at `1b39a30…`. Ballot the successor; this record is retained for the refutations it carries.
 **Issued:** 2026-08-01
 **Supersedes:** [`EVD-P35-04-MAKER`](wp-p35-04-maker-submission.md) at `c03cd4f…`, withdrawn as critically defective
 **Raised by:** [`EVD-P35-CODEX-PREFLIGHT-001`](codex-preflight-wp-p35-04-05a.md) §2, verdict `SUPERSEDED`

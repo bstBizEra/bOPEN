@@ -1,5 +1,30 @@
 # Documentation Changelog
 
+## 2026-08-01 - R3 issued, with one proposition deliberately not restated
+
+- `EVD-P35-04-MAKER-R3` at `1b39a30` (tree `d134838`, gateway subtree `516a65a`), succeeding the
+  R2 candidate that two refutations blocked. R2 is marked BLOCKED and SUPERSEDED, retained for
+  the refutations it carries. **R2's 28 confirmations do not carry forward** — this is a new
+  candidate and needs its own ballots.
+- **The dot-segment half of `P35-04R-15` is deliberately not restated.** It is unachievable at
+  this layer: the WHATWG parser resolves dot segments when the `Request` is constructed, before
+  any handler runs. Restating it would be offering a claim the maker knows to be false, which is
+  worse than the prose limitation the proposition was written to escape.
+- In its place, three honest artifacts: a test asserting the normalisation deliberately so it
+  cannot drift; `P35-04R3-17` claiming the bounded truth — that the gateway adds no transformation
+  of its own beyond the parser's; and §6 raising the residual architecture question as a
+  **decision** rather than leaving it as a proposition that would be correctly refuted forever.
+- `P35-04R3-18` puts the `P35-04R-16` probe-validity question to the verifiers directly instead of
+  the maker assuming the answer. §4 records the measurement — every dot-segment path stays
+  contained through the real gateway — as evidence for them to weigh, not as a verdict.
+- **`P35-04R3-02` is narrowed on purpose.** R2's version claimed a base prefix survives full stop
+  while its test used a path with no dot segments. The wording now matches what the test checks —
+  the defect that recurred three times in this package.
+- §8 states the thing the numbers hide: R1 had 31 tests and a critical SSRF in the gap, R2 had 43
+  and two refutations in the gap, R3 has 47. That is not evidence of correctness. It is the same
+  kind of evidence, one iteration later.
+
+
 ## 2026-08-01 - The first refutations, and a proposition that cannot be satisfied
 
 - Gemini balloted `P35-04R-15` and `P35-04R-16` **REFUTED** (`8041701`), both with reproducible

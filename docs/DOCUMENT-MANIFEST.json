@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 295,
+  "count": 296,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "f990fbb0571c81eef69042fba95c5e72862f926a0b677f789869bcb30f622cc3",
-      "bytes": 44020
+      "sha256": "765d207c0ec7951e37d843d83f326e75b47c0e194e1f4501aa8df24ec3e101b9",
+      "bytes": 45939
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1419,9 +1419,16 @@
     {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r2.md",
       "title": "EVD-P35-04-MAKER-R2 \u2014 WP-P35-04 Maker Submission, revision 2 (API Gateway)",
+      "status": "**BLOCKED then SUPERSEDED 2026-08-01** \u2014 refuted on `P35-04R-15` and `P35-04R-16` (`8041701`); succeeded by [`EVD-P35-04-MAKER-R3`](wp-p35-04-maker-submission-r3.md) at `1b39a30\u2026`. Ballot the successor; this record is retained for the refutations it carries.",
+      "sha256": "72bd505c42e881fb31e5ad3a84e58b5593293a6a8f24a8c373b1e40699c18079",
+      "bytes": 16916
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r3.md",
+      "title": "EVD-P35-04-MAKER-R3 \u2014 WP-P35-04 Maker Submission, revision 3 (API Gateway)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "fb2ada485a6495232369ae6bfa0cfb2cdd8ac63741b7528545036214c835f318",
-      "bytes": 16726
+      "sha256": "bba5dda6be1ff9f89a4c894f17ab76ab6142e6e2b791bdd0657c05db03c2abd5",
+      "bytes": 7699
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",
