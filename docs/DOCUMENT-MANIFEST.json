@@ -145,9 +145,9 @@
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI.md",
       "title": "HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI \u2014 Second verifier seat, and the four packages nobody has looked at",
-      "status": "**Active \u2014 issued 2026-08-01**",
-      "sha256": "68ff0cb0b6a259e8882a39f356f310a1836d9c9c4f3f5e797a5c639477f77f32",
-      "bytes": 8705
+      "status": "**Active \u2014 issued 2026-08-01; \u00a72 revised same day after Gemini ruled**",
+      "sha256": "3d4fc26c15136a59e8e12a279bf6b2ffdfe8dbde1ae402c9da28e802297d411a",
+      "bytes": 11339
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
@@ -265,8 +265,8 @@
       "path": "docs/02-requirements/BOPEN-PRD-P35-002.md",
       "title": "BOPEN-PRD-P35-002 \u2014 Tenant Privacy and Platform Observability Product Requirements",
       "status": "Proposed \u2014 assists `WP-P35-06`; no implementation authority",
-      "sha256": "3beee48efd045d49689474f308f60c400d6b80e794c055f91762befc1f02890f",
-      "bytes": 20010
+      "sha256": "a3aae2d56f52b7cf1bf01185f2e1442da6adec8bc68d4661cb0a1ddc6bd62400",
+      "bytes": 20888
     },
     {
       "path": "docs/02-requirements/BOPEN-REQ-001-DRAFT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "77042db1c064dfbd6bd22e26089a57b2aa231ded0f7f783c8fb00a4c422da236",
-      "bytes": 37882
+      "sha256": "ba47a6b099002484c08205ca799c42614ecd2088fb0f23566c845a826e58f523",
+      "bytes": 39826
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",

@@ -129,8 +129,22 @@ foreign keys in F-1.
 duplicated. Two consequences:
 
 1. F-1 enumerated foreign keys. **It did not enumerate RLS policies whose `USING` clause reaches
-   another table.** At least one exists. The others have not been counted, and
-   `PRD-P35B-PLANE-001` cannot be signed off until they are.
+   another table.**
+
+   **Enumerated 2026-08-01 against the live catalogue** (`D-CP-003`, `DEC-P35-CONTROL-PLANE-DOCKET`
+   §3.3). `pg_policies` reports **27 active policies across 16 tables**; every `qual` and
+   `with_check` expression was inspected. **Exactly one carries a cross-plane dependency:**
+   `principals_read` on `principals`, whose `USING` clause is
+   `EXISTS (SELECT 1 FROM memberships …)`.
+
+   That is a materially better result than F-6 first assumed — the exposure is one policy, not an
+   uncounted class. It does not dissolve the finding: `principals` is control-plane by F-2 and
+   `memberships` is tenant-scoped, so the policy still cannot be evaluated across a split, and the
+   6,657-row disclosure it closed still reopens unless `memberships` is co-located, the relation
+   is projected, or the policy is replaced.
+
+   `PRD-P35B-PLANE-001` is no longer blocked on *counting*. It is blocked on **deciding
+   `memberships`' plane**, which is a single decision rather than an open survey.
 2. Worse, and less obvious: in the control plane **every session is unscoped by construction** —
    no `app.current_tenant_id` is set. Every policy in migration 007 grants full read to an
    unscoped session via its `… IS NULL OR …` branch. Migration 007 says so itself under "What

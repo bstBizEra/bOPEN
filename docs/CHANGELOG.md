@@ -1,5 +1,31 @@
 # Documentation Changelog
 
+## 2026-08-01 - F-6 reconciled after enumeration, and the Kimi seat re-scoped
+
+- **F-6 updated.** `D-CP-003` enumerated the live catalogue: `pg_policies` reports **27 active
+  policies across 16 tables**, every `qual` and `with_check` inspected, and **exactly one** carries
+  a cross-plane dependency — `principals_read` on `principals`, whose `USING` clause is
+  `EXISTS (SELECT 1 FROM memberships …)`.
+- That is materially better than F-6 first assumed. The exposure is one policy, not an uncounted
+  class. It does not dissolve the finding: `principals` is control-plane by F-2 and `memberships`
+  is tenant-scoped, so the policy still cannot be evaluated across a split and the 6,657-row
+  disclosure still reopens unless `memberships` is co-located, projected, or the policy replaced.
+- **`PRD-P35B-PLANE-001` is no longer blocked on counting** — it is blocked on deciding
+  `memberships`' plane. A single decision instead of an open survey.
+- The PRD and the docket had been contradicting each other since the enumeration landed: one said
+  ENUMERATED, the other said never counted. Reconciled.
+- **Handoff re-scoped after Gemini ruled.** `WP-P35-04` now holds quorum and no longer needs a
+  seat, except for `P35-04R-15`/`16` which postdate Gemini's run and remain unballoted.
+  `WP-P35-01`..`03` have one verifier each, so **Kimi is the second seat** and the only remaining
+  route to quorum on those three.
+- Added §3.1 to the handoff: an explicit probe bar. Independent probes (Codex's 90 hostile
+  combinations, Gemini's 14 hand-written gateway probes) establish that an agent constructed an
+  attack and it failed. Named-test reruns establish that the maker's test passes. Both are
+  legitimate; **only the first is refutation**, and 32 of 63 ballots so far sit in the second
+  tier. For `WP-P35-01`'s isolation invariants the handoff now asks for hand-written SQL rather
+  than a rerun of `test_rls_database_behavior.py`.
+
+
 ## 2026-08-01 - The quorum check was counting the wrong thing
 
 - Gemini cast 49 ballots (`adc97fc`, author `gemini@bst.local`): 14 on `WP-P35-04` and the first

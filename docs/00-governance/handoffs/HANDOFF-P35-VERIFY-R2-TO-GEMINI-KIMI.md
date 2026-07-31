@@ -1,6 +1,19 @@
 # HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI — Second verifier seat, and the four packages nobody has looked at
 
-**Status:** **Active — issued 2026-08-01**
+**Status:** **Active — issued 2026-08-01; §2 revised same day after Gemini ruled**
+
+> **Revision, 2026-08-01 — read this before §2.** Gemini has since cast 49 ballots (`adc97fc`).
+> That changes both asks:
+>
+> - **`WP-P35-04` now holds quorum** (codex + gemini at `88e6ed2`). It no longer needs a seat —
+>   except for `P35-04R-15` and `P35-04R-16`, added after Gemini's run and **still unballoted**.
+> - **`WP-P35-01`..`03` now have one verifier each, not zero.** **Kimi is the second seat**, and
+>   the only remaining route to quorum on those three.
+>
+> Correcting a claim that reached this repository twice: `check_ballot_attribution.py` reported
+> *"2 verifiers toward a quorum of 2 — PASS"* for the whole phase while three of four candidates
+> had one verifier each. It counted per phase, not per work package. Fixed in `fbd8a99`; it now
+> reports per candidate and names every shortfall. **Do not read a phase-level PASS as quorum.**
 **Maker of this handoff:** Claude (agent, Motor role)
 **Addressed to:** Gemini / Antigravity, **or** Kimi — either alone is useful
 **Supersedes:** [`HANDOFF-P35-VERIFY-TO-GEMINI-KIMI`](HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md), stood down 2026-07-30 and stale in every particular
@@ -93,6 +106,30 @@ instances in two days:
 
 **So: read each proposition, then read the test it names, and ask what the words claim that the
 test does not check.** That question has found something every time it has been asked here.
+
+### 3.1 What a probe has to be — the bar, stated because the last run sat below it
+
+`probe_command` is the field that decides whether a ballot carries evidence. Measured across the
+63 ballots cast so far, there are two tiers, and the record should be able to tell them apart:
+
+| Tier | Example | What it establishes |
+| :--- | :--- | :--- |
+| **Independent probe** | Codex's 90 hostile path/search combinations; Gemini's 14 hand-written `node --eval` one-liners against `buildUpstreamUrl` | An independent agent constructed an attack and it failed |
+| **Named-test rerun** | `python -m unittest tests/isolation/test_rls_database_behavior.py`, used as the probe for 13 separate ballots | The maker's named test passes at this commit |
+
+Both are legitimate; **only the first is refutation.** EBIV §8 holds that a maker's passing suite
+carries no verdict weight, and a probe that *is* the maker's suite transmits that same absence of
+weight into a ballot. 32 of Gemini's 49 ballots sit in the second tier.
+
+**For `WP-P35-01` in particular this matters more than anywhere else.** Its invariants are the
+tenant isolation claims — `INV-TENANT-ISOLATION-01/02`, `INV-TENANT-DENY-DEFAULT-01/02`,
+`INV-TENANT-WRITE-01/02`, `INV-TENANT-FORCE-RLS-01`. Rerunning
+`test_rls_database_behavior.py` shows Claude's tests pass. **Write your own SQL.** Open a
+tenant-scoped session, try to read another tenant's rows directly, try to write across the
+boundary, try it as the table owner to test `FORCE ROW LEVEL SECURITY`, try with
+`app.current_tenant_id` unset. If isolation does not hold, it does not hold across every future
+product at once, and it is the single claim in this repository least able to afford a rerun in
+place of a probe.
 
 Second: **do not trust maker tests.** Claude wrote the implementations *and* their tests. A green
 suite is a maker self-assessment carrying no verdict weight (§8).
