@@ -593,17 +593,52 @@ def register_principal(
     tenant. `BOPEN-TENANT-001` invariant 1 — a principal is broader than a human user, and
     invariant 4 — membership, not registration, is what binds a principal to a tenant.
 
-    KNOWN AND NOT CLOSED: this endpoint is an account-existence oracle. 409 for an address
-    already registered and 201 for one that is not are distinguishable by anyone, with no
-    credential, and security review confirmed it by execution on 2026-07-30. It is recorded
-    rather than patched because the fix is not available at this layer: a registration call
-    that returns the new principal's identifier synchronously must tell the caller whether it
-    created one. Removing the oracle means making registration asynchronous behind an address
-    verification step, which is the enterprise identity bridge's work (WP-P35-05), and the same
-    work package that gives this endpoint any authentication at all — see
-    BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION. Returning 201 for a duplicate would hide the oracle
-    from a reader of this file without closing it, since timing and the absent identifier both
-    still answer the question.
+    KNOWN AND NOT CLOSED: this endpoint is an account-existence oracle. Measured, 2026-07-31,
+    over 150 paired requests — three independent channels answer "is this address registered?":
+
+        status code   409 against 201
+        body length   55 bytes against 125
+        timing        median 2.5 ms faster when the address exists,
+                      P(exists is faster) = 0.657 against 0.500 for indistinguishable
+
+    The timing channel is structural rather than incidental: the existing-address path fails
+    fast on the unique constraint instead of completing an insert. Any design that still
+    resolves uniqueness synchronously and then decides leaks through it, however identical the
+    response is made. What has to match is the work, not the answer.
+
+    An earlier version of this note asserted that the oracle "cannot be closed at this layer",
+    because a call returning the new identifier synchronously must say whether it created one.
+    That was a design hypothesis stated as a finding, and it is corrected here rather than
+    left standing. Research on 2026-07-31 could neither establish it nor refute it: no source
+    proved the necessity, and no non-leaking synchronous counter-design survived verification
+    either. It remains plausible and unproven, and this file should not have claimed otherwise.
+
+    What the same research did establish, and what makes leaving this open defensible:
+
+      - OWASP ASVS 5.0 is the only named standard extending enumeration resistance to
+        registration, and it gates that to Level 3, its highest assurance tier. Below L3 it is
+        a recommendation. OWASP WSTG treats the finding as contextual and tells testers to
+        check the application's requirements before reporting it at all.
+      - NIST SP 800-63B-4 has no normative requirement about enumeration in either direction
+        and defers enrolment to SP 800-63A, which is likewise silent.
+      - Google Cloud Identity Platform ships this exact oracle. With email enumeration
+        protection fully enabled, sign-up still returns a distinguishable EMAIL_EXISTS; the
+        documented answer is compensating controls, not a redesigned response.
+
+    And what makes the recorded remedy less obviously right than it looked: an asynchronous,
+    verification-gated registration relocates the oracle rather than closing it. The mail send
+    is itself both a latency signal and an out-of-band mailbox signal — the address owner
+    learns that someone tried to register it, which answers the same question from the other
+    end. Google documents retaining that conditional-send behaviour deliberately.
+
+    So this stays open as a decision, not as a blocked task. Accepting it is a defensible
+    product position below ASVS L3 with compensating controls; closing it is a design problem
+    nobody in the sources surveyed has solved without moving the leak. Either way it belongs
+    with WP-P35-05, which is what gives this endpoint any authentication at all — see
+    BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION.
+
+    Returning 201 for a duplicate would hide the oracle from a reader of this file without
+    closing it: the timing and body-length channels above both still answer the question.
     """
     try:
         created = principals.create(email=str(body.email), principal_type=body.type)

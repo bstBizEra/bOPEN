@@ -517,3 +517,124 @@ removes them.
 Source — verified research claim tested against the verification instance on 2026-07-30, probe
 rows removed. Migration 009 applied, rolled back and re-applied. Advisory only —
 `execution_authority: false`, `approval_authority: false`.
+
+---
+
+# Addendum C — F6 re-examined, and a claim of mine withdrawn, 2026-07-31
+
+Section 4 recorded F6 as open with a stated reason: the oracle *"cannot be closed at this
+layer"*, because a registration call returning the new identifier synchronously must tell the
+caller whether it created one. Research was commissioned to check that reasoning.
+
+**It does not survive.** Every claim that would have corroborated it was voted down, and so was
+every claim for a non-leaking synchronous counter-design. The honest verdict is that the
+assumption is neither established nor refuted — it is a design hypothesis, and section 4 stated
+it as a finding. That is withdrawn here and corrected in `api.py`.
+
+The distinction matters beyond tidiness. A recorded reason closes further thinking; "we could not
+determine this" invites it. The whole method of this record is that a claim survives only if it
+was executed or cited, and this one was neither.
+
+## C.1 What is now measured rather than assumed
+
+Three independent channels answer the question, over 150 paired requests on 2026-07-31:
+
+| channel | address exists | address is new |
+|---|---|---|
+| status code | 409 | 201 |
+| body length | 55 bytes | 125 bytes |
+| timing, median | 35.77 ms | 38.29 ms |
+
+`P(exists is faster) = 0.657`, against 0.500 for two indistinguishable distributions. Measured
+in-process, so without network jitter; the standard result for timing channels is that averaging
+recovers the signal across jitter given enough samples.
+
+The timing channel is **structural, not incidental** — the existing-address path fails fast on
+the unique constraint rather than completing an insert. Any design that resolves uniqueness
+synchronously and then decides leaks through it however identical the response is made. What has
+to be equalised is the work, not the answer. That is a stronger constraint than section 4
+appreciated, and it applies to several of the counter-designs that look obvious.
+
+## C.2 What the standards actually say
+
+- **OWASP ASVS 5.0** is the only named standard extending enumeration resistance to registration,
+  and gates it to **Level 3**, its highest assurance tier. Below L3 it is a recommendation in
+  ASVS's own words.
+- **OWASP WSTG** treats username enumeration as contextual and instructs testers to check the
+  application's security requirements before reporting it as a finding at all.
+- **NIST SP 800-63B-4** contains no normative requirement about enumeration in either direction
+  and expressly defers enrolment to SP 800-63A, which is silent too.
+
+So there is no MUST from any standards body below the top ASVS tier. That does not make the
+oracle good; it makes accepting it a defensible product position rather than a violation.
+
+## C.3 The recorded remedy relocates the leak
+
+Section 4 named asynchronous registration behind address verification as the fix. The same
+research establishes that this **moves the oracle rather than closing it**: the mail send is both
+a latency signal and an out-of-band mailbox signal, since the address owner learns that someone
+tried to register it — which answers the same question from the other end. Google Cloud Identity
+Platform documents retaining that conditional-send behaviour deliberately, and ships the
+distinguishable `EMAIL_EXISTS` on sign-up with enumeration protection fully enabled, answering
+with compensating controls rather than a redesigned response.
+
+A major commercial multi-tenant identity provider treating this as accepted residual risk is not
+proof that it is unclosable. It is evidence about what the field considers proportionate.
+
+## C.4 What remains unanswered
+
+The invitation-acceptance variant — how acceptance can avoid revealing whether an address is
+already a principal while still binding consent — produced **no claims that survived**, 0-3 three
+times. It is the harder half and it is still open. Two related observations from reading the code
+rather than the literature, both recorded rather than acted on because neither is reachable over
+HTTP today:
+
+- `accept()` documents that "an authenticated principal is required" and checks only that the
+  supplied `principal_id` string is non-empty. That is the same shape as F2 and F9 — a fourth
+  occurrence, and the reason a single seam is being researched separately rather than a fifth
+  local guard being written.
+- `validate()` never compares the invited address to the accepting principal, so the token is the
+  sole secret. That may be intended, but it means an audit record can say an invitation was
+  issued to one address while a different principal received the membership.
+
+## C.5 Provenance
+
+Channel measurements executed against the running application on 2026-07-31, 150 paired requests,
+alternating arms so drift affects both equally. Standards positions from ASVS 5.0, WSTG and
+SP 800-63B-4/63A-4 as cited in the research. Advisory only — `execution_authority: false`,
+`approval_authority: false`.
+
+---
+
+# Addendum D — the `principal_id` erasure question, answered in one direction
+
+Migration 009 left `audit_events.principal_id ON DELETE SET NULL` and recorded the two readings —
+oversight, or deliberate erasure support — as a decision rather than taking it. Research settles
+one of them.
+
+**`SET NULL` cannot be characterised as GDPR erasure.** An EDPB-adopted report states that basic
+pseudonymisation or partial masking does not fulfil deletion requirements where a controller
+relies on it as a substitute for erasure. Nulling the actor while retaining timestamp, action,
+resource and tenant is pseudonymisation, and re-identification from the retained columns is the
+question a regulator would ask.
+
+That does not decide RESTRICT versus SET NULL. It eliminates one defence:
+
+- If `SET NULL` **stays**, it must be documented as *pseudonymisation under a retained-purpose
+  justification*, not as erasure support. The purpose has to be stated and the retention
+  proportionate — GDPR Art. 17(3) exemptions are scoped by "to the extent that processing is
+  necessary", so no exemption authorises blanket indefinite retention of an audit table.
+- If it becomes **RESTRICT**, the system must answer an erasure request some other way, and
+  "we cannot delete, we pseudonymise" is then the position on the record — which is the position
+  the EDPB report addresses.
+
+**This needs counsel, not an engineering ruling.** The anonymisation/pseudonymisation boundary —
+exactly the boundary this decision sits on — is formally recorded by the EDPB as an unsettled
+EU-wide compliance issue, with guidelines still in preparation following CJEU C-413/23 P
+(*EDPS v SRB*, 4 September 2025). An engineer choosing between these two referential actions is
+choosing a legal posture, and should say so rather than pick.
+
+What is an engineering fact and can be stated without counsel: the current schema supports
+neither position explicitly. It performs pseudonymisation silently, as a side effect of a
+referential action, with no record anywhere that this is the erasure mechanism — which is the
+worst of the three available states, because it is undocumented either way.
