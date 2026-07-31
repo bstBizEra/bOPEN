@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 278,
+  "count": 279,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1156,6 +1156,13 @@
       "status": "**Approved \u2014 Option C adopted 2026-07-31 (see \u00a78)**",
       "sha256": "07c91802bc77b872b3ffedca465e10a5ffda704e385bdc4eebed9a3f6f221cdd",
       "bytes": 12514
+    },
+    {
+      "path": "docs/decisions/DEC-P35-TENANCY-MODEL.md",
+      "title": "DEC-P35-TENANCY-MODEL \u2014 Should tenant isolation move from row-level security to database-per-tenant?",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
+      "sha256": "ae2efdfd424b074b22906a6f8646147565c4f00f0ace937eee001ea1517c95a3",
+      "bytes": 8188
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
