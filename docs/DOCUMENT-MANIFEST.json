@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "13e3e3cfb2fe14689062e79e4e84c44192072568855f03b245ee197de9213a36",
-      "bytes": 41787
+      "sha256": "f990fbb0571c81eef69042fba95c5e72862f926a0b677f789869bcb30f622cc3",
+      "bytes": 44020
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1364,8 +1364,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "24f39cfd25209f1e1dca77ce97a5579e71c689e947ae49be37e6ff4422548a9e",
-      "bytes": 55497
+      "sha256": "1c8d18b74943b91b20f6af75e532471d809435609b30567902199ebd981dde31",
+      "bytes": 57617
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1420,8 +1420,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r2.md",
       "title": "EVD-P35-04-MAKER-R2 \u2014 WP-P35-04 Maker Submission, revision 2 (API Gateway)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "d4d410f2e9754ceb34bbe85ffcbd32e170f4a30806bb2e43ee2c13b15ad198bf",
-      "bytes": 13840
+      "sha256": "fb2ada485a6495232369ae6bfa0cfb2cdd8ac63741b7528545036214c835f318",
+      "bytes": 16726
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",

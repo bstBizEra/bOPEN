@@ -1,5 +1,35 @@
 # Documentation Changelog
 
+## 2026-08-01 - The first refutations, and a proposition that cannot be satisfied
+
+- Gemini balloted `P35-04R-15` and `P35-04R-16` **REFUTED** (`8041701`), both with reproducible
+  probes. **The first refutations in this repository.** Under EBIV §6.1 they block `WP-P35-04`
+  regardless of the 28 confirmations opposing them — which is exactly why the propositions were
+  offered.
+- Both reproduced independently before acting. They are real, but **not equally real**, and the
+  difference decides what a successor may claim.
+- **`P35-04R-15` conflated two transformations.** Percent-decoding was ours and is **fixed**:
+  `c.req.path` ran `decodeURI`, so `/v1/a%2Fb` reached the kernel as `/v1/a/b` with a segment
+  boundary invented out of an encoded slash. Now uses `new URL(c.req.url).pathname`.
+  Dot-segment normalisation is **not fixable at this layer** — the WHATWG URL parser resolves it
+  when the `Request` is constructed, before Hono or the gateway runs. The proposition as worded
+  cannot be satisfied and must be re-scoped, not re-asserted.
+- A test now asserts the dot-segment behaviour **deliberately**, so a known limitation cannot
+  drift in either direction unnoticed.
+- **`P35-04R-16` is refuted against the exported function, not against any request path.** Gemini
+  called `buildUpstreamUrl` directly; measured through the real gateway, `/../../admin`,
+  `/v1/../../admin` and `/%2e%2e/%2e%2e/admin` all stay contained in `/base`. Dot segments are
+  normalised before the handler runs, so no request can reach the state the probe exercises — and
+  the proposition says *"no request path can cause…"*.
+- **The maker does not get to rule on that.** §6.2 reserves invalidating a probe to an independent
+  verifier, demonstrated rather than asserted. Recorded for a verifier to weigh; the refutation
+  stands until one does. The guard was added anyway — `buildUpstreamUrl` now throws
+  `UpstreamPathEscape`, because a latent hazard in an exported function is worth closing when the
+  next caller has no way to know.
+- 47 tests, up from 43. `WP-P35-04` remains **BLOCKED** at `88e6ed2`. This records the fix, not
+  its discharge: that needs a successor candidate, a re-scoped `R-15`, and fresh ballots.
+
+
 ## 2026-08-01 - The last verifier seat is a role conflict, not a dispatch
 
 - Kimi is unavailable, so the second seat on `WP-P35-01`..`03` was re-scoped. **Gemini cannot fill

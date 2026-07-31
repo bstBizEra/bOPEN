@@ -220,6 +220,56 @@ time. Trading a latent defect for the re-invalidation of the only independent ve
 repository has is the wrong trade. The fix is deferred deliberately, is recorded here as owed, and
 must land before `WP-P35-04` is put to a Completion Authority.
 
+## 6A.5 Amendment 2026-08-01 — both new propositions REFUTED, and what the fix can honestly claim
+
+Gemini balloted `P35-04R-15` and `P35-04R-16` **REFUTED** (`8041701`), both with reproducible
+probes. Under EBIV §6.1 that **blocks** — and blocking was the purpose of offering them. §6.2
+allows discharge only by fixing the defect until the probe fails to reproduce, or by an
+*independent* verifier demonstrating the probe invalid. The maker cannot do the second.
+
+I reproduced both independently before acting. **They are real.** But they are not equally real,
+and the difference matters for what a successor submission may claim.
+
+### `P35-04R-15` — validly refuted, half fixable
+
+Two transformations were conflated in one proposition, and only one is ours:
+
+| Transformation | Status |
+| :--- | :--- |
+| **Percent-decoding** — `c.req.path` ran `decodeURI`, so `/v1/a%2Fb` reached the kernel as `/v1/a/b`, inventing a segment boundary out of an encoded slash | **FIXED.** Now uses `new URL(c.req.url).pathname`, which preserves the encoding as sent. Verified: `/v1/a%2Fb` and `/v1/caf%C3%A9` arrive unchanged |
+| **Dot segments** — `/v1/../admin` arrives as `/admin` | **NOT FIXABLE AT THIS LAYER.** The WHATWG URL parser resolves dot segments when the `Request` is constructed, before Hono or this code runs. The original target is unrecoverable |
+
+**The proposition as worded cannot be satisfied, and a successor must re-scope it rather than
+re-assert it.** A test now asserts the dot-segment behaviour deliberately, so the limitation
+cannot drift in either direction unnoticed.
+
+### `P35-04R-16` — refuted against the function, unreachable from a request
+
+Gemini's probe called `buildUpstreamUrl('http://kernel.invalid/base', '/../../admin', '')`
+directly. Measured through the real gateway with the same base, every path stays contained:
+
+```text
+/../../admin, /v1/../../admin, /%2e%2e/%2e%2e/admin  ->  /base/admin
+```
+
+Because dot segments are normalised before the handler runs, **no request path can put
+`buildUpstreamUrl` in the state the probe exercises**, and the proposition is worded *"no request
+path can cause…"*.
+
+**The maker does not get to rule on that.** §6.2 reserves invalidating a probe to an independent
+verifier, demonstrated rather than asserted. It is recorded here for a verifier to weigh, and the
+refutation stands until one does.
+
+The guard was added regardless: `buildUpstreamUrl` now throws `UpstreamPathEscape` rather than
+returning an escaped URL. A latent hazard in an exported function is worth closing even when no
+current caller can reach it, because the next caller has no way to know.
+
+### State
+
+47 tests, up from 43. `WP-P35-04` remains **BLOCKED** on `P35-04R-15` and `P35-04R-16` at
+`88e6ed2`; this section records the fix, not its discharge. Discharge requires a successor
+candidate, a re-scoped `R-15`, and fresh ballots.
+
 ## 7. Clean-room declaration
 
 No upstream source inspected, copied or adapted. Header rules derive from `HTTP_HEADER_SPEC.md`

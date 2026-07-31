@@ -9,7 +9,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { buildUpstreamUrl, createGateway } from '../src/app.ts';
+import { buildUpstreamUrl, createGateway, UpstreamPathEscape } from '../src/app.ts';
 import { CORRELATION_ID_MAX, validateHeaders } from '../src/headers.ts';
 import { isAcceptableIdentifier } from '../src/identifiers.ts';
 
@@ -338,6 +338,54 @@ describe('the caller cannot choose the upstream host', () => {
     assert.equal(calls.length, 1);
     const target = new URL(calls[0]!.url);
     assert.equal(target.hostname, 'kernel.invalid', `token would have gone to ${target.hostname}`);
+  });
+});
+
+describe('request target fidelity — after ballots P35-04R-15 and P35-04R-16', () => {
+  test('percent-encoding reaches the kernel as sent', async () => {
+    // `c.req.path` runs decodeURI, so `/v1/a%2Fb` arrived as `/v1/a/b` — a different path with a
+    // segment boundary invented out of an encoded slash. `URL.pathname` preserves it.
+    const { calls, fetchImpl } = recordingKernel();
+    const gw = gateway(fetchImpl);
+
+    for (const target of ['/v1/a%2Fb', '/v1/caf%C3%A9']) {
+      await gw.request(`http://g${target}`, { headers: { 'X-Correlation-ID': CORR } });
+    }
+
+    assert.deepEqual(
+      calls.map((c) => new URL(c.url).pathname),
+      ['/v1/a%2Fb', '/v1/caf%C3%A9'],
+    );
+  });
+
+  test('KNOWN LIMITATION: dot segments are resolved before this code runs', async () => {
+    // Asserts the defective behaviour on purpose. `P35-04R-15` was REFUTED on this and the
+    // refutation stands: the WHATWG URL parser resolves dot segments when the Request is
+    // constructed, so `/v1/../admin` is already `/admin` before Hono or the gateway sees it. The
+    // original target is unrecoverable at this layer.
+    //
+    // This test exists so the limitation cannot change silently in either direction — if a future
+    // runtime stops normalising, this fails and the claim gets revisited rather than drifting.
+    const { calls, fetchImpl } = recordingKernel();
+    await gateway(fetchImpl).request('http://g/v1/../admin', {
+      headers: { 'X-Correlation-ID': CORR },
+    });
+
+    assert.equal(new URL(calls[0]!.url).pathname, '/admin', 'dot-segment behaviour changed');
+  });
+
+  test('a path escaping the configured base prefix is refused, not resolved', () => {
+    // `P35-04R-16`. Unreachable from a request — the parser normalises first — so this closes a
+    // latent hazard in an exported function rather than a live request path.
+    assert.throws(
+      () => buildUpstreamUrl('http://kernel.internal:8000/base', '/../../admin', ''),
+      UpstreamPathEscape,
+    );
+  });
+
+  test('an ordinary path under a base prefix is still allowed', () => {
+    const url = buildUpstreamUrl('http://kernel.internal:8000/base', '/v1/authorize', '');
+    assert.equal(url.pathname, '/base/v1/authorize');
   });
 });
 
