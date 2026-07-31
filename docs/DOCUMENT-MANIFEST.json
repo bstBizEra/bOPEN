@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 280,
+  "count": 282,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -43,6 +43,13 @@
       "status": "",
       "sha256": "ee77a910213462d2425eb1255551f4206c02cb2ac2bde5dfd91fce3020144039",
       "bytes": 249
+    },
+    {
+      "path": "docs/00-governance/baselines/README.md",
+      "title": "Architecture Baselines",
+      "status": "Operational",
+      "sha256": "cafc7e1cac9dce9d5a1914a335d0a85c0e2ff3207b1e93558370fa1a1a7407e0",
+      "bytes": 3967
     },
     {
       "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
@@ -1123,6 +1130,13 @@
       "bytes": 12235
     },
     {
+      "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
+      "title": "DEC-P35-CONTROL-PLANE \u2014 What the platform may know about a tenant it cannot read",
+      "status": "**Proposed \u2014 requires Security and Privacy Authority review before implementation**",
+      "sha256": "74f87ce6c441394782615116815f29bb94d35416e0ab0eb9ad094e24fd7a9c67",
+      "bytes": 6801
+    },
+    {
       "path": "docs/decisions/DEC-P35-DOCKET.md",
       "title": "DEC-P35-DOCKET - Phase 3.5 entry decision docket",
       "status": "Partially ratified 2026-07-31 - `D-P35-001`..`D-P35-003` accepted (\u00a76.1); `D-P35-004`..`D-P35-018` awaiting designated authority decisions",
@@ -1160,9 +1174,9 @@
     {
       "path": "docs/decisions/DEC-P35-TENANCY-MODEL.md",
       "title": "DEC-P35-TENANCY-MODEL \u2014 Should tenant isolation move from row-level security to database-per-tenant?",
-      "status": "**Approved \u2014 Option C adopted 2026-07-31 (see \u00a77)**",
-      "sha256": "cc995f5a2557cee4f3aa5b08971d7f5b58a553f32171564dfe2366f90b836024",
-      "bytes": 10210
+      "status": "**Approved \u2014 Option D adopted 2026-07-31 (see \u00a78, which supersedes \u00a77)**",
+      "sha256": "5d34896ca86d59ceb0c64d41fda0bd11fad8a4cb8e4c074ee054a2dcb22d8998",
+      "bytes": 13837
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",

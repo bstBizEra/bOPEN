@@ -544,3 +544,49 @@ Security reviewer remains unassigned. Completion authority is the operator.
 Full table and its consequences: [`DEC-P35-DOCKET`](docs/decisions/DEC-P35-DOCKET.md) §5.1-§5.3.
 Active handoff: [`HANDOFF-P35-MAKER-SPLIT-TO-CODEX`](docs/00-governance/handoffs/HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md).
 
+---
+
+## 23. Amendment 2026-07-31 — baseline before a major architecture change
+
+> **Change note (extend-only, per BST rule 5).**
+> **Reason**: operator instruction of 2026-07-31 — capture the old version, with a full README,
+> before proceeding with any major architecture change.
+> **Benefit of the prior state**: none was lost, because no rule existed. The extend-only rule
+> preserved superseded *text*, but nothing preserved the surrounding tree, so a reader could see
+> that a decision changed without being able to run what it changed from.
+> **Expected outcome**: every superseded architecture stays readable and restorable, by hash.
+
+### 23.1 The rule
+
+**Before a change that alters the architecture, capture a baseline.** No exceptions for urgency;
+an urgent change is the one most likely to need reverting.
+
+Triggering changes are listed in
+[`docs/00-governance/baselines/README.md`](docs/00-governance/baselines/README.md) §2 — tenant
+isolation mechanism, an approved normative artifact or ADR of record, the technology selection,
+a blueprint layer, or a data-flow boundary.
+
+```bash
+git tag -a "arch-baseline/<yyyy-mm-dd>-<short-name>" <commit> -m "<what it captures, and why it is being superseded>"
+```
+
+Then append a section to the baselines register recording the commit OID, tree OID, the state of
+each architectural concern, why it was superseded, and what the successor keeps.
+
+### 23.2 Why a tag and not a copied directory
+
+A tag is content-addressed. It names an exact tree by hash, cannot drift, costs no disk, and
+remains verifiable against the object database indefinitely. A `backup/` folder is a second copy
+that diverges silently, and after two of them nobody can say which was real. This repository
+already uses annotated tags for exactly this purpose.
+
+The baseline does **not** replace the decision record explaining the change, and does not license
+deleting superseded text. Extend-only still governs the text; the baseline preserves the tree
+around it.
+
+### 23.3 First baseline
+
+[`arch-baseline/2026-07-31-rls-option-c`](docs/00-governance/baselines/README.md#31-2026-07-31--rls-with-option-c-sharding)
+at `9e26c0b` — shared-schema row-level security with Option C sharding, captured before the
+hybrid-placement change in `DEC-P35-TENANCY-MODEL` §8.
+
