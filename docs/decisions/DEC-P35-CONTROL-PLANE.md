@@ -56,13 +56,43 @@ an amendment, not an interpretation.
 
 ## 4. What may **not** be collected
 
+> **Corrected 2026-07-31 — this section as first drafted forbade what the platform requires.**
+> It prohibited "free-text content — names, addresses" without distinguishing *tenant business
+> content* from *platform-owned identity*. `BOPEN-PRD-P35-002` F-2 then established that
+> `principals.email` is globally unique and therefore cannot be sharded, so the control plane
+> must hold it or the platform cannot register a principal at all. The prohibition below is now
+> scoped to its actual target. The error is left visible because a rule that forbids the thing
+> it depends on is the kind that gets quietly ignored rather than fixed.
+
+The boundary runs between **tenant business content** and **platform-owned relationship data** —
+not between "sensitive" and "not sensitive". Both sides can contain personal data; only one side
+belongs to the tenant.
+
 | Prohibited | Reason |
 | :--- | :--- |
 | Any row from a tenant's business tables | The property this decision exists to protect |
-| Field values, even hashed or truncated | A hash of a business value is still that value's identity, and joins across tenants become possible |
-| Free-text content — names, notes, addresses, documents | Personal data under most regimes, and unbounded in what it may reveal |
+| Field values from those tables, even hashed or truncated | A hash of a business value is still that value's identity, and it makes cross-tenant joins possible |
+| Free-text content originating in tenant business data — notes, descriptions, documents, customer names | Unbounded in what it may reveal, and it is the tenant's, not the platform's |
 | Query text containing literals | A slow-query log carrying `WHERE customer = 'Acme'` moves business data into telemetry |
 | Cross-tenant joins of any kind | Structurally impossible under dedicated placement; must remain impossible in the control plane |
+
+### 4.1 Platform-owned identity is permitted, bounded and declared
+
+The control plane holds the principal registry, including `principals.email`. This is not an
+exception grudgingly made — a principal exists **before** it belongs to any tenant
+(`BOPEN-TENANT-001` invariant 1), so it was never tenant-owned data. Global email uniqueness is
+what makes one principal reachable across many tenants, which is the platform's function.
+
+It is nonetheless personal data, and is therefore subject to:
+
+- an enumerated register of every personal-data column the control plane holds
+  (`BOPEN-PRD-P35-002` `PRD-P35B-PII-001`);
+- a stated justification per item, naming the platform function that fails without it;
+- Privacy Authority review of that register, not of this sentence.
+
+**The test to apply:** *would this value exist if the tenant had never been created?* A principal's
+email would — the principal may belong to several tenants or none. A customer name in a tenant's
+invoice would not. The first is platform-owned; the second is the tenant's and does not cross.
 
 ### 4.1 The one that needs care
 

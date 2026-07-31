@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 286,
+  "count": 287,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -113,6 +113,13 @@
       "status": "",
       "sha256": "1abf71a9cef7482c49d5543e077f001fc512883bc38cac6a7783aead8a495584",
       "bytes": 11845
+    },
+    {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-BALLOTS-TO-CODEX.md",
+      "title": "HANDOFF-P35-BALLOTS-TO-CODEX \u2014 Cast ballots on `WP-P35-04` and `WP-P35-05a`",
+      "status": "Active \u2014 issued 2026-07-31",
+      "sha256": "403119942dffb1b2acb06eb17218889720329f1bfca48ae0da2b553d3095e11f",
+      "bytes": 6493
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md",
@@ -1154,8 +1161,8 @@
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
       "title": "DEC-P35-CONTROL-PLANE \u2014 What the platform may know about a tenant it cannot read",
       "status": "**Proposed \u2014 requires Security and Privacy Authority review before implementation**",
-      "sha256": "74f87ce6c441394782615116815f29bb94d35416e0ab0eb9ad094e24fd7a9c67",
-      "bytes": 6801
+      "sha256": "2ce07ff1169d562511c20d75eef61de0c6a308fdf8f8d5285e182fca618e8856",
+      "bytes": 8804
     },
     {
       "path": "docs/decisions/DEC-P35-DOCKET.md",
