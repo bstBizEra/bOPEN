@@ -1,5 +1,38 @@
 # Documentation Changelog
 
+## 2026-07-31 - Phase 3.6 opened: roadmap, implementation plan, action plan, engineering loop
+
+- **Roadmap extended.** Phase 3.6 — Tenant Privacy and Platform Observability — inserted between
+  3.5 and 4 in `roadmap.md` and `PHASE-OUTLINE-SPEC.md`. The phase count is now **seven**; the
+  overview previously said five, then six, having twice not been updated when a phase was
+  inserted. It now carries the date it was last checked, because a count is a fact that drifts
+  silently.
+- **Implementation plan** `BOPEN-P36-001`: 10 deliverables (D-16..D-25), 10 acceptance criteria
+  (A-17..A-26) each inheriting a removal probe from `BOPEN-PRD-P35-002`, a dependency-ordered
+  sequence, risks and rollback. Entry is **blocked** pending Security and Privacy review.
+- Sequencing states its own reasoning: cross-plane integrity is placed *before* placement routing,
+  because building routing first would let tenants be placed into a topology whose integrity story
+  is unwritten, creating the orphans before the mechanism that refuses them exists.
+- `A-21` is named as the criterion carrying the guarantee — control-plane credentials refused by
+  PostgreSQL, not by application code declining to issue a query.
+- **Action plan** `BOPEN-GOV-ACTION-001`: twelve sequenced actions with owners and gates, plus a
+  register of what is deliberately *not* being done so absence reads as decision rather than
+  oversight. Its critical path is not on any execution plan — **seat a verifier**. Three actions
+  are available today with nothing blocking them; the rest are gated.
+- **Engineering loop** `BOPEN-ENG-LOOP-001`: the nine-stage cycle from bind to record, with stage
+  8 (verify) marked as where the loop stops if nobody is seated. Includes the mutation-probe
+  discipline, the anchor rules, the required-check list, and eight anti-patterns — every one of
+  them observed in this repository rather than imagined.
+- **Status correction in `WORK-PACKAGE-REGISTER`.** `BOPEN-P1-001` and `BOPEN-P2-001` were
+  recorded as *Completed & Verified*, and `BOPEN-P3-001` as *GO ON EVIDENCE*. All three conflict
+  with `AGENTS.md` §20.2, the operative gate register, which records them `IMPLEMENTED_UNVERIFIED`.
+  No ballot has ever been cast here. The authorizations were real; the verification was not.
+  "Verified" had meant a passing suite, which EBIV §8 holds to be maker self-assessment carrying
+  no verdict weight.
+- Document status register extended with the PRD, both new decisions, the P36 plan, the action
+  plan, the engineering loop and the baseline register.
+- No contract, migration, specification or production source changed.
+
 ## 2026-07-31 - PRD research for the hybrid-placement plan
 
 - Added `BOPEN-PRD-P35-002`, requirements for tenant privacy and platform observability under

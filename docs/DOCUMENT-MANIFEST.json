@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 283,
+  "count": 286,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -188,8 +188,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "bde0964b653caef89bd639fe31167c226b62320441bebae0ac9776a716942e70",
-      "bytes": 12366
+      "sha256": "bf17f6bc2268d046d7751ea97fad7631c3a675a5b609a8cf80839745a3c0b89f",
+      "bytes": 14927
     },
     {
       "path": "docs/01-product/principles.md",
@@ -209,8 +209,8 @@
       "path": "docs/01-product/roadmap.md",
       "title": "Strategic Roadmap",
       "status": "",
-      "sha256": "2c717a61636ea7c125caf6d89456ce59f89e391f72d48f1878ba912abf33e7c9",
-      "bytes": 1510
+      "sha256": "74cb69a431d1a374f842470337aad9ec7fe03cc4e5989d50f195fb1944ed9fe8",
+      "bytes": 2629
     },
     {
       "path": "docs/01-product/success-metrics.md",
@@ -731,6 +731,13 @@
       "bytes": 194
     },
     {
+      "path": "docs/08-engineering/ENGINEERING-LOOP.md",
+      "title": "bOPEN Engineering Loop",
+      "status": "Operational",
+      "sha256": "edbe886450da37ddb3c70bf388be8fd424a3fb602df4fd45c3feaaead6ca2668",
+      "bytes": 7544
+    },
+    {
       "path": "docs/08-engineering/local-development.md",
       "title": "Local Development",
       "status": "",
@@ -948,6 +955,13 @@
       "bytes": 177
     },
     {
+      "path": "docs/ACTION-PLAN.md",
+      "title": "bOPEN Action Plan",
+      "status": "Live \u2014 regenerate the state table when any row changes",
+      "sha256": "bc2fae6e842dec71b258b55e249368978f5f6130f15bca637ac12c17709ccb27",
+      "bytes": 5199
+    },
+    {
       "path": "docs/adr/ADR-0001.md",
       "title": "ADR-0001 \u2014 bOPEN is a platform kernel, not an industry application",
       "status": "Accepted",
@@ -1105,8 +1119,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "c2bb7e57b4e7263c457737466750d6548b0581dd73a14d0d8a8b2a796693570e",
-      "bytes": 25709
+      "sha256": "f6da27284950c0ec72cc4b3884915c13acd3c78c7c00c0338e6205c5ee0b4801",
+      "bytes": 28352
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1203,8 +1217,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "e0fa8b307571c6af2113cb094ffc941de4dcd0b6d882087d9af772572adbc3d4",
-      "bytes": 2162
+      "sha256": "0a5c40eb6e15a50ca59ba7d71756235f4e531e1bfd75dc1796162bcdecffda74",
+      "bytes": 3114
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1963,6 +1977,13 @@
       "bytes": 7158
     },
     {
+      "path": "docs/work-packages/BOPEN-P36-001-EXECUTION-PLAN.md",
+      "title": "BOPEN-P36-001 \u2014 Phase 3.6 Tenant Privacy and Platform Observability",
+      "status": "**Proposed \u2014 entry blocked pending Security and Privacy review of `DEC-P35-CONTROL-PLANE`**",
+      "sha256": "24d5896929398b41e2d8d620456ee2f12d44772145dd7f47ebcee6332f12d732",
+      "bytes": 7250
+    },
+    {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
@@ -1980,8 +2001,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "8c08129dd847bafab18dfa7832d44ac6e7943e8e3ca862512dfb3879b9fb3c66",
-      "bytes": 2329
+      "sha256": "331ca1586ed2ddff28278247f0d3f344435c5971ce43cb833702290891ff6a67",
+      "bytes": 4003
     }
   ]
 }

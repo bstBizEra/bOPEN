@@ -23,13 +23,17 @@
 
 ## Executive Overview
 
-bOPEN is structured across **6 sequential strategic phases** to ensure absolute clean-room separation, multi-tenant security, and contract-first integrity:
+bOPEN is structured across **7 sequential strategic phases** to ensure absolute clean-room separation, multi-tenant security, and contract-first integrity:
 
-$$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)} \longrightarrow \text{Phase 2 (Membership/SSO)} \longrightarrow \text{Phase 3 (Entitlement/Capabilities)} \longrightarrow \text{Phase 3.5 (Runtime Realization)} \longrightarrow \text{Phase 4 (Foundations/Products)}$$
+$$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)} \longrightarrow \text{Phase 2 (Membership/SSO)} \longrightarrow \text{Phase 3 (Entitlement/Capabilities)} \longrightarrow \text{Phase 3.5 (Runtime Realization)} \longrightarrow \text{Phase 3.6 (Tenant Privacy)} \longrightarrow \text{Phase 4 (Foundations/Products)}$$
 
 > **Corrected 2026-07-31.** This overview read "5 Sequential Strategic Phases" and omitted
-> Phase 3.5 from the chain, having not been updated when 3.5 was inserted on 2026-07-30. The
-> count is six.
+> Phase 3.5 from the chain, having not been updated when 3.5 was inserted on 2026-07-30.
+> **Extended 2026-07-31** with Phase 3.6 under `DEC-P35-TENANCY-MODEL` §8. The count is seven.
+>
+> Both corrections have the same cause: a phase was inserted and this overview was not updated.
+> The count is a fact that drifts silently, so it is now stated with the date it was last
+> checked rather than left as prose.
 
 ---
 
@@ -108,6 +112,23 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
   5. **WP-P35-05a Kernel authentication boundary** — an external authenticator's signed assertion is required before context issuance, and a configured authenticator cannot be disabled by the development flag. Implemented 2026-07-31; see [`EVD-P35-05A-MAKER`](../evidence/phase-3.5/wp-p35-05a-maker-submission.md). Split from `WP-P35-05` by [`DEC-P35-IDP-SPLIT`](../decisions/DEC-P35-IDP-SPLIT.md).
 * **Moved out of this phase**: **WP-P35-05b Enterprise IdP federation** (BoxyHQ Jackson, per-tenant connections, SCIM). Blocked by `D-P35-011`..`D-P35-014` **and** by `D-P35-004`..`D-P35-010`, which its connection storage needs.
 * **Deferred**: Go event microservices (blueprint layer 5). Not cancelled; revisited when metering throughput is measured rather than projected.
+
+---
+
+### Phase 3.6 — Tenant Privacy & Platform Observability *(inserted 2026-07-31)*
+**Authorization**: **PARTIAL** — `DEC-P35-TENANCY-MODEL` §8 approved (hybrid placement); [`DEC-P35-CONTROL-PLANE`](../decisions/DEC-P35-CONTROL-PLANE.md) **Proposed, Security and Privacy review required before implementation**
+**Verification**: not started
+
+* **Objective**: Make tenant privacy a structural property rather than a policy promise — a dedicated database per tenant by default, a shared RLS pool for trial and free tier — while the platform retains capacity planning, performance management and billing without reading a business row.
+* **Driver**: tenant privacy. Recorded explicitly, because `DEC-P35-TENANCY-MODEL` §7 answered a *load* question and §8 supersedes it on a different one.
+* **Requirements**: [`BOPEN-PRD-P35-002`](../02-requirements/BOPEN-PRD-P35-002.md) — 10 requirements, each with the mutation that must break it.
+* **Key Execution Outline**:
+  1. **WP-P35-06 Placement routing** — carried forward from Phase 3.5, generalized from shard routing. Resolve a tenant to a connection target that may be a dedicated database or a shared pool.
+  2. **WP-P36-01 Plane assignment and cross-plane integrity** — the hard one. Twelve foreign keys reference `tenants` or `principals` and cannot survive the split.
+  3. **WP-P36-02 Control-plane telemetry and credential boundary** — aggregates pushed outward; the control plane holds no credential for any tenant database.
+  4. **WP-P36-03 Disclosure and migration uniformity** — a tenant can see its placement kind and what is held about it; a placement behind on migrations is refused service.
+* **Entry gate**: Security and Privacy review of `DEC-P35-CONTROL-PLANE`, which must resolve two questions the PRD found — that the control plane necessarily holds personal data (`principals.email` is globally unique), and where audit records carrying business identifiers should live.
+* **What it keeps**: row-level security remains the live mechanism for the shared pool, so the 16 policy-bearing tables and all 38 executed isolation tests retain their meaning. This is why Option D was preferred to database-per-tenant everywhere.
 
 ---
 
