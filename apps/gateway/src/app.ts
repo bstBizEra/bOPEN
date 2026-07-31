@@ -30,7 +30,7 @@ export interface GatewayOptions {
   fetchImpl?: typeof fetch;
 }
 
-/** Headers the gateway never forwards upstream, because a hop-by-hop header is not the client's. */
+/** Headers the gateway never forwards, because a hop-by-hop header is not the client's. */
 const HOP_BY_HOP = new Set([
   'connection',
   'keep-alive',
@@ -42,6 +42,68 @@ const HOP_BY_HOP = new Set([
   'upgrade',
   'host',
 ]);
+
+/**
+ * Response headers that describe the *upstream* body encoding and must not be copied.
+ *
+ * `fetch` decompresses the body before we see it. Copying `content-encoding: gzip` labels a
+ * plaintext body as compressed, and copying the compressed `content-length` declares a byte
+ * count that does not match what we write — which desynchronises a keep-alive connection, so
+ * the client reads the start of the next response as the tail of this one.
+ */
+const BODY_FRAMING = new Set(['content-encoding', 'content-length']);
+
+/**
+ * Names listed in a `Connection` header are hop-by-hop for that message (RFC 9110 §7.6.1).
+ *
+ * The fixed set above catches the standard names. It does not catch `Connection: X-Internal`,
+ * which makes `X-Internal` hop-by-hop for this message only. Without this, a header a peer
+ * marked as not-for-forwarding gets forwarded.
+ */
+function hopByHopFor(headers: Headers): Set<string> {
+  const dynamic = new Set(HOP_BY_HOP);
+  const connection = headers.get('connection');
+  if (connection) {
+    for (const name of connection.split(',')) {
+      const trimmed = name.trim().toLowerCase();
+      if (trimmed) dynamic.add(trimmed);
+    }
+  }
+  return dynamic;
+}
+
+/**
+ * Build the upstream URL so that the caller cannot choose the host.
+ *
+ * **This is the security-critical function in this file.** The first implementation resolved the
+ * request path as a *relative reference* against the kernel base:
+ *
+ * ```ts
+ * new URL(c.req.path + search, kernelBaseUrl)   // DO NOT
+ * ```
+ *
+ * A path beginning `//` is a scheme-relative URL, so `new URL('//evil/x', 'http://kernel:8000')`
+ * resolves to `http://evil/x` — the base's authority is discarded entirely. `///evil/x` and
+ * `/\evil/x` do the same, the last because WHATWG folds `\` to `/` for special schemes. The base
+ * was a default, not a constraint.
+ *
+ * That made the gateway an unauthenticated open proxy: any caller could select the upstream host,
+ * have the client's `Authorization` bearer token forwarded to it, and receive its response body.
+ * Header validation did not help, because it checks the *format* of values any anonymous caller
+ * can generate. Found by adversarial sweep 2026-07-31 and reproduced against real sockets.
+ *
+ * The fix is structural rather than a filter: the URL is built **from the base object**, and only
+ * `pathname` and `search` are assigned. Assigning `pathname` cannot alter the origin, so no input
+ * to this function can move the request off `kernelBaseUrl`. A denylist of dangerous prefixes
+ * would have needed to anticipate every encoding; this needs to anticipate none.
+ */
+export function buildUpstreamUrl(kernelBaseUrl: string, path: string, search: string): URL {
+  const upstream = new URL(kernelBaseUrl);
+  const basePath = upstream.pathname.replace(/\/+$/, '');
+  upstream.pathname = `${basePath}${path.startsWith('/') ? '' : '/'}${path}`;
+  upstream.search = search;
+  return upstream;
+}
 
 export function createGateway(options: GatewayOptions): Hono {
   const app = new Hono();
@@ -71,11 +133,12 @@ export function createGateway(options: GatewayOptions): Hono {
       );
     }
 
-    const upstreamUrl = new URL(c.req.path + (new URL(c.req.url).search ?? ''), kernelBaseUrl);
+    const upstreamUrl = buildUpstreamUrl(kernelBaseUrl, c.req.path, new URL(c.req.url).search);
 
+    const requestHopByHop = hopByHopFor(c.req.raw.headers);
     const forwarded = new Headers();
     c.req.raw.headers.forEach((value, name) => {
-      if (!HOP_BY_HOP.has(name.toLowerCase())) forwarded.set(name, value);
+      if (!requestHopByHop.has(name.toLowerCase())) forwarded.set(name, value);
     });
 
     const method = c.req.method;
@@ -89,10 +152,21 @@ export function createGateway(options: GatewayOptions): Hono {
         body,
       });
 
+      const responseHopByHop = hopByHopFor(upstream.headers);
       const responseHeaders = new Headers();
       upstream.headers.forEach((value, name) => {
-        if (!HOP_BY_HOP.has(name.toLowerCase())) responseHeaders.set(name, value);
+        const lower = name.toLowerCase();
+        if (responseHopByHop.has(lower) || BODY_FRAMING.has(lower) || lower === 'set-cookie') {
+          return;
+        }
+        responseHeaders.set(name, value);
       });
+
+      // `Set-Cookie` is the one response header that legitimately repeats, and `Headers.set`
+      // would keep only the last. `getSetCookie` returns them all; append preserves each.
+      for (const cookie of upstream.headers.getSetCookie?.() ?? []) {
+        responseHeaders.append('set-cookie', cookie);
+      }
 
       return new Response(upstream.body, {
         status: upstream.status,
@@ -100,9 +174,15 @@ export function createGateway(options: GatewayOptions): Hono {
         headers: responseHeaders,
       });
     } catch {
-      // The upstream failure reason is not returned. It would describe the kernel's network
-      // position to a caller that is meant to see only the gateway.
-      return c.json({ detail: 'platform kernel is unreachable' }, 502);
+      // The failure reason is not returned: it would describe the kernel's network position to a
+      // caller meant to see only the gateway.
+      //
+      // The wording is "could not be reached" rather than "is unreachable" because this catch
+      // cannot tell a network failure from a gateway-side fault — a request method `fetch`
+      // refuses, for instance, throws here without a socket ever being opened. Asserting a
+      // network diagnosis this code has not established would cost an operator time during an
+      // incident.
+      return c.json({ detail: 'platform kernel could not be reached' }, 502);
     }
   });
 

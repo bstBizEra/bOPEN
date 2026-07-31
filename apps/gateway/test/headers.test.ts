@@ -9,7 +9,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { createGateway } from '../src/app.ts';
+import { buildUpstreamUrl, createGateway } from '../src/app.ts';
 import { CORRELATION_ID_MAX, validateHeaders } from '../src/headers.ts';
 import { isAcceptableIdentifier } from '../src/identifiers.ts';
 
@@ -289,6 +289,114 @@ describe('proxy behaviour', () => {
     });
 
     assert.equal(calls[0]?.headers['connection'], undefined);
+  });
+});
+
+describe('the caller cannot choose the upstream host', () => {
+  // Regression tests for the critical defect found by adversarial sweep on 2026-07-31.
+  //
+  // The original code did `new URL(path + search, kernelBaseUrl)`, resolving the caller's path as
+  // a relative reference. A path starting `//` is scheme-relative, so the base authority was
+  // discarded and the caller chose the upstream host — an unauthenticated open proxy that also
+  // forwarded the client's bearer token to the attacker's host.
+  //
+  // Every one of these was reproduced against real sockets before the fix.
+  const ESCAPES = [
+    '//evil.example/x',
+    '///evil.example/x',
+    '/\\evil.example/x',
+    '//user:pass@evil.example/x',
+    '//evil.example:9999/x',
+  ];
+
+  for (const path of ESCAPES) {
+    test(`${JSON.stringify(path)} cannot move the request off the kernel origin`, () => {
+      const url = buildUpstreamUrl('http://kernel.internal:8000', path, '');
+      assert.equal(url.origin, 'http://kernel.internal:8000', `escaped to ${url.toString()}`);
+      assert.equal(url.hostname, 'kernel.internal');
+    });
+  }
+
+  test('an ordinary path still reaches the kernel unchanged', () => {
+    const url = buildUpstreamUrl('http://kernel.internal:8000', '/v1/authorize', '?a=1');
+    assert.equal(url.toString(), 'http://kernel.internal:8000/v1/authorize?a=1');
+  });
+
+  test('a base path prefix is preserved rather than discarded', () => {
+    // Relative-reference resolution silently dropped a base path. Assigning pathname keeps it.
+    const url = buildUpstreamUrl('http://kernel.internal:8000/api', '/v1/authorize', '');
+    assert.equal(url.toString(), 'http://kernel.internal:8000/api/v1/authorize');
+  });
+
+  test('an escaping path does not reach the kernel as a different host end to end', async () => {
+    const { calls, fetchImpl } = recordingKernel();
+    await gateway(fetchImpl).request('//evil.example/v1/pwn', {
+      method: 'GET',
+      headers: { 'X-Correlation-ID': CORR, Authorization: 'Bearer secret.token.value' },
+    });
+
+    assert.equal(calls.length, 1);
+    const target = new URL(calls[0]!.url);
+    assert.equal(target.hostname, 'kernel.invalid', `token would have gone to ${target.hostname}`);
+  });
+});
+
+describe('response header handling', () => {
+  function kernelReturning(headers: Record<string, string>, body = '{"ok":true}') {
+    return (async () =>
+      new Response(body, { status: 200, headers })) as unknown as typeof fetch;
+  }
+
+  test('content-encoding is not copied, because fetch already decompressed the body', async () => {
+    const res = await gateway(
+      kernelReturning({ 'content-encoding': 'gzip', 'content-type': 'application/json' }),
+    ).request('/v1/x', { headers: { 'X-Correlation-ID': CORR } });
+
+    assert.equal(res.headers.get('content-encoding'), null);
+  });
+
+  test('the upstream content-length is not copied onto a different body', async () => {
+    // Copying it declares a byte count that does not match what we write, which desynchronises
+    // a keep-alive connection: the client reads the next response's head as this body's tail.
+    const res = await gateway(
+      kernelReturning({ 'content-length': '49', 'content-type': 'application/json' }),
+    ).request('/v1/x', { headers: { 'X-Correlation-ID': CORR } });
+
+    assert.equal(res.headers.get('content-length'), null);
+  });
+
+  test('every Set-Cookie survives, not only the last', async () => {
+    const fetchImpl = (async () => {
+      const h = new Headers();
+      h.append('set-cookie', 'a=1; HttpOnly');
+      h.append('set-cookie', 'b=2; Secure');
+      return new Response('{}', { status: 200, headers: h });
+    }) as unknown as typeof fetch;
+
+    const res = await gateway(fetchImpl).request('/v1/x', {
+      headers: { 'X-Correlation-ID': CORR },
+    });
+
+    const cookies = res.headers.getSetCookie?.() ?? [];
+    assert.equal(cookies.length, 2, `expected both cookies, got ${JSON.stringify(cookies)}`);
+  });
+});
+
+describe('Connection-named headers are hop-by-hop too', () => {
+  test('a header named in Connection is not forwarded', async () => {
+    const { calls, fetchImpl } = recordingKernel();
+    await gateway(fetchImpl).request('/v1/x', {
+      method: 'GET',
+      headers: {
+        'X-Correlation-ID': CORR,
+        Connection: 'close, X-Secret-Hop',
+        'X-Secret-Hop': 'leaked',
+      },
+    });
+
+    // RFC 9110 §7.6.1: names listed in Connection are hop-by-hop for that message. A fixed
+    // denylist catches the standard names and misses these.
+    assert.equal(calls[0]?.headers['x-secret-hop'], undefined);
   });
 });
 
