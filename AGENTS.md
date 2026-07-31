@@ -344,7 +344,7 @@ subsection governs until the next amendment.
 | Phase 1 — Platform kernel vertical slice | **AUTHORIZED** (§3) | `IMPLEMENTED_UNVERIFIED` — no evidence executed against PostgreSQL |
 | Phase 2 — Membership and enterprise onboarding | **AUTHORIZED** — hold discharged by `DEC-0009`..`DEC-0011`, `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — independent checker and security reviewer recorded as NOT ASSIGNED in `EVD-P2-PROVISIONAL-001` |
 | Phase 3 — Capability and entitlement kernel | **AUTHORIZED** — `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — completion evidence inadmissible under EBIV R1 and R3 |
-| Phase 3.5 — Runtime realization | **AUTHORIZED 2026-07-31** — `DEC-P35-RUNTIME` approved (Option C); `BOPEN-P35-001` bound. Scope limits in §22.2 | `WP-P35-01`..`WP-P35-04` and `WP-P35-05a` all `IMPLEMENTED_UNVERIFIED`, **zero ballots**; `WP-P35-05b` moved out by `DEC-P35-IDP-SPLIT` and blocked |
+| Phase 3.5 — Runtime realization | **AUTHORIZED 2026-07-31** — `DEC-P35-RUNTIME` approved (Option C); `BOPEN-P35-001` bound. Scope limits in §22.2 | `WP-P35-04` — **14 admissible ballots, 1 verifier of 2 required; quorum NOT met, no confirmation realized** (`0d12332`, Codex). `WP-P35-01`..`03` and `05a` `IMPLEMENTED_UNVERIFIED`, zero ballots. `WP-P35-05b` moved out by `DEC-P35-IDP-SPLIT` and blocked |
 | Phase 4 — Foundations and satellite products | **NOT AUTHORIZED** | blocked pending Phase 3.5 |
 
 `IMPLEMENTED_UNVERIFIED` means the code exists and is specification-shaped, but no

@@ -17,15 +17,21 @@
 | [BOPEN-P1-001](BOPEN-P1-001-EXECUTION-PLAN.md) | Platform Kernel Vertical Slice execution plan | **IMPLEMENTED_UNVERIFIED** | Deliver principal -> tenant -> owner membership -> context -> authorization -> audit. |
 | [BOPEN-P2-001](BOPEN-P2-001-EXECUTION-PLAN.md) | Membership & Enterprise Onboarding execution plan (`MILE-2.1`..`MILE-2.5`) | **IMPLEMENTED_UNVERIFIED** | Deliver invitation engine, membership state machine, tenant context switching, enterprise IdP/SCIM sync and delegated cross-tenant access. |
 | [BOPEN-P3-001](BOPEN-P3-001-EXECUTION-PLAN.md) | Capability and commercial entitlement kernel execution plan (`WP-P3-00`..`WP-P3-07`) | **IMPLEMENTED_UNVERIFIED** — authorized `GO ON EVIDENCE` | Govern capability registration, entitlement decisions, usage metering, rate limiting, RLS, and evidence execution. |
-| [BOPEN-P35-001](BOPEN-P35-001-EXECUTION-PLAN.md) | Phase 3.5 Runtime Realization (`WP-P35-01`..`05a`) | **IMPLEMENTED_UNVERIFIED** — accepted 2026-07-31, zero ballots | Persistence and tenant-scoped sessions, kernel HTTP surface, signed context token, API gateway, kernel authentication boundary. |
+| [BOPEN-P35-001](BOPEN-P35-001-EXECUTION-PLAN.md) | Phase 3.5 Runtime Realization (`WP-P35-01`..`05a`) | **IMPLEMENTED_UNVERIFIED** — `WP-P35-04` has 14 admissible ballots from 1 of 2 required verifiers (quorum not met); the rest have none | Persistence and tenant-scoped sessions, kernel HTTP surface, signed context token, API gateway, kernel authentication boundary. |
 | [WP-P35-06](BOPEN-P35-006-SHARD-ROUTING.md) | Tenant placement routing | **Accepted, not started** — maker unassigned | Resolve a tenant to a connection target: dedicated database or shared RLS pool. |
 | [BOPEN-P36-001](BOPEN-P36-001-EXECUTION-PLAN.md) | Phase 3.6 Tenant Privacy and Platform Observability (`WP-P36-01`..`03`) | **Proposed** — entry blocked on Security and Privacy review of `DEC-P35-CONTROL-PLANE` | Plane assignment, cross-plane integrity for 12 foreign keys, control-plane credential boundary, telemetry, disclosure. |
 
 > **Status correction, 2026-07-31.** `BOPEN-P1-001`, `BOPEN-P2-001` and `BOPEN-P3-001` were
 > recorded here as *Completed & Verified* and *GO ON EVIDENCE*. Both readings conflict with
 > [`AGENTS.md` §20.2](../../AGENTS.md), the single operative gate register, which records all
-> three as `IMPLEMENTED_UNVERIFIED`. No ballot has been cast on any work package in this
-> repository (`python tools/check_ballot_attribution.py` — "no ballots recorded yet").
+> three as `IMPLEMENTED_UNVERIFIED`. At the time of that correction no ballot had been cast on
+> any work package in this repository.
+>
+> **Updated 2026-08-01.** The first ballots now exist: 14 admissible `CONFIRMED` ballots on
+> `WP-P35-04` from Codex (`0d12332`). That is **one verifier of the two `BOPEN-GOV-EBIV-001` §6.1
+> requires**, so no confirmation is realized and the sentence above still holds for `P1`, `P2`,
+> `P3`, `WP-P35-01`..`03` and `05a`. `check_ballot_attribution.py` reports the shortfall on its
+> own face: *"quorum NOT MET — a confirmation cannot be realized."*
 >
 > The authorizations were real; the verification was not. "Verified" in this register meant a
 > passing test suite, which `BOPEN-GOV-EBIV-001` §8 holds to be maker self-assessment carrying no

@@ -8,7 +8,7 @@
 | BOPEN-REQ-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
 | BOPEN-PRD-P35-001 | **Proposed requirements candidate** | **No implementation authority** | Product, Architecture, Engineering, and Security review |
 | DEC-P35-DOCKET-001 | **Partially ratified 2026-07-31** | **`D-P35-001`..`D-P35-003` accepted — Phase 3.5 implementation authorized** | Designated authorities record dispositions for `D-P35-004`..`D-P35-018`; assign security reviewer |
-| BOPEN-P35-001 | **Accepted work package (2026-07-31)** | **Phase 3.5 Authorized** | Codex assigned maker; seat an independent checker (Gemini or Kimi) for `WP-P35-01`..`WP-P35-03` |
+| BOPEN-P35-001 | **Accepted work package (2026-07-31)** | **Phase 3.5 Authorized** | `WP-P35-04` needs a **second verifier** for quorum; `WP-P35-01`..`03` need Gemini or Kimi; `05a` blocked on `AUTH-D1`/`AUTH-D3` |
 | BOPEN-PRD-P35-002 | **Proposed requirements candidate** | **No implementation authority** | Product, Architecture, Engineering, Security and Privacy review |
 | DEC-P35-TENANCY-MODEL | **Approved (Option D, hybrid placement)** | **Authorizes `WP-P35-06`** | Assign a maker; baseline captured at `arch-baseline/2026-07-31-rls-option-c` |
 | DEC-P35-CONTROL-PLANE | **Proposed** | **No implementation authority** | **Security and Privacy Authority review — blocks all of Phase 3.6** |

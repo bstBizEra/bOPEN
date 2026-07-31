@@ -1,5 +1,33 @@
 # Documentation Changelog
 
+## 2026-08-01 - The first ballots in this repository's history, and what they do not establish
+
+- Codex cast **14 admissible `CONFIRMED` ballots** on `WP-P35-04` R2 at `88e6ed2`, committed as
+  `0d12332` under its own identity. Independently verified from repository objects: author *and*
+  committer are `codex@bst.local`, the commit touches only `ballots.jsonl`, every ballot anchors
+  the exact commit and tree that were issued, and none is missing a mandatory probe field.
+- **Quorum is not met and no confirmation is realized.** `BOPEN-GOV-EBIV-001` §6.1 requires two
+  independent verifiers; there is one. `check_ballot_attribution.py` states the shortfall on its
+  own face — *"quorum NOT MET — a confirmation cannot be realized"* — which is the tool refusing
+  to let a partial result read as a pass.
+- Codex's adversarial probes: 90 hostile path and search combinations against the SSRF fix, no
+  origin escape found. Canonical suite 433/433, gateway suite 43/43, attribution, anchors,
+  repository validation and clean-room all PASS.
+- **The maker's proposition set had a hole, and Codex's precision exposed it.** Path
+  normalisation remains reproducible — `/v1/../admin` still reaches the kernel as `/admin` — but
+  Codex correctly declined to refute any of `P35-04R-01`..`14` on it, because **none of the
+  fourteen propositions claims path fidelity**. So a real, reproduced defect passed through the
+  ballot untouched, not because the verifier missed it but because the maker never offered a
+  claim it could contradict.
+- That is the same failure shape as revision 1: propositions that were true, and did not cover
+  the line that mattered. Revision 1's gap was a critical SSRF; this one is a known MEDIUM defect,
+  recorded in `EVD-P35-04-MAKER-R2` §6.1 as open rather than accepted. **A ballot can only rule on
+  what it was offered.**
+- `WP-P35-05a` untouched, per Codex's standing `HOLD_FOR_DECISION`.
+- Registers updated: `AGENTS.md` §20.2, work-package register, document status, action plan. The
+  2026-07-31 status-correction note in the work-package register said *"no ballot has been cast"*
+  and is now itself corrected — one day old and already drift.
+
 ## 2026-08-01 - Codex preflight stops stale WP-P35-04 and 05a ballots
 
 - Bound the live branch to commit `88e6ed2b4f2ab80a6b8ef0e8d570f761d8725b4b`

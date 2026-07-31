@@ -972,8 +972,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "583741a1cd53c8fb4babb3293d3c77ed3a76df9d7b3f573971e4dc5a36e38743",
-      "bytes": 5555
+      "sha256": "cf504f78094cdf1ade77a5ccf2bd0fec81333c39b7a8af072105265fba7ce4a0",
+      "bytes": 5648
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1133,8 +1133,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "f0ab76d396ea080945740d78115c38039f6f769ce180fde8595ccc3330201791",
-      "bytes": 29429
+      "sha256": "adce0c89c8b053b427b6c49aa554a78ae07973dda66517f2201aebcbcb26ccc8",
+      "bytes": 31625
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1252,8 +1252,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "f20cb8fd7740355469ef91dbc2258b67849d557b1154a4522efa8a9a32622138",
-      "bytes": 3273
+      "sha256": "6acbc5a531f1aee162ac4784bdb82c43ce62ea53cf52877fc78e0254bff80a44",
+      "bytes": 3305
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1350,8 +1350,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0
+      "sha256": "81c692a7a6cf9440de2e3e511d073511de520ef74a430e321b7cf74f814b0577",
+      "bytes": 17236
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -2050,8 +2050,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "331ca1586ed2ddff28278247f0d3f344435c5971ce43cb833702290891ff6a67",
-      "bytes": 4003
+      "sha256": "ae8cc182e96ae435d68e8df0c1282be8d7de2c13e6d69eb41a3104ba5351d3b7",
+      "bytes": 4486
     }
   ]
 }

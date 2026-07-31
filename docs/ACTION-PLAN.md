@@ -22,9 +22,9 @@ because it has been waiting a long time.
 | | Count |
 | :--- | :--- |
 | Work packages implemented | 5 (`WP-P35-01`..`04`, `05a`) |
-| Independent ballots cast | **0** |
+| Independent ballots cast | **14** — all on `WP-P35-04`, from **1 verifier of 2 required** |
 | Phases authorized | 0, 1, 2, 3, 3.5; 3.6 partial |
-| Phases verified | **none** |
+| Phases verified | **none** — quorum unmet on every package |
 | Canonical suite | 433/433 against PostgreSQL |
 | Gateway suite | 31/31 |
 | Governance checks | 6/6 pass |
