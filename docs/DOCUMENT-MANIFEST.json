@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 291,
+  "count": 292,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -258,8 +258,8 @@
       "path": "docs/02-requirements/BOPEN-PRD-P35-002.md",
       "title": "BOPEN-PRD-P35-002 \u2014 Tenant Privacy and Platform Observability Product Requirements",
       "status": "Proposed \u2014 assists `WP-P35-06`; no implementation authority",
-      "sha256": "bfca33da76eee4682be7d79813bde8e4b50322260e84a9ccaee4a7c604a22855",
-      "bytes": 17789
+      "sha256": "3beee48efd045d49689474f308f60c400d6b80e794c055f91762befc1f02890f",
+      "bytes": 20010
     },
     {
       "path": "docs/02-requirements/BOPEN-REQ-001-DRAFT.md",
@@ -1172,6 +1172,13 @@
       "bytes": 5878
     },
     {
+      "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
+      "title": "DEC-P35-CONTROL-PLANE-DOCKET \u2014 Security and Privacy review surface for the control-plane boundary",
+      "status": "**Proposed \u2014 awaiting Security and Privacy Authority disposition**",
+      "sha256": "c2b9adf868238c9f97de06bd5dde8daf85e43d1b449a43aa78a958dc11a04a0f",
+      "bytes": 11966
+    },
+    {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
       "title": "DEC-P35-CONTROL-PLANE \u2014 What the platform may know about a tenant it cannot read",
       "status": "**Proposed \u2014 requires Security and Privacy Authority review before implementation**",
@@ -1224,8 +1231,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "57c9ecde521350abc3367c1028d3d54e015d69d8ac01bfa47af63f6f1ee68689",
-      "bytes": 5986
+      "sha256": "3ca57313c838aeaa1afe8240bbe6ce9482cbbc63b6fc8e0cde6b37086fbc1e7f",
+      "bytes": 6360
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",

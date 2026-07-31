@@ -101,6 +101,49 @@ The type disagreement is pre-existing and known. It means metering is *already*
 plane-portable — an accident that happens to help, but one that should become deliberate rather
 than remaining an inconsistency nobody chose.
 
+### F-6 — F-1 counted foreign keys. Nobody counted RLS policies with cross-plane dependencies *(added 2026-08-01)*
+
+Migration `007_registry_table_isolation.sql` closed a **measured** cross-tenant disclosure — one
+tenant session reading 7,631 tenant rows and 6,657 principal rows including email addresses. The
+policy that closed it:
+
+```sql
+CREATE POLICY principals_read ON principals
+    FOR SELECT
+    USING (
+        NULLIF(current_setting('app.current_tenant_id', true), '') IS NULL
+        OR EXISTS (
+            SELECT 1 FROM memberships m
+            WHERE m.principal_id = principals.id
+              AND m.tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::uuid
+        )
+    );
+```
+
+**That policy is a subquery from `principals` into `memberships`.** F-2 forces `principals` into
+the control plane; `memberships` is tenant-scoped by RLS. Split them across databases and
+PostgreSQL cannot evaluate the subquery — for the same reason it cannot enforce the twelve
+foreign keys in F-1.
+
+**The disclosure fix does not survive the split** unless `memberships` is placed control-plane or
+duplicated. Two consequences:
+
+1. F-1 enumerated foreign keys. **It did not enumerate RLS policies whose `USING` clause reaches
+   another table.** At least one exists. The others have not been counted, and
+   `PRD-P35B-PLANE-001` cannot be signed off until they are.
+2. Worse, and less obvious: in the control plane **every session is unscoped by construction** —
+   no `app.current_tenant_id` is set. Every policy in migration 007 grants full read to an
+   unscoped session via its `… IS NULL OR …` branch. Migration 007 says so itself under "What
+   this does not close": *"The unscoped path itself. `system_session` still sees the entire
+   registry."* **Moving `principals` to a control plane where all sessions are unscoped converts
+   that stated residual risk into the normal operating mode.**
+
+`PRD-P35B-CRED-001` constrains the control plane's access to *tenant* databases. **Nothing yet
+constrains access within the control plane**, which is where the principal registry and its email
+addresses would live.
+
+This is a blocking input to `PRD-P35B-PLANE-001`, not a downstream concern.
+
 ### F-5 — Nothing in the schema records placement
 
 There is no column, table or configuration naming which database serves a tenant. Placement is
