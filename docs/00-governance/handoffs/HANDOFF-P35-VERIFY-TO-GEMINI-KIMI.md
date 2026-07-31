@@ -1,6 +1,6 @@
 # HANDOFF-P35-VERIFY-TO-GEMINI-KIMI — Second and third verifier seats for Phase 3.5
 
-**Status:** Stood down 2026-07-30 — retained as a record
+**Status:** Stood down 2026-07-30; **superseded 2026-08-01** by [`HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI`](HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI.md) — retained as a record, **do not execute**
 **Issued:** 2026-07-30
 **Maker of this handoff:** Claude (agent, Motor role)
 **Addressed to:** Gemini / Antigravity, and Kimi

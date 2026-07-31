@@ -153,6 +153,73 @@ were true — they simply did not cover the line that mattered.
 This revision has more tests and one more probe. That is not evidence it is correct. It is the
 same kind of evidence revision 1 had.
 
+## 6A. Amendment 2026-08-01 — two propositions added, and one existing one found to overclaim
+
+> **The candidate commit is unchanged.** `88e6ed2…`, tree `39da471…`, subtree `485f6b3…` — no code
+> has moved. Codex's 14 ballots at `0d12332` remain valid for `P35-04R-01`..`14` and are not
+> reopened by this amendment. Only the proposition set grows.
+
+### 6A.1 Why this amendment exists
+
+Codex reproduced the path-normalisation defect in §6.1 and correctly declined to refute anything
+on it, **because none of the fourteen propositions claims path fidelity**. A real, reproduced
+defect passed through an adversarial ballot untouched — not because the verifier missed it, but
+because the maker never offered a claim it could contradict.
+
+A defect recorded only in a prose limitations section cannot be balloted, and therefore cannot
+block. `BOPEN-GOV-EBIV-001` §6.1 gives a single `REFUTED` ballot with a reproducible probe the
+power to block; that power is unreachable if nothing is offered to refute. These propositions
+exist to move the defect from prose into the ballot record.
+
+### 6A.2 `P35-04R-02` overclaims relative to its test
+
+**Found by the maker on 2026-08-01, after the ballot.** `P35-04R-02` states *"a base path prefix
+survives instead of being discarded"*. Its test exercises `buildUpstreamUrl('http://kernel:8000/api',
+'/v1/authorize', '')`. Measured:
+
+| Base | Path | Result |
+| :--- | :--- | :--- |
+| `http://k:8000/api` | `/v1/authorize` | `http://k:8000/api/v1/authorize` — prefix survives |
+| `http://k:8000/api` | `/v1/../admin` | `http://k:8000/api/admin` — prefix survives |
+| **`http://k:8000/api`** | **`/../../admin`** | **`http://k:8000/admin` — prefix escaped** |
+
+The proposition is true for paths without dot segments and **false in general**. Its test covers
+only the benign case. Codex's `CONFIRMED` ballot on it is not an error — it ruled on what the
+proposition and its named test actually assert — but a reader must not take `P35-04R-02` as
+establishing base-path containment. It does not.
+
+This is the **third** instance today of a proposition whose test covers less than its words claim:
+revision 1's path test (fixture had no `.` or `%`, hid a critical SSRF), §6.1's path fidelity (no
+proposition at all), and now this. The recurring defect is in how propositions are written, not in
+any single mechanism.
+
+### 6A.3 New propositions
+
+Both are offered by the maker **expecting `REFUTED`**. That is the point of offering them.
+
+| ID | Proposition | Maker's own position | Reproduction |
+| :--- | :--- | :--- | :--- |
+| `P35-04R-15` | The request target a client sends reaches the kernel without percent-decoding or dot-segment normalisation | **BELIEVED FALSE** | `/v1/../admin` → `/admin`; `/v1/%2E%2E/admin` → `/admin` |
+| `P35-04R-16` | No request path can cause the upstream path to escape the configured base path prefix | **BELIEVED FALSE** | base `/api` + `/../../admin` → `/admin` |
+
+A verifier should refute both with its own probe rather than relying on the table above.
+
+### 6A.4 Severity and why no code change accompanies this
+
+`P35-04R-16` is **latent, not live**: with `BOPEN_KERNEL_BASE_URL` carrying no path — the
+documented and expected deployment — there is no prefix to escape, and the impact collapses into
+`P35-04R-15`, which the kernel answers with a 404. It becomes exploitable only where the kernel is
+deployed under a base path *and* something else on that origin is reachable above it.
+
+Both share one root cause: dot-segment and percent-decoding handling between Hono's `getPath` and
+`URL`. They should be fixed together, once, with a proposition set that covers the general case
+rather than a fixture.
+
+Fixing now would move the candidate commit and invalidate Codex's 14 ballots for the **second**
+time. Trading a latent defect for the re-invalidation of the only independent verification this
+repository has is the wrong trade. The fix is deferred deliberately, is recorded here as owed, and
+must land before `WP-P35-04` is put to a Completion Authority.
+
 ## 7. Clean-room declaration
 
 No upstream source inspected, copied or adapted. Header rules derive from `HTTP_HEADER_SPEC.md`

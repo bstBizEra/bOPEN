@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 293,
+  "count": 294,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -143,11 +143,18 @@
       "bytes": 17426
     },
     {
+      "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI.md",
+      "title": "HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI \u2014 Second verifier seat, and the four packages nobody has looked at",
+      "status": "**Active \u2014 issued 2026-08-01**",
+      "sha256": "68ff0cb0b6a259e8882a39f356f310a1836d9c9c4f3f5e797a5c639477f77f32",
+      "bytes": 8705
+    },
+    {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md",
       "title": "HANDOFF-P35-VERIFY-TO-GEMINI-KIMI \u2014 Second and third verifier seats for Phase 3.5",
-      "status": "Stood down 2026-07-30 \u2014 retained as a record",
-      "sha256": "b25a99b8501cda3dedd43fa230cb047902ba7fd6e7cf1081e53a80b29192cc9d",
-      "bytes": 12415
+      "status": "Stood down 2026-07-30; **superseded 2026-08-01** by [`HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI`](HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI.md) \u2014 retained as a record, **do not execute**",
+      "sha256": "9431ad414783bc9a4de670881250ddb97bd5e57ffcb947ad9bd2b1908a6a6274",
+      "bytes": 12330
     },
     {
       "path": "docs/00-governance/license-strategy.md",
@@ -1133,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "adce0c89c8b053b427b6c49aa554a78ae07973dda66517f2201aebcbcb26ccc8",
-      "bytes": 31625
+      "sha256": "2c1b5b4192c373afb5cb06d19d78bd8366434070d092f2e2b54953bbb8b527c0",
+      "bytes": 34198
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1406,8 +1413,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r2.md",
       "title": "EVD-P35-04-MAKER-R2 \u2014 WP-P35-04 Maker Submission, revision 2 (API Gateway)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "44a0c8c99aa4f13288d04084a85cca1863b1965e5069ada48972e3b3f9305187",
-      "bytes": 9782
+      "sha256": "d4d410f2e9754ceb34bbe85ffcbd32e170f4a30806bb2e43ee2c13b15ad198bf",
+      "bytes": 13840
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",

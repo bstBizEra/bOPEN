@@ -1,5 +1,37 @@
 # Documentation Changelog
 
+## 2026-08-01 - A third proposition found to overclaim, and a verifier seat reopened
+
+- Amended `EVD-P35-04-MAKER-R2` with section 6A. The candidate commit is unchanged at `88e6ed2`,
+  so Codex's 14 ballots remain valid and are not reopened; only the proposition set grows.
+- Added `P35-04R-15` (path fidelity) and `P35-04R-16` (base-path containment), both offered by the
+  maker **expecting `REFUTED`**. A defect recorded only in a prose limitations section cannot be
+  balloted and therefore cannot block, and EBIV §6.1 gives a single refutation with a reproducible
+  probe the power to block. These move two known defects from prose into the ballot record.
+- **Found while writing them: `P35-04R-02` overclaims.** It asserts a base path prefix survives;
+  its test exercises only a path with no dot segments. Measured: base `/api` with `/../../admin`
+  yields `/admin` — **the prefix is escapable**. Codex's `CONFIRMED` on it is not an error, it
+  ruled on what the proposition asserts, but the proposition asserts more than its test checks.
+- That is the **third** instance in two days of the same defect shape: revision 1's path test
+  (fixture had no `.` or `%`, hid a critical SSRF behind 31 green tests), section 6.1's path
+  normalisation (no proposition claimed it at all), and now this. The recurring fault is in how
+  propositions are written, not in any one mechanism, and the new Gemini/Kimi handoff names it as
+  the fastest route to a real defect.
+- `P35-04R-16` is latent rather than live: with no base path configured — the documented
+  deployment — there is nothing to escape. No code change accompanies the amendment, because
+  fixing now would move the candidate and invalidate the only independent verification this
+  repository has for a second time. The fix is recorded as owed and must land before `WP-P35-04`
+  reaches a Completion Authority.
+- Issued `HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI` and superseded the 2026-07-30 handoff, which
+  predated the SSRF, the R2 reissue, `WP-P35-05a` and Codex's ballots entirely. Dispatching it
+  would have repeated the stale-anchor mistake Codex caught.
+- The new handoff asks for two things: the **second verifier seat** on `WP-P35-04`, where quorum
+  stands at 1 of 2, and the **first ever look** at `WP-P35-01`..`03` — which only Gemini or Kimi
+  can give, since Claude authored them and Codex remediates them. `WP-P35-01` carries the tenant
+  isolation claim, the most consequential unverified assertion in the repository.
+- No contract, migration, specification or production source changed.
+
+
 ## 2026-08-01 - The first ballots in this repository's history, and what they do not establish
 
 - Codex cast **14 admissible `CONFIRMED` ballots** on `WP-P35-04` R2 at `88e6ed2`, committed as
