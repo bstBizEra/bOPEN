@@ -979,8 +979,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "cf504f78094cdf1ade77a5ccf2bd0fec81333c39b7a8af072105265fba7ce4a0",
-      "bytes": 5648
+      "sha256": "b3306ab84c9cb87574078c2a39cd3bdf35a88109894fb1f8a186103fd5ce87c5",
+      "bytes": 5693
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "2c1b5b4192c373afb5cb06d19d78bd8366434070d092f2e2b54953bbb8b527c0",
-      "bytes": 34198
+      "sha256": "35cb1bbf2d3226489e71ef15726d804885c976cfbce076d38e56c3b3906ed6d9",
+      "bytes": 35370
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1181,16 +1181,16 @@
     {
       "path": "docs/decisions/DEC-P35-AUTH-CLOSURE.md",
       "title": "DEC-P35-AUTH-CLOSURE - Close the remaining kernel authentication paths",
-      "status": "Proposed - Codex technical recommendation; authority disposition pending",
-      "sha256": "8db3740bdc04579076c87d68e11bbf3fd9b69ae37818441e763159bc470b13d0",
-      "bytes": 5878
+      "status": "Partially decided - `AUTH-D1` accepted; `AUTH-D3` pending",
+      "sha256": "fb33dc5f02d5cd5b9557d893e0ba57128cf48c9e6ff200fe370c2291c58e5a21",
+      "bytes": 7666
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
       "title": "DEC-P35-CONTROL-PLANE-DOCKET \u2014 Security and Privacy review surface for the control-plane boundary",
-      "status": "**Proposed \u2014 awaiting Security and Privacy Authority disposition**",
-      "sha256": "c2b9adf868238c9f97de06bd5dde8daf85e43d1b449a43aa78a958dc11a04a0f",
-      "bytes": 11966
+      "status": "**Proposed - `D-CP-003` enumerated; awaiting plane assignment and Security and Privacy Authority disposition**",
+      "sha256": "aed87f5307c096ec1e6a8d9044cacf3fb4cb347b8c5d449b6b236ecb230751e6",
+      "bytes": 14588
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
@@ -1245,8 +1245,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "6b135a92881ecba69abc8685b5016b34d34b37a19236723ce7d1bd02e7b4a9cc",
-      "bytes": 6822
+      "sha256": "a0dda5add9f04323f754f11b6e113b8759f943da1b0ba51e6b5171c48938c667",
+      "bytes": 6986
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1259,8 +1259,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "6acbc5a531f1aee162ac4784bdb82c43ce62ea53cf52877fc78e0254bff80a44",
-      "bytes": 3305
+      "sha256": "4c57d2fdc5637e8199a73819d53ffc876f7ffc338d0d2193b0e6b788ebbbcc35",
+      "bytes": 3508
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",

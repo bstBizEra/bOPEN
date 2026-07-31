@@ -1,8 +1,8 @@
 # DEC-P35-AUTH-CLOSURE - Close the remaining kernel authentication paths
 
 **Decision ID:** `DEC-P35-AUTH-CLOSURE`  
-**Version:** `0.1.0`  
-**Status:** Proposed - Codex technical recommendation; authority disposition pending  
+**Version:** `0.2.0`
+**Status:** Partially decided - `AUTH-D1` accepted; `AUTH-D3` pending
 **Issued:** 2026-08-01  
 **Owner:** Security Authority and Architecture Authority  
 **Required concurrence:** Engineering Authority and Product Authority  
@@ -18,8 +18,9 @@ The operator instruction names auth decisions `D1` and `D3`, but no controlled r
 artifact defined those labels. This record defines them explicitly as `AUTH-D1` and `AUTH-D3`
 instead of guessing silently.
 
-This document recommends outcomes. Codex cannot ratify its own security architecture proposal,
-amend a frozen contract, or authorize production activation.
+This document records the operator's `AUTH-D1` disposition and retains the technical
+recommendation for `AUTH-D3`. The `AUTH-D1` disposition does not decide `AUTH-D3`, amend a frozen
+contract by itself, verify an implementation, or authorize production activation.
 
 ## 2. AUTH-D1 - What authenticates protected kernel requests?
 
@@ -43,11 +44,16 @@ authenticate the caller presenting the identifier.
 3. Require a verified bearer token for every protected endpoint. Retain `X-Context-ID` only as a
    non-authoritative reference where a contract still needs it.
 
-### Recommendation
+### Decision - option 3 accepted 2026-08-01
 
-**Adopt option 3.** A protected endpoint must derive principal, tenant, membership, and context
+**Option 3 is accepted.** A protected endpoint must derive principal, tenant, membership, and context
 from a verified signed token, then re-read the stored context for revocation and current state.
 Headers may narrow or cross-check signed claims; they cannot create authority.
+
+The normative basis is [`DEC-P35-AUTH-CLOSURE-RESEARCH`](DEC-P35-AUTH-CLOSURE-RESEARCH.md)
+section 2: OWASP ASVS 5.0 section 6.8.2 requires signature presence and integrity to be validated
+and unsigned or invalid assertions to be rejected. `AUTH-D1` therefore does not depend on how
+initial enrollment is solved under `AUTH-D3`.
 
 The compatibility transition must be explicit:
 
@@ -99,6 +105,23 @@ Neither route may infer authority from email equality, a caller-supplied owner I
 location, or the existence of a context identifier. Principal creation, tenant creation, owner
 membership creation, and audit/outbox effects must retain their required transaction boundaries.
 
+### Enrollment-credential recursion risk still requiring disposition
+
+The annex identifies a viable self-naming enrollment credential, but it also identifies the
+security recursion plainly: the credential is an unsigned bearer-by-identifier mechanism, the
+same class of authority that `AUTH-D1` retires from protected endpoints.
+
+Codex's recommendation is that this risk is acceptable only as a separately named enrollment
+trust domain with all of these controls: CSPRNG generation, at least 112 bits of entropy, a hard
+10-minute lifetime, single-use atomic consumption, local out-of-band transfer rather than email,
+explicit enrollment-only authorization, and no durable credential after redemption. A generic,
+long-lived, reusable, emailed, or protected-endpoint fallback token is not acceptable.
+
+The authorities must decide whether that bounded exception is acceptable. Until they do,
+principal enrollment remains closed or outside the exposed production kernel surface. This
+pending decision does not reopen the legacy `X-Context-ID` authorization path disposed by
+`AUTH-D1`.
+
 ## 4. Implementation sequencing if ratified
 
 1. Amend or version `HTTP_HEADER_SPEC.md` and the affected API contracts before code.
@@ -115,12 +138,12 @@ membership creation, and audit/outbox effects must retain their required transac
 
 | Field | Value |
 |---|---|
-| `AUTH-D1` | Pending authority disposition; Codex recommends bearer-only protected endpoints |
+| `AUTH-D1` | **ACCEPTED 2026-08-01 - option 3.** Protected endpoints are bearer-only; `X-Context-ID` is non-authoritative |
 | `AUTH-D3` | Pending authority disposition; Codex recommends proof-bound enrollment and authenticated provisioning |
-| Security Authority | Pending |
-| Architecture Authority | Pending |
-| Engineering Authority | Pending |
-| Product Authority | Pending |
+| Disposition source | Operator instruction, recorded 2026-08-01 |
+| Implementation effect | `AUTH-D1` remediation may proceed inside authorized `WP-P35-05a`; contracts and negative tests precede code |
+| Remaining authority decision | `AUTH-D3` only - accept or reject the bounded enrollment-credential recursion risk |
+| Production activation | Not authorized |
 
 ```text
 execution_authority: false

@@ -43,7 +43,7 @@ The single most valuable action is not on any execution plan.
 | :--- | :--- |
 | **Why first** | Five implemented work packages cannot be completed, and Phase 4 cannot open, until an independent verifier rules. No amount of further code changes this |
 | **Who** | Gemini or Kimi for `WP-P35-01`..`03` — Claude authored them and Codex is remediating, so §20.3 disqualifies both. Codex for `WP-P35-04` and `05a`, which it did not touch |
-| **Blocked by** | Gemini/Kimi seats for `WP-P35-01`..`03` remain available. Codex ballots are held: WP-P35-04 needs a maker resubmission at `88e6ed2...`; WP-P35-05a needs `AUTH-D1`/`AUTH-D3` disposition, remediation, and a successor submission |
+| **Blocked by** | Gemini/Kimi seats for `WP-P35-01`..`03` remain available. `WP-P35-04` has one verifier of two. `WP-P35-05a`: `AUTH-D1` is accepted; Claude must remediate it, while `AUTH-D3` still needs authority disposition before a successor submission |
 | **Risk if deferred** | Verification debt compounds. Each new package adds to a queue nobody has started, and the eventual reviewer faces a body of work too large to probe honestly |
 
 **Codex completed preflight and must not ballot the stale candidates.** The original handoff is
@@ -55,7 +55,7 @@ successor.
 | | |
 | :--- | :--- |
 | **Why** | Gates the whole of Phase 3.6. `BOPEN-P36-001` cannot start |
-| **Must resolve** | **F-2** — the control plane necessarily holds personal data, which §4 as drafted forbids. **F-3** — where audit records carrying business identifiers live |
+| **Must resolve** | `D-CP-003` enumerated one cross-table policy (`principals_read` -> `memberships`); decide its plane/projection shape. Then resolve **F-2** personal data, **F-3** audit placement, and retention |
 | **Who** | Security Authority, Privacy Authority |
 | **Blocked by** | Nothing. Available today |
 

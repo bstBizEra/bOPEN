@@ -1,8 +1,8 @@
 # DEC-P35-CONTROL-PLANE-DOCKET — Security and Privacy review surface for the control-plane boundary
 
 **Document ID:** `DEC-P35-CP-DOCKET-001`
-**Version:** `1.0.0`
-**Status:** **Proposed — awaiting Security and Privacy Authority disposition**
+**Version:** `1.1.0`
+**Status:** **Proposed - `D-CP-003` enumerated; awaiting plane assignment and Security and Privacy Authority disposition**
 **Issued:** 2026-08-01
 **Owner:** Architecture Authority
 **Required concurrence:** **Security Authority, Privacy Authority**, Engineering Authority, Product Authority
@@ -32,6 +32,16 @@ This docket presents one bounded review surface. It decides nothing.
 | Security-monitoring design | **None exists** — no SIEM, no detection catalogue | "Capability lost" is assessed against a capability never specified |
 
 ## 3. Docket
+
+The docket is executed in this order. `D-CP-003` is the first row because its result can change
+the plane assignment used by every later row.
+
+| Order | Row | State | Next decision |
+| :--- | :--- | :--- | :--- |
+| 1 | `D-CP-003` - cross-plane RLS dependencies | **ENUMERATED 2026-08-01** | Decide `memberships` placement or replace the dependency before signing the plane register |
+| 2 | `D-CP-001` - control-plane personal data | Pending | Bind minimisation and erasure |
+| 3 | `D-CP-002` - audit placement | Pending | Choose placement after P-1 and P-2 |
+| 4 | `D-CP-004` - retention | Pending | Set ceilings and floors after data placement |
 
 ### 3.1 `D-CP-001` — Control-plane personal data (F-2)
 
@@ -131,10 +141,46 @@ enumerated at all.** And in the control plane every session is unscoped by const
 migration 007's `… IS NULL OR …` branch grants full registry read to every control-plane
 connection — converting a stated residual risk into the normal operating mode.
 
-**Required before `PRD-P35B-PLANE-001` can be signed off:** enumerate every RLS policy whose
-`USING` or `WITH CHECK` clause references another table, and decide `memberships`' plane with that
-in hand. **Recommended disposition: enumerate first, decide after.** No option is offered here
-because the input does not exist yet.
+#### Enumeration result - complete against the live PostgreSQL catalogue
+
+The live database was queried through `pg_policies` after loading `.env.local`. It contains
+**27 active policies across 16 tables**. Every `qual` and `with_check` expression was inspected.
+
+| Policy | Protected table | Referenced table | Clause | Source | Consequence |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `principals_read` | `principals` | `memberships` | `USING` (`EXISTS (SELECT 1 FROM memberships ...)`) | migration 007 | `principals` and the membership visibility relation must be co-located, projected, or the policy must be replaced |
+
+**No other live policy references another table.** The remaining 26 policies depend only on the
+protected row, `current_setting('app.current_tenant_id', true)`, constants, casts, or null checks.
+This result excludes policies superseded by later migrations and all rollback-only definitions.
+
+Reproduction query:
+
+```sql
+SELECT policyname, tablename, cmd, qual, with_check
+FROM pg_policies
+WHERE schemaname = 'public'
+ORDER BY tablename, policyname;
+```
+
+#### Plane-assignment consequence
+
+F-2 still requires `principals` in the control plane. Therefore a plane register that assigns
+`memberships` only to tenant databases makes `principals_read` unevaluable and loses the measured
+6,657-row disclosure fix. The assignment decision must choose one of these explicit shapes:
+
+1. place authoritative `memberships` in the control plane, accepting that tenant relationship,
+   role, and state data become centrally held;
+2. keep authoritative memberships tenant-side and maintain a minimal control-plane visibility
+   projection sufficient for `principals_read`, with enforced consistency and negative orphan
+   probes; or
+3. replace the cross-table RLS policy with a different database-enforced boundary that does not
+   require a tenant-database lookup.
+
+The enumeration is complete; **the plane assignment is not**. `PRD-P35B-PLANE-001` remains
+blocked until one shape is selected and the control-plane session model distinguishes a narrowly
+tenant-scoped registry reader from the unscoped system role. Merely moving `memberships` does not
+fix the `IS NULL OR ...` branch that grants an unscoped connection full registry visibility.
 
 ### 3.4 `D-CP-004` — Retention
 
@@ -153,7 +199,7 @@ erasure question bound to `D-CP-001`.
 
 ## 4. Recommended disposition order
 
-1. `D-CP-003` — enumerate cross-plane RLS dependencies. Cheap, and it may change plane assignment.
+1. `D-CP-003` - **enumeration complete; decide the membership visibility shape and session roles.**
 2. `D-CP-001` — the personal-data register, with erasure bound to it.
 3. `D-CP-002` — audit placement, with P-1 and P-2 as prerequisites.
 4. `D-CP-004` — retention.

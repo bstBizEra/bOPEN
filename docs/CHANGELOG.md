@@ -1,5 +1,21 @@
 # Documentation Changelog
 
+## 2026-08-01 - AUTH-D1 disposed and cross-plane RLS dependencies enumerated
+
+- Recorded the operator's acceptance of `AUTH-D1` option 3: every protected endpoint derives
+  authority from a verified signed bearer token, with no fallback to `X-Context-ID`. The research
+  annex supplies the normative basis independently of `AUTH-D3`.
+- Kept `AUTH-D3` open. A self-naming enrollment credential is recommended only as a separate,
+  single-use, 10-minute, local out-of-band enrollment trust domain; the authorities must decide
+  whether reintroducing bearer-by-identifier authority under those bounds is acceptable.
+- Executed the `D-CP-003` inventory against live PostgreSQL: 27 active policies on 16 tables,
+  exactly one cross-table dependency - `principals_read` queries `memberships`.
+- The enumeration is complete but plane assignment remains blocked. Since `principals` is
+  control-plane, membership visibility must be co-located, projected with enforced consistency,
+  or replaced by another database-enforced boundary. The unscoped system-role aperture also
+  remains explicit.
+- No implementation, migration, RLS policy, ballot, or production activation changed.
+
 ## 2026-08-01 - A third proposition found to overclaim, and a verifier seat reopened
 
 - Amended `EVD-P35-04-MAKER-R2` with section 6A. The candidate commit is unchanged at `88e6ed2`,
