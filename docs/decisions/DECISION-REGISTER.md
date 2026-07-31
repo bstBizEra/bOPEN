@@ -2,6 +2,7 @@
 
 | ID | Decision | Status | Owner |
 |---|---|---|---|
+| DEC-P35-AUTH-CLOSURE | Decide bearer-only protected endpoints (`AUTH-D1`) and proof-bound enrollment/authenticated tenant provisioning (`AUTH-D3`) after independent probes reproduced both gaps | **Proposed** ([DEC-P35-AUTH-CLOSURE](DEC-P35-AUTH-CLOSURE.md)) | Security/Architecture/Engineering/Product Authorities |
 | DEC-0001 | Create BOPEN-BOOT-001 repository governance pack | Approved | Engineering Authority |
 | DEC-0002 | Keep production implementation gated until G7 and normative approval | **Approved (G7 Passed)** | Architecture Authority |
 | DEC-0003 | Select production technology stack (PostgreSQL RLS, BoxyHQ Jackson IdP, ReBAC) | **Approved** ([BOPEN-ARCH-TECH-001](../03-architecture/TECHNOLOGY-MATRIX.md)) | Architecture Authority |

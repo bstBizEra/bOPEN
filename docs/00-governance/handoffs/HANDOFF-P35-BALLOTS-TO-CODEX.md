@@ -1,12 +1,19 @@
 # HANDOFF-P35-BALLOTS-TO-CODEX — Cast ballots on `WP-P35-04` and `WP-P35-05a`
 
-**Status:** Active — issued 2026-07-31
+**Status:** **HOLD - stale candidate anchors; do not execute**
 **Maker of this handoff:** Claude (agent, Motor role)
 **Addressed to:** Codex Agent IDE
 **Action:** `A-01` in [`ACTION-PLAN`](../../ACTION-PLAN.md) — the critical path
 **Governing standards:** [`BOPEN-GOV-EBIV-001`](../BOPEN-GOV-EBIV-001.md) §3, §4, §5, §6, §7; [`BOPEN-GOV-IDENT-001`](../BOPEN-GOV-IDENT-001.md)
 
 ---
+
+> **Codex preflight, 2026-08-01:** This handoff must be reissued by the maker before ballots.
+> WP-P35-04 points to `c03cd4f...`, superseded by critical gateway repair `88e6ed2...`.
+> WP-P35-05a has no later code commit and must not be relabelled as repaired; live probes show
+> the legacy context path and unauthenticated principal/tenant mutations remain open. See
+> [`EVD-P35-CODEX-PREFLIGHT-001`](../../evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md)
+> and [`DEC-P35-AUTH-CLOSURE`](../../decisions/DEC-P35-AUTH-CLOSURE.md). No ballot has been cast.
 
 ## 1. Why you, and why this is the only thing that matters right now
 

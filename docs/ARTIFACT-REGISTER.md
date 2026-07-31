@@ -2,6 +2,7 @@
 
 | ID | Title | Class | Status | Owner |
 |---|---|---|---|---|
+| DEC-P35-AUTH-CLOSURE | Kernel Authentication Path Closure | Decision candidate | **Proposed; no implementation authority** | Security/Architecture Authorities |
 | BOPEN-RES-001 | Open-Source Platform Kernel Research & Clean-Room Study Plan | Normative | **Gate G7 Cleared** (`EVD-RES-001-G7`) | Research Authority |
 | BOPEN-BOOT-001 | Repository Bootstrap, AGENTS.md & Engineering Controls Pack | Normative | Approved Execution | Engineering Authority |
 | BOPEN-REQ-001 | Product Requirements Specification | Normative | **Approved** | Product Authority |

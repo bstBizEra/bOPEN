@@ -1,5 +1,21 @@
 # Documentation Changelog
 
+## 2026-08-01 - Codex preflight stops stale WP-P35-04 and 05a ballots
+
+- Bound the live branch to commit `88e6ed2b4f2ab80a6b8ef0e8d570f761d8725b4b`
+  and tree `39da471ae01ade3e3ee619f788d99fabbe1fde3d` before verification.
+- Marked the Codex ballot handoff `HOLD`: WP-P35-04 still names the pre-SSRF-fix candidate
+  `c03cd4f...`; current gateway subtree is `485f6b3...` and passes 43/43 tests.
+- Did not rewrite Claude's maker submission, preserving Codex verifier independence. Claude must
+  reissue the proposition set against the corrected exact commit.
+- Established that WP-P35-05a has no later implementation blob to anchor. Repointing it to HEAD
+  would falsely imply repair.
+- Executed live PostgreSQL-backed probes showing a configured authenticator still permits
+  `200 ALLOW` through the unsigned legacy context path, and unauthenticated principal and tenant
+  creation still return `201`.
+- Raised `DEC-P35-AUTH-CLOSURE` with explicit advisory recommendations for `AUTH-D1` and
+  `AUTH-D3`. No decision, implementation authority, ballot, or completion is claimed.
+
 ## 2026-07-31 - Phase 3.6 opened: roadmap, implementation plan, action plan, engineering loop
 
 - **Roadmap extended.** Phase 3.6 — Tenant Privacy and Platform Observability — inserted between

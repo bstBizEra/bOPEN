@@ -43,11 +43,12 @@ The single most valuable action is not on any execution plan.
 | :--- | :--- |
 | **Why first** | Five implemented work packages cannot be completed, and Phase 4 cannot open, until an independent verifier rules. No amount of further code changes this |
 | **Who** | Gemini or Kimi for `WP-P35-01`..`03` — Claude authored them and Codex is remediating, so §20.3 disqualifies both. Codex for `WP-P35-04` and `05a`, which it did not touch |
-| **Blocked by** | Nothing. This is available today |
+| **Blocked by** | Gemini/Kimi seats for `WP-P35-01`..`03` remain available. Codex ballots are held: WP-P35-04 needs a maker resubmission at `88e6ed2...`; WP-P35-05a needs `AUTH-D1`/`AUTH-D3` disposition, remediation, and a successor submission |
 | **Risk if deferred** | Verification debt compounds. Each new package adds to a queue nobody has started, and the eventual reviewer faces a body of work too large to probe honestly |
 
-**Codex can act on this immediately** — it has an active handoff and two packages it is eligible
-to verify.
+**Codex completed preflight and must not ballot the stale candidates.** The original handoff is
+on HOLD under `EVD-P35-CODEX-PREFLIGHT-001`; independence remains intact for a maker-issued
+successor.
 
 ### A-02 — Security and Privacy review of `DEC-P35-CONTROL-PLANE`
 
@@ -67,7 +68,7 @@ keeps the other eligible as checker.
 
 | # | Action | Owner | Gate | State |
 | :--- | :--- | :--- | :--- | :--- |
-| A-01 | Cast ballots on `WP-P35-01`..`05a` | Gemini / Kimi / Codex | none | **available now** |
+| A-01 | Cast ballots on `WP-P35-01`..`05a` | Gemini / Kimi / Codex | current exact-commit maker submission | **Gemini/Kimi available for 01-03; Codex HOLD for 04/05a** |
 | A-02 | Security + Privacy review of `DEC-P35-CONTROL-PLANE` | Security, Privacy | none | **available now** |
 | A-03 | Assign maker to `WP-P35-06` | Engineering | none | **available now** |
 | A-04 | Plane assignment register (D-16) | `WP-P36-01` maker | A-02 | blocked |

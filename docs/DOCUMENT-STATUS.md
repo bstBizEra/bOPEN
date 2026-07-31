@@ -2,6 +2,7 @@
 
 | Artifact | Status | Implementation authority | Next action |
 |---|---|---:|---|
+| DEC-P35-AUTH-CLOSURE | **Proposed security decision** | **No implementation authority** | Decide AUTH-D1 and AUTH-D3, then issue a new 05a maker candidate |
 | BOPEN-RES-001 | Gate G7 Cleared | Research Approved | Phase 1 Implementation Authorized |
 | BOPEN-BOOT-001 | Approved execution | Repository/docs/tooling | Phase 1 & 2 Execution Completed |
 | BOPEN-REQ-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |

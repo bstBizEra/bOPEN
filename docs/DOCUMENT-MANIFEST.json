@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 287,
+  "count": 289,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -117,9 +117,9 @@
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-BALLOTS-TO-CODEX.md",
       "title": "HANDOFF-P35-BALLOTS-TO-CODEX \u2014 Cast ballots on `WP-P35-04` and `WP-P35-05a`",
-      "status": "Active \u2014 issued 2026-07-31",
-      "sha256": "403119942dffb1b2acb06eb17218889720329f1bfca48ae0da2b553d3095e11f",
-      "bytes": 6493
+      "status": "**HOLD - stale candidate anchors; do not execute**",
+      "sha256": "c2be8d68dcd1f94a0bdd4ebf27bd286dc6e97bf2732ce372997e3c6f5d7927a4",
+      "bytes": 7074
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md",
@@ -965,8 +965,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "bc2fae6e842dec71b258b55e249368978f5f6130f15bca637ac12c17709ccb27",
-      "bytes": 5199
+      "sha256": "583741a1cd53c8fb4babb3293d3c77ed3a76df9d7b3f573971e4dc5a36e38743",
+      "bytes": 5555
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1119,15 +1119,15 @@
       "path": "docs/ARTIFACT-REGISTER.md",
       "title": "Artifact Register",
       "status": "",
-      "sha256": "a7f1250c0511671bc55710bc2f44d8064e759a1980424bcc2dfb07801c2959cf",
-      "bytes": 3042
+      "sha256": "b1b73bfc95f749d534ae52d443b57fc876337d5c3f47e9a27b62bd352abeb924",
+      "bytes": 3205
     },
     {
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "f6da27284950c0ec72cc4b3884915c13acd3c78c7c00c0338e6205c5ee0b4801",
-      "bytes": 28352
+      "sha256": "f0ab76d396ea080945740d78115c38039f6f769ce180fde8595ccc3330201791",
+      "bytes": 29429
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1156,6 +1156,13 @@
       "status": "Advisory. Recommends; does not decide.",
       "sha256": "728b74f2b960f21e71dd70e57333e15e8d3c210051347575a4ae461d837d4b4e",
       "bytes": 12235
+    },
+    {
+      "path": "docs/decisions/DEC-P35-AUTH-CLOSURE.md",
+      "title": "DEC-P35-AUTH-CLOSURE - Close the remaining kernel authentication paths",
+      "status": "Proposed - Codex technical recommendation; authority disposition pending",
+      "sha256": "8db3740bdc04579076c87d68e11bbf3fd9b69ae37818441e763159bc470b13d0",
+      "bytes": 5878
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
@@ -1210,22 +1217,22 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "c9352f3ed61636f7e4c7b2746e34c5c54b331f5d7c03a58c63b55d3b390dc01d",
-      "bytes": 5670
+      "sha256": "57c9ecde521350abc3367c1028d3d54e015d69d8ac01bfa47af63f6f1ee68689",
+      "bytes": 5986
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
       "title": "Documentation Coverage",
       "status": "",
-      "sha256": "7c47f748e4f99af9e524a9821f1c78c0d3bb261ef77bc972ab4775a8b6a65460",
-      "bytes": 2249
+      "sha256": "08f911027e42c8f81cb163b0ba3f9f48559bda3de03e7d5bc2a2607a11e7876e",
+      "bytes": 2457
     },
     {
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "0a5c40eb6e15a50ca59ba7d71756235f4e531e1bfd75dc1796162bcdecffda74",
-      "bytes": 3114
+      "sha256": "f20cb8fd7740355469ef91dbc2258b67849d557b1154a4522efa8a9a32622138",
+      "bytes": 3273
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1324,6 +1331,13 @@
       "status": "",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "bytes": 0
+    },
+    {
+      "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
+      "title": "EVD-P35-CODEX-PREFLIGHT-001 - WP-P35-04 and WP-P35-05a verification preflight",
+      "status": "Verification hold - maker resubmission required",
+      "sha256": "80d5a61e98701ee9357a909562d6fb2e22beffab7f584aec4f51597eb06ad95a",
+      "bytes": 5400
     },
     {
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
@@ -1854,8 +1868,8 @@
       "path": "docs/TRACEABILITY-MATRIX.md",
       "title": "Traceability Matrix",
       "status": "",
-      "sha256": "63a42fbe577e3b7dc26cdf6aa408cf0ac21fa491c7326f98d7d47ace5458cdc1",
-      "bytes": 3576
+      "sha256": "59def869982f3e4b0665c35f7c798a703d308a37b6c0f22572c0987f00ff72f7",
+      "bytes": 3880
     },
     {
       "path": "docs/work-packages/BOOT-P0-01.md",

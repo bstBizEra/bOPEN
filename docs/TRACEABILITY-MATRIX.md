@@ -2,6 +2,7 @@
 
 | Requirement | Artifact | ADR/contract | Work package | Evidence | Status |
 |---|---|---|---|---|---|
+| PRD-P35-AUTH Authentication path closure | BOPEN-PRD-P35-001 | DEC-P35-AUTH-CLOSURE / HTTP_HEADER_SPEC.md / DEC-P35-IDP-SPLIT | WP-P35-05a successor | EVD-P35-CODEX-PREFLIGHT-001; bearer-only and authenticated-provisioning negative tests required | **HOLD; decision and maker resubmission required** |
 | REQ-GOV-001 Agent governance | BOPEN-BOOT-001 | Root/scoped AGENTS.md | BOOT-P0-02 | Repository validator | Implemented |
 | REQ-GOV-002 Document control | BOPEN-BOOT-001 | Document templates | BOOT-P0-03 | Manifest validator | Implemented |
 | REQ-RES-001 Clean-room separation | BOPEN-RES-001 | ADR-0002 | RES-P0-07 | EVD-RES-001-G7 | **Passed (G7)** |

@@ -2,6 +2,7 @@
 
 | Domain | Baseline | Normative artifact | Current maturity | Production gate |
 |---|---|---|---|---|
+| Kernel authentication closure | Bearer-only protected routes and proof-bound enrollment/provisioning | DEC-P35-AUTH-CLOSURE | **Proposed** | Designated authority disposition required before 05a successor |
 | Research and clean room | BOPEN-RES-001 | Approved (`EVD-RES-001-G7`) | Cleared | **Gate G7 Passed** |
 | Repository governance | BOPEN-BOOT-001 | Approved | Operational | **B7 Passed** |
 | Product requirements | Initial catalog | BOPEN-REQ-001 | **Approved** | **Phase 1 Completed** |
