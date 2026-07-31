@@ -1,5 +1,42 @@
 # Documentation Changelog
 
+## 2026-07-31 - WP-P35-05 split, and the kernel gains an authentication boundary
+
+- `DEC-P35-IDP-SPLIT` ratified: `WP-P35-05` becomes `05a` (kernel authentication boundary,
+  stays in Phase 3.5) and `05b` (BoxyHQ federation, moved out and still blocked). The trigger
+  was that `D-P35-014` is a *licensing* re-verification, so a runtime security hole was waiting
+  on a legal question about a third party.
+- **Correction recorded in the decision itself.** The advice that prompted the split said it
+  would leave `05a` needing only the design decisions. That understated the position: no
+  migration defines `sso_connections`, `external_identities` or `authentication_sessions`, so a
+  per-tenant connection model needs new tables and lands back on the unratified
+  `D-P35-004`..`D-P35-010`. Splitting removes the vendor from the critical path, not the storage
+  decisions.
+- Implemented `WP-P35-05a`. The kernel now verifies a signed, audience-bound assertion from an
+  external authenticator before issuing a context, instead of taking the caller's word. Three
+  properties are the point, and each has a negative probe: a partial configuration refuses
+  rather than opening the unauthenticated path; a configured authenticator **cannot** be
+  disabled by `BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION`; and an assertion vouching for
+  one principal cannot mint a context for another.
+- Two mutation probes: letting the development flag win broke 5 tests including the central one;
+  removing the principal comparison broke the impersonation test.
+- Binding is by issuer and subject only — no email claim is read, per `D-P35-012`. The assertion
+  is never persisted, per `D-P35-010`.
+- **Limits recorded rather than left to be discovered:** one authenticator for the whole kernel,
+  no per-tenant connections, **no replay protection** (`jti` is checked but not stored, because
+  storing it is the persistence that is blocked), no key rotation, and no other endpoint
+  authenticated yet. Listed in `EVD-P35-05A-MAKER` §5.
+- Also recorded: the module's own claim type-check is currently unreachable because PyJWT
+  rejects non-string `sub`/`iss`/`jti` first. Kept as defence in depth but marked redundant, and
+  the tests assert refusal rather than which layer refused.
+- Canonical suite 433/433 against PostgreSQL. `WP-P35-05a` is `IMPLEMENTED_UNVERIFIED` with zero
+  ballots; a maker reporting a green suite carries no verdict weight (EBIV §8).
+- Committed separately: Addendum C of `EVD-SEC-001` and its `api.py` correction, authored in an
+  earlier session and found uncommitted. They are one unit and landed together rather than being
+  bundled into unrelated commits.
+- **Authority:** operator decision transcribed, implementation by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
 ## 2026-07-31 - WP-P35-04 API gateway implemented
 
 - Built `apps/gateway` — a Hono reverse proxy validating the `HTTP_HEADER_SPEC.md` contract at

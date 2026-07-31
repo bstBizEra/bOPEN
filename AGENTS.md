@@ -344,7 +344,7 @@ subsection governs until the next amendment.
 | Phase 1 — Platform kernel vertical slice | **AUTHORIZED** (§3) | `IMPLEMENTED_UNVERIFIED` — no evidence executed against PostgreSQL |
 | Phase 2 — Membership and enterprise onboarding | **AUTHORIZED** — hold discharged by `DEC-0009`..`DEC-0011`, `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — independent checker and security reviewer recorded as NOT ASSIGNED in `EVD-P2-PROVISIONAL-001` |
 | Phase 3 — Capability and entitlement kernel | **AUTHORIZED** — `DEC-P3-ENTRY` | `IMPLEMENTED_UNVERIFIED` — completion evidence inadmissible under EBIV R1 and R3 |
-| Phase 3.5 — Runtime realization | **AUTHORIZED 2026-07-31** — `DEC-P35-RUNTIME` approved (Option C); `BOPEN-P35-001` bound. Scope limits in §22.2 | `WP-P35-01`..`WP-P35-03` `IMPLEMENTED_UNVERIFIED`, zero ballots; `WP-P35-04`, `WP-P35-05` not started |
+| Phase 3.5 — Runtime realization | **AUTHORIZED 2026-07-31** — `DEC-P35-RUNTIME` approved (Option C); `BOPEN-P35-001` bound. Scope limits in §22.2 | `WP-P35-01`..`WP-P35-04` and `WP-P35-05a` all `IMPLEMENTED_UNVERIFIED`, **zero ballots**; `WP-P35-05b` moved out by `DEC-P35-IDP-SPLIT` and blocked |
 | Phase 4 — Foundations and satellite products | **NOT AUTHORIZED** | blocked pending Phase 3.5 |
 
 `IMPLEMENTED_UNVERIFIED` means the code exists and is specification-shaped, but no
@@ -526,7 +526,8 @@ to governance work, and neither becomes the sole author of the phase.
 | :--- | :--- | :--- |
 | `WP-P35-01`, `WP-P35-02`, `WP-P35-03` | **Codex** (remediation) | Gemini or Kimi only |
 | `WP-P35-04` | **Claude** | Codex, Gemini or Kimi |
-| `WP-P35-05` | named when unblocked | determined then |
+| `WP-P35-05a` | **Claude** | Codex, Gemini or Kimi |
+| `WP-P35-05b` | named when unblocked (moved out of Phase 3.5) | determined then |
 
 The reason is arithmetic, not preference. §20.3 item 1 and `BOPEN-GOV-EBIV-001` §3 exclude a
 verifier who authored any artifact under review, so each additional maker on a package removes

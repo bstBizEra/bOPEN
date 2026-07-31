@@ -105,7 +105,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
   2. **WP-P35-02 Kernel HTTP surface** — FastAPI + Pydantic v2 over `contracts/schemas/`.
   3. **WP-P35-03 Signed context token** — `sub`, `tid`, `mid`, `roles`, `scopes`; active context survives a process boundary.
   4. **WP-P35-04 API gateway** — Hono + Zod bound to `HTTP_HEADER_SPEC.md`. Implemented 2026-07-31 in `apps/gateway`; see [`EVD-P35-04-MAKER`](../evidence/phase-3.5/wp-p35-04-maker-submission.md).
-  5. **WP-P35-05 Enterprise IdP bridge** — replace the simulated SSO surface with BoxyHQ Jackson. **Blocked** pending `D-P35-011`..`D-P35-014`.
+  5. **WP-P35-05a Kernel authentication boundary** — an external authenticator's signed assertion is required before context issuance, and a configured authenticator cannot be disabled by the development flag. Implemented 2026-07-31; see [`EVD-P35-05A-MAKER`](../evidence/phase-3.5/wp-p35-05a-maker-submission.md). Split from `WP-P35-05` by [`DEC-P35-IDP-SPLIT`](../decisions/DEC-P35-IDP-SPLIT.md).
+* **Moved out of this phase**: **WP-P35-05b Enterprise IdP federation** (BoxyHQ Jackson, per-tenant connections, SCIM). Blocked by `D-P35-011`..`D-P35-014` **and** by `D-P35-004`..`D-P35-010`, which its connection storage needs.
 * **Deferred**: Go event microservices (blueprint layer 5). Not cancelled; revisited when metering throughput is measured rather than projected.
 
 ---

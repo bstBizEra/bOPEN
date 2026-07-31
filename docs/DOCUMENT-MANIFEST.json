@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 276,
+  "count": 278,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -181,8 +181,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "1e89bd077b9a9e54fcf70bc1ed2f81c03bb30c34d7a8864a70add591e8b12c76",
-      "bytes": 11882
+      "sha256": "bde0964b653caef89bd639fe31167c226b62320441bebae0ac9776a716942e70",
+      "bytes": 12366
     },
     {
       "path": "docs/01-product/principles.md",
@@ -202,8 +202,8 @@
       "path": "docs/01-product/roadmap.md",
       "title": "Strategic Roadmap",
       "status": "",
-      "sha256": "d3fb60789c8ec57dcbe7fb4331ba78ecbf5de6bec92ade26247885311104939b",
-      "bytes": 1371
+      "sha256": "2c717a61636ea7c125caf6d89456ce59f89e391f72d48f1878ba912abf33e7c9",
+      "bytes": 1510
     },
     {
       "path": "docs/01-product/success-metrics.md",
@@ -1091,8 +1091,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "0185a17bc63788656e941d766278b2ccb3111a317c66d55f864f14611ec13e4d",
-      "bytes": 14326
+      "sha256": "3c19a54d3f68f8d37697f6033243f0776434c7543c1ee1a2f11bbb38a18b3b5b",
+      "bytes": 17161
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1130,6 +1130,13 @@
       "bytes": 17363
     },
     {
+      "path": "docs/decisions/DEC-P35-IDP-SPLIT.md",
+      "title": "DEC-P35-IDP-SPLIT \u2014 Split `WP-P35-05` into an authentication boundary and a federation integration",
+      "status": "**Approved \u2014 ratified by the operator 2026-07-31**",
+      "sha256": "e1eba8509d40d55d88fa18ac79d1af30c575d9d141792ba14c986c01c34736bf",
+      "bytes": 6302
+    },
+    {
       "path": "docs/decisions/DEC-P35-PHASE2-STORAGE-ADDENDUM.md",
       "title": "DEC-P35-PHASE2-STORAGE-ADDENDUM - Mapping and grant ambiguity",
       "status": "Proposed advisory addendum - authority decision pending",
@@ -1154,8 +1161,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "0fb2bca714413e098fc668cbfb52cbbd7c193c5ecc2f2cf03e4db3da0eb076ed",
-      "bytes": 4171
+      "sha256": "7384f1f6876a49b43b828cc330c0664d6f89ff223ab89349b5e8956357b85b86",
+      "bytes": 4512
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1317,6 +1324,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "2974a8a221b681d86a197c7716851412e1e09a5d3c85647cf72f267b49fe65ad",
       "bytes": 8544
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
+      "title": "EVD-P35-05A-MAKER \u2014 WP-P35-05a Maker Submission (Kernel Authentication Boundary)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "12682c1b77ef1a00126d9998f19712c7b9b40582e91168c1423928a6d957b060",
+      "bytes": 5766
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -1910,8 +1924,8 @@
       "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P35-001 \u2014 Phase 3.5 Runtime Realization",
       "status": "**Accepted and authorized 2026-07-31** \u2014 bound by `DEC-P35-RUNTIME` \u00a78 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`",
-      "sha256": "aa42848dd19496d81c1466566c61697824ac99c1abab58ee6e61bd72d5f425ac",
-      "bytes": 9375
+      "sha256": "222199bbdb7c338760d33305f8de93d7fdfbb496e463678601a809c577428051",
+      "bytes": 9833
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

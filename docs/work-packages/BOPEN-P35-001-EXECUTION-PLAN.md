@@ -173,6 +173,8 @@ against executed evidence meeting A-01..A-07.*
 | D-07 (`WP-P35-02`) | implemented, unverified | [`wp-p35-02-maker-submission.md`](../evidence/phase-3.5/wp-p35-02-maker-submission.md) |
 | D-08 (`WP-P35-03`) | implemented, unverified | [`wp-p35-03-maker-submission.md`](../evidence/phase-3.5/wp-p35-03-maker-submission.md) |
 | D-09 (`WP-P35-04`) | implemented, unverified — 31 tests, 3 mutation probes | [`wp-p35-04-maker-submission.md`](../evidence/phase-3.5/wp-p35-04-maker-submission.md) |
+| D-10 (`WP-P35-05a`) | implemented, unverified — 2 mutation probes | [`wp-p35-05a-maker-submission.md`](../evidence/phase-3.5/wp-p35-05a-maker-submission.md) |
+| `WP-P35-05b` | **moved out of Phase 3.5** by [`DEC-P35-IDP-SPLIT`](../decisions/DEC-P35-IDP-SPLIT.md); blocked by `D-P35-011`..`014` and `D-P35-004`..`010` | — |
 
 Roles are assigned per work package and alternate, so that each engine stays eligible to verify
 the other's work. Assigned 2026-07-31.
@@ -183,7 +185,8 @@ the other's work. Assigned 2026-07-31.
 | `WP-P35-02` | **Codex** — remediation | Gemini or Kimi only |
 | `WP-P35-03` | **Codex** — remediation | Gemini or Kimi only |
 | `WP-P35-04` | **Claude** (`claude@bst.local`) | Codex, Gemini or Kimi |
-| `WP-P35-05` | *named when unblocked* | *determined then* |
+| `WP-P35-05a` | **Claude** — kernel authentication boundary | Codex, Gemini or Kimi |
+| `WP-P35-05b` | *named when unblocked* — federation, moved out of Phase 3.5 | *determined then* |
 
 | Role | Assignee |
 | :--- | :--- |

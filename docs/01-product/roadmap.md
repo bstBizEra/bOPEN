@@ -23,8 +23,10 @@ context token, API gateway and enterprise IdP integration. Turns the kernel from
 in-process model into a service that satellite products can call.
 
 Inserted 2026-07-30 under `BOPEN-P35-001`. `DEC-P35-RUNTIME` approved 2026-07-31, so
-implementation is authorized. `WP-P35-01`..`WP-P35-04` are implemented and unverified;
-`WP-P35-05` is blocked pending the authentication-boundary decisions.
+implementation is authorized. `WP-P35-01`..`WP-P35-04` and `WP-P35-05a` are implemented and
+unverified. Enterprise IdP federation (`WP-P35-05b`) was moved out of this phase by
+`DEC-P35-IDP-SPLIT`, because a runtime security fix should not wait on a vendor licensing
+question; it remains blocked.
 
 ## Phase 4 — Common business foundation and first product packs
 
