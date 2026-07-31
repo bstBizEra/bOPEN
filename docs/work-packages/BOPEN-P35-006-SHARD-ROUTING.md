@@ -1,6 +1,13 @@
-# WP-P35-06 — Tenant shard routing
+# WP-P35-06 — Tenant placement routing
 
-**Status:** **Accepted, not started** — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1
+**Status:** **Accepted, not started** — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1, **generalized by §8.4**
+
+> **Generalized 2026-07-31.** This package was written as *shard routing* under Option C. Option D
+> (hybrid placement) supersedes that, and the package widens rather than dies: the resolver now
+> returns a **connection target**, which may be a tenant's dedicated database or a shared
+> row-level-security pool. Every acceptance criterion below survives unchanged, and `A-09` becomes
+> more important — under hybrid placement a wrong default could route a private tenant into the
+> shared pool. Read "shard" below as "placement target".
 **Version:** `1.0.0`
 **Issued:** 2026-07-31
 **Owner:** Engineering Authority
@@ -79,6 +86,18 @@ The kernel refuses to serve from a shard whose applied-migration set differs fro
 **A-14 — Single-shard default is behaviour-identical.**
 With one shard configured, or none, behaviour matches the pre-`WP-P35-06` kernel exactly. This is
 what makes the change additive and rollback trivial.
+
+**A-15 — Placement kind is explicit, and a dedicated tenant never lands in the shared pool.**
+*(added by `DEC-P35-TENANCY-MODEL` §8.4)*
+Every placement records whether it is `dedicated` or `shared`. A tenant placed as `dedicated`
+must be unroutable to the shared pool by construction, not by convention — a negative probe must
+show the attempt failing rather than succeeding quietly. Under Option D this is the isolation
+guarantee itself: a private tenant reaching the shared pool is the failure the model exists to
+prevent, and it would look like ordinary operation.
+
+**A-16 — Shared-pool tenants remain covered by row-level security.**
+The 38 isolation tests run against the shared pool exactly as today. Option D keeps RLS as a live
+mechanism rather than a retired one, and it must keep being tested as one.
 
 ## Deferred, and named so it is not forgotten
 

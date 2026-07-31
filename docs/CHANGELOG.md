@@ -1,5 +1,44 @@
 # Documentation Changelog
 
+## 2026-07-31 - Tenant privacy: hybrid placement, and a boundary for what the platform may see
+
+- Captured `arch-baseline/2026-07-31-rls-option-c` at `9e26c0b` **before** changing the
+  architecture, per the new `AGENTS.md` §23 rule. An annotated tag rather than a copied folder:
+  content-addressed, cannot drift, costs no disk, verifiable indefinitely.
+- **`DEC-P35-TENANCY-MODEL` §8 supersedes §7.** Option D — hybrid placement — replaces Option C:
+  a dedicated database per tenant by default, with a shared RLS pool for trial and free-tier
+  tenants who must be told they are sharing.
+- The reversal is legitimate rather than a contradiction, and the record predicted it. §7 recorded
+  its driver as *load, not isolation*, and stated that an isolation driver would make
+  database-per-tenant stronger and require Security concurrence. The operator then stated a
+  tenant-privacy requirement. The analysis did not change; the question did.
+- **`ADR-0005` and `BOPEN-ARCH-001` stand.** RLS remains the live mechanism for the shared pool,
+  so the 16 policy-bearing tables and the 38 executed isolation tests keep their meaning. That is
+  the principal reason Option D was preferred to Option B: no evidence is discarded to gain the
+  isolation.
+- `WP-P35-06` is **generalized, not withdrawn** — shard routing becomes placement routing, and the
+  resolver returns a connection target that may be a dedicated database or a shared pool. Two
+  criteria added: `A-15` requires that a tenant placed as `dedicated` be unroutable to the shared
+  pool *by construction*, with a negative probe showing the attempt fail; `A-16` requires the
+  shared pool to remain covered by the existing isolation suite.
+- Raised `DEC-P35-CONTROL-PLANE` to answer the operator's second requirement — that private
+  tenants must not blind the platform. Control plane holds usage aggregates, operational
+  telemetry, authorization outcomes, lifecycle events and entitlement state; tenant business rows,
+  field values, free text and literal-bearing query logs never cross. The platform can know a
+  tenant's call count, storage, latency and quota without reading one invoice.
+- Recommended that the boundary be **structural, not procedural**: the control plane holds no
+  credential for any tenant database and aggregates are pushed outward, never pulled. A boundary
+  that depends on the platform choosing not to look is not a boundary.
+- Flagged the one that needs care: row counts are metadata, but row-count *patterns* tracked
+  across an industry are market intelligence nobody granted permission to derive.
+- **`DEC-P35-CONTROL-PLANE` is NOT ratified.** It creates a data flow out of tenant boundaries and
+  requires Security and Privacy Authority review before implementation. The tenancy change was
+  ratified because it tightens isolation; this one is not a tightening and is recorded as
+  unreviewed rather than assumed.
+- No contract, migration, specification or production source changed.
+- **Authority:** operator decision transcribed by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
 ## 2026-07-31 - Tenancy model decided: shard for load, keep RLS for isolation
 
 - Raised and ratified `DEC-P35-TENANCY-MODEL` in response to a request to adopt an

@@ -2,7 +2,7 @@
 
 **Decision ID:** `DEC-P35-TENANCY-MODEL`
 **Version:** `1.0.0`
-**Status:** **Approved — Option C adopted 2026-07-31 (see §7)**
+**Status:** **Approved — Option D adopted 2026-07-31 (see §8, which supersedes §7)**
 **Issued:** 2026-07-31
 **Owner:** Architecture Authority
 **Required concurrence:** Engineering Authority, Security Authority, Data Authority
@@ -160,3 +160,69 @@ This is why implementation is specified before it is started, and why `WP-P35-06
 criteria require that mis-routing be *impossible* rather than *unlikely*.
 
 Nothing in this record changes a contract, migration, specification or production source.
+
+---
+
+## 8. Amendment 2026-07-31 — Option D adopted, superseding §7
+
+> **Change note (extend-only, per BST rule 5).** §7 is retained for provenance and **must not be
+> read as the current decision**. §8 governs.
+> **Reason**: §7 recorded the driver as *load, not isolation*, and said in terms that had the
+> driver been isolation, Option B would have been stronger and Security Authority concurrence
+> would have been required. The operator then stated a **privacy** requirement — tenant data is
+> private, no cross-tenant data accessible. The premise of §7 no longer holds.
+> **Benefit of the prior decision**: Option C was the cheapest way to answer a load question and
+> preserved every existing control unchanged.
+> **Expected outcome**: tenant privacy becomes a structural property rather than a policy
+> promise, while row-level security survives where it is still the right tool.
+
+### 8.1 Decision
+
+**Option D — hybrid placement.**
+
+| Placement | Who | Isolation mechanism |
+| :--- | :--- | :--- |
+| **Dedicated database** *(default)* | Every paying/production tenant | Physical separation. A policy bug cannot cross a database boundary |
+| **Shared RLS pool** | Trial, free-tier and evaluation tenants, **who must be told so** | PostgreSQL row-level security, exactly as today |
+
+Both placements distribute across instances, so §7's load answer is retained rather than
+discarded — Option D is a superset of Option C, not a replacement for it.
+
+### 8.2 What this does and does not retire
+
+`ADR-0005` and `BOPEN-ARCH-001`'s row-level-security clause **stand**. RLS remains the mechanism
+for the shared pool, so the 16 policy-bearing tables and the 38 executed isolation tests keep
+their meaning and keep running. This is the principal advantage of Option D over Option B: no
+evidence is discarded to gain the isolation.
+
+`AGENTS.md` §8 already permits *"explicit tenant ownership field **or** approved physical
+isolation"*, so no invariant is amended.
+
+### 8.3 Security and privacy concurrence — recorded as NOT obtained
+
+The tenancy change is a **tightening** and is ratified on that basis. The control-plane data
+collection it requires is **not** a tightening: it is a new data flow out of tenant boundaries,
+and it is privacy-bearing.
+
+That boundary is specified separately in [`DEC-P35-CONTROL-PLANE`](DEC-P35-CONTROL-PLANE.md) and
+**requires Security and Privacy Authority review before implementation**. It is not ratified
+here, and an agent must not treat this record as authorizing it.
+
+### 8.4 Consequence for `WP-P35-06`
+
+Not withdrawn — **generalized**. Shard routing becomes *placement routing*: resolve a tenant to a
+connection target, which may be a dedicated database or a shared pool. Every acceptance criterion
+survives, and `A-09` (an unresolvable tenant is refused, never defaulted) becomes more important,
+not less: under hybrid placement a wrong default could route a private tenant into the shared
+pool.
+
+### 8.5 Approver
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **ACCEPT — Option D.** Dedicated database per tenant by default; shared RLS pool for trial and free tier, disclosed to those tenants |
+| **Driver** | **Tenant privacy**, with load retained as a secondary driver |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — acting as Architecture Authority |
+| **Decision timestamp** | 2026-07-31 |
+| **Security review** | **NOT OBTAINED.** Required for `DEC-P35-CONTROL-PLANE` before any collection is implemented |
+| **Recorded by** | Claude (agent, Motor role). `execution_authority: false`, `approval_authority: false` |

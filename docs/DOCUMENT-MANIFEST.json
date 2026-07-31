@@ -1098,8 +1098,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "b84c1760f0a908b927d07042c68dfd1ce5869d3839d42abf1b6ab9c14a21fa20",
-      "bytes": 19838
+      "sha256": "8bd281ba48be97679ec7833e93f3de1727357eaffb2da633e9ba737f837ed34d",
+      "bytes": 22966
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1182,8 +1182,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "5e436436d7a2f16d7273cf391aebbcbf1534a112fa6af511854b32f37d2ce5ba",
-      "bytes": 4904
+      "sha256": "c9352f3ed61636f7e4c7b2746e34c5c54b331f5d7c03a58c63b55d3b390dc01d",
+      "bytes": 5670
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1950,10 +1950,10 @@
     },
     {
       "path": "docs/work-packages/BOPEN-P35-006-SHARD-ROUTING.md",
-      "title": "WP-P35-06 \u2014 Tenant shard routing",
-      "status": "**Accepted, not started** \u2014 authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a77.1",
-      "sha256": "14f4111963ade85ec3b62a836ecf60502c15e1892afbe18179d0dd8dd62ea1d1",
-      "bytes": 5769
+      "title": "WP-P35-06 \u2014 Tenant placement routing",
+      "status": "**Accepted, not started** \u2014 authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a77.1, **generalized by \u00a78.4**",
+      "sha256": "923d704e61c09b196c028ffb1cddda3a4a9682d5b12e33843886508103bff213",
+      "bytes": 7158
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
