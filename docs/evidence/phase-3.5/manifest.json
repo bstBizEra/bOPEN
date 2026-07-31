@@ -1,5 +1,5 @@
 {
-  "phase": "Phase 3.5 \u2014 Runtime Realization",
+  "phase": "Phase 3.5 — Runtime Realization",
   "work_package_id": "BOPEN-P35-001",
   "deliverable_scope": "WP-P35-01 (D-01..D-05), WP-P35-02 (D-06, D-07), WP-P35-03 (D-08)",
   "status": "MAKER_SUBMISSION_AWAITING_VERIFICATION",
@@ -44,13 +44,13 @@
       "isolation": 20,
       "governance": 10
     },
-    "note": "Pass count is an input to admissibility, not a verdict (EBIV \u00a74). The mutation probes below are what establish that these assertions can fail."
+    "note": "Pass count is an input to admissibility, not a verdict (EBIV §4). The mutation probes below are what establish that these assertions can fail."
   },
   "checks": {
     "repository_validation": "PASS",
     "clean_room": "PASS",
     "evidence_anchors": "PASS",
-    "gitleaks": "PASS \u2014 no leaks across 227 commits"
+    "gitleaks": "PASS — no leaks across 227 commits"
   },
   "admissibility_self_assessment": {
     "R1_executed_not_simulated": true,
@@ -65,7 +65,7 @@
       "R4": "Cross-tenant read, cross-tenant write, unset context, unknown tenant, audit mutation, and four database constraints each carry a negative probe. Three schema mutations recorded in mutation-probes.json.",
       "R5": "With BOPEN_DATABASE_URL unset the isolation suite fails rather than skipping; verified before the database was provisioned."
     },
-    "caveat": "This is the Maker's self-assessment. Under EBIV \u00a73 it carries no verdict weight. It is recorded so a verifier can check the claim rather than reconstruct it."
+    "caveat": "This is the Maker's self-assessment. Under EBIV §3 it carries no verdict weight. It is recorded so a verifier can check the claim rather than reconstruct it."
   },
   "acceptance_criteria": {
     "A-01_isolation_enforced_by_database": "met",
@@ -73,7 +73,7 @@
     "A-03_cross_tenant_write_refused": "met",
     "A-04_force_rls_effective_against_owner": "met",
     "A-05_evidence_executed_not_simulated": "met",
-    "A-06_migration_reversible": "MET \u2014 full round trip executed on c88c7bbe5475: apply -> rollback -> compensate -> re-apply -> 217/217. Closing it uncovered three defects: --apply was not idempotent (no ledger), the rollback was not round-trippable without data compensation, and the companion-suffix exclusion defect recurred a third time.",
+    "A-06_migration_reversible": "MET — full round trip executed on c88c7bbe5475: apply -> rollback -> compensate -> re-apply -> 217/217. Closing it uncovered three defects: --apply was not idempotent (no ledger), the rollback was not round-trippable without data compensation, and the companion-suffix exclusion defect recurred a third time.",
     "A-07_evidence_anchoring_machine_emitted": "met"
   },
   "roles": {
@@ -82,34 +82,61 @@
       "Codex Agent IDE",
       "Gemini / Antigravity"
     ],
-    "ballots_cast": 0,
+    "ballots_cast": 63,
     "quorum_required": 2,
-    "quorum_status": "UNREACHABLE \u2014 verifier seats stood down 2026-07-30",
-    "quorum_note": "The three verifier seats (Codex, Gemini, Kimi) were stood down by the operator on 2026-07-30 after none picked up its handoff. Under BOPEN-GOV-EBIV-001 \u00a76.3 fewer than two admissible ballots escalates to the Completion Authority and never auto-passes, so this changes only the reason the quorum is unmet \u2014 from awaiting ballots to unreachable. The decision now sits with the operator acting as Completion Authority on a zero-verifier record. Status remains IMPLEMENTED_UNVERIFIED; standing verifiers down does not verify anything.",
+    "quorum_status": "PARTIAL - quorum is per candidate, not per phase",
+    "quorum_note": "Corrected 2026-08-01. The previous value said UNREACHABLE - verifier seats stood down 2026-07-30 and ballots_cast 0. Both became false when Codex cast 14 ballots (0d12332) and Gemini cast 49 (adc97fc). Quorum is a property of a candidate commit, not of a phase: WP-P35-04 holds it with codex and gemini; WP-P35-01, 02 and 03 have gemini alone and escalate to the Completion Authority under EBIV 6.3, which never auto-passes. check_ballot_attribution.py counted per phase until fbd8a99 and reported this as 2 of 2.",
     "seats_issued": {
       "V1_Codex": "reproducibility and privilege",
       "V2_Gemini": "contract and architecture conformance",
-      "V3_Kimi": "cross-artifact consistency"
+      "V3_Kimi": "STOOD DOWN 2026-08-01 - Kimi unavailable; seat not filled"
     },
-    "escalated_to": "Operator, as Completion Authority (EBIV \u00a76.3)",
+    "escalated_to": "Operator, as Completion Authority (EBIV §6.3)",
     "handoffs_retained": [
       "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md"
-    ]
+    ],
+    "quorum_per_candidate": {
+      "WP-P35-01": {
+        "verifiers": [
+          "gemini"
+        ],
+        "quorum_met": false
+      },
+      "WP-P35-02": {
+        "verifiers": [
+          "gemini"
+        ],
+        "quorum_met": false
+      },
+      "WP-P35-03": {
+        "verifiers": [
+          "gemini"
+        ],
+        "quorum_met": false
+      },
+      "WP-P35-04": {
+        "verifiers": [
+          "codex",
+          "gemini"
+        ],
+        "quorum_met": true
+      }
+    }
   },
   "known_gaps": [
     "Findings F-4 through F-7 of the Phase 3 review remain open. They are entitlement-module defects outside WP-P35-01 scope and are not addressed here.",
-    "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing; not corrected by this work package.",
+    "Migrations 001 and 002 have no rollback scripts, contrary to AGENTS.md §14. Pre-existing; not corrected by this work package.",
     "Authorization: Bearer is not enforced by the HTTP surface. HTTP_HEADER_SPEC.md makes it mandatory but no issuer exists (WP-P35-03). An unverified bearer token is deliberately not accepted either.",
     "HTTP_HEADER_SPEC.md contradicts itself: X-Tenant-ID is described as a UUID while its own example is tnt_<uuid>. Both forms are accepted and normalised; the contradiction needs a decision.",
-    "PlatformKernelService remains as a parallel in-memory path superseded by the repository-backed one. Removing it in this increment would have exceeded AGENTS.md \u00a715. Recorded as debt.",
+    "PlatformKernelService remains as a parallel in-memory path superseded by the repository-backed one. Removing it in this increment would have exceeded AGENTS.md §15. Recorded as debt.",
     "The audit write is not in the same transaction as the authorization decision. Acceptable while decisions are not persisted; a defect once they are.",
     "MUT-J showed that test_a_token_signed_by_an_unknown_key_is_refused passed on the signature check alone and did not isolate the kid control. Fixed by adding an isolating test; recorded because it proves the probe set was not exhaustive.",
-    "sid is set to the context identifier because Phase 1 has no authentication session distinct from the context. A divergence from BOPEN-IDP-001 \u00a712.2 intent, referred to Kimi for a ruling.",
+    "sid is set to the context identifier because Phase 1 has no authentication session distinct from the context. A divergence from BOPEN-IDP-001 §12.2 intent, referred to Kimi for a ruling.",
     "jti is emitted but never checked; there is no replay cache. A captured token is reusable within its five-minute lifetime.",
     "Key rotation is supported by kid-based resolution but no test exercises two live keys.",
     "Migration 003's rollback is not round-trippable alone: dropping CHECK constraints admits rows that then block re-application. Six such rows were committed during the observed rollback window. Mitigated by 003_phase1_context_audit.compensate.sql, which DELETES rows and refuses to run without BOPEN_DB_NON_PRODUCTION=1.",
-    "Migrations 001 and 002 still have no rollback scripts, contrary to AGENTS.md \u00a714. Pre-existing and now visible in `db_bootstrap --status` as NO ROLLBACK.",
+    "Migrations 001 and 002 still have no rollback scripts, contrary to AGENTS.md §14. Pre-existing and now visible in `db_bootstrap --status` as NO ROLLBACK.",
     "13 of 16 schemas in contracts/schemas/ have no test validating a real instance against them. Only tenant-context, entitlement-decision and usage-metered-event do. This is the F-4 defect class unaddressed at scale: the contract suite opens six Phase 3 schemas and asserts things about the schema documents, never about an instance.",
     "No production code path reads or writes any of the five tables migration 002 created. The tables are correct and unused; the entitlement module still holds all state in memory.",
     "RateLimitDecision produces 9 validation errors against its frozen schema, not 5: five required properties missing plus four forbidden by additionalProperties:false. current_rate is a semantic inversion of remaining, not a rename.",
@@ -141,7 +168,7 @@
     },
     {
       "id": "WP-P35-03",
-      "title": "Context access token (Ed25519, BOPEN-IDP-001 \u00a712)",
+      "title": "Context access token (Ed25519, BOPEN-IDP-001 §12)",
       "commit_oid": "767cb8143fa296f8ef92c7ea1be21dd376c0fe9f",
       "tree_oid": "f4859ff001d5ee926df7e2f8127baaf63d8d761c",
       "record": "docs/evidence/phase-3.5/wp-p35-03-maker-submission.md"
@@ -155,7 +182,7 @@
     },
     {
       "id": "WP-P35-01 / migration 004",
-      "title": "Tenant identity policy alignment \u2014 closes a demonstrated cross-family isolation defect",
+      "title": "Tenant identity policy alignment — closes a demonstrated cross-family isolation defect",
       "commit_oid": "01ebc8716fd226b3f554eaf8de1625d70ab9a045",
       "tree_oid": "3db1dcadb7efa4da69ab06d643e4c8681e2392b4",
       "record": "docs/evidence/phase-3.5/maker-submission.md"
