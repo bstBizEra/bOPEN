@@ -22,7 +22,9 @@ Persistence on PostgreSQL with enforced row-level isolation, kernel HTTP surface
 context token, API gateway and enterprise IdP integration. Turns the kernel from an
 in-process model into a service that satellite products can call.
 
-Inserted 2026-07-30 under `BOPEN-P35-001`, pending `DEC-P35-RUNTIME`.
+Inserted 2026-07-30 under `BOPEN-P35-001`. `DEC-P35-RUNTIME` approved 2026-07-31, so
+implementation is authorized. `WP-P35-01`..`WP-P35-04` are implemented and unverified;
+`WP-P35-05` is blocked pending the authentication-boundary decisions.
 
 ## Phase 4 — Common business foundation and first product packs
 

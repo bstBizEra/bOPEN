@@ -23,9 +23,13 @@
 
 ## Executive Overview
 
-bOPEN is structured across **5 Sequential Strategic Phases** to ensure absolute clean-room separation, multi-tenant security, and contract-first integrity:
+bOPEN is structured across **6 sequential strategic phases** to ensure absolute clean-room separation, multi-tenant security, and contract-first integrity:
 
-$$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)} \longrightarrow \text{Phase 2 (Membership/SSO)} \longrightarrow \text{Phase 3 (Entitlement/Capabilities)} \longrightarrow \text{Phase 4 (Foundations/Products)}$$
+$$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)} \longrightarrow \text{Phase 2 (Membership/SSO)} \longrightarrow \text{Phase 3 (Entitlement/Capabilities)} \longrightarrow \text{Phase 3.5 (Runtime Realization)} \longrightarrow \text{Phase 4 (Foundations/Products)}$$
+
+> **Corrected 2026-07-31.** This overview read "5 Sequential Strategic Phases" and omitted
+> Phase 3.5 from the chain, having not been updated when 3.5 was inserted on 2026-07-30. The
+> count is six.
 
 ---
 
@@ -91,8 +95,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 ---
 
 ### Phase 3.5 — Runtime Realization *(inserted 2026-07-30)*
-**Authorization**: **PROPOSED** — [`BOPEN-P35-001`](../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md), pending [`DEC-P35-RUNTIME`](../decisions/DEC-P35-RUNTIME.md)
-**Verification**: not started
+**Authorization**: **AUTHORIZED 2026-07-31** — [`DEC-P35-RUNTIME`](../decisions/DEC-P35-RUNTIME.md) approved (Option C); [`BOPEN-P35-001`](../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md) bound as the implementation plan
+**Verification**: **IMPLEMENTED_UNVERIFIED** — `WP-P35-01`..`WP-P35-04` are implemented with an executed suite (414/414 against PostgreSQL, plus 31 gateway tests), and **zero ballots are recorded**. `WP-P35-05` is not started and is blocked by `D-P35-011`..`D-P35-014`
 
 * **Objective**: Convert the specification model into a running multi-tenant service. `BOPEN-ARCH-PLAN-001` §2 binds a five-layer production blueprint; four of those five layers currently have no implementation.
 * **Rationale**: Phase 4 satellite products must call the kernel across a network boundary. On the current baseline they could only `import kernel_core` in-process, giving each product its own copy of tenant, membership and entitlement state — which would make the kernel a shared library rather than an isolation boundary.
@@ -100,8 +104,8 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
   1. **WP-P35-01 Persistence & tenant-scoped session layer** — psycopg3, `SET LOCAL app.current_tenant_id` per transaction, RLS conformance executed against a live PostgreSQL instance.
   2. **WP-P35-02 Kernel HTTP surface** — FastAPI + Pydantic v2 over `contracts/schemas/`.
   3. **WP-P35-03 Signed context token** — `sub`, `tid`, `mid`, `roles`, `scopes`; active context survives a process boundary.
-  4. **WP-P35-04 API gateway** — Hono + Zod bound to `HTTP_HEADER_SPEC.md`.
-  5. **WP-P35-05 Enterprise IdP bridge** — replace the simulated SSO surface with BoxyHQ Jackson.
+  4. **WP-P35-04 API gateway** — Hono + Zod bound to `HTTP_HEADER_SPEC.md`. Implemented 2026-07-31 in `apps/gateway`; see [`EVD-P35-04-MAKER`](../evidence/phase-3.5/wp-p35-04-maker-submission.md).
+  5. **WP-P35-05 Enterprise IdP bridge** — replace the simulated SSO surface with BoxyHQ Jackson. **Blocked** pending `D-P35-011`..`D-P35-014`.
 * **Deferred**: Go event microservices (blueprint layer 5). Not cancelled; revisited when metering throughput is measured rather than projected.
 
 ---

@@ -181,8 +181,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "5938de580826d0bd64eac347892926a5f83a49b7c550f41d862b9c11ae96da2f",
-      "bytes": 11160
+      "sha256": "1e89bd077b9a9e54fcf70bc1ed2f81c03bb30c34d7a8864a70add591e8b12c76",
+      "bytes": 11882
     },
     {
       "path": "docs/01-product/principles.md",
@@ -202,8 +202,8 @@
       "path": "docs/01-product/roadmap.md",
       "title": "Strategic Roadmap",
       "status": "",
-      "sha256": "36358e7f4429d3bd4616810a43ef9a42e22719b8f577fa827da547e3ee8fecff",
-      "bytes": 1199
+      "sha256": "d3fb60789c8ec57dcbe7fb4331ba78ecbf5de6bec92ade26247885311104939b",
+      "bytes": 1371
     },
     {
       "path": "docs/01-product/success-metrics.md",
