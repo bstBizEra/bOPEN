@@ -1,5 +1,31 @@
 # Documentation Changelog
 
+## 2026-08-01 - The last verifier seat is a role conflict, not a dispatch
+
+- Kimi is unavailable, so the second seat on `WP-P35-01`..`03` was re-scoped. **Gemini cannot fill
+  it** — it is already the sole verifier there, and EBIV §3.1 counts sequential verifiers who can
+  read prior verdicts as one. A second Gemini pass adds ballots, not a verifier.
+- **Codex is the only remaining eligible agent, and this was verified rather than assumed.**
+  `git log --format='%an'` over `db.py`, `tokens.py`, `db_bootstrap.py` and their tests returns
+  only `BizEra` and `Claude Opus 5`. Codex appears nowhere, so §3's exclusion — which is on having
+  *authored* an artifact — does not bite. Its maker assignment there is prospective.
+- Raised `DEC-P35-VERIFIER-REASSIGN`: Codex cannot hold maker and verifier on the same package, so
+  one has to give. Recommends Codex verify now and the remediation maker seat return to Claude,
+  who already authored those packages and so creates no new exclusion.
+- The argument is ordering, not preference. **Verification precedes remediation** — you remediate
+  what verification finds. Codex's maker assignment was made on 2026-07-31 when nobody had
+  verified anything, so its remediation scope is currently guesswork; two verifier passes would
+  give it an actual defect list.
+- Recorded why this matters most for `WP-P35-01`: its single existing verifier used the maker's
+  own `test_rls_database_behavior.py` as the `probe_command` for **13 separate ballots**. That
+  establishes the named test passes. It does not establish that anyone tried to break tenant
+  isolation and failed — and disposing that package on §6.3 would leave the platform's primary
+  security property on the thinnest evidence in the repository.
+- Corrected the phase manifest, which still read `ballots_cast: 0` and `quorum_status:
+  UNREACHABLE`. Quorum is now recorded per candidate; Kimi's seat reads stood down rather than
+  pending.
+
+
 ## 2026-08-01 - F-6 reconciled after enumeration, and the Kimi seat re-scoped
 
 - **F-6 updated.** `D-CP-003` enumerated the live catalogue: `pg_policies` reports **27 active

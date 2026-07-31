@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 294,
+  "count": 295,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "ba47a6b099002484c08205ca799c42614ecd2088fb0f23566c845a826e58f523",
-      "bytes": 39826
+      "sha256": "13e3e3cfb2fe14689062e79e4e84c44192072568855f03b245ee197de9213a36",
+      "bytes": 41787
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1242,11 +1242,18 @@
       "bytes": 13837
     },
     {
+      "path": "docs/decisions/DEC-P35-VERIFIER-REASSIGN.md",
+      "title": "DEC-P35-VERIFIER-REASSIGN \u2014 Codex cannot both remediate and verify `WP-P35-01`..`03`",
+      "status": "**Proposed \u2014 awaiting operator ratification**",
+      "sha256": "36da06dc6917b05eec718e2c95a141a35fd4d44fb8328be6573afd9150d819e4",
+      "bytes": 4743
+    },
+    {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "a0dda5add9f04323f754f11b6e113b8759f943da1b0ba51e6b5171c48938c667",
-      "bytes": 6986
+      "sha256": "8fcdf00892c2e136fdae63be0c8e205e1752b2287ac1c6274766a4100290fbd5",
+      "bytes": 7420
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
