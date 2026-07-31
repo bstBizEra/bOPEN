@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 279,
+  "count": 280,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1091,8 +1091,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "3c19a54d3f68f8d37697f6033243f0776434c7543c1ee1a2f11bbb38a18b3b5b",
-      "bytes": 17161
+      "sha256": "b84c1760f0a908b927d07042c68dfd1ce5869d3839d42abf1b6ab9c14a21fa20",
+      "bytes": 19838
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1160,16 +1160,16 @@
     {
       "path": "docs/decisions/DEC-P35-TENANCY-MODEL.md",
       "title": "DEC-P35-TENANCY-MODEL \u2014 Should tenant isolation move from row-level security to database-per-tenant?",
-      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
-      "sha256": "ae2efdfd424b074b22906a6f8646147565c4f00f0ace937eee001ea1517c95a3",
-      "bytes": 8188
+      "status": "**Approved \u2014 Option C adopted 2026-07-31 (see \u00a77)**",
+      "sha256": "cc995f5a2557cee4f3aa5b08971d7f5b58a553f32171564dfe2366f90b836024",
+      "bytes": 10210
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "7384f1f6876a49b43b828cc330c0664d6f89ff223ab89349b5e8956357b85b86",
-      "bytes": 4512
+      "sha256": "5e436436d7a2f16d7273cf391aebbcbf1534a112fa6af511854b32f37d2ce5ba",
+      "bytes": 4904
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1933,6 +1933,13 @@
       "status": "**Accepted and authorized 2026-07-31** \u2014 bound by `DEC-P35-RUNTIME` \u00a78 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`",
       "sha256": "222199bbdb7c338760d33305f8de93d7fdfbb496e463678601a809c577428051",
       "bytes": 9833
+    },
+    {
+      "path": "docs/work-packages/BOPEN-P35-006-SHARD-ROUTING.md",
+      "title": "WP-P35-06 \u2014 Tenant shard routing",
+      "status": "**Accepted, not started** \u2014 authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a77.1",
+      "sha256": "14f4111963ade85ec3b62a836ecf60502c15e1892afbe18179d0dd8dd62ea1d1",
+      "bytes": 5769
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",

@@ -1,5 +1,41 @@
 # Documentation Changelog
 
+## 2026-07-31 - Tenancy model decided: shard for load, keep RLS for isolation
+
+- Raised and ratified `DEC-P35-TENANCY-MODEL` in response to a request to adopt an
+  ERPNext/Frappe-style database-per-tenant model to avoid overloading one database.
+- **Option C adopted:** tenants shard across PostgreSQL instances; row-level security is retained
+  within each shard. `ADR-0005` and `BOPEN-ARCH-001`'s isolation clause stand unchanged. No RLS
+  policy or isolation test is removed.
+- The driver was recorded explicitly as **load, not isolation**, because it changes the answer.
+  Had it been regulatory or blast-radius isolation, database-per-tenant would have been stronger
+  and Security Authority concurrence would have been required.
+- The premise was examined rather than accepted: separate databases do not distribute load —
+  separate *instances* do. Fifty databases on one server share a buffer pool, a WAL writer and a
+  connection limit while adding fifty catalogs, autovacuum targets and migration runs. Load
+  distribution and the isolation mechanism are independent axes, and only the first is about
+  load.
+- Also recorded: Frappe needs a database per site because sites carry structurally different
+  schemas, a constraint bOPEN designed out via versioned capability contracts; and Frappe runs on
+  MariaDB, which the technology matrix rejected for this platform on the ground of weak native
+  RLS.
+- **Clean-room boundary stated:** cloning Frappe source is prohibited by `AGENTS.md` §6 and
+  enforced by `check_clean_room.py`. Independent implementation of the pattern is permitted, and
+  every option assumed it.
+- Option D (RLS by default, dedicated database for named tenants) remains available per case
+  without a further architecture decision, since §8 already permits approved physical isolation.
+- Added `WP-P35-06` specifying shard routing, with the risk stated before any code exists:
+  sharding moves failure from "policy is wrong" to "routing is wrong", and RLS cannot catch a
+  mis-routed tenant because the session is correctly scoped to a tenant with no rows on that
+  shard — a silent wrong answer rather than a refusal. `A-09` and `A-11` therefore require
+  refusal, never an empty result, and `A-14` requires single-shard behaviour to be identical so
+  the change is additive.
+- **Rebalancing is explicitly deferred and named**, so that placement being effectively permanent
+  is a known constraint rather than a later discovery.
+- No contract, migration, specification or production source changed.
+- **Authority:** operator decision transcribed by Claude (agent, Motor role).
+  `execution_authority: false`; `approval_authority: false`.
+
 ## 2026-07-31 - WP-P35-05 split, and the kernel gains an authentication boundary
 
 - `DEC-P35-IDP-SPLIT` ratified: `WP-P35-05` becomes `05a` (kernel authentication boundary,

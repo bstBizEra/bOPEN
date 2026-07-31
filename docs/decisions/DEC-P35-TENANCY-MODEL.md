@@ -2,7 +2,7 @@
 
 **Decision ID:** `DEC-P35-TENANCY-MODEL`
 **Version:** `1.0.0`
-**Status:** **Proposed — decision request raised under `AGENTS.md` §16**
+**Status:** **Approved — Option C adopted 2026-07-31 (see §7)**
 **Issued:** 2026-07-31
 **Owner:** Architecture Authority
 **Required concurrence:** Engineering Authority, Security Authority, Data Authority
@@ -128,9 +128,35 @@ decision by measurement rather than argument; the same is available here.
 
 | Field | Value |
 | :--- | :--- |
-| **Decision** | *Pending* |
-| **Approver** | *Not assigned — Architecture Authority* |
-| **Security review** | *Not assigned* |
-| **Agent authority** | Advisory only. `execution_authority: false`, `approval_authority: false` |
+| **Decision** | **ACCEPT — Option C.** Tenants are sharded across PostgreSQL instances; row-level security is retained within each shard. `ADR-0005` and `BOPEN-ARCH-001`'s isolation clause stand unchanged |
+| **Driver recorded** | **Load and scale headroom** — not regulatory or blast-radius isolation. This matters: had the driver been isolation, Option B would have been stronger and Security Authority concurrence would have been required |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — acting as Architecture Authority |
+| **Decision timestamp** | 2026-07-31 |
+| **Security review** | Not separately required. Option C **retains** every existing isolation control and adds no new trust boundary inside a shard. The routing layer it introduces is a new *correctness* surface, which §7.2 addresses |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+Option D remains available per case without a further architecture decision, because
+`AGENTS.md` §8 already permits *"explicit tenant ownership field or approved physical
+isolation"*. A tenant needing its own database can be placed on a single-tenant shard.
+
+Option B is **not** adopted. Nothing in this record retires `ADR-0005`, amends `BOPEN-ARCH-001`,
+or authorizes removing an isolation policy or test.
+
+### 7.1 What this authorizes
+
+Implementation of tenant→shard routing under a new work package, `WP-P35-06`. No migration is
+altered. No RLS policy is removed. The 38 isolation tests keep running unchanged, and are now
+required to run **per shard**.
+
+### 7.2 The risk this introduces, stated before any code exists
+
+Sharding moves a class of failure from "policy is wrong" to "routing is wrong". A tenant whose
+requests reach the wrong shard is a **tenant isolation failure** — precisely what this platform
+exists to prevent — and row-level security cannot catch it, because within the wrong shard the
+session is correctly scoped to a tenant that has no data there. Silent wrong answers, not
+refusals.
+
+This is why implementation is specified before it is started, and why `WP-P35-06`'s acceptance
+criteria require that mis-routing be *impossible* rather than *unlikely*.
 
 Nothing in this record changes a contract, migration, specification or production source.
