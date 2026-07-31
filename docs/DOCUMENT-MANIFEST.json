@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 292,
+  "count": 293,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1165,6 +1165,13 @@
       "bytes": 12235
     },
     {
+      "path": "docs/decisions/DEC-P35-AUTH-CLOSURE-RESEARCH.md",
+      "title": "DEC-P35-AUTH-CLOSURE-RESEARCH \u2014 External standards evidence for `AUTH-D1` and `AUTH-D3`",
+      "status": "Advisory annex \u2014 informs disposition, decides nothing",
+      "sha256": "5a6e4bdc66519e371d572025808a3966f1e22bb59598b56347398e72833e4151",
+      "bytes": 9512
+    },
+    {
       "path": "docs/decisions/DEC-P35-AUTH-CLOSURE.md",
       "title": "DEC-P35-AUTH-CLOSURE - Close the remaining kernel authentication paths",
       "status": "Proposed - Codex technical recommendation; authority disposition pending",
@@ -1231,8 +1238,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "3ca57313c838aeaa1afe8240bbe6ce9482cbbc63b6fc8e0cde6b37086fbc1e7f",
-      "bytes": 6360
+      "sha256": "6b135a92881ecba69abc8685b5016b34d34b37a19236723ce7d1bd02e7b4a9cc",
+      "bytes": 6822
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
