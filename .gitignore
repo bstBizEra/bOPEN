@@ -55,3 +55,11 @@ graphify-out/
 /.swarm/
 /.codex/
 /.gemini/
+
+# Transient upstream documents fetched by research tooling into the working tree.
+# AGENTS.md §6 prohibits committing upstream source outside research/upstream/; these
+# patterns make that prohibition unbreakable by accident rather than relying on care.
+/*.html
+/*.pdf
+/*.txt
+!/README.txt
