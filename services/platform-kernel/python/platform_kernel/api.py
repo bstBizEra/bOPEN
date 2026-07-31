@@ -82,6 +82,7 @@ from kernel_core.types import (
     DecisionResult,
 )
 from platform_kernel import repositories as repo
+from platform_kernel import subject_assertion
 from platform_kernel import tokens
 from platform_kernel.db import DatabaseNotConfiguredError
 
@@ -381,6 +382,67 @@ def require_tenant_hint(
             detail="X-Tenant-ID is mandatory (HTTP_HEADER_SPEC.md)",
         )
     return normalise_id(x_tenant_id, "X-Tenant-ID")
+
+
+def _authenticated_principal(assertion: Optional[str]) -> Optional[str]:
+    """Return the principal an external authenticator vouched for, or None if none is configured.
+
+    `WP-P35-05a`. The order of these checks is the security property, so it is spelled out:
+
+    1. **A partial configuration refuses.** Some settings present and others missing is an
+       operator error, and the safe reading of an error concerning authentication is that
+       authentication was intended. Treating it as "no authenticator" would silently open the
+       unauthenticated path on a deployment that was trying to close it.
+    2. **A configured authenticator cannot be overridden.** If one is configured, an assertion is
+       required, and `BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION` is not consulted. A
+       development escape that can disable a configured authenticator is not a boundary; it is a
+       switch, and it would be the first thing set on the day something is hard to debug.
+    3. **Only with no authenticator at all** does the caller fall through to the pre-existing
+       flag-guarded path, which behaves exactly as before.
+
+    Returns the normalised principal identifier, so the caller compares like with like.
+    """
+    if subject_assertion.configuration_is_partial():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "context issuance is disabled",
+                "reason": (
+                    "the subject-assertion authenticator is partially configured, so this "
+                    "kernel cannot tell whether it is meant to authenticate callers"
+                ),
+                "remediation": (
+                    f"set all of {subject_assertion.ENV_ASSERTION_ISSUER}, "
+                    f"{subject_assertion.ENV_ASSERTION_PUBLIC_KEY} and "
+                    f"{subject_assertion.ENV_ASSERTION_AUDIENCE}, or none of them"
+                ),
+            },
+        )
+
+    if not subject_assertion.authenticator_configured():
+        return None
+
+    if not assertion or not assertion.strip():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="X-Subject-Assertion is required by this deployment",
+        )
+
+    try:
+        claims = subject_assertion.verify_subject_assertion(assertion.strip())
+    except subject_assertion.AssertionVerificationError:
+        # The reason belongs in an audit record, not in a response an attacker can use to refine
+        # a forgery. Mirrors the context-token path above.
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="assertion is not valid"
+        )
+    except subject_assertion.AssertionNotConfiguredError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="kernel authentication is not configured",
+        )
+
+    return normalise_id(claims.principal_id, "assertion subject")
 
 
 def _bearer_token(authorization: Optional[str]) -> Optional[str]:
@@ -733,6 +795,9 @@ def establish_context(
     body: EstablishContextRequest,
     tenant_hint: Annotated[str, Depends(require_tenant_hint)],
     correlation_id: Annotated[str, Depends(require_correlation_id)],
+    x_subject_assertion: Annotated[
+        Optional[str], Header(alias="X-Subject-Assertion")
+    ] = None,
 ) -> EstablishContextResponse:
     """Establish an active context for a principal in a tenant.
 
@@ -744,7 +809,9 @@ def establish_context(
     membership that belongs to a different tenant gets the same refusal as one naming a
     membership that does not exist.
     """
-    if not unauthenticated_identity_assertion_permitted():
+    asserted_principal = _authenticated_principal(x_subject_assertion)
+
+    if asserted_principal is None and not unauthenticated_identity_assertion_permitted():
         _refuse_unauthenticated(
             "context issuance",
             "issuing a context here would grant an owner bearer token to anyone who knows a "
@@ -752,6 +819,15 @@ def establish_context(
         )
 
     principal_id = normalise_id(body.principal_id, "principal_id")
+
+    if asserted_principal is not None and asserted_principal != principal_id:
+        # The authenticator vouched for one principal and the body names another. This is the
+        # whole point of the boundary: without it, a caller holding a valid assertion for
+        # themselves could mint a context for anyone.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="assertion does not vouch for this principal",
+        )
     membership_id = normalise_id(body.membership_id, "membership_id")
 
     try:
