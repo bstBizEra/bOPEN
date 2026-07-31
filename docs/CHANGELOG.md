@@ -1,5 +1,42 @@
 # Documentation Changelog
 
+## 2026-07-31 - PRD research for the hybrid-placement plan
+
+- Added `BOPEN-PRD-P35-002`, requirements for tenant privacy and platform observability under
+  the hybrid-placement architecture. Additive to `BOPEN-PRD-P35-001`, which addressed runtime
+  assurance of the single-database kernel and remains valid.
+- Five findings established by inspection at `arch-baseline/2026-07-31-rls-option-c`, then
+  **queried against the live PostgreSQL instance** rather than left as readings of the SQL:
+  - **F-1**: **12** foreign keys reference `tenants`, `principals`, `memberships` or
+    `active_contexts` and cannot survive a plane split, because PostgreSQL cannot enforce a
+    foreign key across databases. Reading the migrations had given five; the database reported
+    twelve. The reproduction query is included in the PRD.
+  - **F-2**: `principals_email_key` makes email globally unique, forcing `principals` into the
+    control plane — which means the control plane necessarily holds personal data. As drafted,
+    `DEC-P35-CONTROL-PLANE` §4 forbids exactly that. The prohibition needs refining before
+    ratification, not after.
+  - **F-3**: `audit_events` carries `action`, `resource_type` and `resource_id` — business
+    identifiers. Platform security monitoring wants them central; tenant privacy wants them
+    tenant-side. Both defensible, incompatible, undecided.
+  - **F-4**: `usage_meter_balances.tenant_id` is `character varying` against `tenants.id` `uuid`,
+    with 0 foreign keys. Metering is already plane-portable by accident.
+  - **F-5**: nothing in the schema records placement. The new load-bearing concept does not exist
+    in the model.
+- Ten requirements with removal probes, and an acceptance matrix where each proposition names the
+  mutation that must break it. `PRD-P35B-CRED-001` is the one that makes privacy structural: the
+  control plane holds no credential for any tenant database, so it cannot read business rows even
+  if asked.
+- **Recorded a false negative rather than hiding it.** The first verification query returned zero
+  foreign keys and looked like a refutation of F-1. The cause was
+  `information_schema.constraint_column_usage` filtering by table ownership under the
+  unprivileged application role. Re-run against `pg_catalog` it returned twelve. A PRD whose
+  findings were never executed is what EBIV R1 exists to refuse, so both the undercount and the
+  false negative are in the provenance section.
+- Delivery sequence puts Security and Privacy review of `DEC-P35-CONTROL-PLANE` first and
+  blocking, because F-2 and F-3 must be resolved there rather than in code.
+- No contract, migration, specification or production source changed. The PRD carries no
+  implementation authority.
+
 ## 2026-07-31 - Tenant privacy: hybrid placement, and a boundary for what the platform may see
 
 - Captured `arch-baseline/2026-07-31-rls-option-c` at `9e26c0b` **before** changing the

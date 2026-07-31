@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 282,
+  "count": 283,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -239,6 +239,13 @@
       "status": "Proposed - assists `BOPEN-P35-001`; no implementation authority",
       "sha256": "9a82d59f8655d2c903a8f1dae58201bbea02436a7de0b89a242a4a579a7ee989",
       "bytes": 20611
+    },
+    {
+      "path": "docs/02-requirements/BOPEN-PRD-P35-002.md",
+      "title": "BOPEN-PRD-P35-002 \u2014 Tenant Privacy and Platform Observability Product Requirements",
+      "status": "Proposed \u2014 assists `WP-P35-06`; no implementation authority",
+      "sha256": "bfca33da76eee4682be7d79813bde8e4b50322260e84a9ccaee4a7c604a22855",
+      "bytes": 17789
     },
     {
       "path": "docs/02-requirements/BOPEN-REQ-001-DRAFT.md",
@@ -1098,8 +1105,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "8bd281ba48be97679ec7833e93f3de1727357eaffb2da633e9ba737f837ed34d",
-      "bytes": 22966
+      "sha256": "c2bb7e57b4e7263c457737466750d6548b0581dd73a14d0d8a8b2a796693570e",
+      "bytes": 25709
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
