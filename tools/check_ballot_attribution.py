@@ -130,13 +130,16 @@ def manifest_maker(phase_dir: Path) -> str | None:
     return maker.split()[0].lower() if maker else None
 
 
-def check_phase(phase_dir: Path, register: dict) -> tuple[list[Finding], int, set[str]]:
+def check_phase(
+    phase_dir: Path, register: dict
+) -> tuple[list[Finding], int, set[str], dict[str, set[str]]]:
     ballots_path = phase_dir / "ballots.jsonl"
     findings: list[Finding] = []
     countable: set[str] = set()
+    by_candidate: dict[str, set[str]] = {}
 
     if not ballots_path.is_file():
-        return findings, 0, countable
+        return findings, 0, countable, by_candidate
 
     lines = ballots_path.read_text(encoding="utf-8").splitlines()
     maker = manifest_maker(phase_dir)
@@ -236,8 +239,10 @@ def check_phase(phase_dir: Path, register: dict) -> tuple[list[Finding], int, se
                 f"({author_name} <{author_email}>); acceptable for history, not for new work."
             )
         countable.add(agent_id)
+        # Quorum is a property of a candidate, not of a phase. See the note in main().
+        by_candidate.setdefault(ballot.get("commit_oid", "<none>"), set()).add(agent_id)
 
-    return findings, total, countable
+    return findings, total, countable, by_candidate
 
 
 def main() -> int:
@@ -265,23 +270,37 @@ def main() -> int:
 
     all_findings: list[Finding] = []
     grand_total = 0
+    unmet: list[str] = []
 
     for phase_dir in phase_dirs:
-        findings, total, countable = check_phase(phase_dir, register)
+        findings, total, countable, by_candidate = check_phase(phase_dir, register)
         if total == 0 and not findings:
             continue
         grand_total += total
         all_findings.extend(findings)
-        quorum = len(countable)
-        print(
-            f"- {phase_dir.name}: {total} ballot(s), "
-            f"{quorum} attributable verifier(s) toward a quorum of 2"
-        )
-        if quorum < 2:
+        print(f"- {phase_dir.name}: {total} ballot(s), {len(countable)} distinct verifier(s)")
+
+        # Quorum is counted PER CANDIDATE COMMIT, not per phase.
+        #
+        # EBIV §3 assigns roles per work package and §6.1 requires two verifiers to confirm a
+        # proposition. A phase-level count says "2 of 2" when one package has two verifiers and
+        # three have one each — which is exactly what this file reported on 2026-08-01, and the
+        # false reading propagated into two agent reports before anyone checked by hand.
+        # A check that reports a weaker property than the rule it enforces is worse than no
+        # check, because its PASS is quoted as if it were the rule.
+        for candidate in sorted(by_candidate):
+            verifiers = by_candidate[candidate]
+            short = candidate[:12] if candidate != "<none>" else candidate
             print(
-                f"    quorum NOT MET — EBIV §6.1 requires two independent verifiers. "
-                f"A confirmation cannot be realized."
+                f"    candidate {short}: {len(verifiers)} verifier(s) "
+                f"[{', '.join(sorted(verifiers))}] toward a quorum of 2"
             )
+            if len(verifiers) < 2:
+                print(
+                    f"      quorum NOT MET — EBIV §6.1 requires two independent verifiers. "
+                    f"A confirmation cannot be realized for this candidate."
+                )
+                unmet.append(f"{phase_dir.name}/{short}")
 
     if grand_total == 0:
         print("- no ballots recorded yet")
@@ -299,6 +318,22 @@ def main() -> int:
         return 1
 
     print("\nPASS — every ballot binds to a registered agent distinct from the Maker.")
+
+    # PASS here means *attributable*, and nothing more. A quorum shortfall is not an attribution
+    # failure — EBIV §6.3 makes it an escalation to the Completion Authority, which is a state
+    # rather than an error — so it must not change the exit code. But it must not be silent
+    # either: this line exists because the previous phase-level summary was twice quoted as
+    # "quorum met" when three of four candidates had a single verifier.
+    if unmet:
+        print(
+            f"\nQUORUM SHORTFALL — {len(unmet)} candidate(s) below two verifiers: "
+            f"{', '.join(unmet)}"
+        )
+        print(
+            "This PASS attests attribution only. It does not attest quorum, and must not be "
+            "quoted as though it did. EBIV §6.3: fewer than two admissible ballots escalates to "
+            "the Completion Authority and never auto-passes."
+        )
     return 0
 
 

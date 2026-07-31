@@ -1,5 +1,37 @@
 # Documentation Changelog
 
+## 2026-08-01 - The quorum check was counting the wrong thing
+
+- Gemini cast 49 ballots (`adc97fc`, author `gemini@bst.local`): 14 on `WP-P35-04` and the first
+  ever on `WP-P35-01`, `02` and `03`. Verified from repository objects — anchors match the
+  submissions, the proposition IDs resolve to `invariant-traceability.csv`, and the 14 gateway
+  probes are independently written rather than reruns of the maker's suite.
+- **`check_ballot_attribution.py` counted verifiers per phase, not per work package.** It
+  reported *"2 attributable verifier(s) toward a quorum of 2 — PASS"* while three of four
+  candidates had a single verifier each. EBIV §3 assigns roles per work package and §6.1 requires
+  two verifiers to confirm a proposition, so quorum is a per-candidate property.
+- The false reading propagated into **two** agent reports before anyone checked by hand, both
+  claiming "2-of-2 quorum MET" across all four packages. Neither agent was wrong to say it — the
+  tool told them. **A check that reports a weaker property than the rule it enforces is worse
+  than no check, because its PASS gets quoted as if it were the rule.**
+- Fixed: quorum is now counted and reported per candidate commit. Corrected output —
+  `88e6ed2` (`WP-P35-04`) has two verifiers and holds quorum; `6ce069e`, `a969bb5` and `767cb81`
+  have one each and are recorded `quorum NOT MET`.
+- The exit code deliberately stays `0` on a shortfall. Attribution is what this tool attests, and
+  EBIV §6.3 makes a shortfall an escalation to the Completion Authority rather than an error. But
+  the summary now names every short candidate and states that the PASS attests attribution only.
+- This is the same defect class as `check_evidence_anchors.py` verifying that an OID *resolves*
+  rather than that it names the work it claims. Both are the enforcement mechanisms the whole
+  governance model rests on, and both check something weaker than the rule.
+- Quality note recorded rather than smoothed: 32 of Gemini's 49 ballots use the maker's own test
+  files as `probe_command`. Following the traceability CSV's named test is legitimate and
+  establishes that the test passes at that commit. It does not establish that an independent
+  agent tried to break the invariant and failed, which is what EBIV §8 means when it says a
+  maker's passing suite carries no verdict weight.
+- 63 ballots, zero refutations, zero abstentions. `P35-04R-15` and `16` — offered by the maker
+  *expecting* refutation — remain unballoted.
+
+
 ## 2026-08-01 - AUTH-D1 disposed and cross-plane RLS dependencies enumerated
 
 - Recorded the operator's acceptance of `AUTH-D1` option 3: every protected endpoint derives

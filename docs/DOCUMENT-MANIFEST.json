@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "35cb1bbf2d3226489e71ef15726d804885c976cfbce076d38e56c3b3906ed6d9",
-      "bytes": 35370
+      "sha256": "77042db1c064dfbd6bd22e26089a57b2aa231ded0f7f783c8fb00a4c422da236",
+      "bytes": 37882
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1357,8 +1357,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "81c692a7a6cf9440de2e3e511d073511de520ef74a430e321b7cf74f814b0577",
-      "bytes": 17236
+      "sha256": "24f39cfd25209f1e1dca77ce97a5579e71c689e947ae49be37e6ff4422548a9e",
+      "bytes": 55497
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
