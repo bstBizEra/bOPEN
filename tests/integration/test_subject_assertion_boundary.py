@@ -386,5 +386,94 @@ class SubjectAssertionBoundaryTests(unittest.TestCase):
         self.assertEqual(response.status_code, 503)
 
 
+class ResidualDefectsClosed(SubjectAssertionBoundaryTests):
+    """The four defects the 2026-07-31 sweep found and Codex confirmed still reproducible.
+
+    Each was disclosed in `EVD-P35-05A-MAKER-R2` §6.3 as open. These close three of them and
+    bound the fourth.
+    """
+
+    def test_a_malformed_pem_refuses_rather_than_crashing(self) -> None:
+        """Was 500. A 500 says the kernel broke; a 503 says this deployment is misconfigured."""
+        for bad in (
+            "-----BEGIN PUBLIC KEY-----\nnot base64\n-----END PUBLIC KEY-----",
+            "not-a-pem-at-all",
+        ):
+            with self.subTest(key=bad[:24]):
+                self._configure(key=bad)
+                response = self.client.post(
+                    "/v1/contexts",
+                    json={
+                        "principal_id": str(uuid.uuid4()),
+                        "membership_id": str(uuid.uuid4()),
+                    },
+                    headers={
+                        "X-Tenant-ID": str(uuid.uuid4()),
+                        "X-Correlation-ID": str(uuid.uuid4()),
+                        "X-Subject-Assertion": _assertion(self.private, str(uuid.uuid4())),
+                    },
+                )
+                self.assertEqual(response.status_code, 503, response.text)
+
+    def test_an_assertion_longer_than_the_ceiling_is_refused(self) -> None:
+        """Codex accepted a 10-year assertion. Every replay minted a fresh context token."""
+        self._configure()
+        with self.assertRaises(subject_assertion.AssertionVerificationError) as caught:
+            subject_assertion.verify_subject_assertion(
+                _assertion(
+                    self.private,
+                    str(uuid.uuid4()),
+                    lifetime_seconds=subject_assertion.MAX_ASSERTION_LIFETIME + 60,
+                )
+            )
+        self.assertEqual(caught.exception.reason, "lifetime_exceeds_ceiling")
+
+    def test_an_assertion_within_the_ceiling_is_accepted(self) -> None:
+        self._configure()
+        claims = subject_assertion.verify_subject_assertion(
+            _assertion(
+                self.private,
+                str(uuid.uuid4()),
+                lifetime_seconds=subject_assertion.MAX_ASSERTION_LIFETIME,
+            )
+        )
+        self.assertIsNotNone(claims.principal_id)
+
+    def test_a_valid_signature_with_a_bad_subject_is_indistinguishable_from_a_bad_signature(
+        self,
+    ) -> None:
+        """The oracle. Two refusals must not differ in what they tell a forger.
+
+        A valid signature carrying a non-UUID `sub` returned 400 and named the field; a forged
+        signature returned 401 and said nothing. The difference told an attacker their signature
+        had been accepted — the single most useful bit of feedback available to them.
+        """
+        self._configure()
+        other, _ = _keypair()
+        headers = {
+            "X-Tenant-ID": str(uuid.uuid4()),
+            "X-Correlation-ID": str(uuid.uuid4()),
+        }
+        body = {"principal_id": str(uuid.uuid4()), "membership_id": str(uuid.uuid4())}
+
+        good_sig_bad_sub = self.client.post(
+            "/v1/contexts",
+            json=body,
+            headers=headers | {"X-Subject-Assertion": _assertion(self.private, "auth0|123")},
+        )
+        bad_sig = self.client.post(
+            "/v1/contexts",
+            json=body,
+            headers=headers | {"X-Subject-Assertion": _assertion(other, str(uuid.uuid4()))},
+        )
+
+        self.assertEqual(good_sig_bad_sub.status_code, 401)
+        self.assertEqual(bad_sig.status_code, 401)
+        self.assertEqual(
+            good_sig_bad_sub.json(), bad_sig.json(),
+            "the two refusals differ, which tells a forger whether the signature was accepted",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -22,6 +22,24 @@ widened into federation without those decisions — see `DEC-P35-IDP-SPLIT` §6.
 Verification discipline is copied from `tokens.py` rather than reinvented, including the two
 rules that matter most: the algorithm is supplied by this module and never read from the token,
 and claims are inspected only after the signature holds.
+
+**PRECONDITION, previously undisclosed.** The authenticator must emit **bOPEN principal
+identifiers** as `sub` — a bare or prefixed UUID. It cannot emit its own subject identifier.
+
+This was not stated anywhere until Codex's sweep surfaced it on 2026-08-01, and it is a real
+constraint on what can be deployed: **every mainstream OIDC provider issues an opaque, non-UUID
+`sub`** (`auth0|1234567890`, a Google numeric id, an Entra object id). None can be pointed at this
+kernel directly.
+
+The gap it implies is `external_identities` — a mapping from `(connection, issuer, subject)` to a
+bOPEN principal. That table does not exist, and creating it needs `D-P35-004`..`D-P35-010`, which
+are unratified. So this precondition is not an oversight to fix here; it is the shape of the hole
+`WP-P35-05b` fills, and it is now written down instead of being rediscovered by whoever tries to
+deploy against a real IdP.
+
+Why it went unrecorded: no HTTP test in `test_subject_assertion_boundary.py` exercises a
+**successful** issuance. Every test asserts a refusal, so nothing ever had to supply a `sub` that
+the kernel would accept.
 """
 
 from __future__ import annotations
@@ -43,6 +61,21 @@ _ALGORITHM = "EdDSA"
 # Matches `tokens.MAX_CLOCK_SKEW`. An assertion is short-lived by design, so leeway is the only
 # thing standing between a correct deployment and spurious refusals on modest clock drift.
 MAX_CLOCK_SKEW = 60
+
+#: Longest assertion lifetime this kernel will honour, in seconds.
+#:
+#: The submission disclosed that `jti` is required but never recorded, so an assertion can be
+#: replayed within its lifetime. It also said "callers should keep assertion lifetimes short" —
+#: which was a request, not a control. Codex measured the consequence on 2026-08-01: an assertion
+#: with `exp - iat` of ten years was accepted, and each replay minted a fresh context token.
+#:
+#: A ceiling bounds the window without needing anywhere to store spent identifiers, which is what
+#: full replay protection would require and what `D-P35-004`..`D-P35-010` currently block. Five
+#: minutes matches the context-token lifetime already in use.
+#:
+#: **This bounds replay. It does not prevent it.** Within five minutes an assertion is still
+#: replayable, and that remains open until there is somewhere to record `jti`.
+MAX_ASSERTION_LIFETIME = 300
 
 MANDATORY_CLAIMS = ("iss", "aud", "sub", "exp", "iat", "jti")
 
@@ -119,7 +152,24 @@ def configuration_is_partial() -> bool:
 
 def _load_key(pem: str) -> Ed25519PublicKey:
     normalised = pem.replace("\\n", "\n").strip()
-    key = load_pem_public_key(normalised.encode("utf-8"))
+    try:
+        key = load_pem_public_key(normalised.encode("utf-8"))
+    except (ValueError, TypeError) as exc:
+        # Found 2026-07-31, confirmed still reproducible by Codex 2026-08-01. `load_pem_public_key`
+        # raises a bare `ValueError` on a malformed PEM, and this call sat outside the `try` in
+        # `verify_subject_assertion`, so the error escaped as a non-`SubjectAssertionError` and the
+        # endpoint returned **500** instead of the designed 503.
+        #
+        # A 500 says "the kernel broke". A 503 says "this deployment is misconfigured". The second
+        # is true and actionable; the first sends an operator looking for a bug that is not there.
+        # A certificate PEM in place of a public key is the most likely operator mistake, and it
+        # was the 500 path.
+        #
+        # The maker's own test could not tell them apart: it asserted `assertRaises(Exception)`,
+        # which passes on `ValueError` as happily as on the designed refusal.
+        raise AssertionNotConfiguredError(
+            f"{ENV_ASSERTION_PUBLIC_KEY} is not a readable PEM public key"
+        ) from exc
     if not isinstance(key, Ed25519PublicKey):
         # `BOPEN-IDP-001` §12.4 mandates asymmetric signing so that a verifier cannot also be an
         # issuer. Accepting another key type here would let a symmetric secret be configured and
@@ -198,6 +248,19 @@ def verify_subject_assertion(token: str) -> SubjectClaims:
             raise AssertionVerificationError(
                 "assertion is not valid", reason=f"non_string_claim:{claim}"
             )
+
+    # Lifetime ceiling. Checked after the signature holds, so an unsigned assertion is never
+    # inspected for its claims.
+    try:
+        lifetime = int(claims["exp"]) - int(claims["iat"])
+    except (TypeError, ValueError):
+        raise AssertionVerificationError(
+            "assertion is not valid", reason="non_numeric_lifetime"
+        )
+    if lifetime > MAX_ASSERTION_LIFETIME:
+        raise AssertionVerificationError(
+            "assertion is not valid", reason="lifetime_exceeds_ceiling"
+        )
 
     return SubjectClaims(
         principal_id=claims["sub"].strip(),

@@ -474,7 +474,21 @@ def _authenticated_principal(assertion: Optional[str]) -> Optional[str]:
             detail="kernel authentication is not configured",
         )
 
-    return normalise_id(claims.principal_id, "assertion subject")
+    # Status-code oracle, found 2026-07-31 and confirmed still reproducible by Codex 2026-08-01.
+    #
+    # `normalise_id` raises 400 with a message naming the field. A bad signature raises 401 with
+    # an opaque body. So the pair distinguished "your assertion verified but its subject is not
+    # UUID-shaped" from "your assertion did not verify" — which tells a forger their signature
+    # was accepted, the single most useful bit of feedback they could receive.
+    #
+    # `P35-05a-10` claims the refusal reason is not disclosed. It was, through the status code
+    # rather than the body.
+    try:
+        return normalise_id(claims.principal_id, "assertion subject")
+    except HTTPException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="assertion is not valid"
+        )
 
 
 def _bearer_token(authorization: Optional[str]) -> Optional[str]:
