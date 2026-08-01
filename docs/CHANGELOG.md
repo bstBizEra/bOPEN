@@ -1,5 +1,34 @@
 # Documentation Changelog
 
+## 2026-08-01 - The first refutation to find a code defect rather than a wording defect
+
+- Codex refuted `P35-05aR3-02` (`e8508b0`): an assertion with `exp − iat = 300.9` returned `201`
+  against a 300-second ceiling, because `int(exp) − int(iat)` truncated both sides before
+  subtracting.
+- **It reproduces only when `iat` is a whole number** — which is what every real identity provider
+  emits. The maker's probe took `iat` from `datetime.now()`, so it was fractional and the defect
+  was invisible from where the maker stood. A verifier constructing the assertion the way an IdP
+  does found it immediately. Measured: 300.9 and 300.99 accepted, 301 refused.
+- RFC 7519 NumericDate is *"a JSON numeric value"*, so fractional seconds are conformant input,
+  not an invented edge case. Fixed with `float`; truncation discarded precision the specification
+  guarantees.
+- **This is the first refutation here that found an implementation defect rather than a wording
+  one.** The previous seven were propositions claiming more than the code did; this time the
+  proposition was right and the code failed to implement it. Evidence the process catches both
+  kinds.
+- `EVD-P35-05A-MAKER-R4` issued at `119f2d8`. `subject_assertion.py` changed, `api.py` did not —
+  so Codex's 21 confirmations, many covering byte-identical `api.py` behaviour, **still do not
+  carry forward.** Ballots bind to a commit.
+- `P35-05aR4-01` is worded to name the two conditions the refuted version left implicit: fractional
+  excess, and integral `iat`.
+- Recorded so the verifier need not repeat it: `P35-05aR3-04` survived Codex's strong attack —
+  equal `401`, identical 35-byte body, identical ordered headers, no log or audit side effects, and
+  **no measurable timing distinction across 220 interleaved samples per path.**
+- 465 tests. Mutation probe: restoring `int()` truncation breaks 3.
+- Also noted: Codex observed one unrelated rate-limit timing flake in the profile-disabled run.
+  Recorded so it is not later mistaken for a regression.
+
+
 ## 2026-08-01 - WP-P35-05a R3 issued; the previous ballots do not carry forward
 
 - `EVD-P35-05A-MAKER-R3` at `e559d1d` (tree `af4cfae`), superseding the R2 candidate Codex

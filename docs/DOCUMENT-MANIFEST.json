@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 299,
+  "count": 300,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "a861f1ba5edee1bae4cf3a6bf198c2e2a96f37fd94b2a7d7f7e53a795d984040",
-      "bytes": 64763
+      "sha256": "65c10648487d29e7cc3cc182fc91de73687cdb974a7712416529f437406d8b18",
+      "bytes": 66802
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1371,8 +1371,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "46117606dd47c290228c391409a4e59acf43b9dceeefc66bb31f2a305c3b018a",
-      "bytes": 91598
+      "sha256": "dc8b2b424a188b85e869f316b611449f4fdedddbf82b9d64a1b84fecc4b6ef5b",
+      "bytes": 107623
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1454,9 +1454,16 @@
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r3.md",
       "title": "EVD-P35-05A-MAKER-R3 \u2014 WP-P35-05a Maker Submission, revision 3 (Kernel Authentication Boundary)",
+      "status": "**REFUTED then SUPERSEDED 2026-08-01** \u2014 Codex refuted `P35-05aR3-02` (`e8508b0`): `int()` truncation let a 300.9s lifetime pass a 300s ceiling. Fixed; ballot [`EVD-P35-05A-MAKER-R4`](wp-p35-05a-maker-submission-r4.md) at `119f2d8\u2026`.",
+      "sha256": "23d7990964e12f264a27703355eaa3e45c1ca412ae684f39a0843f4baf94b692",
+      "bytes": 6398
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md",
+      "title": "EVD-P35-05A-MAKER-R4 \u2014 WP-P35-05a Maker Submission, revision 4 (Kernel Authentication Boundary)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "4bf8c008d33502367561b9941d96787082a0bbe86f0f86c6f172debc11b30338",
-      "bytes": 6233
+      "sha256": "b36d085461d6610f0ac408dc7ed1a37306fe4a0acb863ef791f92b52e1463f1b",
+      "bytes": 6053
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",

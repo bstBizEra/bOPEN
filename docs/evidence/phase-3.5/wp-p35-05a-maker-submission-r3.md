@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-05A-MAKER-R3`
 **Version:** `3.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **REFUTED then SUPERSEDED 2026-08-01** — Codex refuted `P35-05aR3-02` (`e8508b0`): `int()` truncation let a 300.9s lifetime pass a 300s ceiling. Fixed; ballot [`EVD-P35-05A-MAKER-R4`](wp-p35-05a-maker-submission-r4.md) at `119f2d8…`.
 **Issued:** 2026-08-01
 **Supersedes:** [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc…`
 
