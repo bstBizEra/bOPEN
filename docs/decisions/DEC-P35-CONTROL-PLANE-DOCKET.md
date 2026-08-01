@@ -42,7 +42,7 @@ the plane assignment used by every later row.
 | 2 | `D-CP-001` - control-plane personal data | Pending | Bind minimisation and erasure |
 | 3 | `D-CP-002` - audit placement | Pending | Choose placement after P-1 and P-2 |
 | 4 | `D-CP-004` - retention | Pending | Set ceilings and floors after data placement |
-| 5 | `D-CP-005` - consent mechanism for business-content analytics | **NEW 2026-08-01** | Review the mechanism in `DEC-P35-CONTROL-PLANE` §5A.3 before any content is read |
+| 5 | `D-CP-005` - consent mechanism for business-content analytics | **WITHDRAWN 2026-08-01** | Not needed. The requirement is frequency, flow and reports, none of which touch business content (`DEC-P35-CONTROL-PLANE` §5B) |
 
 ### 3.1 `D-CP-001` — Control-plane personal data (F-2)
 
@@ -114,6 +114,11 @@ own database during an incident, on the database that may be compromised.*
 | 2 | Whole record centrally | `resource_id` and `payload` cross; violates §4 rows 2–3; reduces `O-1` from a property to a promise |
 | **3** | **Dual record — authority tenant-side, projection control-plane-side, no `resource_id`, no `payload`** *(recommended)* | Two records to keep consistent; the AUTHZ-001-conformant record lives where `CRED-001` forbids the platform to read it |
 | 4 | 3 plus per-tenant-salted pseudonym of `resource_id` | Recovers cardinality without the value; **requires amending §4**, which forbids hashed field values |
+
+**Recommended: 3 — and now depended upon, not merely preferred.** `DEC-P35-CONTROL-PLANE` §5B.4
+establishes that platform flow analytics needs the *shape* of audit events and not `resource_id`.
+Option 1 (tenant-side only) would make platform-wide flow analysis impossible, so the operator's
+stated requirement selects option 3 on its own.
 
 **Recommended: 3.** It concedes exactly what placement was adopted to protect (`resource_id` names
 the tenant's object) and preserves exactly what placement destroys — cross-tenant visibility,
@@ -199,7 +204,14 @@ this docket cannot supply: whether metering rows are financial records (Finance)
 erasure question bound to `D-CP-001`.
 
 
-### 3.5 `D-CP-005` — Consent mechanism for business-content analytics *(added 2026-08-01)*
+### 3.5 `D-CP-005` — WITHDRAWN 2026-08-01
+
+> Withdrawn the same day it was added. The requirement was clarified as **frequency, flow and
+> reports**, none of which need business content, so no consent mechanism is required and none
+> is being built. `DEC-P35-CONTROL-PLANE` §5B governs. The analysis below is retained only as a
+> record of what business-content analytics *would* have cost.
+
+#### Original text (superseded)
 
 **Disposition already made.** The operator permits business-content analytics for all tenants
 under explicit, revocable, per-tenant **opt-in** consent, default off

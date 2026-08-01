@@ -168,6 +168,58 @@ flow out of tenant boundaries, which is the category §8 already marks as requir
 *choice* is the operator's; the *mechanism* in §5A.3 must be reviewed before implementation.
 Docketed as `D-CP-005`.
 
+## 5B. Correction 2026-08-01 — the requirement is frequency, flow and reports, not content
+
+> **§5A over-scoped the requirement and is narrowed here.** §5A is retained under the extend-only
+> rule and **must not be read as the current disposition**. §5B governs.
+
+### 5B.1 What was actually asked for
+
+*"Frequency data, flow and report."* Not business content. §5A was drafted from a broader reading
+and would have obliged the platform to build consent capture, revocation, provenance tracking and
+retroactive re-derivation — **none of which this requirement needs.**
+
+### 5B.2 All three are already permitted, and none touches business content
+
+| Requirement | Derived from | Business content needed? |
+| :--- | :--- | :--- |
+| **Frequency** — API call volume, feature and capability invocation counts, error rates, quota consumption | `usage_meter_balances`, `usage_outbox`, `rate_limit_counters`, audit outcome counts | **No** |
+| **Flow** — which capabilities follow which, journeys, funnels, drop-off, abandonment | `audit_events` **shape**: `action`, `resource_type`, `occurred_at`, `correlation_id` | **No** |
+| **Report** — platform-wide aggregates, and a tenant's own figures returned to it | the above, aggregated | **No** — §5 tiers 1 and 2 |
+
+Every one sits inside §3 as already drafted. **No amendment to §4 is required, and §5 tier 3 is
+not engaged.**
+
+### 5B.3 What this removes
+
+**All six mechanisms in §5A.3 are withdrawn as unnecessary**: consent record, authority-to-consent
+check, retroactive revocation, per-tenant provenance in derived artifacts, consent disclosure, and
+the default-off consent probe.
+
+`D-CP-005` is **withdrawn**. Business-content analytics is **not** authorized for any tenant, by
+consent or otherwise. If it is ever wanted, §5 tier 3 and §5A remain on the record as the analysis
+of what it would cost — but nothing is being built toward it.
+
+That is the whole benefit of the correction: the platform gets the analytics that were actually
+wanted, and `O-1` stays a structural property rather than a policy with an exception in it.
+
+### 5B.4 The one thing flow analytics does constrain
+
+Flow needs the **shape** of audit events — `action`, `resource_type`, timing, correlation — and
+**not** `resource_id`, which is the column naming the tenant's business object.
+
+That is precisely the split `D-CP-002` option 3 recommends: the full record stays tenant-side as
+the authoritative one, and a control-plane projection carries everything except `resource_id` and
+`payload`. **This requirement therefore does not merely tolerate that disposition, it depends on
+it** — a tenant-side-only audit record (`D-CP-002` option 1) would make platform-wide flow
+analysis impossible.
+
+`D-CP-002` should be disposed with that dependency on the record.
+
+**Prerequisite unchanged:** `P-1` still binds. `action` and `resource_type` are free text today,
+so a caller can put business content in them. They must be closed vocabularies before any
+projection carries them, or "no business content crosses" is a hope rather than a property.
+
 ## 5. Business analysis
 
 Three tiers, in increasing order of what they require.

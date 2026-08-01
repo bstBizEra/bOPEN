@@ -1,5 +1,32 @@
 # Documentation Changelog
 
+## 2026-08-01 - Corrected: the requirement is frequency, flow and reports, not content
+
+- The operator clarified that business-content analytics was **not** the ask. The requirement is
+  **frequency data, flow and reports**. `DEC-P35-CONTROL-PLANE` §5A over-scoped it and is narrowed
+  by §5B; §5A is retained under extend-only but is **not** the current disposition.
+- **All three are already permitted by §3 and touch no business content.** Frequency comes from
+  metering, quota and rate-limit counters. Flow comes from the *shape* of audit events — `action`,
+  `resource_type`, `occurred_at`, `correlation_id`. Reports are §5 tiers 1 and 2. **No amendment
+  to §4 is required and tier 3 is not engaged.**
+- **All six consent mechanisms are withdrawn as unnecessary**: consent record, authority check,
+  retroactive revocation, per-tenant provenance in derived artifacts, consent disclosure, and the
+  default-off probe. `D-CP-005` is withdrawn the same day it was raised.
+- Business-content analytics is **not** authorized for any tenant, by consent or otherwise.
+  Nothing is being built toward it. §5A remains on the record as the analysis of what it would
+  have cost.
+- The correction is worth more than the permission it replaces: the platform gets exactly the
+  analytics that were wanted, and `O-1` stays a **structural property** rather than a policy with
+  an exception in it.
+- **`D-CP-002` is now depended upon, not merely recommended.** Flow analytics needs audit *shape*
+  and not `resource_id`, which is exactly the dual-record split of option 3. Option 1 — audit
+  tenant-side only — would make platform-wide flow analysis impossible. The operator's stated
+  requirement selects option 3 on its own, and the docket now records that dependency.
+- **`P-1` still binds.** `action` and `resource_type` are free text today, so a caller can put
+  business content in them. They must be closed vocabularies before any projection carries them,
+  or "no business content crosses" is a hope rather than a property.
+
+
 ## 2026-08-01 - Business-content analytics permitted under opt-in consent
 
 - **Operator disposition:** business-content analytics is permitted for **all tenants**, of any
