@@ -82,10 +82,10 @@
       "Codex Agent IDE",
       "Gemini / Antigravity"
     ],
-    "ballots_cast": 63,
+    "ballots_cast": 123,
     "quorum_required": 2,
-    "quorum_status": "PARTIAL - quorum is per candidate, not per phase",
-    "quorum_note": "Corrected 2026-08-01. The previous value said UNREACHABLE - verifier seats stood down 2026-07-30 and ballots_cast 0. Both became false when Codex cast 14 ballots (0d12332) and Gemini cast 49 (adc97fc). Quorum is a property of a candidate commit, not of a phase: WP-P35-04 holds it with codex and gemini; WP-P35-01, 02 and 03 have gemini alone and escalate to the Completion Authority under EBIV 6.3, which never auto-passes. check_ballot_attribution.py counted per phase until fbd8a99 and reported this as 2 of 2.",
+    "quorum_status": "CLOSED under two-agent profile (BOPEN-GOV-EBIV-001 6.5, ratified 2026-08-02)",
+    "quorum_note": "Confirmation verdicts below are CONFIRMED_UNDER_TWO_AGENT_PROFILE: one independent verifier plus operator disposition, per 6.5. They are NOT 6.1 two-verifier confirmations. The profile expires when a third independent engine returns.",
     "seats_issued": {
       "V1_Codex": "reproducibility and privilege",
       "V2_Gemini": "contract and architecture conformance",
@@ -96,33 +96,63 @@
       "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-TO-GEMINI-KIMI.md"
     ],
-    "quorum_per_candidate": {
+    "candidate_disposition": {
       "WP-P35-01": {
+        "commit": "6ce069e3c3e09b4d33323d4d8d185b6c796213c0",
+        "ballots": 16,
         "verifiers": [
           "gemini"
         ],
-        "quorum_met": false
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "operator disposition 2026-08-02; single verifier reran maker tests for a large share of ballots (tenant isolation on rerun evidence, execution-plan note a)"
       },
       "WP-P35-02": {
+        "commit": "a969bb59b85c1c717cf432cabd6c46fa10c5edb0",
+        "ballots": 8,
         "verifiers": [
           "gemini"
         ],
-        "quorum_met": false
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "operator disposition 2026-08-02; note a"
       },
       "WP-P35-03": {
+        "commit": "767cb8143fa296f8ef92c7ea1be21dd376c0fe9f",
+        "ballots": 11,
         "verifiers": [
           "gemini"
         ],
-        "quorum_met": false
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "operator disposition 2026-08-02; note a"
       },
       "WP-P35-04": {
+        "commit": "1b39a30bfde007c65b88685b5102650de4f9e54c",
+        "ballots": 18,
         "verifiers": [
-          "codex",
-          "gemini"
+          "codex"
         ],
-        "quorum_met": true
+        "refutations": 2,
+        "verdict": "BLOCKED_ACCEPTED_WITH_KNOWN_DEFECTS",
+        "note": "two standing refutations; 6.2 bars discharge; gateway usable, SSRF and framing defects fixed"
+      },
+      "WP-P35-05a": {
+        "commit": "119f2d8cf678624c055c8d1be48c770b3936de11",
+        "ballots": 0,
+        "verifiers": [],
+        "refutations": 0,
+        "verdict": "AWAITING_BALLOT",
+        "note": "zero ballots at R4; profile confirms one verifier not zero; needs a Codex ballot then operator disposition"
       }
-    }
+    },
+    "superseded_candidates_ballots_do_not_apply": [
+      "88e6ed2",
+      "f12e5fc",
+      "e559d1d",
+      "b11e2e8",
+      "c03cd4f"
+    ]
   },
   "known_gaps": [
     "Findings F-4 through F-7 of the Phase 3 review remain open. They are entitlement-module defects outside WP-P35-01 scope and are not addressed here.",
