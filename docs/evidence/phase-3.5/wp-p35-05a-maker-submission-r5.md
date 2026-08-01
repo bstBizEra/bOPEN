@@ -102,6 +102,33 @@ breaks the squatting test. R4's probes (lifetime ceiling, oracle, PEM) remain va
 4. Two-agent profile: one verifier plus operator disposition confirms (`EBIV` §6.5). Not a
    two-verifier quorum.
 
+## 6.5 Admissibility remediation (2026-08-02) — why this candidate moves
+
+Codex balloted this candidate at `ce97561` and reported all nine propositions behaving correctly
+(Group A `401`/`201`/`503`/identical-`401`; Group B `401`/`403`/`201`/`401`/`401`), suite 470/470 on
+an isolated rerun — **but cast all nine `INADMISSIBLE` on `EBIV` R2**: the propositions were absent
+from the mandatory `invariant-traceability.csv`. That was a maker/recorder omission, not a boundary
+defect.
+
+The gap was real and wider than these nine: the entire subject-assertion / AUTH-D1 / AUTH-D3
+boundary had **no invariant rows** in `docs/evidence/phase-3.5/invariant-traceability.csv`. The
+earlier R4 ballot recorded R2=`True` for the same propositions against the same CSV, which was
+itself incorrect — those propositions were never traced. **No admissible verdict exists on this
+boundary yet, at R4 or R5.**
+
+**Remediation, this commit.** Nine invariant rows were added to the traceability CSV — one per
+balloted proposition, each naming its executed test and the mechanism whose removal breaks it:
+`INV-ASSERTION-LIFETIME-CEILING-01`, `-LIFETIME-BOUND-01`, `-KEY-SAFE-01`, `-OPAQUE-01`,
+`INV-PROVISION-OWNER-ASSERTED-01`, `-OWNER-BINDING-01`, `-OWNER-VOUCHED-01`, `-FORGERY-01`,
+`-DEVFLAG-01`. No source code changed — `subject_assertion.py` (`ada0eb1`) and `api.py` (`646cf41`)
+are byte-identical to `ce97561`. Only the recording gap that failed R2 is closed.
+
+**This is a recorder action, not a verdict** (`EBIV` §8). The candidate for a fresh ballot is the
+commit carrying this remediation; Codex re-ballots there, where R2 can pass, and only then does a
+verdict exist for operator disposition. The still-untraced remainder of the carried set
+(`P35-05a-02..11`, `P35-05aR2-01..08`) is recorded debt — Codex balloted a representative nine, and
+those nine are what this remediation traces.
+
 ## 7. Authority
 
 A maker's submission. `EBIV` §8: a passing suite carries no verdict weight.
