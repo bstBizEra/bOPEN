@@ -4,7 +4,7 @@
 **Version:** `5.0.0`
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-02
-**Supersedes:** [`EVD-P35-05A-MAKER-R4`](wp-p35-05a-maker-submission-r4.md) at `119f2d8` (never balloted — verifier session classifier-blocked, `§6A` there)
+**Supersedes:** [`EVD-P35-05A-MAKER-R4`](wp-p35-05a-maker-submission-r4.md) at `119f2d8` — **which was in fact balloted `7ade81a` after this R5 was issued: 23 `CONFIRMED`, 0 `REFUTED`, verifier `codex`.** The "never balloted" note that first appeared here was written before those ballots landed and is corrected in §1.
 **Also implements:** [`DEC-P35-AUTH-D3-DOCKET`](../../decisions/DEC-P35-AUTH-D3-DOCKET.md) `D-D3-001` Row 1(a), operator-approved 2026-08-02
 
 **Commit OID:** `ce97561bf21106c35c473bf71c0afee835443a35`
@@ -17,15 +17,32 @@
 
 ---
 
-## 1. Why one combined candidate
+## 1. Why one combined candidate — and the R4-ballot reconciliation
 
-R4 was never balloted — Codex's session was blocked by its cybersecurity classifier before casting
-(recorded in R4 §6A). Because there is **no verdict to invalidate**, the operator-approved AUTH-D3
-Row 1(a) mitigation was built on top of the R4 tree into one candidate, to be balloted once. This
-halves the round-trips with a verifier that has proven flaky on this package.
+**Correction (2026-08-02).** This section first said "R4 was never balloted." That was written
+while a first verifier session was classifier-blocked. It is now false: a reframed defensive
+dispatch succeeded and **R4 (`119f2d8`) was balloted at `7ade81a` — 23 `CONFIRMED`, 0 `REFUTED`,
+verifier `codex`**, covering the full R4 proposition set. The record stands corrected here and in
+R4 §6A.
 
-`subject_assertion.py` is byte-identical to R4, so **every R4 proposition remains valid here**. The
-only new code is in `api.py`: the tenant-provisioning gate.
+That does not undo the decision to combine. When AUTH-D3 Row 1(a) was built on top of the R4 tree,
+the R4 ballots had not yet been observed. The result is a clean, favourable reconciliation rather
+than wasted work:
+
+- **`subject_assertion.py` is byte-identical** between R4 (`119f2d8`) and this candidate
+  (`ce97561`): blob `ada0eb1` at both, confirmed by `git rev-parse`. The auth-boundary code Codex
+  confirmed is unchanged here.
+- **The `api.py` delta is surgically confined** to `provision_tenant`: it adds the
+  `X-Subject-Assertion` header parameter and the owner-mismatch gate, and touches nothing else — not
+  the bearer-only paths, not context issuance, not assertion verification. So the change cannot
+  disturb any Group A proposition; it only *adds* the Group B surface.
+
+**What this means for balloting.** The Group A propositions were `CONFIRMED` by Codex at `119f2d8`.
+Because ballots bind to a commit, whether those verdicts carry to `ce97561` is a **verifier's**
+judgment, not the maker's (`EBIV` §8) — the byte-identity and additive-delta facts above are
+offered as evidence for that judgment, not as a maker ruling. The genuinely new, unballoted surface
+is **Group B (`P35-D3a-01..05`)**. A verifier balloting here need re-establish only Group B and may,
+on the hash evidence, carry Group A forward.
 
 ## 2. This is a defensive verification, not an attack
 
