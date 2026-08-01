@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-05A-MAKER`
 **Version:** `1.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **SUPERSEDED 2026-08-01** — held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc…` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.
 **Issued:** 2026-07-31
 **Work package:** [`BOPEN-P35-001`](../../work-packages/BOPEN-P35-001-EXECUTION-PLAN.md) — `WP-P35-05a`
 **Commit OID:** `b11e2e8a976a7a5f7469361331a2fe0ddec699bd`

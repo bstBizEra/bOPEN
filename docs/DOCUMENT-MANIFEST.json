@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 296,
+  "count": 297,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "6f52b769fc410681d2fe8b1ad03d1b36d6f1d2c0547bdd41ae067648feccf810",
-      "bytes": 54670
+      "sha256": "4d09ab2486dea25a11d0409195abb8fc9b3fff0372ba55a93b4e10929cb1dc6e",
+      "bytes": 56556
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1438,11 +1438,18 @@
       "bytes": 9148
     },
     {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r2.md",
+      "title": "EVD-P35-05A-MAKER-R2 \u2014 WP-P35-05a Maker Submission, revision 2 (Kernel Authentication Boundary)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "abf54343ac85cd25d650672369a14d79844cab642918f52534af71e081c35a93",
+      "bytes": 7748
+    },
+    {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
       "title": "EVD-P35-05A-MAKER \u2014 WP-P35-05a Maker Submission (Kernel Authentication Boundary)",
-      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "12682c1b77ef1a00126d9998f19712c7b9b40582e91168c1423928a6d957b060",
-      "bytes": 5766
+      "status": "**SUPERSEDED 2026-08-01** \u2014 held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc\u2026` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.",
+      "sha256": "c64255190f4abe18dd1047bb36b9623eb4ed9a303f4f678d81a5e886d28c3304",
+      "bytes": 5973
     },
     {
       "path": "docs/GLOSSARY.md",

@@ -1,5 +1,32 @@
 # Documentation Changelog
 
+## 2026-08-01 - WP-P35-05a successor issued at the AUTH-D1 commit
+
+- `EVD-P35-05A-MAKER-R2` at `f12e5fc` (tree `3443000`), succeeding the revision Codex placed on
+  `HOLD_FOR_DECISION`. Revision 1 is superseded and retained — the privilege escalation it did
+  not disclose is the reason `AUTH-D1` exists.
+- Eight propositions, each stating **exactly what its named test checks**. That discipline is
+  deliberate: five propositions in the sibling `WP-P35-04` package were refuted for claiming more
+  than their tests supported, across three revisions.
+- Revision 1's assertion-verification propositions carry to this candidate unchanged —
+  `subject_assertion.py` is byte-identical — and **require fresh ballots, since revision 1
+  received none.**
+- Mutation probes: removing the bearer-only gate breaks 5 tests; making the profile guard return
+  `True` unconditionally breaks the production refusal.
+- **§6 tells a verifier what this does not establish**, at more length than §4 claims:
+  - the green 441/441 is **not** evidence the legacy path is gone — the pre-existing suite runs
+    with the legacy profile enabled, and bearer-only is proven only by the one test file that
+    unsets it. Running the wider suite with it unset is a probe the maker has not run;
+  - `AUTH-D3` is untouched — `POST /v1/principals` and `POST /v1/tenants` still return `201`
+    without an assertion;
+  - four defects from the 2026-07-31 sweep remain open: unbounded replay window, `500` instead of
+    the designed `503` on a malformed PEM, a status-code oracle, and an undisclosed precondition
+    that the authenticator emit bOPEN principal UUIDs as `sub`, which no mainstream OIDC provider
+    does.
+- Provenance checked: `f12e5fc` is **not** among the eight commits disclosed in `AGENTS.md` §23.0.
+  It carries Claude's identity correctly, so both eligible verifiers are unaffected.
+
+
 ## 2026-08-01 - Corrected: the requirement is frequency, flow and reports, not content
 
 - The operator clarified that business-content analytics was **not** the ask. The requirement is
