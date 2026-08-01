@@ -1,5 +1,37 @@
 # Documentation Changelog
 
+## 2026-08-01 - AUTH-D1 implemented: a header can no longer create authority
+
+- `AUTH-D1` (ACCEPTED 2026-08-01, option 3) is implemented following the decision's own
+  sequencing: contract amended first, failing negative tests second, code third.
+- **`HTTP_HEADER_SPEC` v1.1.** `Authorization` is the only authoritative header. `X-Tenant-ID` and
+  `X-Context-ID` are marked **non-authoritative** — they may narrow or cross-check a signed claim
+  and can never create one. The amendment records why: v1.0 listed `X-Context-ID` without stating
+  its authority, and the kernel accepted it *in place of* a token.
+- **The defect closed.** A tenant member presenting another member's `X-Context-ID`, with no token
+  and no signature, obtained `200 ALLOW` and acted as that member. The identifier is published to
+  every member of the tenant by `GET /v1/audit-events`, so obtaining one required no attack at
+  all. Reproduced independently by two engines on 2026-07-31.
+- Seven tests written **before** the code, per §4 step 2. They failed as designed: 4 security
+  probes plus 3 for a function that did not exist. They cover the four operations the disposition
+  names — decision, read, write, audit enumeration — plus no-fallback-after-verification-failure
+  and the profile rules.
+- `legacy_context_header_profile_enabled()` enforces all three required properties rather than
+  documenting them: **off by default**, **refused when `BOPEN_ENV=production`**, and **separately
+  named** so it cannot be switched on by accident alongside
+  `BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION`.
+- Mutation probes: removing the bearer-only gate breaks 5 tests; allowing the profile on a
+  production deployment breaks 1. Tree restored and re-verified at 441/441.
+- **Recorded honestly:** the pre-existing 433 tests predate `AUTH-D1` and exercise the legacy path,
+  so `.env.local` enables the profile locally. **Bearer-only behaviour is proven by
+  `test_auth_d1_bearer_only.py`, which unsets it — not by the suite at large.** A reader should
+  not take 441/441 as evidence the legacy path is gone.
+- Checks: canonical 441/441 against PostgreSQL, gateway 47/47, and all six governance checks PASS.
+- **`AUTH-D3` remains pending.** Unauthenticated principal registration and tenant provisioning
+  are untouched by this change and still return `201`. `AUTH-D1` did not close them and does not
+  claim to.
+
+
 ## 2026-08-01 - Eight commits under the wrong identity, found by the verifier not the author
 
 - Codex balloted `WP-P35-04` R3 at `1b39a30`: **CONFIRMED** `R3-01`..`14`, `R3-16`, `R3-18`;

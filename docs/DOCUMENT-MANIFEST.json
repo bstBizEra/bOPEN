@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "6bb85d5399cd557c9ea118541d955bf49550aedebcfc09f87aa2043ec25424c5",
-      "bytes": 47975
+      "sha256": "4817f2ae31c50ee5283ddfbc51c1b3a3d0ee103d4d98fc12b8daf2e13f21d898",
+      "bytes": 50375
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",

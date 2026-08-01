@@ -384,6 +384,38 @@ def require_tenant_hint(
     return normalise_id(x_tenant_id, "X-Tenant-ID")
 
 
+ENV_LEGACY_CONTEXT_PROFILE = "BOPEN_LEGACY_CONTEXT_HEADER_PROFILE"
+ENV_DEPLOYMENT_PROFILE = "BOPEN_ENV"
+
+
+def legacy_context_header_profile_enabled() -> bool:
+    """True only where the `X-Context-ID`-without-a-token path is still permitted.
+
+    `AUTH-D1` (ACCEPTED 2026-08-01, option 3) makes protected endpoints bearer-only and
+    `X-Context-ID` non-authoritative. Two independent engines reproduced why on 2026-07-31: a
+    tenant member presenting another member's context identifier, with no token and no signature,
+    obtained `200 ALLOW` and acted as that member — and the identifier is published to every
+    member of the tenant by `GET /v1/audit-events`, so obtaining one required no attack.
+
+    Three properties, each required by the disposition and each enforced here rather than
+    documented:
+
+    1. **Off by default.** An unset variable is a closed door.
+    2. **Cannot be enabled on a production profile.** An escape hatch a production deployment can
+       switch on is not test-only; it is a switch waiting for a bad day. `BOPEN_ENV=production`
+       refuses regardless of the flag.
+    3. **Separately named.** It does not share a variable with
+       `BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION`, so turning one on cannot turn the other
+       on by accident.
+
+    This path is unsupported, is not a client contract, and is scheduled for removal.
+    """
+    if os.environ.get(ENV_LEGACY_CONTEXT_PROFILE, "").strip() != "1":
+        return False
+    profile = os.environ.get(ENV_DEPLOYMENT_PROFILE, "").strip().lower()
+    return profile != "production"
+
+
 def _authenticated_principal(assertion: Optional[str]) -> Optional[str]:
     """Return the principal an external authenticator vouched for, or None if none is configured.
 
@@ -557,6 +589,15 @@ def resolve_context(
             )
 
         return resolved.model_copy(update={"correlation_id": correlation_id})
+
+    # AUTH-D1: a header cannot create authority. Reaching here means no bearer token was
+    # presented — a token that failed verification raised above and never arrives, so there is no
+    # fallback path from a rejected signature to header-asserted identity.
+    if not legacy_context_header_profile_enabled():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="a signed context access token is required (HTTP_HEADER_SPEC v1.1)",
+        )
 
     if not x_context_id or not x_context_id.strip():
         raise HTTPException(
