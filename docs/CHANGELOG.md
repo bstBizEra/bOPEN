@@ -1,5 +1,31 @@
 # Documentation Changelog
 
+## 2026-08-01 - Two agents cannot reach a quorum of two
+
+- Operator: the team is **Claude and Codex**. Gemini is set aside for now.
+- That is a structural constraint, not a scheduling one. EBIV §3 makes maker and verifier mutually
+  exclusive within a package, and one of two agents is always the maker — so **one verifier per
+  package is the maximum achievable**, and §6.1's quorum of two is unreachable by construction.
+- Consequence if nothing changes: every package escalates under §6.3 **permanently**, and
+  `CONFIRMED` becomes a verdict the team can never realize. A rule that is checkable but
+  unreachable is worse than one that is merely unenforced — it reads as satisfiable.
+- **What the ballots have actually delivered, measured across all 101:** 97 `CONFIRMED`, 4
+  `REFUTED`, and exactly one candidate ever reached two verifiers — a candidate since withdrawn.
+- **Every defect in this repository came from a refutation, a preflight, or an adversarial sweep.
+  None came from counting confirmations.** The SSRF, the auth escalation, the stale anchors, five
+  overclaiming propositions, eight misattributed commits — the 97 confirmations recorded that
+  claims held and discovered nothing.
+- Raised `DEC-P35-TWO-AGENT-QUORUM`. Recommends a two-agent profile: confirmation needs one
+  independent verifier **plus an explicit Completion Authority disposition**, the maker still
+  cannot vote, the profile is recorded in the manifest so a later reader knows which rule produced
+  the verdict, and it **expires when a third engine returns**.
+- **The refutation asymmetry is deliberately untouched** — one reproducible refutation still
+  blocks. That is the half that has found everything.
+- Recorded rather than glossed: two blind verifiers catch what one verifier's blind spot misses,
+  and that property is being surrendered. A one-verifier confirmation is weaker evidence, and the
+  record should say so rather than let the word `CONFIRMED` imply parity.
+
+
 ## 2026-08-01 - The probe the maker had not run, run by the verifier
 
 - Codex balloted `WP-P35-05a` R2 at `f12e5fc`: **18 CONFIRMED, no refutations** (`5aea020`).

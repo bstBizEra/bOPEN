@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 297,
+  "count": 298,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "fdc74a5a8127c699b515b43f428283d80de6fffe04b2e1d2ce43abc21a39d73e",
-      "bytes": 58290
+      "sha256": "2edf5ba92b2f86fccd127da4345aeb46513fe7f404c160d752554ea2af6f1868",
+      "bytes": 60272
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1242,6 +1242,13 @@
       "bytes": 13837
     },
     {
+      "path": "docs/decisions/DEC-P35-TWO-AGENT-QUORUM.md",
+      "title": "DEC-P35-TWO-AGENT-QUORUM \u2014 A two-agent team cannot reach a quorum of two",
+      "status": "**Proposed \u2014 awaiting operator ratification**",
+      "sha256": "5b07937c56a2c772142a807eb562c3dce33be0ddc499628303c2f74752e03e3d",
+      "bytes": 5240
+    },
+    {
       "path": "docs/decisions/DEC-P35-VERIFIER-REASSIGN.md",
       "title": "DEC-P35-VERIFIER-REASSIGN \u2014 Codex cannot both remediate and verify `WP-P35-01`..`03`",
       "status": "**Proposed \u2014 awaiting operator ratification**",
@@ -1252,8 +1259,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "8fcdf00892c2e136fdae63be0c8e205e1752b2287ac1c6274766a4100290fbd5",
-      "bytes": 7420
+      "sha256": "c3e8ab2b43ceb1ded6b6130f7f1892feaf7e24ea4783c2412a9a76b443e4c1f3",
+      "bytes": 7867
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
