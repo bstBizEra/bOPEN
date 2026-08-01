@@ -1392,8 +1392,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "e6b7ce71dce018f94e4c6af526e94abf32f4c3ee208e42893e57e21dbf480665",
-      "bytes": 124127
+      "sha256": "840b052a65a481f770d316f9f7c98eb4b56606f25123709359819030426efce5",
+      "bytes": 132080
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1482,16 +1482,16 @@
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md",
       "title": "EVD-P35-05A-MAKER-R4 \u2014 WP-P35-05a Maker Submission, revision 4 (Kernel Authentication Boundary)",
-      "status": "**SUPERSEDED 2026-08-02** \u2014 never balloted (verifier classifier-blocked, \u00a76A). AUTH-D3 Row 1(a) built on top; ballot the combined candidate [`EVD-P35-05A-MAKER-R5`](wp-p35-05a-maker-submission-r5.md) at `ce97561`.",
-      "sha256": "3f0a9366b370afb43c74448a5e0b4cd2f2bc577ce78c2fe9b4c9ab10d30305be",
-      "bytes": 7581
+      "status": "**SUPERSEDED 2026-08-02 for further work \u2014 but this candidate WAS subsequently balloted.** The first verifier session was classifier-blocked (\u00a76A attempt 1); a reframed defensive dispatch then succeeded (\u00a76A attempt 2, commit `7ade81a`): **23 `CONFIRMED`, 0 `REFUTED`, verifier `codex`**, covering every proposition below. AUTH-D3 Row 1(a) was built on top into [`EVD-P35-05A-MAKER-R5`](wp-p35-05a-maker-submission-r5.md) at `ce97561` before those ballots were observed; the auth-boundary code (`subject_assertion.py`, blob `ada0eb1`) is byte-identical at R5, and the R4\u2192R5 `api.py` delta is confined to the new tenant-provisioning gate \u2014 see the R5 reconciliation.",
+      "sha256": "82f10cc5b5235231fc0829262e06246ea9a53fcb33aec912ee6239c9eb94504c",
+      "bytes": 8747
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r5.md",
       "title": "EVD-P35-05A-MAKER-R5 \u2014 WP-P35-05a auth boundary + AUTH-D3 Row 1(a)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "393d10e5bf630738bf08596acab64aa2a254548134e34791c903bd4e872fe821",
-      "bytes": 5856
+      "sha256": "6f385edcc13e17b534969b9f8f77f5674e742537ea613a085f30450015b70967",
+      "bytes": 7239
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
