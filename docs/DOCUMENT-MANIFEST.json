@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 301,
+  "count": 302,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1186,6 +1186,13 @@
       "bytes": 7666
     },
     {
+      "path": "docs/decisions/DEC-P35-AUTH-D3-DOCKET.md",
+      "title": "DEC-P35-AUTH-D3-DOCKET \u2014 Disposition surface for the last live authentication hole",
+      "status": "**Proposed \u2014 awaiting operator/authority disposition**",
+      "sha256": "db83757e680db0c01aae089abba8342970af204afc7eecb4e48ea9b3175a9a66",
+      "bytes": 6603
+    },
+    {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
       "title": "DEC-P35-CONTROL-PLANE-DOCKET \u2014 Security and Privacy review surface for the control-plane boundary",
       "status": "**Proposed - `D-CP-003` enumerated; awaiting plane assignment and Security and Privacy Authority disposition**",
@@ -1259,8 +1266,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "c397717162f17a59ff56a5e0d59c492bd9b383969af27684906c91ebe93e3939",
-      "bytes": 7944
+      "sha256": "270cedae06a16bf26dbd0f0a34406a06dd4eafac229be4ed129d925a51d236bb",
+      "bytes": 8411
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
