@@ -1,5 +1,28 @@
 # Documentation Changelog
 
+## 2026-08-01 - The probe the maker had not run, run by the verifier
+
+- Codex balloted `WP-P35-05a` R2 at `f12e5fc`: **18 CONFIRMED, no refutations** (`5aea020`).
+  Quorum **1 of 2** — not confirmation.
+- **The valuable part is §6.1's disclosed gap, now measured.** The submission stated that
+  bearer-only rested on one test file and that running the wider suite with
+  `BOPEN_LEGACY_CONTEXT_HEADER_PROFILE` unset was a probe the maker had not run. Codex ran it and
+  the maker reproduced it independently: 441 tests, 12 failures, and **every failure is
+  `401 != <expected>`** — five `401 != 200`, three `401 != 422`, two `401 != 403`, one `401 != 400`,
+  one `401 != 201`. Not one protected operation succeeded without a bearer token.
+- That is failing **closed**. It converts a disclosed unknown into a measurement and materially
+  strengthens `P35-05aR2-01`..`05`. `EVD-P35-05A-MAKER-R2` §6.1 is updated with the result.
+- Codex also reproduced **all four disclosed residual defects**: a 10-year assertion accepted
+  (`201`), malformed PEM → `500`, valid non-UUID `sub` → `400` against bad signature → `401`, and
+  the undisclosed precondition that the authenticator emit bOPEN principal UUIDs. `AUTH-D3` routes
+  remain public — principals and tenants both `201`. All open, all confirmed still reproducible.
+- Ballot totals now **101** across six candidates. Per-candidate quorum: `WP-P35-04` R2 has two
+  verifiers but is a **withdrawn** candidate; every live candidate sits at **1 of 2**.
+- **Gemini is the missing seat on both `WP-P35-04` R3 and `WP-P35-05a` R2** — one dispatch closes
+  two quorums. Codex is the missing seat on `WP-P35-01`..`03`, which needs
+  `DEC-P35-VERIFIER-REASSIGN` ratified first.
+
+
 ## 2026-08-01 - WP-P35-05a successor issued at the AUTH-D1 commit
 
 - `EVD-P35-05A-MAKER-R2` at `f12e5fc` (tree `3443000`), succeeding the revision Codex placed on

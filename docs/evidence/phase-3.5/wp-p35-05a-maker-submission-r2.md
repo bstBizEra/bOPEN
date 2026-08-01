@@ -101,13 +101,31 @@ Tree restored and re-verified at 441/441 after each.
 
 ## 6. What this does NOT establish — read before balloting
 
-### 6.1 The green suite is not evidence the legacy path is gone
+### 6.1 The green suite is not evidence the legacy path is gone — gap now measured
 
 The 433 pre-existing tests predate `AUTH-D1` and exercise the legacy path, so `.env.local` sets
 `BOPEN_LEGACY_CONTEXT_HEADER_PROFILE=1` locally. **Bearer-only behaviour is proven only by
 `tests/integration/test_auth_d1_bearer_only.py`, which unsets it.** A verifier should not read
-441/441 as covering this change; it does not. Verifying with the variable unset across the wider
-suite is a probe the maker has not run.
+441/441 as covering this change; it does not.
+
+> **Measured 2026-08-01 — the probe this section said the maker had not run.**
+>
+> Codex ran it (`5aea020`) and the maker reproduced it independently. With
+> `BOPEN_LEGACY_CONTEXT_HEADER_PROFILE` **unset** across the full suite:
+>
+> ```text
+> Ran 441 tests — FAILED (failures=12)
+> ```
+>
+> **The direction is what matters, and it is unambiguous.** Every failure is `401 != <expected>`:
+> five `401 != 200`, three `401 != 422`, two `401 != 403`, one `401 != 400`, one `401 != 201`.
+> The observed value is **401 in every case**. Not one failure shows a protected operation
+> succeeding without a bearer token — they are legacy-path tests failing **closed**, each carrying
+> `"a signed context access token is required (HTTP_HEADER_SPEC v1.1)"`.
+>
+> This converts the disclosed unknown into a measurement and materially strengthens
+> `P35-05aR2-01`..`05`, which previously rested on one test file. It does **not** confirm the
+> candidate: quorum is still one verifier of two.
 
 ### 6.2 `AUTH-D3` is untouched and still open
 

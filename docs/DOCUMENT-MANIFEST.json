@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "4d09ab2486dea25a11d0409195abb8fc9b3fff0372ba55a93b4e10929cb1dc6e",
-      "bytes": 56556
+      "sha256": "fdc74a5a8127c699b515b43f428283d80de6fffe04b2e1d2ce43abc21a39d73e",
+      "bytes": 58290
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1364,8 +1364,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "12d46ef53f23b93c68ea2813f5a50b30d8354823e43172313aaae2349b1e8d0c",
-      "bytes": 78529
+      "sha256": "46117606dd47c290228c391409a4e59acf43b9dceeefc66bb31f2a305c3b018a",
+      "bytes": 91598
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1441,8 +1441,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r2.md",
       "title": "EVD-P35-05A-MAKER-R2 \u2014 WP-P35-05a Maker Submission, revision 2 (Kernel Authentication Boundary)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "abf54343ac85cd25d650672369a14d79844cab642918f52534af71e081c35a93",
-      "bytes": 7748
+      "sha256": "32ac07a5bd835583307a98087b5f9d70b4e587ddf8761421053b5f35a4f575e4",
+      "bytes": 8659
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
