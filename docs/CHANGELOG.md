@@ -1,5 +1,27 @@
 # Documentation Changelog
 
+## 2026-08-01 - WP-P35-05a R3 issued; the previous ballots do not carry forward
+
+- `EVD-P35-05A-MAKER-R3` at `e559d1d` (tree `af4cfae`), superseding the R2 candidate Codex
+  balloted at `f12e5fc`.
+- **Codex's 18 ballots do not carry forward, and the submission says so in a table.** Both blobs
+  changed: `api.py` `bb48fb44` → `42f1ab68`, `subject_assertion.py` `82b83248` → `8d866a28`.
+  Ballots bind to a commit, not to a package — a distinction that already produced one misleading
+  reading, where `WP-P35-04` R2 shows two verifiers on a **withdrawn** candidate.
+- Four new propositions covering the closed defects, each with **its exception written into the
+  claim** rather than into a limitations section. Seven propositions in the sibling gateway package
+  were refuted for stating intent instead of behaviour; §3 is written against that failure.
+- §5 states what the revision does not establish: replay is **bounded, not prevented** — within
+  300s an assertion is still replayable and still mints a token; `AUTH-D3` remains the live hole,
+  with principals and tenants still creatable unauthenticated; and the bearer-only measurement was
+  taken at `f12e5fc` and **has not been re-run** at this candidate, though the code path is
+  unchanged.
+- §6 records the quorum reality plainly: with the team reduced to Claude and Codex, two independent
+  verifiers is unreachable by construction, so the best achievable state is one verifier plus §6.3
+  escalation. A ballot here should not be described as confirmation until
+  `DEC-P35-TWO-AGENT-QUORUM` is disposed.
+
+
 ## 2026-08-01 - Four auth defects closed, and two refutations that cannot be argued away
 
 - **Closed three of the four residual `WP-P35-05a` defects Codex confirmed reproducible, and

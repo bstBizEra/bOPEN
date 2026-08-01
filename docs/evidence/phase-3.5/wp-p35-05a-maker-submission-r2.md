@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-05A-MAKER-R2`
 **Version:** `2.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **SUPERSEDED 2026-08-01** — Codex balloted this candidate (18 CONFIRMED, `5aea020`) and reproduced all four disclosed residual defects. Three are now closed and one bounded, so **both blobs changed** and those ballots do not carry forward. Ballot [`EVD-P35-05A-MAKER-R3`](wp-p35-05a-maker-submission-r3.md) at `e559d1d…`.
 **Issued:** 2026-08-01
 **Supersedes:** [`EVD-P35-05A-MAKER`](wp-p35-05a-maker-submission.md) at `b11e2e8…`, held under Codex's `HOLD_FOR_DECISION`
 **Implements:** [`DEC-P35-AUTH-CLOSURE`](../../decisions/DEC-P35-AUTH-CLOSURE.md) `AUTH-D1`, ACCEPTED 2026-08-01 (option 3)

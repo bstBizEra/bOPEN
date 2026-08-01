@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 298,
+  "count": 299,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "fd9ca0e2fa9b719273f4bd86b17146f8ff940ab1933fe9f9e22ac675ef308c7c",
-      "bytes": 63181
+      "sha256": "a861f1ba5edee1bae4cf3a6bf198c2e2a96f37fd94b2a7d7f7e53a795d984040",
+      "bytes": 64763
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1447,9 +1447,16 @@
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r2.md",
       "title": "EVD-P35-05A-MAKER-R2 \u2014 WP-P35-05a Maker Submission, revision 2 (Kernel Authentication Boundary)",
+      "status": "**SUPERSEDED 2026-08-01** \u2014 Codex balloted this candidate (18 CONFIRMED, `5aea020`) and reproduced all four disclosed residual defects. Three are now closed and one bounded, so **both blobs changed** and those ballots do not carry forward. Ballot [`EVD-P35-05A-MAKER-R3`](wp-p35-05a-maker-submission-r3.md) at `e559d1d\u2026`.",
+      "sha256": "acd0ba58c6190ef1a63776607c05deb6b337befa4c004382ded35c70ccb06df6",
+      "bytes": 8912
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r3.md",
+      "title": "EVD-P35-05A-MAKER-R3 \u2014 WP-P35-05a Maker Submission, revision 3 (Kernel Authentication Boundary)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "32ac07a5bd835583307a98087b5f9d70b4e587ddf8761421053b5f35a4f575e4",
-      "bytes": 8659
+      "sha256": "4bf8c008d33502367561b9941d96787082a0bbe86f0f86c6f172debc11b30338",
+      "bytes": 6233
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
