@@ -163,6 +163,36 @@ reversible by deletion.
 
 ## Completion record
 
+> **Closure state — Option B ratified, 2026-08-02.** Two-agent profile (`BOPEN-GOV-EBIV-001` §6.5)
+> is in force: one independent verifier plus operator disposition confirms, labelled
+> `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, never bare `CONFIRMED`.
+>
+> | Candidate | Evidence @ commit | Verifier | Refuted | Disposition 2026-08-02 |
+> | :--- | :--- | :--- | :---: | :--- |
+> | `WP-P35-01` | [`maker-submission`](../evidence/phase-3.5/maker-submission.md) @ `6ce069e` | gemini | 0 | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** — with the risk in note (a) recorded |
+> | `WP-P35-02` | [`wp-p35-02`](../evidence/phase-3.5/wp-p35-02-maker-submission.md) @ `a969bb5` | gemini | 0 | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** — note (a) |
+> | `WP-P35-03` | [`wp-p35-03`](../evidence/phase-3.5/wp-p35-03-maker-submission.md) @ `767cb81` | gemini | 0 | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** — note (a) |
+> | `WP-P35-04` | [`R3`](../evidence/phase-3.5/wp-p35-04-maker-submission-r3.md) @ `1b39a30` | codex | **2** | **BLOCKED — not confirmable.** §6.2: two standing refutations the profile cannot discharge. Accepted as `IMPLEMENTED_WITH_KNOWN_DEFECTS`, note (b) |
+> | `WP-P35-05a` | [`R4`](../evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md) @ `119f2d8` | none | 0 | **NOT DISPOSED — needs one ballot.** The profile confirms with one verifier; it does not confirm zero. Awaiting a Codex ballot |
+>
+> **Note (a) — the risk the operator disposed on.** The single verifier for `WP-P35-01`..`03` is
+> Gemini, and a large share of its probes were reruns of the maker's own test files
+> (`python -m unittest tests/isolation/test_rls_database_behavior.py` served as the probe for 13
+> ballots). That establishes *the named tests pass at this commit*. It does **not** establish that
+> an independent agent tried to break the invariant and failed. For `WP-P35-01` this is the tenant
+> isolation claim — the platform's primary security property — confirmed on rerun evidence under a
+> one-verifier profile. The disposition is the operator's and is recorded with this weakness
+> explicit, per §6.5.
+>
+> **Note (b) — `WP-P35-04`.** `P35-04R-15`'s dot-segment half is unachievable at the gateway layer;
+> `P35-04R-17`'s base-path prefixing is intentional behaviour the proposition wrongly excluded.
+> Both probes reproduce. The gateway is usable — the SSRF, response-desync, cookie and
+> connection-header defects are all fixed — but the two refutations stand and `CONFIRMED` is not
+> available to it under any rule. Recorded as accepted-with-known-defects, not confirmed.
+>
+> Superseded candidates whose ballots do **not** apply: `88e6ed2`, `f12e5fc`, `e559d1d`.
+
+<!-- superseded closure note retained below -->
 > **Closure state, 2026-08-01.** This table is the single surface for disposing Phase 3.5. It
 > replaces the "zero ballots" line below, which is no longer true.
 >

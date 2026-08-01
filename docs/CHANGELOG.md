@@ -1,5 +1,31 @@
 # Documentation Changelog
 
+## 2026-08-02 - Option B ratified: Phase 3.5 closes under the two-agent profile
+
+- **Operator ratified `DEC-P35-TWO-AGENT-QUORUM` Option B.** Recorded as the operator's decision,
+  transcribed by the agent. `BOPEN-GOV-EBIV-001` §6.5 now defines a two-agent team profile:
+  confirmation needs one independent verifier **plus** an explicit Completion Authority disposition,
+  labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, never bare `CONFIRMED`. The label exists so the
+  weaker basis is never silent. The profile **expires when a third engine returns.**
+- **Nothing else is relaxed.** Maker exclusion holds. One reproducible refutation still blocks
+  (§6.2). A zero-ballot candidate still escalates, not confirms.
+- **Phase 3.5 closure, disposed 2026-08-02:**
+  - `WP-P35-01`, `02`, `03` → **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** One Gemini verifier each,
+    zero refutations, operator disposition.
+  - `WP-P35-04` → **BLOCKED, not confirmable.** Two standing refutations the profile cannot
+    discharge; accepted as implemented-with-known-defects. The gateway is usable — SSRF, response
+    desync, cookies and connection headers all fixed — but `R3-15`/`R3-17` stand.
+  - `WP-P35-05a` R4 → **not disposed.** The profile confirms with one verifier; it does not confirm
+    zero. Awaiting a Codex ballot at `119f2d8`. This is the one remaining open item in the phase.
+- **The risk the operator disposed on, recorded plainly (note a):** the single verifier for
+  `WP-P35-01`..`03` reran the maker's own test files as its probe for a large share of ballots
+  (`test_rls_database_behavior.py` served 13). That establishes the named tests pass; it does not
+  establish an independent agent tried to break the invariant and failed. For `WP-P35-01` that is
+  tenant isolation — the platform's primary security property — confirmed on rerun evidence under a
+  one-verifier profile. Disposed with the weakness explicit, per §6.5.
+- `AGENTS.md` §20.2 gate row and the decision register updated to match.
+
+
 ## 2026-08-01 - AUTH-D3 exposure measured: unbounded in volume, bounded in blast radius
 
 - Codex's run wrote a 581-line exposure probe at 16:00, executed it, and stopped without

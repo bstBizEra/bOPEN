@@ -190,6 +190,35 @@ Authority. It never auto-passes. Absence of a quorum is not a quorum.
 A single `INADMISSIBLE` ballot does not block, but it suspends counting until the
 admissibility question is settled by the Recorder against §5, which is mechanical.
 
+### 6.5 Two-agent team profile *(added 2026-08-02, `DEC-P35-TWO-AGENT-QUORUM`)*
+
+§6.1 requires two independent verifiers to confirm. When the participating team is **two agents**,
+that is unreachable by construction — one is always the Maker, so at most one independent verifier
+exists per work package. Without an accommodation, §6.3 escalates every artifact forever and
+`CONFIRMED` becomes a verdict the team can never realize.
+
+While a two-agent team is in effect, and **only** then:
+
+1. **Confirmation** requires one admissible `CONFIRMED` ballot from an independent verifier
+   **plus** an explicit Completion Authority disposition recorded on the artifact's disclosed-risk
+   evidence. The operator's disposition stands in for the second verifier; it does not pretend to
+   be one.
+2. **Every verdict reached this way is labelled** `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, never bare
+   `CONFIRMED`, so a later reader knows a one-verifier rule produced it. §6.1's two-verifier
+   `CONFIRMED` and this are different verdicts and must not be conflated.
+3. **Nothing else is relaxed.** §3 maker exclusion holds — the Maker still may not be the verifier.
+   §6.2 holds — one reproducible `REFUTED` still blocks, and this profile cannot discharge it.
+   A candidate with zero admissible ballots is not confirmed; it escalates under §6.3 as before.
+4. **The profile expires when a third independent engine returns.** It names the team it was
+   written for. From that point §6.1's two-verifier quorum is reachable again and is required;
+   verdicts already recorded under the profile keep their label and are not retroactively
+   upgraded.
+
+This preserves the property that has actually caught defects — a single reproducible refutation
+blocks regardless of how many confirmations oppose it — and concedes only the property a
+two-agent team cannot supply. A confirmation under this profile is weaker evidence than a
+two-verifier one, and the label exists so that weakness is never silent.
+
 ---
 
 ## 7. Ballot record

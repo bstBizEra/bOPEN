@@ -55,8 +55,8 @@
       "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
       "title": "BOPEN-GOV-EBIV-001 \u2014 Evidence-Bound Independent Verification",
       "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
-      "sha256": "b5119dbebd942f244b9e0f95c28d875182c23f25370b8a8221ff01ac465f9ddf",
-      "bytes": 12976
+      "sha256": "894a93198e3d0c3b5d98677d81191d122f6ffafc60db0a068de6212bd789086b",
+      "bytes": 14979
     },
     {
       "path": "docs/00-governance/BOPEN-GOV-IDENT-001.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "63770013990da36477be949d04902746c382b5001d8699ff6ffc6ce2ef00b084",
-      "bytes": 69630
+      "sha256": "4aebdb4ba154817d9c1817a3348925290db64d4535887fd4f698746bb20da1ba",
+      "bytes": 71647
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1245,8 +1245,8 @@
       "path": "docs/decisions/DEC-P35-TWO-AGENT-QUORUM.md",
       "title": "DEC-P35-TWO-AGENT-QUORUM \u2014 A two-agent team cannot reach a quorum of two",
       "status": "**Proposed \u2014 awaiting operator ratification**",
-      "sha256": "5b07937c56a2c772142a807eb562c3dce33be0ddc499628303c2f74752e03e3d",
-      "bytes": 5240
+      "sha256": "ffc86fb77af419289fa6497b62afa01672b92409ce07467a74dc713dc699ef64",
+      "bytes": 6466
     },
     {
       "path": "docs/decisions/DEC-P35-VERIFIER-REASSIGN.md",
@@ -1259,8 +1259,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "c3e8ab2b43ceb1ded6b6130f7f1892feaf7e24ea4783c2412a9a76b443e4c1f3",
-      "bytes": 7867
+      "sha256": "c397717162f17a59ff56a5e0d59c492bd9b383969af27684906c91ebe93e3939",
+      "bytes": 7944
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -2071,8 +2071,8 @@
       "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P35-001 \u2014 Phase 3.5 Runtime Realization",
       "status": "**Accepted and authorized 2026-07-31** \u2014 bound by `DEC-P35-RUNTIME` \u00a78 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`",
-      "sha256": "b226d88f196b9bc9c94bde113b017133e9f1a577bcd2d3a092269316b7bf4566",
-      "bytes": 11684
+      "sha256": "8d8349a17407cfbc151977faf67b49ff4076a47f9a6baba172ae0172ff10bc24",
+      "bytes": 14401
     },
     {
       "path": "docs/work-packages/BOPEN-P35-006-SHARD-ROUTING.md",

@@ -94,9 +94,18 @@ to say so in the record rather than to let the word `CONFIRMED` imply parity.
 
 | Field | Value |
 | :--- | :--- |
-| **Decision** | *Pending* |
-| **Approver** | *Not assigned — Architecture and Engineering Authorities* |
-| **Agent authority** | Advisory only. `execution_authority: false`, `approval_authority: false` |
+| **Decision** | **ACCEPT — Option B.** A two-agent team profile is added to `BOPEN-GOV-EBIV-001`: confirmation requires **one** admissible ballot from an independent verifier **plus an explicit Completion Authority disposition** on the disclosed-risk record. Refutation rules unchanged — one reproducible `REFUTED` still blocks. The maker still may not vote. The profile is recorded per verdict and **expires when a third engine returns.** |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — acting as Architecture and Engineering Authority |
+| **Decision timestamp** | 2026-08-02 |
+| **What was weighed** | The measured record (§3): 97 confirmations found nothing, 4 refutations and the adversarial sweeps found everything. The profile keeps the half that works and does not pretend a one-verifier confirmation equals a two-verifier one — §5 requires the weaker basis to be stated on each verdict |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
 
-If rejected, Option A applies by default: every package escalates to the operator on a
-one-verifier record, permanently, and this record explains why.
+### 6.1 What this does not do
+
+It does not discharge a refutation. `WP-P35-04` R3 carries two standing refutations that Option B
+leaves exactly where they are — §6.2 of the standard governs them, not this profile. It does not
+confirm a candidate with **zero** ballots: `WP-P35-05a` R4 still needs one verifier before the
+profile can apply. And it does not lower the maker exclusion — the agent that built an artifact
+still cannot be the one verifier.
+
+The amendment is recorded in `BOPEN-GOV-EBIV-001` §6.5.
