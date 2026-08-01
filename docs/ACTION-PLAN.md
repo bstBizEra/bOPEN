@@ -90,8 +90,24 @@ Recorded so that absence reads as a decision rather than an oversight.
 | More implementation ahead of verification | Five unverified packages is already too many. Adding a sixth increases the debt, not the progress |
 | Go event microservices | Deferred pending measured throughput, `DEC-P35-RUNTIME` §5 |
 | Rebalancing between placements | Out of scope for `WP-P35-06`; named in A-12 so it is not forgotten |
-| Business-content analytics | Needs the consent mechanism in `DEC-P35-CONTROL-PLANE` §5 tier 3, which needs a buyer to justify building |
+| Business-content analytics | **Not authorized at all.** `DEC-P35-CONTROL-PLANE` §5B: the requirement is frequency, flow and reports, none of which touch business content. `D-CP-005` withdrawn |
+| The analytics collector agent, dashboards, flow reports | **Deferred until bOPEN is finished** (operator, 2026-08-01). These consume data; building them before there is a stable platform to consume from is the wrong order |
 | Phase 4 | Not authorized. Blocked on Phase 3.5 admissible evidence, which blocks on A-01 |
+
+**Two things the analytics deferral does NOT cover**, because they decide whether the data will
+exist and be safe to read when the collector is finally built:
+
+- **`P-1` — closing the `action` and `resource_type` vocabularies.** Free text today. Deferring
+  it lets tenants accumulate arbitrary values in audit rows, and migration 009's principle means
+  those rows cannot be edited to fix it. Historical rows would have to be excluded rather than
+  cleaned.
+- **`D-CP-002` — where audit lives.** Placement, not analytics. If hybrid placement lands first,
+  audit goes somewhere by default, and moving it later is a migration across N databases.
+  Cross-tenant visibility is annihilated by dedicated placement rather than relocated, so a
+  projection that does not exist from the first tenant leaves the collector with no history.
+
+Both are cheap now and unrecoverable later. Neither is new scope: `P-1` is already a
+prerequisite in `DEC-P35-CONTROL-PLANE-DOCKET` §3.2 and `D-CP-002` is already docket row 3.
 
 ## 6. Review cadence
 

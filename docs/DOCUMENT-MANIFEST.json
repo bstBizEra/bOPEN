@@ -979,8 +979,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "b3306ab84c9cb87574078c2a39cd3bdf35a88109894fb1f8a186103fd5ce87c5",
-      "bytes": 5693
+      "sha256": "0a361b8b8b488d6251f786368af930ed203782b3405a2162b1c7ed6e569814e0",
+      "bytes": 6991
     },
     {
       "path": "docs/adr/ADR-0001.md",
