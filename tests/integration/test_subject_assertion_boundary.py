@@ -428,6 +428,37 @@ class ResidualDefectsClosed(SubjectAssertionBoundaryTests):
             )
         self.assertEqual(caught.exception.reason, "lifetime_exceeds_ceiling")
 
+    def test_a_fractional_lifetime_just_over_the_ceiling_is_refused(self) -> None:
+        """Refuted by Codex 2026-08-01. The regression test for `P35-05aR3-02`.
+
+        `int(exp) - int(iat)` truncated both sides, so a lifetime of 300.9s computed as 300 and
+        passed — but **only when `iat` is a whole number**, which is exactly what every real
+        identity provider emits. A fractional `iat` in the maker's own probe masked it.
+
+        RFC 7519 NumericDate is "a JSON numeric value", so fractional seconds are conformant
+        input, not an edge case a verifier had to invent.
+        """
+        self._configure()
+        ceiling = subject_assertion.MAX_ASSERTION_LIFETIME
+        for over in (0.1, 0.9, 0.99):
+            with self.subTest(lifetime=ceiling + over):
+                now = int(datetime.now(timezone.utc).timestamp())  # integer iat, as an IdP emits
+                token = jwt.encode(
+                    {
+                        "iss": ISSUER,
+                        "aud": AUDIENCE,
+                        "sub": str(uuid.uuid4()),
+                        "iat": now,
+                        "exp": now + ceiling + over,
+                        "jti": str(uuid.uuid4()),
+                    },
+                    _private_pem(self.private),
+                    algorithm="EdDSA",
+                )
+                with self.assertRaises(subject_assertion.AssertionVerificationError) as caught:
+                    subject_assertion.verify_subject_assertion(token)
+                self.assertEqual(caught.exception.reason, "lifetime_exceeds_ceiling")
+
     def test_an_assertion_within_the_ceiling_is_accepted(self) -> None:
         self._configure()
         claims = subject_assertion.verify_subject_assertion(
