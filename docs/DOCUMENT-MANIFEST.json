@@ -1483,8 +1483,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md",
       "title": "EVD-P35-05A-MAKER-R4 \u2014 WP-P35-05a Maker Submission, revision 4 (Kernel Authentication Boundary)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "b36d085461d6610f0ac408dc7ed1a37306fe4a0acb863ef791f92b52e1463f1b",
-      "bytes": 6053
+      "sha256": "a7f461b7e47bd532981f32c6ab3983c1236271825791aba33a45e95a70b2611c",
+      "bytes": 7437
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",

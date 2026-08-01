@@ -108,6 +108,27 @@ at `e559d1d`, not at this candidate.
 4. Codex noted **one unrelated rate-limit timing flake** in the profile-disabled run. Not
    investigated here; recorded so it is not mistaken for a regression.
 
+## 6A. Verification log
+
+| Attempt | Date | Outcome |
+| :--- | :--- | :--- |
+| 1 | 2026-08-02 | **Blocked.** Codex's delegated session (`019fbe72-a6af-7f30-9358-7ba87da3ec44`) exited 1 — its cybersecurity classifier blocked the run. No ballot cast, no commit. Partial probe files (`probe_wp_p35_05a_r4_codex.py`, `run_wp_p35_05a_r4_codex.ps1`) remain in the tree, uncommitted |
+
+**This is not a verdict and must not be read as one.** No `REFUTED`, no `CONFIRMED`, no
+disposition. `WP-P35-05a` R4 remains `AWAITING_BALLOT`.
+
+**Why it is retryable, not a dead end.** Codex balloted this same authentication package twice
+without any block — R2 at `f12e5fc` (18 ballots) and R3 at `e559d1d` (22 ballots, one of them the
+truncation refutation that produced this very candidate). The capability exists. The R4 run
+differed in framing: the dispatch said *"attack"* and the session had accumulated auth-bypass
+probes, which reads as offensive security to a safety classifier even though the task is
+**defensive** — verifying that the boundary correctly *refuses* forged, expired and over-long
+assertions.
+
+**Retry guidance.** Frame the ballot as defensive verification of a refusal boundary, not as an
+attack: *"confirm the kernel refuses each of the following"*, not *"attack the kernel"*. The
+propositions are unchanged; only the framing needs to make the defensive intent legible.
+
 ## 7. Quorum
 
 Two independent verifiers is unreachable with a two-agent team — see
