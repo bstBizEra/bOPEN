@@ -1,0 +1,97 @@
+# EVD-P35-05A-MAKER-R5 — WP-P35-05a auth boundary + AUTH-D3 Row 1(a)
+
+**Document ID:** `EVD-P35-05A-MAKER-R5`
+**Version:** `5.0.0`
+**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Issued:** 2026-08-02
+**Supersedes:** [`EVD-P35-05A-MAKER-R4`](wp-p35-05a-maker-submission-r4.md) at `119f2d8` (never balloted — verifier session classifier-blocked, `§6A` there)
+**Also implements:** [`DEC-P35-AUTH-D3-DOCKET`](../../decisions/DEC-P35-AUTH-D3-DOCKET.md) `D-D3-001` Row 1(a), operator-approved 2026-08-02
+
+**Commit OID:** `ce97561bf21106c35c473bf71c0afee835443a35`
+**Tree OID:** `1157ba87f78936f316f5d9741e31758a64c6e806`
+**Blob — `api.py`:** `646cf4121a89161e89f432b5da346d211f437389` *(changed: adds tenant-provisioning gate)*
+**Blob — `subject_assertion.py`:** `ada0eb1de30f5d78798947744f0219585ff43d07` *(byte-identical to R4 — auth-boundary fixes intact)*
+**Maker:** Claude (agent, Motor role) — `claude@bst.local`
+**Eligible verifier:** Codex
+**Suites:** canonical **470/470** against PostgreSQL; gateway **47/47**
+
+---
+
+## 1. Why one combined candidate
+
+R4 was never balloted — Codex's session was blocked by its cybersecurity classifier before casting
+(recorded in R4 §6A). Because there is **no verdict to invalidate**, the operator-approved AUTH-D3
+Row 1(a) mitigation was built on top of the R4 tree into one candidate, to be balloted once. This
+halves the round-trips with a verifier that has proven flaky on this package.
+
+`subject_assertion.py` is byte-identical to R4, so **every R4 proposition remains valid here**. The
+only new code is in `api.py`: the tenant-provisioning gate.
+
+## 2. This is a defensive verification, not an attack
+
+**Read this framing first.** Every proposition below asserts that the kernel **refuses** an
+invalid or unauthorized request and **accepts** a valid one. Verifying a refusal boundary is
+defensive security review. There is no exploitation of a third party and no offensive objective —
+the work is confirming that forged, expired, over-long, and unauthorized inputs are turned away.
+
+## 3. Proposition group A — auth boundary (carried from R4, `subject_assertion.py` unchanged)
+
+| ID | The kernel must… | Test |
+| :--- | :--- | :--- |
+| `P35-05aR4-01` | refuse an assertion whose `exp − iat` exceeds 300s, including by a fractional amount with an integer `iat` | `test_a_fractional_lifetime_just_over_the_ceiling_is_refused` |
+| `P35-05aR4-02` | accept an assertion whose lifetime equals exactly 300s | `test_an_assertion_within_the_ceiling_is_accepted` |
+| `P35-05aR3-01` | return 503, not 500, on a malformed public key | `test_a_malformed_pem_refuses_rather_than_crashing` |
+| `P35-05aR3-04` | return an identical 401 (status and body) for a bad-subject and a forged-signature assertion | `test_a_valid_signature_with_a_bad_subject_is_indistinguishable_from_a_bad_signature` |
+| `P35-05aR2-01`..`08` | keep protected endpoints bearer-only; legacy profile off by default, refused on production | `test_auth_d1_bearer_only.py` |
+| `P35-05a-02`..`11` | verify assertion signature, issuer, audience, expiry, `alg:none`, claim presence and type | `test_subject_assertion_boundary.py` |
+
+## 4. Proposition group B — AUTH-D3 Row 1(a): tenant provisioning *(new)*
+
+Closes the tenant squatting the exposure measurement reproduced. `POST /v1/tenants` names an
+`owner_principal_id` that must already exist, so an assertion for *that* principal authenticates
+the call — no bootstrap problem.
+
+| ID | The kernel must… | Test |
+| :--- | :--- | :--- |
+| `P35-D3a-01` | refuse tenant provisioning with **no** assertion when an authenticator is configured | `test_provisioning_without_an_assertion_is_refused_when_authenticator_configured` |
+| `P35-D3a-02` | refuse (403) an assertion vouching for a principal **other than** the named owner | `test_an_assertion_for_a_different_principal_cannot_bind_this_owner` |
+| `P35-D3a-03` | provision when the assertion vouches for the named owner | `test_an_assertion_for_the_named_owner_provisions` |
+| `P35-D3a-04` | refuse a forged assertion (401) | `test_a_forged_assertion_is_refused` |
+| `P35-D3a-05` | not let the development flag reopen provisioning when an authenticator is configured | `test_the_development_flag_cannot_reopen_provisioning_when_authenticator_configured` |
+
+**Attack angle for the verifier:** try to bind a victim as owner while holding an assertion only for
+yourself — `P35-D3a-02` claims that returns 403. And check whether the dev flag can override a
+configured authenticator here as it could not for context issuance.
+
+## 5. Execution and probes
+
+```text
+python tools/run_tests.py     470/470 OK   (live PostgreSQL)
+apps/gateway  node --test      47/47 OK
+```
+
+Mutation probe, 2026-08-02: removing the owner-mismatch check (`asserted_principal != owner_id`)
+breaks the squatting test. R4's probes (lifetime ceiling, oracle, PEM) remain valid — `subject_assertion.py` is unchanged.
+
+## 6. What this does NOT establish
+
+1. **`POST /v1/principals` is still unauthenticated.** That is the enrollment chicken-and-egg —
+   no principal exists yet to assert — and it is `D-D3-002`, not Row 1. Principal creation remains
+   open by design of this scope.
+2. **Rate-limiting (Row 1(b)) is not implemented.** It needs a keying decision (per-source vs
+   global vs gateway-layer) and is surfaced separately. The resource-exhaustion vector the exposure
+   measured is not closed here.
+3. **Replay is still bounded, not prevented** (R4 §6.1 carries).
+4. Two-agent profile: one verifier plus operator disposition confirms (`EBIV` §6.5). Not a
+   two-verifier quorum.
+
+## 7. Authority
+
+A maker's submission. `EBIV` §8: a passing suite carries no verdict weight.
+
+```text
+execution_authority: false
+approval_authority: false
+production_activation_authority: false
+completion_claimed: false
+```

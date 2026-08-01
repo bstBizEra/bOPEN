@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-05A-MAKER-R4`
 **Version:** `4.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **SUPERSEDED 2026-08-02** — never balloted (verifier classifier-blocked, §6A). AUTH-D3 Row 1(a) built on top; ballot the combined candidate [`EVD-P35-05A-MAKER-R5`](wp-p35-05a-maker-submission-r5.md) at `ce97561`.
 **Issued:** 2026-08-01
 **Supersedes:** [`EVD-P35-05A-MAKER-R3`](wp-p35-05a-maker-submission-r3.md) at `e559d1d…`, **refuted** on `P35-05aR3-02`
 

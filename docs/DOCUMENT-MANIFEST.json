@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 303,
+  "count": 304,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1482,9 +1482,16 @@
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md",
       "title": "EVD-P35-05A-MAKER-R4 \u2014 WP-P35-05a Maker Submission, revision 4 (Kernel Authentication Boundary)",
+      "status": "**SUPERSEDED 2026-08-02** \u2014 never balloted (verifier classifier-blocked, \u00a76A). AUTH-D3 Row 1(a) built on top; ballot the combined candidate [`EVD-P35-05A-MAKER-R5`](wp-p35-05a-maker-submission-r5.md) at `ce97561`.",
+      "sha256": "3f0a9366b370afb43c74448a5e0b4cd2f2bc577ce78c2fe9b4c9ab10d30305be",
+      "bytes": 7581
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r5.md",
+      "title": "EVD-P35-05A-MAKER-R5 \u2014 WP-P35-05a auth boundary + AUTH-D3 Row 1(a)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "a7f461b7e47bd532981f32c6ab3983c1236271825791aba33a45e95a70b2611c",
-      "bytes": 7437
+      "sha256": "393d10e5bf630738bf08596acab64aa2a254548134e34791c903bd4e872fe821",
+      "bytes": 5856
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
