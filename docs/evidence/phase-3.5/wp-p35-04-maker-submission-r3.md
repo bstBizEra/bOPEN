@@ -133,6 +133,59 @@ R3: 47 tests. **That is not evidence it is correct.** It is the same kind of evi
 iteration later, and the only thing that has ever found a defect here is someone independent
 attacking a claim the maker was willing to state plainly.
 
+## 8A. Amendment 2026-08-01 — two refutations that cannot be discharged
+
+Codex balloted R3 (`369f845`): `CONFIRMED` on `R3-01`..`14`, `R3-16`, `R3-18`; **`REFUTED` on
+`R3-15` and `R3-17`**.
+
+### 8A.1 No revision 4, and why
+
+The gateway subtree at `516a65a4df0542f514f4b6fb11f0a40f4c34bb88` is **byte-identical** to the R3
+candidate. No gateway code has changed.
+
+Issuing an R4 at a later commit would re-anchor an unchanged component and imply a repair that has
+not happened — precisely what Codex refused to permit for `WP-P35-05a` on 2026-07-31, and the
+refusal was right then. It is equally wrong here. **This is an amendment, not a revision.**
+
+### 8A.2 The refutations stand and are not discharged
+
+`BOPEN-GOV-EBIV-001` §6.2 permits discharge only by fixing the defect until the probe fails to
+reproduce, or by an independent verifier demonstrating the probe invalid.
+
+**Neither applies.** Both probes are valid and both reproduce. The defect was not in the code —
+**it was in the propositions, which claimed more than the code does.**
+
+| Refuted | Why it was wrong |
+| :--- | :--- |
+| `R3-15` — "percent-encoding reaches the kernel byte-identical" | True except where the encoding decodes to a dot segment, which the URL parser resolves before any handler runs. `/v1/%2E%2E/admin` → `/admin`. The claim admitted no exception |
+| `R3-17` — "the gateway applies no path transformation of its own beyond the parser's" | False. Base-path prefixing is a transformation the gateway applies deliberately: with base `/base`, `/v1/item` → `/base/v1/item`. The claim excluded it by omission |
+
+**`R3-15` and `R3-17` are withdrawn as claims and remain `REFUTED` on the record, permanently.**
+A maker cannot retire a refutation by rewording the thing that was refuted. The ballots stand.
+
+### 8A.3 Replacement propositions, stated to match the code
+
+New IDs, because they are new claims and must not inherit a refuted one's history.
+
+| ID | Proposition | Test |
+| :--- | :--- | :--- |
+| `P35-04R3-19` | Percent-encoding is preserved **except** where the encoded sequence decodes to a dot segment, which the URL parser resolves before any handler runs | `percent-encoding reaches the kernel as sent`, `KNOWN LIMITATION: dot segments are resolved…` |
+| `P35-04R3-20` | The only path transformation the gateway applies is **prefixing the configured base path**; it introduces no other | `an ordinary path under a base prefix is still allowed`, `a path escaping the configured base prefix is refused…` |
+
+Both are narrower than what they replace, and deliberately so. **This is the sixth and seventh
+time in this package that a proposition claimed more than its test supported** — the recurring
+fault is that the maker states the intent rather than the behaviour, and the correction is to
+write the exception into the claim rather than into a limitations section.
+
+### 8A.4 State
+
+`WP-P35-04` remains **BLOCKED** at `1b39a30` on `R3-15` and `R3-17`, and will stay blocked while
+those propositions stand refuted. Ballots on `R3-19` and `R3-20` do not lift that; they establish
+what is actually true alongside it.
+
+A Completion Authority disposing this package must do so on a record that carries two standing
+refutations, not on one where they were argued away.
+
 ## 9. Authority
 
 A maker's submission. EBIV §8: a passing suite is a self-assessment carrying **no verdict weight**.

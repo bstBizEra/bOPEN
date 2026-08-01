@@ -1,5 +1,43 @@
 # Documentation Changelog
 
+## 2026-08-01 - Four auth defects closed, and two refutations that cannot be argued away
+
+- **Closed three of the four residual `WP-P35-05a` defects Codex confirmed reproducible, and
+  bounded the fourth.** 464 tests, up from 441. All six governance checks and the gateway suite
+  pass.
+  - **Malformed PEM → 503, not 500.** `load_pem_public_key` raises a bare `ValueError` outside the
+    `try`, so it escaped as a non-`SubjectAssertionError`. A 500 says the kernel broke; a 503 says
+    the deployment is misconfigured. A certificate PEM — the likeliest operator mistake — was the
+    500 path. The maker's own test could not tell them apart: `assertRaises(Exception)` passes on
+    either.
+  - **Status-code oracle closed.** A valid signature with a non-UUID `sub` returned `400` naming
+    the field while a forged signature returned `401` saying nothing — telling a forger whether
+    their signature was accepted. `P35-05a-10` claimed the reason was not disclosed; it was,
+    through the status code. Both now return an identical `401`, and the test asserts the two
+    **bodies are equal**, not merely that both are 401.
+  - **Replay window bounded, not closed.** Codex accepted a ten-year assertion, each replay
+    minting a fresh context token. `MAX_ASSERTION_LIFETIME` caps it at five minutes. Within the
+    window an assertion is **still replayable** — that needs somewhere to record `jti`, which
+    `D-P35-004`..`010` block. The source says so rather than implying closure.
+  - **The undisclosed precondition is now written down.** The authenticator must emit bOPEN
+    principal UUIDs as `sub`, so **no mainstream OIDC provider can be pointed at this kernel
+    directly**. It went unrecorded because no HTTP test exercises a *successful* issuance — every
+    test asserts a refusal, so nothing ever had to supply an acceptable `sub`.
+- Mutation probes: removing the lifetime ceiling breaks 1, restoring the oracle breaks 1, letting
+  the PEM error escape breaks 2.
+- **No `WP-P35-04` R4 was issued.** The gateway subtree is byte-identical to the R3 candidate, so
+  re-anchoring would imply a repair that has not happened — exactly what Codex refused to permit
+  for `05a`. R3 is amended instead.
+- **`R3-15` and `R3-17` remain `REFUTED` permanently.** §6.2 allows discharge only by fixing until
+  the probe fails or by an independent verifier invalidating it; both probes are valid and both
+  reproduce. The defect was in the propositions, not the code. **A maker cannot retire a
+  refutation by rewording what was refuted.**
+- Replacement propositions `R3-19` and `R3-20` state what the code actually does, under new IDs so
+  they inherit no refuted history. That is the **sixth and seventh** overclaim in this package: the
+  recurring fault is stating intent rather than behaviour, and the fix is putting the exception in
+  the claim rather than in a limitations section.
+
+
 ## 2026-08-01 - Two agents cannot reach a quorum of two
 
 - Operator: the team is **Claude and Codex**. Gemini is set aside for now.
