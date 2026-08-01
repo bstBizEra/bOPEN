@@ -102,6 +102,25 @@
       "commits": 29,
       "actual_author": "Claude (agent, Motor role)",
       "detail": "The per-agent convention lapsed and Claude committed the whole of WP-P35-01, WP-P35-02 and WP-P35-03 under the operator's identity. History is not rewritten; the gap is recorded so a verifier reads these commits as unattributable rather than as operator-authored."
+    },
+    {
+      "range": "2026-08-01, eight commits",
+      "commits": [
+        "6094648",
+        "c57b4c0",
+        "fbd8a99",
+        "01e7599",
+        "25b3d42",
+        "d9324a6",
+        "1b39a30",
+        "7eb7bad"
+      ],
+      "ident_recorded": "Codex (BST-SA Motor) <codex@bst.local> on six; Gemini (BST-SA Cortex) <gemini@bst.local> on 1b39a30 and 7eb7bad",
+      "actual_author": "Claude (agent, Motor role)",
+      "cause": "Codex and Gemini each set the repository-local git identity for their own runs. Claude committed afterwards without re-checking it, so eight commits carry the identity of the agent that had run most recently. Found by Codex while balloting WP-P35-04 R3.",
+      "detail": "History is not rewritten: doing so would invalidate every evidence anchor emitted against these objects and trade a disclosed defect for a silent one, per AGENTS.md 21.4. These commits must be read as CLAUDE-AUTHORED, not as work of the agent named in the ident.",
+      "verification_consequence": "1b39a30 is the WP-P35-04 R3 candidate and 7eb7bad is its submission. Read from the ident alone, Gemini would appear to have authored the candidate it might verify. It did not. Gemini therefore REMAINS ELIGIBLE to verify R3, and Claude remains disqualified as the true author. Codex balloted R3 at 369f845 and is unaffected.",
+      "ballots_affected": "None. check_ballot_attribution binds a ballot to the author of the commit introducing the ballot line; all three ballot commits (0d12332 codex, adc97fc and 8041701 gemini, 369f845 codex) carry their correct authors."
     }
   ],
   "verification": {

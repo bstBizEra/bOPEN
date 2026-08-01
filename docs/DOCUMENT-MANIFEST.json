@@ -20,8 +20,8 @@
       "path": "docs/00-governance/agent-identity-register.json",
       "title": "",
       "status": "",
-      "sha256": "27b376ce8e6a4e696bc54fc04e5b1afda0ebbf5285b9f607547434719270c1b4",
-      "bytes": 5204
+      "sha256": "25076503a0fa24c64153c00bcee329cfe7cd5a88cc40a073e76d0b9f16fded38",
+      "bytes": 6791
     },
     {
       "path": "docs/00-governance/agent-role-catalog.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "765d207c0ec7951e37d843d83f326e75b47c0e194e1f4501aa8df24ec3e101b9",
-      "bytes": 45939
+      "sha256": "6bb85d5399cd557c9ea118541d955bf49550aedebcfc09f87aa2043ec25424c5",
+      "bytes": 47975
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1364,8 +1364,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "1c8d18b74943b91b20f6af75e532471d809435609b30567902199ebd981dde31",
-      "bytes": 57617
+      "sha256": "12d46ef53f23b93c68ea2813f5a50b30d8354823e43172313aaae2349b1e8d0c",
+      "bytes": 78529
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",

@@ -1,5 +1,32 @@
 # Documentation Changelog
 
+## 2026-08-01 - Eight commits under the wrong identity, found by the verifier not the author
+
+- Codex balloted `WP-P35-04` R3 at `1b39a30`: **CONFIRMED** `R3-01`..`14`, `R3-16`, `R3-18`;
+  **REFUTED** `R3-15` and `R3-17`. R3 is blocked. Quorum 1 of 2.
+- Codex also flagged a provenance defect, and it is **worse than reported**. Eight commits carry
+  another agent's identity: `6094648`, `c57b4c0`, `fbd8a99`, `01e7599`, `25b3d42`, `d9324a6` as
+  Codex, and `1b39a30`, `7eb7bad` as Gemini. All eight were authored by Claude.
+- **Cause:** Codex and Gemini each set the repository-local git identity for their own runs;
+  Claude committed afterwards without re-checking. A shared mutable config catches whoever
+  commits second, and nothing in the repository warned them.
+- **This is a failure against `AGENTS.md` §21.1 by the agent that wrote §21.1's enforcement into
+  the engineering loop as stage 1.** Documenting a rule is not following it.
+- History is **not** rewritten, per the §21.4 precedent: rewriting would invalidate every evidence
+  anchor emitted against these objects and trade a disclosed defect for a silent one. Recorded in
+  `agent-identity-register.json` under `attribution_gaps` and in `AGENTS.md` §23.0.
+- **The consequence that mattered:** `1b39a30` is the R3 candidate. Read from its ident alone,
+  Gemini appears to have authored the candidate it might verify — and with Claude disqualified as
+  true author, Codex already balloted and Kimi unavailable, **R3's quorum would have been
+  unreachable**. Gemini did not author it and remains eligible. No ballot is affected; all four
+  ballot commits carry correct authors.
+- Standing correction added: re-check `git config user.email` immediately before the first commit
+  of a session, not only at session start.
+- **`AUTH-D1` was disposed on 2026-08-01 — ACCEPTED, option 3**: protected endpoints are
+  bearer-only, `X-Context-ID` is non-authoritative. That unblocks remediation of the privilege
+  escalation in `WP-P35-05a`. `AUTH-D3` remains pending.
+
+
 ## 2026-08-01 - R3 issued, with one proposition deliberately not restated
 
 - `EVD-P35-04-MAKER-R3` at `1b39a30` (tree `d134838`, gateway subtree `516a65a`), succeeding the

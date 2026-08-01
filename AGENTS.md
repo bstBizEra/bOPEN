@@ -584,6 +584,35 @@ The baseline does **not** replace the decision record explaining the change, and
 deleting superseded text. Extend-only still governs the text; the baseline preserves the tree
 around it.
 
+### 23.0 Disclosed violation 2026-08-01 — eight commits under another agent's identity
+
+Codex and Gemini each set the repository-local git identity for their own runs. Claude committed
+afterwards **without re-checking it**, so eight commits carry the identity of whichever agent had
+run most recently: `6094648`, `c57b4c0`, `fbd8a99`, `01e7599`, `25b3d42`, `d9324a6` as Codex, and
+`1b39a30`, `7eb7bad` as Gemini. All eight were authored by Claude.
+
+Found by Codex while balloting `WP-P35-04` R3, not by the agent that caused it.
+
+**This is a failure against §21.1 by the agent that wrote §21.1's enforcement into the engineering
+loop as stage 1.** A rule one has personally documented is not thereby followed; the shared
+mutable git config is a trap that catches whoever commits second, and nothing in the repository
+warns them.
+
+History is **not** rewritten, for the reason given in §21.4: it would invalidate every evidence
+anchor emitted against these objects and trade a disclosed defect for a silent one. The range is
+recorded in [`agent-identity-register.json`](docs/00-governance/agent-identity-register.json)
+under `attribution_gaps` and must be read as **Claude-authored**.
+
+**Verification consequence, which is the part that matters.** `1b39a30` is the `WP-P35-04` R3
+candidate. Read from its ident alone, Gemini appears to have authored the candidate it might
+verify, which would disqualify it — and with Claude disqualified as the true author, Codex
+already balloted, and Kimi unavailable, R3's quorum would be unreachable. It did not author it.
+**Gemini remains eligible.** No ballot is affected: all four ballot commits carry their correct
+authors.
+
+**Standing correction:** every agent re-checks `git config user.email` immediately before its
+first commit of a session, not only at session start. Another agent may have changed it since.
+
 ### 23.3 First baseline
 
 [`arch-baseline/2026-07-31-rls-option-c`](docs/00-governance/baselines/README.md#31-2026-07-31--rls-with-option-c-sharding)
