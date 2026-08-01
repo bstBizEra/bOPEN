@@ -785,6 +785,9 @@ def register_principal(
 def provision_tenant(
     body: ProvisionTenantRequest,
     correlation_id: Annotated[str, Depends(require_correlation_id)],
+    x_subject_assertion: Annotated[
+        Optional[str], Header(alias="X-Subject-Assertion")
+    ] = None,
 ) -> ProvisionTenantResponse:
     """Provision a tenant and its owner membership.
 
@@ -800,7 +803,16 @@ def provision_tenant(
     2026-07-30 while following up the context-issuance finding, which had named only that
     endpoint.
     """
-    if not unauthenticated_identity_assertion_permitted():
+    # AUTH-D3 Row 1 (a), operator-approved 2026-08-02 (DEC-P35-AUTH-D3-DOCKET). Closes the tenant
+    # squatting reproduced by auth-d3-exposure-measurement: an unauthenticated caller binding
+    # another principal as owner.
+    #
+    # `owner_principal_id` must already exist (checked below), so an assertion vouching for that
+    # principal authenticates the call with no bootstrap problem — the principal is not being
+    # created here. This is exactly the establish_context treatment under AUTH-D1, reused.
+    asserted_principal = _authenticated_principal(x_subject_assertion)
+
+    if asserted_principal is None and not unauthenticated_identity_assertion_permitted():
         _refuse_unauthenticated(
             "tenant provisioning",
             "provisioning a tenant here would bind a principal the caller has not proved it is "
@@ -808,6 +820,15 @@ def provision_tenant(
         )
 
     owner_id = normalise_id(body.owner_principal_id, "owner_principal_id")
+
+    if asserted_principal is not None and asserted_principal != owner_id:
+        # The authenticator vouched for one principal and the body names another as owner. Without
+        # this, a caller holding a valid assertion for themselves could bind anyone as owner —
+        # which is the squatting the exposure measured.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="assertion does not vouch for the named owner principal",
+        )
 
     try:
         principals.get(owner_id)

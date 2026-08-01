@@ -54,6 +54,18 @@ of the exposure closes without solving the hard problem at all.
 neither waits on the recursion decision below. They **amend `WP-P35-05a`'s scope** (per the
 exposure measurement §6), so they are governed work, not a patch — a maker/verifier cycle applies.
 
+> **DISPOSITION 2026-08-02 — `D-D3-001` Row 1 APPROVED.** Operator (`BizEra`) authorized both
+> mitigations. Sequencing note: because the `WP-P35-05a` R4 candidate (`119f2d8`) was never
+> balloted (classifier-blocked, not ruled on), these mitigations are built on top of it into one
+> combined successor candidate, balloted once — no review is invalidated, and the flaky-verifier
+> round-trips are halved.
+>
+> **(a) tenant-provisioning assertion** is the security fix (impersonation/squatting) and is built
+> immediately — it reuses `_authenticated_principal` from `AUTH-D1`. **(b) rate-limiting** is
+> resource-exhaustion (bounded blast radius) and needs a keying choice (per-source vs global vs
+> gateway-layer); surfaced separately rather than guessed. Recorded by Claude (Motor), transcribing
+> the operator decision.
+
 **What remains open after Row 1:** only `POST /v1/principals`. That is the sole endpoint where no
 principal yet exists to assert, and therefore the only one that genuinely requires `AUTH-D3`.
 

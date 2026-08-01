@@ -1196,8 +1196,8 @@
       "path": "docs/decisions/DEC-P35-AUTH-D3-DOCKET.md",
       "title": "DEC-P35-AUTH-D3-DOCKET \u2014 Disposition surface for the last live authentication hole",
       "status": "**Proposed \u2014 awaiting operator/authority disposition**",
-      "sha256": "db83757e680db0c01aae089abba8342970af204afc7eecb4e48ea9b3175a9a66",
-      "bytes": 6603
+      "sha256": "6afcabfe71833a305856f079bd7423b84df96edd70fe7d863aba96e169b61c0b",
+      "bytes": 7432
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
@@ -1392,8 +1392,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "dc8b2b424a188b85e869f316b611449f4fdedddbf82b9d64a1b84fecc4b6ef5b",
-      "bytes": 107623
+      "sha256": "e6b7ce71dce018f94e4c6af526e94abf32f4c3ee208e42893e57e21dbf480665",
+      "bytes": 124127
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",

@@ -1,7 +1,7 @@
-# bOPEN Standard Client HTTP Header Specification v1.1
+# bOPEN Standard Client HTTP Header Specification v1.2
 
-**Version:** `1.1`
-**Amended:** 2026-08-01 by `DEC-P35-AUTH-CLOSURE` `AUTH-D1` (ACCEPTED, option 3)
+**Version:** `1.2`
+**Amended:** 2026-08-01 by `DEC-P35-AUTH-CLOSURE` `AUTH-D1` (option 3); 2026-08-02 by `DEC-P35-AUTH-D3-DOCKET` `D-D3-001` (`X-Subject-Assertion` on tenant provisioning)
 
 All client applications, satellite products (bPro, bFleet, PropTech, bERP, LDM), and AI agents interacting with the bOPEN Platform Kernel MUST send these HTTP headers:
 
@@ -12,6 +12,7 @@ All client applications, satellite products (bPro, bFleet, PropTech, bERP, LDM),
 | `X-Tenant-ID` | Optional | **non-authoritative** | Cross-check only. On the bearer path the tenant comes from the signed `tid` claim; a disagreeing header is refused | `tnt_88a11b22-44c3-55d6-77e8-99f00a11b22c` |
 | `X-Context-ID` | Optional | **non-authoritative** | Reference only. **Possession of a context identifier confers no authority** | `ctx_99f11a22-33b4-44c5-55d6-66e77f88a99b` |
 | `X-Capability-Version` | Optional | none | Requested capability contract API version | `1.0.0` |
+| `X-Subject-Assertion` | **Conditional** | **Authoritative for enrollment** | Signed assertion from the configured external authenticator, vouching for a principal by `sub`. Required by `POST /v1/contexts` and `POST /v1/tenants` when an authenticator is configured; on `/v1/tenants` its `sub` must equal `owner_principal_id`. Never bound by email (`DEC-P35-AUTH-BOUNDARY`) | `eyJhbGciOiJFZERTQS...` |
 
 ## Authority rule (v1.1)
 
