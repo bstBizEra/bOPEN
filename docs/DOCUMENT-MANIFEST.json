@@ -6,8 +6,8 @@
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
       "title": "bOPEN Agent Alignment & Context Register v1.0",
       "status": "Operational",
-      "sha256": "cedc9b9e316bb1b395ed6345c16ea4ab3d9e3297ebb57314f364ca170f9e0dd6",
-      "bytes": 3403
+      "sha256": "ccd721b36a704e44e8d954c502c1bd5c7877a1fe5e95e82283e3b5236ac3ae4b",
+      "bytes": 3606
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -209,8 +209,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "bf17f6bc2268d046d7751ea97fad7631c3a675a5b609a8cf80839745a3c0b89f",
-      "bytes": 14927
+      "sha256": "5e559d99ce98bae82a25ae620801759fae424ecc2907cfff09a6de43131fe146",
+      "bytes": 15161
     },
     {
       "path": "docs/01-product/principles.md",
@@ -979,8 +979,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "0a361b8b8b488d6251f786368af930ed203782b3405a2162b1c7ed6e569814e0",
-      "bytes": 6991
+      "sha256": "7ecc9e86ac97e830dd685b02a0373c0fc0164b34bff1f2ff5fbdd5297117a35f",
+      "bytes": 6990
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1273,8 +1273,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "4c57d2fdc5637e8199a73819d53ffc876f7ffc338d0d2193b0e6b788ebbbcc35",
-      "bytes": 3508
+      "sha256": "f107f5c7c5dce02adf9efa041c1a618c636b8882112ea32718ba4d74e5fecf36",
+      "bytes": 3551
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",

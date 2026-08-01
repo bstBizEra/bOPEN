@@ -15,15 +15,17 @@ Every AI agent starting a session in bOPEN **must** read this single section to 
 
 ```text
 Repository: bOPEN (Open Business Platform Kernel)
-Current Phase: Phase 3.5 — Runtime Realization
-Current Gate: DEC-P35-RUNTIME Approved 2026-07-31 (Option C) — DEC-P35-DOCKET §6.1
+Current Phase: Phase 3.5 — Runtime Realization, CLOSING
+Current Gate: DEC-P35-RUNTIME Approved (Option C); DEC-P35-TWO-AGENT-QUORUM Approved 2026-08-02 (Option B)
 Primary Workspace: c:/laragon/www/bopen (Single-Workspace Policy)
-Active Implementation Authority: BOPEN-P35-001 Authorized (WP-P35-01..WP-P35-04)
-Maker WP-P35-01..03: Codex (remediation) — checker must be Gemini or Kimi
-Maker WP-P35-04:     Claude — checker may be Codex, Gemini or Kimi
+Team: Claude + Codex (two-agent profile in force — EBIV §6.5)
 Rule: an engine that edits a package cannot vote on it (EBIV §3). Record your row before writing
-Still Blocked: WP-P35-05, Phase 2 persistence migrations, audit-envelope convergence
-Verification State: Phases 1-3 and WP-P35-01..03 are IMPLEMENTED_UNVERIFIED, zero ballots
+Verification State (2026-08-02):
+  WP-P35-01..03  CONFIRMED_UNDER_TWO_AGENT_PROFILE (one verifier + operator disposition; rerun-evidence risk on record)
+  WP-P35-04      BLOCKED_ACCEPTED_WITH_KNOWN_DEFECTS (two standing refutations; gateway usable)
+  WP-P35-05a R4  AWAITING one Codex ballot at 119f2d8 — the only open engineering item in the phase
+  Phases 1-3     IMPLEMENTED_UNVERIFIED (not re-verified under EBIV)
+Next: Codex ballots WP-P35-05a R4; then Phase 3.5 fully disposed and Phase 4 entry opens
 ```
 
 Read [`AGENTS.md`](../../AGENTS.md) §20.2 and §22 before starting. Authorization to write code

@@ -17,38 +17,42 @@ happens next, in what order, and what is stopping each one**.
 One rule governs it: a row moves only when the thing blocking it has an outcome recorded, never
 because it has been waiting a long time.
 
-## 2. Standing state, 2026-07-31
+## 2. Standing state, 2026-08-02
 
 | | Count |
 | :--- | :--- |
 | Work packages implemented | 5 (`WP-P35-01`..`04`, `05a`) |
-| Independent ballots cast | **14** — all on `WP-P35-04`, from **1 verifier of 2 required** |
+| Independent ballots cast | **123** across candidates |
 | Phases authorized | 0, 1, 2, 3, 3.5; 3.6 partial |
-| Phases verified | **none** — quorum unmet on every package |
-| Canonical suite | 433/433 against PostgreSQL |
-| Gateway suite | 31/31 |
+| Phase 3.5 | **CLOSING** — 01-03 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, 04 accepted-with-defects, 05a R4 awaits one ballot |
+| Canonical suite | 465/465 against PostgreSQL |
+| Gateway suite | 47/47 |
 | Governance checks | 6/6 pass |
 
-**Read the second row before the fifth.** Green suites are maker self-assessment and carry no
-verdict weight under `BOPEN-GOV-EBIV-001` §8. Nothing in this repository has been verified by
-anyone who did not write it.
+**What "confirmed" means here is weaker than it sounds, by design.** Under the two-agent profile
+(EBIV §6.5) a confirmation is one independent verifier plus operator disposition, not two blind
+verifiers — recorded as `CONFIRMED_UNDER_TWO_AGENT_PROFILE` so the difference is never silent.
+The single verifier for `WP-P35-01`..`03` reran maker tests for many of its ballots, so tenant
+isolation in particular rests on rerun evidence. Green suites remain maker self-assessment with
+no verdict weight (§8).
 
 ## 3. Critical path
 
-The single most valuable action is not on any execution plan.
+### A-01 — Verify Phase 3.5 *(largely COMPLETE, 2026-08-02)*
 
-### A-01 — Seat a verifier *(blocking everything downstream)*
+Once the single most valuable action; now nearly discharged. `DEC-P35-TWO-AGENT-QUORUM` Option B
+(EBIV §6.5) resolved the structural blocker — with a two-agent team, one verifier plus operator
+disposition confirms.
 
-| | |
+| Package | State |
 | :--- | :--- |
-| **Why first** | Five implemented work packages cannot be completed, and Phase 4 cannot open, until an independent verifier rules. No amount of further code changes this |
-| **Who** | Gemini or Kimi for `WP-P35-01`..`03` — Claude authored them and Codex is remediating, so §20.3 disqualifies both. Codex for `WP-P35-04` and `05a`, which it did not touch |
-| **Blocked by** | Gemini/Kimi seats for `WP-P35-01`..`03` remain available. `WP-P35-04` has one verifier of two. `WP-P35-05a`: `AUTH-D1` is accepted; Claude must remediate it, while `AUTH-D3` still needs authority disposition before a successor submission |
-| **Risk if deferred** | Verification debt compounds. Each new package adds to a queue nobody has started, and the eventual reviewer faces a body of work too large to probe honestly |
+| `WP-P35-01`..`03` | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** — Gemini verifier + operator disposition |
+| `WP-P35-04` | **Accepted with known defects** — two standing refutations, gateway usable |
+| `WP-P35-05a` R4 | **The one remaining action:** a Codex ballot at `119f2d8` |
 
-**Codex completed preflight and must not ballot the stale candidates.** The original handoff is
-on HOLD under `EVD-P35-CODEX-PREFLIGHT-001`; independence remains intact for a maker-issued
-successor.
+**Only `WP-P35-05a` R4 is still open.** After that ballot and its disposition, A-01 is complete
+and Phase 4 entry opens (its condition was `WP-P35-01`..`03`, now disposed). The verification-debt
+risk that made this "blocking everything" has been discharged rather than deferred.
 
 ### A-02 — Security and Privacy review of `DEC-P35-CONTROL-PLANE`
 
@@ -68,7 +72,7 @@ keeps the other eligible as checker.
 
 | # | Action | Owner | Gate | State |
 | :--- | :--- | :--- | :--- | :--- |
-| A-01 | Cast ballots on `WP-P35-01`..`05a` | Gemini / Kimi / Codex | current exact-commit maker submission | **Gemini/Kimi available for 01-03; Codex HOLD for 04/05a** |
+| A-01 | Verify Phase 3.5 | Codex + operator | §6.5 profile | **DONE except `WP-P35-05a` R4 — one Codex ballot at `119f2d8`** |
 | A-02 | Security + Privacy review of `DEC-P35-CONTROL-PLANE` | Security, Privacy | none | **available now** |
 | A-03 | Assign maker to `WP-P35-06` | Engineering | none | **available now** |
 | A-04 | Plane assignment register (D-16) | `WP-P36-01` maker | A-02 | blocked |
