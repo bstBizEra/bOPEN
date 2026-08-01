@@ -2071,8 +2071,8 @@
       "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P35-001 \u2014 Phase 3.5 Runtime Realization",
       "status": "**Accepted and authorized 2026-07-31** \u2014 bound by `DEC-P35-RUNTIME` \u00a78 (`D-P35-001`). `WP-P35-05` remains blocked pending `D-P35-011`..`D-P35-014`; Phase 2 persistence migration design remains blocked pending `D-P35-004`..`D-P35-010`",
-      "sha256": "222199bbdb7c338760d33305f8de93d7fdfbb496e463678601a809c577428051",
-      "bytes": 9833
+      "sha256": "b226d88f196b9bc9c94bde113b017133e9f1a577bcd2d3a092269316b7bf4566",
+      "bytes": 11684
     },
     {
       "path": "docs/work-packages/BOPEN-P35-006-SHARD-ROUTING.md",

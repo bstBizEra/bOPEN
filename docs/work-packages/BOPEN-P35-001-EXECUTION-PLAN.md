@@ -163,9 +163,32 @@ reversible by deletion.
 
 ## Completion record
 
-*`WP-P35-01`..`WP-P35-04` implemented, all `IMPLEMENTED_UNVERIFIED`, zero ballots cast.
-`WP-P35-05` not started and blocked by `D-P35-011`..`D-P35-014`. Completion is recorded only
-against executed evidence meeting A-01..A-07.*
+> **Closure state, 2026-08-01.** This table is the single surface for disposing Phase 3.5. It
+> replaces the "zero ballots" line below, which is no longer true.
+>
+> | Candidate | Current evidence | Ballots | Verifiers | Refuted | What it needs to close |
+> | :--- | :--- | :---: | :--- | :---: | :--- |
+> | `WP-P35-01` | [`maker-submission.md`](../evidence/phase-3.5/maker-submission.md) @ `6ce069e` | 16 | gemini | 0 | disposition at 1-of-2 |
+> | `WP-P35-02` | [`wp-p35-02`](../evidence/phase-3.5/wp-p35-02-maker-submission.md) @ `a969bb5` | 8 | gemini | 0 | disposition at 1-of-2 |
+> | `WP-P35-03` | [`wp-p35-03`](../evidence/phase-3.5/wp-p35-03-maker-submission.md) @ `767cb81` | 11 | gemini | 0 | disposition at 1-of-2 |
+> | `WP-P35-04` | [`R3`](../evidence/phase-3.5/wp-p35-04-maker-submission-r3.md) @ `1b39a30` | 18 | codex | **2** | **disposition with two standing refutations** |
+> | `WP-P35-05a` | [`R4`](../evidence/phase-3.5/wp-p35-05a-maker-submission-r4.md) @ `119f2d8` | **0** | none | 0 | **one Codex ballot**, then disposition |
+>
+> **One verification gap remains in the entire phase: `WP-P35-05a` R4 has no ballots.** Everything
+> else is disposition, not engineering.
+>
+> **Nothing can be marked `CONFIRMED` until [`DEC-P35-TWO-AGENT-QUORUM`](../decisions/DEC-P35-TWO-AGENT-QUORUM.md)
+> is disposed.** With a two-agent team the maker is always one of the two, so §6.1's quorum of two
+> is unreachable by construction and every candidate escalates under §6.3 permanently.
+>
+> `WP-P35-04`'s two refutations **cannot be discharged**: `P35-04R-15`'s dot-segment half is
+> unachievable at that layer, and `P35-04R-17`'s base-path prefixing is intentional behaviour the
+> proposition wrongly excluded. Both probes are valid and reproduce. Disposing that package means
+> disposing it *with* them on the record.
+>
+> Superseded candidates whose ballots do **not** apply: `88e6ed2`, `f12e5fc`, `e559d1d`.
+
+*Completion is recorded only against executed evidence meeting A-01..A-07.*
 
 | Deliverable | State | Evidence |
 | :--- | :--- | :--- |
@@ -181,7 +204,7 @@ the other's work. Assigned 2026-07-31.
 
 | Work package | Maker | Eligible independent checker |
 | :--- | :--- | :--- |
-| `WP-P35-01` | **Codex** (`codex@bst.local`) — remediation | Gemini or Kimi only |
+| `WP-P35-01` | **Codex** (`codex@bst.local`) — remediation, **not started** | Gemini or Kimi only — **Gemini set aside 2026-08-01; see `DEC-P35-VERIFIER-REASSIGN`** |
 | `WP-P35-02` | **Codex** — remediation | Gemini or Kimi only |
 | `WP-P35-03` | **Codex** — remediation | Gemini or Kimi only |
 | `WP-P35-04` | **Claude** (`claude@bst.local`) | Codex, Gemini or Kimi |
