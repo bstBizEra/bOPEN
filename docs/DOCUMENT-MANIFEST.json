@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 302,
+  "count": 303,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1135,6 +1135,13 @@
       "status": "",
       "sha256": "b1b73bfc95f749d534ae52d443b57fc876337d5c3f47e9a27b62bd352abeb924",
       "bytes": 3205
+    },
+    {
+      "path": "docs/BOPEN-STATE-ARCHIVE-2026-08-02.md",
+      "title": "bOPEN State Archive \u2014 2026-08-02",
+      "status": "Milestone checkpoint \u2014 Phase 3.5 closure, pending final `WP-P35-05a` R4 disposition",
+      "sha256": "e3989d0382d435cc47623c89d5e5ca92f2c37c6dbae693bd181df94ff9eb93dc",
+      "bytes": 6549
     },
     {
       "path": "docs/CHANGELOG.md",
