@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 300,
+  "count": 301,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "65c10648487d29e7cc3cc182fc91de73687cdb974a7712416529f437406d8b18",
-      "bytes": 66802
+      "sha256": "63770013990da36477be949d04902746c382b5001d8699ff6ffc6ce2ef00b084",
+      "bytes": 69630
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1366,6 +1366,13 @@
       "status": "",
       "sha256": "51fadf412a8071286b21018cb236e5b8991565717d327f799ed2d4df73592e18",
       "bytes": 3713
+    },
+    {
+      "path": "docs/evidence/phase-3.5/auth-d3-exposure-measurement.md",
+      "title": "EVD-P35-AUTH-D3-EXPOSURE \u2014 What an unauthenticated caller can actually do",
+      "status": "Measurement \u2014 input to the pending `AUTH-D3` disposition. **Not a ballot, not a verification.**",
+      "sha256": "9a4144eae6096611c52937ac7878c37ad08f0558e83c757ed1f7cc47eeb9fb4e",
+      "bytes": 7230
     },
     {
       "path": "docs/evidence/phase-3.5/ballots.jsonl",

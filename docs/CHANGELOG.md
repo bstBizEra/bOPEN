@@ -1,5 +1,40 @@
 # Documentation Changelog
 
+## 2026-08-01 - AUTH-D3 exposure measured: unbounded in volume, bounded in blast radius
+
+- Codex's run wrote a 581-line exposure probe at 16:00, executed it, and stopped without
+  committing a report. No temp logs survived, no Python process remained, last database write
+  16:01. **The probe was re-executed by the maker** — design is Codex's and independent of the
+  kernel author; execution is deterministic; the interpretation is the maker's and is labelled so.
+- **A complete unauthenticated path from nothing to an owner bearer token exists**: principal
+  `201` → tenant `201` → context `201`, token issued. That token then returns `200`/ALLOW on
+  authorize, `200` on read, `201` on write and `200` on audit enumeration — fully functional in
+  the tenant it created.
+- **Tenant isolation holds and bounds the severity.** Foreign resource with conflicting header
+  `403`, without `404`, foreign audit events visible **0**. The attacker gets a tenant of their
+  own, not yours — an abuse problem, not a breach.
+- **The profile table is the substance of the finding.** `AUTH-D1` worked: with an authenticator
+  configured, context issuance is `401`. But **configuring an authenticator does not close tenant
+  provisioning** (`201`), and **nothing closes principal creation** — all three profiles return
+  `201`, including the flag-unset profile that is otherwise the safest default.
+- **No rate limit, quota or cost ceiling:** 40 principals and 20 tenants in 5.85s, zero `429`s, no
+  retry headers. Under ratified hybrid placement each tenant eventually means a database, so an
+  unauthenticated caller can queue unbounded infrastructure cost.
+- **Tenant squatting confirmed:** provisioning a tenant naming another principal as owner returns
+  `201` and that owner's decisions are ALLOW. The victim's existing tenants are unaffected —
+  pollution and impersonation-by-association, not takeover.
+- **The account-existence oracle persists**, `P(existing faster) = 0.647` over 80 pairs, matching
+  `EVD-SEC-001` Addendum C's 0.657 over 150. New form found: unauthenticated **email reservation**
+  returns `201`, which against a globally-unique `principals.email` with no application-role delete
+  path is a denial-of-registration against a named person.
+- **Advisory for the disposition:** `AUTH-D3` is not an emergency and should not be rushed into
+  accepting the enrollment-credential recursion risk on urgency grounds. Two mitigations are
+  cheaper and **do not depend on it** — rate limiting, and closing tenant provisioning, since
+  `POST /v1/tenants` names an `owner_principal_id` that must already exist and can therefore be
+  authenticated without solving the bootstrap problem. **Only `POST /v1/principals` genuinely
+  needs `AUTH-D3`.** Neither mitigation is implemented; both are recommendations.
+
+
 ## 2026-08-01 - The first refutation to find a code defect rather than a wording defect
 
 - Codex refuted `P35-05aR3-02` (`e8508b0`): an assertion with `exp − iat = 300.9` returned `201`
