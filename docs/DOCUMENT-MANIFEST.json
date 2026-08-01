@@ -1140,8 +1140,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "4817f2ae31c50ee5283ddfbc51c1b3a3d0ee103d4d98fc12b8daf2e13f21d898",
-      "bytes": 50375
+      "sha256": "3602b67c76fe98ae484bf552fece6c2c50c03fd8b2edaff2ad7d09d92855b453",
+      "bytes": 52631
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1189,15 +1189,15 @@
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
       "title": "DEC-P35-CONTROL-PLANE-DOCKET \u2014 Security and Privacy review surface for the control-plane boundary",
       "status": "**Proposed - `D-CP-003` enumerated; awaiting plane assignment and Security and Privacy Authority disposition**",
-      "sha256": "aed87f5307c096ec1e6a8d9044cacf3fb4cb347b8c5d449b6b236ecb230751e6",
-      "bytes": 14588
+      "sha256": "4b81c9121ae7687671749692e59f97a9abd51b9208c161e64b91d709d28b49ae",
+      "bytes": 16598
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE.md",
       "title": "DEC-P35-CONTROL-PLANE \u2014 What the platform may know about a tenant it cannot read",
       "status": "**Proposed \u2014 requires Security and Privacy Authority review before implementation**",
-      "sha256": "2ce07ff1169d562511c20d75eef61de0c6a308fdf8f8d5285e182fca618e8856",
-      "bytes": 8804
+      "sha256": "a66d95d0af34ebf5f14dfb03991b4b59f0605b70a6dc1f8f3c53f6114f34f23b",
+      "bytes": 12795
     },
     {
       "path": "docs/decisions/DEC-P35-DOCKET.md",

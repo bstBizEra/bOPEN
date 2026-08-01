@@ -104,6 +104,70 @@ Recommended constraint: aggregates leave the control plane only as **platform-wi
 as **the tenant's own** figures returned to that tenant. Per-tenant series are retained for
 operations and are not an input to commercial analysis without consent under §5.
 
+## 5A. Disposition 2026-08-01 — tier 3 permitted under per-tenant opt-in consent
+
+> **Operator disposition.** Business-content analytics is permitted for **all tenants**, of any
+> placement, **under explicit opt-in consent**. Default is off. Consent is revocable.
+> §5 below is retained; this section governs its tier 3.
+
+### 5A.1 What this does and does not authorize
+
+**Authorized:** deriving insight from tenant business content — rows, field values, document
+content — **for tenants that have opted in**, for the purpose of improving the system and
+platform.
+
+**Not authorized, and unchanged:** reading business content of a tenant that has not opted in.
+Absence of consent is not consent. §4's prohibitions apply in full to every non-consenting
+tenant, which after a default-off launch is every tenant.
+
+### 5A.2 The constraint that makes this enforceable rather than promised
+
+**Consent must not be implemented by giving the control plane credentials on tenant databases.**
+
+If the control plane holds credentials, it can read *every* tenant — and the boundary for
+non-consenting tenants degrades from a structural property to a policy the platform promises to
+honour. That would silently repeal `PRD-P35B-CRED-001`, which is the mechanism the entire privacy
+claim rests on.
+
+The direction is therefore fixed: **consented content is pushed outward from the tenant plane,
+never pulled by the control plane.** A tenant that has not consented has no push configured, and
+the platform has no route to its data even if its code asked. Consent becomes a capability the
+tenant grants, not a check the platform performs on itself.
+
+This is the same reasoning as §6 and it survives the disposition intact.
+
+### 5A.3 What must exist before any content is read
+
+Each is a mechanism, not a statement of intent.
+
+| Requirement | Why |
+| :--- | :--- |
+| **Consent record** — tenant, scope, terms version, granting principal, timestamp | "The tenant agreed" must name *who*, *to what*, and *when*, or it cannot be shown later |
+| **Authority to consent is checked** | An `active` membership is not authority to give away a tenant's data. The role permitted to consent must be named |
+| **Revocation, honoured retroactively** | Revocation that leaves derived models trained on the data is revocation in name only. The retention and re-derivation obligation must be stated **before** the first model exists, not after |
+| **Per-tenant provenance in every derived artifact** | If tenant X revokes, you must be able to answer which aggregates, models and reports contain its contribution. Unanswerable later if not recorded from the start |
+| **Disclosure the tenant can inspect** | Pairs with `PRD-P35B-DISCLOSE-001`: a tenant can see its placement, what is held, and its own consent state |
+| **Default-off proven by test** | A negative probe showing a non-consenting tenant's content is unreachable — refused by construction, not by an `if` |
+
+### 5A.4 Cost recorded honestly
+
+This is the most expensive of the four options considered. It buys the widest data, and it
+obliges the platform to build consent capture, revocation, provenance tracking and retroactive
+re-derivation — none of which exist. **Option "derived metrics only" required none of them**, and
+would have supplied capacity, adoption, performance and cost analytics from metering and
+schema-level counts already being collected.
+
+The disposition is the operator's and is recorded as made. The cost is recorded beside it so that
+a later reader can see it was chosen rather than stumbled into, and so that a decision to descope
+later is available on the evidence rather than on regret.
+
+### 5A.5 Concurrence
+
+**Security and Privacy Authority concurrence is NOT recorded.** This section creates a new data
+flow out of tenant boundaries, which is the category §8 already marks as requiring review. The
+*choice* is the operator's; the *mechanism* in §5A.3 must be reviewed before implementation.
+Docketed as `D-CP-005`.
+
 ## 5. Business analysis
 
 Three tiers, in increasing order of what they require.

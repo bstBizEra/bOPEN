@@ -1,5 +1,34 @@
 # Documentation Changelog
 
+## 2026-08-01 - Business-content analytics permitted under opt-in consent
+
+- **Operator disposition:** business-content analytics is permitted for **all tenants**, of any
+  placement, **under explicit opt-in consent**. Default off, revocable. Recorded as
+  `DEC-P35-CONTROL-PLANE` §5A; §4's prohibitions continue to apply in full to every
+  non-consenting tenant, which after a default-off launch is every tenant.
+- **The constraint that decides whether this is real:** consent must **not** be implemented by
+  giving the control plane credentials on tenant databases. A credential-holding control plane can
+  read *every* tenant, so the boundary for non-consenting tenants would degrade from a structural
+  property to a promise the platform makes to itself — silently repealing `PRD-P35B-CRED-001`,
+  which the entire privacy claim rests on.
+- Direction is therefore fixed: **consented content is pushed outward from the tenant plane, never
+  pulled.** A tenant that has not consented has no push configured and the platform has no route
+  to its data even if its code asked. Consent becomes a capability the tenant grants rather than a
+  check the platform performs on itself.
+- Six mechanisms must exist before any content is read (§5A.3): a consent record naming who/what/
+  when, a check that the consenting role actually has that authority, **revocation honoured
+  retroactively**, per-tenant provenance in every derived artifact, tenant-inspectable disclosure,
+  and a negative probe proving default-off by construction.
+- **Cost recorded beside the choice.** This is the most expensive of the four options considered.
+  It obliges the platform to build consent capture, revocation, provenance and retroactive
+  re-derivation — none of which exist. "Derived metrics only" required none of them and would have
+  supplied capacity, adoption, performance and cost analytics from metering and schema-level counts
+  already collected. Recorded so a later descope is available on the evidence rather than on regret.
+- Added docket row `D-CP-005`. **Security and Privacy concurrence is not recorded** — the choice is
+  the operator's, the mechanism needs review, and §8 already marks new data flows out of tenant
+  boundaries as requiring it.
+
+
 ## 2026-08-01 - AUTH-D1 implemented: a header can no longer create authority
 
 - `AUTH-D1` (ACCEPTED 2026-08-01, option 3) is implemented following the decision's own

@@ -42,6 +42,7 @@ the plane assignment used by every later row.
 | 2 | `D-CP-001` - control-plane personal data | Pending | Bind minimisation and erasure |
 | 3 | `D-CP-002` - audit placement | Pending | Choose placement after P-1 and P-2 |
 | 4 | `D-CP-004` - retention | Pending | Set ceilings and floors after data placement |
+| 5 | `D-CP-005` - consent mechanism for business-content analytics | **NEW 2026-08-01** | Review the mechanism in `DEC-P35-CONTROL-PLANE` §5A.3 before any content is read |
 
 ### 3.1 `D-CP-001` — Control-plane personal data (F-2)
 
@@ -196,6 +197,30 @@ a **floor**, and deletion must be a governed act.
 Advisory periods are tabulated in the F-2 research and are not reproduced here. Two need inputs
 this docket cannot supply: whether metering rows are financial records (Finance), and the
 erasure question bound to `D-CP-001`.
+
+
+### 3.5 `D-CP-005` — Consent mechanism for business-content analytics *(added 2026-08-01)*
+
+**Disposition already made.** The operator permits business-content analytics for all tenants
+under explicit, revocable, per-tenant **opt-in** consent, default off
+(`DEC-P35-CONTROL-PLANE` §5A). That choice is not reopened here.
+
+**What requires Security and Privacy review is the mechanism**, because the choice creates a data
+flow out of tenant boundaries and §8 already marks that category as requiring it.
+
+| Item for review | Question |
+| :--- | :--- |
+| Push, not pull (§5A.2) | Does the design keep the control plane credential-free on tenant databases? If consent is implemented by granting credentials, `PRD-P35B-CRED-001` is silently repealed for **every** tenant, consenting or not |
+| Authority to consent | Which role may bind a tenant's data? An `active` membership is not obviously authority to give it away |
+| Revocation semantics | What happens to models and aggregates already derived? Revocation that leaves them in place is revocation in name only, and the obligation must be fixed **before** the first model exists |
+| Provenance | Can the platform answer *"which derived artifacts contain tenant X's contribution"*? Unanswerable later if not recorded from the start |
+| Default-off proof | A negative probe showing non-consenting content is unreachable **by construction**, not by a conditional |
+| Retention of consented content | Does it inherit `D-CP-004`, or does consent carry its own period? |
+
+**Recommended disposition:** approve the mechanism only with §5A.2's push direction binding. The
+alternative — a credential-holding control plane gated by an application check — makes tenant
+privacy a promise the platform makes to itself, which is the property this whole architecture was
+adopted to avoid.
 
 ## 4. Recommended disposition order
 
