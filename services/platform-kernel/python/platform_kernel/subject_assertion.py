@@ -252,7 +252,17 @@ def verify_subject_assertion(token: str) -> SubjectClaims:
     # Lifetime ceiling. Checked after the signature holds, so an unsigned assertion is never
     # inspected for its claims.
     try:
-        lifetime = int(claims["exp"]) - int(claims["iat"])
+        # `float`, not `int`. Refuted by Codex 2026-08-01 (`P35-05aR3-02`): truncating both sides
+        # before subtracting let a lifetime of up to 300.99s pass a 300s ceiling, because
+        # `int(iat + 300.9) - int(iat)` is 300 whenever `iat` is a whole number — which is what
+        # every real identity provider emits.
+        #
+        # RFC 7519 NumericDate is "a JSON numeric value", not an integer, so fractional seconds
+        # are conformant input and must not be discarded on the way into a comparison.
+        #
+        # The proposition was right and the code was wrong. Worth recording, because the previous
+        # seven refutations in this repository were the other way round.
+        lifetime = float(claims["exp"]) - float(claims["iat"])
     except (TypeError, ValueError):
         raise AssertionVerificationError(
             "assertion is not valid", reason="non_numeric_lifetime"
