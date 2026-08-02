@@ -23,6 +23,17 @@ if (!kernelBaseUrl) {
 const port = Number(process.env.BOPEN_GATEWAY_PORT ?? 8787);
 const hostname = process.env.BOPEN_GATEWAY_HOST ?? '127.0.0.1';
 
-serve({ fetch: createGateway({ kernelBaseUrl }).fetch, port, hostname }, (info) => {
+// AUTH-D3 Row 1(b): creation rate limiting is ON by default rather than opt-in — an operator who
+// forgets to configure it still gets the cap, which is the safe direction for a control whose
+// absence is what the exposure measured. The caps are tunable per deployment; the defaults (10
+// creations per source and 100 across all sources, per minute) would have stopped the measured
+// burst of 40 principals + 20 tenants in 5.8s.
+const rateLimit = {
+  perSourceLimit: Number(process.env.BOPEN_GATEWAY_CREATE_LIMIT_PER_SOURCE ?? 10),
+  globalLimit: Number(process.env.BOPEN_GATEWAY_CREATE_LIMIT_GLOBAL ?? 100),
+  windowMs: Number(process.env.BOPEN_GATEWAY_CREATE_WINDOW_MS ?? 60_000),
+};
+
+serve({ fetch: createGateway({ kernelBaseUrl, rateLimit }).fetch, port, hostname }, (info) => {
   console.log(`bopen-gateway listening on http://${hostname}:${info.port} -> ${kernelBaseUrl}`);
 });

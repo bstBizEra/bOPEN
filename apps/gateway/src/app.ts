@@ -22,12 +22,23 @@
 
 import { Hono } from 'hono';
 import { validateHeaders } from './headers.ts';
+import {
+  CreationRateLimiter,
+  RATE_LIMITED_CREATIONS,
+  sourceKey,
+  type RateLimitPolicy,
+} from './rate-limit.ts';
 
 export interface GatewayOptions {
   /** Base URL of the platform kernel, e.g. `http://127.0.0.1:8000`. */
   kernelBaseUrl: string;
   /** Injectable for tests. Defaults to global `fetch`. */
   fetchImpl?: typeof fetch;
+  /**
+   * `AUTH-D3` Row 1(b): cap `POST /v1/principals` and `POST /v1/tenants` at the edge. Omitted
+   * means no limiting — the gateway forwards every creation, as it did before this control.
+   */
+  rateLimit?: RateLimitPolicy;
 }
 
 /** Headers the gateway never forwards, because a hop-by-hop header is not the client's. */
@@ -127,6 +138,7 @@ export function createGateway(options: GatewayOptions): Hono {
   const app = new Hono();
   const fetchImpl = options.fetchImpl ?? fetch;
   const kernelBaseUrl = options.kernelBaseUrl.replace(/\/+$/, '');
+  const rateLimiter = options.rateLimit ? new CreationRateLimiter(options.rateLimit) : undefined;
 
   /**
    * Gateway liveness only.
@@ -149,6 +161,24 @@ export function createGateway(options: GatewayOptions): Hono {
         },
         400,
       );
+    }
+
+    // AUTH-D3 Row 1(b): cap creation at the edge before it reaches the kernel. Applied after
+    // header validation — a malformed request is already 400'd cheaply and need not consume a
+    // rate-limit slot — and only to the two creation endpoints, by exact normalised path so a
+    // percent-encoded or dot-segment variant cannot slip a creation past the counter.
+    if (rateLimiter && c.req.method === 'POST') {
+      const requestPath = new URL(c.req.url).pathname;
+      if (RATE_LIMITED_CREATIONS.has(requestPath)) {
+        const decision = rateLimiter.check(sourceKey(c.req.raw.headers));
+        if (!decision.allowed) {
+          c.header('Retry-After', String(decision.retryAfterSeconds ?? 1));
+          return c.json(
+            { detail: 'creation rate limit exceeded', scope: decision.scope },
+            429,
+          );
+        }
+      }
     }
 
     // `new URL(c.req.url).pathname`, not `c.req.path`.
