@@ -24,7 +24,7 @@ because it has been waiting a long time.
 | Work packages implemented | 5 (`WP-P35-01`..`04`, `05a`) |
 | Independent ballots cast | **123** across candidates |
 | Phases authorized | 0, 1, 2, 3, 3.5; 3.6 partial |
-| Phase 3.5 | **CLOSING** — 01-03 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, 04 accepted-with-defects, 05a R4 awaits one ballot |
+| Phase 3.5 | **CLOSED (2026-08-02)** — 01-03 & 05a `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, 04 accepted-with-defects; all five WPs disposed |
 | Canonical suite | 465/465 against PostgreSQL |
 | Gateway suite | 47/47 |
 | Governance checks | 6/6 pass |
@@ -38,19 +38,20 @@ no verdict weight (§8).
 
 ## 3. Critical path
 
-### A-01 — Verify Phase 3.5 *(largely COMPLETE, 2026-08-02)*
+### A-01 — Verify Phase 3.5 *(COMPLETE, 2026-08-02)*
 
-Once the single most valuable action; now nearly discharged. `DEC-P35-TWO-AGENT-QUORUM` Option B
-(EBIV §6.5) resolved the structural blocker — with a two-agent team, one verifier plus operator
-disposition confirms.
+Discharged. `DEC-P35-TWO-AGENT-QUORUM` Option B (EBIV §6.5) resolved the structural blocker — with
+a two-agent team, one verifier plus operator disposition confirms.
 
 | Package | State |
 | :--- | :--- |
 | `WP-P35-01`..`03` | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** — Gemini verifier + operator disposition |
 | `WP-P35-04` | **Accepted with known defects** — two standing refutations, gateway usable |
-| `WP-P35-05a` R4 | **The one remaining action:** a Codex ballot at `119f2d8` |
+| `WP-P35-05a` | **`CONFIRMED_UNDER_TWO_AGENT_PROFILE`** at `2c31379` — 27 propositions, Codex ballot `5158629`, operator disposition 2026-08-02 |
 
-**Only `WP-P35-05a` R4 is still open.** After that ballot and its disposition, A-01 is complete
+**All five WPs are disposed; A-01 is complete.** The auth boundary — the last open verification
+item — is closed. Decided-but-unbuilt follow-ons (AUTH-D3 Row 1(b) gateway rate-limit, `D-D3-002`
+Option B enrollment) are governed build work, not verification gaps
 and Phase 4 entry opens (its condition was `WP-P35-01`..`03`, now disposed). The verification-debt
 risk that made this "blocking everything" has been discharged rather than deferred.
 
@@ -72,7 +73,7 @@ keeps the other eligible as checker.
 
 | # | Action | Owner | Gate | State |
 | :--- | :--- | :--- | :--- | :--- |
-| A-01 | Verify Phase 3.5 | Codex + operator | §6.5 profile | **DONE except `WP-P35-05a` R4 — one Codex ballot at `119f2d8`** |
+| A-01 | Verify Phase 3.5 | Codex + operator | §6.5 profile | **DONE — all five WPs disposed; `WP-P35-05a` `CONFIRMED_UNDER_TWO_AGENT_PROFILE` at `2c31379` (ballot `5158629`, operator disposition 2026-08-02)** |
 | A-02 | Security + Privacy review of `DEC-P35-CONTROL-PLANE` | Security, Privacy | none | **available now** |
 | A-03 | Assign maker to `WP-P35-06` | Engineering | none | **available now** |
 | A-04 | Plane assignment register (D-16) | `WP-P36-01` maker | A-02 | blocked |

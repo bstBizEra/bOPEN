@@ -15,7 +15,7 @@ Every AI agent starting a session in bOPEN **must** read this single section to 
 
 ```text
 Repository: bOPEN (Open Business Platform Kernel)
-Current Phase: Phase 3.5 — Runtime Realization, CLOSING
+Current Phase: Phase 3.5 — Runtime Realization, CLOSED (all five WPs disposed 2026-08-02)
 Current Gate: DEC-P35-RUNTIME Approved (Option C); DEC-P35-TWO-AGENT-QUORUM Approved 2026-08-02 (Option B)
 Primary Workspace: c:/laragon/www/bopen (Single-Workspace Policy)
 Team: Claude + Codex (two-agent profile in force — EBIV §6.5)
@@ -23,9 +23,9 @@ Rule: an engine that edits a package cannot vote on it (EBIV §3). Record your r
 Verification State (2026-08-02):
   WP-P35-01..03  CONFIRMED_UNDER_TWO_AGENT_PROFILE (one verifier + operator disposition; rerun-evidence risk on record)
   WP-P35-04      BLOCKED_ACCEPTED_WITH_KNOWN_DEFECTS (two standing refutations; gateway usable)
-  WP-P35-05a R4  AWAITING one Codex ballot at 119f2d8 — the only open engineering item in the phase
+  WP-P35-05a     CONFIRMED_UNDER_TWO_AGENT_PROFILE at 2c31379 (27 propositions; Codex ballot 5158629; operator disposition 2026-08-02)
   Phases 1-3     IMPLEMENTED_UNVERIFIED (not re-verified under EBIV)
-Next: Codex ballots WP-P35-05a R4; then Phase 3.5 fully disposed and Phase 4 entry opens
+Next: all five WPs disposed; Phase 3.5 verification complete. Decided-but-unbuilt follow-ons — AUTH-D3 Row 1(b) gateway rate-limit, D-D3-002 Option B enrollment — do not gate Phase 4 entry
 ```
 
 Read [`AGENTS.md`](../../AGENTS.md) §20.2 and §22 before starting. Authorization to write code

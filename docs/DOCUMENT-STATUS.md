@@ -2,13 +2,13 @@
 
 | Artifact | Status | Implementation authority | Next action |
 |---|---|---:|---|
-| DEC-P35-AUTH-CLOSURE | **Partially decided - AUTH-D1 accepted; AUTH-D3 pending** | **AUTH-D1 remediation authorized within WP-P35-05a; no activation authority** | Maker removes legacy protected-endpoint fallback after contracts/tests; authorities decide AUTH-D3 enrollment risk |
+| DEC-P35-AUTH-CLOSURE | **Decided - AUTH-D1 accepted; AUTH-D3 disposed 2026-08-02** | **AUTH-D1 + AUTH-D3 Row 1(a) verified within WP-P35-05a; no activation authority** | Build the decided follow-ons: Row 1(b) rate-limiting at the gateway layer, and `D-D3-002` Option B (out-of-band enrollment) — see `DEC-P35-AUTH-D3-DOCKET` |
 | BOPEN-RES-001 | Gate G7 Cleared | Research Approved | Phase 1 Implementation Authorized |
 | BOPEN-BOOT-001 | Approved execution | Repository/docs/tooling | Phase 1 & 2 Execution Completed |
 | BOPEN-REQ-001 | **Approved** | **Phase 1 Authorized** | Phase 1 Vertical Slice Built & Verified |
 | BOPEN-PRD-P35-001 | **Proposed requirements candidate** | **No implementation authority** | Product, Architecture, Engineering, and Security review |
 | DEC-P35-DOCKET-001 | **Partially ratified 2026-07-31** | **`D-P35-001`..`D-P35-003` accepted — Phase 3.5 implementation authorized** | Designated authorities record dispositions for `D-P35-004`..`D-P35-018`; assign security reviewer |
-| BOPEN-P35-001 | **Phase 3.5 CLOSING (2026-08-02)** | **`WP-P35-01`..`03` `CONFIRMED_UNDER_TWO_AGENT_PROFILE`; `WP-P35-04` accepted with known defects; `05a` R4 awaits one ballot** | Codex ballots `WP-P35-05a` R4 at `119f2d8`, then the phase is fully disposed |
+| BOPEN-P35-001 | **Phase 3.5 CLOSED (2026-08-02)** | **`WP-P35-01`..`03` & `05a` `CONFIRMED_UNDER_TWO_AGENT_PROFILE`; `WP-P35-04` accepted with known defects; all five WPs disposed** | Phase 3.5 verification complete. Follow-on build cycle: Row 1(b) gateway rate-limit, `D-D3-002` Option B enrollment (neither gates Phase 4 entry) |
 | BOPEN-PRD-P35-002 | **Proposed requirements candidate** | **No implementation authority** | Product, Architecture, Engineering, Security and Privacy review |
 | DEC-P35-TENANCY-MODEL | **Approved (Option D, hybrid placement)** | **Authorizes `WP-P35-06`** | Assign a maker; baseline captured at `arch-baseline/2026-07-31-rls-option-c` |
 | DEC-P35-CONTROL-PLANE | **Proposed; D-CP-003 enumeration complete** | **No implementation authority** | Decide membership visibility shape, personal-data scope, audit placement, and retention; Phase 3.6 remains blocked |

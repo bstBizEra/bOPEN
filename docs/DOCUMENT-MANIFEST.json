@@ -1,13 +1,13 @@
 {
   "generated": "2026-07-29",
-  "count": 304,
+  "count": 305,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
       "title": "bOPEN Agent Alignment & Context Register v1.0",
       "status": "Operational",
-      "sha256": "ccd721b36a704e44e8d954c502c1bd5c7877a1fe5e95e82283e3b5236ac3ae4b",
-      "bytes": 3606
+      "sha256": "9ff67577da11a3e91ef2aa6b404f162296c734c7dbedb9c234586f87142d198c",
+      "bytes": 3777
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -209,8 +209,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "5e559d99ce98bae82a25ae620801759fae424ecc2907cfff09a6de43131fe146",
-      "bytes": 15161
+      "sha256": "97edd966d0b6e449503f1ee9c425cabd82fed3331aaa6833471231a0d3fe6860",
+      "bytes": 15412
     },
     {
       "path": "docs/01-product/principles.md",
@@ -979,8 +979,8 @@
       "path": "docs/ACTION-PLAN.md",
       "title": "bOPEN Action Plan",
       "status": "Live \u2014 regenerate the state table when any row changes",
-      "sha256": "7ecc9e86ac97e830dd685b02a0373c0fc0164b34bff1f2ff5fbdd5297117a35f",
-      "bytes": 6990
+      "sha256": "a143dd4607df33a3d7f9ca55bee134751fc29a5663e43d89765be3bbbe5f4483",
+      "bytes": 7271
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1195,9 +1195,9 @@
     {
       "path": "docs/decisions/DEC-P35-AUTH-D3-DOCKET.md",
       "title": "DEC-P35-AUTH-D3-DOCKET \u2014 Disposition surface for the last live authentication hole",
-      "status": "**Proposed \u2014 awaiting operator/authority disposition**",
-      "sha256": "6afcabfe71833a305856f079bd7423b84df96edd70fe7d863aba96e169b61c0b",
-      "bytes": 7432
+      "status": "**DISPOSED 2026-08-02.** `D-D3-001` Row 1(a) VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`); Row 1(b) rate-limiting decided \u2192 gateway layer; `D-D3-002` decided \u2192 Option B (out-of-band provisioning). Row 1(b) and `D-D3-002` are decided but not yet built (governed follow-on work). See dispositions inline.",
+      "sha256": "34ce2b7954139b99a7152c957b20b35e2db9b99cc3164d53133bdc78d80cd0a8",
+      "bytes": 9163
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
@@ -1287,8 +1287,8 @@
       "path": "docs/DOCUMENT-STATUS.md",
       "title": "Document Status Register",
       "status": "",
-      "sha256": "f107f5c7c5dce02adf9efa041c1a618c636b8882112ea32718ba4d74e5fecf36",
-      "bytes": 3551
+      "sha256": "b235bae6249cdd050bd36738b4c6b12ecb8896add9668c49ab72f612ce1ee072",
+      "bytes": 3671
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1392,8 +1392,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "840b052a65a481f770d316f9f7c98eb4b56606f25123709359819030426efce5",
-      "bytes": 132080
+      "sha256": "f1fb3c894b79f90de6d1ef1dcdf9147c993b7db33a05760ee1621e18edbaf1ff",
+      "bytes": 160011
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1406,8 +1406,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "2fc5217f88413dcc195a87e64bfa0e0d1e355f16d55496c0fefd81fc1dd33d51",
-      "bytes": 10966
+      "sha256": "cf959ba54c24ef3a4fa0ab22d8f128869e2df6f21eabb55175a2aa801ed670f5",
+      "bytes": 19960
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1420,8 +1420,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "db3a544e37e864c8c22f790767565c19601b7d6f47b802b14a68195fd3e6278d",
-      "bytes": 12142
+      "sha256": "942905d69a5a8936e5483268205a8d01e76cb959e204fd3522e20c31d95ca9dc",
+      "bytes": 12406
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
@@ -1466,6 +1466,13 @@
       "bytes": 9148
     },
     {
+      "path": "docs/evidence/phase-3.5/wp-p35-05a-disposition.md",
+      "title": "EVD-P35-05A-DISPOSITION \u2014 WP-P35-05a auth boundary, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-02 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "035be3d6f967cf88eaf53d51a7be0c7e9a295a9a372dc8a1053481d818af55f4",
+      "bytes": 6568
+    },
+    {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r2.md",
       "title": "EVD-P35-05A-MAKER-R2 \u2014 WP-P35-05a Maker Submission, revision 2 (Kernel Authentication Boundary)",
       "status": "**SUPERSEDED 2026-08-01** \u2014 Codex balloted this candidate (18 CONFIRMED, `5aea020`) and reproduced all four disclosed residual defects. Three are now closed and one bounded, so **both blobs changed** and those ballots do not carry forward. Ballot [`EVD-P35-05A-MAKER-R3`](wp-p35-05a-maker-submission-r3.md) at `e559d1d\u2026`.",
@@ -1490,8 +1497,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission-r5.md",
       "title": "EVD-P35-05A-MAKER-R5 \u2014 WP-P35-05a auth boundary + AUTH-D3 Row 1(a)",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "6f385edcc13e17b534969b9f8f77f5674e742537ea613a085f30450015b70967",
-      "bytes": 7239
+      "sha256": "e2e63fdd878c56cf87aa51c3f6a2fd858a9ac0e961fdeab95e0d11fc6514c23d",
+      "bytes": 9903
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-maker-submission.md",
