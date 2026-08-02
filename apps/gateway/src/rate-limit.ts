@@ -117,21 +117,33 @@ export const RATE_LIMITED_CREATIONS: ReadonlySet<string> = new Set([
  *
  * The gateway forwards the raw bytes unchanged; it deliberately does not decode the request target
  * (see `app.ts`). But the kernel percent-decodes before routing, so `POST /v1/%70rincipals` reaches
- * `register_principal` and creates a principal all the same. Classifying only the raw path let that
- * encoded equivalent slip the cap entirely — refuted as `P35-D3b-05` (codex, 2026-08-02, a
- * reproducible bypass). Decoding once for the *classification decision only*, never for forwarding,
- * makes the limiter see the route the kernel will actually run. A single decode matches the kernel's
- * single decode: `/v1/%2570rincipals` decodes once to `/v1/%70rincipals`, which the kernel does not
- * route to creation either.
+ * `register_principal` all the same. Classifying only the raw path let that slip the cap — refuted as
+ * `P35-D3b-05` (codex). A single decode then let `/v1/%2570rincipals` (double-encoded) slip, because
+ * the chain to the kernel decodes more than once — refuted again.
+ *
+ * So this decodes to a **fixpoint** — repeatedly until the path stops changing — and checks
+ * membership at every level, for the classification decision only, never for forwarding. This is
+ * *sound* for the property that matters: any path that decodes at any depth to a creation route is
+ * classified as creation, which is a superset of what the kernel routes to creation. It cannot
+ * under-limit. It may over-limit a path the kernel would 404 (a non-creation path that happens to
+ * decode to a creation string), which is the fail-safe direction. The iteration is capped so a
+ * pathological input cannot spin.
  */
 export function isCreationPath(rawPath: string): boolean {
-  if (RATE_LIMITED_CREATIONS.has(rawPath)) return true;
-  try {
-    return RATE_LIMITED_CREATIONS.has(decodeURIComponent(rawPath));
-  } catch {
-    // A malformed percent-sequence is not a path the kernel will route to a creation handler.
-    return false;
+  let path = rawPath;
+  for (let depth = 0; depth < 6; depth++) {
+    if (RATE_LIMITED_CREATIONS.has(path)) return true;
+    let next: string;
+    try {
+      next = decodeURIComponent(path);
+    } catch {
+      // A malformed percent-sequence is not a path the kernel will route to a creation handler.
+      return false;
+    }
+    if (next === path) return false; // fully decoded, no creation route reached
+    path = next;
   }
+  return RATE_LIMITED_CREATIONS.has(path);
 }
 
 /**

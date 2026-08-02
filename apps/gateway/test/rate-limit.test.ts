@@ -145,6 +145,25 @@ describe('AUTH-D3 Row 1(b) — creation rate limiting at the gateway', () => {
     assert.equal(encoded.status, 429);
   });
 
+  test('a double-encoded creation path is limited too', async () => {
+    // Refutation R2 (codex, 2026-08-02): the chain to the kernel decodes more than once, so
+    // /v1/%2570rincipals (%25 -> %, giving %70rincipals -> principals) reached the kernel. Fixpoint
+    // decoding must classify it as creation as well.
+    const { calls, fetchImpl } = recordingKernel();
+    const app = createGateway({
+      kernelBaseUrl: 'http://kernel.invalid:8000',
+      fetchImpl,
+      rateLimit: { perSourceLimit: 1, globalLimit: 100, windowMs: 60_000 },
+    });
+    await app.request('/v1/principals', create(fetchImpl, '203.0.113.57'));
+    const dbl = await app.request('/v1/%2570rincipals', create(fetchImpl, '203.0.113.57'));
+    const dblTenant = await app.request('/v1/%2574enants', create(fetchImpl, '203.0.113.57'));
+
+    assert.equal(dbl.status, 429, 'the double-encoded principal path must be limited');
+    assert.equal(dblTenant.status, 429, 'the double-encoded tenant path must be limited');
+    assert.equal(calls.length, 1, 'no double-encoded creation slipped to the kernel');
+  });
+
   test('endpoints that are not creation are never rate-limited', async () => {
     const { fetchImpl } = recordingKernel(200);
     const app = createGateway({
@@ -228,6 +247,11 @@ describe('isCreationPath', () => {
   test('a percent-encoded equivalent matches, as the kernel would route it', () => {
     assert.equal(isCreationPath('/v1/%70rincipals'), true);
     assert.equal(isCreationPath('/v1/%74enants'), true);
+  });
+  test('a multiply-encoded equivalent matches, to a fixpoint', () => {
+    assert.equal(isCreationPath('/v1/%2570rincipals'), true); // double
+    assert.equal(isCreationPath('/v1/%252570rincipals'), true); // triple
+    assert.equal(isCreationPath('/v1/%2574enants'), true);
   });
   test('a non-creation path does not match', () => {
     assert.equal(isCreationPath('/v1/authorize'), false);

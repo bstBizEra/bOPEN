@@ -2,18 +2,19 @@
 
 **Document ID:** `EVD-P35-AUTH-D3-FOLLOWON-MAKER`
 **Version:** `1.0.0`
-**Status:** **REVISED — R2 after one refutation (§8).** `P35-D3b-05` was refuted at the R1 candidate (`7450661`, a reproducible percent-encoding bypass) and fixed at `f269e2c`. The kernel Group A is byte-identical (`api.py` `4a58ddb`, carries); the gateway Group B needs a fresh ballot at the revised candidate.
+**Status:** **REVISED — R3 after two refutations (§7).** `P35-D3b-05`/`-08` were refuted for single-encoding (R1, `7450661`) then double-encoding (R2, `aa2a74b`); both are path-classification defects, fixed by decoding to a fixpoint. The kernel Group A is byte-identical (`api.py` `4a58ddb`, carries); the gateway Group B needs a fresh ballot at the R3 candidate.
 **Issued:** 2026-08-02
 **Implements:** [`DEC-P35-AUTH-D3-DOCKET`](../../decisions/DEC-P35-AUTH-D3-DOCKET.md) `D-D3-002` (Option B) and `D-D3-001` Row 1(b), operator-disposed 2026-08-02
-**R1 candidate:** `7450661` — 11 `CONFIRMED`, 1 `REFUTED` (`P35-D3b-05`)
-**Revised candidate:** the commit carrying this R2 revision (fix at `f269e2c`)
+**R1 candidate:** `7450661` — 11 `CONFIRMED`, 1 `REFUTED` (`P35-D3b-05`, single-encoding)
+**R2 candidate:** `aa2a74b` — Group A carried; Group B 6 `CONFIRMED`, 2 `REFUTED` (`P35-D3b-05`/`-08`, double-encoding)
+**R3 candidate:** the commit carrying this revision
 **Blob — `api.py`:** `4a58ddb6238884fb49d341dfcd007f244e973cd3` *(unchanged from R1 — Group A carries)*
-**Blob — gateway `rate-limit.ts`:** `12555885f55fc987e35627bd3e672c866e54dc80` *(changed: decode-aware classification)*
-**Blob — gateway `app.ts`:** `7fb19ecb98524dbb50d5f83b36926d0fa39f38b9` *(changed)*
-**Blob — `invariant-traceability.csv`:** `b3682b82123144351a0ece2896850bdc3787b010`
+**Blob — gateway `rate-limit.ts`:** `c52937030d1ab25fb577612c85ead15c512e2447` *(changed: fixpoint decode)*
+**Blob — gateway `app.ts`:** `7fb19ecb98524dbb50d5f83b36926d0fa39f38b9` *(unchanged from R2)*
+**Blob — `invariant-traceability.csv`:** `aa771de25ae542f97b36004daac39fed36abe0a3`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
-**Suites:** canonical **475/475** against PostgreSQL; gateway **65/65**
+**Suites:** canonical **475/475** against PostgreSQL; gateway **67/67**
 
 ---
 
@@ -133,7 +134,22 @@ which the kernel does not route to creation.
 **What carries and what does not.** `api.py` is byte-identical to R1 (`4a58ddb`), so Group A
 (`P35-D3c-01..05`) carries — a verifier may re-cast on the hash. The gateway changed
 (`rate-limit.ts`, `app.ts`), so Group B (`P35-D3b-01..08`) requires fresh ballots at this candidate.
-Gateway suite is now **65/65**.
+
+### R3 — the single decode was not enough
+
+At the R2 candidate Codex refuted `P35-D3b-05` and `P35-D3b-08` again, with a **double-encoding**
+probe: `/v1/%2570rincipals` (`%25` → `%`, giving `%70rincipals` → `principals`) reached the kernel's
+creation handler (confirmed 503/422 against the live kernel, not 404), because the chain to the
+kernel decodes the path **more than once** while the fix decoded it once. The refutation was correct
+again — the single decode mirrored the wrong depth.
+
+**Fix (R3).** `isCreationPath` now decodes to a **fixpoint** — repeatedly until the path stops
+changing, checking membership at each level. This is *sound* for the property that matters: any path
+that decodes at any depth to a creation route is classified as creation, a superset of what the
+kernel routes to creation, so it **cannot under-limit**. It may over-limit a path the kernel would
+404 (fail-safe). Mixed-case hex, encoded separators, overlong UTF-8 and case-different paths were all
+either already blocked or 404'd by the kernel, so encoding *depth* was the last open class, and a
+fixpoint closes it. Gateway suite is now **67/67**. Group B re-ballots again at the R3 candidate.
 
 ## 8. Authority
 
