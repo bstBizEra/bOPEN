@@ -116,18 +116,30 @@ earlier R4 ballot recorded R2=`True` for the same propositions against the same 
 itself incorrect — those propositions were never traced. **No admissible verdict exists on this
 boundary yet, at R4 or R5.**
 
-**Remediation, this commit.** Nine invariant rows were added to the traceability CSV — one per
-balloted proposition, each naming its executed test and the mechanism whose removal breaks it:
-`INV-ASSERTION-LIFETIME-CEILING-01`, `-LIFETIME-BOUND-01`, `-KEY-SAFE-01`, `-OPAQUE-01`,
-`INV-PROVISION-OWNER-ASSERTED-01`, `-OWNER-BINDING-01`, `-OWNER-VOUCHED-01`, `-FORGERY-01`,
-`-DEVFLAG-01`. No source code changed — `subject_assertion.py` (`ada0eb1`) and `api.py` (`646cf41`)
-are byte-identical to `ce97561`. Only the recording gap that failed R2 is closed.
+**Remediation, in two commits.** The **whole** boundary is now traced — all 27 propositions, not
+only the nine Codex balloted — so the re-ballot can cover the full set in one pass rather than
+surface the same R2 gap on the remainder later:
+
+- First commit `edefa97` traced the nine balloted propositions: `INV-ASSERTION-LIFETIME-CEILING-01`,
+  `-LIFETIME-BOUND-01`, `-KEY-SAFE-01`, `-OPAQUE-01`, `INV-PROVISION-OWNER-ASSERTED-01`,
+  `-OWNER-BINDING-01`, `-OWNER-VOUCHED-01`, `-FORGERY-01`, `-DEVFLAG-01`.
+- This commit traces the remaining eighteen carried propositions: `P35-05a-02..11` (assertion
+  verification — `INV-ASSERTION-PARTIAL-CONFIG-01`, `-SUBJECT-BINDING-01`, `-SIGNATURE-01`,
+  `-ISSUER-01`, `-AUDIENCE-01`, `-EXPIRY-01`, `-ALG-01`, `-CLAIMS-01`, `-REFUSAL-OPAQUE-01`,
+  `-NO-AUTHENTICATOR-01`) and `P35-05aR2-01..08` (bearer-only / AUTH-D1 —
+  `INV-BEARER-AUTHZ-01`, `-READ-01`, `-WRITE-01`, `-AUDIT-01`, `-NO-FALLBACK-01`,
+  `INV-LEGACY-OFF-DEFAULT-01`, `-NO-PROD-01`, `-LOCAL-01`). It also corrects two of the first nine
+  rows whose `evidence_kind` was `executed_http` but whose tests drive `verify_subject_assertion`
+  directly — `executed_python` is accurate.
+
+Each row names its executed test and the mechanism whose removal breaks it. **No source code
+changed** — `subject_assertion.py` (`ada0eb1`) and `api.py` (`646cf41`) are byte-identical to
+`ce97561`. Only the recording gap that failed R2 is closed.
 
 **This is a recorder action, not a verdict** (`EBIV` §8). The candidate for a fresh ballot is the
-commit carrying this remediation; Codex re-ballots there, where R2 can pass, and only then does a
-verdict exist for operator disposition. The still-untraced remainder of the carried set
-(`P35-05a-02..11`, `P35-05aR2-01..08`) is recorded debt — Codex balloted a representative nine, and
-those nine are what this remediation traces.
+commit carrying this second remediation; Codex re-ballots there, where R2 can pass for the full
+27-proposition boundary, and only then does a verdict exist for operator disposition. No recorded
+debt remains on this boundary.
 
 ## 7. Authority
 
