@@ -2,17 +2,18 @@
 
 **Document ID:** `EVD-P35-AUTH-D3-FOLLOWON-MAKER`
 **Version:** `1.0.0`
-**Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
+**Status:** **REVISED — R2 after one refutation (§8).** `P35-D3b-05` was refuted at the R1 candidate (`7450661`, a reproducible percent-encoding bypass) and fixed at `f269e2c`. The kernel Group A is byte-identical (`api.py` `4a58ddb`, carries); the gateway Group B needs a fresh ballot at the revised candidate.
 **Issued:** 2026-08-02
 **Implements:** [`DEC-P35-AUTH-D3-DOCKET`](../../decisions/DEC-P35-AUTH-D3-DOCKET.md) `D-D3-002` (Option B) and `D-D3-001` Row 1(b), operator-disposed 2026-08-02
-**Candidate:** the commit carrying this submission (code at `c3abd83` + `e0398d5`, tracing at `6cf8841`)
-**Blob — `api.py`:** `4a58ddb6238884fb49d341dfcd007f244e973cd3`
-**Blob — gateway `rate-limit.ts`:** `b0ae80e9c52712bcd434080248cda35a14431b99`
-**Blob — gateway `app.ts`:** `8d2a4684708adc8eed6fd0bd764dc58406f96426`
-**Blob — `invariant-traceability.csv`:** `9582ed497de916c73fe3f27c1d89168ba34f2e99`
+**R1 candidate:** `7450661` — 11 `CONFIRMED`, 1 `REFUTED` (`P35-D3b-05`)
+**Revised candidate:** the commit carrying this R2 revision (fix at `f269e2c`)
+**Blob — `api.py`:** `4a58ddb6238884fb49d341dfcd007f244e973cd3` *(unchanged from R1 — Group A carries)*
+**Blob — gateway `rate-limit.ts`:** `12555885f55fc987e35627bd3e672c866e54dc80` *(changed: decode-aware classification)*
+**Blob — gateway `app.ts`:** `7fb19ecb98524dbb50d5f83b36926d0fa39f38b9` *(changed)*
+**Blob — `invariant-traceability.csv`:** `b3682b82123144351a0ece2896850bdc3787b010`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
-**Suites:** canonical **475/475** against PostgreSQL; gateway **59/59**
+**Suites:** canonical **475/475** against PostgreSQL; gateway **65/65**
 
 ---
 
@@ -103,7 +104,38 @@ a refused request breaks `P35-D3b-07`.
 4. **Out-of-band provisioning is a deployment path, not code here** — Option B closes the endpoint;
    the operator/SCIM mechanism that creates principals in production is out of this scope.
 
-## 7. Authority
+## 7. Refutation and revision (R2)
+
+**The refutation was correct and useful.** At the R1 candidate `7450661`, Codex refuted `P35-D3b-05`
+with a reproducible probe: `POST /v1/%70rincipals` (percent-encoded `p`) returned `201` and reached
+the kernel, so the encoded creation slipped the cap entirely — a single character defeated the whole
+limit. Codex confirmed the kernel routes the encoded path to `register_principal` directly. This is
+the first refutation of this work stream, and it found a real evasion the maker's own probes missed.
+
+**Root cause.** The limiter classified the *raw* pathname, but the kernel percent-decodes before
+routing. `/v1/%70rincipals` is not in the exact creation set, yet the kernel runs it as
+`/v1/principals`. The two saw different paths.
+
+**Fix (`f269e2c`).** `isCreationPath` now decodes the path once — matching the kernel's single
+decode — for the classification *decision only*. The gateway still forwards the raw bytes unchanged,
+so the deliberate no-decode-on-forward design (`P35-04R-15`) is untouched. A malformed
+percent-sequence is treated as non-creation, because the kernel would not route it to a creation
+handler either. A single decode is correct: `/v1/%2570rincipals` decodes once to `/v1/%70rincipals`,
+which the kernel does not route to creation.
+
+**New proposition, and re-assertion:**
+
+| ID | The gateway must… | Test |
+| :--- | :--- | :--- |
+| `P35-D3b-05` *(re-assert)* | never rate-limit a non-creation endpoint, and classify creation by the route the kernel will run | `endpoints that are not creation are never rate-limited` |
+| `P35-D3b-08` *(new)* | rate-limit a percent-encoded creation path exactly as its literal form | `a percent-encoded creation path is limited exactly as its literal form` |
+
+**What carries and what does not.** `api.py` is byte-identical to R1 (`4a58ddb`), so Group A
+(`P35-D3c-01..05`) carries — a verifier may re-cast on the hash. The gateway changed
+(`rate-limit.ts`, `app.ts`), so Group B (`P35-D3b-01..08`) requires fresh ballots at this candidate.
+Gateway suite is now **65/65**.
+
+## 8. Authority
 
 A maker's submission. `EBIV` §8: a passing suite is a self-assessment carrying **no verdict weight**.
 
