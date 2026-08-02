@@ -112,6 +112,29 @@ export const RATE_LIMITED_CREATIONS: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * Whether a request path is a creation the limiter guards — checked against the raw path AND its
+ * percent-decoded form.
+ *
+ * The gateway forwards the raw bytes unchanged; it deliberately does not decode the request target
+ * (see `app.ts`). But the kernel percent-decodes before routing, so `POST /v1/%70rincipals` reaches
+ * `register_principal` and creates a principal all the same. Classifying only the raw path let that
+ * encoded equivalent slip the cap entirely — refuted as `P35-D3b-05` (codex, 2026-08-02, a
+ * reproducible bypass). Decoding once for the *classification decision only*, never for forwarding,
+ * makes the limiter see the route the kernel will actually run. A single decode matches the kernel's
+ * single decode: `/v1/%2570rincipals` decodes once to `/v1/%70rincipals`, which the kernel does not
+ * route to creation either.
+ */
+export function isCreationPath(rawPath: string): boolean {
+  if (RATE_LIMITED_CREATIONS.has(rawPath)) return true;
+  try {
+    return RATE_LIMITED_CREATIONS.has(decodeURIComponent(rawPath));
+  } catch {
+    // A malformed percent-sequence is not a path the kernel will route to a creation handler.
+    return false;
+  }
+}
+
+/**
  * The source key for a request: the first `X-Forwarded-For` hop, lower-cased and trimmed.
  *
  * Absent the header — a direct caller the proxy did not annotate — every such request shares the

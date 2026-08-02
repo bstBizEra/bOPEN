@@ -24,7 +24,7 @@ import { Hono } from 'hono';
 import { validateHeaders } from './headers.ts';
 import {
   CreationRateLimiter,
-  RATE_LIMITED_CREATIONS,
+  isCreationPath,
   sourceKey,
   type RateLimitPolicy,
 } from './rate-limit.ts';
@@ -169,7 +169,10 @@ export function createGateway(options: GatewayOptions): Hono {
     // percent-encoded or dot-segment variant cannot slip a creation past the counter.
     if (rateLimiter && c.req.method === 'POST') {
       const requestPath = new URL(c.req.url).pathname;
-      if (RATE_LIMITED_CREATIONS.has(requestPath)) {
+      // isCreationPath, not an exact-set membership: the kernel percent-decodes before routing, so
+      // /v1/%70rincipals is a creation to it. Matching only the raw path let that slip the cap —
+      // refuted as P35-D3b-05. See rate-limit.ts.
+      if (isCreationPath(requestPath)) {
         const decision = rateLimiter.check(sourceKey(c.req.raw.headers));
         if (!decision.allowed) {
           c.header('Retry-After', String(decision.retryAfterSeconds ?? 1));

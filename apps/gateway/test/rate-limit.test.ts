@@ -10,7 +10,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createGateway } from '../src/app.ts';
-import { CreationRateLimiter, sourceKey } from '../src/rate-limit.ts';
+import { CreationRateLimiter, isCreationPath, sourceKey } from '../src/rate-limit.ts';
 
 const CORR = 'corr_12345678-abcd-ef01-2345-6789abcdef01';
 
@@ -115,6 +115,36 @@ describe('AUTH-D3 Row 1(b) — creation rate limiting at the gateway', () => {
     assert.equal(second.status, 429);
   });
 
+  test('a percent-encoded creation path is limited exactly as its literal form', async () => {
+    // Refutation P35-D3b-05 (codex, 2026-08-02): the kernel percent-decodes before routing, so
+    // /v1/%70rincipals reaches register_principal. Classifying only the raw path let it slip the
+    // cap entirely. This reproduces the bypass; it must now be refused.
+    const { calls, fetchImpl } = recordingKernel();
+    const app = createGateway({
+      kernelBaseUrl: 'http://kernel.invalid:8000',
+      fetchImpl,
+      rateLimit: { perSourceLimit: 1, globalLimit: 100, windowMs: 60_000 },
+    });
+    const literal = await app.request('/v1/principals', create(fetchImpl, '203.0.113.55'));
+    const encoded = await app.request('/v1/%70rincipals', create(fetchImpl, '203.0.113.55'));
+
+    assert.equal(literal.status, 201, 'the first creation is admitted');
+    assert.equal(encoded.status, 429, 'the percent-encoded equivalent must be limited too');
+    assert.equal(calls.length, 1, 'the encoded creation must not slip past to the kernel');
+  });
+
+  test('an encoded tenant path is limited too', async () => {
+    const { fetchImpl } = recordingKernel();
+    const app = createGateway({
+      kernelBaseUrl: 'http://kernel.invalid:8000',
+      fetchImpl,
+      rateLimit: { perSourceLimit: 1, globalLimit: 100, windowMs: 60_000 },
+    });
+    await app.request('/v1/tenants', create(fetchImpl, '203.0.113.56'));
+    const encoded = await app.request('/v1/%74enants', create(fetchImpl, '203.0.113.56'));
+    assert.equal(encoded.status, 429);
+  });
+
   test('endpoints that are not creation are never rate-limited', async () => {
     const { fetchImpl } = recordingKernel(200);
     const app = createGateway({
@@ -187,5 +217,24 @@ describe('sourceKey', () => {
   });
   test('a request the proxy did not annotate shares one bucket', () => {
     assert.equal(sourceKey(new Headers()), 'unknown');
+  });
+});
+
+describe('isCreationPath', () => {
+  test('the literal creation paths match', () => {
+    assert.equal(isCreationPath('/v1/principals'), true);
+    assert.equal(isCreationPath('/v1/tenants'), true);
+  });
+  test('a percent-encoded equivalent matches, as the kernel would route it', () => {
+    assert.equal(isCreationPath('/v1/%70rincipals'), true);
+    assert.equal(isCreationPath('/v1/%74enants'), true);
+  });
+  test('a non-creation path does not match', () => {
+    assert.equal(isCreationPath('/v1/authorize'), false);
+    assert.equal(isCreationPath('/v1/resources'), false);
+  });
+  test('a malformed percent-sequence is not a creation path', () => {
+    assert.equal(isCreationPath('/v1/%ZZrincipals'), false);
+    assert.equal(isCreationPath('/v1/principals%'), false);
   });
 });
