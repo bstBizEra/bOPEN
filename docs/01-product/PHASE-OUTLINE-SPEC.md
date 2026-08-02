@@ -133,7 +133,7 @@ $$\text{Phase 0 (Govern/Research)} \longrightarrow \text{Phase 1 (Kernel Slice)}
 ---
 
 ### Phase 4 — Common Business Foundations & Satellite Products
-**Authorization**: **NOT AUTHORIZED** — blocked pending Phase 3.5 (`AGENTS.md` §20.2)
+**Authorization**: **ENTRY PROPOSED — awaiting operator authorization** (2026-08-03, [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md)). The "blocked pending Phase 3.5" precondition is **met** — Phase 3.5 is closed and disposed. Recommended first slice: **MILE-4.1 only** (Party & Relationship Foundation), the dependency root; MILE-4.2/4.3 stay gated. Phase entry itself remains an operator act (`AGENTS.md` §20.2).
 **Verification**: not started
 
 * **Objective**: Build reusable business foundation microservices and integrate initial satellite products.
