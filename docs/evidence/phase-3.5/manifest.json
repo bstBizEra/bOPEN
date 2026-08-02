@@ -138,12 +138,14 @@
         "note": "two standing refutations; 6.2 bars discharge; gateway usable, SSRF and framing defects fixed"
       },
       "WP-P35-05a": {
-        "commit": "119f2d8cf678624c055c8d1be48c770b3936de11",
-        "ballots": 0,
-        "verifiers": [],
+        "commit": "2c31379ad7ed888ffad04ee0bff07172cc10cfca",
+        "ballots": 27,
+        "verifiers": [
+          "codex"
+        ],
         "refutations": 0,
-        "verdict": "AWAITING_BALLOT",
-        "note": "zero ballots at R4; profile confirms one verifier not zero; needs a Codex ballot then operator disposition"
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "operator disposition 2026-08-02 (BizEra, Completion Authority); 27-proposition auth boundary traced and admissibly balloted at 2c31379 (ballot commit 5158629, verifier codex, R1-R5 true); disclosed-risk record wp-p35-05a-disposition.md acknowledged. Supersedes the untraced R4 ballots at 119f2d8, whose R2=true was erroneous"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [

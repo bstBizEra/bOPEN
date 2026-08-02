@@ -2,7 +2,7 @@
 
 **Document ID:** `DEC-P35-AUTH-D3-DOCKET-001`
 **Version:** `1.0.0`
-**Status:** **Proposed — awaiting operator/authority disposition**
+**Status:** **DISPOSED 2026-08-02.** `D-D3-001` Row 1(a) VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`); Row 1(b) rate-limiting decided → gateway layer; `D-D3-002` decided → Option B (out-of-band provisioning). Row 1(b) and `D-D3-002` are decided but not yet built (governed follow-on work). See dispositions inline.
 **Issued:** 2026-08-02
 **Owner:** Architecture & Security Authority
 **Raised by:** Claude (agent, Motor role) — advisory only
@@ -65,6 +65,16 @@ exposure measurement §6), so they are governed work, not a patch — a maker/ve
 > resource-exhaustion (bounded blast radius) and needs a keying choice (per-source vs global vs
 > gateway-layer); surfaced separately rather than guessed. Recorded by Claude (Motor), transcribing
 > the operator decision.
+>
+> **DISPOSITION 2026-08-02 (follow-up) — Row 1(a) VERIFIED-AND-DISPOSED; Row 1(b) keyed to the
+> GATEWAY LAYER.** Row 1(a) (tenant-provisioning assertion) was built, balloted, and confirmed:
+> `WP-P35-05a` R5, candidate `2c31379`, 27 propositions incl. `P35-D3a-01..05`, one independent
+> verifier (`codex`, ballot `5158629`), `CONFIRMED_UNDER_TWO_AGENT_PROFILE` under EBIV §6.5 — see
+> [`wp-p35-05a-disposition.md`](../evidence/phase-3.5/wp-p35-05a-disposition.md). **Row 1(b)
+> rate-limiting** is dispositioned by the operator to the **gateway layer** — cap principal/tenant
+> creation at the Hono edge so abuse is stopped before it reaches PostgreSQL. It is decided but not
+> yet built (governed follow-on work). Recorded by Claude (Motor), transcribing the operator
+> decision.
 
 **What remains open after Row 1:** only `POST /v1/principals`. That is the sole endpoint where no
 principal yet exists to assert, and therefore the only one that genuinely requires `AUTH-D3`.
@@ -92,6 +102,14 @@ the same breath:
 reintroduces the retired class and is safe *only* with every control present; B avoids the
 recursion entirely at the cost of self-service. C is defensible given the bounded blast radius but
 should be chosen, not drifted into.
+
+> **DISPOSITION 2026-08-02 — `D-D3-002` decided: OPTION B.** Operator (`BizEra`, Completion
+> Authority) chose **B — keep principal creation out of the exposed kernel surface**: principals are
+> provisioned by an out-of-band operator/SCIM path, not a public `POST /v1/principals` endpoint. No
+> new bearer-by-identifier credential is introduced, so the class `AUTH-D1` retired is not reopened;
+> the cost accepted is no self-service registration through the kernel. This is a decision, not an
+> implementation — the enforcement change (closing/guarding the public endpoint) is governed
+> follow-on work. Recorded by Claude (Motor), transcribing the operator decision.
 
 ## 4. Sequencing
 

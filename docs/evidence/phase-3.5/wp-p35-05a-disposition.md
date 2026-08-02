@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-05A-DISPOSITION`
 **Version:** `1.0.0`
-**Status:** **AWAITING_OPERATOR_DISPOSITION** — the verifier verdict is recorded as fact; the §6.5 disposition below is reserved to the operator and is **not** filled by the maker.
+**Status:** **DISPOSED 2026-08-02 — `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-02
 **Maker/Recorder:** Claude (agent, Motor role) — `claude@bst.local`, advisory only
 **Governing artifacts:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md) §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../../decisions/DEC-P35-TWO-AGENT-QUORUM.md) (Option B, ratified 2026-08-02)
@@ -81,12 +81,19 @@ disposition:
   verdict_basis: one_verifier_plus_operator            # EBIV §6.5 two-agent profile
   candidate_commit: 2c31379ad7ed888ffad04ee0bff07172cc10cfca
   ballot_commit: 5158629b849074ce7730b40e52f84f4548f4c1da
-  decision: <PENDING — CONFIRMED_UNDER_TWO_AGENT_PROFILE | REJECTED | DEFERRED>
-  disclosed_risk_acknowledged: <PENDING — true/false; the four items in §3 are read and accepted>
-  approver: <PENDING — Operator: BizEra <ounkhamvilay@gmail.com> acting as Completion Authority>
-  decision_timestamp: <PENDING>
+  decision: CONFIRMED_UNDER_TWO_AGENT_PROFILE
+  disclosed_risk_acknowledged: true                    # the four items in §3 are read and accepted
+  approver: "Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority"
+  decision_timestamp: 2026-08-02
   recorded_by: Claude (Motor), transcribing — execution_authority:false approval_authority:false
 ```
+
+**Recorded follow-through (this disposition):** the profile verdict is written to
+[`manifest.json`](manifest.json) `roles.candidate_disposition.WP-P35-05a`; `DEC-P35-AUTH-D3-DOCKET`
+`D-D3-001` Row 1(a) is marked verified-and-disposed; Row 1(b) rate-limiting is dispositioned to the
+**gateway layer**; and `D-D3-002` principal enrollment is dispositioned to **Option B** (out-of-band
+provisioning). Row 1(b) and `D-D3-002` are decided but not yet built — they are governed follow-on
+work, not part of this verified boundary.
 
 **On an operator disposition of `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, the follow-through (advisory):**
 record the profile verdict in [`manifest.json`](manifest.json) per §6.5.4; mark
