@@ -501,12 +501,16 @@ class TestPhase1HttpSlice(unittest.TestCase):
 
     def test_one_flag_governs_every_endpoint_that_acts_on_an_unproven_identity(self):
         """
-        Both endpoints must answer to the same affirmation.
+        Removing the affirmation must silence the whole surface that acts on an identity it cannot
+        verify, and must leave the rest — /health — working.
 
-        If a future endpoint checks a different variable, or none, the operator's single
-        affirmation stops meaning what it says. Removing the flag must silence the whole surface
-        that trusts an identity claim it cannot verify — and must leave the rest working, since a
-        guard that disabled registration too would be an outage wearing a security fix.
+        This test once asserted that registration stayed open when the flag was removed, on the
+        reasoning that registration "asserts no identity it has not just created". D-D3-002 Option B
+        (operator-disposed 2026-08-02) overrides that: principal creation is out of band, not a
+        public self-service endpoint, and the operator accepted "no self-service registration" as
+        its cost. So with no authenticator and the flag removed, registration is refused too. The
+        three endpoints that act on an unproven claim — registration, tenant provisioning, context
+        issuance — all answer to the one affirmation; /health acts on no identity and keeps working.
         """
         import os
 
@@ -521,7 +525,7 @@ class TestPhase1HttpSlice(unittest.TestCase):
             )
             provisioning = self.client.post(
                 "/v1/tenants",
-                json={"name": "G", "owner_principal_id": registration.json()["principal_id"]},
+                json={"name": "G", "owner_principal_id": f"usr_{uuid.uuid4()}"},
                 headers={"X-Correlation-ID": corr()},
             )
             context = self.client.post(
@@ -534,13 +538,13 @@ class TestPhase1HttpSlice(unittest.TestCase):
             if previous is not None:
                 os.environ[ENV_ALLOW_UNAUTHENTICATED_IDENTITY] = previous
 
+        self.assertEqual(
+            registration.status_code, 503,
+            "D-D3-002 Option B: principal creation is out-of-band; removing the affirmation "
+            "silences it too",
+        )
         self.assertEqual(provisioning.status_code, 503)
         self.assertEqual(context.status_code, 503)
-        self.assertEqual(
-            registration.status_code, 201,
-            "registration is legitimately unauthenticated — it asserts no identity it has not "
-            "just created — and must keep working",
-        )
         self.assertEqual(health.status_code, 200)
 
     def test_the_affirmation_does_not_weaken_any_other_check(self):

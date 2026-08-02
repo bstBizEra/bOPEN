@@ -29,7 +29,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from fastapi.testclient import TestClient
 
 from platform_kernel import subject_assertion
-from platform_kernel.api import app
+from platform_kernel.api import app, principals
 
 ISSUER = "https://authenticator.test.invalid"
 AUDIENCE = "bopen-kernel-test"
@@ -106,13 +106,16 @@ class TenantProvisioningRequiresOwnerAssertion(unittest.TestCase):
         )
 
     def _register_principal(self) -> str:
-        """Create a principal to name as owner. Uses the still-open registration path (D-D3-002)."""
-        r = self.client.post(
-            "/v1/principals",
-            json={"email": f"owner-{uuid.uuid4().hex[:8]}@example.com", "type": "human"},
-            headers={"X-Correlation-ID": str(uuid.uuid4())},
+        """Provision an owner principal out of band (D-D3-002 Option B).
+
+        These tests configure an authenticator, so `POST /v1/principals` is now closed — principal
+        creation is out-of-band, not a public endpoint. The owner is provisioned directly through
+        the repository, exactly as an operator/SCIM path would, rather than through the endpoint.
+        """
+        created = principals.create(
+            email=f"owner-{uuid.uuid4().hex[:8]}@example.com", principal_type="human"
         )
-        return r.json()["principal_id"]
+        return created.id
 
     # -- the squatting probe the mitigation closes -------------------------------------
 

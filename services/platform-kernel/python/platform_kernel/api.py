@@ -756,7 +756,39 @@ def register_principal(
 
     Returning 201 for a duplicate would hide the oracle from a reader of this file without
     closing it: the timing and body-length channels above both still answer the question.
+
+    D-D3-002 Option B (operator-disposed 2026-08-02, DEC-P35-AUTH-D3-DOCKET): principal creation is
+    provisioned out of band (operator/SCIM), not through a public self-service endpoint. Option B
+    adds NO enrollment credential, so — unlike tenant provisioning, which names an already-existing
+    principal an assertion can vouch for — there is no assertion that opens this. The refusal is
+    therefore 503, not 401: no credential the caller could supply would change it. When an
+    authenticator is configured the endpoint is closed and the development flag does not reopen it,
+    the same rule `_authenticated_principal` applies to context issuance and tenant provisioning.
+    When none is configured, the pre-existing non-production affirmation flag still gates it, so
+    local and test provisioning is unchanged.
     """
+    if subject_assertion.configuration_is_partial() or subject_assertion.authenticator_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "principal registration is disabled",
+                "reason": (
+                    "an authenticator is configured, so principals are provisioned out of band "
+                    "(operator/SCIM) rather than through this public endpoint"
+                ),
+                "remediation": (
+                    "provision principals through the out-of-band operator path; the development "
+                    "flag does not reopen this endpoint against a configured authenticator"
+                ),
+                "resolved_by": "DEC-P35-AUTH-D3-DOCKET D-D3-002 Option B",
+            },
+        )
+    if not unauthenticated_identity_assertion_permitted():
+        _refuse_unauthenticated(
+            "principal registration",
+            "creating a principal here would let an unauthenticated caller populate the identity "
+            "namespace and reserve email addresses a named person can never reclaim",
+        )
     try:
         created = principals.create(email=str(body.email), principal_type=body.type)
     except psycopg.errors.UniqueViolation:
