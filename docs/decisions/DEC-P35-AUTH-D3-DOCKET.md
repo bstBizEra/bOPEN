@@ -2,7 +2,7 @@
 
 **Document ID:** `DEC-P35-AUTH-D3-DOCKET-001`
 **Version:** `1.0.0`
-**Status:** **DISPOSED 2026-08-02.** `D-D3-001` Row 1(a) VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`); Row 1(b) rate-limiting decided → gateway layer; `D-D3-002` decided → Option B (out-of-band provisioning). Row 1(b) and `D-D3-002` are decided but not yet built (governed follow-on work). See dispositions inline.
+**Status:** **CLOSED 2026-08-02 — all three items VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`).** `D-D3-001` Row 1(a) tenant-provisioning assertion; Row 1(b) gateway rate-limiting (built at the gateway layer, 8/8 confirmed after two encoding-bypass refutations were fixed); `D-D3-002` principal enrollment (Option B, out-of-band, 5/5 confirmed). Evidence: [`auth-d3-followon-disposition.md`](../evidence/phase-3.5/auth-d3-followon-disposition.md). The AUTH-D3 hardening is complete.
 **Issued:** 2026-08-02
 **Owner:** Architecture & Security Authority
 **Raised by:** Claude (agent, Motor role) — advisory only

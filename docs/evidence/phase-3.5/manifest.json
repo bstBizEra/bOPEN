@@ -146,6 +146,26 @@
         "refutations": 0,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "operator disposition 2026-08-02 (BizEra, Completion Authority); 27-proposition auth boundary traced and admissibly balloted at 2c31379 (ballot commit 5158629, verifier codex, R1-R5 true); disclosed-risk record wp-p35-05a-disposition.md acknowledged. Supersedes the untraced R4 ballots at 119f2d8, whose R2=true was erroneous"
+      },
+      "AUTH-D3-D-D3-002": {
+        "commit": "7450661d5d53a723e19bca00c332f9d477c79b33",
+        "ballots": 5,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "principal enrollment Option B (out-of-band); operator disposition 2026-08-02; 5/5 P35-D3c CONFIRMED, api.py 4a58ddb; evidence auth-d3-followon-disposition.md. Not a Phase 3.5 WP but a disposed AUTH-D3 hardening follow-on"
+      },
+      "AUTH-D3-ROW-1B": {
+        "commit": "7fcd86c84e0f5e8316e866b83cacff2589c579d8",
+        "ballots": 8,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 2,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "gateway creation rate limiting; operator disposition 2026-08-02; 8/8 P35-D3b CONFIRMED at R3 (ballot commit 8405460) after two encoding-bypass refutations (single then double percent-encoding) were fixed by fixpoint decode; evidence auth-d3-followon-disposition.md"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [

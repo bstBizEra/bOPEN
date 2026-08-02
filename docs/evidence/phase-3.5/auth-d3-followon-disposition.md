@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-AUTH-D3-FOLLOWON-DISPOSITION`
 **Version:** `1.0.0`
-**Status:** **AWAITING_OPERATOR_DISPOSITION** — the verifier verdicts are recorded as fact; the §6.5 disposition below is reserved to the operator and is **not** filled by the maker.
+**Status:** **DISPOSED 2026-08-02 — `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed both follow-ons per the recommendation and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-02
 **Maker/Recorder:** Claude (agent, Motor role) — `claude@bst.local`, advisory only
 **Governing:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md) §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../../decisions/DEC-P35-TWO-AGENT-QUORUM.md) (Option B)
@@ -69,12 +69,17 @@ disposition:
   verdict_basis: one_verifier_plus_operator            # EBIV §6.5 two-agent profile
   group_a_candidate: 7450661   # D-D3-002, 5/5 CONFIRMED
   group_b_candidate: 7fcd86c   # Row 1(b), 8/8 CONFIRMED (ballot 8405460)
-  decision: <PENDING — CONFIRMED_UNDER_TWO_AGENT_PROFILE | REJECTED | DEFERRED>
-  disclosed_risk_acknowledged: <PENDING — true/false; the five items in §4 are read and accepted>
-  approver: <PENDING — Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority>
-  decision_timestamp: <PENDING>
+  decision: CONFIRMED_UNDER_TWO_AGENT_PROFILE
+  disclosed_risk_acknowledged: true                    # the five items in §4 are read and accepted
+  approver: "Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority"
+  decision_timestamp: 2026-08-02
   recorded_by: Claude (Motor), transcribing — execution_authority:false approval_authority:false
 ```
+
+**Recorded follow-through (this disposition):** the profile verdicts are noted in
+[`manifest.json`](manifest.json); `DEC-P35-AUTH-D3-DOCKET` `D-D3-002` and `D-D3-001` Row 1(b) are
+marked verified-and-disposed. This completes the AUTH-D3 hardening. The five disclosed gaps in §4
+remain as recorded, non-blocking follow-on concerns.
 
 **On a `CONFIRMED_UNDER_TWO_AGENT_PROFILE` disposition (advisory follow-through):** record the profile
 verdicts in [`manifest.json`](manifest.json); mark `DEC-P35-AUTH-D3-DOCKET` `D-D3-002` and `D-D3-001`
