@@ -134,7 +134,7 @@ describe('AUTH-D3 Row 1(b) — creation rate limiting at the gateway', () => {
     }
   });
 
-  test('without a rateLimit option the gateway forwards every creation, as before', async () => {
+  test('without a rateLimit option the gateway forwards every creation as before', async () => {
     const { calls, fetchImpl } = recordingKernel();
     const app = createGateway({ kernelBaseUrl: 'http://kernel.invalid:8000', fetchImpl });
     for (let i = 0; i < 20; i++) {
@@ -145,7 +145,7 @@ describe('AUTH-D3 Row 1(b) — creation rate limiting at the gateway', () => {
 });
 
 describe('CreationRateLimiter — unit', () => {
-  test('a refused request is not counted, so a blocked flood does not extend its own window', () => {
+  test('a refused request is not counted so a blocked flood does not extend its own window', () => {
     let t = 1_000;
     const limiter = new CreationRateLimiter({
       perSourceLimit: 1,
