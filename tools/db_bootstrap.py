@@ -241,6 +241,67 @@ def cmd_status() -> int:
     return 0
 
 
+def apply_ledger_to(target_url: str, *, role: str = DEFAULT_ROLE, verbose: bool = False) -> None:
+    """Apply the full forward migration ledger to the database at `target_url`, idempotently, and
+    grant DML on the public schema to `role`.
+
+    Extracted from `cmd_apply` so the shared-pool bootstrap and dedicated-database provisioning apply
+    the *same* migrations by the *same* code — a dedicated database is the same schema, not a variant
+    (PLAN-P35-06-DEDICATED-DB §2.1). Idempotent by the checksum ledger, and refuses a migration file
+    that changed after it was applied (AGENTS.md §14).
+    """
+    psycopg = require_psycopg()
+    from psycopg import sql
+
+    with psycopg.connect(target_url, autocommit=False) as conn:
+        with conn.cursor() as cur:
+            cur.execute(LEDGER_DDL)
+        conn.commit()
+
+        with conn.cursor() as cur:
+            ledger = read_ledger(cur)
+
+        for number, path in forward_migrations():
+            digest = checksum(path)
+
+            if number in ledger:
+                _recorded_name, recorded_digest = ledger[number]
+                if recorded_digest != digest:
+                    raise RuntimeError(
+                        f"{path.name} changed after it was applied "
+                        f"(recorded {recorded_digest[:12]}…, file {digest[:12]}…). "
+                        f"Migrations are append-only after merge (AGENTS.md §14)."
+                    )
+                if verbose:
+                    print(f"skipped {path.name} (already applied)")
+                continue
+
+            statement = path.read_text(encoding="utf-8")
+            with conn.cursor() as cur:
+                cur.execute(statement)
+                cur.execute(
+                    "INSERT INTO schema_migrations (version, filename, checksum) "
+                    "VALUES (%s, %s, %s)",
+                    (number, path.name, digest),
+                )
+            conn.commit()
+            if verbose:
+                print(f"applied {path.name}")
+
+        with conn.cursor() as cur:
+            cur.execute(
+                sql.SQL(
+                    "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO {}"
+                ).format(sql.Identifier(role))
+            )
+            cur.execute(
+                sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(sql.Identifier(role))
+            )
+        conn.commit()
+        if verbose:
+            print(f"granted DML on public schema to {role}")
+
+
 def cmd_apply(password: str) -> int:
     psycopg = require_psycopg()
     from psycopg import sql
@@ -285,61 +346,7 @@ def cmd_apply(password: str) -> int:
     # would need FORCE to be constrained at all, and a missing FORCE would go unnoticed.
     target = re.sub(r"/[^/]*$", f"/{DEFAULT_DB}", url)
     try:
-        with psycopg.connect(target, autocommit=False) as conn:
-            with conn.cursor() as cur:
-                cur.execute(LEDGER_DDL)
-            conn.commit()
-
-            with conn.cursor() as cur:
-                ledger = read_ledger(cur)
-
-            for number, path in forward_migrations():
-                digest = checksum(path)
-
-                if number in ledger:
-                    recorded_name, recorded_digest = ledger[number]
-                    if recorded_digest != digest:
-                        # AGENTS.md section 14: migrations are append-only after merge. A file
-                        # that changed after being applied means the schema in this database no
-                        # longer corresponds to the file that describes it, and re-running it
-                        # would not reconcile them.
-                        print(
-                            f"ERROR: {path.name} changed after it was applied.\n"
-                            f"       recorded checksum {recorded_digest[:12]}…\n"
-                            f"       file checksum     {digest[:12]}…\n"
-                            f"       Migrations are append-only after merge (AGENTS.md §14).\n"
-                            f"       Add a new migration rather than editing this one.",
-                            file=sys.stderr,
-                        )
-                        return 1
-                    print(f"skipped {path.name} (already applied)")
-                    continue
-
-                statement = path.read_text(encoding="utf-8")
-                with conn.cursor() as cur:
-                    cur.execute(statement)
-                    cur.execute(
-                        "INSERT INTO schema_migrations (version, filename, checksum) "
-                        "VALUES (%s, %s, %s)",
-                        (number, path.name, digest),
-                    )
-                conn.commit()
-                print(f"applied {path.name}")
-
-            with conn.cursor() as cur:
-                cur.execute(
-                    sql.SQL(
-                        "GRANT SELECT, INSERT, UPDATE, DELETE "
-                        "ON ALL TABLES IN SCHEMA public TO {}"
-                    ).format(sql.Identifier(DEFAULT_ROLE))
-                )
-                cur.execute(
-                    sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(
-                        sql.Identifier(DEFAULT_ROLE)
-                    )
-                )
-            conn.commit()
-            print(f"granted DML on public schema to {DEFAULT_ROLE}")
+        apply_ledger_to(target, role=DEFAULT_ROLE, verbose=True)
     except Exception as exc:
         print(f"ERROR: migration failed: {exc}", file=sys.stderr)
         return 1

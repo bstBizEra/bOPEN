@@ -85,9 +85,14 @@ REGISTRY_TABLES = (
     "principals",
 )
 
-# Not data. Readable only outside a tenant scope.
+# Not tenant data — properties of the database itself, structurally protected (ENABLE + FORCE row
+# security) but not tenant-scoped. `schema_migrations` is readable only outside a tenant scope;
+# `placement_identity` (migration 015) is the opposite — a dedicated database's single-row
+# declaration of the tenant it serves, read by verify_connection_serves WHILE a tenant scope is in
+# force, so its policy is permissive rather than tenant-matching (see the migration for why).
 INFRASTRUCTURE_TABLES = (
     "schema_migrations",
+    "placement_identity",
 )
 
 # The 002 family stores tenant_id as text rather than UUID, so a repository writing to them

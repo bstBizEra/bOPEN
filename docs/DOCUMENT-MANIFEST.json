@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 320,
+  "count": 321,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1448,8 +1448,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "cb4d5802d98ab81394882bc94aec3656b8a48ee4c4663aa211662965607e8cef",
-      "bytes": 39216
+      "sha256": "e80098810069e7e45c032ab1ad5ac0558a6fce289e8a5f544b03a2cd0959074c",
+      "bytes": 41176
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1590,6 +1590,13 @@
       "status": "**SUPERSEDED 2026-08-01** \u2014 held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc\u2026` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.",
       "sha256": "c64255190f4abe18dd1047bb36b9623eb4ed9a303f4f678d81a5e886d28c3304",
       "bytes": 5973
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-06-dedicated-db-maker.md",
+      "title": "EVD-P35-06-DEDICATED-DB-MAKER \u2014 Dedicated-database provisioning",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "ba1bfd7c7bed459a84fcb9fae0df7c5825106ce1424db7eef78c272b4c7c6c7a",
+      "bytes": 6586
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-06-disposition.md",
