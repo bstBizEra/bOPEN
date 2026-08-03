@@ -5,11 +5,12 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-03
 **Implements:** [`DEC-P4-ENTRY`](../../decisions/DEC-P4-ENTRY.md) §8 (Workflow State Engine, MILE-4.2)
-**Candidate:** `a09022d`
+**Candidate:** `2ee4612` (supersedes `a09022d`, which carried the `P4-WF-05` refutation — see §6)
 **Blob — `013_workflow_state_engine.sql`:** `f5e58332918dafde84e1cba592d7440301e257b4`
+**Blob — `014_workflow_history_survives_its_instance.sql`:** `7d505ec8ef3200a03958eda10320475a01689759`
 **Blob — `workflow_repositories.py`:** `d9fff1b0b93e77dbd8c901368d9a39c2e758aa94`
-**Blob — `api.py`:** `e50569363ccfc64947d414f36a15190f59f196ec`
-**Blob — `invariant-traceability.csv`:** `82aa16c1045623dd42f2478c95d19774fb9d1001`
+**Blob — `invariant-traceability.csv`:** `dd9982011280763dcf39199349965de5448e88b6`
+**Blob — `test_workflow_isolation.py`:** `3605168712d4d95efa27ef33ef03535f97601f95`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
 **Suites:** canonical **539/539** against PostgreSQL (18 workflow tests added; 0 skips with the admin URL set)

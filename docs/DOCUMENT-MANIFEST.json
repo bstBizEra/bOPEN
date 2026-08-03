@@ -1490,8 +1490,8 @@
       "path": "docs/evidence/phase-3.5/mile-4.2-workflow-maker.md",
       "title": "EVD-MILE-4.2-WORKFLOW-MAKER \u2014 Workflow State Engine foundation",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "89e608037546b47a3cd170428772b2e4934b404950b915d18361cd82d9623350",
-      "bytes": 8393
+      "sha256": "739d7b25d9121542a76c1c8d02c5f4b33bc36844222ed7bad385682e62a81fbd",
+      "bytes": 8595
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
