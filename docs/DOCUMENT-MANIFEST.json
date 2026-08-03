@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 319,
+  "count": 320,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -260,6 +260,13 @@
       "status": "",
       "sha256": "8125193650f112f6253da26bf3e7d95e20b23559c699db85d4fc08d110366c19",
       "bytes": 327
+    },
+    {
+      "path": "docs/01-product/WP-P35-06-dedicated-db-provisioning-plan.md",
+      "title": "WP-P35-06 \u2014 Dedicated-database provisioning, design & first-slice plan",
+      "status": "**Design \u2014 advisory. Buildable on operator authorization.** Extends the disposed WP-P35-06 placement seam ([`EVD-P35-06-DISPOSITION`](../evidence/phase-3.5/wp-p35-06-disposition.md)) with the carried \"no dedicated DB provisioned\" item.",
+      "sha256": "5084517eff330569313615330bb3e6717348a6e6eca4027881893815003b8c54",
+      "bytes": 10064
     },
     {
       "path": "docs/02-requirements/acceptance/README.md",
