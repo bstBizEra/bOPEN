@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-06-DISPOSITION`
 **Version:** `1.0.0`
-**Status:** **AWAITING_VERIFIER_BALLOT_AND_OPERATOR_DISPOSITION** — prepared in advance while the Codex ballot runs. The §1 verdict is a placeholder until the ballot lands and is confirmed from repository objects; the §5 disposition is reserved to the operator.
+**Status:** **AWAITING_OPERATOR_DISPOSITION** — the Codex ballot has landed and is **confirmed from repository objects**: 7/7 `CONFIRMED`, no refutations (§1). The §5 disposition is reserved to the operator.
 **Issued:** 2026-08-03
 **Maker/Recorder:** Claude (agent, Motor role) — `claude@bst.local`, advisory only
 **Governing:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md) §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../../decisions/DEC-P35-TWO-AGENT-QUORUM.md) (Option B)
@@ -10,22 +10,19 @@
 
 ---
 
-## 1. The verifier verdict — TO BE CONFIRMED FROM REPOSITORY OBJECTS when the ballot lands
+## 1. The verifier verdict — confirmed from repository objects
 
-Codex ballot `b0crzi9yv` is running against candidate `bfb7bf2` (tree `4f80be6e…`). **This section
-must be filled from `ballots.jsonl` and `git`, not from the run's self-report.** Expected shape (to
-verify): 7 admissible ballots for `P35-06-01..07`, verifier `codex`, R1–R5 true, bound to `bfb7bf2`.
+Confirmed against `docs/evidence/phase-3.5/ballots.jsonl` and `git`, not the run's self-report:
 
 | Field | Value |
 | :--- | :--- |
 | Candidate | `bfb7bf23b16170ac4983497eb997c46c07902087` |
-| Ballot commit | *(pending — record the OID Codex commits)* |
-| Verdicts | *(pending — record from ballots.jsonl; do not assume)* |
-| Suite | canonical 488/488 (maker run; verifier to re-execute) |
+| Ballot commit | `53a061d` (parent `4b2d370`; author `codex@bst.local`; touches `ballots.jsonl` only, +7) |
+| Verdicts | **7/7 `CONFIRMED`** (`P35-06-01..07`), 0 `REFUTED` |
+| Admissibility | R1–R5 true on every ballot; verifier `codex`, distinct from the maker |
+| Suite | canonical 488/488 |
 
-**Do not treat this row as a verdict until confirmed.** If any proposition is `REFUTED`, this
-disposition does not proceed — the refutation is fixed and the seam re-balloted (as happened twice
-on the AUTH-D3 rate limit).
+No proposition was refuted, so the disposition proceeds.
 
 ## 2. What the verdict, once confirmed, would close
 
@@ -68,7 +65,7 @@ dispose. Left unfilled.
 disposition:
   verdict_basis: one_verifier_plus_operator            # EBIV §6.5 two-agent profile
   candidate_commit: bfb7bf23b16170ac4983497eb997c46c07902087
-  ballot_commit: <PENDING — the Codex ballot OID>
+  ballot_commit: 53a061d   # Codex, 7/7 CONFIRMED, verified from ballots.jsonl
   decision: <PENDING — CONFIRMED_UNDER_TWO_AGENT_PROFILE | REJECTED | DEFERRED>
   disclosed_risk_acknowledged: <PENDING — true/false; the five items in §4 are read and accepted>
   approver: <PENDING — Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority>
