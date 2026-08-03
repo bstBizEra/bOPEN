@@ -196,6 +196,16 @@
         "refutations": 0,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "Money & Currency foundation (DEC-P4-ENTRY §7, operator-authorized 2026-08-03); operator disposition 2026-08-03; 13/13 P4-MONEY CONFIRMED at e54d48c (ballot commit e9a999d, verifier codex, R1-R5 true, no refutations); integer minor units never a float, exact-decimal conversion, tenant-scoped exchange rates; Codex first fail-closed-refused until MILE-4.2 authorization was recorded; evidence mile-4.2-money-disposition.md. Carried: no ledger/payment, single current rate, currency constant, no allocate"
+      },
+      "MILE-4.2-WORKFLOW": {
+        "commit": "2ee4612342fbd30f1f122ac4abfd909c62d746c4",
+        "ballots": 16,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Workflow State Engine foundation (DEC-P4-ENTRY §8, operator-authorized 2026-08-03); operator disposition 2026-08-03; 16/16 INV-WF CONFIRMED at 2ee4612 (ballot commit c1847b4, verifier codex, R1-R5 true, no refutations at this candidate); tenant-scoped state machine, definition-gated transitions, append-only history, lifecycle audit event. Prior candidate a09022d was REFUTED on the append-only invariant (workflow_history ON DELETE CASCADE erased history via parent-instance deletion past RLS, ballot blt_a4367591a838); fixed at root cause by migration 014 (ON DELETE RESTRICT, the migration-009 precedent), reproduction added as INV-WF-HISTORY-APPEND-ONLY-02; evidence mile-4.2-workflow-disposition.md. Carried: no per-transition role authz, no timers/branching/BPMN, no definition versioning"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [

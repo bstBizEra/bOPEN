@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 318,
+  "count": 319,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1427,8 +1427,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "0b90ffd506992eb449885e94f4504dfc3b786f6a2fa05558282142d37b1bab8f",
-      "bytes": 238982
+      "sha256": "7ac91032d8c0d4d43cac4b7cc20f4b3e021af8624ad70d7824e3e1d53bb40633",
+      "bytes": 251680
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1455,8 +1455,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "2bfa4782d0b7ad4fa670f78c0ba1e11bde5e4dcbbf65de04aac58b74dcab802a",
-      "bytes": 15613
+      "sha256": "436fed4275d2e4d2ea96285b13537a3849a6ef8351cf444919b86d31fcfdeac2",
+      "bytes": 16685
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
@@ -1485,6 +1485,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "e8b8a2e742eed19ebbbc946ee16ad93e48854306c52d35e8b14afc32070b2e14",
       "bytes": 5305
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.2-workflow-disposition.md",
+      "title": "EVD-MILE-4.2-WORKFLOW-DISPOSITION \u2014 Workflow State Engine, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-03 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "072610c2d58566f06a2f86464585d16458328757c3786f349a20e40b4211ece0",
+      "bytes": 4470
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.2-workflow-maker.md",
