@@ -12,6 +12,20 @@
 > it is done carefully and full-suite-green before it is trusted; (2) trace the seam invariants
 > (R2), maker submission, **Codex** ballot (defensive framing), operator disposition under §6.5.
 > Dedicated-DB provisioning and trial→paid migration remain deferred until a paying tenant exists.
+>
+> **BLOCKER found 2026-08-03 when the wiring was first attempted (then reverted, clean).** Wiring
+> `tenant_session` to resolve fail-closed broke **41 entitlement/metering tests**: the Phase 3
+> entitlement tables (migration 002 family) use free-form `VARCHAR` `tenant_id` **with no foreign
+> key to `tenants`**, so those tenants have **no registry row** and `resolve_placement` refuses them
+> (`PlacementUnresolved`). This surfaces a real **A-09 interpretation decision that is not the
+> maker's to make**: does "an unresolvable tenant is refused, never defaulted" mean (a) an
+> unregistered tenant is **refused** — so the metering subsystem must register its tenants in
+> `tenants` first — or (b) only an **unroutable *dedicated*** tenant is refused, and an unregistered
+> tenant **defaults to the shared pool** (safe under the no-DELETE invariant on `tenants`, since a
+> dedicated tenant always keeps its row)? Option (b) is the smaller change and matches today's
+> behaviour; option (a) is stricter but requires touching the entitlement subsystem. **This is a
+> governance/architecture decision for the operator + a Codex review, not a session-tail patch.**
+> The resolver core is committed and green; only the wiring waits on this decision.
 **Original status:** Accepted, not started — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1, **generalized by §8.4**
 
 > **Generalized 2026-07-31.** This package was written as *shard routing* under Option C. Option D
