@@ -2,7 +2,7 @@
 
 **Decision ID:** `DEC-P4-ENTRY`
 **Version:** `1.0.0`
-**Status:** **Proposed — awaiting operator authorization** (phase entry is an authority act; `AGENTS.md` §20.2)
+**Status:** **AUTHORIZED 2026-08-03 — Phase 4 entry opened, MILE-4.1 slice only.** Operator (`BizEra`, Architecture & Engineering Authority) authorized entry conditional on net benefit to the system; the maker confirmed the precondition (Phase 3.5 closed/verified/demonstrated) and the narrow low-risk first slice. Transcribed by Claude (Motor); not a maker approval. MILE-4.2/4.3 remain gated.
 **Issued:** 2026-08-03
 **Owner:** Architecture & Engineering Authority
 **Raised by:** Claude (agent, Motor role) — advisory only
