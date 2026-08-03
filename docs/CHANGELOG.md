@@ -1,5 +1,19 @@
 # Documentation Changelog
 
+## 2026-08-03 - ERP solution deferred until after bOPEN Alpha and production baseline
+
+- Recorded `BOPEN-BERP-PLAN-001` as an operator-directed future plan at
+  `docs/10-products/berp/product-composition.md`.
+- The ERP program begins only after both the applicable bOPEN Alpha acceptance evidence and a
+  governed production-version baseline are recorded; a separate accepted `BOPEN-BERP-001` work
+  package is still required.
+- bOPEN remains the platform governance kernel. ERPNext is the intended ERP execution engine and
+  prospective owner of Accounting/General Ledger, Finance, procurement, inventory, assets, and
+  selected ERP modules. Industry systems remain separate and integrate later through versioned
+  APIs and domain events.
+- This planning record grants no implementation, merge, deployment, release, or activation
+  authority and does not alter any current phase, milestone, or acceptance criterion.
+
 ## 2026-08-02 - Option B ratified: Phase 3.5 closes under the two-agent profile
 
 - **Operator ratified `DEC-P35-TWO-AGENT-QUORUM` Option B.** Recorded as the operator's decision,

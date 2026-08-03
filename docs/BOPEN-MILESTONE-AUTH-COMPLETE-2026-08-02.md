@@ -1,5 +1,6 @@
 # bOPEN Milestone — Authentication boundary + AUTH-D3 hardening complete (2026-08-02)
 
+**Status:** Historical checkpoint — verified and operator-disposed state as of 2026-08-02
 **Type:** Milestone checkpoint (state archive)
 **Date:** 2026-08-02
 **Recorded by:** Claude (agent, Motor role) — transcribing verified state, no verdict authority

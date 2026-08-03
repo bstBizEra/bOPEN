@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 305,
+  "count": 310,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -206,11 +206,18 @@
       "bytes": 3616
     },
     {
+      "path": "docs/01-product/MILE-4.1-party-foundation-plan.md",
+      "title": "MILE-4.1 \u2014 Party & Relationship Foundation, first-slice plan (`BOPEN-PARTY-001`)",
+      "status": "**Plan \u2014 buildable on Phase 4 authorization** ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md))",
+      "sha256": "545ec00a3dbd427d789c79d50936801bc03bffac9dea8a06a1399e72527ffbb4",
+      "bytes": 4283
+    },
+    {
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "97edd966d0b6e449503f1ee9c425cabd82fed3331aaa6833471231a0d3fe6860",
-      "bytes": 15412
+      "sha256": "6daf0c72b6cbcc93def08a61c611f4105362bd5f2e13818c6890101fc8bf4191",
+      "bytes": 15712
     },
     {
       "path": "docs/01-product/principles.md",
@@ -907,10 +914,10 @@
     },
     {
       "path": "docs/10-products/berp/product-composition.md",
-      "title": "berp Product Composition",
-      "status": "",
-      "sha256": "35282153adbb44c848593fef4e1b4bf8bf2052b3f8b280e3d3b9558a73b7201a",
-      "bytes": 225
+      "title": "BOPEN-BERP-PLAN-001 \u2014 Post-production ERP Solution Plan",
+      "status": "Planned Direction \u2014 deferred; no implementation authority",
+      "sha256": "53153c91a29173ce1c2ffaf0c79885c41d47430a5493b6503fe45eab95997816",
+      "bytes": 5419
     },
     {
       "path": "docs/10-products/bfleet/product-composition.md",
@@ -1137,6 +1144,13 @@
       "bytes": 3205
     },
     {
+      "path": "docs/BOPEN-MILESTONE-AUTH-COMPLETE-2026-08-02.md",
+      "title": "bOPEN Milestone \u2014 Authentication boundary + AUTH-D3 hardening complete (2026-08-02)",
+      "status": "Historical checkpoint \u2014 verified and operator-disposed state as of 2026-08-02",
+      "sha256": "a323e2ea08a2977aeeb87eff36ca5913020b76b3465798d8881569a9cce97bd9",
+      "bytes": 3261
+    },
+    {
       "path": "docs/BOPEN-STATE-ARCHIVE-2026-08-02.md",
       "title": "bOPEN State Archive \u2014 2026-08-02",
       "status": "Milestone checkpoint \u2014 Phase 3.5 closure, pending final `WP-P35-05a` R4 disposition",
@@ -1147,8 +1161,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "4aebdb4ba154817d9c1817a3348925290db64d4535887fd4f698746bb20da1ba",
-      "bytes": 71647
+      "sha256": "ad6a4ad6813aecf9ee1ad4cd2dba807fa4a794a50dca47080101e3844950b253",
+      "bytes": 72565
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1195,9 +1209,9 @@
     {
       "path": "docs/decisions/DEC-P35-AUTH-D3-DOCKET.md",
       "title": "DEC-P35-AUTH-D3-DOCKET \u2014 Disposition surface for the last live authentication hole",
-      "status": "**DISPOSED 2026-08-02.** `D-D3-001` Row 1(a) VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`); Row 1(b) rate-limiting decided \u2192 gateway layer; `D-D3-002` decided \u2192 Option B (out-of-band provisioning). Row 1(b) and `D-D3-002` are decided but not yet built (governed follow-on work). See dispositions inline.",
-      "sha256": "34ce2b7954139b99a7152c957b20b35e2db9b99cc3164d53133bdc78d80cd0a8",
-      "bytes": 9163
+      "status": "**CLOSED 2026-08-02 \u2014 all three items VERIFIED-AND-DISPOSED (`CONFIRMED_UNDER_TWO_AGENT_PROFILE`).** `D-D3-001` Row 1(a) tenant-provisioning assertion; Row 1(b) gateway rate-limiting (built at the gateway layer, 8/8 confirmed after two encoding-bypass refutations were fixed); `D-D3-002` principal enrollment (Option B, out-of-band, 5/5 confirmed). Evidence: [`auth-d3-followon-disposition.md`](../evidence/phase-3.5/auth-d3-followon-disposition.md). The AUTH-D3 hardening is complete.",
+      "sha256": "dda4daa2429f5b4858bfe5bb0acd4ec21327f6a154764dd51fc6ada6d731e02f",
+      "bytes": 9329
     },
     {
       "path": "docs/decisions/DEC-P35-CONTROL-PLANE-DOCKET.md",
@@ -1268,6 +1282,13 @@
       "status": "**Proposed \u2014 awaiting operator ratification**",
       "sha256": "36da06dc6917b05eec718e2c95a141a35fd4d44fb8328be6573afd9150d819e4",
       "bytes": 4743
+    },
+    {
+      "path": "docs/decisions/DEC-P4-ENTRY.md",
+      "title": "DEC-P4-ENTRY \u2014 Phase 4 entry gate: the Phase 3.5 precondition is met",
+      "status": "**AUTHORIZED 2026-08-03 \u2014 Phase 4 entry opened, MILE-4.1 slice only.** Operator (`BizEra`, Architecture & Engineering Authority) authorized entry conditional on net benefit to the system; the maker confirmed the precondition (Phase 3.5 closed/verified/demonstrated) and the narrow low-risk first slice. Transcribed by Claude (Motor); not a maker approval. MILE-4.2/4.3 remain gated.",
+      "sha256": "009e8f9c14a09b84d2c0a11651bb1b397c5b4c9b434ff021effd5c896c9dd3da",
+      "bytes": 4569
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1389,11 +1410,18 @@
       "bytes": 7230
     },
     {
+      "path": "docs/evidence/phase-3.5/auth-d3-followon-disposition.md",
+      "title": "EVD-P35-AUTH-D3-FOLLOWON-DISPOSITION \u2014 D-D3-002 + Row 1(b), \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-02 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed both follow-ons per the recommendation and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "e89f48a0295896f9640e4ccdaa6bed8487fb9679fe1eb95e004b7acefc698cb2",
+      "bytes": 5474
+    },
+    {
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "f1fb3c894b79f90de6d1ef1dcdf9147c993b7db33a05760ee1621e18edbaf1ff",
-      "bytes": 160011
+      "sha256": "68c3ba6dc8f06196892aa29d21268eca43f4734811beb2e91660ec26ffb0af7f",
+      "bytes": 186328
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1406,8 +1434,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "cf959ba54c24ef3a4fa0ab22d8f128869e2df6f21eabb55175a2aa801ed670f5",
-      "bytes": 19960
+      "sha256": "5acac0c717b3672396a22154927ab5d8855d2303d91c87744c8b4914e024b289",
+      "bytes": 24898
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1420,8 +1448,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "942905d69a5a8936e5483268205a8d01e76cb959e204fd3522e20c31d95ca9dc",
-      "bytes": 12406
+      "sha256": "08be946fc1848010227fcbaf6400ccf96ef0856ce24a4d14a703f5d9c8f35bb6",
+      "bytes": 13436
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
@@ -1506,6 +1534,13 @@
       "status": "**SUPERSEDED 2026-08-01** \u2014 held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc\u2026` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.",
       "sha256": "c64255190f4abe18dd1047bb36b9623eb4ed9a303f4f678d81a5e886d28c3304",
       "bytes": 5973
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-auth-d3-followon-maker.md",
+      "title": "EVD-P35-AUTH-D3-FOLLOWON-MAKER \u2014 D-D3-002 (Option B) + AUTH-D3 Row 1(b)",
+      "status": "**REVISED \u2014 R3 after two refutations (\u00a77).** `P35-D3b-05`/`-08` were refuted for single-encoding (R1, `7450661`) then double-encoding (R2, `aa2a74b`); both are path-classification defects, fixed by decoding to a fixpoint. The kernel Group A is byte-identical (`api.py` `4a58ddb`, carries); the gateway Group B needs a fresh ballot at the R3 candidate.",
+      "sha256": "2f98f0ce42305615ab1bdeb26a39a0ac39f1f738f853b61cc512a582f51b71fd",
+      "bytes": 10867
     },
     {
       "path": "docs/GLOSSARY.md",
