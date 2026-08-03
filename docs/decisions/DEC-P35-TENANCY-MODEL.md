@@ -283,3 +283,44 @@ call and surfaces a refusal inside a repository operation rather than at request
 Resolving once at the boundary and threading the connection down (`repositories.py` methods would
 gain a `connection=` parameter, as `entitlement_repositories.py` already has) is a **tracked
 refinement** in `WP-P35-06`, not a security gap. This maker note is subject to the Codex ballot.
+
+---
+
+## 10. Amendment 2026-08-04 — dedicated-database provisioning authorized
+
+> **Change note (extend-only).** §8.4 recorded that `WP-P35-06` carries the placement seam and that
+> actually *provisioning* a dedicated database was a disclosed, accepted follow-on. This authorizes
+> that follow-on build, recorded **before any build** per the `DEC-P4-ENTRY` §7/§8 sequencing lesson.
+> The design it authorizes is [`PLAN-P35-06-DEDICATED-DB`](../01-product/WP-P35-06-dedicated-db-provisioning-plan.md).
+
+### 10.1 Decision
+
+**The dedicated-database provisioning slice is AUTHORIZED**, exactly as scoped in
+`PLAN-P35-06-DEDICATED-DB` §2 and §2.4. In scope: migration 015 (`placement_identity`, single-row),
+a `provision_dedicated_db` tool that applies the full migration ledger to a target database and seeds
+the identity, parameterizing the `db_bootstrap` applier by target database, and an end-to-end
+cross-database isolation test proving a dedicated tenant's data lives in its own database and is
+invisible to the shared pool — with the keystone probe `INV-DEDI-MISROUTE-REFUSED-01` (a wrong route
+becomes a loud refusal, never a silent empty read). **Explicitly out of scope and deferred:** the
+trial→paid cross-database data migration (`PLAN` §2.4), and any change to the disposed request path.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the dedicated-database provisioning slice** per `PLAN-P35-06-DEDICATED-DB`. Trial→paid data migration stays deferred |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-04 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 10.2 How it runs (governed, same loop)
+
+Tests-first (the cross-database `INV-DEDI-*` probes, red before migration 015 and the tool exist) →
+migration 015 + provisioning tool → execute against **two live PostgreSQL databases** → trace
+invariants in `invariant-traceability.csv` (R2) → maker submission → **Codex** independent ballot
+(defensive framing) → operator disposition under `EBIV` §6.5. No request-path kernel code changes.
+
+```text
+execution_authority: false
+approval_authority: false
+production_activation_authority: false
+completion_claimed: false
+```
