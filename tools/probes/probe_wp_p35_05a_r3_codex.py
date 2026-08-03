@@ -70,6 +70,7 @@ def main() -> int:
     if not os.environ.get("BOPEN_DATABASE_URL", "").strip():
         raise RuntimeError("BOPEN_DATABASE_URL must be loaded from .env.local")
 
+    r4_mode = os.environ.get("BOPEN_WP_P35_05A_R4", "").strip() == "1"
     saved = {
         name: os.environ.get(name)
         for name in (*AUTH_ENV, "BOPEN_ENV", "BOPEN_LEGACY_CONTEXT_HEADER_PROFILE")
@@ -205,35 +206,44 @@ def main() -> int:
         )
         expect(at_ceiling, 201, "300-second assertion")
 
-        # NumericDate permits non-integer JSON numbers. The implementation converts both
-        # endpoints to int before subtracting, so this genuinely-over-ceiling lifetime is
-        # truncated to 300 and accepted. This is the refutation probe for R3-02 as worded.
+        # NumericDate permits non-integer JSON numbers. R3 deliberately expects the
+        # truncation defect to reproduce. R4 reuses the rest of this independent probe but
+        # requires each fractional excess to be refused after the float-lifetime repair.
         fractional_iat = int(time.time())
         private_pem = private.private_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PrivateFormat.PKCS8,
             encryption_algorithm=serialization.NoEncryption(),
         )
-        fractional_over_token = jwt.encode(
-            {
-                "iss": ISSUER,
-                "aud": AUDIENCE,
-                "sub": principal,
-                "iat": fractional_iat,
-                "exp": fractional_iat + 300.9,
-                "jti": str(uuid.uuid4()),
-            },
-            private_pem,
-            algorithm="EdDSA",
-        )
-        fractional_over = context_request(
-            client, tenant, principal, membership, fractional_over_token
-        )
-        expect(fractional_over, 201, "300.9-second assertion refutation")
+        fractional_offsets = (300.1, 300.9, 300.99) if r4_mode else (300.9,)
+        fractional_statuses: dict[str, int] = {}
+        for offset in fractional_offsets:
+            fractional_over_token = jwt.encode(
+                {
+                    "iss": ISSUER,
+                    "aud": AUDIENCE,
+                    "sub": principal,
+                    "iat": fractional_iat,
+                    "exp": fractional_iat + offset,
+                    "jti": str(uuid.uuid4()),
+                },
+                private_pem,
+                algorithm="EdDSA",
+            )
+            fractional_over = context_request(
+                client, tenant, principal, membership, fractional_over_token
+            )
+            expected_fractional_status = 401 if r4_mode else 201
+            expect(
+                fractional_over,
+                expected_fractional_status,
+                f"{offset}-second assertion fractional boundary",
+            )
+            fractional_statuses[str(offset)] = fractional_over.status_code
         results["lifetime_boundary"] = {
             "301_seconds": over_ceiling.status_code,
             "300_seconds": at_ceiling.status_code,
-            "300.9_seconds": fractional_over.status_code,
+            "fractional_seconds": fractional_statuses,
         }
 
         # P35-05aR3-04: equal-length tokens, interleaved order, raw response comparison,
@@ -294,7 +304,7 @@ def main() -> int:
         finally:
             root_logger.removeHandler(handler)
 
-        audit_headers = headers(Authorization=f"Bearer {fractional_over.json()['access_token']}")
+        audit_headers = headers(Authorization=f"Bearer {at_ceiling.json()['access_token']}")
         audit_view = client.get("/v1/audit-events?limit=500", headers=audit_headers)
         expect(audit_view, 200, "R3-04 audit side-effect inspection")
         probe_correlations = set(bad_subject_corr + forged_corr)
