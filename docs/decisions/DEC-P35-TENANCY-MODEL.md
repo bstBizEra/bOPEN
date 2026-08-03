@@ -226,3 +226,44 @@ pool.
 | **Decision timestamp** | 2026-07-31 |
 | **Security review** | **NOT OBTAINED.** Required for `DEC-P35-CONTROL-PLANE` before any collection is implemented |
 | **Recorded by** | Claude (agent, Motor role). `execution_authority: false`, `approval_authority: false` |
+
+---
+
+## 9. Amendment 2026-08-03 — A-09 wiring interpretation (Option C, strict)
+
+> **Change note (extend-only).** Trigger: implementing `WP-P35-06` surfaced that the entitlement
+> tables (`002`) use `tenant_id VARCHAR(64)` with **no foreign key** to `tenants`, so some tenants
+> have no registry row and a fail-closed resolver refuses them. This decides how A-09 ("an
+> unresolvable tenant is refused, never defaulted") applies to them. An **independent immune review**
+> (2026-08-03) found that defaulting unregistered tenants to the shared pool (the tempting small
+> change) converts the resolver from *fail-closed* to *fail-open-to-shared* and re-opens the exact
+> silent mis-route A-09 exists to close, resting tenant isolation on an unenforced cross-subsystem
+> invariant. The operator ratified the strict option **for safety**.
+
+### 9.1 Decision
+
+**A-09 stays STRICT — an unresolvable tenant is refused, never defaulted.** Concretely (Option C):
+
+1. **`resolve_placement` never defaults.** An unregistered tenant, an unknown placement kind, or an
+   unroutable dedicated placement is refused. (The resolver as built already does this.)
+2. **Placement is resolved once at the request/context boundary**, where the tenant has just
+   authenticated and is therefore known-registered, and the resolved connection is threaded down via
+   the existing `connection=` parameter — **not** re-resolved inside every `db.tenant_session` call.
+   This keeps the fail-closed gate in one place and off the per-call hot path.
+3. **Every tenant with tenant-scoped data must have a `tenants` registry row.** The 41 entitlement/
+   metering test fixtures that deliberately skipped it are corrected to provision it; the
+   entitlement→`tenants` foreign key (already raised as deferred in migration `004`) is scheduled so
+   the database enforces this rather than a convention. Under this rule an orphan entitlement tenant
+   becomes unreachable through the kernel — the strict gate delivers FK-grade integrity at the
+   routing boundary.
+
+### 9.2 Approver
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **ACCEPT — Option C (strict).** A-09 unconditional; resolve at the request boundary; every tenant registered (FK scheduled). Option B (default unregistered → shared) is **rejected** as a security-gate weakening |
+| **Driver** | **Tenant isolation** — a mis-route is a silent wrong answer RLS cannot catch, so refuse-vs-default must be structural and unconditional |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — acting as Architecture Authority |
+| **Decision timestamp** | 2026-08-03 |
+| **Independent review** | Immune agent (advisory) recommended this option and flagged Option B as fail-open-to-shared; a Codex ballot on the implementation follows per `WP-P35-06` §6.5 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
