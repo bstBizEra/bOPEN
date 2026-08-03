@@ -2,7 +2,7 @@
 
 **Decision ID:** `DEC-P4-ENTRY`
 **Version:** `1.0.0`
-**Status:** **AUTHORIZED 2026-08-03 — Phase 4 entry opened, MILE-4.1 slice only.** Operator (`BizEra`, Architecture & Engineering Authority) authorized entry conditional on net benefit to the system; the maker confirmed the precondition (Phase 3.5 closed/verified/demonstrated) and the narrow low-risk first slice. Transcribed by Claude (Motor); not a maker approval. MILE-4.2/4.3 remain gated.
+**Status:** **AUTHORIZED — MILE-4.1 (2026-08-03) and MILE-4.2 (2026-08-03, §7).** MILE-4.3 remains gated. Operator (`BizEra`, Architecture & Engineering Authority) authorizations transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-03
 **Owner:** Architecture & Engineering Authority
 **Raised by:** Claude (agent, Motor role) — advisory only
@@ -79,3 +79,35 @@ execution_authority: false
 approval_authority: false
 production_activation_authority: false
 ```
+
+---
+
+## 7. Amendment 2026-08-03 — MILE-4.2 (Money & Currency) authorized
+
+> **Change note (extend-only).** §3 set MILE-4.1 as the only in-scope slice and recorded that
+> MILE-4.2/4.3 "enter on their own operator dispositions". This records that disposition for MILE-4.2.
+
+**Sequencing note, disclosed:** the maker built the MILE-4.2 Money slice on the operator's verbal
+"start the Money foundation" instruction **before** this gate authorization was recorded. Codex,
+verifying, correctly refused to ballot it fail-closed — the record still gated MILE-4.2 — and cast no
+verdict. The engineering is complete and green (canonical 521/521), but authorization is an authority
+act the maker may not infer from an execution instruction, so it is recorded here explicitly rather
+than interpreted. The maker should have obtained this before building, as it did for MILE-4.1.
+
+### 7.1 Decision
+
+**MILE-4.2 (Money & Currency) is AUTHORIZED.** In scope: the money value type (integer minor units)
+and tenant-scoped exchange rates with conversion, as submitted in
+[`EVD-MILE-4.2-MONEY-MAKER`](../evidence/phase-3.5/mile-4.2-money-maker.md), candidate `30f3ca2`.
+MILE-4.3 (satellite products) and the other MILE-4.2 foundations (Document, Location, UOM, Calendar,
+Asset, Workflow, Notification) remain gated and enter on their own operator dispositions.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE MILE-4.2 (Money & Currency)** — the money value type and tenant exchange rates/conversion. Other 4.2 foundations and all of 4.3 stay gated |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-03 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+On this authorization the MILE-4.2 candidate `30f3ca2` becomes verifiable; its Codex ballot follows
+under `EBIV` §6.5.
