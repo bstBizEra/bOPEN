@@ -5,7 +5,11 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-03
 **Implements:** [`DEC-P4-ENTRY`](../../decisions/DEC-P4-ENTRY.md) §8 (Workflow State Engine, MILE-4.2)
-**Candidate:** the commit carrying this submission (filled on commit)
+**Candidate:** `a09022d`
+**Blob — `013_workflow_state_engine.sql`:** `f5e58332918dafde84e1cba592d7440301e257b4`
+**Blob — `workflow_repositories.py`:** `d9fff1b0b93e77dbd8c901368d9a39c2e758aa94`
+**Blob — `api.py`:** `e50569363ccfc64947d414f36a15190f59f196ec`
+**Blob — `invariant-traceability.csv`:** `82aa16c1045623dd42f2478c95d19774fb9d1001`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
 **Suites:** canonical **538/538** against PostgreSQL (17 workflow tests added; 0 skips with the admin URL set)
