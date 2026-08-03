@@ -60,6 +60,10 @@ TENANT_SCOPED_TABLES = (
     "rate_limit_counters",
     "rate_limit_policies",
     "tenant_feature_toggles",
+    # Migration 010 — MILE-4.1 party foundation. Tenant-scoped business entities (person /
+    # organization) and their relationships, isolated by RLS from their first migration.
+    "parties",
+    "party_relationships",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the
