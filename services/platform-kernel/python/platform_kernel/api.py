@@ -81,6 +81,7 @@ from kernel_core.types import (
     ContextPayload,
     DecisionResult,
 )
+from platform_kernel import party_repositories as party_repo
 from platform_kernel import repositories as repo
 from platform_kernel import subject_assertion
 from platform_kernel import tokens
@@ -170,6 +171,7 @@ memberships = repo.MembershipRepository()
 contexts = repo.ContextRepository()
 audit = repo.AuditRepository()
 resources = repo.TenantResourceRepository()
+parties = party_repo.PartyRepository()
 evaluator = AuthorizationEvaluator()
 
 
@@ -323,6 +325,38 @@ class AuthorizationDecisionResponse(BaseModel):
     reason_code: str
     evaluated_at: str
     audit_event_id: str
+
+
+# MILE-4.1 — party graph (BOPEN-PARTY-001)
+
+
+class CreatePartyRequest(BaseModel):
+    party_type: str = Field(pattern="^(person|organization)$")
+    display_name: str = Field(min_length=1, max_length=255)
+
+
+class PartyResponse(BaseModel):
+    party_id: str
+    tenant_id: str
+    party_type: str
+    display_name: str
+    status: str
+
+
+class CreatePartyRelationshipRequest(BaseModel):
+    from_party_id: str = Field(min_length=1, max_length=64)
+    to_party_id: str = Field(min_length=1, max_length=64)
+    relationship_type: str = Field(
+        pattern="^(employs|supplies|bills|owns|member_of)$"
+    )
+
+
+class PartyRelationshipResponse(BaseModel):
+    relationship_id: str
+    tenant_id: str
+    from_party_id: str
+    to_party_id: str
+    relationship_type: str
 
 
 # --------------------------------------------------------------------------------------
@@ -1176,3 +1210,115 @@ def read_resource(
             status_code=status.HTTP_404_NOT_FOUND, detail="resource not found"
         )
     return record
+
+
+# MILE-4.1 — party graph endpoints (BOPEN-PARTY-001). Bearer-gated: every one runs behind
+# resolve_context, so the tenant comes from the signed context, never from a header, and the party
+# is created and read under that tenant's row-level-security scope. Isolation is the database's, not
+# these handlers'.
+
+
+@app.post("/v1/parties", response_model=PartyResponse, status_code=status.HTTP_201_CREATED)
+def create_party(
+    body: CreatePartyRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> PartyResponse:
+    try:
+        created = parties.create(ctx.tenant_id, body.party_type, body.display_name)
+    except party_repo.PartyRepositoryError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id,
+        principal_id=ctx.principal_id,
+        context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id,
+        event_type="domain",
+        action="party:create",
+        resource_type="party",
+        resource_id=created.id,
+    )
+    return PartyResponse(
+        party_id=created.id,
+        tenant_id=created.tenant_id,
+        party_type=created.party_type,
+        display_name=created.display_name,
+        status=created.status,
+    )
+
+
+@app.get("/v1/parties", response_model=list[PartyResponse])
+def list_parties(
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[PartyResponse]:
+    return [
+        PartyResponse(
+            party_id=p.id,
+            tenant_id=p.tenant_id,
+            party_type=p.party_type,
+            display_name=p.display_name,
+            status=p.status,
+        )
+        for p in parties.list(ctx.tenant_id, limit=limit)
+    ]
+
+
+@app.get("/v1/parties/{party_id}", response_model=PartyResponse)
+def read_party(
+    party_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> PartyResponse:
+    try:
+        p = parties.get(ctx.tenant_id, normalise_id(party_id, "party_id"))
+    except party_repo.PartyNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="party not found"
+        )
+    return PartyResponse(
+        party_id=p.id,
+        tenant_id=p.tenant_id,
+        party_type=p.party_type,
+        display_name=p.display_name,
+        status=p.status,
+    )
+
+
+@app.post(
+    "/v1/party-relationships",
+    response_model=PartyRelationshipResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_party_relationship(
+    body: CreatePartyRelationshipRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> PartyRelationshipResponse:
+    try:
+        rel = parties.create_relationship(
+            ctx.tenant_id,
+            normalise_id(body.from_party_id, "from_party_id"),
+            normalise_id(body.to_party_id, "to_party_id"),
+            body.relationship_type,
+        )
+    except party_repo.PartyRelationshipError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id,
+        principal_id=ctx.principal_id,
+        context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id,
+        event_type="domain",
+        action="party_relationship:create",
+        resource_type="party_relationship",
+        resource_id=rel.id,
+    )
+    return PartyRelationshipResponse(
+        relationship_id=rel.id,
+        tenant_id=rel.tenant_id,
+        from_party_id=rel.from_party_id,
+        to_party_id=rel.to_party_id,
+        relationship_type=rel.relationship_type,
+    )
