@@ -12,7 +12,7 @@
 **Blob — `invariant-traceability.csv`:** `82aa16c1045623dd42f2478c95d19774fb9d1001`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
-**Suites:** canonical **538/538** against PostgreSQL (17 workflow tests added; 0 skips with the admin URL set)
+**Suites:** canonical **539/539** against PostgreSQL (18 workflow tests added; 0 skips with the admin URL set)
 
 ---
 
@@ -46,8 +46,9 @@ Every proposition asserts the platform **refuses** an illegal move or a cross-te
 | `P4-WF-02` | keep one tenant's instance invisible to another | `test_an_instance_created_in_one_tenant_is_invisible_to_another` |
 | `P4-WF-03` | refuse a cross-tenant definition write (WITH CHECK) | `test_a_cross_tenant_definition_insert_is_refused` |
 | `P4-WF-04` | refuse an instance of another tenant's definition (composite FK) | `test_an_instance_of_another_tenants_definition_is_refused` |
-| `P4-WF-05` | keep recorded history immutable (no UPDATE/DELETE) | `test_recorded_history_cannot_be_updated_or_deleted` |
+| `P4-WF-05` | keep recorded history immutable to a direct UPDATE/DELETE | `test_recorded_history_cannot_be_updated_or_deleted` |
 | `P4-WF-06` | refuse a transition the definition does not allow, leaving state unchanged | `test_the_repository_refuses_a_disallowed_transition` |
+| `P4-WF-07` | keep recorded history from being erased by deleting its instance (cascade) | `test_recorded_history_survives_an_attempt_to_delete_its_instance` |
 
 **Group B — HTTP layer** (`tests/integration/test_workflow_http.py`, executed HTTP, bearer-gated):
 
@@ -72,7 +73,7 @@ row for the refused move; hold tenant B's bearer and try to read or transition t
 ## 4. Execution
 
 ```text
-python tools/run_tests.py     538/538 OK   (live PostgreSQL, BOPEN_ADMIN_DATABASE_URL set)
+python tools/run_tests.py     539/539 OK   (live PostgreSQL, BOPEN_ADMIN_DATABASE_URL set)
 ```
 
 Migration 013 adds `workflow_definitions`, `workflow_instances` and `workflow_history`, all
@@ -95,7 +96,29 @@ breaks.
    consistent with the rest of the kernel's domain endpoints — not a separate event bus.
 4. **No definition versioning or migration of running instances** across a definition change.
 
-## 6. Authority
+## 6. Verification history — one refutation, closed
+
+The first candidate `a09022d` was verified by Codex, which **CONFIRMED 14 of 15** propositions and
+**REFUTED `P4-WF-05`** under an independent lens the maker's tests had not covered
+(`workflow_history_append_only_cascade_bypass`, ballot `blt_879fef0cfc4a`):
+
+> A direct `DELETE` on `workflow_history` reaches zero rows, but the instance foreign key was
+> `ON DELETE CASCADE`, so deleting the parent `workflow_instances` row erased the history through
+> the referential path — which PostgreSQL performs with row security bypassed. Recorded history was
+> therefore deletable. Reproduced live.
+
+This is the same carve-out migration 009 closed for the audit trail, which the maker did not carry to
+the new table. Fixed at root cause by **migration 014**: `workflow_history.fk_wf_instance` changed
+from `ON DELETE CASCADE` to `ON DELETE RESTRICT`. An instance that has recorded a transition can no
+longer be deleted out from under its history, and the two longer cascade paths (definition- and
+tenant-deletion) now fail on the same RESTRICT. `RESTRICT` rather than dropping the key because a
+workflow instance is durable business state, not an ephemeral referent like a context — the
+distinction migration 009 itself draws between `context_id` (drop FK) and `tenant_id` (RESTRICT). The
+reproduction is now proposition `P4-WF-07`, verified by execution.
+
+This candidate re-submits with that fix for re-ballot.
+
+## 7. Authority
 
 A maker's submission. `EBIV` §8: a passing suite carries no verdict weight.
 

@@ -162,6 +162,32 @@ class TestWorkflowIsolation(unittest.TestCase):
             cur.execute("SELECT to_state FROM workflow_history")
             self.assertEqual(cur.fetchone()[0], "submitted", "the recorded transition was altered")
 
+    def test_recorded_history_survives_an_attempt_to_delete_its_instance(self):
+        """INV-WF-HISTORY-APPEND-ONLY-02. The verifier's refutation of candidate a09022d: a direct
+        DELETE on workflow_history reaches zero rows (no DELETE policy), but the instance foreign key
+        was ON DELETE CASCADE, so deleting the parent instance erased the history through the
+        referential path — which PostgreSQL performs with row security bypassed. Migration 014
+        changed that key to ON DELETE RESTRICT. Deleting an instance that has recorded a transition
+        is now refused, and the history is untouched. Fails if 014 is rolled back."""
+        d = self._make_definition(self.tenant_a)
+        i = self._make_instance(self.tenant_a, d)
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO workflow_history "
+                "(tenant_id, instance_id, from_state, to_state) "
+                "VALUES (%s, %s, 'draft', 'submitted')",
+                (self.tenant_a, i),
+            )
+        # The cascade path the verifier exploited: deleting the parent instance must now be refused
+        # by the RESTRICT, not silently cascade the history away.
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            with self.assertRaises(self.psycopg.errors.Error):
+                cur.execute("DELETE FROM workflow_instances WHERE id = %s", (i,))
+        # The history — and the instance — are still there.
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute("SELECT to_state FROM workflow_history WHERE instance_id = %s", (i,))
+            self.assertEqual(cur.fetchone()[0], "submitted", "the recorded transition was erased")
+
     # -- the state-machine invariant, through the repository ---------------------------
 
     def test_the_repository_refuses_a_disallowed_transition(self):
