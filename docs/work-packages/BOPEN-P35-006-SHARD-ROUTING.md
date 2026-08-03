@@ -26,6 +26,20 @@
 > behaviour; option (a) is stricter but requires touching the entitlement subsystem. **This is a
 > governance/architecture decision for the operator + a Codex review, not a session-tail patch.**
 > The resolver core is committed and green; only the wiring waits on this decision.
+>
+> **RESOLVED 2026-08-03 — Option C (strict), operator-ratified after an independent immune review**
+> (`DEC-P35-TENANCY-MODEL` §9). A-09 stays strict (never default). Remaining implementation is one
+> coherent refactor for the next focused round (each Codex-verified):
+> 1. **Fixtures** — provision a `tenants` row for every entitlement/metering test tenant (~14 mint
+>    sites): `test_usage_metering_persistence.py` (8), `test_phase3_entitlement_metering.py`
+>    (3 — **done**, `_register_tenant` helper), `test_rollout_and_rate_limit_persistence.py` (2),
+>    `test_quota_reservation_contract.py` (1). Idempotent `INSERT ... ON CONFLICT DO NOTHING`.
+> 2. **Boundary wiring** — resolve placement ONCE where the tenant is established (API/context
+>    boundary) and thread the resolved `connection=` down; do NOT re-resolve per `tenant_session`.
+>    `entitlement_repositories.py` already accepts `connection=`; `repositories.py` needs it added.
+> 3. **FK migration** — add the deferred `entitlement.tenant_id → tenants(id)` foreign key so the
+>    database enforces §9.3 rather than a convention.
+> 4. **Full suite green + Codex ballot** (§6.5), then MILE-4.1 HTTP layer.
 **Original status:** Accepted, not started — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1, **generalized by §8.4**
 
 > **Generalized 2026-07-31.** This package was written as *shard routing* under Option C. Option D

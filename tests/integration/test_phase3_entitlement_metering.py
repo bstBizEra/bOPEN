@@ -59,6 +59,24 @@ from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def _register_tenant(tenant_id: str) -> None:
+    """Provision the tenant's registry row (DEC-P35-TENANCY-MODEL §9.3, Option C).
+
+    The entitlement/metering tables (migration 002) carry no foreign key to `tenants`, so these
+    fixtures once minted a tenant_id with no registry row. Under Option C every tenant with
+    tenant-scoped data must be registered, so the placement resolver can route it fail-closed
+    rather than refuse it. Idempotent, so a shared tenant across several writes is provisioned once.
+    """
+    from platform_kernel import db
+
+    with db.system_session() as cur:
+        cur.execute(
+            "INSERT INTO tenants (id, name, status) VALUES (%s, %s, 'active') "
+            "ON CONFLICT (id) DO NOTHING",
+            (tenant_id, f"metering-test-{tenant_id[:8]}"),
+        )
+
+
 class Phase3EntitlementMeteringIntegrationTests(unittest.TestCase):
     def setUp(self):
         self.registry = ModuleRegistry()
@@ -111,6 +129,7 @@ class Phase3EntitlementMeteringIntegrationTests(unittest.TestCase):
         # never collides with, and never has to clean up after, other work sharing the
         # verification database.
         self.tenant_beta = str(uuid.uuid4())
+        _register_tenant(self.tenant_beta)
         self.evaluator.assign_tenant_plan(self.tenant_beta, "plan_pro")
 
         self.context = ContextPayload(
@@ -194,6 +213,8 @@ class Phase3EntitlementMeteringIntegrationTests(unittest.TestCase):
         """
         tenant_a = str(uuid.uuid4())
         tenant_b = str(uuid.uuid4())
+        _register_tenant(tenant_a)
+        _register_tenant(tenant_b)
         shared_key = f"idemp-shared-{uuid.uuid4()}"
 
         evt_a = self.meter_service.record_event(
