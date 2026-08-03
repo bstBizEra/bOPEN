@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-P35-06-DISPOSITION`
 **Version:** `1.0.0`
-**Status:** **AWAITING_OPERATOR_DISPOSITION** — the Codex ballot has landed and is **confirmed from repository objects**: 7/7 `CONFIRMED`, no refutations (§1). The §5 disposition is reserved to the operator.
+**Status:** **DISPOSED 2026-08-03 — `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-03
 **Maker/Recorder:** Claude (agent, Motor role) — `claude@bst.local`, advisory only
 **Governing:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md) §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../../decisions/DEC-P35-TWO-AGENT-QUORUM.md) (Option B)
@@ -66,12 +66,18 @@ disposition:
   verdict_basis: one_verifier_plus_operator            # EBIV §6.5 two-agent profile
   candidate_commit: bfb7bf23b16170ac4983497eb997c46c07902087
   ballot_commit: 53a061d   # Codex, 7/7 CONFIRMED, verified from ballots.jsonl
-  decision: <PENDING — CONFIRMED_UNDER_TWO_AGENT_PROFILE | REJECTED | DEFERRED>
-  disclosed_risk_acknowledged: <PENDING — true/false; the five items in §4 are read and accepted>
-  approver: <PENDING — Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority>
-  decision_timestamp: <PENDING>
+  decision: CONFIRMED_UNDER_TWO_AGENT_PROFILE
+  disclosed_risk_acknowledged: true                    # the five items in §4 are read and accepted
+  approver: "Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority"
+  decision_timestamp: 2026-08-03
   recorded_by: Claude (Motor), transcribing — execution_authority:false approval_authority:false
 ```
+
+**Recorded follow-through (this disposition):** the profile verdict is noted in
+[`manifest.json`](manifest.json); `WP-P35-06` is marked verified-and-disposed. "One tenant, one
+database" is now structurally correct and verified at the routing layer. The five disclosed items in
+§4 remain as recorded, non-blocking follow-on work (boundary-resolution refinement, dedicated-DB
+provisioning, the FK migration, a live dedicated-DB identity probe).
 
 **On a `CONFIRMED_UNDER_TWO_AGENT_PROFILE` disposition (advisory follow-through):** record the profile
 verdict in [`manifest.json`](manifest.json); mark `WP-P35-06` verified-and-disposed in the WP doc;

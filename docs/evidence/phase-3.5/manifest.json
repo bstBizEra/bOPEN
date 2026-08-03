@@ -166,6 +166,16 @@
         "refutations": 2,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "gateway creation rate limiting; operator disposition 2026-08-02; 8/8 P35-D3b CONFIRMED at R3 (ballot commit 8405460) after two encoding-bypass refutations (single then double percent-encoding) were fixed by fixpoint decode; evidence auth-d3-followon-disposition.md"
+      },
+      "WP-P35-06": {
+        "commit": "bfb7bf23b16170ac4983497eb997c46c07902087",
+        "ballots": 7,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "tenant placement seam (DEC-P35-TENANCY-MODEL Option D / Option C strict); operator disposition 2026-08-03; 7/7 P35-06 CONFIRMED at bfb7bf2 (ballot commit 53a061d, verifier codex, R1-R5 true, no refutations); an independent immune review had corrected the A-09 interpretation (rejected fail-open-to-shared Option B); evidence wp-p35-06-disposition.md. Carried non-blocking: per-call not boundary resolution, no dedicated DB provisioned, entitlement->tenants FK scheduled, structural identity check"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [

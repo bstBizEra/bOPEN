@@ -1,6 +1,6 @@
 # WP-P35-06 — Tenant placement routing
 
-**Status:** **In progress — resolution seam CORE landed 2026-08-03 (`53adc14`), maker work awaiting wiring + Codex verification.**
+**Status:** **VERIFIED-AND-DISPOSED 2026-08-03 — `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** The placement seam is wired strict-fail-closed and balloted 7/7 (Codex `53a061d`, no refutations); operator disposed 2026-08-03 ([`wp-p35-06-disposition.md`](../evidence/phase-3.5/wp-p35-06-disposition.md)). Carried non-blocking refinements below (boundary resolution, dedicated-DB provisioning, the `VARCHAR→UUID` FK migration).
 > **Resume point (2026-08-03).** The correctness-critical resolution core is built and green:
 > migration 011 records placement on the tenant registry row (`placement_kind` shared_pool|dedicated
 > + `placement_ref`, backfilled shared_pool); `platform_kernel/placement.py` resolves fail-closed
