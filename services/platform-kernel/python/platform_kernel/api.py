@@ -87,6 +87,7 @@ from platform_kernel import money
 from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
 from platform_kernel import repositories as repo
+from platform_kernel import workflow_repositories as workflow_repo
 from platform_kernel import subject_assertion
 from platform_kernel import tokens
 from platform_kernel.db import DatabaseNotConfiguredError
@@ -177,6 +178,7 @@ audit = repo.AuditRepository()
 resources = repo.TenantResourceRepository()
 parties = party_repo.PartyRepository()
 exchange_rates_repo = money_repo.ExchangeRateRepository()
+workflows = workflow_repo.WorkflowRepository()
 evaluator = AuthorizationEvaluator()
 
 
@@ -390,6 +392,52 @@ class ConvertMoneyRequest(BaseModel):
 class MoneyResponse(BaseModel):
     amount_minor: int
     currency: str
+
+
+# MILE-4.2 — Workflow State Engine. A definition names states and the transitions allowed between
+# them; an instance runs one process; a transition moves it along an allowed edge only.
+
+
+class CreateWorkflowDefinitionRequest(BaseModel):
+    name: str = Field(min_length=1, max_length=255)
+    initial_state: str = Field(min_length=1, max_length=64)
+    states: list[str] = Field(min_length=1)
+    # Each transition is a [from, to] pair. Validated against `states` in the repository.
+    transitions: list[list[str]] = Field(default_factory=list)
+
+
+class WorkflowDefinitionResponse(BaseModel):
+    definition_id: str
+    tenant_id: str
+    name: str
+    initial_state: str
+    states: list[str]
+    transitions: list[list[str]]
+
+
+class StartWorkflowInstanceRequest(BaseModel):
+    definition_id: str = Field(min_length=1, max_length=64)
+    subject_ref: str = Field(min_length=1, max_length=255)
+
+
+class WorkflowInstanceResponse(BaseModel):
+    instance_id: str
+    tenant_id: str
+    definition_id: str
+    current_state: str
+    subject_ref: str
+
+
+class ApplyTransitionRequest(BaseModel):
+    to_state: str = Field(min_length=1, max_length=64)
+
+
+class WorkflowTransitionResponse(BaseModel):
+    transition_id: str
+    instance_id: str
+    from_state: str
+    to_state: str
+    actor_principal_id: Optional[str] = None
 
 
 # --------------------------------------------------------------------------------------
@@ -1438,3 +1486,194 @@ def convert_money(
         )
     converted = amount.convert(rate, body.to_currency)
     return MoneyResponse(amount_minor=converted.amount_minor, currency=converted.currency)
+
+
+# MILE-4.2 — Workflow State Engine endpoints. Bearer-gated: definitions, instances and history are
+# private to the tenant, read and written under its own row-level-security scope. A transition is
+# refused unless the definition allows it, and every applied transition is audited — the lifecycle
+# event the definition's authorization (DEC-P4-ENTRY §8) requires.
+
+
+@app.post(
+    "/v1/workflow-definitions",
+    response_model=WorkflowDefinitionResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_workflow_definition(
+    body: CreateWorkflowDefinitionRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> WorkflowDefinitionResponse:
+    try:
+        created = workflows.create_definition(
+            ctx.tenant_id, body.name, body.initial_state, body.states, body.transitions
+        )
+    except workflow_repo.WorkflowDefinitionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id,
+        principal_id=ctx.principal_id,
+        context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id,
+        event_type="domain",
+        action="workflow_definition:create",
+        resource_type="workflow_definition",
+        resource_id=created.id,
+    )
+    return WorkflowDefinitionResponse(
+        definition_id=created.id,
+        tenant_id=created.tenant_id,
+        name=created.name,
+        initial_state=created.initial_state,
+        states=list(created.states),
+        transitions=[list(pair) for pair in created.transitions],
+    )
+
+
+@app.get(
+    "/v1/workflow-definitions/{definition_id}",
+    response_model=WorkflowDefinitionResponse,
+)
+def read_workflow_definition(
+    definition_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> WorkflowDefinitionResponse:
+    try:
+        d = workflows.get_definition(ctx.tenant_id, normalise_id(definition_id, "definition_id"))
+    except workflow_repo.WorkflowDefinitionNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="workflow definition not found"
+        )
+    return WorkflowDefinitionResponse(
+        definition_id=d.id,
+        tenant_id=d.tenant_id,
+        name=d.name,
+        initial_state=d.initial_state,
+        states=list(d.states),
+        transitions=[list(pair) for pair in d.transitions],
+    )
+
+
+@app.post(
+    "/v1/workflow-instances",
+    response_model=WorkflowInstanceResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def start_workflow_instance(
+    body: StartWorkflowInstanceRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> WorkflowInstanceResponse:
+    try:
+        started = workflows.start_instance(
+            ctx.tenant_id, normalise_id(body.definition_id, "definition_id"), body.subject_ref
+        )
+    except workflow_repo.WorkflowDefinitionNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="workflow definition not found"
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id,
+        principal_id=ctx.principal_id,
+        context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id,
+        event_type="domain",
+        action="workflow_instance:start",
+        resource_type="workflow_instance",
+        resource_id=started.id,
+    )
+    return WorkflowInstanceResponse(
+        instance_id=started.id,
+        tenant_id=started.tenant_id,
+        definition_id=started.definition_id,
+        current_state=started.current_state,
+        subject_ref=started.subject_ref,
+    )
+
+
+@app.get(
+    "/v1/workflow-instances/{instance_id}",
+    response_model=WorkflowInstanceResponse,
+)
+def read_workflow_instance(
+    instance_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> WorkflowInstanceResponse:
+    try:
+        i = workflows.get_instance(ctx.tenant_id, normalise_id(instance_id, "instance_id"))
+    except workflow_repo.WorkflowInstanceNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="workflow instance not found"
+        )
+    return WorkflowInstanceResponse(
+        instance_id=i.id,
+        tenant_id=i.tenant_id,
+        definition_id=i.definition_id,
+        current_state=i.current_state,
+        subject_ref=i.subject_ref,
+    )
+
+
+@app.post(
+    "/v1/workflow-instances/{instance_id}/transitions",
+    response_model=WorkflowInstanceResponse,
+)
+def apply_workflow_transition(
+    instance_id: str,
+    body: ApplyTransitionRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> WorkflowInstanceResponse:
+    """Move an instance along an allowed edge. A move the definition does not list is a 422, and the
+    instance does not change. The applied transition is audited as the lifecycle event."""
+    resolved_instance = normalise_id(instance_id, "instance_id")
+    try:
+        updated = workflows.apply_transition(
+            ctx.tenant_id, resolved_instance, body.to_state, actor_principal_id=ctx.principal_id
+        )
+    except workflow_repo.WorkflowInstanceNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="workflow instance not found"
+        )
+    except workflow_repo.WorkflowTransitionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id,
+        principal_id=ctx.principal_id,
+        context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id,
+        event_type="domain",
+        action="workflow_instance:transition",
+        resource_type="workflow_instance",
+        resource_id=updated.id,
+    )
+    return WorkflowInstanceResponse(
+        instance_id=updated.id,
+        tenant_id=updated.tenant_id,
+        definition_id=updated.definition_id,
+        current_state=updated.current_state,
+        subject_ref=updated.subject_ref,
+    )
+
+
+@app.get(
+    "/v1/workflow-instances/{instance_id}/history",
+    response_model=list[WorkflowTransitionResponse],
+)
+def list_workflow_history(
+    instance_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[WorkflowTransitionResponse]:
+    resolved_instance = normalise_id(instance_id, "instance_id")
+    return [
+        WorkflowTransitionResponse(
+            transition_id=t.id,
+            instance_id=t.instance_id,
+            from_state=t.from_state,
+            to_state=t.to_state,
+            actor_principal_id=t.actor_principal_id,
+        )
+        for t in workflows.list_history(ctx.tenant_id, resolved_instance, limit=limit)
+    ]

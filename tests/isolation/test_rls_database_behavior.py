@@ -66,6 +66,11 @@ TENANT_SCOPED_TABLES = (
     "party_relationships",
     # Migration 012 — MILE-4.2 Money & Currency. A tenant's exchange rates, isolated by RLS.
     "exchange_rates",
+    # Migration 013 — MILE-4.2 Workflow State Engine. Definitions, instances and append-only
+    # history, all tenant-scoped by RLS.
+    "workflow_definitions",
+    "workflow_instances",
+    "workflow_history",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the

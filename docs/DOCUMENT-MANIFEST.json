@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 310,
+  "count": 318,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -185,6 +185,13 @@
       "bytes": 242
     },
     {
+      "path": "docs/01-product/BOPEN-NEXT-SUCCESS-TARGET.md",
+      "title": "bOPEN \u2014 the next visible success target",
+      "status": "",
+      "sha256": "5b8c42dd00cfd37f2a6c61410b3cca66ef58b70937ab3ca1169b8e4c46f6d875",
+      "bytes": 3498
+    },
+    {
       "path": "docs/01-product/CAPABILITY-MATRIX.md",
       "title": "bOPEN Capability & Architecture Matrix v1.0",
       "status": "Approved Specification",
@@ -216,8 +223,8 @@
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
       "title": "bOPEN Strategic Roadmap & Full Phase Execution Outline v1.0",
       "status": "Approved Master Specification",
-      "sha256": "6daf0c72b6cbcc93def08a61c611f4105362bd5f2e13818c6890101fc8bf4191",
-      "bytes": 15712
+      "sha256": "f6f5420de9a78901193ee4230f1fdc90ab4269af0415e32f30d5373fb61bb9f9",
+      "bytes": 15792
     },
     {
       "path": "docs/01-product/principles.md",
@@ -1266,8 +1273,8 @@
       "path": "docs/decisions/DEC-P35-TENANCY-MODEL.md",
       "title": "DEC-P35-TENANCY-MODEL \u2014 Should tenant isolation move from row-level security to database-per-tenant?",
       "status": "**Approved \u2014 Option D adopted 2026-07-31 (see \u00a78, which supersedes \u00a77)**",
-      "sha256": "5d34896ca86d59ceb0c64d41fda0bd11fad8a4cb8e4c074ee054a2dcb22d8998",
-      "bytes": 13837
+      "sha256": "80aced93c98a83caba76e39657aed2f8414cca76fd236aa70fcb5a1963dfba35",
+      "bytes": 17953
     },
     {
       "path": "docs/decisions/DEC-P35-TWO-AGENT-QUORUM.md",
@@ -1286,9 +1293,9 @@
     {
       "path": "docs/decisions/DEC-P4-ENTRY.md",
       "title": "DEC-P4-ENTRY \u2014 Phase 4 entry gate: the Phase 3.5 precondition is met",
-      "status": "**AUTHORIZED 2026-08-03 \u2014 Phase 4 entry opened, MILE-4.1 slice only.** Operator (`BizEra`, Architecture & Engineering Authority) authorized entry conditional on net benefit to the system; the maker confirmed the precondition (Phase 3.5 closed/verified/demonstrated) and the narrow low-risk first slice. Transcribed by Claude (Motor); not a maker approval. MILE-4.2/4.3 remain gated.",
-      "sha256": "009e8f9c14a09b84d2c0a11651bb1b397c5b4c9b434ff021effd5c896c9dd3da",
-      "bytes": 4569
+      "status": "**AUTHORIZED \u2014 MILE-4.1 (2026-08-03) and MILE-4.2 (2026-08-03, \u00a77).** MILE-4.3 remains gated. Operator (`BizEra`, Architecture & Engineering Authority) authorizations transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "885ff31d7b2154a64f5f630700e8116f485422423903ff3861085abee78ee115",
+      "bytes": 7856
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
@@ -1420,8 +1427,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "68c3ba6dc8f06196892aa29d21268eca43f4734811beb2e91660ec26ffb0af7f",
-      "bytes": 186328
+      "sha256": "3399173b15032c63507b56dadd4b71eef344820c60a8bd9aebc7a08411ae3d37",
+      "bytes": 214045
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1434,8 +1441,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "5acac0c717b3672396a22154927ab5d8855d2303d91c87744c8b4914e024b289",
-      "bytes": 24898
+      "sha256": "12a6dba86d2ec256c3eab2b271a89980962094cd544b14ce191fb1d22c22443d",
+      "bytes": 38802
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1448,8 +1455,43 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "08be946fc1848010227fcbaf6400ccf96ef0856ce24a4d14a703f5d9c8f35bb6",
-      "bytes": 13436
+      "sha256": "2bfa4782d0b7ad4fa670f78c0ba1e11bde5e4dcbbf65de04aac58b74dcab802a",
+      "bytes": 15613
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
+      "title": "EVD-MILE-4.1-DISPOSITION \u2014 Party foundation, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-03 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "760da8a727a57fb9ff6f089e7290a35245d25b2b8887c62d46fe0fa972cde8d8",
+      "bytes": 4177
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.1-party-maker.md",
+      "title": "EVD-MILE-4.1-MAKER \u2014 Party & Relationship Foundation (BOPEN-PARTY-001)",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "cd881ce7389b6959e2208b9c4672c35736aa7e0026ffcc979eeb180ec711a65b",
+      "bytes": 5315
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.2-money-disposition.md",
+      "title": "EVD-MILE-4.2-MONEY-DISPOSITION \u2014 Money foundation, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-03 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "f1de397770d6ef17f6bbd62906355ec296f1eda12a168ab6cf797875e2d76c93",
+      "bytes": 3790
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.2-money-maker.md",
+      "title": "EVD-MILE-4.2-MONEY-MAKER \u2014 Money & Currency foundation",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "e8b8a2e742eed19ebbbc946ee16ad93e48854306c52d35e8b14afc32070b2e14",
+      "bytes": 5305
+    },
+    {
+      "path": "docs/evidence/phase-3.5/mile-4.2-workflow-maker.md",
+      "title": "EVD-MILE-4.2-WORKFLOW-MAKER \u2014 Workflow State Engine foundation",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "7393ddf585363a4454321ea63c189387432cba4277b0b166a77fae95a7b77c4a",
+      "bytes": 6408
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
@@ -1534,6 +1576,20 @@
       "status": "**SUPERSEDED 2026-08-01** \u2014 held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc\u2026` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.",
       "sha256": "c64255190f4abe18dd1047bb36b9623eb4ed9a303f4f678d81a5e886d28c3304",
       "bytes": 5973
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-06-disposition.md",
+      "title": "EVD-P35-06-DISPOSITION \u2014 WP-P35-06 placement seam, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-03 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "bb91fe4dd7955e24e53dcac7e6eb891b07d2106f1157045e8297cc6ebc0368ea",
+      "bytes": 5232
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-06-placement-maker.md",
+      "title": "EVD-P35-06-MAKER \u2014 WP-P35-06 placement resolution seam",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "92a3a64ea5be1bad20540362f8a2ea9e5ad8b9790e514a0e0f6517fffdd9fa26",
+      "bytes": 5172
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-auth-d3-followon-maker.md",
@@ -2140,9 +2196,9 @@
     {
       "path": "docs/work-packages/BOPEN-P35-006-SHARD-ROUTING.md",
       "title": "WP-P35-06 \u2014 Tenant placement routing",
-      "status": "**Accepted, not started** \u2014 authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a77.1, **generalized by \u00a78.4**",
-      "sha256": "923d704e61c09b196c028ffb1cddda3a4a9682d5b12e33843886508103bff213",
-      "bytes": 7158
+      "status": "**VERIFIED-AND-DISPOSED 2026-08-03 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** The placement seam is wired strict-fail-closed and balloted 7/7 (Codex `53a061d`, no refutations); operator disposed 2026-08-03 ([`wp-p35-06-disposition.md`](../evidence/phase-3.5/wp-p35-06-disposition.md)). Carried non-blocking refinements below (boundary resolution, dedicated-DB provisioning, the `VARCHAR\u2192UUID` FK migration).",
+      "sha256": "6f9de7eac77b487878144fb103982ffa6493534aa5d93708397948cca67ee51e",
+      "bytes": 11091
     },
     {
       "path": "docs/work-packages/BOPEN-P36-001-EXECUTION-PLAN.md",
