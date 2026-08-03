@@ -1,6 +1,18 @@
 # WP-P35-06 — Tenant placement routing
 
-**Status:** **Accepted, not started** — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1, **generalized by §8.4**
+**Status:** **In progress — resolution seam CORE landed 2026-08-03 (`53adc14`), maker work awaiting wiring + Codex verification.**
+> **Resume point (2026-08-03).** The correctness-critical resolution core is built and green:
+> migration 011 records placement on the tenant registry row (`placement_kind` shared_pool|dedicated
+> + `placement_ref`, backfilled shared_pool); `platform_kernel/placement.py` resolves fail-closed
+> (unknown tenant, unknown kind, unconfigured dedicated, empty → refused, never defaulted);
+> `verify_connection_serves` is the identity check for dedicated databases. 6 probes executed,
+> canonical suite 488/488. **Next, as a deliberate separate step:** (1) wire `db.tenant_session` to
+> resolve the connection through `resolve_placement` when none is passed, and call
+> `verify_connection_serves` on dedicated — this changes the connection path every request uses, so
+> it is done carefully and full-suite-green before it is trusted; (2) trace the seam invariants
+> (R2), maker submission, **Codex** ballot (defensive framing), operator disposition under §6.5.
+> Dedicated-DB provisioning and trial→paid migration remain deferred until a paying tenant exists.
+**Original status:** Accepted, not started — authorized by [`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) §7.1, **generalized by §8.4**
 
 > **Generalized 2026-07-31.** This package was written as *shard routing* under Option C. Option D
 > (hybrid placement) supersedes that, and the package widens rather than dies: the resolver now
