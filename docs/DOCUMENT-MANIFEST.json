@@ -1427,8 +1427,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "3399173b15032c63507b56dadd4b71eef344820c60a8bd9aebc7a08411ae3d37",
-      "bytes": 214045
+      "sha256": "81ba7292414a2d7ab46a7d6fd4b13aef7f7c94fabdac2248b07ff1a248c84ea0",
+      "bytes": 225874
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1490,8 +1490,8 @@
       "path": "docs/evidence/phase-3.5/mile-4.2-workflow-maker.md",
       "title": "EVD-MILE-4.2-WORKFLOW-MAKER \u2014 Workflow State Engine foundation",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "7393ddf585363a4454321ea63c189387432cba4277b0b166a77fae95a7b77c4a",
-      "bytes": 6408
+      "sha256": "7cb81513f435acc78eb0e0c7a2f594e71724e2e1aed9e6651a79e7717120a297",
+      "bytes": 6761
     },
     {
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
