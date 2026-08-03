@@ -59,22 +59,7 @@ from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def _register_tenant(tenant_id: str) -> None:
-    """Provision the tenant's registry row (DEC-P35-TENANCY-MODEL §9.3, Option C).
-
-    The entitlement/metering tables (migration 002) carry no foreign key to `tenants`, so these
-    fixtures once minted a tenant_id with no registry row. Under Option C every tenant with
-    tenant-scoped data must be registered, so the placement resolver can route it fail-closed
-    rather than refuse it. Idempotent, so a shared tenant across several writes is provisioned once.
-    """
-    from platform_kernel import db
-
-    with db.system_session() as cur:
-        cur.execute(
-            "INSERT INTO tenants (id, name, status) VALUES (%s, %s, 'active') "
-            "ON CONFLICT (id) DO NOTHING",
-            (tenant_id, f"metering-test-{tenant_id[:8]}"),
-        )
+from tests.support.tenants import register_tenant as _register_tenant
 
 
 class Phase3EntitlementMeteringIntegrationTests(unittest.TestCase):

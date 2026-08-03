@@ -89,8 +89,12 @@ class UsageOutboxPersistenceTests(unittest.TestCase):
         self.service = self.metering.UsageMeterService()
         # Canonical lowercase UUID text: migration 004 constrains these columns to exactly
         # that shape, and identifiers are passed through unchanged.
+        from tests.support.tenants import register_tenant
+
         self.tenant_a = str(uuid.uuid4())
         self.tenant_b = str(uuid.uuid4())
+        register_tenant(self.tenant_a)
+        register_tenant(self.tenant_b)
         # Fixed per test: a replay is the *same* request arriving twice, so varying the
         # principal between calls would exercise the payload-conflict guard instead.
         self.principal = str(uuid.uuid4())
@@ -289,8 +293,12 @@ class QuotaReservationPersistenceTests(unittest.TestCase):
 
     def setUp(self):
         self.service = self.metering.UsageMeterService()
+        from tests.support.tenants import register_tenant
+
         self.tenant = str(uuid.uuid4())
         self.other_tenant = str(uuid.uuid4())
+        register_tenant(self.tenant)
+        register_tenant(self.other_tenant)
         self.capability = "cap_monthly_leases"
         self.expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
 

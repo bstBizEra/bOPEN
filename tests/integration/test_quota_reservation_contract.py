@@ -110,7 +110,10 @@ class QuotaReservationInstanceTests(unittest.TestCase):
         # A fresh tenant per test. The identifier must be a canonical lowercase UUID: migration
         # 003 constrains the column to that shape and migration 004's policy casts the session
         # variable to uuid, so a value like "tnt_beta" cannot even open a session.
+        from tests.support.tenants import register_tenant
+
         self.tenant_id = str(uuid.uuid4())
+        register_tenant(self.tenant_id)
 
         # A reservation now holds against a balance, so one has to exist. Provisioning it here
         # rather than letting the service create it on demand is deliberate: quota_limit comes
