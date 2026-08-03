@@ -12,17 +12,21 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CANDIDATE = "a09022d59afe66eb542305fd3f06d66f2197a041"
-TREE = "4457a953e7c16826cdbdf1153b549e63f94f626d"
+CANDIDATE = "2ee4612342fbd30f1f122ac4abfd909c62d746c4"
+TREE = "8b21e48f8d897cb0f766cbe6888892193598aef9"
 EXPECTED_BLOBS = {
     "infrastructure/database/013_workflow_state_engine.sql":
         "f5e58332918dafde84e1cba592d7440301e257b4",
+    "infrastructure/database/014_workflow_history_survives_its_instance.sql":
+        "7d505ec8ef3200a03958eda10320475a01689759",
     "services/platform-kernel/python/platform_kernel/workflow_repositories.py":
         "d9fff1b0b93e77dbd8c901368d9a39c2e758aa94",
     "services/platform-kernel/python/platform_kernel/api.py":
         "e50569363ccfc64947d414f36a15190f59f196ec",
     "docs/evidence/phase-3.5/invariant-traceability.csv":
-        "82aa16c1045623dd42f2478c95d19774fb9d1001",
+        "dd9982011280763dcf39199349965de5448e88b6",
+    "tests/isolation/test_workflow_isolation.py":
+        "3605168712d4d95efa27ef33ef03535f97601f95",
 }
 EXPECTED_INVARIANTS = {
     "INV-WF-TENANT-ISOLATION-01",
@@ -30,6 +34,7 @@ EXPECTED_INVARIANTS = {
     "INV-WF-TENANT-WRITE-01",
     "INV-WF-INSTANCE-DEF-SAME-TENANT-01",
     "INV-WF-HISTORY-APPEND-ONLY-01",
+    "INV-WF-HISTORY-APPEND-ONLY-02",
     "INV-WF-TRANSITION-ALLOWED-01",
     "INV-WF-HTTP-LIFECYCLE-01",
     "INV-WF-HTTP-TRANSITION-01",
@@ -325,6 +330,29 @@ def main() -> int:
             if cur.fetchall() != [("draft", "submitted")]:
                 raise AssertionError("recorded workflow history was not immutable")
 
+        # Replay the exact referential path that refuted a09022d. Migration 014 must make the
+        # parent DELETE fail, and both parent and recorded history must remain after that refusal.
+        try:
+            with db.tenant_session(tenant_a) as cur:
+                cur.execute("DELETE FROM workflow_instances WHERE id = %s", (instance_id,))
+        except psycopg.Error:
+            pass
+        else:
+            raise AssertionError("instance DELETE succeeded and could erase recorded history")
+
+        with db.tenant_session(tenant_a) as cur:
+            cur.execute("SELECT count(*) FROM workflow_instances WHERE id = %s", (instance_id,))
+            instance_rows_after_delete = cur.fetchone()[0]
+            cur.execute(
+                "SELECT from_state, to_state FROM workflow_history WHERE instance_id = %s",
+                (instance_id,),
+            )
+            history_after_instance_delete = cur.fetchall()
+        if instance_rows_after_delete != 1:
+            raise AssertionError("instance disappeared despite the RESTRICT refusal")
+        if history_after_instance_delete != [("draft", "submitted")]:
+            raise AssertionError("recorded history was erased through the parent DELETE path")
+
         second_move = client.post(
             f"/v1/workflow-instances/{instance_id}/transitions",
             json={"to_state": "approved"},
@@ -353,6 +381,9 @@ def main() -> int:
                 "cross_tenant_definition_fk": "refused",
                 "history_update_rows": 0,
                 "history_delete_rows": 0,
+                "instance_delete_with_history": "refused",
+                "instance_rows_after_delete": instance_rows_after_delete,
+                "history_after_instance_delete": history_after_instance_delete,
                 "legal_transition_states": [
                     first_move.json()["current_state"], second_move.json()["current_state"]
                 ],
