@@ -111,3 +111,28 @@ Asset, Workflow, Notification) remain gated and enter on their own operator disp
 
 On this authorization the MILE-4.2 candidate `30f3ca2` becomes verifiable; its Codex ballot follows
 under `EBIV` §6.5.
+
+---
+
+## 8. Amendment 2026-08-03 — Workflow State Engine (MILE-4.2) authorized
+
+> **Change note (extend-only).** Recorded **before** any build this time, per the sequencing lesson
+> in §7. The operator directed the next foundation with authorization first.
+
+### 8.1 Decision
+
+**The Workflow State Engine foundation (part of MILE-4.2) is AUTHORIZED.** In scope: a generic,
+tenant-scoped state machine for business processes — workflow definitions (states + allowed
+transitions), instances, and transitions gated by the definition and by authorization, with an
+append-only history and a lifecycle event on each transition. Consumers: all satellite products
+(`CAPABILITY-MATRIX`). The other MILE-4.2 foundations (Document, Location, UOM, Calendar, Asset,
+Notification) and all of MILE-4.3 remain gated and enter on their own operator dispositions.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the Workflow State Engine foundation (MILE-4.2)** — definitions, instances, transitions (definition- and authz-gated), append-only history, lifecycle events. Other foundations and all of 4.3 stay gated |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-03 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The build proceeds tests-first under the governed cycle; a Codex ballot follows under `EBIV` §6.5.
