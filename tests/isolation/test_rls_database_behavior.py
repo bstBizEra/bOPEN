@@ -64,6 +64,8 @@ TENANT_SCOPED_TABLES = (
     # organization) and their relationships, isolated by RLS from their first migration.
     "parties",
     "party_relationships",
+    # Migration 012 — MILE-4.2 Money & Currency. A tenant's exchange rates, isolated by RLS.
+    "exchange_rates",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the

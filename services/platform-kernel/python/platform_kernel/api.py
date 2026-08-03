@@ -81,6 +81,10 @@ from kernel_core.types import (
     ContextPayload,
     DecisionResult,
 )
+from decimal import Decimal
+
+from platform_kernel import money
+from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
 from platform_kernel import repositories as repo
 from platform_kernel import subject_assertion
@@ -172,6 +176,7 @@ contexts = repo.ContextRepository()
 audit = repo.AuditRepository()
 resources = repo.TenantResourceRepository()
 parties = party_repo.PartyRepository()
+exchange_rates_repo = money_repo.ExchangeRateRepository()
 evaluator = AuthorizationEvaluator()
 
 
@@ -357,6 +362,34 @@ class PartyRelationshipResponse(BaseModel):
     from_party_id: str
     to_party_id: str
     relationship_type: str
+
+
+# MILE-4.2 — Money & Currency. The rate is a decimal STRING, never a JSON number, so a float can
+# never enter the exact-decimal money arithmetic through the request body.
+
+
+class SetExchangeRateRequest(BaseModel):
+    from_currency: str = Field(pattern="^[A-Z]{3}$")
+    to_currency: str = Field(pattern="^[A-Z]{3}$")
+    rate: str = Field(pattern=r"^\d+(\.\d+)?$")
+
+
+class ExchangeRateResponse(BaseModel):
+    tenant_id: str
+    from_currency: str
+    to_currency: str
+    rate: str
+
+
+class ConvertMoneyRequest(BaseModel):
+    amount_minor: int
+    from_currency: str = Field(pattern="^[A-Z]{3}$")
+    to_currency: str = Field(pattern="^[A-Z]{3}$")
+
+
+class MoneyResponse(BaseModel):
+    amount_minor: int
+    currency: str
 
 
 # --------------------------------------------------------------------------------------
@@ -1322,3 +1355,86 @@ def create_party_relationship(
         to_party_id=rel.to_party_id,
         relationship_type=rel.relationship_type,
     )
+
+
+# MILE-4.2 — Money & Currency endpoints. Bearer-gated: a tenant's exchange rates are private to it,
+# and a conversion uses that tenant's own rate. Money never becomes a float — the rate is exact
+# decimal end to end and the amount is integer minor units.
+
+
+def _require_known_currency(code: str) -> None:
+    try:
+        money.minor_units(code)
+    except money.UnknownCurrencyError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+
+
+@app.put("/v1/exchange-rates", response_model=ExchangeRateResponse)
+def set_exchange_rate(
+    body: SetExchangeRateRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ExchangeRateResponse:
+    _require_known_currency(body.from_currency)
+    _require_known_currency(body.to_currency)
+    try:
+        stored = exchange_rates_repo.set(
+            ctx.tenant_id, body.from_currency, body.to_currency, Decimal(body.rate)
+        )
+    except money_repo.ExchangeRateError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    return ExchangeRateResponse(
+        tenant_id=stored.tenant_id,
+        from_currency=stored.from_currency,
+        to_currency=stored.to_currency,
+        rate=str(stored.rate),
+    )
+
+
+@app.get(
+    "/v1/exchange-rates/{from_currency}/{to_currency}",
+    response_model=ExchangeRateResponse,
+)
+def get_exchange_rate(
+    from_currency: str,
+    to_currency: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ExchangeRateResponse:
+    try:
+        stored = exchange_rates_repo.get(ctx.tenant_id, from_currency, to_currency)
+    except money_repo.ExchangeRateNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="no rate set for this pair"
+        )
+    return ExchangeRateResponse(
+        tenant_id=stored.tenant_id,
+        from_currency=stored.from_currency,
+        to_currency=stored.to_currency,
+        rate=str(stored.rate),
+    )
+
+
+@app.post("/v1/money/convert", response_model=MoneyResponse)
+def convert_money(
+    body: ConvertMoneyRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> MoneyResponse:
+    """Convert an integer-minor-units amount using this tenant's own rate, exactly."""
+    try:
+        amount = money.Money(body.amount_minor, body.from_currency)
+        money.minor_units(body.to_currency)
+    except money.MoneyError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+        )
+    try:
+        rate = exchange_rates_repo.get(ctx.tenant_id, body.from_currency, body.to_currency).rate
+    except money_repo.ExchangeRateNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="no rate set for this pair"
+        )
+    converted = amount.convert(rate, body.to_currency)
+    return MoneyResponse(amount_minor=converted.amount_minor, currency=converted.currency)
