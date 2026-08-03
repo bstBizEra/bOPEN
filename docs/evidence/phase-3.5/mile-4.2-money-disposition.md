@@ -2,7 +2,7 @@
 
 **Document ID:** `EVD-MILE-4.2-MONEY-DISPOSITION`
 **Version:** `1.0.0`
-**Status:** **AWAITING_OPERATOR_DISPOSITION** — the Codex ballot is confirmed from repository objects (§1: 13/13 `CONFIRMED`, no refutations). The §4 disposition is reserved to the operator.
+**Status:** **DISPOSED 2026-08-03 — `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-03
 **Maker/Recorder:** Claude (agent, Motor role) — `claude@bst.local`, advisory only
 **Governing:** [`BOPEN-GOV-EBIV-001`](../../00-governance/BOPEN-GOV-EBIV-001.md) §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../../decisions/DEC-P35-TWO-AGENT-QUORUM.md)
@@ -48,12 +48,16 @@ disposition:
   verdict_basis: one_verifier_plus_operator            # EBIV §6.5 two-agent profile
   candidate_commit: e54d48cd40d095bda40b623a5e56c60824c92b6c
   ballot_commit: e9a999d   # Codex, 13/13 CONFIRMED, verified from ballots.jsonl
-  decision: <PENDING — CONFIRMED_UNDER_TWO_AGENT_PROFILE | REJECTED | DEFERRED>
-  disclosed_risk_acknowledged: <PENDING — true/false; the items in §3 are read and accepted>
-  approver: <PENDING — Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority>
-  decision_timestamp: <PENDING>
+  decision: CONFIRMED_UNDER_TWO_AGENT_PROFILE
+  disclosed_risk_acknowledged: true                    # the items in §3 are read and accepted
+  approver: "Operator: BizEra <ounkhamvilay@gmail.com>, Completion Authority"
+  decision_timestamp: 2026-08-03
   recorded_by: Claude (Motor), transcribing — execution_authority:false approval_authority:false
 ```
+
+**Recorded follow-through:** the profile verdict is noted in [`manifest.json`](manifest.json) and
+MILE-4.2 is marked verified-and-disposed. The Money foundation is a ratified base for the financial
+features and products that need it.
 
 **On a `CONFIRMED_UNDER_TWO_AGENT_PROFILE` disposition:** record the profile verdict in
 [`manifest.json`](manifest.json); mark MILE-4.2 verified-and-disposed. The Money foundation is then a

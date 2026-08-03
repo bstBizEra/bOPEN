@@ -176,6 +176,26 @@
         "refutations": 0,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "tenant placement seam (DEC-P35-TENANCY-MODEL Option D / Option C strict); operator disposition 2026-08-03; 7/7 P35-06 CONFIRMED at bfb7bf2 (ballot commit 53a061d, verifier codex, R1-R5 true, no refutations); an independent immune review had corrected the A-09 interpretation (rejected fail-open-to-shared Option B); evidence wp-p35-06-disposition.md. Carried non-blocking: per-call not boundary resolution, no dedicated DB provisioned, entitlement->tenants FK scheduled, structural identity check"
+      },
+      "MILE-4.1": {
+        "commit": "0eb2b21044ce13e55012c21d54c9471c9d266250",
+        "ballots": 13,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Phase 4 first slice — party & relationship foundation (BOPEN-PARTY-001, DEC-P4-ENTRY); operator disposition 2026-08-03; 13/13 P4-PARTY CONFIRMED at 0eb2b21 (ballot commit 1e9ced7, verifier codex, R1-R5 true, no refutations); party graph tenant-isolated by RLS over HTTP; evidence mile-4.1-party-disposition.md. Carried: party!=principal not linked, no roles, create/read only"
+      },
+      "MILE-4.2": {
+        "commit": "e54d48cd40d095bda40b623a5e56c60824c92b6c",
+        "ballots": 13,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Money & Currency foundation (DEC-P4-ENTRY §7, operator-authorized 2026-08-03); operator disposition 2026-08-03; 13/13 P4-MONEY CONFIRMED at e54d48c (ballot commit e9a999d, verifier codex, R1-R5 true, no refutations); integer minor units never a float, exact-decimal conversion, tenant-scoped exchange rates; Codex first fail-closed-refused until MILE-4.2 authorization was recorded; evidence mile-4.2-money-disposition.md. Carried: no ledger/payment, single current rate, currency constant, no allocate"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [
