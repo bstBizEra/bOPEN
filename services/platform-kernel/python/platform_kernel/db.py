@@ -137,6 +137,41 @@ def _reject_conflicting_scope(conn: "psycopg.Connection", desired: str) -> None:
     )
 
 
+def _connect_for_tenant(tenant_id: str):
+    """Open a connection to the database that holds this tenant's data (WP-P35-06, Option C).
+
+    Fail-closed (`DEC-P35-TENANCY-MODEL` §9): an unresolvable tenant raises rather than defaulting.
+    For a shared-pool tenant the control connection opened for resolution IS the data connection, so
+    it is reused. For a dedicated tenant a fresh connection to its database is opened and the control
+    one closed. Returns (connection, placement) so `tenant_session` can verify a dedicated database
+    actually serves this tenant before any data is read.
+
+    NOTE: resolution happens per `tenant_session` here. §9.2 records resolve-once-at-the-request-
+    boundary as the intended refinement (one placement read per request rather than per call); this
+    per-call form delivers the same strict fail-closed security property and is the first cut.
+    """
+    from . import placement as _placement  # lazy: placement imports db
+
+    control = connect()
+    try:
+        resolved = _placement.resolve_placement(tenant_id, control_connection=control)
+    except BaseException:
+        control.close()
+        raise
+
+    if resolved.connection_url == database_url():
+        return control, resolved
+    control.close()
+    return connect(resolved.connection_url), resolved
+
+
+def _verify_placement(cursor, tenant_id: str, placement) -> None:
+    """Refuse a mis-routed dedicated connection loudly (no-op for the shared pool)."""
+    from . import placement as _placement
+
+    _placement.verify_connection_serves(cursor, tenant_id, placement)
+
+
 @contextmanager
 def tenant_session(
     tenant_id: str, *, connection: "psycopg.Connection | None" = None
@@ -171,7 +206,12 @@ def tenant_session(
         )
 
     owns_connection = connection is None
-    conn = connection or connect()
+    if connection is None:
+        # No caller-supplied connection: resolve the tenant to its placement and connect there.
+        # A caller that supplied a connection chose the placement itself and is trusted as given.
+        conn, placement = _connect_for_tenant(str(tenant_id))
+    else:
+        conn, placement = connection, None
     try:
         _reject_conflicting_scope(conn, str(tenant_id))
         with conn.transaction():
@@ -180,6 +220,11 @@ def tenant_session(
                     "SELECT set_config(%s, %s, true)",
                     (TENANT_SETTING, str(tenant_id)),
                 )
+                # WP-P35-06: on a dedicated placement, refuse the connection unless the database
+                # declares it serves exactly this tenant — a mis-route becomes a loud failure, not
+                # a silent empty read. No-op for the shared pool, already scoped by RLS above.
+                if placement is not None:
+                    _verify_placement(cursor, str(tenant_id), placement)
                 yield cursor
     finally:
         if owns_connection:

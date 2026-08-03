@@ -267,3 +267,19 @@ pool.
 | **Decision timestamp** | 2026-08-03 |
 | **Independent review** | Immune agent (advisory) recommended this option and flagged Option B as fail-open-to-shared; a Codex ballot on the implementation follows per `WP-P35-06` §6.5 |
 | **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 9.3 Implementation note (2026-08-03)
+
+The strict fail-closed resolution is now **wired into `db.tenant_session`** and the full canonical
+suite passes (488/488) with every entitlement/metering test tenant registered per §9.1.3. The
+security property in §9.1 — A-09 unconditional, no default, dedicated verified — is delivered and
+proved by two new probes (`test_tenant_session_refuses_an_unregistered_tenant`,
+`test_tenant_session_serves_a_registered_shared_pool_tenant`).
+
+**Deviation from §9.1.2, disclosed:** resolution is currently done **per `tenant_session` call**, not
+once at the request boundary. This delivers the identical security property (each call resolves
+fail-closed and verifies a dedicated connection) but runs one extra placement read per tenant-scoped
+call and surfaces a refusal inside a repository operation rather than at request admission.
+Resolving once at the boundary and threading the connection down (`repositories.py` methods would
+gain a `connection=` parameter, as `entitlement_repositories.py` already has) is a **tracked
+refinement** in `WP-P35-06`, not a security gap. This maker note is subject to the Codex ballot.

@@ -104,6 +104,22 @@ class TestPlacementResolution(unittest.TestCase):
         with self.assertRaises(self.placement.PlacementUnresolved):
             self.placement.resolve_placement("", control_connection=self.conn)
 
+    # -- the wiring: tenant_session itself now resolves fail-closed ----------------------
+
+    def test_tenant_session_refuses_an_unregistered_tenant(self):
+        """The seam is wired (WP-P35-06): opening a session for a tenant with no registry row is
+        refused, not silently served against the shared pool where its writes would land."""
+        with self.assertRaises(self.placement.PlacementUnresolved):
+            with self.db.tenant_session(str(uuid.uuid4())) as cur:
+                cur.execute("SELECT 1")
+
+    def test_tenant_session_serves_a_registered_shared_pool_tenant(self):
+        """A registered shared-pool tenant resolves and its session is scoped by RLS as before."""
+        self._seed("shared_pool")
+        with self.db.tenant_session(self.tenant) as cur:
+            cur.execute("SELECT count(*) FROM parties")
+            self.assertEqual(cur.fetchone()[0], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
