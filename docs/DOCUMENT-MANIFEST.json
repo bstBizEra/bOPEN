@@ -1315,8 +1315,8 @@
       "path": "docs/decisions/DEC-P4-ENTRY.md",
       "title": "DEC-P4-ENTRY \u2014 Phase 4 entry gate: the Phase 3.5 precondition is met",
       "status": "**AUTHORIZED \u2014 MILE-4.1 (2026-08-03) and MILE-4.2 (2026-08-03, \u00a77).** MILE-4.3 remains gated. Operator (`BizEra`, Architecture & Engineering Authority) authorizations transcribed by Claude (Motor); not a maker approval.",
-      "sha256": "885ff31d7b2154a64f5f630700e8116f485422423903ff3861085abee78ee115",
-      "bytes": 7856
+      "sha256": "27c3c0dc6975d5e9363a84072a73beb03641a718743cd7472ea4c5c056990bfb",
+      "bytes": 9922
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",

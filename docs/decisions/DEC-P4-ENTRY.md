@@ -136,3 +136,33 @@ Notification) and all of MILE-4.3 remain gated and enter on their own operator d
 | **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
 
 The build proceeds tests-first under the governed cycle; a Codex ballot follows under `EBIV` §6.5.
+
+---
+
+## 9. Amendment 2026-08-05 — Unit-of-Measure (UOM) foundation authorized
+
+> **Change note (extend-only).** Recorded **before** any build, per the §7/§8 sequencing lesson. The
+> operator directed UOM as the next foundation, with scope, after reviewing the research
+> [`RESEARCH-MILE-4.2-UOM`](../01-product/MILE-4.2-uom-foundation-research.md).
+
+### 9.1 Decision
+
+**The Unit-of-Measure foundation (part of MILE-4.2) is AUTHORIZED.** In scope: a dimension-safe
+`Quantity` value type (exact `decimal.Decimal` magnitude, never a float; `ROUND_HALF_EVEN`),
+**multiplicative units only**, with a **standard unit registry as a code constant** (SI + common
+business/imperial units + Thai land units `rai`/`ngan`/`wah²`) and **tenant custom units with full
+CRUD** (create, read, update, delete), tenant-scoped by RLS — reusing the `exchange_rates` tenancy
+machinery. The keystone invariant is **dimension safety** (`kg + m` refused, cross-dimension
+conversion refused). **Affine/temperature units are REFUSED loudly** (not silently mis-converted), and
+**compound/derived units** (`km/h`, price-per-unit) are **deferred** to their own slices. The
+foundation is product-agnostic — ready to support multiple satellite products. Other MILE-4.2
+foundations (Document, Location, Calendar, Asset, Notification) and all of MILE-4.3 remain gated.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the UOM foundation (MILE-4.2)** — Quantity value type (Decimal, dimension-safe, exact multiplicative conversion), standard unit constant, tenant custom units with full CRUD (RLS). Temperature/affine refused; compound units deferred. Other foundations and all of 4.3 stay gated |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-05 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The build proceeds tests-first under the governed cycle; a Codex ballot follows under `EBIV` §6.5.
