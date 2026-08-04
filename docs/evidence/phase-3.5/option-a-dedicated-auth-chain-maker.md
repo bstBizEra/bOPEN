@@ -5,7 +5,11 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-04
 **Implements:** [`DEC-P35-TENANCY-MODEL`](../../decisions/DEC-P35-TENANCY-MODEL.md) §11 (Option A, authorized)
-**Candidate:** the commit carrying this submission (filled on commit)
+**Candidate:** `9ad31ca`
+**Blob — `016_principal_reference_survives_placement.sql`:** `6b31b46499f562484517dba56549cfef9a3fe317`
+**Blob — `test_dedicated_auth_chain.py`:** `e979638f556e052c9360dee92b40b9a021b26fe0`
+**Blob — `test_rls_database_behavior.py`:** `2733369cfd81bb193fdd891f528e619701e6b0d8`
+**Blob — `invariant-traceability.csv`:** `332c5da42730fadeb56196eb31e19bff0cfb3206`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
 **Suites:** canonical **551/551** against PostgreSQL, with a second real database provisioned

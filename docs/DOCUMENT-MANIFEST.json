@@ -1518,8 +1518,8 @@
       "path": "docs/evidence/phase-3.5/option-a-dedicated-auth-chain-maker.md",
       "title": "EVD-OPTION-A-DEDICATED-AUTH-CHAIN-MAKER \u2014 a usable dedicated tenant",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "2ebce557b0381f78e2cfaae75d10ff9e2f704c71fe612164158d4064f428de92",
-      "bytes": 5456
+      "sha256": "649195f6561cc152b42a3cf14d579eb2110b54388af540bacf6cf49ef637c132",
+      "bytes": 5780
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
