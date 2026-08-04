@@ -222,15 +222,33 @@ class TestDedicatedPlacement(unittest.TestCase):
     def test_the_dedicated_database_cannot_declare_a_second_tenant(self):
         """INV-DEDI-SINGLETON-01. placement_identity holds at most one row, so a provisioning bug
         cannot make a dedicated database claim to serve two tenants (a shared-by-accident dedicated
-        database). The single-row constraint refuses the second declaration."""
+        database). The single-row primary key refuses the second declaration — asserted under the
+        served tenant's own scope so it is the key, not the tenant-matching policy, that refuses."""
         conn = self._dedicated_conn()
         try:
-            with conn.cursor() as cur:
-                with self.assertRaises(self.psycopg.errors.Error):
+            with self.assertRaises(self.psycopg.errors.Error):
+                with self.db.tenant_session(self.tenant_dedi, connection=conn) as cur:
                     cur.execute(
                         "INSERT INTO placement_identity (tenant_id) VALUES (%s)",
-                        (str(uuid.uuid4()),),
+                        (self.tenant_dedi,),
                     )
+        finally:
+            conn.close()
+
+    def test_the_identity_is_invisible_to_another_tenants_scope(self):
+        """INV-DEDI-IDENTITY-SCOPED-01. The tenant-matching policy (migration 015) keeps the
+        declaration from being read under any scope but the served tenant's — so the served-tenant id
+        is not exposed to another tenant's session. This is the tightening the verifier's adversarial
+        probe on candidate ec14c53 established over the earlier permissive USING(true)."""
+        conn = self._dedicated_conn()
+        try:
+            with self.db.tenant_session(self.tenant_dedi, connection=conn) as cur:
+                cur.execute("SELECT count(*) FROM placement_identity")
+                self.assertEqual(cur.fetchone()[0], 1, "the served tenant cannot read its own identity")
+            other = str(uuid.uuid4())
+            with self.db.tenant_session(other, connection=conn) as cur:
+                cur.execute("SELECT count(*) FROM placement_identity")
+                self.assertEqual(cur.fetchone()[0], 0, "another tenant's scope read the identity row")
         finally:
             conn.close()
 

@@ -104,15 +104,18 @@ def _seed_dedicated_identity(target_url: str, tenant_id: str, tenant_name: str, 
     psycopg = db_bootstrap.require_psycopg()
     with psycopg.connect(target_url, autocommit=False) as conn:
         with conn.cursor() as cur:
+            # The tenants registry is written under system scope, the way it is written elsewhere.
             cur.execute("SELECT set_config('app.current_tenant_id', '', true)")
             cur.execute(
                 "INSERT INTO tenants (id, name, status, placement_kind, placement_ref) "
                 "VALUES (%s, %s, 'active', 'dedicated', %s) ON CONFLICT (id) DO NOTHING",
                 (tenant_id, tenant_name, ref),
             )
-            # placement_identity holds at most one row (singleton PK) and is write-once (no UPDATE
-            # policy), so a provisioned identity cannot be silently re-pointed. DO NOTHING keeps
-            # re-provisioning idempotent without needing to mutate an existing declaration.
+            # placement_identity is tenant-matching (migration 015), so its declaration is seeded
+            # under the served tenant's own scope. It holds at most one row (singleton PK) and is
+            # write-once (no UPDATE policy), so a provisioned identity cannot be silently re-pointed;
+            # DO NOTHING keeps re-provisioning idempotent.
+            cur.execute("SELECT set_config('app.current_tenant_id', %s, true)", (tenant_id,))
             cur.execute(
                 "INSERT INTO placement_identity (tenant_id) VALUES (%s) "
                 "ON CONFLICT (singleton) DO NOTHING",

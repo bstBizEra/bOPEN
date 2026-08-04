@@ -1434,8 +1434,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "7ac91032d8c0d4d43cac4b7cc20f4b3e021af8624ad70d7824e3e1d53bb40633",
-      "bytes": 251680
+      "sha256": "4e0b608c0c46ba54741bc0d1f555b08b2ae826c4b113f8704ed1868ee2aa7980",
+      "bytes": 257283
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1448,8 +1448,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "e80098810069e7e45c032ab1ad5ac0558a6fce289e8a5f544b03a2cd0959074c",
-      "bytes": 41176
+      "sha256": "15506ddf5dfc29dd98f298e213cf7eb972178f4c1d94a01a00cc08f0cd042cb1",
+      "bytes": 41494
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1595,8 +1595,8 @@
       "path": "docs/evidence/phase-3.5/wp-p35-06-dedicated-db-maker.md",
       "title": "EVD-P35-06-DEDICATED-DB-MAKER \u2014 Dedicated-database provisioning",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "dd174a5abdb4606bff8977b4384442b2cd862aef2e7976b3afcfb565ef6d11cc",
-      "bytes": 6960
+      "sha256": "7ae47d91e5023f305eaa8d5c581f4e54b55f1f2792c93a36970c5db3c5f40253",
+      "bytes": 9363
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-06-disposition.md",

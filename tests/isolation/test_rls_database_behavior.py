@@ -85,11 +85,12 @@ REGISTRY_TABLES = (
     "principals",
 )
 
-# Not tenant data — properties of the database itself, structurally protected (ENABLE + FORCE row
-# security) but not tenant-scoped. `schema_migrations` is readable only outside a tenant scope;
-# `placement_identity` (migration 015) is the opposite — a dedicated database's single-row
-# declaration of the tenant it serves, read by verify_connection_serves WHILE a tenant scope is in
-# force, so its policy is permissive rather than tenant-matching (see the migration for why).
+# Not tenant business data — properties of the database itself, structurally protected (ENABLE +
+# FORCE row security). `schema_migrations` is readable only outside a tenant scope. `placement_
+# identity` (migration 015) is a dedicated database's single-row declaration of the tenant it serves;
+# it carries a tenant-matching policy (read by verify_connection_serves under the served tenant's
+# scope) so the declaration is invisible to any other tenant's scope. It is classified here rather
+# than as tenant-scoped because it is a singleton database property, not per-tenant business data.
 INFRASTRUCTURE_TABLES = (
     "schema_migrations",
     "placement_identity",

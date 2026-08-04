@@ -37,17 +37,26 @@ CREATE TABLE IF NOT EXISTS placement_identity (
 -- structurally protected and cannot be left open by omission — the discipline
 -- `test_every_table_in_the_schema_is_classified_and_protected` enforces after the 007 disclosure.
 --
--- Its policies are deliberately PERMISSIVE, unlike the tenant-scoped tables, and the reason is what
--- this table is and when it is read. It is not tenant *data*: it is the database's own declaration
--- of the single tenant it serves, and it is read by `verify_connection_serves` WHILE a tenant scope
--- is already in force (right after the session sets it) precisely to check that declaration against
--- the resolved tenant. A tenant-matching policy would hide the row from the verification step that
--- has to see it. The one value it exposes is the served-tenant id, which the connecting caller
--- already supplies — not a secret. The real mis-route defence is verify_connection_serves comparing
--- this row to the resolved tenant, plus the single-row primary key; the SELECT/INSERT-only policies
--- (no UPDATE, no DELETE) make the declaration write-once, so a provisioned identity cannot be
--- silently re-pointed.
+-- The policy is TENANT-MATCHING, the same shape the tenant-scoped tables use. `verify_connection_
+-- serves` reads this table WHILE the resolved tenant's scope is in force, so a matching policy still
+-- admits the declaration for the tenant a correctly-routed connection serves, and it makes a
+-- mis-route return zero rows — the verification then refuses on the empty read. This REINFORCES
+-- verify_connection_serves rather than relying on it alone, and it does not expose the served-tenant
+-- id to any other tenant's scope.
+--
+-- (An earlier revision used `USING (true)` with a comment claiming a tenant-matching policy would
+-- hide the row from verification. The verifier disproved that by execution — a tenant-matching
+-- policy still admits the served tenant and still refuses a mis-route, and is strictly tighter — so
+-- the policy was narrowed to this. Recorded rather than quietly changed.)
+--
+-- SELECT and INSERT only — no UPDATE or DELETE policy — so the declaration is write-once: a
+-- provisioned identity cannot be silently re-pointed. The single-row primary key makes a second
+-- declaration unrepresentable regardless of scope.
 ALTER TABLE placement_identity ENABLE ROW LEVEL SECURITY;
 ALTER TABLE placement_identity FORCE ROW LEVEL SECURITY;
-CREATE POLICY placement_identity_read ON placement_identity FOR SELECT USING (true);
-CREATE POLICY placement_identity_declare ON placement_identity FOR INSERT WITH CHECK (true);
+CREATE POLICY placement_identity_read ON placement_identity
+    FOR SELECT
+    USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::uuid);
+CREATE POLICY placement_identity_declare ON placement_identity
+    FOR INSERT
+    WITH CHECK (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::uuid);
