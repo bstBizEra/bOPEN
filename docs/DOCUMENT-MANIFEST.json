@@ -187,9 +187,9 @@
     {
       "path": "docs/01-product/BOPEN-NEXT-SUCCESS-TARGET.md",
       "title": "bOPEN \u2014 the next visible success target",
-      "status": "",
-      "sha256": "5b8c42dd00cfd37f2a6c61410b3cca66ef58b70937ab3ca1169b8e4c46f6d875",
-      "bytes": 3498
+      "status": "**Advisory plan \u2014 target realized 2026-08-04.** The described success (multi-tenant business data, end to end, isolated and placement-routed over the gateway) is demonstrated by `scripts/demo_business_scenario.py` (two tenants, private party graphs) and `scripts/demo_approval_flow.py` (Party + Money + Workflow composed into an invoice-approval flow). Retained as the record of the target and how it was met.",
+      "sha256": "4ed931220c4a078c616e5a42ce0f6d66b3cb01bbe674980b4162856a07a43d78",
+      "bytes": 3922
     },
     {
       "path": "docs/01-product/CAPABILITY-MATRIX.md",

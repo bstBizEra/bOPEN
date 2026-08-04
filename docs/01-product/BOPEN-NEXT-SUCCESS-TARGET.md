@@ -1,5 +1,6 @@
 # bOPEN — the next visible success target
 
+**Status:** **Advisory plan — target realized 2026-08-04.** The described success (multi-tenant business data, end to end, isolated and placement-routed over the gateway) is demonstrated by `scripts/demo_business_scenario.py` (two tenants, private party graphs) and `scripts/demo_approval_flow.py` (Party + Money + Workflow composed into an invoice-approval flow). Retained as the record of the target and how it was met.
 **Issued:** 2026-08-03
 **Raised by:** Claude (agent, Motor role) — advisory plan, no approval authority
 **Purpose:** name a concrete, demonstrable success the next working round drives straight to, and the ordered path to it.
