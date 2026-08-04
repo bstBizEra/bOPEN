@@ -166,14 +166,6 @@ def _connect_for_tenant(tenant_id: str):
 
     control = connect()
     try:
-        # Freeze (PLAN-P35-06-TRIAL-TO-PAID §2): a tenant mid-migration is refused here, at the data
-        # chokepoint, so no write can reach the source database while its rows are being copied. The
-        # migrate tool uses superuser raw connections rather than tenant_session, so it is not frozen.
-        if _placement.tenant_placement_state(tenant_id, control_connection=control) == "migrating":
-            raise TenantMigratingError(
-                f"tenant {tenant_id} is migrating to a dedicated database; tenant-scoped access is "
-                f"refused for the duration so no write is lost. Retry once the migration completes."
-            )
         resolved = _placement.resolve_placement(tenant_id, control_connection=control)
     except BaseException:
         control.close()
@@ -223,6 +215,21 @@ def tenant_session(
             "session with an unset tenant: the RLS policies would then match no rows and "
             "the caller would read that as 'this tenant has no data' rather than as an "
             "error."
+        )
+
+    # Freeze (PLAN-P35-06-TRIAL-TO-PAID §2). Checked HERE, before the connection branch, so it covers
+    # BOTH the resolved-connection path (connection is None) and the supplied-connection path
+    # (connection=X, used by entitlement_repositories and others). A verifier reproduced a data loss
+    # where the supplied-connection branch skipped a freeze placed only in the resolution path: a
+    # write committed to the shared pool after the migration's copy and was then deleted by cleanup,
+    # leaving zero copies in either database. Refusing at the single entry point closes every
+    # tenant-scoped write path. The migrate tool uses superuser raw connections, not tenant_session,
+    # so it is not frozen and can still copy, cut over and clean up.
+    from . import placement as _placement  # lazy: placement imports db
+    if _placement.tenant_placement_state(str(tenant_id)) == "migrating":
+        raise TenantMigratingError(
+            f"tenant {tenant_id} is migrating to a dedicated database; tenant-scoped access is "
+            f"refused for the duration so no write is lost. Retry once the migration completes."
         )
 
     owns_connection = connection is None

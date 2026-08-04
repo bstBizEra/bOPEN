@@ -67,11 +67,13 @@ python tools/run_tests.py     560/560 OK   (live PostgreSQL, a second DB provisi
 ```
 
 - **Migration 017** adds `tenants.placement_state` (`stable` | `migrating`).
-- **The freeze** is enforced at **`db.tenant_session`** (`_connect_for_tenant`) — the data-access
-  chokepoint every write path passes through — raising `TenantMigratingError` for a migrating tenant,
-  with `api._load_validated_context` additionally returning a clean retriable 503 on the HTTP path.
-  The migrate tool uses superuser raw connections, not `tenant_session`, so it is not frozen. (The
-  first candidate froze *only* at HTTP; see §7.)
+- **The freeze** is enforced at the top of **`db.tenant_session`**, before the connection branch, so
+  it covers **both** the resolved-connection path (`connection is None`) and the supplied-connection
+  path (`tenant_session(..., connection=X)`, used by `entitlement_repositories` and others). It raises
+  `TenantMigratingError` for a migrating tenant; `api._load_validated_context` additionally returns a
+  clean retriable 503 on the HTTP path. The migrate tool uses superuser raw connections, not
+  `tenant_session`, so it is not frozen. (Two earlier candidates placed the freeze too narrowly — see
+  §7.)
 - **`provision_dedicated_db`** gains `activate=False` (prepare without flipping the control registry).
 - **`tools/migrate_tenant_to_dedicated.py`** drives freeze → prepare → copy → verify → cutover →
   cleanup. The copy is **binary COPY as the superuser** — because `COPY FROM` is refused on an RLS
@@ -100,24 +102,37 @@ shared pool — recoverable, not loss.
    leave the tenant `migrating` (frozen) needing a manual clear; the data is safe (in shared, or in
    dedicated post-flip), but the state is not self-healing. Recorded as a known edge, not built.
 3. **No reverse (dedicated→shared) or bulk/scheduled migration.**
-4. **The freeze adds one control read per context resolution.** The same per-call cost class as the
-   placement resolution refinement already tracked in §9.3; not a new architectural cost.
+4. **The freeze adds one control read per `tenant_session`.** Now that it sits at the single
+   `tenant_session` entry point (to cover the supplied-connection branch), it reads
+   `placement_state` on every tenant-scoped session — for the `connection is None` path that is a
+   second control read alongside placement resolution. Measured cost: the canonical suite went from
+   ~365s to ~417s. It is correct and the same per-call cost class as the placement-resolution
+   refinement tracked in §9.3; folding the freeze read into `resolve_placement`'s existing tenants-row
+   read for the `connection is None` path (leaving one dedicated read only for `connection=X`) is a
+   tracked optimization, not a correctness gap.
 5. **One verifier, not two** (two-agent profile).
 
-## 7. Verification history — one refutation, closed
+## 7. Verification history — two refutations, both closed
 
-The first candidate `2a253a5` was verified by Codex, which **CONFIRMED 6 of 7** propositions and
-**REFUTED `INV-MIGRATE-COMPLETE-01`** by execution: the freeze was placed at the HTTP layer only, so a
-write via `db.tenant_session` that bypassed it committed to the shared pool after the migration's copy
-and was then deleted by cleanup — leaving **zero copies in either database** (data loss). The freeze
-was at the wrong layer.
+The freeze was placed too narrowly twice, and the verifier caught each by execution — the same
+data-loss shape (a write reaching the shared pool after the copy, then deleted by cleanup, leaving
+zero copies in either database) reached through a different path each time:
 
-Fixed at root cause: the freeze moved to **`db.tenant_session`** (`TenantMigratingError` in
-`_connect_for_tenant`), the chokepoint every write path passes through — the HTTP 503 remains for a
-clean error. The reproduction is now proposition `P4-MIGRATE-08`
-(`test_the_freeze_covers_the_data_chokepoint_not_just_http`). This candidate re-submits with that fix
-for re-ballot. The verifier catching a data-loss window the maker's HTTP-layer freeze left open is the
-two-agent governance working on the slice where it matters most.
+1. **Candidate `2a253a5`** — freeze at the **HTTP layer only** (`api._load_validated_context`). A
+   write via `db.tenant_session` bypassed it. `INV-MIGRATE-COMPLETE-01` **REFUTED**.
+   Fix: freeze moved into the `db.tenant_session` machinery.
+2. **Candidate `6fdb8e9`** — freeze in **`_connect_for_tenant`**, which only the resolved-connection
+   branch calls; `tenant_session(..., connection=X)` (the supplied-connection path, used by
+   `entitlement_repositories`) skipped it. `INV-MIGRATE-COMPLETE-01` and
+   `INV-MIGRATE-FREEZE-DATA-PATH-01` **REFUTED**.
+   Fix: freeze moved to the **top of `tenant_session`**, before the connection branch, so **both**
+   branches are covered.
+
+This candidate re-submits with the freeze at the single `tenant_session` entry point. `P4-MIGRATE-08`
+now asserts *both* branches are refused (`test_the_freeze_covers_the_data_chokepoint_not_just_http`).
+The verifier refusing to pass a data-loss window until every write path is closed — twice — is the
+two-agent governance working on the slice where it matters most; the maker's job was to move the guard
+to the one place all paths share, which the second refutation identified precisely.
 
 ## 8. Authority
 

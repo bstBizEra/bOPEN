@@ -282,13 +282,30 @@ class TestMigrationFreezeAndRollback(unittest.TestCase):
         try:
             with self.db.system_session() as cur:
                 cur.execute("UPDATE tenants SET placement_state = 'migrating' WHERE id = %s", (tenant,))
+
+            # Branch 1 — the resolved-connection path (connection is None).
             with self.assertRaises(dbmod.TenantMigratingError):
                 with self.db.tenant_session(tenant) as cur:
                     cur.execute(
                         "INSERT INTO parties (tenant_id, party_type, display_name) "
-                        "VALUES (%s, 'person', 'late write that would be lost')",
+                        "VALUES (%s, 'person', 'late write via resolution path')",
                         (tenant,),
                     )
+
+            # Branch 2 — the SUPPLIED-connection path (connection=X). This is the path a verifier
+            # reproduced on candidate 6fdb8e9: it skipped a freeze placed only in the resolution
+            # branch. entitlement_repositories and others pass connection=X, so it must be frozen too.
+            supplied = self.db.connect(self.control_url, autocommit=True)
+            try:
+                with self.assertRaises(dbmod.TenantMigratingError):
+                    with self.db.tenant_session(tenant, connection=supplied) as cur:
+                        cur.execute(
+                            "INSERT INTO parties (tenant_id, party_type, display_name) "
+                            "VALUES (%s, 'person', 'late write via supplied connection')",
+                            (tenant,),
+                        )
+            finally:
+                supplied.close()
         finally:
             with self.db.system_session() as cur:
                 cur.execute("UPDATE tenants SET placement_state = 'stable' WHERE id = %s", (tenant,))
