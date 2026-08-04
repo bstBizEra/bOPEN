@@ -936,25 +936,31 @@ class TestRegistryTableIsolation(unittest.TestCase):
             cur.execute("SELECT count(*) FROM schema_migrations")
             self.assertGreater(cur.fetchone()[0], 0, "the ledger is unreadable to the kernel too")
 
-    def test_referential_integrity_still_holds_against_rows_the_session_cannot_see(self):
+    def test_dropping_the_cross_database_principal_fk_moves_integrity_to_the_application(self):
         """
-        PostgreSQL evaluates foreign-key checks with row security bypassed, deliberately, so
-        that a policy cannot be used to corrupt data. This asserts that property directly,
-        because migration 007 depends on it: `memberships.principal_id` references a table the
-        session can now only partly read, and if the check were subject to the policy, valid
-        writes would start failing as integrity violations.
+        Until migration 016, `memberships.principal_id` had a foreign key to `principals`, and this
+        test asserted the PostgreSQL property migration 007 relied on: FK checks run with row
+        security bypassed, so a membership for a real-but-hidden principal was admitted while one
+        for a non-existent principal raised ForeignKeyViolation.
 
-        The same behaviour is a covert channel — the two outcomes below differ, so existence
-        is observable without read access. That is a documented PostgreSQL limitation, it is
-        recorded in migration 007, and it is asserted here so it stays a known property rather
-        than becoming a surprise.
+        Migration 016 DROPPED that foreign key (DEC-P35-TENANCY-MODEL §11): a dedicated tenant's
+        memberships live in a different database from the global `principals` registry, and a foreign
+        key cannot span databases. This test now asserts the deliberate consequences of that drop, so
+        the trade stays explicit rather than becoming a surprise:
+
+        1. The database no longer refuses a membership for a principal that does not exist — that
+           integrity moved to the application (`principals.get` in the control registry, and
+           `POST /v1/contexts` checking the membership's principal). This is the disclosed weakening.
+        2. As a side effect, the covert channel the FK created is CLOSED: a membership for a
+           hidden-but-real principal and one for a non-existent principal now behave identically, so
+           principal existence can no longer be probed through an FK-violation difference.
         """
-        import psycopg
-
+        # A principal of tenant B is not visible under tenant A's scope (principals RLS, migration 007).
         with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
             cur.execute("SELECT count(*) FROM principals WHERE id = %s", (self.principal_b,))
             self.assertEqual(cur.fetchone()[0], 0, "precondition: B's principal must be hidden")
 
+        # A membership for that hidden-but-real principal is admitted (as before migration 016).
         with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
             cur.execute(
                 "INSERT INTO memberships (tenant_id, principal_id, state, role) "
@@ -963,13 +969,20 @@ class TestRegistryTableIsolation(unittest.TestCase):
             )
             self.assertEqual(cur.rowcount, 1)
 
-        with self.assertRaises(psycopg.errors.ForeignKeyViolation):
-            with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
-                cur.execute(
-                    "INSERT INTO memberships (tenant_id, principal_id, state, role) "
-                    "VALUES (%s, %s, 'active', 'member')",
-                    (self.tenant_a, str(uuid.uuid4())),
-                )
+        # And a membership for a principal that does NOT exist is now ALSO admitted — no foreign key
+        # refuses it, and no observable difference remains (the covert channel is closed). Integrity
+        # for this reference is the application's after migration 016.
+        with self.db.tenant_session(self.tenant_a, connection=self.conn) as cur:
+            cur.execute(
+                "INSERT INTO memberships (tenant_id, principal_id, state, role) "
+                "VALUES (%s, %s, 'active', 'member')",
+                (self.tenant_a, str(uuid.uuid4())),
+            )
+            self.assertEqual(
+                cur.rowcount, 1,
+                "post-016 a non-existent principal is admitted at the database; integrity is the "
+                "application's, and the FK covert channel is closed",
+            )
 
     def test_every_table_in_the_schema_is_classified_and_protected(self):
         """

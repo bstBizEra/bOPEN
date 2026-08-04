@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 322,
+  "count": 323,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1448,8 +1448,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "15506ddf5dfc29dd98f298e213cf7eb972178f4c1d94a01a00cc08f0cd042cb1",
-      "bytes": 41494
+      "sha256": "98b886b996ccb4b215381d2570a3474ef9d503aa107d7f21318cf2227966a5f1",
+      "bytes": 42538
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1513,6 +1513,13 @@
       "status": "",
       "sha256": "9748fc21a4431ad00519859bea8a2cad9be9ec97ee4621ef58aedf0ac21e1144",
       "bytes": 10808
+    },
+    {
+      "path": "docs/evidence/phase-3.5/option-a-dedicated-auth-chain-maker.md",
+      "title": "EVD-OPTION-A-DEDICATED-AUTH-CHAIN-MAKER \u2014 a usable dedicated tenant",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "2ebce557b0381f78e2cfaae75d10ff9e2f704c71fe612164158d4064f428de92",
+      "bytes": 5456
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
