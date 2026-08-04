@@ -72,6 +72,7 @@ COPY_ORDER = (
     "rate_limit_counters",
     "tenant_feature_toggles",
     "exchange_rates",
+    "uom_custom_units",
     # Parents before children.
     "parties",
     "party_relationships",

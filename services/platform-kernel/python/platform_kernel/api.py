@@ -72,7 +72,7 @@ from datetime import datetime, timezone
 from typing import Annotated, Optional
 
 import psycopg
-from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, status
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response, status
 from pydantic import BaseModel, EmailStr, Field
 
 from kernel_core.evaluator import AuthorizationEvaluator
@@ -88,6 +88,8 @@ from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
 from platform_kernel import placement
 from platform_kernel import repositories as repo
+from platform_kernel import uom
+from platform_kernel import uom_repositories as uom_repo
 from platform_kernel import workflow_repositories as workflow_repo
 from platform_kernel import subject_assertion
 from platform_kernel import tokens
@@ -180,6 +182,7 @@ resources = repo.TenantResourceRepository()
 parties = party_repo.PartyRepository()
 exchange_rates_repo = money_repo.ExchangeRateRepository()
 workflows = workflow_repo.WorkflowRepository()
+uom_units = uom_repo.CustomUnitRepository()
 evaluator = AuthorizationEvaluator()
 
 
@@ -439,6 +442,41 @@ class WorkflowTransitionResponse(BaseModel):
     from_state: str
     to_state: str
     actor_principal_id: Optional[str] = None
+
+
+# MILE-4.2 — UOM. The factor and the magnitude cross the boundary as decimal STRINGS, never JSON
+# numbers, so a float can never enter the exact-decimal quantity arithmetic through the request body.
+
+
+class CreateCustomUnitRequest(BaseModel):
+    unit_code: str = Field(min_length=1, max_length=64)
+    dimension: str = Field(pattern="^(mass|length|area|volume|time|count)$")
+    factor_to_base: str = Field(pattern=r"^\d+(\.\d+)?$")
+    display_name: str = Field(min_length=1, max_length=255)
+
+
+class UpdateCustomUnitRequest(BaseModel):
+    factor_to_base: str = Field(pattern=r"^\d+(\.\d+)?$")
+    display_name: str = Field(min_length=1, max_length=255)
+
+
+class CustomUnitResponse(BaseModel):
+    tenant_id: str
+    unit_code: str
+    dimension: str
+    factor_to_base: str
+    display_name: str
+
+
+class ConvertQuantityRequest(BaseModel):
+    magnitude: str = Field(pattern=r"^-?\d+(\.\d+)?$")
+    from_unit: str = Field(min_length=1, max_length=64)
+    to_unit: str = Field(min_length=1, max_length=64)
+
+
+class QuantityResponse(BaseModel):
+    magnitude: str
+    unit: str
 
 
 # --------------------------------------------------------------------------------------
@@ -1696,3 +1734,132 @@ def list_workflow_history(
         )
         for t in workflows.list_history(ctx.tenant_id, resolved_instance, limit=limit)
     ]
+
+
+# MILE-4.2 — UOM endpoints. Bearer-gated. Standard units are a code constant; custom units are the
+# tenant's own, with full CRUD. Conversion uses the tenant's registry (standard + its custom units)
+# and is dimension-safe — kg + m is refused, temperature conversion is refused, magnitudes are exact
+# decimal strings so a float never enters the arithmetic.
+
+
+def _decimal_str(value: Decimal) -> str:
+    """Render a Decimal without trailing zeros or scientific notation. The NUMERIC(38,18) factor
+    column reads back as e.g. 48.000000000000000000, and a conversion carries that scale; the exact
+    value is unchanged, so the wire form is normalised to the shortest faithful decimal ('48', '4',
+    '0.0508')."""
+    return format(value.normalize(), "f")
+
+
+def _unit_response(u: uom_repo.StoredCustomUnit) -> CustomUnitResponse:
+    return CustomUnitResponse(
+        tenant_id=u.tenant_id,
+        unit_code=u.unit_code,
+        dimension=u.dimension,
+        factor_to_base=_decimal_str(u.factor_to_base),
+        display_name=u.display_name,
+    )
+
+
+@app.get("/v1/uom/standard-units")
+def list_standard_units(
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> dict:
+    """The standard unit registry (reference data), grouped by dimension."""
+    grouped: dict[str, list[str]] = {}
+    for code, definition in sorted(uom.STANDARD_UNITS.items()):
+        grouped.setdefault(definition.dimension, []).append(code)
+    return grouped
+
+
+@app.post("/v1/uom/units", response_model=CustomUnitResponse, status_code=status.HTTP_201_CREATED)
+def create_custom_unit(
+    body: CreateCustomUnitRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> CustomUnitResponse:
+    try:
+        created = uom_units.create(
+            ctx.tenant_id, body.unit_code, body.dimension,
+            Decimal(body.factor_to_base), body.display_name,
+        )
+    except uom_repo.CustomUnitConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    except uom_repo.CustomUnitError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="uom_custom_unit:create",
+        resource_type="uom_custom_unit", resource_id=created.unit_code,
+    )
+    return _unit_response(created)
+
+
+@app.get("/v1/uom/units", response_model=list[CustomUnitResponse])
+def list_custom_units(
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> list[CustomUnitResponse]:
+    return [_unit_response(u) for u in uom_units.list(ctx.tenant_id)]
+
+
+@app.get("/v1/uom/units/{unit_code}", response_model=CustomUnitResponse)
+def read_custom_unit(
+    unit_code: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> CustomUnitResponse:
+    try:
+        return _unit_response(uom_units.get(ctx.tenant_id, unit_code))
+    except uom_repo.CustomUnitNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="custom unit not found")
+
+
+@app.put("/v1/uom/units/{unit_code}", response_model=CustomUnitResponse)
+def update_custom_unit(
+    unit_code: str,
+    body: UpdateCustomUnitRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> CustomUnitResponse:
+    try:
+        updated = uom_units.update(
+            ctx.tenant_id, unit_code, Decimal(body.factor_to_base), body.display_name
+        )
+    except uom_repo.CustomUnitNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="custom unit not found")
+    except uom_repo.CustomUnitError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="uom_custom_unit:update",
+        resource_type="uom_custom_unit", resource_id=unit_code,
+    )
+    return _unit_response(updated)
+
+
+@app.delete("/v1/uom/units/{unit_code}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_custom_unit(
+    unit_code: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> Response:
+    try:
+        uom_units.delete(ctx.tenant_id, unit_code)
+    except uom_repo.CustomUnitNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="custom unit not found")
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="uom_custom_unit:delete",
+        resource_type="uom_custom_unit", resource_id=unit_code,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@app.post("/v1/uom/convert", response_model=QuantityResponse)
+def convert_quantity(
+    body: ConvertQuantityRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> QuantityResponse:
+    """Convert a quantity using this tenant's registry (standard units + its custom units). Refuses a
+    cross-dimension conversion, an unknown unit, and a temperature (affine) conversion."""
+    registry = uom_units.registry_for(ctx.tenant_id)
+    try:
+        result = registry.convert(uom.Quantity(body.magnitude, body.from_unit), body.to_unit)
+    except uom.UomError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    return QuantityResponse(magnitude=_decimal_str(result.magnitude), unit=result.unit)

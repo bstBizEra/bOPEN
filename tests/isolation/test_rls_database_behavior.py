@@ -71,6 +71,8 @@ TENANT_SCOPED_TABLES = (
     "workflow_definitions",
     "workflow_instances",
     "workflow_history",
+    # Migration 018 — MILE-4.2 UOM. A tenant's custom units of measure, isolated by RLS.
+    "uom_custom_units",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the

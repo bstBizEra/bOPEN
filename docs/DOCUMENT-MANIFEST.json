@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 328,
+  "count": 330,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -218,6 +218,13 @@
       "status": "**Plan \u2014 buildable on Phase 4 authorization** ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md))",
       "sha256": "545ec00a3dbd427d789c79d50936801bc03bffac9dea8a06a1399e72527ffbb4",
       "bytes": 4283
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-asset-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Asset foundation, research & design",
+      "status": "**Research \u2014 advisory. A future slice; buildable only on operator authorization.** Asset remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79.",
+      "sha256": "ad649425127c65ad2d17a9b43ee2c2bcb0f5463ee76ea1f3b11adafd3e0175aa",
+      "bytes": 20375
     },
     {
       "path": "docs/01-product/MILE-4.2-uom-foundation-research.md",
@@ -566,8 +573,8 @@
       "path": "docs/05-foundation/asset/README.md",
       "title": "Asset",
       "status": "",
-      "sha256": "18e34fad2fead864aa5eebc50ecb0083223d06fabebf49e480b7815ecc39806f",
-      "bytes": 86
+      "sha256": "42d5272436bec05bad9198f34d5d11813bbc4b169b90a269b403363087fc1799",
+      "bytes": 352
     },
     {
       "path": "docs/05-foundation/BOPEN-PARTY-001-DRAFT.md",
@@ -1189,8 +1196,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "ad6a4ad6813aecf9ee1ad4cd2dba807fa4a794a50dca47080101e3844950b253",
-      "bytes": 72565
+      "sha256": "b4255e8322266b3a84d3cd205655747308fad17944e4519d511f77da46128bc1",
+      "bytes": 73413
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1462,8 +1469,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "1465aa035fd70b9e219738ab3875dc6b1eb5c1aef4389bd075cab55fc02a9af1",
-      "bytes": 45241
+      "sha256": "a45934496fc9dba87fbba6da092adeef84c72cc4ed51e69f2d967f55ce2e8384",
+      "bytes": 49015
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1555,6 +1562,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "24474e32dceec72f24e618ba271a4f7e90528d67f2f456fbcb25b69715096e60",
       "bytes": 9975
+    },
+    {
+      "path": "docs/evidence/phase-3.5/uom-maker.md",
+      "title": "EVD-UOM-MAKER \u2014 Unit-of-Measure foundation",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "9cc1d73f2c607e56cb1dd0931765d35f8e01e2a38686ef2a26baaf2c5384f99e",
+      "bytes": 6538
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
