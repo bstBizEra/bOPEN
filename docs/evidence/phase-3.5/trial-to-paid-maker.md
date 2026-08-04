@@ -5,10 +5,10 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-04
 **Implements:** [`DEC-P35-TENANCY-MODEL`](../../decisions/DEC-P35-TENANCY-MODEL.md) §12 (authorized); [`PLAN-P35-06-TRIAL-TO-PAID`](../../01-product/WP-P35-06-trial-to-paid-migration-plan.md)
-**Candidate:** `6fdb8e9` (supersedes `2a253a5`, whose HTTP-only freeze the verifier refuted — see §7)
+**Candidate:** `1adf673` (supersedes `2a253a5` and `6fdb8e9`, whose freezes the verifier refuted — see §7)
 **Blob — `migrate_tenant_to_dedicated.py`:** `65e173e33bb755a445b0e1d2e9b9700b90c2b3b6`
-**Blob — `db.py` (the freeze at the data chokepoint):** `9d035723cc72badafca9465a0b17b5943876b52c`
-**Blob — `test_trial_to_paid.py`:** `696f6771a733638f81f6568570da63816ceabab2`
+**Blob — `db.py` (the freeze at the tenant_session entry point):** `14ad71303df519bfcd274204cdf6812c00be5039`
+**Blob — `test_trial_to_paid.py`:** `1714b413074790a724ae9bcd7d78968cf8b92523`
 **Blob — `invariant-traceability.csv`:** `9d342b7247a7571a9ad221847b529e0eb19cfc4b`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
