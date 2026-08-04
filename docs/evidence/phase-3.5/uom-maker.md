@@ -5,7 +5,12 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-05
 **Implements:** [`DEC-P4-ENTRY`](../../decisions/DEC-P4-ENTRY.md) §9 (authorized); [`RESEARCH-MILE-4.2-UOM`](../../01-product/MILE-4.2-uom-foundation-research.md)
-**Candidate:** the commit carrying this submission (filled on commit)
+**Candidate:** `9ea765c`
+**Blob — `uom.py`:** `37ec24057a35c9acf5f4b9a6da59dd8bd14a9d1d`
+**Blob — `uom_repositories.py`:** `40d341bf50c8cf00fdcf129565e74b04c8789403`
+**Blob — `018_uom_custom_units.sql`:** `a9bab5c682a4ecc3ccad90e23587293afdac45a5`
+**Blob — `test_uom.py`:** `0e9b7fb7b8bbf39b290d9b4ac34c0ef5b371d1cd`
+**Blob — `invariant-traceability.csv`:** `f7315f860bd225c6a20613ec73c01447c579320a`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
 **Suites:** canonical **589/589** against PostgreSQL

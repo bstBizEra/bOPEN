@@ -1567,8 +1567,8 @@
       "path": "docs/evidence/phase-3.5/uom-maker.md",
       "title": "EVD-UOM-MAKER \u2014 Unit-of-Measure foundation",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
-      "sha256": "9cc1d73f2c607e56cb1dd0931765d35f8e01e2a38686ef2a26baaf2c5384f99e",
-      "bytes": 6538
+      "sha256": "ddb7857e8a1da776e7fb5e10cfeddd9a53834cb5d274f93973af54e48845a050",
+      "bytes": 6879
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",
