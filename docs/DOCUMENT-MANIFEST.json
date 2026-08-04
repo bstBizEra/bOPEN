@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 324,
+  "count": 325,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -267,6 +267,13 @@
       "status": "**Design \u2014 advisory. Buildable on operator authorization.** Extends the disposed WP-P35-06 placement seam ([`EVD-P35-06-DISPOSITION`](../evidence/phase-3.5/wp-p35-06-disposition.md)) with the carried \"no dedicated DB provisioned\" item.",
       "sha256": "5084517eff330569313615330bb3e6717348a6e6eca4027881893815003b8c54",
       "bytes": 10064
+    },
+    {
+      "path": "docs/01-product/WP-P35-06-trial-to-paid-migration-plan.md",
+      "title": "WP-P35-06 \u2014 Trial\u2192paid tenant migration, design & slice plan",
+      "status": "**Design \u2014 advisory. Buildable on operator authorization.** The last open item of the hybrid tenancy model ([`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a78 Option D), deferred through the \u00a710 and \u00a711 slices.",
+      "sha256": "236e9407bcc938ae6bf3c85cab29bfbf151e2af65d87e6a9a936724baa877c0a",
+      "bytes": 9294
     },
     {
       "path": "docs/02-requirements/acceptance/README.md",
