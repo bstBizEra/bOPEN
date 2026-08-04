@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 321,
+  "count": 322,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1462,8 +1462,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "436fed4275d2e4d2ea96285b13537a3849a6ef8351cf444919b86d31fcfdeac2",
-      "bytes": 16685
+      "sha256": "d7b305eb208db3fab25ba76be77b20bd68b4ba13e9ba26d933faaedcb71a9a06",
+      "bytes": 18009
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
@@ -1590,6 +1590,13 @@
       "status": "**SUPERSEDED 2026-08-01** \u2014 held under Codex's `HOLD_FOR_DECISION`, then implemented by `AUTH-D1`. Ballot [`EVD-P35-05A-MAKER-R2`](wp-p35-05a-maker-submission-r2.md) at `f12e5fc\u2026` instead. Retained: the privilege escalation it did not disclose is the reason `AUTH-D1` exists.",
       "sha256": "c64255190f4abe18dd1047bb36b9623eb4ed9a303f4f678d81a5e886d28c3304",
       "bytes": 5973
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-06-dedicated-db-disposition.md",
+      "title": "EVD-P35-06-DEDICATED-DB-DISPOSITION \u2014 Dedicated-database provisioning, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-04 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "298fdd7d753e2a7250753b216d2fa973e951f901160d68ef48426c03fafeea76",
+      "bytes": 5139
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-06-dedicated-db-maker.md",
