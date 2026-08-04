@@ -230,6 +230,17 @@
         "note": "Option A — usable dedicated tenant (DEC-P35-TENANCY-MODEL §11, operator-authorized 2026-08-04); operator disposition 2026-08-04; 3/3 INV-DEDI-AUTHCHAIN CONFIRMED at 9ad31ca (ballot commit 53532ff, verifier codex, R1-R5 true, no refutations). Migration 016 drops the three cross-database principal_id FKs (memberships/active_contexts/audit_events) so a dedicated tenant's membership+context land in its own DB while principals stay global in control (Option A not B), the migration-009 survives-its-referent pattern. Verifier reproduced the fix adversarially (restoring each FK reproduced the violation; the pre-016 FK/RLS existence channel reproduced and shown closed post-016; HTTP 201 issuance, 403 mismatch). Evidence option-a-dedicated-auth-chain-disposition.md. Disclosed+acknowledged: no orphan-handling on principal deletion (unreachable today); same-DB FK weakening traded for uniform schema, covert channel closed as side benefit; trial->paid data migration deferred",
         "remaining_tenancy_item": "trial_to_paid_cross_db_data_migration"
       },
+      "MILE-4.2-UOM": {
+        "commit": "9ea765c",
+        "ballots": 15,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Unit-of-Measure foundation — Money's dimension-safe sibling (DEC-P4-ENTRY §9, operator-authorized 2026-08-05); operator disposition 2026-08-05; 15/15 INV-UOM CONFIRMED at 9ea765c (ballot commit c5dd559, verifier codex, R1-R5 true, no refutations — clean first pass). Quantity(magnitude: Decimal, unit), exact arithmetic never a float, keystone dimension safety (kg + m refused); standard units a code constant (SI + imperial + Thai rai/ngan/wah2), tenant custom units tenant-scoped by RLS (migration 018) with full CRUD, cannot shadow a standard unit. Adding uom_custom_units to the RLS classification correctly forced adding it to the trial->paid COPY_ORDER (INV-MIGRATE-COVERAGE-01 caught the interaction). Evidence uom-disposition.md. Disclosed+acknowledged: multiplicative units only (temperature/affine refused); no compound/derived units; a factor >18 dp is rounded by NUMERIC(38,18) (tracked refinement); custom-unit dimension not editable",
+        "ready_for": "multiple products (bERP, bFleet, PropTech, shipping)"
+      },
       "MILE-4.2-WORKFLOW": {
         "commit": "2ee4612342fbd30f1f122ac4abfd909c62d746c4",
         "ballots": 16,
