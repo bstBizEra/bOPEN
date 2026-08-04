@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 327,
+  "count": 328,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -218,6 +218,13 @@
       "status": "**Plan \u2014 buildable on Phase 4 authorization** ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md))",
       "sha256": "545ec00a3dbd427d789c79d50936801bc03bffac9dea8a06a1399e72527ffbb4",
       "bytes": 4283
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-uom-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Unit-of-Measure (UOM) foundation, research & design",
+      "status": "**Research \u2014 advisory. A future slice; buildable only on operator authorization.** One of the gated MILE-4.2 foundations ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a77 lists UOM as gated).",
+      "sha256": "3e5f065854fc802a9411ce5813813d139c251f8cb47defd1216cee372757b7cc",
+      "bytes": 10242
     },
     {
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
