@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 326,
+  "count": 327,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1469,8 +1469,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "cec1414c22725421f9aa1e4d6b5a18a2c95d156c24b8c49d2c45428eec103ff1",
-      "bytes": 19305
+      "sha256": "9d6611366bb216a1e87cb9f01fbb50ed31802497e8cea8f53ef30bf64e19b520",
+      "bytes": 20739
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
@@ -1534,6 +1534,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "649195f6561cc152b42a3cf14d579eb2110b54388af540bacf6cf49ef637c132",
       "bytes": 5780
+    },
+    {
+      "path": "docs/evidence/phase-3.5/trial-to-paid-disposition.md",
+      "title": "EVD-TRIAL-TO-PAID-DISPOSITION \u2014 trial\u2192paid tenant migration, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-05 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "ffe81060bdc1d9a6aa7bdc4d045099e9abfa7199e593312bdfbefa6c58370d7d",
+      "bytes": 5236
     },
     {
       "path": "docs/evidence/phase-3.5/trial-to-paid-maker.md",

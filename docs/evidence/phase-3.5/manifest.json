@@ -208,6 +208,17 @@
         "note": "Dedicated-database provisioning — 'one tenant, one database' for domain data (DEC-P35-TENANCY-MODEL §10, operator-authorized 2026-08-04); operator disposition 2026-08-04; 7/7 INV-DEDI CONFIRMED at d8dd023 (ballot commit 763e728, verifier codex, R1-R5 true, no refutations at this candidate). Migration 015 placement_identity (tenant-matching RLS, single-row) + provision_dedicated_db.py; a dedicated tenant's domain data physically in its own DB, absent from the shared pool, mis-route refused (keystone INV-DEDI-MISROUTE-REFUSED-01). Prior candidate ec14c53 was 6/6 CONFIRMED but the verifier proved its permissive placement_identity RLS broader than necessary; narrowed to tenant-matching, re-balloted 7/7. Evidence wp-p35-06-dedicated-db-disposition.md. Disclosed+acknowledged: auth chain not yet usable for a dedicated tenant (memberships/active_contexts/audit_events FK principal_id to global principals across DB) -> Option A next slice; domain-data only (principals global by design); trial->paid deferred",
         "next_slice": "option_A_drop_cross_db_principal_fks"
       },
+      "WP-P35-06-TRIAL-TO-PAID": {
+        "commit": "1adf673",
+        "ballots": 8,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Trial->paid tenant migration — the last hybrid-tenancy piece (DEC-P35-TENANCY-MODEL §12, operator-authorized 2026-08-04); operator disposition 2026-08-05; 8/8 INV-MIGRATE CONFIRMED at 1adf673 (ballot commit 5cfac11, verifier codex, R1-R5 true, no refutations at this candidate). Moves an existing shared-pool tenant into its own dedicated database with no data loss and no split-brain read: freeze (db.tenant_session entry point) -> prepare -> superuser binary COPY -> verify -> atomic control-row cutover -> superuser cleanup. TWO prior candidates were refuted on a freeze that was too narrow (2a253a5 HTTP-only; 6fdb8e9 resolved-connection branch only, skipped by tenant_session(connection=X) used in entitlement_repositories) — each reproduced a lost-write; closed by moving the freeze to the single tenant_session entry point covering both branches. Evidence trial-to-paid-disposition.md. Closes the hybrid tenancy model end to end. Disclosed+acknowledged: not zero-downtime; cutover-step failure needs manual clear; freeze adds a per-tenant_session control read (~365->417s, optimization tracked); no reverse/bulk migration",
+        "closes": "hybrid_tenancy_model_end_to_end"
+      },
       "WP-P35-06-OPTION-A": {
         "commit": "9ad31ca",
         "ballots": 3,
