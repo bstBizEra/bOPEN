@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 325,
+  "count": 326,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1455,8 +1455,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "98b886b996ccb4b215381d2570a3474ef9d503aa107d7f21318cf2227966a5f1",
-      "bytes": 42538
+      "sha256": "c6a1f52bc3c6c654a015f7e6ac8171c71469cfbe7df0ab9ebe93bc2f4c5e9658",
+      "bytes": 44844
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
@@ -1534,6 +1534,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "649195f6561cc152b42a3cf14d579eb2110b54388af540bacf6cf49ef637c132",
       "bytes": 5780
+    },
+    {
+      "path": "docs/evidence/phase-3.5/trial-to-paid-maker.md",
+      "title": "EVD-TRIAL-TO-PAID-MAKER \u2014 trial\u2192paid tenant migration",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "2ff8f1de596b4b899a90a6a408f36259fe7ae43b895c72146b7e205d25e6748d",
+      "bytes": 6883
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-02-maker-submission.md",

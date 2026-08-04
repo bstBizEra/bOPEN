@@ -86,6 +86,7 @@ from decimal import Decimal
 from platform_kernel import money
 from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
+from platform_kernel import placement
 from platform_kernel import repositories as repo
 from platform_kernel import workflow_repositories as workflow_repo
 from platform_kernel import subject_assertion
@@ -622,7 +623,25 @@ def _load_validated_context(tenant_id: str, context_id: str) -> ResolvedContext:
     it does not attest that the context is still valid, and a five-minute lifetime would
     otherwise leave a five-minute window in which a revoked context keeps working. Checking the
     row makes revocation immediate at the cost of one scoped read.
+
+    The freeze is enforced here because both the bearer and the legacy paths pass through this
+    function, and it is below the migrate tool (which uses `tenant_session` directly, not this HTTP
+    path). A tenant whose data is being moved to a dedicated database is `migrating`, and its
+    requests are refused with a retriable 503 so no write lands in the source database after the
+    migration's snapshot (PLAN-P35-06-TRIAL-TO-PAID §2).
     """
+    if placement.tenant_placement_state(tenant_id) == "migrating":
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "tenant is migrating",
+                "reason": (
+                    "this tenant's data is being moved to a dedicated database; the request was "
+                    "refused rather than written to the database being migrated away from"
+                ),
+                "retriable": True,
+            },
+        )
     try:
         stored = contexts.get(tenant_id, context_id)
     except repo.ContextNotFoundError:

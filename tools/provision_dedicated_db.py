@@ -132,8 +132,17 @@ def provision_dedicated_database(
     target_url: str,
     admin_url: str,
     control_url: str,
+    activate: bool = True,
 ) -> None:
-    """Provision a dedicated database for `tenant_id`, end to end. Idempotent and re-runnable."""
+    """Provision a dedicated database for `tenant_id`, end to end. Idempotent and re-runnable.
+
+    `activate=True` (the default, for a new dedicated tenant) marks the control registry row
+    `dedicated` so `resolve_placement` routes to the new database immediately. `activate=False`
+    (prepare-only, for a trial→paid migration) stands the database up WITHOUT flipping the control
+    registry — the tenant keeps serving from the shared pool until the migration's atomic cutover
+    flips it. In both cases the dedicated database's own single `tenants` row and its
+    `placement_identity` are seeded, because those are local to it.
+    """
     database = _database_name(target_url)
     admin_target = _swap_database(admin_url, database)
 
@@ -141,7 +150,8 @@ def provision_dedicated_database(
     # Apply the full ledger as the admin (owner) so the app role is DML-only and FORCE RLS is
     # observable — exactly as the shared pool is provisioned.
     db_bootstrap.apply_ledger_to(admin_target, role=db_bootstrap.DEFAULT_ROLE, verbose=False)
-    _seed_control_registry(control_url, tenant_id, tenant_name, ref)
+    if activate:
+        _seed_control_registry(control_url, tenant_id, tenant_name, ref)
     _seed_dedicated_identity(target_url, tenant_id, tenant_name, ref)
 
 

@@ -86,6 +86,22 @@ def resolve_placement(tenant_id: str, *, control_connection=None) -> Placement:
     raise PlacementUnresolved(f"tenant {tid} has an unrecognised placement kind {kind!r}")
 
 
+def tenant_placement_state(tenant_id: str, *, control_connection=None) -> str | None:
+    """Return a tenant's placement state ('stable' | 'migrating'), or None if it has no registry row.
+
+    Read from the control connection, like `resolve_placement`. `migrating` is the freeze: the request
+    path refuses a migrating tenant so a trial→paid migration can copy its data without a concurrent
+    write landing in the source database after the snapshot (PLAN-P35-06-TRIAL-TO-PAID §2).
+    """
+    tid = str(tenant_id).strip()
+    if not tid:
+        return None
+    with db.system_session(connection=control_connection) as cur:
+        cur.execute("SELECT placement_state FROM tenants WHERE id = %s", (tid,))
+        row = cur.fetchone()
+    return row[0] if row else None
+
+
 def verify_connection_serves(cursor, tenant_id: str, placement: Placement) -> None:
     """Assert the connection actually serves the tenant it was resolved for.
 
