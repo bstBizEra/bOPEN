@@ -1287,8 +1287,8 @@
       "path": "docs/decisions/DEC-P35-TENANCY-MODEL.md",
       "title": "DEC-P35-TENANCY-MODEL \u2014 Should tenant isolation move from row-level security to database-per-tenant?",
       "status": "**Approved \u2014 Option D adopted 2026-07-31 (see \u00a78, which supersedes \u00a77)**",
-      "sha256": "39a6945cf35439f3d141aceddfdbd8c01d3af06f9dd707b6dee66c14cbdc170b",
-      "bytes": 23348
+      "sha256": "6930d5b246cffc24a6ef55d809cca447ca16719bd8c243ec4e0d178ea3628238",
+      "bytes": 26016
     },
     {
       "path": "docs/decisions/DEC-P35-TWO-AGENT-QUORUM.md",

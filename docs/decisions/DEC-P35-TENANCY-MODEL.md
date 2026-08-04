@@ -375,3 +375,50 @@ approval_authority: false
 production_activation_authority: false
 completion_claimed: false
 ```
+
+---
+
+## 12. Amendment 2026-08-04 — trial→paid tenant migration authorized
+
+> **Change note (extend-only).** §8 named "trial shares the pool; paying gets its own database" as
+> the model, and §10/§11 built and disposed the *new* dedicated tenant. This authorizes the last
+> piece: moving an *existing* shared-pool tenant into a dedicated database. Recorded **before any
+> build** per the §7/§8 sequencing lesson. The design it authorizes is
+> [`PLAN-P35-06-TRIAL-TO-PAID`](../01-product/WP-P35-06-trial-to-paid-migration-plan.md).
+
+### 12.1 Decision
+
+**The trial→paid tenant migration slice is AUTHORIZED**, as scoped in `PLAN-P35-06-TRIAL-TO-PAID` §5.
+In scope: a tenant `migrating` state and the kernel refusing a migrating tenant's requests (the
+freeze); provisioning split into prepare (no cutover) and an atomic cutover; a
+`migrate_tenant_to_dedicated` tool driving copy → verify → cutover → cleanup, with the table list
+**derived from the RLS classification** (`TENANT_SCOPED_TABLES`), never hard-coded; and the six R4
+probes (`INV-MIGRATE-*`) — completeness, no-duplication, cutover-routes, freeze-refuses,
+rollback-safe, principals-untouched. **Out of scope and deferred:** zero-downtime/online migration,
+reverse (dedicated→shared) migration, and bulk/scheduled migration.
+
+Because there is no transaction across two databases, the guarantee is by sequencing: the freeze
+prevents lost writes, the cutover is the one atomic control-row flip, a failure before cutover leaves
+the tenant safely on the shared pool, and a failure after leaves only recoverable stale rows. Two-
+phase commit is recorded as considered and not chosen for this slice (`PLAN` §3).
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the trial→paid migration slice** per `PLAN-P35-06-TRIAL-TO-PAID`. Online, reverse and bulk migration stay out |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-04 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 12.2 How it runs
+
+Tests-first (the `INV-MIGRATE-*` probes, red before the `migrating` state and the migrate tool exist)
+→ migration for the `migrating` state + the freeze point + the prepare/cutover split + the migrate
+tool → execute across **two live PostgreSQL databases** → trace invariants (R2) → maker submission →
+**Codex** ballot → operator disposition under `EBIV` §6.5.
+
+```text
+execution_authority: false
+approval_authority: false
+production_activation_authority: false
+completion_claimed: false
+```
