@@ -83,6 +83,7 @@ from kernel_core.types import (
 )
 from decimal import Decimal
 
+from platform_kernel import contact_point_repositories as contact_point_repo
 from platform_kernel import money
 from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
@@ -180,6 +181,7 @@ contexts = repo.ContextRepository()
 audit = repo.AuditRepository()
 resources = repo.TenantResourceRepository()
 parties = party_repo.PartyRepository()
+contact_points = contact_point_repo.ContactPointRepository()
 exchange_rates_repo = money_repo.ExchangeRateRepository()
 workflows = workflow_repo.WorkflowRepository()
 uom_units = uom_repo.CustomUnitRepository()
@@ -368,6 +370,58 @@ class PartyRelationshipResponse(BaseModel):
     from_party_id: str
     to_party_id: str
     relationship_type: str
+
+
+# MILE-4.2 — Party ContactPoint extension (BOPEN-PARTY-002, DEC-P4-ENTRY §10). The endpoint value is a
+# plain string field; it is classified sensitive (CP-INV-06) and redacted from audit and logs — only
+# the contact-point id and type are recorded there, never the value.
+
+
+class CreateContactPointRequest(BaseModel):
+    endpoint_type: str = Field(pattern="^(email|phone)$")
+    endpoint_value: str = Field(min_length=1, max_length=320)
+    purpose: str = Field(pattern="^(security_operational|transactional|billing|general)$")
+    provenance: Optional[str] = Field(default=None, max_length=64)
+
+
+class UpdateContactPointRequest(BaseModel):
+    expected_revision: int = Field(ge=1)
+    endpoint_value: Optional[str] = Field(default=None, min_length=1, max_length=320)
+    purpose: Optional[str] = Field(
+        default=None, pattern="^(security_operational|transactional|billing|general)$"
+    )
+
+
+class ContactPointResponse(BaseModel):
+    contact_point_id: str
+    tenant_id: str
+    party_id: str
+    endpoint_type: str
+    endpoint_value: str
+    purpose: str
+    verification_state: str
+    verification_method: Optional[str]
+    is_primary: bool
+    revision: int
+
+
+class VerifyContactPointRequest(BaseModel):
+    # Administrative-assertion verify: the one governed, audited verify path in this slice. The
+    # challenge ceremony (OTP/magic-link) is deferred (CP-D-05).
+    method: str = Field(default="administrative_assertion", pattern="^administrative_assertion$")
+
+
+class ResolveRecipientRequest(BaseModel):
+    purpose: str = Field(pattern="^(security_operational|transactional|billing|general)$")
+    channel: str = Field(min_length=1, max_length=32)
+
+
+class RecipientSnapshotResponse(BaseModel):
+    endpoint_type: str
+    endpoint_value: str
+    purpose: str
+    party_id: str
+    resolved_at: str
 
 
 # MILE-4.2 — Money & Currency. The rate is a decimal STRING, never a JSON number, so a float can
@@ -1863,3 +1917,232 @@ def convert_quantity(
     except uom.UomError as exc:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
     return QuantityResponse(magnitude=_decimal_str(result.magnitude), unit=result.unit)
+
+
+# MILE-4.2 — Party ContactPoint endpoints (BOPEN-PARTY-002, DEC-P4-ENTRY §10). Bearer-gated: every one
+# runs behind resolve_context, so the tenant comes from the signed context and the contact point is
+# created and read under that tenant's row-level-security scope. A contact point attaches to a Party of
+# THIS tenant only — the composite FK refuses a cross-tenant attachment at the database. The endpoint
+# value is redacted from every audit record (CP-INV-06): the audit carries the contact-point id and
+# type, never the value. `resolve` is the NotificationRecipientResolver keystone and never reads
+# principals.email.
+
+
+def _contact_point_response(cp: contact_point_repo.StoredContactPoint) -> ContactPointResponse:
+    return ContactPointResponse(
+        contact_point_id=cp.id,
+        tenant_id=cp.tenant_id,
+        party_id=cp.party_id,
+        endpoint_type=cp.endpoint_type,
+        endpoint_value=cp.endpoint_value,
+        purpose=cp.purpose,
+        verification_state=cp.verification_state,
+        verification_method=cp.verification_method,
+        is_primary=cp.is_primary,
+        revision=cp.revision,
+    )
+
+
+@app.post(
+    "/v1/parties/{party_id}/contact-points",
+    response_model=ContactPointResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_contact_point(
+    party_id: str,
+    body: CreateContactPointRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    try:
+        created = contact_points.create(
+            ctx.tenant_id,
+            normalise_id(party_id, "party_id"),
+            body.endpoint_type,
+            body.endpoint_value,
+            body.purpose,
+            body.provenance,
+        )
+    except contact_point_repo.ContactPointPartyNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="party not found")
+    except contact_point_repo.ContactPointConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    except contact_point_repo.ContactPointValidationError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="party_contact_point:create",
+        resource_type="party_contact_point", resource_id=created.id,
+    )
+    return _contact_point_response(created)
+
+
+@app.get(
+    "/v1/parties/{party_id}/contact-points",
+    response_model=list[ContactPointResponse],
+)
+def list_contact_points(
+    party_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[ContactPointResponse]:
+    return [
+        _contact_point_response(cp)
+        for cp in contact_points.list(ctx.tenant_id, normalise_id(party_id, "party_id"), limit=limit)
+    ]
+
+
+@app.get(
+    "/v1/parties/{party_id}/contact-points/{cp_id}",
+    response_model=ContactPointResponse,
+)
+def read_contact_point(
+    party_id: str,
+    cp_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    try:
+        cp = contact_points.get(ctx.tenant_id, normalise_id(cp_id, "cp_id"))
+    except contact_point_repo.ContactPointNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="contact point not found")
+    return _contact_point_response(cp)
+
+
+@app.put(
+    "/v1/parties/{party_id}/contact-points/{cp_id}",
+    response_model=ContactPointResponse,
+)
+def update_contact_point(
+    party_id: str,
+    cp_id: str,
+    body: UpdateContactPointRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    try:
+        updated = contact_points.update(
+            ctx.tenant_id,
+            normalise_id(cp_id, "cp_id"),
+            body.expected_revision,
+            endpoint_value=body.endpoint_value,
+            purpose=body.purpose,
+        )
+    except contact_point_repo.ContactPointNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="contact point not found")
+    except contact_point_repo.ContactPointConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    except contact_point_repo.ContactPointValidationError as exc:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="party_contact_point:update",
+        resource_type="party_contact_point", resource_id=cp_id,
+    )
+    return _contact_point_response(updated)
+
+
+@app.delete(
+    "/v1/parties/{party_id}/contact-points/{cp_id}",
+    response_model=ContactPointResponse,
+)
+def retire_contact_point(
+    party_id: str,
+    cp_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    """Retire (tombstone), not hard delete — a verified/referenced endpoint keeps its row and its
+    append-only verification history (CP-D-03)."""
+    try:
+        retired = contact_points.retire(ctx.tenant_id, normalise_id(cp_id, "cp_id"))
+    except contact_point_repo.ContactPointNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="contact point not found")
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="party_contact_point:retire",
+        resource_type="party_contact_point", resource_id=cp_id,
+    )
+    return _contact_point_response(retired)
+
+
+@app.post(
+    "/v1/parties/{party_id}/contact-points/{cp_id}/verify",
+    response_model=ContactPointResponse,
+)
+def verify_contact_point(
+    party_id: str,
+    cp_id: str,
+    body: VerifyContactPointRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    """Administrative-assertion verify — the one governed, audited verify path in this slice. Sets the
+    contact point verified and records an append-only verification event in the same transaction. The
+    challenge ceremony is deferred (CP-D-05)."""
+    try:
+        verified = contact_points.verify_by_assertion(
+            ctx.tenant_id, normalise_id(cp_id, "cp_id"), ctx.principal_id
+        )
+    except contact_point_repo.ContactPointNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="contact point not found")
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="party_contact_point:verify",
+        resource_type="party_contact_point", resource_id=cp_id,
+    )
+    return _contact_point_response(verified)
+
+
+@app.post(
+    "/v1/parties/{party_id}/contact-points/{cp_id}/set-primary",
+    response_model=ContactPointResponse,
+)
+def set_primary_contact_point(
+    party_id: str,
+    cp_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ContactPointResponse:
+    try:
+        primary = contact_points.set_primary(ctx.tenant_id, normalise_id(cp_id, "cp_id"))
+    except contact_point_repo.ContactPointNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="contact point not found")
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain",
+        action="party_contact_point:set_primary",
+        resource_type="party_contact_point", resource_id=cp_id,
+    )
+    return _contact_point_response(primary)
+
+
+@app.post(
+    "/v1/parties/{party_id}/resolve-recipient",
+    response_model=RecipientSnapshotResponse,
+)
+def resolve_recipient(
+    party_id: str,
+    body: ResolveRecipientRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> RecipientSnapshotResponse:
+    """The NotificationRecipientResolver keystone over HTTP (CP-INV-03). Resolves a business recipient
+    (party + purpose + channel) to a verified, purpose-authorized, effective destination for a Party of
+    the caller's tenant. Never principals.email; never a cross-tenant, unverified, wrong-purpose, or
+    wrong-channel endpoint. A failure is a single uniform 422 that does not reveal which rung failed
+    (CP-INV-05)."""
+    try:
+        snapshot = contact_points.resolve(
+            ctx.tenant_id, normalise_id(party_id, "party_id"), body.purpose, body.channel
+        )
+    except contact_point_repo.RecipientUnresolved:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="no usable destination for this recipient",
+        )
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="party_contact_point:resolve",
+        resource_type="party", resource_id=snapshot.party_id,
+    )
+    return RecipientSnapshotResponse(
+        endpoint_type=snapshot.endpoint_type,
+        endpoint_value=snapshot.endpoint_value,
+        purpose=snapshot.purpose,
+        party_id=snapshot.party_id,
+        resolved_at=snapshot.resolved_at.isoformat(),
+    )

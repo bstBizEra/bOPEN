@@ -75,6 +75,10 @@ COPY_ORDER = (
     "uom_custom_units",
     # Parents before children.
     "parties",
+    # Migration 019 — Party ContactPoint extension. party_contact_points references parties; its
+    # verification-events table references party_contact_points. Parents before children.
+    "party_contact_points",
+    "party_contact_point_verification_events",
     "party_relationships",
     "workflow_definitions",
     "workflow_instances",

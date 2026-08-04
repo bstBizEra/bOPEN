@@ -73,6 +73,11 @@ TENANT_SCOPED_TABLES = (
     "workflow_history",
     # Migration 018 — MILE-4.2 UOM. A tenant's custom units of measure, isolated by RLS.
     "uom_custom_units",
+    # Migration 019 — MILE-4.2 Party ContactPoint extension (BOPEN-PARTY-002). A Party's typed,
+    # purpose-classified contact endpoints and their append-only verification-event history, both
+    # tenant-scoped by RLS.
+    "party_contact_points",
+    "party_contact_point_verification_events",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the
