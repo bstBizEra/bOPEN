@@ -166,3 +166,47 @@ foundations (Document, Location, Calendar, Asset, Notification) and all of MILE-
 | **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
 
 The build proceeds tests-first under the governed cycle; a Codex ballot follows under `EBIV` §6.5.
+
+---
+
+## 10. Amendment 2026-08-05 — Party ContactPoint extension authorized (unblocks Notification)
+
+> **Change note (extend-only).** Recorded **before** any build, per the §7/§8 sequencing lesson. The
+> operator directed the ContactPoint extension after reviewing
+> [`RESEARCH-MILE-4.2-PARTY-CONTACTPOINT`](../01-product/MILE-4.2-party-contactpoint-extension-research.md)
+> (authored by a Claude subagent; its build will be independently verified by Codex under EBIV §6.5).
+> This extends the built Party foundation (`BOPEN-PARTY-001`) with the contact-endpoint entity the
+> Notification `NotificationRecipientResolver` needs; it never uses `principals.email` as a destination.
+
+### 10.1 Decision
+
+**The Party ContactPoint extension is AUTHORIZED**, scoped to `RESEARCH-MILE-4.2-PARTY-CONTACTPOINT`
+§13 with the operator's CP-D resolutions below. Keystone (`CP-INV-03`): the resolver yields a usable
+destination **only** for a *verified* contact point of the *authorized purpose* belonging to a *Party
+of the caller's tenant* — never `principals.email`, never a cross-tenant/unverified/wrong-purpose
+endpoint.
+
+**CP-D resolutions (operator, transcribed):**
+
+| Decision | Resolution |
+| :--- | :--- |
+| `CP-D-01`/`CP-D-02` | First slice endpoint types **`email` and `phone` only**; **`postal` deferred** (Location is unbuilt — no dependency now); social/push/webhook deferred |
+| `CP-D-03` | **`ON DELETE RESTRICT` + retire-not-delete**; append-only `party_contact_point_verification_events` survives direct mutation and parent cascade (migration-014 lesson) |
+| `CP-D-04` | Primary flag scope **per `(party, type)`**; one live primary enforced |
+| `CP-D-05`/`CP-D-08` | Self-service verification ceremony (OTP/magic-link) **deferred**; the first slice ships a **governed, audited administrative-assertion** verify capability that records `verification_method='administrative_assertion'` in the append-only history — so a real verified destination exists and Notification is functionally unblocked, while the asserted-vs-challenged distinction stays auditable |
+| `CP-D-06` | Channel→type: `email→email`, `sms`/`voice→phone`; purpose vocabulary small & governed, aligned with Notification |
+| `CP-D-07` | Endpoint value stored, **redacted in logs/events/status**; at-rest encryption a tracked refinement (disclosed) |
+| `CP-D-09` | `resolve` is a distinct, higher-trust capability from reading a raw endpoint value |
+
+Both new tables (`party_contact_points`, `party_contact_point_verification_events`) enter
+`TENANT_SCOPED_TABLES` and the trial→paid `COPY_ORDER` (parents before children, after `parties`).
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the Party ContactPoint extension** per the scope and CP-D resolutions above |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-05 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The build proceeds tests-first under the governed cycle; an independent **Codex** ballot follows under
+`EBIV` §6.5, then operator disposition.
