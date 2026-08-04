@@ -5,12 +5,12 @@
 **Status:** **MAKER_SUBMISSION_AWAITING_VERIFICATION** — not a completion decision
 **Issued:** 2026-08-04
 **Implements:** [`DEC-P35-TENANCY-MODEL`](../../decisions/DEC-P35-TENANCY-MODEL.md) §10 (authorized); [`PLAN-P35-06-DEDICATED-DB`](../../01-product/WP-P35-06-dedicated-db-provisioning-plan.md)
-**Candidate:** `ec14c53`
-**Blob — `015_placement_identity.sql`:** `b8c2c898d5e765e073f7a8be76fcae478493349e`
-**Blob — `provision_dedicated_db.py`:** `721f8b3ac1e3e2d3453d5880210a23d6d38c5424`
+**Candidate:** `d8dd023` (supersedes `ec14c53`, whose permissive RLS the verifier narrowed — see §5)
+**Blob — `015_placement_identity.sql`:** `3d4f230c43f35fc5db3dbc6b9d9346a448c8dffc`
+**Blob — `provision_dedicated_db.py`:** `38d69d47d8da676c477942ea29f71342427ff5e9`
 **Blob — `db_bootstrap.py`:** `fdc61fe7092d7ceac5abc9044260e889c43d0fec`
-**Blob — `test_dedicated_placement.py`:** `e17a332411e6e31645583d1065772b713c696be7`
-**Blob — `invariant-traceability.csv`:** `7fbd0badae2a99a561fbfa254feff1bbfa2e8e38`
+**Blob — `test_dedicated_placement.py`:** `05c4f04e1e630be68ac1dcf2e96190369f4eb357`
+**Blob — `invariant-traceability.csv`:** `2b8dc5c7a51fcb489a372a94edb9fcd14aa1eb47`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
 **Suites:** canonical **547/547** against PostgreSQL, with a **second real database** provisioned (8 dedicated probes added)
