@@ -324,3 +324,54 @@ approval_authority: false
 production_activation_authority: false
 completion_claimed: false
 ```
+
+---
+
+## 11. Amendment 2026-08-04 — Option A: make a dedicated tenant usable end to end
+
+> **Change note (extend-only).** §10's disposition disclosed, and the operator acknowledged, that a
+> dedicated tenant cannot yet be given a membership: three routed tables foreign-key `principal_id`
+> to the global `principals`, and that FK cannot be satisfied across databases. This authorizes the
+> fix. Recorded **before any build** per the §7/§8 sequencing lesson.
+
+### 11.1 The gap, precisely
+
+`memberships` (001), `active_contexts` (003) and `audit_events` (003) each declare
+`principal_id → principals(id)`. All three route to a dedicated tenant's database via
+`tenant_session`, while `principals` is global in the control database (`system_session`). PostgreSQL
+cannot enforce a foreign key across databases, so a dedicated tenant's routed rows raise
+`ForeignKeyViolation` — reproduced 2026-08-04. A principal is deliberately multi-tenant, so it stays
+global (routing it, or replicating it per dedicated database, both break that); the foreign key is
+what must change.
+
+### 11.2 Decision
+
+**Option A is AUTHORIZED.** Drop the three `principal_id → principals` foreign keys (keeping the
+columns as soft references), the same reasoning migration 009 applied to `audit_events.context_id`
+("an audit record must survive its referent" — here, a routed row references a principal that lives
+in another database by design). The application already validates principal existence
+(`principals.get` in control; `POST /v1/contexts` checks the membership's principal), so the
+integrity the database can no longer enforce across databases is still checked where it can be.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE Option A** — a migration dropping the `principal_id` FKs on `memberships`, `active_contexts`, `audit_events` (columns kept), plus a test proving a dedicated tenant onboards end to end (principal in control, membership + context in its dedicated database, authorize succeeds) |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-04 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 11.3 Scope and how it runs
+
+In scope: the FK-dropping migration; an end-to-end dedicated-tenant onboarding test (the "usable
+dedicated tenant" proof the §10 slice lacks); the reproduction that the FK gap is closed. **Out of
+scope:** orphan handling on principal deletion (principals have no DELETE policy after migration 007,
+so it is not reachable today — recorded, not built); the trial→paid cross-database data migration
+(still deferred). Governed cycle: tests-first → migration 016 → execute across two databases → trace
+invariants (R2) → maker submission → **Codex** ballot → operator disposition.
+
+```text
+execution_authority: false
+approval_authority: false
+production_activation_authority: false
+completion_claimed: false
+```
