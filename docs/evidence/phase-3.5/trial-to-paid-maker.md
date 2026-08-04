@@ -13,7 +13,7 @@
 **Blob — `invariant-traceability.csv`:** `14cbb8f94fbac60bafe1bcd4191c223580b975bc`
 **Maker:** Claude (agent, Motor role) — `claude@bst.local`
 **Eligible verifier:** Codex
-**Suites:** canonical **559/559** against PostgreSQL, with a second real database provisioned
+**Suites:** canonical **560/560** against PostgreSQL, with a second real database provisioned
 
 ---
 
@@ -48,7 +48,8 @@ No offensive objective; two local verification databases.
 | `P4-MIGRATE-01` | move every one of the tenant's rows into the dedicated database | `test_migration_moves_all_rows_to_the_dedicated_database` |
 | `P4-MIGRATE-02` | leave none behind in the shared pool (no duplication) | `test_migrated_rows_are_gone_from_the_shared_pool` |
 | `P4-MIGRATE-03` | route the tenant to the dedicated database after cutover | `test_after_cutover_the_tenant_routes_to_the_dedicated_database` |
-| `P4-MIGRATE-04` | refuse a migrating tenant's request at the kernel (the freeze) | `test_a_migrating_tenant_is_frozen_at_the_request_path` |
+| `P4-MIGRATE-04` | refuse a migrating tenant's request at the HTTP layer (the freeze) | `test_a_migrating_tenant_is_frozen_at_the_request_path` |
+| `P4-MIGRATE-08` | refuse a migrating tenant at `db.tenant_session` — the data chokepoint, every write path (keystone, added after refutation) | `test_the_freeze_covers_the_data_chokepoint_not_just_http` |
 | `P4-MIGRATE-05` | leave the tenant safely on the shared pool if it fails before cutover | `test_a_verification_mismatch_leaves_the_tenant_on_the_shared_pool` |
 | `P4-MIGRATE-06` | not move or duplicate the tenant's global principals | `test_the_principal_stays_in_control_and_is_not_moved` |
 | `P4-MIGRATE-07` | copy **every** tenant-scoped table (no silent data loss) | `test_copy_order_covers_every_tenant_scoped_table` |
@@ -63,12 +64,15 @@ it to the tool's `COPY_ORDER` and confirm `P4-MIGRATE-07` fails.
 ## 4. Execution
 
 ```text
-python tools/run_tests.py     559/559 OK   (live PostgreSQL, a second DB provisioned)
+python tools/run_tests.py     560/560 OK   (live PostgreSQL, a second DB provisioned)
 ```
 
 - **Migration 017** adds `tenants.placement_state` (`stable` | `migrating`).
-- **The freeze** is one check in `api._load_validated_context` (the chokepoint both auth paths pass
-  through, below the migrate tool): a `migrating` tenant's request returns a retriable 503.
+- **The freeze** is enforced at **`db.tenant_session`** (`_connect_for_tenant`) — the data-access
+  chokepoint every write path passes through — raising `TenantMigratingError` for a migrating tenant,
+  with `api._load_validated_context` additionally returning a clean retriable 503 on the HTTP path.
+  The migrate tool uses superuser raw connections, not `tenant_session`, so it is not frozen. (The
+  first candidate froze *only* at HTTP; see §7.)
 - **`provision_dedicated_db`** gains `activate=False` (prepare without flipping the control registry).
 - **`tools/migrate_tenant_to_dedicated.py`** drives freeze → prepare → copy → verify → cutover →
   cleanup. The copy is **binary COPY as the superuser** — because `COPY FROM` is refused on an RLS
@@ -101,7 +105,22 @@ shared pool — recoverable, not loss.
    placement resolution refinement already tracked in §9.3; not a new architectural cost.
 5. **One verifier, not two** (two-agent profile).
 
-## 7. Authority
+## 7. Verification history — one refutation, closed
+
+The first candidate `2a253a5` was verified by Codex, which **CONFIRMED 6 of 7** propositions and
+**REFUTED `INV-MIGRATE-COMPLETE-01`** by execution: the freeze was placed at the HTTP layer only, so a
+write via `db.tenant_session` that bypassed it committed to the shared pool after the migration's copy
+and was then deleted by cleanup — leaving **zero copies in either database** (data loss). The freeze
+was at the wrong layer.
+
+Fixed at root cause: the freeze moved to **`db.tenant_session`** (`TenantMigratingError` in
+`_connect_for_tenant`), the chokepoint every write path passes through — the HTTP 503 remains for a
+clean error. The reproduction is now proposition `P4-MIGRATE-08`
+(`test_the_freeze_covers_the_data_chokepoint_not_just_http`). This candidate re-submits with that fix
+for re-ballot. The verifier catching a data-loss window the maker's HTTP-layer freeze left open is the
+two-agent governance working on the slice where it matters most.
+
+## 8. Authority
 
 A maker's submission. `EBIV` §8: a passing suite carries no verdict weight.
 

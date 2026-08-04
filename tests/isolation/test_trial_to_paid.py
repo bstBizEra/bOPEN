@@ -268,6 +268,32 @@ class TestMigrationFreezeAndRollback(unittest.TestCase):
             with self.db.system_session() as cur:
                 cur.execute("DELETE FROM tenants WHERE id = %s", (tenant,))
 
+    def test_the_freeze_covers_the_data_chokepoint_not_just_http(self):
+        """INV-MIGRATE-FREEZE-DATA-PATH-01. The freeze is enforced at `db.tenant_session` — the
+        chokepoint every write path passes through — not only at the HTTP layer. A verifier reproduced
+        a data loss on candidate 2a253a5 where a `tenant_session` write that bypassed the HTTP-only
+        freeze committed to the shared pool after the copy and was then deleted by cleanup, leaving
+        zero copies in either database. This asserts a migrating tenant's `tenant_session` is now
+        refused, closing that path; the migrate tool is unaffected because it uses superuser raw
+        connections, not `tenant_session`."""
+        from platform_kernel import db as dbmod
+
+        tenant = self._shared_tenant_with_a_party()
+        try:
+            with self.db.system_session() as cur:
+                cur.execute("UPDATE tenants SET placement_state = 'migrating' WHERE id = %s", (tenant,))
+            with self.assertRaises(dbmod.TenantMigratingError):
+                with self.db.tenant_session(tenant) as cur:
+                    cur.execute(
+                        "INSERT INTO parties (tenant_id, party_type, display_name) "
+                        "VALUES (%s, 'person', 'late write that would be lost')",
+                        (tenant,),
+                    )
+        finally:
+            with self.db.system_session() as cur:
+                cur.execute("UPDATE tenants SET placement_state = 'stable' WHERE id = %s", (tenant,))
+                cur.execute("DELETE FROM tenants WHERE id = %s", (tenant,))
+
     def test_a_migrating_tenant_is_frozen_at_the_request_path(self):
         """INV-MIGRATE-FREEZE-REFUSES-01. While a tenant is `migrating`, the kernel refuses its
         requests with 503, so no write lands in the source database after the snapshot."""

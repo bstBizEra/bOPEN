@@ -48,6 +48,18 @@ class TenantContextError(RuntimeError):
     """Raised when a tenant-scoped session is opened without a usable tenant identifier."""
 
 
+class TenantMigratingError(RuntimeError):
+    """Raised when a tenant-scoped session is opened for a tenant that is mid-migration.
+
+    The freeze (PLAN-P35-06-TRIAL-TO-PAID §2). It lives here, at the data-access chokepoint every
+    write path passes through, rather than only at the HTTP layer: a verifier reproduced a data-loss
+    where a `tenant_session` write that bypassed the HTTP freeze committed to the shared pool after
+    the migration's copy and was then deleted by cleanup — leaving zero copies in either database.
+    Refusing at `tenant_session` closes every write path in one place. The migrate tool itself uses
+    superuser raw connections, not `tenant_session`, so it is unaffected.
+    """
+
+
 class TenantScopeReentryError(RuntimeError):
     """Raised when a session is nested inside another with a different scope in force.
 
@@ -154,6 +166,14 @@ def _connect_for_tenant(tenant_id: str):
 
     control = connect()
     try:
+        # Freeze (PLAN-P35-06-TRIAL-TO-PAID §2): a tenant mid-migration is refused here, at the data
+        # chokepoint, so no write can reach the source database while its rows are being copied. The
+        # migrate tool uses superuser raw connections rather than tenant_session, so it is not frozen.
+        if _placement.tenant_placement_state(tenant_id, control_connection=control) == "migrating":
+            raise TenantMigratingError(
+                f"tenant {tenant_id} is migrating to a dedicated database; tenant-scoped access is "
+                f"refused for the duration so no write is lost. Retry once the migration completes."
+            )
         resolved = _placement.resolve_placement(tenant_id, control_connection=control)
     except BaseException:
         control.close()
