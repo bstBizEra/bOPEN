@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 323,
+  "count": 324,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1462,8 +1462,8 @@
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "d7b305eb208db3fab25ba76be77b20bd68b4ba13e9ba26d933faaedcb71a9a06",
-      "bytes": 18009
+      "sha256": "cec1414c22725421f9aa1e4d6b5a18a2c95d156c24b8c49d2c45428eec103ff1",
+      "bytes": 19305
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
@@ -1513,6 +1513,13 @@
       "status": "",
       "sha256": "9748fc21a4431ad00519859bea8a2cad9be9ec97ee4621ef58aedf0ac21e1144",
       "bytes": 10808
+    },
+    {
+      "path": "docs/evidence/phase-3.5/option-a-dedicated-auth-chain-disposition.md",
+      "title": "EVD-OPTION-A-DEDICATED-AUTH-CHAIN-DISPOSITION \u2014 usable dedicated tenant, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-04 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "efb8348dfd67a78042944c9395e37a8351442385c334c6df23a24d5d239107d9",
+      "bytes": 4202
     },
     {
       "path": "docs/evidence/phase-3.5/option-a-dedicated-auth-chain-maker.md",
