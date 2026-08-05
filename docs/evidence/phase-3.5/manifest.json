@@ -250,6 +250,16 @@
         "refutations": 0,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "Workflow State Engine foundation (DEC-P4-ENTRY §8, operator-authorized 2026-08-03); operator disposition 2026-08-03; 16/16 INV-WF CONFIRMED at 2ee4612 (ballot commit c1847b4, verifier codex, R1-R5 true, no refutations at this candidate); tenant-scoped state machine, definition-gated transitions, append-only history, lifecycle audit event. Prior candidate a09022d was REFUTED on the append-only invariant (workflow_history ON DELETE CASCADE erased history via parent-instance deletion past RLS, ballot blt_a4367591a838); fixed at root cause by migration 014 (ON DELETE RESTRICT, the migration-009 precedent), reproduction added as INV-WF-HISTORY-APPEND-ONLY-02; evidence mile-4.2-workflow-disposition.md. Carried: no per-transition role authz, no timers/branching/BPMN, no definition versioning"
+      },
+      "MILE-4.2-CONTACTPOINT": {
+        "commit": "c48727c14b57282566b7f33bc7c11473570ccfd6",
+        "ballots": 22,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Party ContactPoint extension (BOPEN-PARTY-002), authorized DEC-P4-ENTRY §10; operator disposition 2026-08-05 (BizEra, Completion Authority); 22/22 CP-INV CONFIRMED at c48727c (ballot commit 1a74913, verifier codex, R1-R5 true, independent of maker); resolver keystone (verified+purpose+channel+effective+tenant, never principals.email) and append-only verification history verified; clears Notification NOTIFY-D-01; verification ceremony and postal deferred; evidence contactpoint-disposition.md"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [
