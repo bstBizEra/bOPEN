@@ -260,6 +260,16 @@
         "refutations": 0,
         "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
         "note": "Party ContactPoint extension (BOPEN-PARTY-002), authorized DEC-P4-ENTRY §10; operator disposition 2026-08-05 (BizEra, Completion Authority); 22/22 CP-INV CONFIRMED at c48727c (ballot commit 1a74913, verifier codex, R1-R5 true, independent of maker); resolver keystone (verified+purpose+channel+effective+tenant, never principals.email) and append-only verification history verified; clears Notification NOTIFY-D-01; verification ceremony and postal deferred; evidence contactpoint-disposition.md"
+      },
+      "MILE-4.2-LOCATION": {
+        "commit": "1cde9942096b29795ddd937a2130e170c970b2e7",
+        "ballots": 31,
+        "verifiers": [
+          "codex"
+        ],
+        "refutations": 0,
+        "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+        "note": "Location foundation (BOPEN-LOC-001), authorized DEC-P4-ENTRY §11; operator disposition 2026-08-05 (BizEra, Completion Authority); 31/31 LOC-INV CONFIRMED at 1cde994 (ballot commit b524846, verifier codex, R1-R5 true, independent of maker; ballots persisted by Motor as the verifier run left them uncommitted); keystones coordinate validity (LOC-INV-04) and provider distrust (LOC-INV-06, HTTP 200 != accepted) plus WITH RECURSIVE containment-cycle refusal and append-only history verified; accuracy radius consumes the UOM length dimension; six tables in TENANT_SCOPED_TABLES and COPY_ORDER; provider adapter/spatial/PostGIS deferred, containment-cycle check transactional-not-serialized disclosed; evidence location-disposition.md"
       }
     },
     "superseded_candidates_ballots_do_not_apply": [
