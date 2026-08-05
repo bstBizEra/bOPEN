@@ -78,6 +78,15 @@ TENANT_SCOPED_TABLES = (
     # tenant-scoped by RLS.
     "party_contact_points",
     "party_contact_point_verification_events",
+    # Migration 020 — MILE-4.2 Location foundation (BOPEN-LOC-001). A tenant's places, their versioned
+    # addresses, point geometry observations, external identifiers, `contains` relationships, and the
+    # append-only history — all tenant-scoped by RLS.
+    "locations",
+    "location_address_versions",
+    "location_geometry_observations",
+    "location_external_identifiers",
+    "location_relationships",
+    "location_history",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the

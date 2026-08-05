@@ -83,6 +83,15 @@ COPY_ORDER = (
     "workflow_definitions",
     "workflow_instances",
     "workflow_history",
+    # Migration 020 — Location foundation. Every child references locations by a composite FK; the
+    # history table references locations too. Parents before children: locations first, then its
+    # children, then the append-only history last.
+    "locations",
+    "location_address_versions",
+    "location_geometry_observations",
+    "location_external_identifiers",
+    "location_relationships",
+    "location_history",
 )
 
 

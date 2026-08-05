@@ -84,6 +84,7 @@ from kernel_core.types import (
 from decimal import Decimal
 
 from platform_kernel import contact_point_repositories as contact_point_repo
+from platform_kernel import location_repositories as location_repo
 from platform_kernel import money
 from platform_kernel import money_repositories as money_repo
 from platform_kernel import party_repositories as party_repo
@@ -182,6 +183,7 @@ audit = repo.AuditRepository()
 resources = repo.TenantResourceRepository()
 parties = party_repo.PartyRepository()
 contact_points = contact_point_repo.ContactPointRepository()
+locations = location_repo.LocationRepository()
 exchange_rates_repo = money_repo.ExchangeRateRepository()
 workflows = workflow_repo.WorkflowRepository()
 uom_units = uom_repo.CustomUnitRepository()
@@ -422,6 +424,145 @@ class RecipientSnapshotResponse(BaseModel):
     purpose: str
     party_id: str
     resolved_at: str
+
+
+# MILE-4.2 — Location foundation (BOPEN-LOC-001, DEC-P4-ENTRY §11). Coordinate fields are named
+# `longitude`/`latitude` explicitly — never a bare [a,b] pair — so a caller cannot silently transpose
+# the axes. Coordinates cross as decimal strings (validated server-side); the accuracy radius crosses as
+# {value, unit} decimal strings; precise coordinates are redacted from every audit record.
+
+
+class CreateLocationRequest(BaseModel):
+    code: str = Field(min_length=1, max_length=64)
+    name: str = Field(min_length=1, max_length=255)
+    location_type: str = Field(pattern="^(site|building|depot|office|warehouse|other)$")
+
+
+class UpdateLocationRequest(BaseModel):
+    expected_revision: int = Field(ge=1)
+    name: Optional[str] = Field(default=None, min_length=1, max_length=255)
+    code: Optional[str] = Field(default=None, min_length=1, max_length=64)
+
+
+class TransitionLocationRequest(BaseModel):
+    to_state: str = Field(pattern="^(proposed|active|inactive|retired)$")
+
+
+class LocationResponse(BaseModel):
+    location_id: str
+    tenant_id: str
+    code: str
+    name: str
+    location_type: str
+    lifecycle_state: str
+    current_address_version_id: Optional[str]
+    current_geometry_observation_id: Optional[str]
+    revision: int
+
+
+class CreateAddressVersionRequest(BaseModel):
+    country_code: str = Field(pattern="^[A-Za-z]{2}$")
+    original_input: str = Field(min_length=1)
+    premise: Optional[str] = Field(default=None, max_length=255)
+    thoroughfare: Optional[str] = Field(default=None, max_length=255)
+    locality: Optional[str] = Field(default=None, max_length=255)
+    admin_area: Optional[str] = Field(default=None, max_length=255)
+    postal_code: Optional[str] = Field(default=None, max_length=32)
+    recipient: Optional[str] = Field(default=None, max_length=255)
+    components: Optional[dict] = None
+    rendered: Optional[str] = None
+    language_tag: Optional[str] = Field(default=None, max_length=32)
+    script_tag: Optional[str] = Field(default=None, max_length=32)
+    template_profile: Optional[str] = Field(default=None, max_length=64)
+
+
+class AddressVersionResponse(BaseModel):
+    address_version_id: str
+    location_id: str
+    version_number: int
+    country_code: str
+    premise: Optional[str]
+    thoroughfare: Optional[str]
+    locality: Optional[str]
+    admin_area: Optional[str]
+    postal_code: Optional[str]
+    recipient: Optional[str]
+    original_input: str
+    rendered: Optional[str]
+    verification_state: str
+    is_current: bool
+
+
+class AccuracyRadius(BaseModel):
+    value: str = Field(pattern=r"^\d+(\.\d+)?$")
+    unit: str = Field(min_length=1, max_length=64)
+
+
+class CreateGeometryObservationRequest(BaseModel):
+    # Named fields, never a [a,b] pair: a transposition is unrepresentable at the boundary.
+    longitude: str = Field(pattern=r"^-?\d+(\.\d+)?$")
+    latitude: str = Field(pattern=r"^-?\d+(\.\d+)?$")
+    crs: str = Field(default="OGC:CRS84", max_length=32)
+    accuracy_radius: Optional[AccuracyRadius] = None
+    capture_method: Optional[str] = Field(default=None, max_length=64)
+    source: Optional[str] = Field(default=None, max_length=255)
+    confidence: Optional[str] = Field(default=None, pattern=r"^\d+(\.\d+)?$")
+    observed_at: Optional[str] = None
+
+
+class AcceptGeometryObservationRequest(BaseModel):
+    # Acceptance is a distinct authorized action; the actor is taken from the signed context, not here.
+    note: Optional[str] = Field(default=None, max_length=255)
+
+
+class RejectGeometryObservationRequest(BaseModel):
+    reason: Optional[str] = Field(default=None, max_length=255)
+
+
+class GeometryObservationResponse(BaseModel):
+    observation_id: str
+    location_id: str
+    longitude: str
+    latitude: str
+    crs: str
+    accuracy_radius_value: Optional[str]
+    accuracy_radius_unit: Optional[str]
+    capture_method: Optional[str]
+    source: Optional[str]
+    confidence: Optional[str]
+    observed_at: Optional[str]
+    acceptance_state: str
+    accepted_by: Optional[str]
+
+
+class CreateExternalIdentifierRequest(BaseModel):
+    scheme: str = Field(min_length=1, max_length=64)
+    value: str = Field(min_length=1, max_length=255)
+    issuer: Optional[str] = Field(default=None, max_length=255)
+    is_primary: bool = False
+    provenance: Optional[str] = Field(default=None, max_length=64)
+
+
+class ExternalIdentifierResponse(BaseModel):
+    external_identifier_id: str
+    location_id: str
+    scheme: str
+    value: str
+    issuer: Optional[str]
+    is_primary: bool
+
+
+class CreateRelationshipRequest(BaseModel):
+    from_location_id: str = Field(min_length=1)
+    to_location_id: str = Field(min_length=1)
+    relationship_type: str = Field(default="contains", pattern="^contains$")
+
+
+class RelationshipResponse(BaseModel):
+    relationship_id: str
+    from_location_id: str
+    to_location_id: str
+    relationship_type: str
 
 
 # MILE-4.2 — Money & Currency. The rate is a decimal STRING, never a JSON number, so a float can
@@ -2146,3 +2287,461 @@ def resolve_recipient(
         party_id=snapshot.party_id,
         resolved_at=snapshot.resolved_at.isoformat(),
     )
+
+
+# MILE-4.2 — Location foundation endpoints (BOPEN-LOC-001, DEC-P4-ENTRY §11). Bearer-gated: every one
+# runs behind resolve_context, so the tenant comes from the signed context and every row is created and
+# read under that tenant's row-level-security scope. A geometry observation is a CANDIDATE until an
+# explicit `accept` (LOC-INV-06). Precise coordinates are redacted from every audit record (LOC-INV-14):
+# the audit carries the location/observation id and the action, never a longitude or latitude.
+
+
+def _translate_location_error(exc: location_repo.LocationError):
+    if isinstance(exc, location_repo.LocationNotFoundError):
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+    if isinstance(exc, location_repo.LocationConflictError):
+        return HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    if isinstance(exc, location_repo.RelationshipCycleError):
+        return HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
+    if isinstance(
+        exc,
+        (
+            location_repo.CoordinateValidityError,
+            location_repo.ProviderAcceptanceError,
+            location_repo.LocationValidationError,
+        ),
+    ):
+        return HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+    return HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc))
+
+
+def _location_response(loc: location_repo.StoredLocation) -> LocationResponse:
+    return LocationResponse(
+        location_id=loc.id,
+        tenant_id=loc.tenant_id,
+        code=loc.code,
+        name=loc.name,
+        location_type=loc.location_type,
+        lifecycle_state=loc.lifecycle_state,
+        current_address_version_id=loc.current_address_version_id,
+        current_geometry_observation_id=loc.current_geometry_observation_id,
+        revision=loc.revision,
+    )
+
+
+def _address_response(a: location_repo.StoredAddressVersion) -> AddressVersionResponse:
+    return AddressVersionResponse(
+        address_version_id=a.id,
+        location_id=a.location_id,
+        version_number=a.version_number,
+        country_code=a.country_code,
+        premise=a.premise,
+        thoroughfare=a.thoroughfare,
+        locality=a.locality,
+        admin_area=a.admin_area,
+        postal_code=a.postal_code,
+        recipient=a.recipient,
+        original_input=a.original_input,
+        rendered=a.rendered,
+        verification_state=a.verification_state,
+        is_current=a.effective_to is None,
+    )
+
+
+def _geometry_response(g: location_repo.StoredGeometryObservation) -> GeometryObservationResponse:
+    return GeometryObservationResponse(
+        observation_id=g.id,
+        location_id=g.location_id,
+        longitude=_decimal_str(g.longitude),
+        latitude=_decimal_str(g.latitude),
+        crs=g.crs,
+        accuracy_radius_value=(
+            _decimal_str(g.accuracy_radius_value) if g.accuracy_radius_value is not None else None
+        ),
+        accuracy_radius_unit=g.accuracy_radius_unit,
+        capture_method=g.capture_method,
+        source=g.source,
+        confidence=_decimal_str(g.confidence) if g.confidence is not None else None,
+        observed_at=g.observed_at.isoformat() if g.observed_at is not None else None,
+        acceptance_state=g.acceptance_state,
+        accepted_by=g.accepted_by,
+    )
+
+
+def _external_identifier_response(
+    e: location_repo.StoredExternalIdentifier,
+) -> ExternalIdentifierResponse:
+    return ExternalIdentifierResponse(
+        external_identifier_id=e.id,
+        location_id=e.location_id,
+        scheme=e.scheme,
+        value=e.value,
+        issuer=e.issuer,
+        is_primary=e.is_primary,
+    )
+
+
+def _relationship_response(r: location_repo.StoredRelationship) -> RelationshipResponse:
+    return RelationshipResponse(
+        relationship_id=r.id,
+        from_location_id=r.from_location_id,
+        to_location_id=r.to_location_id,
+        relationship_type=r.relationship_type,
+    )
+
+
+@app.post("/v1/locations", response_model=LocationResponse, status_code=status.HTTP_201_CREATED)
+def create_location(
+    body: CreateLocationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> LocationResponse:
+    try:
+        created = locations.create(ctx.tenant_id, body.code, body.name, body.location_type)
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:create",
+        resource_type="location", resource_id=created.id,
+    )
+    return _location_response(created)
+
+
+@app.get("/v1/locations", response_model=list[LocationResponse])
+def list_locations(
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[LocationResponse]:
+    return [_location_response(loc) for loc in locations.list(ctx.tenant_id, limit=limit)]
+
+
+@app.get("/v1/locations/{location_id}", response_model=LocationResponse)
+def read_location(
+    location_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> LocationResponse:
+    try:
+        loc = locations.get(ctx.tenant_id, normalise_id(location_id, "location_id"))
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    return _location_response(loc)
+
+
+@app.put("/v1/locations/{location_id}", response_model=LocationResponse)
+def update_location(
+    location_id: str,
+    body: UpdateLocationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> LocationResponse:
+    try:
+        updated = locations.update(
+            ctx.tenant_id, normalise_id(location_id, "location_id"),
+            body.expected_revision, name=body.name, code=body.code,
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:update",
+        resource_type="location", resource_id=location_id,
+    )
+    return _location_response(updated)
+
+
+@app.post("/v1/locations/{location_id}/transition", response_model=LocationResponse)
+def transition_location(
+    location_id: str,
+    body: TransitionLocationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> LocationResponse:
+    try:
+        moved = locations.transition(
+            ctx.tenant_id, normalise_id(location_id, "location_id"), body.to_state, ctx.principal_id
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:transition",
+        resource_type="location", resource_id=location_id,
+    )
+    return _location_response(moved)
+
+
+# -- Address versions ------------------------------------------------------------------
+
+
+@app.post(
+    "/v1/locations/{location_id}/address-versions",
+    response_model=AddressVersionResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_address_version(
+    location_id: str,
+    body: CreateAddressVersionRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> AddressVersionResponse:
+    try:
+        created = locations.add_address_version(
+            ctx.tenant_id, normalise_id(location_id, "location_id"),
+            country_code=body.country_code.upper(), original_input=body.original_input,
+            premise=body.premise, thoroughfare=body.thoroughfare, locality=body.locality,
+            admin_area=body.admin_area, postal_code=body.postal_code, recipient=body.recipient,
+            components=body.components, rendered=body.rendered, language_tag=body.language_tag,
+            script_tag=body.script_tag, template_profile=body.template_profile,
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:address_add",
+        resource_type="location", resource_id=location_id,
+    )
+    return _address_response(created)
+
+
+@app.get(
+    "/v1/locations/{location_id}/address-versions",
+    response_model=list[AddressVersionResponse],
+)
+def list_address_versions(
+    location_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[AddressVersionResponse]:
+    return [
+        _address_response(a)
+        for a in locations.list_address_versions(
+            ctx.tenant_id, normalise_id(location_id, "location_id"), limit=limit
+        )
+    ]
+
+
+@app.post(
+    "/v1/locations/{location_id}/address-versions/{version_id}/set-current",
+    response_model=AddressVersionResponse,
+)
+def set_current_address_version(
+    location_id: str,
+    version_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> AddressVersionResponse:
+    try:
+        current = locations.set_current_address_version(
+            ctx.tenant_id, normalise_id(location_id, "location_id"),
+            normalise_id(version_id, "version_id"),
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:address_set_current",
+        resource_type="location", resource_id=location_id,
+    )
+    return _address_response(current)
+
+
+# -- Geometry observations -------------------------------------------------------------
+
+
+@app.post(
+    "/v1/locations/{location_id}/geometry-observations",
+    response_model=GeometryObservationResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_geometry_observation(
+    location_id: str,
+    body: CreateGeometryObservationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> GeometryObservationResponse:
+    """Record a point observation as a CANDIDATE. HTTP 201 does NOT mean accepted (LOC-INV-06): the
+    observation must be accepted by a separate authorized action before it becomes current geometry."""
+    observed_at = None
+    if body.observed_at:
+        try:
+            observed_at = datetime.fromisoformat(body.observed_at)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="observed_at must be an ISO-8601 timestamp",
+            )
+    try:
+        created = locations.observe(
+            ctx.tenant_id, normalise_id(location_id, "location_id"),
+            body.longitude, body.latitude, crs=body.crs,
+            accuracy_radius_value=(body.accuracy_radius.value if body.accuracy_radius else None),
+            accuracy_radius_unit=(body.accuracy_radius.unit if body.accuracy_radius else None),
+            capture_method=body.capture_method, source=body.source,
+            confidence=(Decimal(body.confidence) if body.confidence is not None else None),
+            observed_at=observed_at,
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    # Precise coordinates are redacted from the audit record (LOC-INV-14): id and action only.
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:geometry_observe",
+        resource_type="location_geometry_observation", resource_id=created.id,
+    )
+    return _geometry_response(created)
+
+
+@app.get(
+    "/v1/locations/{location_id}/geometry-observations",
+    response_model=list[GeometryObservationResponse],
+)
+def list_geometry_observations(
+    location_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[GeometryObservationResponse]:
+    return [
+        _geometry_response(g)
+        for g in locations.list_observations(
+            ctx.tenant_id, normalise_id(location_id, "location_id"), limit=limit
+        )
+    ]
+
+
+@app.post(
+    "/v1/locations/{location_id}/geometry-observations/{observation_id}/accept",
+    response_model=GeometryObservationResponse,
+)
+def accept_geometry_observation(
+    location_id: str,
+    observation_id: str,
+    body: AcceptGeometryObservationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> GeometryObservationResponse:
+    """Accept a candidate observation — a distinct authorized action (LOC-INV-05/06). The actor is the
+    signed context's principal; provenance (source/observed_at/confidence) must be present."""
+    try:
+        accepted = locations.accept_observation(
+            ctx.tenant_id, normalise_id(observation_id, "observation_id"), ctx.principal_id
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:geometry_accept",
+        resource_type="location_geometry_observation", resource_id=observation_id,
+    )
+    return _geometry_response(accepted)
+
+
+@app.post(
+    "/v1/locations/{location_id}/geometry-observations/{observation_id}/reject",
+    response_model=GeometryObservationResponse,
+)
+def reject_geometry_observation(
+    location_id: str,
+    observation_id: str,
+    body: RejectGeometryObservationRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> GeometryObservationResponse:
+    try:
+        rejected = locations.reject_observation(
+            ctx.tenant_id, normalise_id(observation_id, "observation_id"), body.reason
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:geometry_reject",
+        resource_type="location_geometry_observation", resource_id=observation_id,
+    )
+    return _geometry_response(rejected)
+
+
+# -- External identifiers --------------------------------------------------------------
+
+
+@app.post(
+    "/v1/locations/{location_id}/external-identifiers",
+    response_model=ExternalIdentifierResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_external_identifier(
+    location_id: str,
+    body: CreateExternalIdentifierRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> ExternalIdentifierResponse:
+    try:
+        created = locations.add_external_identifier(
+            ctx.tenant_id, normalise_id(location_id, "location_id"),
+            body.scheme, body.value, issuer=body.issuer, is_primary=body.is_primary,
+            provenance=body.provenance,
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:external_id_add",
+        resource_type="location", resource_id=location_id,
+    )
+    return _external_identifier_response(created)
+
+
+@app.get(
+    "/v1/locations/{location_id}/external-identifiers",
+    response_model=list[ExternalIdentifierResponse],
+)
+def list_external_identifiers(
+    location_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[ExternalIdentifierResponse]:
+    return [
+        _external_identifier_response(e)
+        for e in locations.list_external_identifiers(
+            ctx.tenant_id, normalise_id(location_id, "location_id"), limit=limit
+        )
+    ]
+
+
+# -- Relationships ---------------------------------------------------------------------
+
+
+@app.post(
+    "/v1/locations/{location_id}/relationships",
+    response_model=RelationshipResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_relationship(
+    location_id: str,
+    body: CreateRelationshipRequest,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+) -> RelationshipResponse:
+    """Add a `contains` edge. A self-link, a duplicate live edge, a second live parent, and a
+    containment cycle are all refused (LOC-INV-09)."""
+    try:
+        created = locations.add_contains(
+            ctx.tenant_id,
+            normalise_id(body.from_location_id, "from_location_id"),
+            normalise_id(body.to_location_id, "to_location_id"),
+        )
+    except location_repo.LocationError as exc:
+        raise _translate_location_error(exc)
+    audit.record(
+        tenant_id=ctx.tenant_id, principal_id=ctx.principal_id, context_id=ctx.context_id,
+        correlation_id=ctx.correlation_id, event_type="domain", action="location:relationship_add",
+        resource_type="location_relationship", resource_id=created.id,
+    )
+    return _relationship_response(created)
+
+
+@app.get(
+    "/v1/locations/{location_id}/relationships",
+    response_model=list[RelationshipResponse],
+)
+def list_relationships(
+    location_id: str,
+    ctx: Annotated[ResolvedContext, Depends(resolve_context)],
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[RelationshipResponse]:
+    return [
+        _relationship_response(r)
+        for r in locations.list_relationships(
+            ctx.tenant_id, normalise_id(location_id, "location_id"), limit=limit
+        )
+    ]
