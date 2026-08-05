@@ -210,3 +210,56 @@ Both new tables (`party_contact_points`, `party_contact_point_verification_event
 
 The build proceeds tests-first under the governed cycle; an independent **Codex** ballot follows under
 `EBIV` §6.5, then operator disposition.
+
+---
+
+## 11. Amendment 2026-08-05 — Location foundation authorized
+
+> **Change note (extend-only).** Recorded **before** any build, per the §7/§8 sequencing lesson. The
+> operator authorized the Location foundation after the advisory review
+> ([`REVIEW-MILE-4.2-LOCATION`](../01-product/MILE-4.2-location-foundation-review.md)) closed with no
+> blocking boundary defect. Scope follows [`RESEARCH-MILE-4.2-LOCATION`](../01-product/MILE-4.2-location-foundation-research.md)
+> §11 with the LOC-D resolutions below.
+
+### 11.1 Decision
+
+**The Location foundation is AUTHORIZED** — a tenant-scoped Location Registry (`BOPEN-LOC-001`): stable
+immutable place identity, versioned addresses, point geometry observations with explicit acceptance,
+external identifiers, and a bounded `contains` relationship. Keystone (`LOC-INV-04` + `LOC-INV-06`):
+**coordinate validity** (a NaN/∞, out-of-range, reversed-axis, or non-Point/unsupported-CRS coordinate
+is refused) and **provider distrust** (an observation is a *candidate* requiring an explicit authorized
+acceptance — "HTTP 200 does not mean accepted"; identity is never derived from a formatted address,
+coordinate, or provider ID).
+
+**LOC-D resolutions (operator, transcribed):**
+
+| Decision | Resolution |
+| :--- | :--- |
+| `LOC-D-01` | Validation fixtures exercise **PropTech operating-address** and **bFleet depot** (schema is consumer-neutral; both exercise identity/address/point/containment/privacy) |
+| `LOC-D-02` | Small governed `location_type` vocabulary via CHECK (`site`,`building`,`depot`,`office`,`warehouse`,`other`), versioned — not arbitrary strings |
+| `LOC-D-03` | Owned structured address components informed by ISO 19160-1 / UPU S42; **Laos/Thailand profile prioritized**; original input preserved separately from normalized + rendered forms |
+| `LOC-D-04` | Point storage **`NUMERIC(9,6)` exact decimal** longitude/latitude (never float), round-trip proven; **accuracy radius carried as a UOM `length` `Quantity`** (m/km, exact `Decimal`), recorded separately from numeric precision |
+| `LOC-D-05` | First-slice relationship **`contains` only**; one active parent per hierarchy; **containment cycles refused by a real `WITH RECURSIVE` check**, not a row CHECK |
+| `LOC-D-06` | Precise geometry is higher-sensitivity: **redacted from logs/events/default exports**; `location.geometry.read_precise` a separate capability; coarsening is presentation, not an accuracy claim |
+| `LOC-D-07` | **Production provider selection DEFERRED** (needs its own ADR); the first slice ships the owned registry + acceptance discipline; a deterministic fake adapter serves contract tests only; the live `geocode.request` HTTP flow ships with the provider ADR |
+| `LOC-D-08` | Acceptance requires an **explicit authorized action**; no observation auto-accepts on HTTP success; confidence/provenance gate acceptance (`LOC-INV-05`) |
+| `LOC-D-09` | Nearby/spatial/autocomplete **search DEFERRED** (avoids a cross-tenant existence oracle, `LOC-INV-01`) |
+| `LOC-D-10` | PostGIS / geofence / polygon / alternate CRS **DEFERRED** to a later ADR; Point + `OGC:CRS84` only |
+| `LOC-D-11` | Jurisdiction refs treated as external versioned references via `ExternalLocationIdentifier`, not bOPEN legal truth |
+| `LOC-D-12` | Deletion = **retire/tombstone** once referenced; append-only history; `ON DELETE RESTRICT` on durable referents |
+
+The API names coordinate fields **`longitude`/`latitude`** explicitly (not a bare `[a,b]`) to make a
+silent axis transposition unrepresentable. The six tables (`locations`, `location_address_versions`,
+`location_geometry_observations`, `location_external_identifiers`, `location_relationships`, and
+append-only `location_history`) enter `TENANT_SCOPED_TABLES` and the trial→paid `COPY_ORDER`
+(parents before children).
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the Location foundation** per the scope and LOC-D resolutions above |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-05 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The build proceeds tests-first under the governed cycle; an independent **Codex** ballot follows under
+`EBIV` §6.5, then operator disposition.
