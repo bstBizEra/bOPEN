@@ -236,7 +236,7 @@ self_certification:
   certification_scope: advisory_only
   execution_authority: false
   approval_authority: false
-  ready_for_operator_review: true
+  ready_for_operator_review: false   # independent re-review 2026-08-06: STILL NEEDS REVISION
 ```
 
 > This ADR recommends an adapter/provider contract only. It authorizes nothing, builds nothing, and selects no provider. A build — and any concrete provider — requires a separate operator authorization recorded first; Notification remains gated by DEC-P4-ENTRY §9.

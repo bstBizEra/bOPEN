@@ -445,7 +445,7 @@ self_certification:
   certification_scope: advisory_only
   execution_authority: false
   approval_authority: false
-  ready_for_operator_review: true
+  ready_for_operator_review: false   # independent re-review 2026-08-06: STILL NEEDS REVISION
 ```
 
 > This ADR recommends an architecture only. It authorizes nothing and builds nothing. Email is the **proposed first implementation scope**; the specified test adapter is a deterministic fake — no ADR here authorizes a channel, an adapter, a build, a provider activation, or a production activation. A build requires a separate operator authorization recorded first; Notification remains gated by DEC-P4-ENTRY §9. Verification, disposition, deployment, provider activation, and production activation remain distinct later operator acts.
