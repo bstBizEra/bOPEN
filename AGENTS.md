@@ -657,3 +657,48 @@ derived from the Refusal Matrix should be implemented tests-first before code re
 2. **Stage 2 — Refusal Matrix & Plan**: Define explicit rejection criteria and test plan.
 3. **Stage 3 — Tests-First Build**: Implement negative and positive tests before realization.
 4. **Stage 4 — Empirical Verification**: Validate against automated suites (`validate_repository.py`, `check_clean_room.py`, canonical tests).
+
+---
+
+## 25. PROPOSED (not in force) — Governed Engineering Loop (the maker cycle)
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** This section carries **no** normative authority and does not
+> replace the in-force §5 workflow. It is recorded as a proposal only and binds nothing until an
+> explicit operator authorization with verifiable Git provenance is recorded (per
+> `BOPEN-GOV-EBIV-001` §2: an agent has no authority to make a normative specification binding by
+> itself). It **describes** the governed maker cycle already practised across the disposed MILE-4.2
+> foundations (Party, Money, Workflow, UOM, Party ContactPoint, Location); promoting it to a normative
+> §5 revision is the operator's decision.
+
+### 25.1 The loop
+
+0. **Authorize-before-build.** A phase / foundation / work-package entry MUST be recorded in a `DEC`
+   (e.g. `DEC-P4-ENTRY`) as an explicit operator decision **before** any build. A maker may not infer
+   authorization from a verbal "start X"; an independent verifier fail-closes if the entry is unrecorded.
+1. **Scope & invariants.** Identify the accepted work-package ID, the governing artifacts/ADRs, and the
+   keystone invariant(s) the slice defends; define the **Refusal Matrix** — the inputs, boundary
+   violations, invalid transitions, and cross-tenant leaks the system MUST reject loudly.
+2. **Tests-first.** Write the negative (refusal) tests and the positive tests **before** the
+   implementation.
+3. **Migration + forced RLS.** New tenant-scoped tables get `ENABLE`+`FORCE ROW LEVEL SECURITY`,
+   composite `(tenant_id, parent_id)` foreign keys, and append-only history with `ON DELETE RESTRICT`.
+   **Register every new tenant-scoped table in BOTH `TENANT_SCOPED_TABLES` and the trial→paid
+   `COPY_ORDER`** (parents before children) — the `INV-MIGRATE-COVERAGE-01` control fails the suite
+   otherwise.
+4. **Repository + bearer-gated endpoints.** All data access runs through `db.tenant_session`; there is
+   no unscoped read of a tenant-owned table.
+5. **Trace invariants (EBIV R2).** Every balloted proposition gets a row in
+   `invariant-traceability.csv` mapping it to a named executed test.
+6. **Maker submission.** Anchored to an exact candidate commit + blob SHAs. A passing suite carries no
+   verdict weight (`EBIV` §8).
+7. **Independent verification.** An eligible verifier that authored **no** artifact under review (not
+   the maker) independently probes the claims and records a ballot in `ballots.jsonl` (admissibility
+   R1–R5). Verdicts are read from the ballot **object**, never from prose.
+8. **Operator disposition.** The **Completion Authority** — Human or named authority, **not** an agent
+   role — accepts or rejects the assembled verdict and acknowledges the disclosed-risk record.
+   Disposition is reserved to the operator; the maker never self-disposes.
+
+### 25.2 Identity hygiene
+
+Reset `git config user.email` to the acting agent's registered identity (`<agent>@bst.local`, §21.1)
+**before every commit** — a shared workspace lets another agent's identity persist in the config.
