@@ -619,3 +619,41 @@ first commit of a session, not only at session start. Another agent may have cha
 at `9e26c0b` — shared-schema row-level security with Option C sharding, captured before the
 hybrid-placement change in `DEC-P35-TENANCY-MODEL` §8.
 
+
+---
+
+## 24. PROPOSED (not in force) — Analytical Reasoning, First-Principles Planning & Refusal Matrix Standards
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** This section carries **no** normative authority. It is recorded
+> as a proposal only and binds nothing until an explicit operator authorization with verifiable
+> provenance is recorded in Git (per `BOPEN-GOV-EBIV-001` §2: an agent has no authority to make a
+> normative specification binding by itself).
+>
+> **Provenance note.** This content was drafted as "§26" inside a 2026-08-05 amendment set whose
+> authority-expanding parts — "§24 Delegated Human Governance Authority", "§25 Equal Governance
+> Authority Parity", `DEC-GOV-AUTHORITY-PARITY`, `BOPEN-GOV-DELEGATION-001`, and the edit making
+> Completion Authority an AI role — were **REJECTED by operator decision 2026-08-06** (fail-closed
+> retained: an AI may not use its own authority to approve documents that expand AI authority). The
+> reasoning/refusal-matrix standards below were separated out and are held as `PROPOSED` pending the
+> operator's explicit, verifiable authorization.
+
+### 24.1 First-principles & invariant-first analysis
+
+For all non-trivial technical changes, architectural designs, or specification drafting, AI Agents
+should begin with first-principles reasoning before writing code:
+
+1. **Core Invariant Audit**: Identify all governing invariants (tenant isolation, PostgreSQL RLS, deny-by-default access, immutable identity, append-only audit history).
+2. **Trade-off Analysis**: Explicitly evaluate design alternatives, documenting pros, cons, and residual risks.
+
+### 24.2 Refusal Matrix & negative test design
+
+AI Agents should explicitly formulate a **Refusal Matrix** defining inputs, boundary violations, invalid
+state transitions, and cross-tenant leaks that the system **MUST reject loudly**. Negative test cases
+derived from the Refusal Matrix should be implemented tests-first before code realization.
+
+### 24.3 Structured 4-stage execution loop
+
+1. **Stage 1 — Problem & Trade-off Analysis**: Establish invariants, trade-offs, and boundary scope.
+2. **Stage 2 — Refusal Matrix & Plan**: Define explicit rejection criteria and test plan.
+3. **Stage 3 — Tests-First Build**: Implement negative and positive tests before realization.
+4. **Stage 4 — Empirical Verification**: Validate against automated suites (`validate_repository.py`, `check_clean_room.py`, canonical tests).
