@@ -105,3 +105,56 @@ the new path to confirm the change that created it would be circular.
 
 Work package document. Confers no implementation, approval, merge, release or production authority.
 Acceptance of this package authorizes the build described here and nothing beyond it.
+
+---
+
+## 10. Disclosed finding 2026-08-08 — the shortfall moved from 26 to 27, and why that is correct
+
+§8 required that output be unchanged for candidates without dispositions, and the 26 shortfalls
+stay reported. **The count moved to 27.** Recorded rather than reconciled, because the movement is
+the change working.
+
+### 10.1 What happened
+
+Before `WP-P35-07`, quorum was counted from *distinct attributable verifiers* — `verdict` and
+`admissibility` were never read. Exactly one candidate in the repository had two verifiers and was
+therefore the only one not in shortfall:
+
+`88e6ed2` — *"fix(gateway): the caller could choose the upstream host — unauthenticated SSRF"*.
+
+It carries confirmations from `codex` **and** `gemini`, and **two `REFUTED` ballots from `gemini`**
+with reproducible probes:
+
+- `P35-04R-15` — *"Client request target /v1/../admin and /v1/%2E%2E/admin reached kernel as /admin
+  due to Hono decoding and URL dot-segment normalisation."*
+- `P35-04R-16` — *"buildUpstreamUrl with configured base path /base and path /../../admin produced
+  pathname /admin, escaping the configured base path prefix."*
+
+Under EBIV §6.2 one reproducible `REFUTED` blocks, discharged only by a failed reproduction. The old
+count could not see this, so **the repository's single "quorum met" candidate was in fact blocked by
+two unresolved refutations of an authorization-boundary bypass**, and had been since 2026-07-31.
+
+The defect itself was remediated at a later candidate — `1b39a30`, *"fix(gateway): stop decoding the
+request target, and refuse…"*. That is the correct shape: the refuted candidate stays refuted, and
+the fix carries its own candidate and its own ballots. Nothing here says the gateway is unfixed; it
+says the old candidate was never confirmable.
+
+### 10.2 Two further exclusions the new reading surfaces
+
+- **Seven candidates** hold both `CONFIRMED` and `REFUTED` ballots from `codex` — a verifier
+  confirming some propositions and refuting others on the same candidate. All were already in
+  shortfall; they are now reported as *blocked by refutation* rather than merely *short*, which is
+  a materially different state.
+- **`ce97561`** holds a ballot inadmissible on **R2** — the proposition was not registered in
+  `invariant-traceability.csv`. Correct behaviour observed, inadmissible verdict (EBIV §6.5.3).
+
+### 10.3 Judgment recorded for review
+
+A refutation is cast against a *proposition*, while quorum here is counted per *candidate*. This
+implementation blocks the **whole candidate** when any proposition on it is refuted. That is the
+fail-closed reading and matches §6.2's wording, but it is a judgment rather than a quotation, and a
+reviewer should test it rather than inherit it.
+
+**Consequence to be explicit about:** zero candidates in this repository are currently confirmable
+under §6.1. Every one of the 27 is either short, refuted, or both. That was true before this change;
+only its visibility is new.
