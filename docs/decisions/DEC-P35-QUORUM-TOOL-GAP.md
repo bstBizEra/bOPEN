@@ -181,3 +181,31 @@ the full governed cycle, not a patch:
 
 A proposed work-package ID and the entry-gate record are still required before any code is written
 (§5 step 2). **This amendment authorizes the direction, not the build.**
+
+## 8. Amendment 2026-08-08 — entry gate GO; `WP-P35-07` accepted
+
+> **Change note (extend-only).** Recorded **before** any code is written, per `AGENTS.md` §25.1
+> step 0 and §3.1's entry-gate requirement.
+
+§7.4 authorized the direction but explicitly **not** the build, and named what was still missing: a
+work-package ID and an entry-gate record. Both are now supplied.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **Entry gate GO.** [`WP-P35-07`](../work-packages/WP-P35-07-QUORUM-DISPOSITION-RECORD.md) is bound as the accepted work package for the disposition record and §6.5 quorum reporting |
+| **Scope** | Exactly `WP-P35-07` §2. Writing any disposition, and confirming or disposing any candidate, remain out of scope |
+| **Baseline** | `arch-baseline/2026-08-08-pre-quorum-disposition`, tagged **before** the change (§23) |
+| **Roles** | Maker: Claude (excluded from voting, EBIV §3). Independent verifier: Codex. Completion Authority: operator |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture & Engineering Authority |
+| **Decision timestamp** | 2026-08-08 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+**The recursion is recorded in `WP-P35-07` §5 and repeated here because it is easy to miss:** the
+first artifact the new mechanism could confirm is the mechanism itself. `WP-P35-07` is therefore
+verified and disposed under the **existing** rules — a Codex ballot plus an operator disposition in
+prose — and `dispositions.jsonl` may carry entries only afterwards. Confirming the change through the
+path it creates would be circular.
+
+Acceptance of the package authorizes the build described in it and nothing beyond it. It does not
+confirm Location, does not dispose any of the 26 candidates, and does not alter §6.1, §3, §6.2 or
+§6.3.
