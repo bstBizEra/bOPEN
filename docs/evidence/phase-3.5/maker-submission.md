@@ -183,3 +183,38 @@ in the real record. `dispositions.jsonl` is read if present; **none is written b
    `dispositions.jsonl` to confirm the change that created it would be circular (`WP-P35-07` §5).
 5. **Untested composition.** No candidate in the real repository has a disposition, so the §6.5
    path has been exercised only in fixtures, never against live evidence.
+
+### Correction 2026-08-08 — the recorded suite result is NOT a candidate-bound result
+
+The "Checks" section above reports `Ran 680 tests in 642.998s / OK` beneath a submission anchored to
+`bdc07e5` / `e0121de`. **That figure was not measured on that tree and must not be read as though it
+were.**
+
+`tools/run_tests.py` discovers tests by walking the working tree (`loader.discover`). The run was
+executed in the primary workspace while it carried 21 uncommitted items belonging to an unrelated
+in-flight change-set, and the log shows it collected them:
+
+- `tests/isolation/test_notification_isolation.py` — **untracked, and absent from the candidate tree
+  entirely** (20 occurrences in the run log)
+- `tests/isolation/test_rls_database_behavior.py` — modified relative to the candidate's blob
+  (35 occurrences)
+
+A candidate-bound run would therefore have a different test count. The recorded `OK` says the dirty
+workspace was green; it does not establish that `e0121de` is green.
+
+**Consequences, recorded rather than repaired, because repairing requires a clean checkout that is
+not currently available:**
+
+1. The `Checks` bullet for the canonical suite is **withdrawn** as candidate evidence. The three
+   static checks (`validate_repository`, `check_clean_room`, `check_evidence_anchors`) and the
+   traceability verification are unaffected — none of them depends on test discovery.
+2. `WP-P35-07` §8 requires a green canonical suite *for the candidate*. That criterion is
+   **not yet met**, and this submission should not be balloted on the suite result until a run is
+   performed with the working tree at exactly `e0121de`.
+3. The `WP07-INV-*` propositions themselves are unaffected in substance — `test_quorum_disposition`
+   builds its own disposable repositories and touches neither the shared database nor the dirty
+   files — but the *evidence for them* must still come from a run at the candidate.
+
+This was found by the maker after the operator questioned the workspace/candidate mismatch, not by
+the verifier. It is recorded here so that a verifier reads it as a disclosed limitation rather than
+discovering an unsound claim in the report.
