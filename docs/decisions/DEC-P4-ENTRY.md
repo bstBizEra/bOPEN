@@ -263,3 +263,53 @@ append-only `location_history`) enter `TENANT_SCOPED_TABLES` and the trial→pai
 
 The build proceeds tests-first under the governed cycle; an independent **Codex** ballot follows under
 `EBIV` §6.5, then operator disposition.
+
+---
+
+## 12. Amendment 2026-08-06 — Notification foundation build authorized
+
+> **Change note (extend-only).** Recorded on the operator's explicit authorization, per the §7/§8
+> authorize-before-build discipline. The build proceeds on a **frozen artifact set** and discharges the
+> independent re-review's build-time obligations with executed tests; it does not defer them further.
+
+### 12.1 Decision
+
+**The Notification foundation build is AUTHORIZED** — the kernel's first asynchronous runtime surface: a
+Postgres-only transactional-outbox worker with a durable fenced lease, idempotency-first duplicate-send
+safety, a mutable-current + append-only-evidence model, in-database tenant fairness, and an
+AUTH-D1-verified inbound callback plane, resolving a business recipient through the disposed ContactPoint
+resolver (never `principals.email`).
+
+**Governing frozen artifacts:**
+- `ADR-NOTIFY-WQ` v2.1 (worker/queue) and `ADR-NOTIFY-PROVIDER` v2.1 (provider/channel) — **frozen at
+  commit `96f21d3`** (the 9 re-review corrections applied; design decisions independently assessed sound).
+- `BOPEN-NOTIFY-001` (spec), the Notification test/refusal matrix, and the migration/rollback plan —
+  being finalized now; **the build's first migration does not land until these are committed (frozen).**
+- Foundation research + review; the privacy/threat model; the two independent Codex review records.
+
+**Scope of the first slice:** channels **email and phone** only (aligned to the built ContactPoint
+endpoint types); a deterministic **fake adapter** only — **no production provider is selected**
+(`NOTIFY-D-07` deferred); the worker/queue + outbox + append-only attempt/receipt evidence + the callback
+plane + the fake send path. Outbound webhooks/egress, production providers, and provider failover are
+deferred to their own decisions.
+
+**Build-time obligations (acknowledged, not deferred).** The independent re-review returned the design
+decisions sound with residual *concurrency/completeness* items. These are **discharged during the
+governed tests-first build on live PostgreSQL**, with executed tests (EBIV R2): lease-steal / fence-CAS
+rejection; crash-mid-send → `unknown` recovery that reuses the same attempt's stored idempotency key
+(no duplicate external send); no blind resend of an expired-`sending` reclaim; concurrent-claimer
+per-tenant inflight cap not exceeded; callback-role RLS/grant/revocation parity; deterministic replay
+dedup; and append-only attempt/receipt resisting UPDATE/DELETE and parent cascade. The exit gate stays
+closed until they pass.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **AUTHORIZE the Notification foundation build** per the frozen artifact set and scope above |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Decision timestamp** | 2026-08-06 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The build follows the governed cycle (tests-first → migrations + forced RLS → repositories →
+bearer-gated endpoints + the worker/callback planes → invariant traceability → maker submission anchored
+to a candidate → independent **Codex** ballot → operator disposition). It authorizes no deployment,
+provider activation, or production; those remain distinct later acts.
