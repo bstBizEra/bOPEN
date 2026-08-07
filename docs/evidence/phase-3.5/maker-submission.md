@@ -127,3 +127,59 @@ Authored by Claude (agent, Motor role) on 2026-07-30. Advisory only —
 Anchors in §front-matter and in [`manifest.json`](manifest.json) were emitted by
 `python tools/check_evidence_anchors.py --emit`. No OID in this package was transcribed by an
 agent, which is the specific defect that made the Phase 3 manifest unverifiable.
+
+---
+
+# WP-P35-07 — machine-readable disposition record and §6.5 quorum reporting
+
+**Submitted:** 2026-08-08
+**Maker:** Claude (agent, Motor role) — disqualified from voting on this package (EBIV §3)
+**Candidate commit:** `bdc07e5e3fa651b96b1128ee94fbf09d51e85139`
+**Candidate tree:** `e0121de88dd6def62fa3948d19e5951bb70216e6`
+**Governing:** [`WP-P35-07`](../../work-packages/WP-P35-07-QUORUM-DISPOSITION-RECORD.md); [`DEC-P35-QUORUM-TOOL-GAP`](../../decisions/DEC-P35-QUORUM-TOOL-GAP.md) §7, §8
+**Baseline:** `arch-baseline/2026-08-08-pre-quorum-disposition` (taken before the change, §23)
+
+**This submission carries no verdict weight (EBIV §8).** A passing suite is not a confirmation.
+
+## Falsifiable propositions
+
+Eleven, registered as `WP07-INV-*` in `invariant-traceability.csv`. Each names one invariant, one
+executed test, and the mechanism whose removal makes that test fail. All eleven were mutated and
+observed red; the two that matter most to attack:
+
+| Proposition | Claim | Mechanism |
+| :--- | :--- | :--- |
+| `WP07-INV-OPERATOR-ONLY-01` | A disposition not committed under the operator identity is refused and reported | the `D3` guard in `load_dispositions` |
+| `WP07-INV-REFUTE-BLOCK-02` | A refutation blocks even alongside a genuine confirmation | the `if refuted:` branch in `main` |
+
+## What changed
+
+`tools/check_ballot_attribution.py` learns three things it did not do before, each required by
+§6.5's wording *"one admissible CONFIRMED ballot"*: it reads `verdict`, it reads `admissibility`,
+and it accepts `--root` so negative cases can be staged in a fixture rather than as false evidence
+in the real record. `dispositions.jsonl` is read if present; **none is written by this package.**
+
+## Checks
+
+- Canonical suite, serialized: `Ran 680 tests in 642.998s` / `OK` / exit 0 / 0 FAIL-ERROR.
+- `validate_repository.py`, `check_clean_room.py`, `check_evidence_anchors.py` — pass.
+- Traceability verified both ways: no row names a missing test; no test lacks a row.
+
+## Limitations and disclosed risks
+
+1. **A judgment, not a quotation.** A refutation is cast against a *proposition*, but this blocks
+   the whole *candidate*. That is the fail-closed reading of §6.2 and the reviewer should test it
+   rather than inherit it. If the intended semantics are per-proposition, this is wrong and the
+   test `test_R4b` encodes the wrong contract.
+2. **The shortfall moved 26 → 27** (`WP-P35-07` §10). `88e6ed2` was the only candidate the old
+   count treated as quorum-met and it holds two `REFUTED` ballots from `gemini`; it has been
+   blocked under §6.2 since 2026-07-31 unseen. **Zero of 27 candidates are currently confirmable
+   under §6.1.** True before this change; only now visible.
+3. **`--root` is a new surface.** It cannot forge a verdict about the real repository — a fixture
+   root yields a verdict about the fixture — but it is a way to run the checker against something
+   that is not this repository, and the reviewer should confirm the canonical invocation is
+   unaffected.
+4. **The recursion.** This package must be disposed under the *existing* rules. Using
+   `dispositions.jsonl` to confirm the change that created it would be circular (`WP-P35-07` §5).
+5. **Untested composition.** No candidate in the real repository has a disposition, so the §6.5
+   path has been exercised only in fixtures, never against live evidence.
