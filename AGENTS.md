@@ -727,6 +727,11 @@ Reset `git config user.email` to the acting agent's registered identity (`<agent
 > artifact, ADR or contract. It is recorded here in adapted form. Ten of its mechanisms conflict with
 > in-force rules and are recorded as **excluded** in §26.6 rather than silently dropped or silently
 > adopted, per §1.
+>
+> **v0.9 supersedes v0.6 — see §27.** This section continues to govern the v0.4/v0.6 mechanisms
+> unchanged. §27 covers only what v0.9 adds, and its §27.1 records that v0.9 restates this
+> repository's own governance **inaccurately**: where an external document mirrors a `DEC` back at
+> us, the `DEC` governs and the mirror is not evidence of anything.
 
 ### 26.1 What this adds, and what it does not touch
 
@@ -901,3 +906,92 @@ Binding constraints if promoted:
 3. Any reconciliation surface that ingests tenant-bearing data — telemetry, error payloads, live row
    samples — is tenant-owned data movement and requires the §8 controls, including cross-tenant
    negative tests, before it is built. None exist today.
+
+---
+
+## 27. PROPOSED (not in force) — URE-Loop v0.9: capability baseline, stage gates, ballot governance
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** No normative authority. Does not replace §5, amend §25, or
+> extend the one promotion recorded in §26 (`DEC-URE-ARCHITECT-LENS`, §26.2). Binds nothing until an
+> explicit operator authorization with verifiable Git provenance is recorded (`BOPEN-GOV-EBIV-001`
+> §2).
+>
+> **Provenance note.** *URE-Loop v0.9* was supplied by the operator on 2026-08-07, superseding v0.6
+> (§26). It adds four mechanisms: §9 governance lens binding, §10 stage-gate and documentation
+> standard, §11 capability matrix, §12 ballot governance. §26 continues to govern the v0.4/v0.6
+> mechanisms; this section covers only what v0.9 adds. **Read §27.1 before anything else in this
+> section.**
+
+### 27.1 A provenance warning that is specific to v0.9
+
+v0.9 §9 restates **bOPEN's own governance** — it quotes `DEC-URE-ARCHITECT-LENS`, `AGENTS.md` §26.2,
+`agent-identity-register.json`, EBIV R1–R5 and `approver: BizEra` back at this repository.
+
+**An external document that mirrors our governance is not a source of truth about it** (§4). It is a
+lossy copy, and it is the most hazardous kind of source precisely because it reads as authoritative.
+The mirror in v0.9 §9 already contains two misstatements of rules that are in force here:
+
+| v0.9 §9 says | What is actually in force |
+| :--- | :--- |
+| *"NOT a Verifier Seat: EBIV R1-R5 governs **human** ballot voting"* | R1–R5 is the admissibility floor for **agent-cast** verification ballots. Agents are the verifiers here. On 2026-08-07 Codex cast 31 admissible Location ballots at commit `64a2bfa`. The lens is not a verifier seat because it is a lens, **not** because ballots are human-only |
+| *"NOT a Quorum Contribution: Cannot count toward formal **release** quorum"* | Quorum is a **verification** quorum. It never authorizes release — §20.3 and EBIV keep release, deployment and production activation outside agent authority entirely, quorum or no quorum. Conflating the two invents an authority path that does not exist |
+
+**Rule: read the `DEC`, never the mirror.** Where v0.9 §9 and `DEC-URE-ARCHITECT-LENS` disagree, the
+`DEC` governs and v0.9 is simply wrong about this repository.
+
+### 27.2 Adopted as vocabulary — the capability baseline (v0.9 §11)
+
+v0.9 §11's eight skills and nine layers largely restate obligations this repository already carries.
+Adopting them costs nothing and gives shared naming:
+
+| v0.9 §11 skill | Already required by |
+| :--- | :--- |
+| Verification Before Completion (its #1 control) | `BOPEN-ENG-LOOP-001` §3; §19.4; EBIV §8 — a `CANNOT RUN` or an unread summary line is not a pass |
+| TDD contract `RED → GREEN → REFACTOR → VERIFY` | §25.1 step 2 tests-first; §24.3 stage 3; the §5 probe-then-mutate discipline |
+| Requirements traceability | §5.7; EBIV R2; `invariant-traceability.csv` |
+| Systematic debugging, smallest sufficient fix | §5.5 smallest coherent change; `BOPEN-ENG-LOOP-001` §2.4 |
+| Security & authorization review | §9, §11, §13 |
+| Subagent isolation with structured statuses | §26.4, bounded by its three floors |
+| Safe integration / expand-migrate-contract | §14 |
+
+The one genuine addition is the **structured status vocabulary** — `DONE`, `DONE_WITH_CONCERNS`,
+`BLOCKED`, `NEEDS_CONTEXT`. A maker report that must choose one of these cannot quietly land in the
+gap between "finished" and "finished with a disclosed limitation", which §17 currently leaves to
+prose.
+
+### 27.3 Excluded — identifier collisions that would corrupt in-force records
+
+These are not stylistic objections. Each reuses a token that already means something else here, and
+adopting it would make existing records ambiguous or false.
+
+| v0.9 mechanism | Collides with | Consequence |
+| :--- | :--- | :--- |
+| **§10 stage gates `G0`–`G7`** | §3: **"GATE G7 CLEARED (EVD-RES-001-G7)"** | bOPEN's `G7` means the normative specifications are Approved and Phase 1 kernel implementation is authorized. v0.9's `G7` means *"Stabilization Exit — Transfer to Operations"*, i.e. post-production. bOPEN's G7 is **already cleared**, so importing the ladder would make an in-force line read as though production stabilization were complete. This is the most damaging item in v0.9 |
+| **§12 "ballot" / `BAL-GOV-001`** | `docs/evidence/phase-3.5/ballots.jsonl`, §21.3, EBIV | "Ballot" is already bound to EBIV verification ballots. v0.9 §12 uses it for project-governance voting and states *"AI Agents do not vote on ballots... or count toward human quorums"* — see §27.4 |
+| **§10 `docs/pack/` 13-folder topology** | `docs/00-governance` … `docs/10-products`, `docs/adr/`, `docs/decisions/` | The numbers collide with different meanings: here `02` is requirements and `07` is security; in v0.9 `02` is ux-service-design and `07` is engineering-devsecops. Adopting it forks the documentation tree and makes every numeric reference ambiguous |
+| **§10 ADR path `docs/pack/03-architecture/adr/`** | `docs/adr/ADR-NNNN.md` (19 records) | Compounds the §26.8 numbering defect: a second ADR root guarantees duplicate IDs |
+
+### 27.4 The §12 contradiction, stated plainly
+
+v0.9 §12 asserts: *"AI Agents **do not vote** on ballots as human voters or count toward human
+quorums."*
+
+In force here, the opposite is true and the entire evidence base depends on it. Agent verifiers cast
+the ballots. `ballots.jsonl` holds 397 of them — 346 `codex`, 51 `gemini` — and EBIV quorum is
+counted from exactly those. Adopting v0.9 §12's rule unqualified would retroactively invalidate every
+verification this repository has performed.
+
+One principle inside §12 is worth keeping under a different name. **`BAL-INV-020`** — *a ballot
+cannot override non-waivable security, legal or safety controls; no vote bypasses a failing test or
+a hard invariant* — is the same fail-closed rule bOPEN already applies, and states it more crisply
+than §26.6 does. It is compatible; only the surrounding vocabulary is not.
+
+### 27.5 What adoption would require
+
+Nothing in §27.3 can be adopted under its current names. If the operator wants the stage-gate ladder
+or project-decision ballots, they need distinct identifiers chosen so that no existing record changes
+meaning — for example a `PG-` prefix for project gates, and a term other than "ballot" for
+governance voting. §27.2 could be promoted on its own; it introduces no new identifier.
+
+Promotion of any part requires an operator decision recorded in a `DEC` with verifiable Git
+provenance, naming which subsections bind. §26.6's ten exclusions are untouched by this section.

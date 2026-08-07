@@ -992,3 +992,28 @@
   expansion still governs. This decision confers no implementation, merge, release, deployment,
   production or EBIV verdict authority.
 
+## 2026-08-07 - URE-Loop v0.9 recorded as AGENTS.md §27, with three identifier collisions excluded
+
+- Added `AGENTS.md` §27 covering only what URE-Loop v0.9 adds over v0.6 (§26): governance lens
+  binding, stage-gate standard, capability matrix, ballot governance. Recorded `PROPOSED`; it does
+  not extend the single promotion made by `DEC-URE-ARCHITECT-LENS` (§26.2).
+- Recorded a provenance warning (§27.1): v0.9 restates this repository's own governance —
+  `DEC-URE-ARCHITECT-LENS`, §26.2, `agent-identity-register.json` — and gets two in-force rules
+  wrong. It says EBIV R1-R5 governs *human* ballot voting (agents are the verifiers here; Codex cast
+  31 admissible ballots at `64a2bfa`), and it conflates verification quorum with *release* quorum
+  (quorum never authorizes release). An external document mirroring a `DEC` is not a source of truth
+  about it: read the `DEC`, never the mirror.
+- Excluded three identifier collisions (§27.3). The most damaging is v0.9's `G0`-`G7` stage ladder:
+  `AGENTS.md` §3 already reads "GATE G7 CLEARED" meaning normative specs Approved and Phase 1
+  authorized, while v0.9's `G7` means post-production "Stabilization Exit" — importing it would make
+  an in-force line read as though production stabilization were complete. Also excluded the
+  `docs/pack/` topology (its `02` and `07` mean different things from ours) and its second ADR root.
+- Recorded the §12 contradiction (§27.4): v0.9 states AI agents do not vote on ballots or count
+  toward quorum, while `ballots.jsonl` holds 397 agent ballots (346 codex, 51 gemini) from which
+  EBIV quorum is counted. Adopting it unqualified would retroactively invalidate every verification
+  performed here. `BAL-INV-020` (no vote overrides a failing test or hard invariant) is compatible
+  and kept as a principle under a different name.
+- Adopted §11's capability vocabulary as naming only (§27.2); the one genuine addition is the
+  structured status set `DONE` / `DONE_WITH_CONCERNS` / `BLOCKED` / `NEEDS_CONTEXT`, which closes a
+  gap §17 leaves to prose. No gate, quorum rule, admissibility rule or authority changed.
+
