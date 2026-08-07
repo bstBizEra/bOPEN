@@ -115,6 +115,24 @@ The exception is narrow by construction: the worktree exists so the candidate ca
 unmixed, and it never becomes a second place where work lands. It does not generalize to other
 tasks.
 
+**Closed 2026-08-07.** The re-cast completed at `64a2bfa` and the worktree was removed. Compliance
+verified before removal: `HEAD` still at `1cde994`, **0** commits made in it, **0** tracked-file
+edits. The exception is spent; any further worktree needs its own authorization.
+
+Repair outcome: Codex re-ran the probes and committed 31 ballots under `codex@bst.local`. The
+re-cast was substantive, not a re-commit — all 31 lines changed `ballot_id`, `probe_command` and
+`probe_observation`, with `probe_command` moving from the generic `python tools/run_tests.py` to the
+specific modules Codex executed, and each ballot carrying its own `verifier_lens`.
+`check_ballot_attribution.py` now reports `PASS`, and `test_ballot_attribution_holds` no longer
+fails.
+
+**This closes attribution only, not quorum.** Candidate `1cde994` still has one verifier. The
+checker's own output warns that its `PASS` *"attests attribution only... and must not be quoted as
+though it did"* attest quorum. Confirmation under `BOPEN-GOV-EBIV-001` §6.5 additionally requires an
+explicit Completion Authority disposition, which is the operator's act and is not supplied by this
+repair. The tooling gap behind the shortfall is raised separately as
+[`DEC-P35-QUORUM-TOOL-GAP`](DEC-P35-QUORUM-TOOL-GAP.md).
+
 ## 7. What this decision request does not do
 
 It does not dispose the Location foundation, re-open its work package, alter any verdict, or change
