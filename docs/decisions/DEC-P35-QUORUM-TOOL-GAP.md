@@ -77,3 +77,55 @@ explicit Completion Authority disposition on `1cde994`, which is the operator's 
 implied by fixing the tooling.
 
 Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+## 6. Decision support — the concrete shape of Option 1, if it is chosen
+
+Prepared so the decision is cheap to make. **This specifies nothing and authorizes nothing**; it
+describes what Option 1 would look like if the operator selects it. Presenting it is not a claim
+that it has been selected.
+
+### 6.1 The record
+
+`docs/evidence/phase-3.5/dispositions.jsonl` — one JSON object per line, append-only, alongside
+`ballots.jsonl` and read the same way:
+
+```json
+{
+  "disposition_id": "dsp_0001",
+  "candidate_commit_oid": "1cde9942096b29795ddd937a2130e170c970b2e7",
+  "artifact": "BOPEN-LOC-001",
+  "profile": "two_agent",
+  "verdict": "CONFIRMED_UNDER_TWO_AGENT_PROFILE",
+  "disposing_authority": "BizEra <ounkhamvilay@gmail.com>",
+  "authority_role": "Completion Authority",
+  "disclosed_risk_ack": "docs/evidence/phase-3.5/...",
+  "issued_at": "2026-08-08T00:00:00+07:00",
+  "recorded_by": "claude"
+}
+```
+
+### 6.2 What the checker would then do
+
+For a candidate with **one** admissible `CONFIRMED` ballot:
+
+- **with** a matching disposition → report `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, satisfying §6.5;
+- **without** one → continue reporting the shortfall exactly as today.
+
+Nothing is relaxed. §3 maker exclusion, §6.2's refutation asymmetry and §6.3's escalation are
+untouched, and a candidate with zero admissible ballots is unaffected.
+
+### 6.3 The property that makes this worth doing
+
+The disposition becomes **evidence rather than prose**, so §6.5.2's requirement that the two verdicts
+"must not be conflated" becomes machine-enforced instead of a naming convention nobody can check.
+
+### 6.4 The integrity condition
+
+The disposition line must be introduced by a commit authored by the **operator's** identity, checked
+the same way `check_ballot_attribution.py` binds a ballot to its author. Otherwise an agent could
+write a disposition granting confirmation to its own work — reintroducing, on the authority side,
+precisely the defect `DEC-P4-LOCATION-BALLOT-ATTRIBUTION` was raised to repair on the verifier side.
+
+This is the one place where §21.2.1 — *no agent commits under the operator's identity* — becomes
+load-bearing rather than hygienic. An agent may **draft** a disposition line; only the operator may
+commit it.
