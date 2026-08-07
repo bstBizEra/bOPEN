@@ -1,0 +1,79 @@
+# DEC-P35-QUORUM-TOOL-GAP — the ratified two-agent profile is not implemented, so 26 candidates report a quorum shortfall
+
+**Decision ID:** `DEC-P35-QUORUM-TOOL-GAP`
+**Version:** `1.0.0`
+**Status:** **Proposed — decision request raised under `AGENTS.md` §16 (two approved artifacts conflict)**
+**Issued:** 2026-08-07
+**Owner:** Engineering Authority
+**Raised by:** Claude (agent, Motor role) — advisory only
+**Governing:** [`BOPEN-GOV-EBIV-001`](../00-governance/BOPEN-GOV-EBIV-001.md) §6.1, §6.3, §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](DEC-P35-TWO-AGENT-QUORUM.md); `AGENTS.md` §20.3
+
+---
+
+## 1. The conflict
+
+Two approved artifacts disagree about what quorum this repository requires.
+
+- **`BOPEN-GOV-EBIV-001` §6.1** requires **two** independent verifiers to confirm.
+- **`BOPEN-GOV-EBIV-001` §6.5**, added 2026-08-02 by `DEC-P35-TWO-AGENT-QUORUM` and **ratified**,
+  provides that while a two-agent team is in effect, confirmation requires **one** admissible
+  `CONFIRMED` ballot plus an explicit Completion Authority disposition, labelled
+  `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
+
+`tools/check_ballot_attribution.py` implements **only §6.1**. Its sole quorum logic is a hardcoded
+message — *"QUORUM SHORTFALL — N candidate(s) below two verifiers"* — with no §6.5 path. As of
+2026-08-07 it reports **26 candidates** below two verifiers, including `1cde994` (Location), whose
+31 ballots were freshly re-cast by Codex under `DEC-P4-LOCATION-BALLOT-ATTRIBUTION`.
+
+This is not a defect introduced by that repair. It predates it and cannot be closed by re-casting.
+
+## 2. Why it matters more than one candidate
+
+Three distinct costs:
+
+1. **The ratified accommodation is unreachable in practice.** §6.5 exists precisely because a
+   two-agent team can never satisfy §6.1 — *"one is always the Maker"*. If the tool only ever
+   reports §6.1, the accommodation the operator ratified has no expression in any automated check.
+2. **Alarm fatigue on a live control.** A 26-line shortfall block printed on every run trains
+   readers to scroll past it. A control that still fires but is no longer read is worse than one
+   that was removed, because the repository retains the appearance of enforcement. This repository
+   has already recorded the sibling failure mode — *"assuming a check passed because it exited
+   quietly"* (`BOPEN-ENG-LOOP-001` §5).
+3. **`CONFIRMED_UNDER_TWO_AGENT_PROFILE` is unverifiable.** §6.5.2 requires that label, and §6.5.1
+   requires a recorded Completion Authority disposition. Neither is machine-checkable today, so the
+   distinction §6.5.2 insists on — *"different verdicts and must not be conflated"* — rests entirely
+   on prose discipline.
+
+## 3. What §6.5 actually requires, and why it is not trivially automatable
+
+§6.5 confirmation has three parts. Only the first is currently checkable:
+
+| Requirement | Machine-checkable today |
+| :--- | :--- |
+| One admissible `CONFIRMED` ballot from an independent verifier | **Yes** — `ballots.jsonl` + admissibility R1–R5 |
+| An explicit Completion Authority disposition on the disclosed-risk evidence | **No** — dispositions are recorded in prose across `DEC` files |
+| The verdict labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE` | **No** — no field carries it |
+
+The gap is therefore not merely "the tool is behind the spec". §6.5 depends on an operator act that
+has no machine-readable home. That is the real missing piece.
+
+## 4. Options
+
+| # | Option | Assessment |
+| :--- | :--- | :--- |
+| 1 | **Add a machine-readable disposition record** (e.g. `dispositions.jsonl`: candidate, artifact, disposing authority, date, label) and teach the checker to report `CONFIRMED_UNDER_TWO_AGENT_PROFILE` where one ballot plus a disposition exist | **Recommended.** It closes the gap at its root — the operator act becomes evidence rather than prose — and makes §6.5.2's labelling enforceable instead of aspirational. It is additive and weakens nothing: a candidate with neither two verifiers nor a disposition still reports a shortfall |
+| 2 | **Record dispositions for the 26 candidates in prose only**, and annotate the tool's output as expected | Cheaper, but leaves the label unverifiable and the 26-line block still printing. Alarm fatigue is unaddressed |
+| 3 | **Teach the checker that one verifier is sufficient** whenever the two-agent profile is in effect | **Recommended against.** This drops the disposition requirement §6.5.1 makes load-bearing, converting an operator-gated accommodation into an automatic pass — a control-weakening change |
+| 4 | **Leave as-is** and treat the shortfall as known noise | Not recommended, for the reason in §2.2 |
+
+## 5. What this decision request does not do
+
+It does not confirm any candidate, dispose any work package, alter any ballot or verdict, or modify
+`check_ballot_attribution.py`. It records a conflict between two approved artifacts and asks for a
+disposition, per §16.
+
+Note that a decision here does **not** by itself confirm Location. Under §6.5 that still requires an
+explicit Completion Authority disposition on `1cde994`, which is the operator's act and is not
+implied by fixing the tooling.
+
+Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
