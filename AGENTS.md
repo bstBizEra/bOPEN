@@ -702,3 +702,202 @@ derived from the Refusal Matrix should be implemented tests-first before code re
 
 Reset `git config user.email` to the acting agent's registered identity (`<agent>@bst.local`, §21.1)
 **before every commit** — a shared workspace lets another agent's identity persist in the config.
+
+---
+
+## 26. PROPOSED (not in force) — URE-Loop adaptation: review lenses, feedback tiers, cost controls, ADR drafting, drift detection
+
+> **STATUS: `PROPOSED` — NOT IN FORCE, EXCEPT §26.2.** This section carries **no** normative
+> authority, does not replace the in-force §5 workflow, and does not amend §25. It is recorded as a
+> proposal only and binds nothing until an explicit operator authorization with verifiable Git
+> provenance is recorded (per `BOPEN-GOV-EBIV-001` §2: an agent has no authority to make a normative
+> specification binding by itself).
+>
+> **QUALIFIED 2026-08-07 — §26.2 is in force.** The operator authorized the architecture & boundary
+> lens as a working review role under
+> [`DEC-URE-ARCHITECT-LENS`](docs/decisions/DEC-URE-ARCHITECT-LENS.md). §26.2 alone is promoted.
+> §26.3, §26.4, §26.5, §26.8 and §26.9 remain `PROPOSED`; the ten §26.6 exclusions remain excluded;
+> no identity was registered and no authority was conferred.
+>
+> **Provenance note.** Adapted from an external design document, *Unified Review Engineer Loop
+> (URE-Loop)*, supplied by the operator on 2026-08-07 — first at **v0.4**, then superseded the same
+> day by **v0.6**, which adds the Agentic ADR Engine (§26.8) and the Continuous State & Telemetry
+> Reconciliation Engine (§26.9). Both intakes are recorded; this section reflects v0.6. An external
+> design document is **not** a bOPEN source of truth (§4): it may not substitute for an approved
+> artifact, ADR or contract. It is recorded here in adapted form. Ten of its mechanisms conflict with
+> in-force rules and are recorded as **excluded** in §26.6 rather than silently dropped or silently
+> adopted, per §1.
+
+### 26.1 What this adds, and what it does not touch
+
+§25 already describes the governed maker cycle end to end (authorize → scope → tests-first →
+migration → build → trace → submit → verify → dispose). URE-Loop contributes five layers that
+§25 and [`BOPEN-ENG-LOOP-001`](docs/08-engineering/ENGINEERING-LOOP.md) do not describe:
+
+| Layer | §26 | Sits inside |
+| :--- | :--- | :--- |
+| Multi-lens review panel | §26.2 | §25.1 step 7 — independent verification |
+| Feedback-latency tiers | §26.3 | §25.1 steps 2–4 — the build inner loop |
+| Token-cost controls | §26.4 | Any stage; constrained by §4 and §5.1 |
+| ADR auto-detection & drafting | §26.8 | §25.1 step 1 and §16 — before the build |
+| Desired-vs-actual drift detection | §26.9 | Outside the loop; feeds §16 decision requests |
+
+It changes **no** gate, quorum rule, admissibility rule, or disposition authority. Where this
+section and any in-force section disagree, the in-force section governs and this section is the
+defect.
+
+### 26.2 Review panel — lenses, not authority
+
+> **IN FORCE 2026-08-07** under [`DEC-URE-ARCHITECT-LENS`](docs/decisions/DEC-URE-ARCHITECT-LENS.md).
+> The operator seated the architecture & boundary lens as a working review role: findings only, no
+> ballot, no registered identity, no authority. The operator's directive named **that lens only**;
+> the security and performance lenses stay described-but-unseated until separately named, so this
+> note is not read as seating all three. A persona was deliberately **not** added to
+> `agent-identity-register.json` — see `DEC-URE-ARCHITECT-LENS` §3 for why, which binds future
+> requests of the same shape.
+
+The panel is a **set of probing lenses**, not a decision body. It supplies findings; `ballots.jsonl`
+supplies verdicts.
+
+| Lens | Probes | Services |
+| :--- | :--- | :--- |
+| Security & refusal | boundary violations, cross-tenant leaks, invalid transitions, deny-by-default gaps | §9, §25.1 step 1 Refusal Matrix, EBIV R4 |
+| Architecture & boundary | kernel/industry separation, clean-room zones, contract compatibility, `tenant_session` discipline | §6, §7, §10, §25.1 step 4 |
+| Performance & test quality | negative-test mutation survival, coverage of the traced invariants, migration/rollback cost | §11, EBIV R2 |
+
+Binding constraints if this section is ever promoted:
+
+1. A lens is **not** a verifier seat. Who may ballot is governed solely by EBIV admissibility
+   R1–R5; a maker running all three lenses has produced findings and no verdict (EBIV §8).
+2. Lenses run by the same agent, or by agents able to read each other's output, count as **one**
+   verifier — the same collapse rule as sequential verifiers in `BOPEN-ENG-LOOP-001` §2.8.
+3. Verdicts are read from the ballot **object**, never from panel prose, and never from a score.
+4. One `REFUTED` ballot carrying a reproducible probe blocks regardless of what the other lenses
+   report. There is no aggregation that discharges it; only a failed reproduction does.
+
+### 26.3 Feedback tiers — convenience above, evidence below
+
+| Tier | What runs | Admissible as evidence |
+| :--- | :--- | :--- |
+| 1 — editor | LSP diagnostics, type check, lint | **No** |
+| 2 — inner loop | tests for the impacted module only | **No** |
+| 3 — canonical | the §19.4 / `BOPEN-ENG-LOOP-001` §3 required check set | **Yes** |
+
+The tiering is a latency convenience for the maker and nothing else. **No completion claim,
+submission or ballot may cite a tier-1 or tier-2 result.** A selective run proves the selection was
+correct and nothing about what it skipped, and the failure mode this repository has already seen —
+a check that exits quietly being read as a pass — is exactly what a partial run reproduces at
+scale. `CANNOT RUN` remains not a pass at every tier.
+
+### 26.4 Token-cost controls, and the floor beneath them
+
+Adopted as engineering practice: ordering prompts static→dynamic for prefix cache reuse; supplying
+signature-level repository maps instead of raw source dumps; running broad searches in isolated
+subagent contexts that return distilled summaries; emitting targeted search/replace diffs instead of
+full-file rewrites; and cascading cheaper models onto mechanical stages.
+
+Three floors that cost optimization may not cross:
+
+1. **The §5.1 read is not prunable.** Root and all scoped `AGENTS.md` files plus
+   `docs/00-governance/AGENT-ALIGNMENT.md` are read in full before a change. Likewise the §4
+   hierarchy: an approved artifact is read, not summarized by a subagent.
+2. **A distilled summary is not evidence.** Evidence anchors are read from git objects
+   (`BOPEN-ENG-LOOP-001` §2.6); a subagent's condensed report of what a file contained is an informal
+   note under §4 and outranks nothing.
+3. **Model cascading is guidance, not role assignment** (§20.4). Routing a stage to a cheaper engine
+   confers no authority on that engine and removes none from the stage's requirements.
+
+### 26.5 Git lifecycle — the adopted part
+
+Branch naming per work package, atomic conventional commits at each passing iteration, and a PR body
+carrying the changed-file table, the check results and the panel findings, are consistent with §15
+and §17 and are adopted as practice.
+
+The URE-Loop co-authorship trailer `Co-authored-by: URE-Loop Agent <agent@antigravity.local>` is
+**not usable here**. §21.1 requires the acting agent's registered per-agent address
+(`<agent>@bst.local`); a shared generic local-part is the precise defect §21.1 was written to
+remove, and `check_ballot_attribution.py` cannot bind a ballot to it.
+
+### 26.6 Excluded — mechanisms that conflict with in-force rules
+
+Recorded under §1 (conflicts are recorded, not silently resolved). These are **not** adopted, not
+in force as proposals, and would each require a separate operator decision.
+
+| URE-Loop mechanism | Conflicts with | Why it cannot stand here |
+| :--- | :--- | :--- |
+| Rubric score ≥ 85 → auto-approve for merge | §25.1 step 8; EBIV §8 | A self-computed score is maker self-assessment, which carries no verdict weight. Disposition is reserved to the Completion Authority — a Human or named authority, never an agent role. |
+| Agent triggers `gh pr merge --squash --delete-branch` | §18; §20.3 | Merge, release, deployment and production activation are outside agent authority regardless of vote. No skill, score or green suite creates it. |
+| 100-point weighted score as the merge gate | §4; §9; §11 | A score is an informal note and cannot outrank a contract or a failing negative test. Weighted aggregation also lets a 0.20-weighted security failure be outvoted by speed and cleanliness; bOPEN fail-closes on a single refused isolation or authorization test. |
+| Score 60–84 → agent self-correction loop, no escalation | `BOPEN-ENG-LOOP-001` §2.8 | A `REFUTED` ballot is discharged only by a failed reproduction of its probe. A score rising after a patch is not a failed reproduction. |
+| CI-failure self-healing auto-push | §15; §21 | An unattended patch loop bundles unrelated hunks into one commit and misattributes them, and pushes changes no seated verifier has seen. |
+| Automatic skill / memory synthesis from a fixed bug | §18 | Repository-local skills are registered only as validated `SKILL.md` packages, and registration grants no authority. Automatic promotion of a distilled lesson into the registry is not authorized. Recording the lesson in `docs/CHANGELOG.md` or the work-package log is. |
+| **v0.6** — panel review moves an ADR `Proposed → Accepted` and commits it | §4; §24 provenance note; EBIV §2 | An Accepted ADR sits second in the source-of-truth hierarchy and constrains every later change. An agent panel accepting one is an agent making a normative artifact binding by itself — the exact authority expansion the operator **rejected** on 2026-08-06. Drafting is adopted (§26.8); acceptance is not. |
+| **v0.6** — ADRs indexed into agent long-term memory as the enforcement mechanism | §4; §26.4 floor 1 | An index is an informal note. A future run must read `docs/adr/` and `docs/decisions/`, not a cached summary of them, or a stale index silently overrides an ADR that was superseded. |
+| **v0.6** — reconciliation triggers `terraform apply` / corrective environment routines | §14; §20.3 | Applying to a live environment is deployment. Outside agent authority regardless of drift severity, and a destructive change still requires the §14 staged-rollout and recovery strategy. |
+| **v0.6** — production alert → agent patch → auto-merge at score ≥ 85 | §25.1 step 8; §8; §13 | Unattended production self-healing is the merge-gate exclusion above, applied to the highest-blast-radius surface, with no seated verifier. Separately, feeding APM stack traces and error payloads into an agent context is an **untested tenant-data egress path**: §8 requires cross-tenant negative tests for tenant-owned data, and no such control exists for telemetry ingestion. |
+
+### 26.7 What promotion would require
+
+Promotion of §26.2–§26.5, §26.8 or §26.9 to normative status requires an operator decision recorded
+in a `DEC` with verifiable Git provenance, naming which subsections bind. The §26.6 exclusions remain
+excluded unless each is separately decided; a decision promoting this section does not reach them.
+
+**Promoted so far:** §26.2 only, by [`DEC-URE-ARCHITECT-LENS`](docs/decisions/DEC-URE-ARCHITECT-LENS.md)
+(2026-08-07). That decision states in its own §4 that it reaches nothing else — a promotion is read
+from the `DEC`, not inferred from the section next to it.
+
+### 26.8 ADR engine — drafting is adopted, acceptance is not
+
+The v0.6 auto-detection trigger is sound and aligns with §10 and §16: a change that touches a
+database schema, introduces an external dependency, alters the auth model, or breaks an API contract
+is exactly a change that must not resolve an architectural question by implementation default. Where
+§16 says *stop and raise a decision request*, URE-Loop supplies the artifact shape for doing so.
+
+Adopted: on any of those four triggers, the maker drafts an ADR **before** building, using the
+existing bOPEN form — `docs/adr/ADR-NNNN.md`, with `**Status:** Proposed`, `**Date:**`, and
+`**Owner:**` naming the responsible **Authority** (Architecture, Security, Engineering), per
+`docs/adr/ADR-0001.md`..`ADR-0019.md`. The v0.6 template's *Context & Problem Statement / Decision
+Drivers / Considered Options / Decision Outcome & Rationale / Consequences & Trade-offs* headings map
+cleanly onto that form and onto §24.1's trade-off analysis, and are adopted as drafting structure.
+
+Four corrections to the v0.6 schema:
+
+1. **`Status` stays `Proposed`.** Only an authority moves it to `Accepted` (§26.6). A maker that
+   drafts an ADR and then builds against it as though Accepted has resolved the decision by default.
+2. **`Owner` is an Authority, not an agent.** v0.6 puts *"Author / Agent: URE-Loop Staff Architect
+   Agent"* in the owner slot. Record the drafting agent as author if useful, but the owner field
+   carries accountability an agent does not hold.
+3. **Numbers are not auto-assigned.** v0.6's `docs/adr/000X-{slug}.md` with an agent picking the next
+   number collides with an occupied register — its own worked example, "ADR-0004: Introduce
+   Distributed Caching Layer via Redis", is already taken here by **ADR-0004 — Contract-first
+   implementation (Accepted)**. Read the directory and take the next free number; never mint one.
+4. **Reversal is by supersession, not by index.** ADR-0001 already states changes require a
+   superseding ADR. That is the enforcement mechanism, and it lives in git, not in agent memory.
+
+### 26.9 Reconciliation — observation is adopted, actuation is not
+
+The v0.6 reconciliation loop is split cleanly by bOPEN's rules: **observing** a divergence between
+desired and actual state is valuable and permitted; **closing** it automatically is not.
+
+Observation is in fact a lesson this repository already paid for. `BOPEN-ENG-LOOP-001` §5 records
+*"Reading a spec instead of querying the database — reading migrations gave 5 foreign keys; the
+database had 12."* Reconciliation is that anti-pattern's remedy generalized: query the live object,
+diff it against the declared one, and treat the difference as a finding.
+
+| Pillar | Adopted | Excluded |
+| :--- | :--- | :--- |
+| Spec ↔ code drift | Scanning implementation against contracts and active ADRs; reporting the diff | Auto-opened `refactor/reconcile-spec-drift` PRs that merge without a seated verifier |
+| Infrastructure / schema drift | Comparing live schema and environment metadata against the declared state | `terraform apply` or any corrective routine executed against an environment (§26.6) |
+| Production telemetry | — | The whole pillar (§26.6): both the auto-heal merge and the untested telemetry ingestion path |
+
+Binding constraints if promoted:
+
+1. A drift finding is a **§16 decision request**, not a work item a maker may self-assign. Drift
+   often means the declared state was wrong, and patching the code to match production would ratify
+   an undecided architecture by observation instead of by ADR.
+2. Reconciliation reads **live objects**, never a cached index, and records what it queried — a
+   single query's empty result is not evidence (`BOPEN-ENG-LOOP-001` §5, `information_schema` vs
+   `pg_catalog`).
+3. Any reconciliation surface that ingests tenant-bearing data — telemetry, error payloads, live row
+   samples — is tenant-owned data movement and requires the §8 controls, including cross-tenant
+   negative tests, before it is built. None exist today.

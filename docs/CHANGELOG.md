@@ -972,3 +972,23 @@
 ## 2026-07-12 — v1.0
 
 - Created BOPEN-BOOT-001 full AGENTS.md and documentation bootstrap pack.
+## 2026-08-07 - URE-Loop Staff Architect seated as a review lens
+
+- Added `DEC-URE-ARCHITECT-LENS`, transcribing the operator's 2026-08-07 authorization. The phrase
+  "Authorize Agent: URE-Loop Staff Architect Agent" carried three materially different readings â€”
+  a review role, a registered commit identity, or the ADR-owning authority the external v0.6
+  template assigns it â€” so the reading was put to the operator rather than chosen by an agent. The
+  review-role reading was selected.
+- Promoted `AGENTS.md` Â§26.2 from `PROPOSED` to in force: the architecture & boundary lens supplies
+  findings only. It is not a verifier seat (EBIV R1-R5 still governs who may ballot), holds no
+  identity, and confers no authority; the acting engine commits under its own `<agent>@bst.local`
+  address per Â§21.1.
+- Recorded why a persona was **not** added to `agent-identity-register.json`: the register maps
+  engines, not personas, and a persona ident would let one engine commit as three lenses and appear
+  to `check_ballot_attribution.py` as three independent verifiers â€” converting the register's one
+  working assurance into a means of manufacturing false independence.
+- `AGENTS.md` Â§26.3, Â§26.4, Â§26.5, Â§26.8 and Â§26.9 remain `PROPOSED`; the ten Â§26.6 exclusions remain
+  excluded, including panel acceptance of ADRs, which the 2026-08-06 rejection of AI authority
+  expansion still governs. This decision confers no implementation, merge, release, deployment,
+  production or EBIV verdict authority.
+
