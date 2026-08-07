@@ -9,7 +9,7 @@
 | Field | Value |
 |---|---|
 | **Document ID** | `ADR-NOTIFY-PROVIDER` (proposed; pending governance ID-registry ratification) |
-| **Version** | `2.0.0-draft` |
+| **Version** | `2.1.0-draft` |
 | **Owner** | bOPEN Agentic SE — Notification (Motor authoring; Codex independent reviewer) |
 | **Issued** | 2026-08-06 |
 | **Updated** | 2026-08-06 |
@@ -19,6 +19,8 @@
 | **Evidence refs** | `docs/01-product/MILE-4.2-notification-ADR-codex-review.md`; kernel files named in the Clean-room note below |
 
 *Proposing a Document ID and version is traceability metadata for governance to register; it is not self-authorization.*
+
+> **Changelog — 2.1.0-draft:** applied re-review corrections 1–9; concurrency proofs deferred to the build-time test matrix.
 
 ---
 
@@ -67,8 +69,8 @@ A stable `bst_notification_adapter` facade — one owned interface, vendor SDKs 
 | Field | Meaning / adapter obligation |
 |---|---|
 | `channel` | transport family (`email`; `sms` modeled, deferred). |
-| `recipient_snapshot` | frozen `{endpoint_type, endpoint_value, purpose, party_id, resolved_at}` — **already validated by the orchestrator; the adapter MUST NOT re-resolve, re-validate, or cross-check tenancy** (it holds no tenant and no session). |
-| `rendered_content_ref` | opaque, integrity-bound handle to the rendered template-version output; dereferenced to bytes for transport only. Raw body, template variables, and recipient value never flow through adapter logs or domain fields. |
+| `recipient_snapshot` | frozen `{endpoint_type, endpoint_value, purpose, party_id, resolved_at}` — **already validated by the orchestrator; the adapter MUST NOT re-resolve, re-validate, or cross-check tenancy** (it holds no tenant and no session). **Lifetime (frozen seam):** resolved by the orchestrator under `tenant_session` at the **start of each attempt**, valid **only within a bounded resolve→handoff freshness ceiling**, **re-resolved before send** if stale, and **never carried across a retry** — the orchestrator fails closed on a stale/unresolvable snapshot before any byte leaves; the adapter never reasons about snapshot age. |
+| `rendered_content_ref` | opaque, **integrity-bound handle** to the rendered template-version output (the orchestrator renders under `tenant_session` and passes this **reference**, never inline bytes through domain state); **dereferenced to transport bytes by the send path at send time, within the same attempt's handoff window**, for transport only. The reference is valid only for that attempt; one that cannot be dereferenced within the attempt is a fail-closed refusal, never a stale/partial send. Raw body, template variables, and recipient value never flow through adapter logs or domain fields. |
 | `idempotency_key` | the deterministic, attempt-derived value the worker ADR computes and records *before* send; forwarded to the provider **only** where the profile declares `idempotency-key`. |
 | `provider_profile` / version | selects the concrete implementation and its vendor→canonical mapping rules. |
 | `correlation_id` | opaque trace tag. |
@@ -98,13 +100,13 @@ A stable `bst_notification_adapter` facade — one owned interface, vendor SDKs 
 Delivery receipts arrive at the worker ADR's per-provider verified public endpoint. `verify_callback` owns **cryptographic verification + vendor→canonical normalization on raw bytes**; it owns nothing authority-bearing. This states the adapter's complete obligations at that surface, consistent with — not re-deciding — the worker ADR's binding lookup and tenant-scoped receipt append.
 
 **CB-1 — Total raw-byte verification order; nothing parsed first.** Each step runs on raw bytes before the next; JSON parse is strictly last, so an unauthenticated caller cannot make the endpoint do meaningful work with garbage:
-1. **size** — reject over a fixed byte cap **before** reading/allocating the full body (defends the unauthenticated endpoint against a parse-bomb / memory DoS);
-2. **content-type** — reject a mistyped body;
-3. **timestamp window** — from a signed header field, range-checked against the DB clock;
-4. **HMAC / signature** — over the exact raw bytes, against the provider's active-or-overlap secret (CB-4);
-5. **only now parse** and normalize to `{provider_message_id, provider_event_id, normalized_transport_status}`.
+0. **size — enforced at the worker-owned public endpoint by a streaming read limit, BEFORE the `raw_bytes` buffer is constructed.** The endpoint caps the body as it streams and aborts an oversized request *without allocating the full buffer* (parse-bomb / memory-DoS defense). This gate is **not** inside `verify_callback(raw_bytes, headers)`: the adapter receives `raw_bytes` already buffered, so a size check there would be too late to prevent the allocation. `verify_callback` is therefore contractually handed an **already-size-bounded** buffer, and its own order begins at content-type;
+1. **content-type** — reject a mistyped body;
+2. **timestamp window** — from a signed header field, range-checked against the DB clock;
+3. **HMAC / signature** — over the exact raw bytes, against the provider's active-or-overlap secret (CB-4);
+4. **only now parse** and normalize to `{provider_message_id, provider_event_id, normalized_transport_status}`.
 
-No allocation-heavy or schema step precedes signature verification.
+No allocation-heavy or schema step precedes signature verification, and no full-body allocation precedes the endpoint's streaming size gate.
 
 **CB-2 — Authority derives ONLY from the stored provider-message binding (AUTH-D1), and the WORKER performs it.** `verify_callback` returns a verified observation; it does **not** resolve a tenant. The **worker** looks the `provider_message_id` up against the stored `notification_attempt` (the sole source of `tenant_id` and context) under the elevated callback role, then opens `tenant_session(stored_tenant_id)` as `bopen_app` to append the receipt. Any tenant/account/recipient field in the callback body is **inert** — "a header cannot create authority," applied to a webhook body. The adapter never sees or selects a tenant.
 
@@ -112,9 +114,9 @@ No allocation-heavy or schema step precedes signature verification.
 
 **CB-4 — Secret rotation with bounded, auditable overlap.** Each provider holds at most two active signing secrets (`current` + `previous`), the `previous` carrying an explicit `not_after`. Verification (CB-1 step 4) tries `current` then `previous`; a body verifying only under an expired `previous` is refused. Rotation promotes new→`current`, demotes old→`previous` with a bounded window, drops old at `not_after` — overlap bounded and recorded, never unbounded acceptance. Secrets are runtime config behind the facade — never a tenant row, never an event field (NOTIFY-INV-13). Per-provider revocation is dropping that provider's secrets, halting its callbacks alone.
 
-**CB-5 — Replay maps to the same attempt.** A redelivered callback keyed on `(provider, provider_message_id, provider_event_id[, replay_id])` collides on the append-only uniqueness key and is a no-op: no second receipt, no second status event (NOTIFY-INV-06). Ordering is a lattice, not a stream — the worker's receipt projection advances only monotonically; a stale or already-superseded observation is still stored append-only but does not rewrite state. Convergence is independent of callback arrival order.
+**CB-5 — Replay maps to the same attempt, independent of a nullable replay ID.** A redelivered callback collides on the append-only **deterministic `dedup_key`** the worker ADR defines — `digest(provider_id ‖ provider_message_id ‖ provider_event_id ‖ payload_signature_digest)`, computed from stable, signature-covered fields, **not** from a mutable/nullable provider `replay_id` — and is a no-op: no second receipt, no second status event (NOTIFY-INV-06). A redelivery whose `replay_id` changed or is absent still yields the same `dedup_key` and still dedupes. Ordering is a lattice, not a stream — the worker's receipt projection advances only monotonically; a stale or already-superseded observation is still stored append-only but does not rewrite state. Convergence is independent of callback arrival order.
 
-**CB-6 — Uniform, tenant-safe refusal (the non-oracle).** Unknown id, wrong-provider/wrong-message binding, bad signature, stale timestamp, oversized/mistyped body, over-rate, invalid transition — all refused **identically**, constant-work past the size/type gate, disclosing nothing about whether a message or recipient exists (NOTIFY-INV-04, -10). *Per-provider callback rate limiting, keyed only on `provider_id` (never resolving a tenant or message to decide throttling), and the tenant-safe audit routing of these refusals are the worker/callback security plane's concern (owned there); the adapter surfaces the verification verdict, the worker enforces the plane.*
+**CB-6 — Uniform, tenant-safe refusal (the non-oracle).** Unknown id, wrong-provider/wrong-message binding, bad signature, stale timestamp, oversized/mistyped body, over-rate, invalid transition — all refused **identically**, constant-work past the size/type gate, disclosing nothing about whether a message or recipient exists (NOTIFY-INV-04, -10). *Per-provider callback rate limiting, keyed only on `provider_id` (never resolving a tenant or message to decide throttling), and the tenant-safe audit routing of these refusals are the worker/callback security plane's concern (owned there); the adapter surfaces the verification verdict, the worker enforces the plane. The callback role's forced-RLS/column confinement, tenantless-quarantine ownership, callback audit identity (`notify-callback`), and callback-specific revocation are frozen in the worker ADR's callback plane (CB-SEC-01b–01e), at parity with the claimer plane — this ADR does not re-decide them.*
 
 ### 5. Single classifier — adapter maps, worker owns (closes cross-ADR finding #2)
 
@@ -218,7 +220,7 @@ Designed independently under **AGENTS.md §6** (clean-room independence): standa
 ```yaml
 adr: notification-provider-channel-adapter-contract
 document_id: ADR-NOTIFY-PROVIDER            # proposed; pending governance registration
-version: 2.0.0-draft
+version: 2.1.0-draft
 status: DRAFT / PROPOSED
 gated_by: DEC-P4-ENTRY §9
 truth_status: partially_supported

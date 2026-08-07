@@ -8,8 +8,8 @@
 
 | Field | Value |
 |---|---|
-| **Document ID** | EVD/ADR-NOTIFY-WORKER (proposed; pending governance ID-registry ratification) |
-| **Version** | 2.0.0-draft |
+| **Document ID** | `ADR-NOTIFY-WQ` (proposed; pending governance ID-registry ratification) |
+| **Version** | 2.1.0-draft |
 | **Owner** | Architecture & Engineering Authority — Notification (Motor authoring; Codex independent reviewer) |
 | **Issued** | 2026-08-06 |
 | **Updated** | 2026-08-06 |
@@ -18,7 +18,9 @@
 | **Dependent artifacts** | ADR-NOTIFY-PROVIDER (provider/channel); BOPEN-NOTIFY-001; API/error/event/template schemas; privacy & threat model; retention rules; migration/rollback/compensation plan; operations runbooks; test matrix; EBIV evidence |
 | **Evidence refs** | `docs/01-product/MILE-4.2-notification-ADR-codex-review.md`; `docs/01-product/MILE-4.2-notification-foundation-research.md`; `docs/01-product/MILE-4.2-notification-foundation-review.md`; kernel files listed in the clean-room note |
 
-This is version 2.0.0-draft: a revision of the prior draft that closes the independent reviewer's NEEDS-REVISION findings (INV-07, INV-09, INV-12, INV-14, INV-01/04, INV-10, adapter facade, PA-07/PA-08). It is DRAFT/advisory; it authorizes and builds nothing.
+This is version 2.1.0-draft: a revision of the prior draft that closes the independent reviewer's NEEDS-REVISION findings (INV-07, INV-09, INV-12, INV-14, INV-01/04, INV-10, adapter facade, PA-07/PA-08). It is DRAFT/advisory; it authorizes and builds nothing.
+
+> **Changelog — 2.1.0-draft:** applied re-review corrections 1–9; concurrency proofs deferred to the build-time test matrix.
 
 ---
 
@@ -68,7 +70,7 @@ A purpose-built `notification_*` set, each tenant-scoped with **forced RLS, tena
 | `notification_dispatch` | mutable / claimable **current-state row** | The outbox work-queue row and the whole send-window state machine: `dispatch_id`, `tenant_id`, composite FK `(tenant_id, notification_id)`, `status` (pending/leased/sending/reconciling/done/dead), `attempt_no`, `send_key`, `send_started_at`, `available_at` (backoff gate), **`lease_owner`, `lease_expires_at`, `lease_fence BIGINT`**, `next_visible_at`, `dead_lettered_at`, and the enqueue-time binding **`provider_id`, `provider_profile_version`**. **Content-free** — ids, scheduling, and lease/send control columns only. |
 | `notification_attempt` | append-only (SELECT+INSERT only) **immutable history** | Per-attempt evidence, INSERTed **exactly once at finalization**: `attempt_id`, `tenant_id`, composite FK `… ON DELETE RESTRICT`, `attempt_no`, `provider_profile`, request fingerprint, **`provider_idempotency_ref`** (sourced from the mutable `send_key`), `started_at`/`ended_at`, **`classified_outcome`** (`provider_accepted`/`retryable_failed`/`terminal_failed`/`unknown`), `safe_code`, `provider_message_id`, `next_retry_at`. |
 | `notification_receipt` | append-only, same policy | Provider-observed truth: provider event id, provider-observed time, normalized transport status, raw-payload integrity ref, `applied|superseded|conflicting` projection marker. |
-| `notification_callback_event` | append-only, same policy | Accepted-callback dedup ledger: `UNIQUE (provider_id, provider_message_id, provider_event_id, replay_id)`. |
+| `notification_callback_event` | append-only, same policy | Accepted-callback dedup ledger keyed on a **deterministic `dedup_key`** — `dedup_key = digest(provider_id ‖ provider_message_id ‖ provider_event_id ‖ payload_signature_digest)` computed from stable, signature-covered fields — with `UNIQUE (provider_id, provider_message_id, dedup_key)`. The dedup key does **not** depend on a mutable/nullable provider `replay_id`; `replay_id` (when present) is stored as evidence only, so a redelivered event with a changed or null `replay_id` still collides. |
 | `notification_callback_quarantine` | append-only, same policy | Verified-but-unbound early callbacks (content-free), re-resolved on a bounded pass. |
 | `notification_quota` | control-plane current-state row | Token-bucket admission: `(tenant_id, purpose, window_start)` → `tokens_used`, `tokens_limit`. |
 | `notification_quota_suspend` | control-plane flag | Emergency per-tenant suspension, **never** conflated with ordinary quota. |
@@ -118,12 +120,14 @@ The prior draft made `notification_attempt` simultaneously (a) append-only "SELE
 
 | From | To | Trigger | Guarded by (fenced CAS) | Immutable write |
 |---|---|---|---|---|
-| `pending` | `leased` | claim | `status='pending' OR (status='leased' AND lease_expires_at<now())`; sets `lease_fence=lease_fence+1` | none |
-| `leased` | `sending` | record send-intent (D-EV-3) | `WHERE dispatch_id=:id AND lease_fence=:fence AND status='leased'` | none |
+| `pending` | `leased` | first claim (never sent) | `status='pending'`; sets `lease_fence=lease_fence+1` | none |
+| expired `leased` | `leased` | **re-claim of a never-sent row** — safe to issue a fresh attempt | `status='leased' AND lease_expires_at<now()`; sets `lease_fence=lease_fence+1` | none |
+| expired `sending` | `reconciling` | **re-claim of a row where a send may have gone out** — MUST NOT blind-resend; routes to reconciliation | `status='sending' AND lease_expires_at<now()`; sets `lease_fence=lease_fence+1`; **preserves `attempt_no` and the stored `send_key`/`provider_idempotency_ref` (no new key minted)** | none yet |
+| `leased` | `sending` | record send-intent (D-EV-3) — genuinely new attempt | `WHERE dispatch_id=:id AND lease_fence=:fence AND status='leased'` | none |
 | `sending` | `done` | finalize `provider_accepted`/`terminal_failed` | same fenced guard on `status='sending'` | **INSERT 1 attempt** |
 | `sending` | `pending` | finalize `retryable_failed` (backoff) | same guard; sets `available_at`, clears `send_key`/`send_started_at` | **INSERT 1 attempt** |
-| `sending` | `reconciling` | finalize `unknown`, or crash-recovery detects in-flight | same guard (recovery re-claims a new fence first) | none yet |
-| `reconciling` | `done`/`dead` | reconciliation resolves (D-EV-5) | fenced | **INSERT 1 attempt** (`terminal_failed`/`terminal_unknown`) |
+| `sending` | `reconciling` | finalize **observed** `unknown` | same guard | **INSERT 1 attempt (`unknown`)** — appended at observation |
+| `reconciling` | `done`/`dead` | reconciliation resolves (D-EV-5) | fenced; **reuses the same `attempt_no`/`send_key`** for the resolve/query path (never mints a new key) | **INSERT 1 attempt** with the resolved outcome (`provider_accepted`/`terminal_failed`/`unknown`); dispatch is floored at the `terminal_unknown` **lifecycle** state when evidence is exhausted — `terminal_unknown` is never an attempt outcome |
 
 **D-EV-3 — The pre-send intent is a marker on the MUTABLE row, committed before bytes leave — never on the immutable attempt.** The `leased→sending` transition is its own short transaction that commits *before* the provider call:
 
@@ -153,13 +157,13 @@ VALUES (…, :attempt_no, …, :send_key, :send_started_at, now(), :classified_o
 
 `started_at` is copied from the mutable `send_started_at` and `ended_at` is `now()` — both known at the single INSERT, so no row is ever pre-stamped and later updated. A resumed stale worker whose fence was superseded matches zero rows and its late send cannot insert a competing attempt or overwrite the newer one (**INV-07**). Every content-bearing write (render, recipient snapshot, this attempt INSERT) runs under `tenant_session(tenant_id)` as `bopen_app` on its own connection, resolving placement exactly like a request — the cross-tenant worker role never touches the append-only tables.
 
-**D-EV-5 — Crash recovery reads the MUTABLE state to detect an in-flight send; it never infers from absence and never blind-resends.** A worker that dies between D-EV-3's commit and D-EV-4 leaves the durable signature `status='sending'` with a populated `send_key`/`send_started_at` and **no finalized attempt for that `attempt_no`**. On lease expiry a new claimant (new fence) reads this and transitions `sending→reconciling` rather than resending — the pre-send marker is precisely what distinguishes "send was in flight" from "send never started." Resolution is evidence-driven (Decision 6).
+**D-EV-5 — Crash recovery reads the MUTABLE state to detect an in-flight send; it never infers from absence and never blind-resends.** A worker that dies between D-EV-3's commit and D-EV-4 leaves the durable signature `status='sending'` with a populated `send_key`/`send_started_at` and **no finalized attempt for that `attempt_no`**. On lease expiry a new claimant (new fence) reads this and transitions `sending→reconciling` rather than resending — the pre-send marker is precisely what distinguishes "send was in flight" from "send never started." The reclaim **preserves the row's `attempt_no` and its stored `send_key`/`provider_idempotency_ref`** (it does not re-enter `leased→sending`, so no new key is minted); the reconcile/resolve path in Decision 6 works from that same stored key. This is distinct from the expired-`leased` reclaim of a **never-sent** row, which is safe to issue as a genuinely fresh attempt (new `attempt_no`, new key). Resolution is evidence-driven (Decision 6).
 
 **D-EV-6 — LATE and CONFLICTING evidence appends; it never mutates history and never regresses the projection.** A provider callback arriving after a terminal state is still verified and the receipt is still INSERTed append-only — evidence is never dropped as a *write*. What is gated is the *projection* onto mutable state:
 
 - `notification_receipt` carries the provider-observed timestamp and an `applied|superseded|conflicting` marker computed at insert against the current projection. A receipt older than the applied one, or one contradicting an already-terminal attempt (e.g. `delivered` after a recorded hard-bounce), is inserted `superseded`/`conflicting` and does **not** advance `notifications.lifecycle_state`.
 - The mutable lifecycle projection is **monotonic along the receipt-driven ladder** (`accepted → delivered → …`) and, once terminal, does not move. A late/conflicting receipt adds a history row for operator triage; it rewrites no prior row and regresses no state — a handoff already recorded can never be rewritten as unsent (**INV-11**).
-- Replay is idempotent via `notification_callback_event`'s `UNIQUE (provider, provider_message_id, provider_event_id, replay_id)`, so a redelivered callback maps to the same attempt and produces no second receipt or status event (**INV-06**).
+- Replay is idempotent via `notification_callback_event`'s deterministic `dedup_key` (`digest(provider_id ‖ provider_message_id ‖ provider_event_id ‖ payload_signature_digest)`, over stable signature-covered fields — **not** a mutable/nullable `replay_id`), so a redelivered callback — even one whose `replay_id` changed or is null — maps to the same attempt and produces no second receipt or status event (**INV-06**).
 
 *Kernel consistency:* the dispatch↔attempt/receipt split *is* the `workflow_instances`↔`workflow_history` pattern (013/014), the same discipline ContactPoint (019) and Location (020) use; Location's `observe()`→`accept_observation()` candidate rule is mirrored — a provider result is a candidate receipt, appended and classified, never self-promoting the mutable projection.
 
@@ -196,9 +200,9 @@ Replace the loose "before bytes / after bytes" wording with a **point-of-no-retu
 
 - **`idempotency-key` declared →** a re-send is permitted *because* it reuses the identical stored `send_key`; the provider collapses it to at-most-one effect. This is the **only** path on which a reclaim re-issues bytes. Result written as the attempt's outcome row.
 - **`reconciliation-query` declared (no key) →** query the provider by message id/`send_key` to resolve the true outcome and write the outcome row. **No resend.**
-- **Neither declared →** after a reconciliation-age ceiling, INSERT one immutable attempt classified **`terminal_unknown`** and move dispatch to `dead` — operator-visible, never rewritten to `delivered`/`failed`, never resent by the worker.
+- **Neither declared →** after a reconciliation-age ceiling, INSERT one immutable attempt classified **`unknown`** (the honest observed outcome, if one was not already appended at observation) and floor the **dispatch** at the **`terminal_unknown` lifecycle state** (`status='dead'`) — operator-visible, never rewritten to `delivered`/`failed`, never resent by the worker. `terminal_unknown` is a dispatch/reconciliation lifecycle floor, **not** an attempt `classified_outcome`; the attempt row always carries one of the four canonical outcomes (`unknown` here).
 
-An `unknown` attempt is **never** promoted to a fresh `attempt_no` for auto-retry (that is the blind resend INV-09 forbids). Only `retryable_failed` increments the attempt.
+An `unknown` attempt is **never** promoted to a fresh `attempt_no` for auto-retry (that is the blind resend INV-09 forbids), and a reconcile/resolve of it **reuses the same `attempt_no` and stored `send_key`** rather than minting a new key. Only `retryable_failed` increments the attempt.
 
 **Dead-letter** is a durable, tenant-scoped state on the dispatch/attempt (not a separate mutable queue) carrying last classified outcome, attempt count, and safe diagnostic. It surfaces via `notification.dead_letter.v1` and supports an **authorized, audited** operator `notification.retry`/`notification.reconcile` — human-initiated, never automatic. Any manual resend that accepts duplicate risk is an authorized, audited operator act, never a worker decision.
 
@@ -259,12 +263,20 @@ claimed AS (
     ) c
 )
 UPDATE notification_dispatch d
-SET    status='leased', lease_owner=:worker,
+SET    status = CASE
+                  WHEN d.status = 'sending'                      -- expired-`sending`: a send MAY have gone out
+                  THEN 'reconciling'                             --   → route to reconciliation, never blind-resend
+                  ELSE 'leased'                                  -- `pending` / expired-`leased`: never sent → fresh attempt
+                END,
+       lease_owner=:worker,
        lease_expires_at = now() + :ttl,               -- ttl > provider-call timeout + margin
        lease_fence = d.lease_fence + 1
+       -- attempt_no and send_key are DELIBERATELY left untouched: an expired-`sending` reclaim
+       -- reuses the SAME attempt_no and stored send_key/provider_idempotency_ref (Decisions 3 & 6);
+       -- a NEW key is minted only by the leased→sending send-intent of a genuinely new attempt (D-EV-3).
 FROM   claimed
 WHERE  d.dispatch_id = claimed.dispatch_id
-RETURNING d.dispatch_id, d.tenant_id, d.lease_fence, d.provider_id;
+RETURNING d.dispatch_id, d.tenant_id, d.lease_fence, d.status, d.provider_id;
 ```
 
 Then, in the **same transaction**, sink the just-served tenant to the back of the interleave order:
@@ -276,6 +288,10 @@ ON CONFLICT (tenant_id) DO UPDATE SET last_served_at = now();
 ```
 
 The `LATERAL … LIMIT LEAST(free_slots, …)` makes "no tenant exceeds its slot share" a **query-enforced guarantee** — a tenant with 10,000 queued rows still yields at most `free_slots` this pass. `ORDER BY last_served_at ASC` interleaves; `SKIP LOCKED` keeps concurrent workers contention-free; `h.state='closed'` filters open/half-open providers *before* a slot is consumed.
+
+**Slot consumption is serialized per tenant (closes INV-14 claim-race).** The `SELECT count(*) … free_slots` computation is not by itself race-safe: two concurrent claimers can each read the same `inflight`, each derive the same `free_slots`, and each claim up to that many rows — together exceeding `:max_inflight_per_tenant`. So the claim transaction **serializes per-tenant slot consumption**: before computing `free_slots` it takes a `SELECT … FOR UPDATE` row lock on that tenant's `notification_fairness` row (the same row the pass sinks to the back of the interleave), so a second concurrent claimer for the same tenant blocks until the first commits and then re-reads the now-current `inflight`. (An equivalent formulation reserves slots with an atomic `UPDATE notification_fairness SET inflight_reserved = inflight_reserved + :n … WHERE inflight_reserved + :n <= :cap RETURNING` in the same transaction.) Either way, two claimers cannot both spend the same free slots; the per-tenant cap holds under concurrency, not just in the single-claimer read.
+
+> **Build-time verification obligation.** The concurrency correctness of this claim/slot/quota SQL — the per-tenant cap under concurrent claimers, fenced-lease CAS rejection, one-probe breaker fencing, and quota reservation atomicity — is **proven in the tests-first build on live PostgreSQL** (concurrent-claimer / race tests against real transaction isolation), not asserted at the ADR level. This ADR fixes the mechanism; the build supplies the proof.
 
 **D3 — Per-tenant quota is a token bucket RESERVED transactionally at admission, VALIDATED (not re-spent) at claim.** At `notification.request`, reserve one token in the *same transaction* as the outbox insert:
 
@@ -324,6 +340,10 @@ The winner leases **exactly one** dispatch for that provider (gated on holding `
 **Inbound callback plane**
 
 - **CB-SEC-01 — Callback ingest is a third, weaker principal `bopen_notify_callback`,** granted only: `SELECT` on the content-free binding-lookup path (`provider_message_id`/`send_key` → `tenant_id` + `attempt_id`), `INSERT` into the append-only callback tables, and `SELECT, UPDATE` on the per-provider callback-rate counter. **No lease/dispatch grant, no content grant** — the internet-facing surface cannot claim work, send, or read a message. The receipt *write* re-enters `tenant_session(stored_tenant_id)` as `bopen_app` after binding.
+- **CB-SEC-01b — Forced-RLS, column-confined binding lookup (parity with WQ-SEC-02).** Like the claimer, `bopen_notify_callback` runs under `FORCE ROW LEVEL SECURITY`. Its only read is a narrow, **column-restricted** binding lookup on `notification_attempt` — `SELECT (attempt_id, tenant_id, dispatch_id, provider_profile, provider_idempotency_ref, provider_message_id)` — the id/lookup scalars a binding needs and nothing more (structurally no request fingerprint beyond the lookup handle, and no body/recipient/subject/variable, which live on no table it can touch). A policy `TO bopen_notify_callback FOR SELECT USING (true)` is **cross-provider by necessity** (the unauthenticated endpoint holds no tenant context yet) but confined by column grants to opaque binding tuples: a fully-compromised callback principal learns only that some `(provider_message_id → tenant_id, attempt_id)` binding exists — never what the message says or to whom. `INSERT` is limited to the append-only callback tables (`notification_callback_event`, `notification_callback_quarantine`); `SELECT, UPDATE` is limited to the content-free per-provider callback-rate counter on `notification_provider_health`. It holds **no** grant on `notification_dispatch`, `notifications`, render/recipient tables, or the fairness/quota control rows.
+- **CB-SEC-01c — Tenantless-quarantine ownership.** A verified-but-unbound early callback (its send-start row not yet visible — CB-SEC-03) is **owned by the callback principal**: it `INSERT`s the content-free quarantine row under **no** tenant context (the tenant is not yet known), and a bounded re-resolution pass — running as `bopen_notify_callback` for the lookup, then re-entering `tenant_session(stored_tenant_id)` as `bopen_app` once the binding appears — promotes it to a tenant-scoped receipt append or, past the quarantine-age ceiling, to an operator-visible dead record. The quarantine table is content-free precisely so this pre-binding, tenantless custody discloses nothing.
+- **CB-SEC-01d — Audit identity for the callback actor (parity with WQ-SEC-04).** Every callback ingest, quarantine, refusal, and resulting receipt is stamped with the governed `notify-callback` service principal (`principals.type='service'`, provisioned alongside `notify-worker` in WQ-SEC-04) plus the `correlation_id` recovered from the bound attempt. Audit *scope* is the **stored** `tenant_id` from the resolved binding — **never** any tenant/account/recipient field in the callback body (the `context_service._deny` rule applied to webhooks); a refusal that resolved no binding files to the tenant-null operational trail (CB-SEC-07), chosen by whether a real binding existed, not by any body value.
+- **CB-SEC-01e — Callback-specific revocation, fails closed (parity with WQ-SEC-05).** (a) `ALTER ROLE bopen_notify_callback NOLOGIN` halts inbound ingest alone, without touching the worker plane or tenant data; (b) suspending the `notify-callback` service principal trips the independent auth gate (INV-02); (c) `DROP POLICY … TO bopen_notify_callback` removes the cross-provider binding-lookup reach — and because the callback principal carries no tenant context, the surface degrades to **zero-visibility**, never open-visibility (mirroring `system_session` reading zero rows); (d) per-provider callback revocation is dropping that provider's signing secrets (CB-SEC-06), halting that provider's callbacks alone.
 
 ---
 
@@ -332,13 +352,13 @@ The winner leases **exactly one** dispatch for that provider (gated on holding `
 Provider status callbacks are accepted at a **single unauthenticated-but-verified public endpoint per provider adapter**. A callback's authority derives **only** from a stored provider-message binding — **never** from any tenant/account/recipient field in the body (**AUTH-D1 applied to webhooks**).
 
 - **CB-SEC-02 — Total raw-byte verification order, nothing parsed first,** as a hard gate, each step on raw bytes before the next, JSON parse strictly last:
-  1. **size** — reject over a fixed byte cap before reading/allocating the full body (parse-bomb / memory-DoS defense on the unauthenticated endpoint);
-  2. **content-type** — reject a mistyped body;
-  3. **timestamp window** — from a signed header field, range-checked against the DB clock;
-  4. **HMAC/signature** — over the exact raw bytes, against the provider's active-or-overlap secret;
-  5. **only now parse.**
+  0. **size — enforced at the public endpoint by a streaming read limit, BEFORE the `raw_bytes` buffer is constructed.** The endpoint caps the request body as it streams and aborts an oversized body *without allocating the full buffer* (parse-bomb / memory-DoS defense on the unauthenticated endpoint). This gate lives at the endpoint, **not** in the adapter's `verify_callback(raw_bytes, …)`: by the time the adapter holds `raw_bytes` the body is already buffered, so a size check there would be too late to prevent the allocation. `verify_callback` is therefore only ever handed an already-size-bounded buffer.
+  1. **content-type** — reject a mistyped body;
+  2. **timestamp window** — from a signed header field, range-checked against the DB clock;
+  3. **HMAC/signature** — over the exact raw bytes, against the provider's active-or-overlap secret;
+  4. **only now parse.**
 - **CB-SEC-03 — Early-callback quarantine distinguishes verified-but-early from forged.** A callback that passes verification but whose `provider_message_id` matches no stored binding (send-start row not yet visible) is written append-only to `notification_callback_quarantine` (content-free) and re-resolved by a bounded pass once the attempt commits. **Signature is verified before quarantine** — forged bytes never enter it. Because `send_key` is derived before send, the binding key exists pre-send, so the quarantine window is only the commit-visibility race. After a bounded quarantine-age ceiling with no match, the entry becomes an operator-visible dead record — never a receipt, never a state change. This names the reviewer's finding-#4 seam: raw edge input → verified observation → *quarantine if unbound* → stored-binding lookup → tenant-scoped receipt append → lifecycle projection.
-- **CB-SEC-04 — Replay uniqueness and order-insensitive convergence.** Every accepted callback is recorded append-only under `notification_callback_event`'s `UNIQUE (provider_id, provider_message_id, provider_event_id, replay_id)`; a redelivery collides and is a no-op (INV-06/-12). Transport status is a lattice, not a stream — the receipt *projection* advances only monotonically along the ladder using the provider-observed timestamp; a stale or already-terminal transition is still stored append-only but does not rewrite projected state (a late `delayed` cannot un-do a `delivered`). Convergence is independent of arrival order and needs no trust in provider sequencing.
+- **CB-SEC-04 — Replay uniqueness (independent of a nullable replay ID) and order-insensitive convergence.** Every accepted callback is recorded append-only under `notification_callback_event`'s **deterministic `dedup_key`** — `digest(provider_id ‖ provider_message_id ‖ provider_event_id ‖ payload_signature_digest)`, derived from stable, signature-covered fields — with `UNIQUE (provider_id, provider_message_id, dedup_key)`. The key **does not depend on a mutable/nullable provider `replay_id`**: a redelivered event whose `replay_id` is changed or null still yields the same `dedup_key`, so it collides and is a no-op (INV-06/-12). `replay_id`, when present, is stored as evidence only. Transport status is a lattice, not a stream — the receipt *projection* advances only monotonically along the ladder using the provider-observed timestamp; a stale or already-terminal transition is still stored append-only but does not rewrite projected state (a late `delayed` cannot un-do a `delivered`). Convergence is independent of arrival order and needs no trust in provider sequencing.
 - **CB-SEC-05 — Per-provider rate limit, keyed only on provider.** A per-provider token bucket is evaluated **before** binding lookup, keyed **only** on `provider_id` — the endpoint must never resolve a tenant or message to decide whether to throttle. A flood at provider A's endpoint cannot starve provider B's ingest.
 - **CB-SEC-06 — Secret rotation with bounded, auditable overlap.** Each provider holds at most two active signing secrets (`current` + `previous`, the `previous` carrying an explicit `not_after`). Verification tries `current` then `previous`; a body verifying only under an expired `previous` is refused. Overlap is bounded and recorded append-only. Secrets are runtime config behind the adapter facade — never a tenant row, never an event field (INV-13). Per-provider revocation is dropping that provider's secrets.
 - **CB-SEC-07 — One uniform, tenant-safe refusal across the entire surface (the non-oracle).** Every rejection — oversize, mistyped, stale, bad signature, unknown/early/wrong-provider/wrong-message binding, replay, over-rate, invalid transition — returns **one identical response** (same status, body, shape, and constant-work past the size/type gate so timing does not separate "message exists" from "does not"). The rejection is filed to audit under the **stored** `tenant_id` only when a binding actually resolved; otherwise to a tenant-null operational trail chosen by whether a real binding existed — **never by any body field** (the `context_service._deny` scope rule applied to webhooks). No response, timing, or audit-routing difference discloses whether a message, recipient, Principal, or Party exists (**INV-04/-01**).
@@ -353,7 +373,9 @@ Provider status callbacks are accepted at a **single unauthenticated-but-verifie
 - **Seam 2 (classifier):** one owner (worker), one closed four-class vocabulary, adapter maps only, `terminal_unknown` demoted to a lifecycle floor state (Decision 5).
 - **Seam 3 (provider routing):** the dispatch row carries `provider_id`/`provider_profile_version`, resolved at enqueue (Decision 2), so "skip open-provider work" is expressible (Decision 7-D1).
 - **Seam 4 (callback ownership):** verify/normalize = adapter; binding lookup + tenant-scoped append + projection = worker (Decision 9).
-- **Recipient/render seam (finding #5):** recipient resolution and all staleness/cross-tenant/verification/purpose/channel validation are performed by the **worker orchestrator** via `ContactPointRepository.resolve()` inside `tenant_session(tenant_id)` — *not* the adapter, which receives an already-validated frozen `RecipientSnapshot` and a rendered-content reference and performs **no recipient validation** (it holds no `tenant_id` and no connection). The snapshot is re-resolved on every attempt (never carried across a retry), bounded by a resolve→handoff freshness ceiling.
+- **Recipient/render seam (finding #5 + finding #8 — frozen):** recipient resolution and all staleness/cross-tenant/verification/purpose/channel validation are performed by the **worker orchestrator** via `ContactPointRepository.resolve()` inside `tenant_session(tenant_id)` — *not* the adapter, which holds no `tenant_id` and no connection and performs **no recipient validation**. Two lifetimes are frozen here so worker and adapter cannot diverge on them:
+  - **Rendered-content transfer/dereference.** The orchestrator renders the template-version output under `tenant_session` and hands the adapter an **integrity-bound `rendered_content_ref`** (an opaque handle) — **not** inline bytes carried through domain state. The reference is **dereferenced to transport bytes at send time, within the same attempt's handoff**, for transport only; raw body and template variables never flow through adapter logs or domain fields. The reference is valid only for that attempt's handoff window; a reference that cannot be dereferenced within the attempt is a fail-closed refusal, never a stale or partial send.
+  - **`RecipientSnapshot` lifetime/validity.** The snapshot is **resolved at the start of each attempt** under `tenant_session`, is valid **only within a bounded resolve→handoff freshness ceiling**, and is **never carried across a retry**. Every genuinely new attempt (including a reclaim that issues a fresh attempt) **re-resolves** it; a snapshot older than the ceiling at handoff is **re-resolved before send, never trusted indefinitely**. A stale, superseded, or unresolvable snapshot fails closed at the orchestrator *before any byte leaves* — the adapter is never handed an expired snapshot to reason about, because it structurally cannot.
 
 *Kernel consistency:* single-owner-per-concern, the same discipline that keeps `tenant_session` the sole authority for tenant scope and forbids a second, divergent path.
 
@@ -427,8 +449,8 @@ Designed independently from standards/patterns as requirements sources (AGENTS.m
 
 ```yaml
 adr: notification-worker-queue-operational-model
-document_id: EVD/ADR-NOTIFY-WORKER
-version: 2.0.0-draft
+document_id: ADR-NOTIFY-WQ
+version: 2.1.0-draft
 status: DRAFT / PROPOSED
 gated_by: DEC-P4-ENTRY §9
 truth_status: partially_supported
