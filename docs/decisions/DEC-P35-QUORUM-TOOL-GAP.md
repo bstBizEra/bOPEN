@@ -129,3 +129,55 @@ precisely the defect `DEC-P4-LOCATION-BALLOT-ATTRIBUTION` was raised to repair o
 This is the one place where §21.2.1 — *no agent commits under the operator's identity* — becomes
 load-bearing rather than hygienic. An agent may **draft** a disposition line; only the operator may
 commit it.
+
+## 7. Amendment 2026-08-08 — Option 1 selected; Location disposition deferred; build plan
+
+> **Change note (extend-only).** Recorded **before** any build, per `AGENTS.md` §25.1 step 0.
+
+### 7.1 What the shortfall actually covers
+
+Measured 2026-08-07 across `docs/evidence/phase-3.5/ballots.jsonl`: **27 candidates in total, 26 of
+them below two verifiers** (23 verified by `codex`, 3 by `gemini`). They are not duplicate or stale
+commits. They are distinct work items spanning almost everything this repository has produced —
+`AUTH-D1`, `AUTH-D3`, gateway decoding, the placement seam, trial→paid migration, Party, the Workflow
+state engine, UOM, Party ContactPoint and Location.
+
+This reframes the finding recorded in §2. §6.5 is not an accommodation for an edge case; it is **the
+normal operating mode of this repository**, and no automated check has ever been able to express it.
+A tool that can only speak §6.1 can never report that anything here is verified.
+
+### 7.2 Decision
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **Option 1 selected** — add a machine-readable disposition record and teach the checker to report `CONFIRMED_UNDER_TWO_AGENT_PROFILE`, per the shape in §6 |
+| **Rejected** | Option 3 (teach the checker one verifier suffices) — drops the disposition requirement §6.5.1 makes load-bearing and converts an operator-gated accommodation into an automatic pass |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture & Engineering Authority |
+| **Decision timestamp** | 2026-08-08 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 7.3 Location disposition is deferred, deliberately
+
+The operator **has not** disposed `1cde994`, and that is the recommended sequence rather than an
+omission. Disposing it in prose now would mean recording it twice once `dispositions.jsonl` exists,
+and 26 candidates are waiting — a single pass in one consistent format is better than 26 one-off
+prose entries. Nothing is blocked meanwhile: Location remains un-confirmed, and the in-flight
+MILE-4.2 work does not depend on its confirmation.
+
+### 7.4 This build is not a small change, and is not authorized to proceed by this amendment
+
+`check_ballot_attribution.py` is the control that guards the entire evidence base. Changing it earns
+the full governed cycle, not a patch:
+
+1. **Baseline first** (§23) — tag before the change lands, never after.
+2. **Refusal Matrix** — the change must be unable to confirm a candidate that has no disposition,
+   no admissible ballot, a maker-cast ballot, a `REFUTED` ballot, or a disposition not committed
+   under the operator's identity (§6.4).
+3. **Tests-first**, negative tests before implementation, then mutate the mechanism and confirm the
+   tests fail.
+4. **Independent verification by Codex**, which authored none of it.
+5. **Operator disposition** — and note the recursion: the first artifact this new mechanism would
+   confirm is the mechanism itself, which must therefore be disposed under the *existing* rules.
+
+A proposed work-package ID and the entry-gate record are still required before any code is written
+(§5 step 2). **This amendment authorizes the direction, not the build.**
