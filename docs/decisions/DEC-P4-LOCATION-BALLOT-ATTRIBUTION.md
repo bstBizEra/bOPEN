@@ -82,7 +82,40 @@ failure `BOPEN-GOV-EBIV-001` §8 and `AGENTS.md` §21 exist to prevent.
 That fact is not established by anything in the repository. It should be confirmed by Codex before
 option 2 is chosen; if it cannot be confirmed, option 1 is the only sound repair.
 
-## 6. What this decision request does not do
+## 6. Amendment 2026-08-07 — Option 1 selected; a §19.1 worktree exception is authorized
+
+> **Change note (extend-only).** Recorded **before** the probes run.
+
+**Option 1 is selected**: Codex re-runs the 31 `LOC-INV-*` probes against `1cde994` and commits its
+own ballots under `codex@bst.local`. Option 2 was rejected on the §5 reasoning — it is hollow unless
+Codex confirms it ran the probes, and otherwise launders a maker self-assessment into an apparently
+independent ballot. Option 3 was rejected as control-weakening.
+
+**A §19.1 worktree exception is authorized**, scoped as follows.
+
+`AGENTS.md` §19.1 requires agents to work in the primary workspace and forbids uncoordinated
+parallel worktrees absent governance authorization. The primary workspace cannot serve here: it
+carries an unrelated in-flight change-set (modified `tests/isolation/test_rls_database_behavior.py`
+and `tools/migrate_tenant_to_dedicated.py`; untracked `021_notification_foundation.sql` and
+`tests/isolation/test_notification_isolation.py`), so a suite run there exercises a tree that is not
+`dfc5d220`. Decisively, a ballot must anchor to a `commit_oid` and `tree_oid`, and uncommitted work
+has neither — verifying in the workspace as it stands could only produce a ballot claiming an anchor
+it did not verify, which is the same class of defect being repaired.
+
+| Field | Value |
+| :--- | :--- |
+| **Scope** | One detached worktree at `1cde994`, **probe execution only** |
+| **Prohibited in the worktree** | Any commit, branch, push, or edit of tracked files |
+| **Where ballots are written** | The primary workspace, committed under `codex@bst.local` |
+| **Lifetime** | Removed after the run |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture Authority |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision |
+
+The exception is narrow by construction: the worktree exists so the candidate can be observed
+unmixed, and it never becomes a second place where work lands. It does not generalize to other
+tasks.
+
+## 7. What this decision request does not do
 
 It does not dispose the Location foundation, re-open its work package, alter any verdict, or change
 `check_ballot_attribution.py`. It records a control failure and asks for a disposition.
