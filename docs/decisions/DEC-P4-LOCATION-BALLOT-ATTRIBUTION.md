@@ -1,0 +1,90 @@
+# DEC-P4-LOCATION-BALLOT-ATTRIBUTION — 31 Location ballots are unattributable and do not count toward quorum
+
+**Decision ID:** `DEC-P4-LOCATION-BALLOT-ATTRIBUTION`
+**Version:** `1.0.0`
+**Status:** **Proposed — decision request raised under `AGENTS.md` §16 (a required attribution record is absent)**
+**Issued:** 2026-08-07
+**Owner:** Engineering Authority
+**Raised by:** Claude (agent, Motor role) — advisory only
+**Governing:** `AGENTS.md` §21.3, §21.4; [`BOPEN-GOV-IDENT-001`](../00-governance/BOPEN-GOV-IDENT-001.md); [`BOPEN-GOV-EBIV-001`](../00-governance/BOPEN-GOV-EBIV-001.md) §3
+
+---
+
+## 1. The finding
+
+`tools/check_authority_bootstrap.py` fails `test_ballot_attribution_holds`:
+
+```text
+Ran 669 tests in 711.993s
+FAILED (failures=1)
+```
+
+Commit `b524846` (2026-08-05) — *"evidence: persist Codex Location ballots (31/31 CONFIRMED at
+1cde994)"* — is authored by `Claude (BST-SA Motor) <claude@bst.local>` but introduced 31 ballot lines
+whose `verifier_id` is `codex`. `check_ballot_attribution.py` binds a ballot to the **git author of
+the commit that introduced the line** (`git blame -L`), so all 31 disagree with their own claim.
+
+- `docs/evidence/phase-3.5/ballots.jsonl` lines **367–397**
+- All 31: `verdict: CONFIRMED`, candidate `1cde994` (Location foundation, `BOPEN-LOC-001`),
+  propositions `LOC-INV-*`
+- One implicated commit; no other ballots in the file are affected (346 codex + 51 gemini total)
+
+Claude transcribed Codex's verdicts into the evidence file instead of Codex committing its own
+ballots. This is a **transcription-versus-authorship** defect, not a misused identity — the commit
+ident is correct; it is the ballots inside it that cannot be bound.
+
+## 2. Why it matters
+
+Per `AGENTS.md` §21.3, **an unattributable ballot does not count toward quorum.** The Location
+foundation's verification therefore currently rests on 31 ballots the tool refuses.
+
+Codex is otherwise a validly independent verifier here: `docs/evidence/phase-3.5/manifest.json`
+records the Maker as *"Claude (agent, Motor role)"* and lists Codex among the eligible verifiers, so
+EBIV §3 is satisfied on the merits. Only the binding is missing.
+
+## 3. Why the register entry does not fix this
+
+`agent-identity-register.json` now carries an `attribution_gaps` record for this commit. **That is
+the record, not the remedy.**
+
+`check_ballot_attribution.py` reads only the `canonical`, `legacy_recognised` and `forbidden` fields
+of the register. It never consults `attribution_gaps`, and the comparison is an unconditional
+equality:
+
+```python
+if agent_id != claimed:
+    findings.append(Finding("R4", locator, ...))
+```
+
+No documentation change clears this check. Recording the gap is still correct and required — the
+2026-08-01 gap set the precedent — but the suite stays red until one of the options below is taken.
+
+## 4. Options
+
+| # | Option | Greens the check | Assessment |
+| :--- | :--- | :--- | :--- |
+| 1 | **Codex re-casts the ballots** — Codex re-runs the probes against `1cde994` and commits its own ballot lines under `codex@bst.local` | Yes | **Recommended.** The verdicts become Codex's own act rather than a transcription, which is what the control is actually asking for |
+| 2 | **Codex re-commits the existing 31 lines** — remove and re-add them in a Codex-authored commit so `git blame` resolves to Codex | Yes | Acceptable **only if Codex confirms it performed the probes.** Otherwise it manufactures the appearance of independence the check exists to prevent — see §5 |
+| 3 | **Widen the checker** — add an exemption path honouring a transcription record | Yes | **Recommended against, and operator-reserved.** The entire value of this control is that it refuses transcribed independence; an exemption returns the repository to the state §21 was written to end |
+| 4 | **Accept as uncountable** — record Location as unverified pending re-verification | No | Honest, and leaves the suite red. Appropriate only if Codex is unavailable |
+
+No option rewrites history. §21.4's reasoning holds: rewriting would invalidate evidence anchors
+emitted against these objects and trade a disclosed defect for a silent one.
+
+## 5. The distinction that decides between options 1 and 2
+
+Option 2 is mechanically sufficient and substantively hollow unless one fact is true: that Codex
+actually ran the probes it is credited with. If it did, re-committing merely repairs a bookkeeping
+error. If it did not — if the verdicts were inferred, copied, or produced by the maker — then option
+2 launders a maker self-assessment into an apparently independent ballot, which is the precise
+failure `BOPEN-GOV-EBIV-001` §8 and `AGENTS.md` §21 exist to prevent.
+
+That fact is not established by anything in the repository. It should be confirmed by Codex before
+option 2 is chosen; if it cannot be confirmed, option 1 is the only sound repair.
+
+## 6. What this decision request does not do
+
+It does not dispose the Location foundation, re-open its work package, alter any verdict, or change
+`check_ballot_attribution.py`. It records a control failure and asks for a disposition.
+
+Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
