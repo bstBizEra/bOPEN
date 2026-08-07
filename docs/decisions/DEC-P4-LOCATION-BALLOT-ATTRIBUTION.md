@@ -139,3 +139,41 @@ It does not dispose the Location foundation, re-open its work package, alter any
 `check_ballot_attribution.py`. It records a control failure and asks for a disposition.
 
 Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+## 8. Correction 2026-08-07 — `check_authority_bootstrap.py` does **not** have the defect attributed to it
+
+> **Change note (extend-only).** Correcting a false statement made by this agent, recorded because
+> it reached commit messages that cannot be edited.
+
+The commit messages of `0d058df` and `fb128aa` both state that `tools/check_authority_bootstrap.py`
+*"exits 0 even when it reports FAILED — the wrapper does not propagate the unittest result, a
+separate harness defect."*
+
+**That is wrong. The tool has no such defect.** `tools/check_authority_bootstrap.py` line 108 calls
+`sys.exit(1)` whenever any check fails, and the first background run did report `exit=1`. The
+misreading came from the shell command the agent wrapped around it, which ended in `tail`, so the
+exit code observed was `tail`'s and not the script's.
+
+Two behaviours of the tool that are correct but easy to misread, recorded so the next reader does
+not repeat the mistake:
+
+1. **A passing run prints only three lines.** `run_script` calls `subprocess.run(...,
+   capture_output=True)`, so a child's output is retained and surfaced **only** when that child
+   exits non-zero. `bOPEN Authority Bootstrap Check: PASS` with no test output means the 669-test
+   suite ran and passed — not that it was skipped.
+2. **`Ran 669 tests ... FAILED` appearing in the output is the captured failure text**, printed
+   because a check failed. Its presence indicates the tool working, not the tool leaking.
+
+The practical advice that accompanied the false claim — read the summary line rather than the exit
+code — remains sound, and was applied to reach the verified results below. Only the stated reason
+was wrong.
+
+**Clean serialized verification, 2026-08-07 23:38:42–23:50:34 (11m52s):**
+`bOPEN Authority Bootstrap Check: PASS`. This also settles the three errors seen in the earlier
+contended run (`test_cross_tenant_idempotency_key_reuse_is_isolated_not_refused`,
+`test_full_phase3_entitlement_metering_flow`, `test_window_bounds_bracket_the_reservation`): they
+were artifacts of two suites contending for the one shared PostgreSQL — that run took 22552s against
+a 712s baseline — and do not reproduce when the suite runs alone. They were not product defects.
+
+The claim was not propagated into the Codex dispatch instruction; the damage is confined to the two
+commit messages named above, which this section corrects.
