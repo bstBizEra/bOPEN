@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 330,
+  "count": 363,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -20,8 +20,8 @@
       "path": "docs/00-governance/agent-identity-register.json",
       "title": "",
       "status": "",
-      "sha256": "25076503a0fa24c64153c00bcee329cfe7cd5a88cc40a073e76d0b9f16fded38",
-      "bytes": 6791
+      "sha256": "f82ba45bd594cc9d3fb33764ce9abb7d3ed900f545b0011c75aa1417b4e8add4",
+      "bytes": 8848
     },
     {
       "path": "docs/00-governance/agent-role-catalog.md",
@@ -227,11 +227,158 @@
       "bytes": 20375
     },
     {
+      "path": "docs/01-product/MILE-4.2-calendar-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Calendar foundation, research & design",
+      "status": "**Research \u2014 advisory. Final sequential research slice; buildable only on separate operator authorization.** Calendar remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79.",
+      "sha256": "d9e458cb5e8aecfeba4b4fbc21c364bd8b86d8755ae4b264f72920bc9074c960",
+      "bytes": 34383
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-calendar-foundation-review.md",
+      "title": "MILE-4.2 \u2014 Calendar foundation, advisory review",
+      "status": "**Advisory review \u2014 no authorization, no build.** Calendar remains gated ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79). This closes the review step for Calendar \u2014 the **last** of the operator's sequence (Document \u2192 Location \u2192 Notification \u2192 **Calendar**). Recording this review lets the four-foundation research sequence be described as *reviewed as advisory planning*; it does **not** approve, authorize, implement, or confirm any of the four.",
+      "sha256": "352de09af908f4f9ed1366d96f5b9f26e63a4305b1ca45a3131745bafedca688",
+      "bytes": 13065
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-document-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Document foundation, research & design",
+      "status": "**Research \u2014 advisory. A future slice; buildable only on operator authorization.** Document remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79.",
+      "sha256": "48ab486dcb8c68c7537e7b9f184d48ca4c470a1635b8907636e5c58c1425415d",
+      "bytes": 13239
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-document-foundation-review.md",
+      "title": "MILE-4.2 \u2014 Document foundation, advisory review",
+      "status": "**Advisory review \u2014 no authorization, no build.** Document remains gated ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79). This closes the review step of the operator's sequential foundation study (Document \u2192 Location \u2192 Notification \u2192 Calendar); Location's research enters next.",
+      "sha256": "a5f58330499c53c2527f0ee4fdf036f4d026276a58f56864aacb8c1289c31c14",
+      "bytes": 14090
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-location-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Location foundation, research & design",
+      "status": "**Research \u2014 advisory. Current sequential research slice; buildable only on separate operator authorization.** Location remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79.",
+      "sha256": "a73e790de8df533bea7abfc058245ccfce9eb424d57e9154888ce9c8a42bb9d1",
+      "bytes": 27509
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-location-foundation-review.md",
+      "title": "MILE-4.2 \u2014 Location foundation, advisory review",
+      "status": "**Advisory review \u2014 no authorization, no build.** Location remains gated ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79). This closes the review step for Location in the operator's sequence (Document \u2192 **Location** \u2192 Notification \u2192 Calendar); Notification's research enters next.",
+      "sha256": "264ea6c52bbd6f951cdb6e7c8acf710780c79cf48f4d00ab9635aea28371f5a0",
+      "bytes": 8290
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-ADR-codex-review.md",
+      "title": "MILE-4.2 \u2014 Notification ADRs, independent Codex review (captured excerpt)",
+      "status": "",
+      "sha256": "a15b837618442d3dc0a86867e3ff6c582fe2c41f36541432b5344232ea298cf8",
+      "bytes": 7386
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-ADR-v2-codex-rereview.md",
+      "title": "MILE-4.2 \u2014 Notification ADRs v2, independent Codex re-review",
+      "status": "",
+      "sha256": "1467e2f820900b89eeb20ca903cafecedd359b0da39ce87501771cffd48e2dd8",
+      "bytes": 4355
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-BOPEN-NOTIFY-001-spec-draft.md",
+      "title": "BOPEN-NOTIFY-001 \u2014 Notification foundation contract (DRAFT)",
+      "status": "",
+      "sha256": "e19efe03d358803da2f6778f55fffcf704c3b5cbd0cdf630e0b14a8a2d70de3e",
+      "bytes": 22970
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-foundation-research.md",
+      "title": "MILE-4.2 \u2014 Notification foundation, research & design",
+      "status": "**Research \u2014 advisory. Current sequential research slice; buildable only on separate operator authorization.** Notification remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79.",
+      "sha256": "b98e9812788d7206caa46651a86811c9e1d91df6e1c8e6b3b6c5f1a8ac1a2ed9",
+      "bytes": 35080
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-foundation-review.md",
+      "title": "MILE-4.2 \u2014 Notification foundation, advisory review",
+      "status": "**Advisory review \u2014 no authorization, no build.** Notification remains gated ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79). This closes the review step for Notification in the operator's sequence (Document \u2192 Location \u2192 **Notification** \u2192 Calendar); Calendar's research enters next.",
+      "sha256": "e53c0ed4d0da9ee17321677e14ee3e7770d76498751db60d501f9cc5042a63ac",
+      "bytes": 9177
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-migration-plan-draft.md",
+      "title": "Notification migration, rollback & compensation plan (DRAFT)",
+      "status": "",
+      "sha256": "1027f15213af7cfc37ef03471b2aab8cb7ca94d5f4227a149b1235f953d52fb6",
+      "bytes": 18357
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-privacy-threat-model-draft.md",
+      "title": "Notification privacy & threat model",
+      "status": "",
+      "sha256": "8bac0913328e91599e3c06b7180965b517423d60d9b26d90f190e37828760510",
+      "bytes": 20223
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-provider-channel-ADR-draft-v2.md",
+      "title": "ADR \u2014 Notification provider/channel adapter contract",
+      "status": "",
+      "sha256": "04c0988b049b50ae1487bdc52fd8f6791cbff8c2f6a593b68a3a208c95ea37cf",
+      "bytes": 36004
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-provider-channel-ADR-draft.md",
+      "title": "ADR \u2014 Notification provider/channel adapter contract",
+      "status": "",
+      "sha256": "740ebbed276c05fff3526b13ae3b351e2c088449b1414fcb75f7b32868aa6e78",
+      "bytes": 18804
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-test-matrix-draft.md",
+      "title": "Notification test & refusal matrix (DRAFT)",
+      "status": "",
+      "sha256": "bbc6e032fd14d35601628173e038f020b639cfda6f9d2580049b25bf7c2e419b",
+      "bytes": 22216
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-worker-queue-ADR-draft-v2.md",
+      "title": "ADR \u2014 Notification worker/queue operational model",
+      "status": "",
+      "sha256": "8153f5f4ae063df3fc48a046ed1d617622e828d9e1ee0b4df628b3512ef54ab3",
+      "bytes": 65974
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-notification-worker-queue-ADR-draft.md",
+      "title": "ADR \u2014 Notification worker/queue operational model",
+      "status": "",
+      "sha256": "1348d1b92336de49bc3096f8fea9bf381c4c358660f58b30630e0bce02cd1fd9",
+      "bytes": 21269
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-party-contactpoint-extension-research.md",
+      "title": "MILE-4.2 \u2014 Party ContactPoint extension, research & design",
+      "status": "**Research \u2014 advisory. Extension of the built Party foundation to unblock Notification recipient resolution; buildable only on separate operator authorization.** The extension remains gated by [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a79; a build needs its own bounded authorization recorded in `DEC-P4-ENTRY`.",
+      "sha256": "a900b1e33268afe07c04e9235dc79f2f44c7014b8e2e8f3eb53f33b708b1ad79",
+      "bytes": 38618
+    },
+    {
+      "path": "docs/01-product/MILE-4.2-party-contactpoint-extension-review.md",
+      "title": "MILE-4.2 \u2014 Party ContactPoint extension, independent advisory review",
+      "status": "**Independent advisory review \u2014 RETURN FOR REVISION.** During this review, the operator's separate implementation authorization was recorded at [`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a710 (commit `59145875037e21cf3a1b9c9ae1488e9696477a36`). That authority does not convert this review to approval or close its findings.",
+      "sha256": "046ed4efb1b044505eb0a731249ac874002480de7c1f2796e715e54ad7ad110a",
+      "bytes": 15082
+    },
+    {
       "path": "docs/01-product/MILE-4.2-uom-foundation-research.md",
       "title": "MILE-4.2 \u2014 Unit-of-Measure (UOM) foundation, research & design",
       "status": "**Research \u2014 advisory. A future slice; buildable only on operator authorization.** One of the gated MILE-4.2 foundations ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md) \u00a77 lists UOM as gated).",
       "sha256": "3e5f065854fc802a9411ce5813813d139c251f8cb47defd1216cee372757b7cc",
       "bytes": 10242
+    },
+    {
+      "path": "docs/01-product/PHASE-4-readiness-and-authorization-map.md",
+      "title": "Phase 4 (MILE-4.2) \u2014 readiness & authorization-sequencing map",
+      "status": "**Advisory planning \u2014 authorizes nothing.** A Motor synthesis of where Phase 4 stands and a *recommended* authorization sequence. Every foundation build and every promotion remains an operator decision recorded in `DEC-P4-ENTRY` before build.",
+      "sha256": "1b9435d80627ad050d1a8509bdf1fe0eb62fccef703e02515134dd65e19d41be",
+      "bytes": 4859
     },
     {
       "path": "docs/01-product/PHASE-OUTLINE-SPEC.md",
@@ -587,22 +734,22 @@
       "path": "docs/05-foundation/calendar/README.md",
       "title": "Calendar",
       "status": "",
-      "sha256": "bb924985cfd3adb8310fac9b39990b87231338c15baccbd46f6dff26a8f91166",
-      "bytes": 80
+      "sha256": "d588d1f2fe6fdaf2e7c892ccf07334cd4be65ee7a6e73cbcb4da4ea271613a9e",
+      "bytes": 371
     },
     {
       "path": "docs/05-foundation/document/README.md",
       "title": "Document",
       "status": "",
-      "sha256": "a3d0e7eb7a96242c64a42f0349aff82fff3ef1f7c912ddfc6c7d8a24cd5ac846",
-      "bytes": 87
+      "sha256": "5dbf46e73d3c78345dfbb5396dc52067c8b274e15845a47395797e263c736776",
+      "bytes": 388
     },
     {
       "path": "docs/05-foundation/location/README.md",
       "title": "Location",
       "status": "",
-      "sha256": "7182d3f1dc2c00a157bc1cd8969625b1cd9491f343d72a6ef787af36b226740d",
-      "bytes": 84
+      "sha256": "30f5179862abedea96aee66ea9a54dd2b13220f00b5dca5efcbaf8ded6a8f3e1",
+      "bytes": 329
     },
     {
       "path": "docs/05-foundation/measurement/README.md",
@@ -619,6 +766,13 @@
       "bytes": 79
     },
     {
+      "path": "docs/05-foundation/notification/README.md",
+      "title": "Notification",
+      "status": "",
+      "sha256": "9630e29256d950d8daedfbc700b85780e3202d539d9d279f68af1273ee9d7230",
+      "bytes": 448
+    },
+    {
       "path": "docs/05-foundation/organization/README.md",
       "title": "Organization",
       "status": "",
@@ -629,8 +783,8 @@
       "path": "docs/05-foundation/party/README.md",
       "title": "Party",
       "status": "",
-      "sha256": "03bbe15d85e32cea01a443098d6eeea165541aeeb722cb9f342888c4e8fd48ce",
-      "bytes": 65
+      "sha256": "603c8d48018ff23de96361782ef3acf2ca162252e03098370addb4799e603c51",
+      "bytes": 574
     },
     {
       "path": "docs/05-foundation/relationship/README.md",
@@ -1196,8 +1350,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "b4255e8322266b3a84d3cd205655747308fad17944e4519d511f77da46128bc1",
-      "bytes": 73413
+      "sha256": "1891a7556d5fdd6585473fa65f1bf30721053b9e1c1fd6eb5d27fa7f4c37212e",
+      "bytes": 83102
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1277,6 +1431,13 @@
       "bytes": 6302
     },
     {
+      "path": "docs/decisions/DEC-P35-ORPHAN-CANDIDATE-ANCHOR.md",
+      "title": "DEC-P35-ORPHAN-CANDIDATE-ANCHOR \u2014 23 ballots are anchored to a commit no ref reaches",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
+      "sha256": "ba11fe2717638c84228ec04945fa2d20ee5c2c9b4da3ae3227d33f8d5a00c4a3",
+      "bytes": 3631
+    },
+    {
       "path": "docs/decisions/DEC-P35-PHASE2-STORAGE-ADDENDUM.md",
       "title": "DEC-P35-PHASE2-STORAGE-ADDENDUM - Mapping and grant ambiguity",
       "status": "Proposed advisory addendum - authority decision pending",
@@ -1289,6 +1450,13 @@
       "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
       "sha256": "1656f160a9dee94bad197207602892007929450d94ddba663f04b4143fc4bc04",
       "bytes": 24902
+    },
+    {
+      "path": "docs/decisions/DEC-P35-QUORUM-TOOL-GAP.md",
+      "title": "DEC-P35-QUORUM-TOOL-GAP \u2014 the ratified two-agent profile is not implemented, so 26 candidates report a quorum shortfall",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (two approved artifacts conflict)**",
+      "sha256": "68a62f2397a8083537bc9d27d78b11bd2cbc6d478c2b9a5953b1e50cf5e30afe",
+      "bytes": 12735
     },
     {
       "path": "docs/decisions/DEC-P35-RUNTIME.md",
@@ -1319,18 +1487,39 @@
       "bytes": 4743
     },
     {
+      "path": "docs/decisions/DEC-P35-VERIFIER-SCOPE.md",
+      "title": "DEC-P35-VERIFIER-SCOPE \u2014 does EBIV \u00a73 disqualify a verifier who authored the code the change extends?",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (authorization precedence is undefined)**",
+      "sha256": "785ec1741c0fe42e132eb0269922ad8b1f4ba2a871e1bd26b9f7561b8bfdd008",
+      "bytes": 15273
+    },
+    {
       "path": "docs/decisions/DEC-P4-ENTRY.md",
       "title": "DEC-P4-ENTRY \u2014 Phase 4 entry gate: the Phase 3.5 precondition is met",
       "status": "**AUTHORIZED \u2014 MILE-4.1 (2026-08-03) and MILE-4.2 (2026-08-03, \u00a77).** MILE-4.3 remains gated. Operator (`BizEra`, Architecture & Engineering Authority) authorizations transcribed by Claude (Motor); not a maker approval.",
-      "sha256": "27c3c0dc6975d5e9363a84072a73beb03641a718743cd7472ea4c5c056990bfb",
-      "bytes": 9922
+      "sha256": "d9a7052099f726ea5abf1526f7784143aee89c7123f5c4aae96d83345fbd267e",
+      "bytes": 20858
+    },
+    {
+      "path": "docs/decisions/DEC-P4-LOCATION-BALLOT-ATTRIBUTION.md",
+      "title": "DEC-P4-LOCATION-BALLOT-ATTRIBUTION \u2014 31 Location ballots are unattributable and do not count toward quorum",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (a required attribution record is absent)**",
+      "sha256": "6d0941a9b7514fe1d9f76f0633a33d296608c597766bc5d63040fe4e9a516ffc",
+      "bytes": 10960
+    },
+    {
+      "path": "docs/decisions/DEC-URE-ARCHITECT-LENS.md",
+      "title": "DEC-URE-ARCHITECT-LENS \u2014 the URE-Loop Staff Architect is seated as a review lens, not as an agent",
+      "status": "**AUTHORIZED 2026-08-07** \u2014 operator directive, transcribed by Claude (Motor). Promotes `AGENTS.md` \u00a726.2 from `PROPOSED` to in force. Not a maker approval.",
+      "sha256": "a9dc51841cca372e11f5ef2d9db617cadb13d503075a064cb1d1fdf92bf38d34",
+      "bytes": 5441
     },
     {
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "270cedae06a16bf26dbd0f0a34406a06dd4eafac229be4ed129d925a51d236bb",
-      "bytes": 8411
+      "sha256": "e896c612bb870520d25f2e5b680cacbfae0ff3cfaa77531cb8b5a06d4b531ba2",
+      "bytes": 11885
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
@@ -1455,8 +1644,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "ac8494149616911cf7a50675c13556d5cbe86165b798f9640f7803ec778939c9",
-      "bytes": 288979
+      "sha256": "0add85aa3d13be17e0022565a31bcb13464a9bf24945c6de05dd34cdda9d5b42",
+      "bytes": 351078
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1466,25 +1655,53 @@
       "bytes": 5400
     },
     {
+      "path": "docs/evidence/phase-3.5/contactpoint-disposition.md",
+      "title": "EVD-CONTACTPOINT-DISPOSITION \u2014 Party ContactPoint extension, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-05 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "8a7778b9c03420100717af5992dd278c203d6eef616e28a5a1ef6acdfdd2bd3a",
+      "bytes": 4734
+    },
+    {
+      "path": "docs/evidence/phase-3.5/contactpoint-maker.md",
+      "title": "EVD-CONTACTPOINT-MAKER \u2014 Party ContactPoint extension",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "0e4ff5c21d26cfa45fddfcf115fa0eb60f56b5af2eda69f11280f37d738ce520",
+      "bytes": 11080
+    },
+    {
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "a45934496fc9dba87fbba6da092adeef84c72cc4ed51e69f2d967f55ce2e8384",
-      "bytes": 49015
+      "sha256": "7d3400435d4a5919459c679e593f07fd4cec38396e486911677311a0bc73fa95",
+      "bytes": 66208
+    },
+    {
+      "path": "docs/evidence/phase-3.5/location-disposition.md",
+      "title": "EVD-LOCATION-DISPOSITION \u2014 Location foundation, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-05 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "75137e2f8424c0403b3dfd11affa0259e90832a56ae137cd99b986288fdf41cf",
+      "bytes": 5650
+    },
+    {
+      "path": "docs/evidence/phase-3.5/location-maker.md",
+      "title": "EVD-LOCATION-MAKER \u2014 Location foundation",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
+      "sha256": "2c90f13c66b46677ad22cfcf73845f462ebb23a71c813389be24b3aff8d2c59b",
+      "bytes": 12137
     },
     {
       "path": "docs/evidence/phase-3.5/maker-submission.md",
       "title": "EVD-P35-01-MAKER \u2014 WP-P35-01 Maker Submission",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 this is not a completion decision",
-      "sha256": "410e91ad3db71b9a06201b032058587afa1a07821f2118060a4ab77f56b8faca",
-      "bytes": 6762
+      "sha256": "c829f232c9e2f02683b8c3711fecbfd89542544136c9bc8a8741cdaf1ff321fb",
+      "bytes": 15156
     },
     {
       "path": "docs/evidence/phase-3.5/manifest.json",
       "title": "",
       "status": "",
-      "sha256": "9d6611366bb216a1e87cb9f01fbb50ed31802497e8cea8f53ef30bf64e19b520",
-      "bytes": 20739
+      "sha256": "fa709c1fdddd488155f6e30f7eae182a6e0758c9205efd03765db56af459c693",
+      "bytes": 23789
     },
     {
       "path": "docs/evidence/phase-3.5/mile-4.1-party-disposition.md",
@@ -1562,6 +1779,13 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "24474e32dceec72f24e618ba271a4f7e90528d67f2f456fbcb25b69715096e60",
       "bytes": 9975
+    },
+    {
+      "path": "docs/evidence/phase-3.5/uom-disposition.md",
+      "title": "EVD-UOM-DISPOSITION \u2014 Unit-of-Measure foundation, \u00a76.5 disposition surface",
+      "status": "**DISPOSED 2026-08-05 \u2014 `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.** Operator (`BizEra`, Completion Authority) disposed the verdict and acknowledged the disclosed-risk record. Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "0bb34d84aa4babdc6fd2e64c0ecfaf70c0bde97411a7a99be81430149b20f6b5",
+      "bytes": 4056
     },
     {
       "path": "docs/evidence/phase-3.5/uom-maker.md",
@@ -2311,6 +2535,13 @@
       "status": "",
       "sha256": "ae8cc182e96ae435d68e8df0c1282be8d7de2c13e6d69eb41a3104ba5351d3b7",
       "bytes": 4486
+    },
+    {
+      "path": "docs/work-packages/WP-P35-07-QUORUM-DISPOSITION-RECORD.md",
+      "title": "WP-P35-07 \u2014 Machine-readable disposition record and \u00a76.5 quorum reporting",
+      "status": "**BUILT AND UNVERIFIED \u2014 verification PAUSED 2026-08-08 by operator decision (see \u00a714). Entry gate GO, operator authorization 2026-08-08** ([`DEC-P35-QUORUM-TOOL-GAP`](../decisions/DEC-P35-QUORUM-TOOL-GAP.md) \u00a77, \u00a78). Transcribed by Claude (Motor); not a maker approval.",
+      "sha256": "9519a27d0b833d38b3dc50818dbcf39b8210906989ea8b4bd525c44b83b38a07",
+      "bytes": 15427
     }
   ]
 }
