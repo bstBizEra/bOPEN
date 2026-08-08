@@ -192,3 +192,26 @@ failure caused by tables that do not belong to this candidate. Codex disclosed e
 verifying Location at `1cde994`. Such a failure is an artifact of shared database state, not a
 property of `e0121de`, and must be reported as such rather than treated as a product defect — or
 silently discounted.
+
+## 12. Correction 2026-08-08 — §6's verifier assignment was wrong
+
+§6 records *"Independent verifier — Codex, authored none of this package"*. **That is false as
+written.** Codex authored none of this package's *changes*, but `git blame` at candidate `bdc07e5`
+shows **38 lines** of `tools/check_ballot_attribution.py` authored by Codex in `fbd8a99`
+(*"fix(governance): count quorum per work package, not per phase"*, 2026-08-01) — including
+`by_candidate`, `unmet` and the per-candidate verifier reporting, which is **the exact mechanism this
+package extends**.
+
+Codex was dispatched on 2026-08-08, verified its own standing as instructed, and **disqualified
+itself under EBIV §3 without balloting**. It changed no file, set no identity, made no commit, and
+ran no suite. The eleven propositions, the `--root` question and the PostgreSQL failure attribution
+are all **unevaluated**.
+
+The maker did not catch this when assigning roles. The verifier did, because it was told to check
+rather than accept — which is the only reason the error surfaced before a ballot was cast rather than
+after.
+
+Whether EBIV §3 disqualifies an agent who authored the code a change *extends* — as opposed to the
+change itself — is now raised as
+[`DEC-P35-VERIFIER-SCOPE`](../decisions/DEC-P35-VERIFIER-SCOPE.md). **This package has no eligible
+assigned verifier until that is decided.**
