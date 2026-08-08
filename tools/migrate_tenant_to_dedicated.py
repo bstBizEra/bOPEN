@@ -92,6 +92,18 @@ COPY_ORDER = (
     "location_external_identifiers",
     "location_relationships",
     "location_history",
+    # Migration 021 — Notification foundation, Stage 1. Parents before children: notifications first,
+    # then its claimable dispatch, then the append-only attempt/receipt evidence that references
+    # dispatch by a composite FK, then the tenant-scoped control rows. `notification_provider_health`
+    # is platform control-plane (no tenant_id) and is DELIBERATELY absent — it is classified
+    # INFRASTRUCTURE, not tenant-scoped, so copying it by tenant_id would fail.
+    "notifications",
+    "notification_dispatch",
+    "notification_attempt",
+    "notification_receipt",
+    "notification_quota",
+    "notification_quota_suspend",
+    "notification_fairness",
 )
 
 

@@ -87,6 +87,18 @@ TENANT_SCOPED_TABLES = (
     "location_external_identifiers",
     "location_relationships",
     "location_history",
+    # Migration 021 — MILE-4.2 Notification foundation (BOPEN-NOTIFY-001), Stage 1. The tenant-owned
+    # orchestration record, its claimable dispatch current-state row, the append-only attempt/receipt
+    # evidence, and the tenant-scoped control rows (quota, quota-suspend, fairness) — all tenant-scoped
+    # by RLS. `notification_provider_health` is platform control-plane (no tenant_id) and is classified
+    # under INFRASTRUCTURE_TABLES below, not here.
+    "notifications",
+    "notification_dispatch",
+    "notification_attempt",
+    "notification_receipt",
+    "notification_quota",
+    "notification_quota_suspend",
+    "notification_fairness",
 )
 
 # Registry tables define or precede the tenant boundary, so they carry no `tenant_id` and the
@@ -110,6 +122,13 @@ REGISTRY_TABLES = (
 INFRASTRUCTURE_TABLES = (
     "schema_migrations",
     "placement_identity",
+    # Migration 021 — Notification foundation. `notification_provider_health` is the platform
+    # circuit-breaker / probe-fence control-plane row, keyed on `provider_id` with no `tenant_id`, so
+    # the tenant-matching policy is inexpressible on it and it is not per-tenant business data. It is
+    # structurally protected (ENABLE + FORCE row security, deny-by-default with no policy in Stage 1)
+    # and is deliberately kept OUT of the trial→paid COPY_ORDER: copying a non-tenant table by
+    # `tenant_id` would fail. The elevated worker/callback roles receive its grants in a later stage.
+    "notification_provider_health",
 )
 
 # The 002 family stores tenant_id as text rather than UUID, so a repository writing to them
