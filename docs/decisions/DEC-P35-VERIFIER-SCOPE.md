@@ -157,3 +157,46 @@ availability is not the discriminator.
 **Recommendation: decide the §6.5.4 question before seating anyone.** Seating first and discovering
 the profile expired afterwards would change the quorum rule for 27 candidates as a side effect of
 staffing one package.
+
+## 9. Analysis of the §6.5.4 question — advisory, the decision is the operator's
+
+§8 asked whether dispatching an engine once constitutes a third engine "returning". The answer turns
+on a sentence in `DEC-P35-TWO-AGENT-QUORUM` §4 that settles what made the team two agents:
+
+> | D | Re-admit a third engine | Restores quorum, and **the operator has excluded it for now** |
+
+**The two-agent team is the product of an operator exclusion recorded 2026-08-02 — not of an engine
+being unavailable.** `gemini` and `kimi` are on PATH today and were almost certainly invocable then;
+availability was never the criterion. The exclusion was.
+
+That fixes the meaning of "returns". `BOPEN-GOV-EBIV-001` §6.5.4 keys expiry to a property, not an
+event: *"From that point §6.1's two-verifier quorum is **reachable** again and is required."*
+Reachability is general — it is about whether two independent verifiers can be seated for packages —
+and one scoped dispatch does not make two-verifier quorum reachable for the other 26 candidates. It
+produces one verifier for one package.
+
+**Advisory reading: a single scoped dispatch does not expire the profile. Lifting the exclusion
+does.** The trigger is a decision, not a CLI invocation.
+
+Two conditions on that reading, both of which matter more than the reading itself:
+
+1. **The scoping must be recorded, not inferred.** If Gemini verifies `WP-P35-07` and nothing says
+   the exclusion still stands, a later reader sees a Gemini ballot dated August and concludes the
+   third engine returned — and with it that every verdict after that date needed two verifiers. The
+   record must say plainly that this was a scoped seating and that Option D remains excluded.
+2. **If the exclusion no longer reflects reality, say so instead of preserving the profile on a
+   stale premise.** The profile's whole justification is that two-verifier quorum is unreachable by
+   construction. If a third engine is in fact available and the operator no longer wishes to exclude
+   it, the honest move is to revisit `DEC-P35-TWO-AGENT-QUORUM` on its merits — not to keep the
+   accommodation alive by describing each use of a third engine as an exception. An accommodation
+   that outlives its premise is a relaxation.
+
+**On the second half of the question — whether to accept the consequence for 27 candidates if the
+profile does expire — the advisory answer is no, not as a side effect.** Changing the quorum rule
+for every candidate in the repository is a decision with its own merits and its own costs, and it
+should be taken deliberately, on a surface raised for that purpose, not absorbed as the by-product of
+staffing one work package.
+
+This section interprets a ratified normative specification. That interpretation is not the maker's
+to make: it is recorded here as advice, and binds nothing until the operator records a decision
+(EBIV §2).
