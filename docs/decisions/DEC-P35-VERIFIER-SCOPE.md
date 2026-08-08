@@ -94,3 +94,66 @@ benefits from reading A, which unblocks its own package. The recommendation abov
 which does not.
 
 Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+---
+
+## 7. Correction 2026-08-08 — §3's text is less ambiguous than §3 of this document claimed
+
+§3 above framed this as two readings the repository "has never had to choose" between. **Reading
+`BOPEN-GOV-EBIV-001` §3 in full weakens that framing considerably**, and the correction is recorded
+because a decision taken on the wrong frame is worse than a decision deferred.
+
+Its operative sentence is not the summary phrase quoted earlier. It reads:
+
+> An agent that contributed **any line of the artifact under review** — implementation, test,
+> fixture, schema, or migration — is **disqualified as a Verifier for that artifact**. This is a
+> structural rule, not a preference. It is what the word *independent* means here.
+
+Three things follow:
+
+1. **"Any line" is not a threshold.** 38 lines is not a small contribution under a rule that says
+   *any*. Codex did not take a cautious reading; it applied the plain one.
+2. **The enumeration points at artifacts, not diffs.** "Implementation, test, fixture, schema, or
+   migration" are kinds of *artifact*, not kinds of *change*. That favours reading B.
+3. **§3 pre-empts the argument for A.** "This is a structural rule, not a preference" is written
+   precisely to refuse case-by-case relaxation — which is what adopting A to unblock a package
+   would be.
+
+**Option 2 in §5 should therefore be read as a proposal to weaken a control against its plain text,
+not as a neutral choice between two equal readings.** It is retained in the table for the record,
+with that recharacterisation.
+
+The residual question is narrower than §3 of this document suggested: whether "the artifact under
+review" denotes the file or the change. The enumeration favours the file. The maker's original
+framing overstated the room available, and the maker is the party that benefits from that overstatement.
+
+## 8. A consequence of seating a third engine that must not happen as a side effect
+
+`BOPEN-GOV-EBIV-001` §6.5.4 states:
+
+> The profile expires when a third independent engine returns. It names the team it was written
+> for. From that point §6.1's two-verifier quorum is reachable again and is required; verdicts
+> already recorded under the profile keep their label and are not retroactively upgraded.
+
+Seating Gemini or Kimi as verifier for `WP-P35-07` may therefore **expire the two-agent profile**,
+with effects far beyond this package:
+
+| Effect | Consequence |
+| :--- | :--- |
+| §6.1 two-verifier quorum becomes required again | `WP-P35-07` would itself need **two** verifiers, not one |
+| The 26 shortfall candidates | Would need two verifiers each, rather than one ballot plus an operator disposition |
+| `WP-P35-07`'s own premise | It implements §6.5. If the profile is expired, the mechanism applies only to verdicts recorded while it was in force |
+
+This does not make the package pointless — the profile's existing verdicts still need expressing,
+and the profile could re-enter if an engine becomes unavailable again — but it changes what the
+package is *for*, and that should be decided deliberately.
+
+**A prior question, unresolved:** does dispatching an engine once constitute a third engine
+"returning" in the sense §6.5.4 means, or does returning describe sustained availability as a team
+member? The clause does not say. Both engines are invocable here (`gemini` and `kimi` are both on
+PATH; Gemini has 4 commits and 51 ballots in this repository, Kimi has none of either), so
+availability is not the discriminator.
+
+**Recommendation: decide the §6.5.4 question before seating anyone.** Seating first and discovering
+the profile expired afterwards would change the quorum rule for 27 candidates as a side effect of
+staffing one package.
