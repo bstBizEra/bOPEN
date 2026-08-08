@@ -218,3 +218,55 @@ not currently available:**
 This was found by the maker after the operator questioned the workspace/candidate mismatch, not by
 the verifier. It is recorded here so that a verifier reads it as a disclosed limitation rather than
 discovering an unsound claim in the report.
+
+### Candidate-bound suite result 2026-08-08 — `FAILED (failures=1)`, and §8 is still unmet
+
+The run withdrawn above was repeated in a scoped worktree placed at the exact candidate
+(`WP-P35-07` §11). Worktree verified before the run: `HEAD` `bdc07e5…`, tree `e0121de…` matching
+this submission's anchor, zero tracked modifications, and **zero foreign test files**.
+
+```
+Ran 660 tests in 613.505s
+FAILED (failures=1)
+run_tests_rc=1
+```
+
+**660, not 680.** The 20-test difference is exactly the foreign `test_notification_isolation.py`
+that the dirty-workspace run had collected, which confirms and quantifies the withdrawal above.
+
+**The suite is not green at the candidate. `WP-P35-07` §8 is NOT met, and this submission does not
+claim otherwise.**
+
+#### The single failure, attributed
+
+`test_every_table_in_the_schema_is_classified_and_protected` — the live database holds 8 tables the
+candidate's classification registry does not know:
+
+`notifications`, `notification_attempt`, `notification_dispatch`, `notification_fairness`,
+`notification_provider_health`, `notification_quota`, `notification_quota_suspend`,
+`notification_receipt`
+
+Established from repository objects rather than assumed:
+
+| Question | Answer |
+| :--- | :--- |
+| Does the candidate define these tables? | **No.** Its migrations end at `020_location_foundation.sql`; there is no `021` in tree `e0121de` |
+| What does the candidate contain about notification? | **Documentation only** — 11 `docs/01-product/MILE-4.2-notification-*.md` specs, ADR drafts and reviews. No migration, no code, no schema |
+| Where do the live tables come from? | `infrastructure/database/021_notification_foundation.sql`, which is **untracked** in the working tree and has already been applied to the shared database |
+
+The test reads the **live** schema and compares it against the candidate's registry. The live
+database is ahead of the candidate because an unrelated change-set applied its migration before
+committing it.
+
+#### Why this is not fixable by re-running
+
+A worktree isolates the file tree but not the database, and there is one shared PostgreSQL. So long
+as those 8 tables exist in it, **this assertion cannot pass at any commit that predates the
+notification change-set** — including every one of the 26 other candidates. The failure is a
+property of the environment, not of `e0121de`.
+
+That is an attribution, **not a discount**. The correct reading is that §8's criterion is currently
+unsatisfiable for this candidate, not that it has been satisfied. Whether to ballot the eleven
+`WP07-INV-*` propositions on their own evidence — `test_quorum_disposition` builds disposable
+repositories and touches neither the shared database nor these tables — is a judgment for the
+verifier and the Completion Authority, and this submission does not make it.
