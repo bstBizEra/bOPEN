@@ -2,7 +2,7 @@
 
 **Work package ID:** `WP-P35-07`
 **Version:** `1.0.0`
-**Status:** **ACCEPTED — entry gate GO, operator authorization 2026-08-08** ([`DEC-P35-QUORUM-TOOL-GAP`](../decisions/DEC-P35-QUORUM-TOOL-GAP.md) §7, §8). Transcribed by Claude (Motor); not a maker approval.
+**Status:** **BUILT AND UNVERIFIED — verification PAUSED 2026-08-08 by operator decision (see §14). Entry gate GO, operator authorization 2026-08-08** ([`DEC-P35-QUORUM-TOOL-GAP`](../decisions/DEC-P35-QUORUM-TOOL-GAP.md) §7, §8). Transcribed by Claude (Motor); not a maker approval.
 **Issued:** 2026-08-08
 **Owner:** Engineering Authority
 **Governing:** [`BOPEN-GOV-EBIV-001`](../00-governance/BOPEN-GOV-EBIV-001.md) §3, §6.1, §6.2, §6.3, §6.5; [`DEC-P35-TWO-AGENT-QUORUM`](../decisions/DEC-P35-TWO-AGENT-QUORUM.md); `AGENTS.md` §21.2.1, §21.3, §23, §25.1
@@ -232,3 +232,31 @@ Superseding the §6 assignment corrected in §12: the independent verifier for `
 effect, `BOPEN-GOV-EBIV-001` §6.5.4 is not triggered, and Option D of `DEC-P35-TWO-AGENT-QUORUM`
 remains excluded. Confirmation still requires one admissible ballot **plus** an operator disposition,
 labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
+
+## 14. Verification paused 2026-08-08 — read this before running the checker
+
+The operator paused verification of this package to prioritise other work. **No verifier was
+dispatched.** Gemini was seated in §13 but never invoked; Codex disqualified itself in §12 without
+balloting. `ballots.jsonl` holds **no** `WP07-INV-*` ballots.
+
+**The implementation is committed and live on this branch.** Anyone running
+`tools/check_ballot_attribution.py` from `claude/BOPEN-P35-001-runtime-realization` is running an
+**unverified change to the control that guards the evidence base**. Its two most visible effects:
+
+1. The quorum shortfall reports **27 of 27** candidates rather than 26, because the checker now reads
+   `verdict` and `admissibility` and no candidate holds two admissible non-refuted confirmations
+   (§10).
+2. `dispositions.jsonl` is read if present. None exists, so nothing is confirmed by it today.
+
+**Nothing here has been verified or disposed.** State on pause:
+
+| Item | State |
+| :--- | :--- |
+| 11 `WP07-INV-*` propositions | Unevaluated by any verifier |
+| The §10.3 judgment — refutation blocks the whole candidate, not one proposition | Untested by anyone but the maker |
+| `--root` behaviour and provenance ambiguity | Unassessed |
+| The maker's attribution of the single suite failure to shared database state | Unchecked by an independent party |
+| §8 green canonical suite for the candidate | **Not met**, and currently unsatisfiable (§10) |
+
+Resuming needs only a dispatch to Gemini against candidate `bdc07e5` / tree `e0121de`; the seat,
+the propositions, the traceability and the baseline are all already in place.
