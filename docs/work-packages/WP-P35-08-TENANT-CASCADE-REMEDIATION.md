@@ -116,3 +116,27 @@ already recurred four times, including inside `014`, the migration written to te
 
 Draft work package. Confers no implementation, approval, merge, release or production authority.
 **An entry gate must be recorded before any code is written** (`AGENTS.md` §25.1 step 0).
+
+---
+
+## 10. Amendment 2026-08-08 — entry gate GO
+
+> **Change note (extend-only).** Recorded **before** any code is written, per `AGENTS.md` §25.1
+> step 0 and §3.1.
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **Entry gate GO.** `WP-P35-08` is bound as the accepted work package for the tenant-cascade remediation |
+| **Scope** | Exactly §2. Option 3, archival paths, tenant-offboarding capability and the mutable parent rows remain out of scope |
+| **Baseline** | `arch-baseline/2026-08-08-pre-tenant-cascade-restrict`, tagged **before** the change (§23) |
+| **Roles** | Maker: Claude (excluded from voting, EBIV §3). Independent verifier: Codex — eligibility checked before assignment (§7.3 of the DEC). Completion Authority: operator |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Engineering & Security Authorities |
+| **Decision timestamp** | 2026-08-08 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+Acceptance authorizes the build described in §2 and nothing beyond it. It does not dispose any
+foundation, does not reopen the three existing dispositions (§7.2 of the DEC), and does not
+authorize a tenant-offboarding or archival capability.
+
+The status line above remains **DRAFT** in its original text for provenance; this amendment
+supersedes it. The operative status is **ACCEPTED — entry gate GO 2026-08-08**.
