@@ -357,3 +357,68 @@ narrowing qualifier.
    MILE-4.2 foundation (Money, Workflow, UOM, ContactPoint, Location all lack one and were
    authorized through `DEC-P4-ENTRY` amendments), but it means the scope statement above lives in
    this submission rather than in an accepted work package.
+
+### Verification outcome 2026-08-08 — Codex, ballot commit `bd42b2e`
+
+**19 `CONFIRMED`, 1 `INADMISSIBLE`, plus one non-ballot refutation that matters more than either.**
+
+All 20 ballots anchor to candidate `d3a5be2` / tree `ba2eb5d`. Codex's commit changed only
+`ballots.jsonl`, under `codex@bst.local`, working tree clean. It verified its own eligibility and
+found no Codex-authored line in any reviewed file.
+
+Its execution evidence: focused suite `Ran 20 tests in 3.544s` / `OK`; canonical suite
+`Ran 680 tests in 518.978s` / `OK`; the missing-database R5 probe correctly `FAILED (failures=1)`;
+authority bootstrap `PASS`.
+
+#### The finding: the append-only guarantee does not survive tenant deletion
+
+`NOTIFY-S1-GAP-TENANT-CASCADE-01` was disclosed as SUSPECTED WRONG on the maker's reasoning that
+deleting a tenant would **raise**. Codex probed it on a disposable tenant. **The maker was wrong,
+and the truth is worse:**
+
+```text
+POST_DELETE_TENANTS=0
+POST_DELETE_NOTIFICATIONS=0
+POST_DELETE_NOTIFICATION_DISPATCH=0
+POST_DELETE_NOTIFICATION_ATTEMPT=0
+POST_DELETE_NOTIFICATION_RECEIPT=0
+```
+
+The deletion **succeeded and erased the attempt and receipt rows**. PostgreSQL followed the parallel
+`tenant_id ON DELETE CASCADE` paths; the `ON DELETE RESTRICT` dispatch foreign keys preserved
+nothing. This refutes the migration header's assertion and the cascade limb of `NOTIFY-INV-12`.
+
+Codex correctly recorded it as **non-ballot**: none of the 20 narrow propositions claims
+tenant-cascade preservation, so no ballot could carry it. That is the disclosure mechanism working —
+the gap row is what made the probe happen — but the defect is real and belongs to the build, not to
+the record. It is **latent**, because no tenant-deletion path exists in the codebase today.
+
+#### The inadmissible row, and why it is a fair call
+
+`NOTIFY-S1-ISO-WRITE-01` recorded `INADMISSIBLE` on **R5**. The cross-tenant write *was* refused —
+`InsufficientPrivilege`, SQLSTATE 42501 — so the behaviour holds. But the row names the explicit
+`WITH CHECK` clause as the mechanism whose removal breaks the test, and for a PostgreSQL `FOR ALL`
+policy an omitted `WITH CHECK` **reuses `USING`**. Removing the named clause therefore admits
+nothing and breaks no test. The mechanism is not removal-sensitive, so EBIV §4 is unmet as written.
+
+The behaviour is sound; the maker's attribution of it was not. Correcting the row changes the tree
+and would require re-balloting all 20, so it is recorded here rather than silently amended.
+
+#### Where Codex judged the maker's disclosures incomplete
+
+- **Dedup oracle** — "honest, but incomplete about the resulting cross-tenant availability and
+  poisoning risk". The submission disclosed the existence oracle; it did not note that one tenant
+  can consume another's dedup key space.
+- **Tenant cascade** — "candid but materially incorrect and understated".
+
+The other six gap disclosures were judged honest and complete, and the scope qualifiers on the
+verified rows were judged narrow enough: direct SQL, specific tables, direct-parent deletion and
+database uniqueness only, claiming no worker, callback, template, retry, cancel, export or cache
+behaviour.
+
+#### Status
+
+Under `BOPEN-GOV-EBIV-001` §6.5 this is one independent verifier, so confirmation additionally
+requires an explicit Completion Authority disposition labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
+**Not disposed. Not confirmed.** The tenant-cascade defect is unremediated and no fix is authorized
+by this record.
