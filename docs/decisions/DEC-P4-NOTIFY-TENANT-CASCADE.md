@@ -150,3 +150,45 @@ this request does not answer and should not.
 
 Still latent: no tenant-deletion path exists in `tools/` or `platform_kernel/`. Nothing here is an
 active data-loss path today.
+
+## 7. Decision 2026-08-08 — Option 2, and the existing dispositions stand
+
+| Field | Value |
+| :--- | :--- |
+| **Decision** | **Option 2 — make the `tenant_id` edge `ON DELETE RESTRICT`** on the 11 at-risk evidence tables, applying the pattern `audit_events` (003) and `lifecycle_events` (005) already use |
+| **Rejected** | Option 1 (header-only) — it would narrow a research invariant by implementation default across four foundations, which §16 exists to prevent |
+| **Scope** | One migration covering all 11 tables, not four per-foundation migrations. The defect is one shape with one fix; splitting it would multiply the verification cost without changing the change |
+| **Work package** | `WP-P35-08` (drafted; **not yet accepted** — entry gate still required) |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Engineering & Security Authorities |
+| **Decision timestamp** | 2026-08-08 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+The recommendation for Option 2 came from the maker of one of the defective artifacts. §4 said that
+party should not choose between narrowing an invariant and changing a retention model, and that
+still holds — what makes this admissible is that the operator, not the maker, made the choice.
+
+### 7.1 Turning tenant deletion into a conditional operation is the accepted cost
+
+Under `RESTRICT`, a tenant holding evidence cannot be deleted until that evidence is archived or
+released. That is a product consequence, not only a schema one, and it is accepted deliberately: a
+tenant-offboarding feature must now be written to confront evidence retention rather than to
+silently destroy it. Option 3 (separate retention from tenant lifetime) remains the fuller answer
+and is **not foreclosed** — `RESTRICT` is the floor that makes its absence loud instead of silent.
+
+### 7.2 The three existing dispositions are not reopened
+
+Workflow, ContactPoint and Location carry recorded operator dispositions made on the evidence
+available at the time. Those dispositions remain accurate statements about what was verified then,
+and the defect is now annotated in each foundation's README.
+
+Reopening them is unnecessary because **the fix supplies its own cycle**: migration `022` changes
+those tables, which produces a new candidate requiring its own verification and its own disposition.
+The corrected state will be disposed on its own evidence rather than by amending a past record.
+
+### 7.3 Verifier eligibility, checked before roles were assigned
+
+`git blame` across all five migrations, `test_rls_database_behavior.py` and
+`migrate_tenant_to_dedicated.py` shows **Claude only** — the `BizEra` lines are the disclosed
+attribution gap of §21.4 and are Claude-authored. **Codex authored nothing on this surface and is
+eligible under both readings of EBIV §3.** Checked first this time, after `WP-P35-07` assigned a
+verifier who turned out to be disqualified.
