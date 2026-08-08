@@ -77,3 +77,76 @@ remains **not confirmed**: 19 propositions carry admissible `CONFIRMED` ballots,
 recorded.
 
 Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+---
+
+## 6. Amendment 2026-08-08 — the defect is systemic, and the correct pattern is already in this repository
+
+§3 said the same shape "may apply to other foundations" and that this was worth checking before
+deciding. It was checked. **It applies to 11 tables across 4 foundations, three of which are already
+operator-disposed.**
+
+Scan basis: every table protected by an `ON DELETE RESTRICT` foreign key — whether declared at
+`CREATE TABLE` or added by a later `ALTER` — paired against the action on its own
+`tenant_id REFERENCES tenants(id)` edge.
+
+| Table | `tenant_id` edge | Introduced by | |
+| :--- | :--- | :--- | :--- |
+| `audit_events` | **RESTRICT** | `003_phase1_context_audit.sql` | safe |
+| `lifecycle_events` | **RESTRICT** | `005_lifecycle_audit_and_rollout.sql` | safe |
+| `workflow_history` | CASCADE | `014_workflow_history_survives_its_instance.sql` | **at risk** |
+| `party_contact_points` | CASCADE | `019_party_contact_points.sql` | **at risk** |
+| `party_contact_point_verification_events` | CASCADE | `019` | **at risk** |
+| `location_address_versions` | CASCADE | `020_location_foundation.sql` | **at risk** |
+| `location_geometry_observations` | CASCADE | `020` | **at risk** |
+| `location_external_identifiers` | CASCADE | `020` | **at risk** |
+| `location_relationships` | CASCADE | `020` | **at risk** |
+| `location_history` | CASCADE | `020` | **at risk** |
+| `notification_dispatch` | CASCADE | `021_notification_foundation.sql` | **at risk** |
+| `notification_attempt` | CASCADE | `021` | **at risk** |
+| `notification_receipt` | CASCADE | `021` | **at risk** |
+
+### 6.1 Epistemic status — what is reproduced and what is inferred
+
+**Reproduced live:** the notification tables only, by Codex on a disposable tenant (§1).
+
+**Inferred for the other eight:** the declared constraint semantics are identical, and the migration
+set contains **no trigger, no rule and no `DEFERRABLE` constraint** anywhere, so nothing can
+intervene between the declaration and the behaviour. The inference is strong but it is an inference;
+a verifier should reproduce it per foundation before any fix is accepted.
+
+### 6.2 The repository already knows the answer
+
+`audit_events` and `lifecycle_events` carry `tenant_id ... ON DELETE RESTRICT` and are not exposed.
+This is not an unsolved design question — it is a pattern that was solved for the Phase 1 and Phase 3
+audit tables and **not carried forward into the Phase 4 foundations**.
+
+`migration 009` states the underlying rule plainly: *"PostgreSQL performs foreign-key actions with
+row security bypassed"*. An append-only guarantee built from policies is therefore only as strong as
+every `ON DELETE` action that can reach the row.
+
+### 6.3 The sharpest illustration is `workflow_history`
+
+Migration `014` exists **for this exact class of defect**. Its header records a live reproduction:
+
+> transition recorded → 1 row; direct DELETE on history → 0 rows; DELETE the parent instance →
+> history cascades 1 → 0
+>
+> *"A recorded transition erased, every direct-DELETE test still green while it happened."*
+
+It closed the hole on the **instance** edge and left the **tenant** edge `CASCADE`. The same
+migration that teaches this lesson is on the at-risk list. Notification's header cites "the
+migration-014 lesson applied in advance" — it inherited both the fix and the gap.
+
+### 6.4 What changes for this decision
+
+The options in §4 were framed for one foundation. They now read differently: option 1 (correct the
+header only) would concede the cascade limb of an append-only guarantee across four foundations, and
+option 2 (`RESTRICT` the tenant edge) would simply apply the pattern `003` and `005` already use.
+
+Three affected foundations — Workflow, ContactPoint, Location — have recorded operator dispositions.
+Whether a disposed artifact carrying a latent defect of this shape needs re-disposition is a question
+this request does not answer and should not.
+
+Still latent: no tenant-deletion path exists in `tools/` or `platform_kernel/`. Nothing here is an
+active data-loss path today.
