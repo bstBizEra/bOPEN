@@ -158,3 +158,37 @@ reviewer should test it rather than inherit it.
 **Consequence to be explicit about:** zero candidates in this repository are currently confirmable
 under §6.1. Every one of the 27 is either short, refuted, or both. That was true before this change;
 only its visibility is new.
+
+## 11. Amendment 2026-08-08 — a second scoped §19.1 worktree, for the candidate-bound suite run
+
+> **Change note (extend-only).** Recorded **before** the worktree is created.
+
+§10 withdrew the canonical-suite result from the submission: it was measured in the primary
+workspace while that workspace carried 21 uncommitted items from an unrelated change-set, and
+`run_tests.py` discovers tests by walking the working tree. §8's "green canonical suite for the
+candidate" is therefore unmet, and cannot be met in the primary workspace while it is dirty.
+
+`git archive` was considered and rejected: it exports the tree without touching anything, but the
+result has no `.git`, so `check_evidence_anchors.py`, `check_ballot_attribution.py` and the
+governance validators cannot run there at all.
+
+| Field | Value |
+| :--- | :--- |
+| **Scope** | One detached worktree at `bdc07e5`, **suite execution only** |
+| **Prohibited in it** | Any commit, branch, push, or edit of tracked files |
+| **Purpose** | Produce a canonical-suite result bound to tree `e0121de` |
+| **Lifetime** | Removed after the run |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture & Engineering Authority |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+This is the second such exception. The first (`DEC-P4-LOCATION-BALLOT-ATTRIBUTION` §6) stated it did
+not generalize, and it did not — this one was authorized separately, for a different candidate and a
+different purpose, and carries the same non-generalizing limit.
+
+**Known limitation, recorded in advance rather than discovered.** A worktree isolates the file tree
+but **not the database**. The shared PostgreSQL already has migration `021_notification_foundation`
+applied from the in-flight change-set, so a candidate-bound run may report a registry-classification
+failure caused by tables that do not belong to this candidate. Codex disclosed exactly this while
+verifying Location at `1cde994`. Such a failure is an artifact of shared database state, not a
+property of `e0121de`, and must be reported as such rather than treated as a product defect — or
+silently discounted.
