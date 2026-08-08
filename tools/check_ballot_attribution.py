@@ -37,28 +37,6 @@ ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE_ROOT = ROOT / "docs" / "evidence"
 REGISTER = ROOT / "docs" / "00-governance" / "agent-identity-register.json"
 
-# The verdict labels EBIV §6.5.2 insists are different verdicts. Kept apart deliberately: a
-# disposition claiming bare CONFIRMED is refused, because conflating the two is the specific
-# thing §6.5.2 forbids.
-PROFILE_VERDICT = "CONFIRMED_UNDER_TWO_AGENT_PROFILE"
-
-
-def configure_root(root: Path) -> None:
-    """Point the check at a different repository.
-
-    Exists so the Refusal Matrix (WP-P35-07 §4) can be tested at all. A control that can only
-    ever inspect one repository cannot be shown to refuse anything, because every negative case
-    would have to be staged as false evidence in the real record.
-
-    This does not weaken the control. The canonical invocation (AGENTS.md §19.4, and
-    check_authority_bootstrap.py) passes no arguments and still resolves the real repository;
-    a fixture root only ever yields a verdict about the fixture.
-    """
-    global ROOT, EVIDENCE_ROOT, REGISTER
-    ROOT = root.resolve()
-    EVIDENCE_ROOT = ROOT / "docs" / "evidence"
-    REGISTER = ROOT / "docs" / "00-governance" / "agent-identity-register.json"
-
 
 class Finding:
     def __init__(self, rule: str, locator: str, detail: str) -> None:
@@ -261,128 +239,16 @@ def check_phase(
                 f"({author_name} <{author_email}>); acceptable for history, not for new work."
             )
         countable.add(agent_id)
-
         # Quorum is a property of a candidate, not of a phase. See the note in main().
-        #
-        # It is also a property of ADMISSIBLE CONFIRMED ballots, not of attributable ones.
-        # Until WP-P35-07 this counted every attributable ballot alike, so a REFUTED ballot
-        # advanced a candidate toward "two verifiers" exactly as a CONFIRMED one did — the
-        # opposite of EBIV §6.2, where one reproducible refutation blocks. An inadmissible
-        # ballot was likewise counted despite EBIV §6.5.3.
-        state = by_candidate.setdefault(
-            ballot.get("commit_oid", "<none>"), {"confirm": set(), "refuted": set()}
-        )
-        verdict = str(ballot.get("verdict", "")).strip().upper()
-        inadmissible = [
-            rule for rule, held in (ballot.get("admissibility") or {}).items() if held is False
-        ]
-
-        if verdict == "REFUTED":
-            state["refuted"].add(agent_id)
-        elif inadmissible:
-            print(
-                f"  note: {locator} is INADMISSIBLE ({', '.join(sorted(inadmissible))}) and does "
-                f"not count toward quorum (EBIV §6.5.3). It is attributable; that is a different "
-                f"property."
-            )
-        elif verdict == "CONFIRMED":
-            state["confirm"].add(agent_id)
-        else:
-            print(
-                f"  note: {locator} carries verdict {verdict or '<none>'!r}, which is neither "
-                f"CONFIRMED nor REFUTED; it does not count toward quorum."
-            )
+        by_candidate.setdefault(ballot.get("commit_oid", "<none>"), set()).add(agent_id)
 
     return findings, total, countable, by_candidate
-
-
-def load_dispositions(phase_dir: Path, register: dict, candidates: set[str]) -> tuple[list[Finding], dict[str, dict]]:
-    """Read Completion Authority dispositions for the EBIV §6.5 two-agent profile.
-
-    A disposition never confirms anything by itself. It only supplies the operator act that
-    §6.5.1 requires alongside one admissible independent CONFIRMED ballot, and every way it can
-    be wrong is a finding rather than a silent skip — a disposition that does nothing quietly is
-    indistinguishable from one that was never written.
-    """
-    findings: list[Finding] = []
-    valid: dict[str, dict] = {}
-    path = phase_dir / "dispositions.jsonl"
-    if not path.is_file():
-        return findings, valid
-
-    for index, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        if not raw.strip():
-            continue
-        locator = f"{path.relative_to(ROOT).as_posix()}:{index}"
-
-        try:
-            record = json.loads(raw)
-        except json.JSONDecodeError as exc:
-            findings.append(Finding("D1", locator, f"disposition is not valid JSON: {exc}"))
-            continue
-
-        blame = introducing_commit(path, index)
-        if blame is None:
-            findings.append(
-                Finding("D2", locator,
-                        "the introducing commit could not be resolved; is the disposition "
-                        "committed?")
-            )
-            continue
-
-        sha, author_name, author_email = blame
-        _, how = resolve_agent(register, author_name, author_email)
-
-        # The integrity condition (DEC-P35-QUORUM-TOOL-GAP §6.4). Without it an agent could write
-        # a disposition confirming its own work, reintroducing on the authority side the defect
-        # DEC-P4-LOCATION-BALLOT-ATTRIBUTION repaired on the verifier side. This is the one place
-        # where AGENTS.md §21.2.1 is load-bearing rather than hygienic.
-        if how != "operator":
-            findings.append(
-                Finding("D3", locator,
-                        f"introduced by {author_name} <{author_email}> in {sha[:12]}, which is "
-                        f"not the operator identity. A Completion Authority disposition may be "
-                        f"DRAFTED by an agent but only COMMITTED by the operator (§21.2.1).")
-            )
-            continue
-
-        verdict = str(record.get("verdict", "")).strip()
-        if verdict != PROFILE_VERDICT:
-            findings.append(
-                Finding("D4", locator,
-                        f"verdict is {verdict!r}; a two-agent disposition must be labelled "
-                        f"{PROFILE_VERDICT}. EBIV §6.5.2: §6.1's CONFIRMED and this are different "
-                        f"verdicts and must not be conflated.")
-            )
-            continue
-
-        candidate = str(record.get("candidate_commit_oid", "")).strip()
-        if candidate not in candidates:
-            findings.append(
-                Finding("D5", locator,
-                        f"names candidate {candidate[:12] or '<none>'}, which has no ballots in "
-                        f"this phase. A disposition for a candidate nobody verified is reported, "
-                        f"never ignored.")
-            )
-            continue
-
-        valid[candidate] = record
-
-    return findings, valid
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--phase", help="limit to one phase directory, e.g. phase-3.5")
-    parser.add_argument(
-        "--root",
-        type=Path,
-        help="repository to inspect (default: this tool's own repository). See configure_root.",
-    )
     args = parser.parse_args()
-
-    if args.root is not None:
-        configure_root(args.root)
 
     code, _ = git("rev-parse", "--git-dir")
     if code != 0:
@@ -422,49 +288,19 @@ def main() -> int:
         # false reading propagated into two agent reports before anyone checked by hand.
         # A check that reports a weaker property than the rule it enforces is worse than no
         # check, because its PASS is quoted as if it were the rule.
-        disposition_findings, dispositions = load_dispositions(
-            phase_dir, register, set(by_candidate)
-        )
-        all_findings.extend(disposition_findings)
-
         for candidate in sorted(by_candidate):
-            state = by_candidate[candidate]
-            verifiers, refuted = state["confirm"], state["refuted"]
+            verifiers = by_candidate[candidate]
             short = candidate[:12] if candidate != "<none>" else candidate
             print(
-                f"    candidate {short}: {len(verifiers)} confirming verifier(s) "
-                f"[{', '.join(sorted(verifiers)) or '—'}] toward a quorum of 2"
+                f"    candidate {short}: {len(verifiers)} verifier(s) "
+                f"[{', '.join(sorted(verifiers))}] toward a quorum of 2"
             )
-
-            if refuted:
-                # EBIV §6.2. Discharged only by a failed reproduction — never by a second
-                # opinion, and never by a disposition.
+            if len(verifiers) < 2:
                 print(
-                    f"      REFUTED by [{', '.join(sorted(refuted))}] — blocks regardless of "
-                    f"confirmations or disposition (EBIV §6.2)."
+                    f"      quorum NOT MET — EBIV §6.1 requires two independent verifiers. "
+                    f"A confirmation cannot be realized for this candidate."
                 )
                 unmet.append(f"{phase_dir.name}/{short}")
-                continue
-
-            if len(verifiers) >= 2:
-                continue
-
-            # EBIV §6.5: one admissible CONFIRMED ballot PLUS an operator disposition. The
-            # disposition stands in for the second verifier; it does not pretend to be one, and
-            # it cannot manufacture the ballot it stands beside.
-            if len(verifiers) == 1 and candidate in dispositions:
-                print(
-                    f"      {PROFILE_VERDICT} — one independent verifier plus a Completion "
-                    f"Authority disposition (EBIV §6.5, {dispositions[candidate].get('disposition_id', '?')}). "
-                    f"This is not §6.1's CONFIRMED and must not be quoted as it."
-                )
-                continue
-
-            print(
-                f"      quorum NOT MET — EBIV §6.1 requires two independent verifiers, and no "
-                f"§6.5 disposition applies. A confirmation cannot be realized for this candidate."
-            )
-            unmet.append(f"{phase_dir.name}/{short}")
 
     if grand_total == 0:
         print("- no ballots recorded yet")

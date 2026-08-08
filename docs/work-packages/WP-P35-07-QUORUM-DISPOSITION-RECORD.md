@@ -260,3 +260,68 @@ balloting. `ballots.jsonl` holds **no** `WP07-INV-*` ballots.
 
 Resuming needs only a dispatch to Gemini against candidate `bdc07e5` / tree `e0121de`; the seat,
 the propositions, the traceability and the baseline are all already in place.
+
+---
+
+## 15. Reverted 2026-08-08 — the build is backed out; the findings are kept
+
+**Operator decision: revert.** `tools/check_ballot_attribution.py` and
+`tests/governance/test_quorum_disposition.py` are restored to their pre-`WP-P35-07` state, and the
+11 `WP07-INV-*` traceability rows are removed. This document, its findings, and every decision
+raised along the way are **kept**.
+
+### 15.1 Why
+
+The change could not be verified, and an unverifiable change to the control that guards the entire
+evidence base should not stay in force.
+
+`BOPEN-GOV-EBIV-001` §3 disqualifies any agent that contributed **any line of the artifact under
+review**. `git blame` on `check_ballot_attribution.py` gives **Claude 467 lines and Codex 38**.
+Whichever of the two makes a change, the other is disqualified from verifying it — a **permanent
+deadlock for this one file**, not a scheduling problem.
+
+A survey of every `.py` under `tools/`, `tests/` and `services/` found this is the **only file in
+the repository** with lines from both engines. The two-agent team is sufficient everywhere else; a
+third engine was not needed for bOPEN, only for this file, and adding one would have engaged
+§6.5.4's profile-expiry clause for the sake of a single artifact.
+
+### 15.2 What the revert costs — recorded, not glossed
+
+The reverted checker is **known to be wrong** in a way the replacement had fixed. It reads neither
+`verdict` nor `admissibility`, so it counts a `REFUTED` ballot toward quorum exactly as a
+`CONFIRMED` one.
+
+Concretely, measured immediately before this revert:
+
+```text
+patched:  candidate 88e6ed2b4f2a: 2 confirming verifier(s) [codex, gemini] toward a quorum of 2
+          REFUTED by [gemini] — blocks regardless of confirmations or disposition (EBIV §6.2)
+
+reverted: candidate 88e6ed2b4f2a: 2 verifier(s) [codex, gemini] toward a quorum of 2
+          (no refutation visible)
+```
+
+**`88e6ed2` — the unauthenticated-SSRF gateway fix — carries two reproducible `REFUTED` ballots from
+Gemini and has been blocked under §6.2 since 2026-07-31.** The restored tool cannot see that and
+will again report it as the one candidate meeting quorum. That is a false reading, it is now the
+live reading, and it is recorded here so nobody quotes it.
+
+The finding itself survives in `docs/evidence/phase-3.5/maker-submission.md` and in
+`DEC-P35-QUORUM-TOOL-GAP`. **The knowledge is kept; only the code is backed out.**
+
+### 15.3 What is kept
+
+- This document, including §10's disclosed finding and §12's verifier-eligibility correction.
+- [`DEC-P35-QUORUM-TOOL-GAP`](../decisions/DEC-P35-QUORUM-TOOL-GAP.md) — the §6.5 expression gap,
+  still open, still unimplemented, with its Option 1 design intact.
+- [`DEC-P35-VERIFIER-SCOPE`](../decisions/DEC-P35-VERIFIER-SCOPE.md) — reading B adopted, and the
+  §6.5.4 analysis.
+- The `88e6ed2` refutation discovery and the `verdict`/`admissibility` blindness, both in prose.
+- `arch-baseline/2026-08-08-pre-quorum-disposition`.
+
+### 15.4 If this is built again
+
+Have a **third engine write it from the start**, then Claude or Codex verifies. The deadlock exists
+because both eligible verifiers had already authored the file before anyone asked who would check
+the change. Assigning the maker seat to whoever has *not* touched a governance control is cheaper
+than finding a verifier afterwards.
