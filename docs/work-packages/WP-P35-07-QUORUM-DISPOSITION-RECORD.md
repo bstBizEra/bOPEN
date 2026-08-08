@@ -215,3 +215,20 @@ Whether EBIV §3 disqualifies an agent who authored the code a change *extends* 
 change itself — is now raised as
 [`DEC-P35-VERIFIER-SCOPE`](../decisions/DEC-P35-VERIFIER-SCOPE.md). **This package has no eligible
 assigned verifier until that is decided.**
+
+## 13. Verifier re-seated 2026-08-08 — Gemini, scoped
+
+Superseding the §6 assignment corrected in §12: the independent verifier for `WP-P35-07` is
+**Gemini**, seated under [`DEC-P35-VERIFIER-SCOPE`](../decisions/DEC-P35-VERIFIER-SCOPE.md) §10.
+
+| Role | Assigned |
+| :--- | :--- |
+| Maker | Claude — excluded from voting on this package for its lifetime (EBIV §3) |
+| Independent verifier | **Gemini** — `git blame` at `bdc07e5` shows **0 lines** of `tools/check_ballot_attribution.py` |
+| Disqualified | **Codex** — 38 lines in `fbd8a99`, the per-candidate quorum mechanism this package extends |
+| Completion Authority | Operator — not an agent role |
+
+**The seating is scoped to this package.** It is not a team change: the two-agent profile remains in
+effect, `BOPEN-GOV-EBIV-001` §6.5.4 is not triggered, and Option D of `DEC-P35-TWO-AGENT-QUORUM`
+remains excluded. Confirmation still requires one admissible ballot **plus** an operator disposition,
+labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.

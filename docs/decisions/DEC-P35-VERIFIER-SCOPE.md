@@ -200,3 +200,53 @@ staffing one work package.
 This section interprets a ratified normative specification. That interpretation is not the maker's
 to make: it is recorded here as advice, and binds nothing until the operator records a decision
 (EBIV §2).
+
+## 10. Decision 2026-08-08 — reading B adopted; a scoped verifier seat; the profile stands
+
+| Field | Value |
+| :--- | :--- |
+| **Reading adopted** | **B** — "the artifact under review" is the code as it stands. An agent that contributed any line of it is disqualified as its Verifier. Codex's self-disqualification from `WP-P35-07` was correct |
+| **Two-agent profile** | **Remains in effect.** `BOPEN-GOV-EBIV-001` §6.5 continues to govern; §6.5.4 is **not** triggered |
+| **Option D** | **Remains excluded.** No third engine is re-admitted to the team |
+| **Verifier seat** | One **scoped** seating for `WP-P35-07` only. It is not a team change and confers no standing on any other package |
+| **Approver** | Operator — `BizEra <ounkhamvilay@gmail.com>` — Architecture & Engineering Authority |
+| **Decision timestamp** | 2026-08-08 |
+| **Recorded by** | Claude (agent, Motor role), transcribing an operator decision. `execution_authority: false`, `approval_authority: false` |
+
+### 10.1 This is explicitly not a third engine returning
+
+Recorded plainly, because §9.1 warned this is exactly what a later reader will otherwise infer:
+
+> A ballot cast by a third engine on `WP-P35-07` in August 2026 is a **scoped seating under an
+> exclusion that remains in force**. It does not expire the two-agent profile, does not restore
+> §6.1's two-verifier quorum, and does not imply that verdicts recorded after that date required two
+> verifiers. Option D of `DEC-P35-TWO-AGENT-QUORUM` stays excluded.
+
+Confirmation of `WP-P35-07` therefore still requires one admissible independent ballot **plus** an
+explicit Completion Authority disposition, labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
+
+### 10.2 Which engine, and a reconsideration
+
+Both are eligible: `git blame` at `bdc07e5` shows **Gemini 0 lines** and **Kimi 0 lines** of
+`tools/check_ballot_attribution.py`.
+
+The maker's first suggestion was Kimi, on the grounds that it has no history in this repository at
+all. **That reasoning does not survive examination.** §3 eligibility is already fully satisfied by
+both — zero lines is zero lines — so Kimi's additional distance is cosmetic, and cosmetic
+independence is not a property the standard asks for.
+
+Once eligibility is equal, the discriminator that remains is demonstrated capability to produce an
+admissible ballot:
+
+| | Gemini | Kimi |
+| :--- | :--- | :--- |
+| Lines in the artifact | 0 | 0 |
+| Ballots cast in this repository | **51** | 0 |
+| Commits | 4 | 0 |
+| Demonstrated refutation | **Yes** — the two `REFUTED` ballots on `88e6ed2` that `WP-P35-07` §10 surfaced | None |
+
+**Gemini is seated.** It has proven it will refute rather than agree — the `88e6ed2` refutations are
+the only reason that candidate's blocked state was discoverable at all — and that is the property
+this seat needs most, given the maker has asked the verifier to attack two of its own claims.
+
+Swapping to Kimi is a one-line change if the operator prefers it; both remain eligible.
