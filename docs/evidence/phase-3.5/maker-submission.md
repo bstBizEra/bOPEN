@@ -270,3 +270,90 @@ unsatisfiable for this candidate, not that it has been satisfied. Whether to bal
 `WP07-INV-*` propositions on their own evidence — `test_quorum_disposition` builds disposable
 repositories and touches neither the shared database nor these tables — is a judgment for the
 verifier and the Completion Authority, and this submission does not make it.
+
+---
+
+# Notification foundation Stage 1 — schema, forced RLS, tenant isolation
+
+**Submitted:** 2026-08-08
+**Maker:** Claude (agent, Motor role) — disqualified from voting on this package (EBIV §3)
+**Candidate commit:** `d3a5be25ce6e37d26b740579e58c4c1c4c3fbf52`
+**Candidate tree:** `ba2eb5d09cebba7a1ce9c2f4f0a6d9aeacfde239`
+**Build commit:** `b0c15e8` (migration, tests, registrations) — this candidate adds its traceability
+**Authorization:** `DEC-P4-ENTRY` §12, recorded **before** the build (`d4b40ef`)
+**Governing:** `BOPEN-GOV-EBIV-001`; `AGENTS.md` §8, §14, §25.1; `RESEARCH-MILE-4.2-NOTIFICATION`
+
+**This submission carries no verdict weight (EBIV §8).** A passing suite is not a confirmation.
+
+## Scope — Stage 1 only
+
+Schema, forced RLS and tenant isolation for 8 tables. **Not built, and explicitly deferred:** the
+worker/claimer plane, the callback ingest plane, provider adapters, the elevated
+`bopen_notify_claimer` / `bopen_notify_callback` roles and their grants, templates, recipient
+resolution, retry/cancel, export and cache surfaces.
+
+That scope boundary is the single most important thing for a verifier to hold, because the parent
+invariants it cites are much broader than what is built.
+
+## Falsifiable propositions
+
+**20 verified** (`NOTIFY-S1-*`, `verified_by_execution`) and **8 disclosed gaps** (`NOTIFY-S1-GAP-*`,
+status `UNVERIFIED`), all in `docs/evidence/phase-3.5/invariant-traceability.csv`.
+
+The rows are Stage-1 scoped rather than claiming the parent `NOTIFY-INV-01..16`. `NOTIFY-INV-01`
+alone spans read, infer, request, retry, cancel, template, resolve, callback, export, cache and
+observe; Stage 1 builds none of those surfaces. Every row that cites a parent carries an explicit
+narrowing qualifier.
+
+## Checks
+
+- Canonical suite at this candidate, run serialized in a clean working tree:
+  `Ran 680 tests in 623.203s` / `OK` / `run_tests.py` exit 0 / 0 FAIL-ERROR, with all 20
+  notification tests collected. The tree was verified unmodified during the run.
+- Registrations verified in both places `AGENTS.md` §25.1 step 3 requires — `TENANT_SCOPED_TABLES`
+  (7 tenant-scoped) and the trial→paid `COPY_ORDER` (parents before children), with
+  `notification_provider_health` deliberately excluded from `COPY_ORDER` as non-tenant.
+- Traceability verified in both directions: no verified row names a missing test; no test lacks a
+  verified row.
+
+## Limitations and disclosed risks
+
+1. **These rows were corrected after an adversarial audit, and the correction pattern matters.**
+   Nine of twenty first-draft rows were wrong and — as the auditor put it — *every error ran in the
+   direction that flattered the build*. Three were hard errors: an `executed_db` claim on a test
+   that runs no SQL, a mechanism ("grants") that appears nowhere in the migration set, and an
+   isolation claim for a table the test never opens. A verifier should treat the corrected rows as
+   a maker's second attempt, not as a clean first one.
+
+2. **`NOTIFY-S1-GAP-TENANT-CASCADE-01` is recorded as SUSPECTED WRONG, not merely untested.**
+   `tenant_id` is `ON DELETE CASCADE` while `fk_attempt_dispatch` is `ON DELETE RESTRICT`, so
+   deleting a tenant holding notification evidence likely **raises** rather than preserving it —
+   the opposite of what the migration header claims. Latent only because no tenant-deletion path
+   exists yet. This is the finding most worth reproducing.
+
+3. **`unq_receipt_dedup` is a cross-tenant existence oracle.** Its scope is deliberate per the
+   migration, but a tenant submitting a receipt whose `(provider_id, provider_message_id,
+   dedup_key)` triple already exists under another tenant receives a distinguishable
+   `UniqueViolation`. That is squarely within `NOTIFY-INV-04` anti-enumeration. Disclosed and
+   unpinned by any test.
+
+4. **`notification_provider_health` deny-by-default is asserted only structurally.** The design
+   relies on `ENABLE + FORCE` with *no policy*. Only the flags are tested; nothing probes that a
+   tenant-scoped session actually reads zero rows or cannot write circuit-breaker state. An
+   over-broad policy added in the worker stage would break no test today.
+
+5. **Four probes assert refusal generically.** `test_a_cross_tenant_notification_insert_is_refused`
+   and the three composite-FK tests use `assertRaises(psycopg.errors.Error)`, the base class, so any
+   database error passes. The mechanisms named are real and load-bearing, but the assertions do not
+   bind the refusal to them the way the vocabulary tests (`CheckViolation`) and idempotency tests
+   (`UniqueViolation`) do.
+
+6. **Two isolation probes lack an owner-visibility control.** `test_a_dispatch_is_invisible_across_tenants`
+   and `test_control_rows_are_isolated_across_tenants` assert only that tenant B sees zero. A policy
+   mutated to `USING (false)` would break the owner and still pass — the dispatch case is saved only
+   incidentally by a `RETURNING` clause in a helper.
+
+7. **No work-package document exists for Notification.** This is consistent with every other
+   MILE-4.2 foundation (Money, Workflow, UOM, ContactPoint, Location all lack one and were
+   authorized through `DEC-P4-ENTRY` amendments), but it means the scope statement above lives in
+   this submission rather than in an accepted work package.
