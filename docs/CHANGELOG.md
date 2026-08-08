@@ -1,5 +1,145 @@
 # Documentation Changelog
 
+## 2026-08-07 - URE-Loop v0.9 recorded as AGENTS.md §27, with three identifier collisions excluded
+
+- Added `AGENTS.md` §27 covering only what URE-Loop v0.9 adds over v0.6 (§26): governance lens
+  binding, stage-gate standard, capability matrix, ballot governance. Recorded `PROPOSED`; it does
+  not extend the single promotion made by `DEC-URE-ARCHITECT-LENS` (§26.2).
+- Recorded a provenance warning (§27.1): v0.9 restates this repository's own governance —
+  `DEC-URE-ARCHITECT-LENS`, §26.2, `agent-identity-register.json` — and gets two in-force rules
+  wrong. It says EBIV R1-R5 governs *human* ballot voting (agents are the verifiers here; Codex cast
+  31 admissible ballots at `64a2bfa`), and it conflates verification quorum with *release* quorum
+  (quorum never authorizes release). An external document mirroring a `DEC` is not a source of truth
+  about it: read the `DEC`, never the mirror.
+- Excluded three identifier collisions (§27.3). The most damaging is v0.9's `G0`-`G7` stage ladder:
+  `AGENTS.md` §3 already reads "GATE G7 CLEARED" meaning normative specs Approved and Phase 1
+  authorized, while v0.9's `G7` means post-production "Stabilization Exit" — importing it would make
+  an in-force line read as though production stabilization were complete. Also excluded the
+  `docs/pack/` topology (its `02` and `07` mean different things from ours) and its second ADR root.
+- Recorded the §12 contradiction (§27.4): v0.9 states AI agents do not vote on ballots or count
+  toward quorum, while `ballots.jsonl` holds 397 agent ballots (346 codex, 51 gemini) from which
+  EBIV quorum is counted. Adopting it unqualified would retroactively invalidate every verification
+  performed here. `BAL-INV-020` (no vote overrides a failing test or hard invariant) is compatible
+  and kept as a principle under a different name.
+- Adopted §11's capability vocabulary as naming only (§27.2); the one genuine addition is the
+  structured status set `DONE` / `DONE_WITH_CONCERNS` / `BLOCKED` / `NEEDS_CONTEXT`, which closes a
+  gap §17 leaves to prose. No gate, quorum rule, admissibility rule or authority changed.
+
+## 2026-08-07 - URE-Loop Staff Architect seated as a review lens
+
+- Added `DEC-URE-ARCHITECT-LENS`, transcribing the operator's 2026-08-07 authorization. The phrase
+  "Authorize Agent: URE-Loop Staff Architect Agent" carried three materially different readings —
+  a review role, a registered commit identity, or the ADR-owning authority the external v0.6
+  template assigns it — so the reading was put to the operator rather than chosen by an agent. The
+  review-role reading was selected.
+- Promoted `AGENTS.md` §26.2 from `PROPOSED` to in force: the architecture & boundary lens supplies
+  findings only. It is not a verifier seat (EBIV R1-R5 still governs who may ballot), holds no
+  identity, and confers no authority; the acting engine commits under its own `<agent>@bst.local`
+  address per §21.1.
+- Recorded why a persona was **not** added to `agent-identity-register.json`: the register maps
+  engines, not personas, and a persona ident would let one engine commit as three lenses and appear
+  to `check_ballot_attribution.py` as three independent verifiers — converting the register's one
+  working assurance into a means of manufacturing false independence.
+- `AGENTS.md` §26.3, §26.4, §26.5, §26.8 and §26.9 remain `PROPOSED`; the ten §26.6 exclusions remain
+  excluded, including panel acceptance of ADRs, which the 2026-08-06 rejection of AI authority
+  expansion still governs. This decision confers no implementation, merge, release, deployment,
+  production or EBIV verdict authority.
+
+## 2026-08-05 - Party ContactPoint independent advisory review
+
+- Added `REVIEW-MILE-4.2-PARTY-CONTACTPOINT`, independently reviewed by Codex against the
+  Claude-authored ContactPoint research bytes (SHA-256
+  `a900b1e33268afe07c04e9235dc79f2f44c7014b8e2e8f3eb53f33b708b1ad79`; computed Git blob
+  `0aac8185964dce213681a54e3f1c74c138044f5b`).
+- Recorded `RETURN FOR REVISION`: changing an endpoint value is not yet required to invalidate the
+  old verification, and the current purpose language can be mistaken for consent/dispatch
+  authorization. Also recorded missing Principal/Membership/context gates, state-axis separation,
+  mandatory append-only evidence, endpoint confidentiality, and normalization conditions.
+- Closed only the independent review action. During the review, the operator's separate implementation
+  authorization was recorded at `DEC-P4-ENTRY` §10 / commit `5914587`; that authority does not close
+  the findings. Concurrent uncommitted implementation appeared and was excluded from this design
+  verdict. This review is not an EBIV ballot, operator disposition, release, deployment, production
+  evidence, or completion claim.
+
+## 2026-08-05 - Calendar foundation entered final sequential research
+
+- Added `RESEARCH-MILE-4.2-CALENDAR` after the Notification advisory review, completing preparation
+  of the fourth and final **Document → Location → Notification → Calendar** research slice.
+- Recommended a versioned Business Calendar/Working-Time service with IANA time zones, weekly local
+  intervals, full-day replacement overrides, explicit DST gap/fold policy, tzdb version evidence,
+  immutable publication, and bounded pure evaluation queries.
+- Deferred meetings, CalDAV, booking/capacity, shifts/leave/payroll, workflow timers, reminders,
+  arbitrary recurrence, Calendar composition, holiday providers, custom zones, and notification/job
+  scheduling. Recorded 18 defensive invariants and 14 decisions required before authorization.
+- Calendar remains gated by `DEC-P4-ENTRY` §9. The sequence is not closed as reviewed until the
+  operator's Calendar advisory review is recorded; no foundation receives implementation, merge,
+  release, deployment, production, EBIV verdict, or gate authority from this research.
+
+## 2026-08-05 - Notification foundation entered sequential research
+
+- Added `RESEARCH-MILE-4.2-NOTIFICATION` after the Location research slice, following the recorded
+  sequence and reserving operator review before Calendar research.
+- Recommended a provider-neutral transactional Notification Orchestrator with governed recipient
+  resolution, immutable template/render provenance, one-recipient email delivery, durable attempts,
+  bounded retry/dead-letter/reconciliation, authenticated receipts, tenant-safe status, and adapters.
+- Recorded a pre-build dependency: no shared Party contact-point contract was found, and
+  `principals.email` must not become a notification destination implicitly. A governed
+  `NotificationRecipientResolver` or Party ContactPoint contract must be accepted first.
+- Deferred marketing, bulk/multi-recipient, SMS, push, outbound webhooks, in-app inbox, provider
+  failover/BYO provider, and read/action analytics. Recorded 16 defensive invariants and 14 decisions.
+- Notification remains gated by `DEC-P4-ENTRY` §9. This research grants no implementation, provider
+  selection, sender activation, merge, release, deployment, production, EBIV verdict, or gate
+  authority.
+
+## 2026-08-05 - Location foundation entered sequential research
+
+- Added `RESEARCH-MILE-4.2-LOCATION` after the Document advisory review, following the recorded
+  **Document → Location → Notification → Calendar** research sequence.
+- Recommended a tenant-scoped Location Registry that separates stable place identity, versioned
+  international address descriptions, WGS 84 point observations with accuracy/provenance, external
+  identifiers, bounded containment relationships, and provider-neutral geocoding.
+- Deferred GIS, routing, telemetry, polygons/geofences, alternative CRS, cadastral authority,
+  product-specific structures, and automatic provider-result acceptance to independently governed
+  slices. Recorded 15 defensive invariants and 12 decisions required before authorization.
+- Location remains gated by `DEC-P4-ENTRY` §9. This research grants no implementation, provider
+  selection, merge, release, deployment, production, EBIV verdict, or gate authority.
+
+## 2026-08-05 - Document foundation advisory review registered
+
+- Registered traceability for `REVIEW-MILE-4.2-DOCUMENT`, an advisory `APPROVE WITH CONDITIONS`
+  review committed originally at `6aa2d0b`. Its research subject remains uncommitted, so the exact
+  reviewed bytes are bound by SHA-256 and computed Git blob; this addendum awaits its own anchor.
+- Recorded executed static/repository/clean-room evidence and five open findings covering tenant
+  migration coverage, content-placement portability, append-only cascade protection, outbox reuse,
+  and media-type validation.
+- Closed only the Document research review step, allowing Location research to enter next in the
+  recorded sequence. Document implementation, provider selection, release, deployment, production,
+  EBIV verdict, and gate authority remain ungranted.
+
+## 2026-08-05 - Remaining foundations moved to sequential research
+
+- Started `RESEARCH-MILE-4.2-DOCUMENT` as the first remaining-foundation study: tenant-scoped
+  document registry, immutable versions, retention/hold controls, and a provider-neutral storage
+  adapter—not a full DMS, OCR, or e-signature suite.
+- Recorded the operator-directed research order: **Document → Location → Notification → Calendar**.
+  The next study begins only after review of the preceding research; the four foundations are not a
+  single simultaneous design or implementation package.
+- Every foundation remains independently gated by `DEC-P4-ENTRY` §9. Research completion grants no
+  implementation, merge, release, deployment, production, or gate authority.
+
+## 2026-08-05 - Asset foundation advisory research and plan
+
+- Added `RESEARCH-MILE-4.2-ASSET`, recommending a tenant-scoped Thin Asset Registry with extension
+  contracts rather than a full EAM, fixed-asset accounting, inventory, maintenance, fleet, or
+  property module.
+- Defined the proposed core entities, generic lifecycle, dependency posture, capabilities, events,
+  first implementation slice, defensive invariants, consumer sequencing, and eight decisions that
+  must be resolved before implementation authorization.
+- Recommended bFleet as the first contract-validation consumer and preserved ERPNext as the
+  prospective owner of financial fixed-asset behavior for bERP integration.
+- Asset remains gated by `DEC-P4-ENTRY` §9. This planning record grants no implementation, merge,
+  release, deployment, production, or gate authority.
+
 ## 2026-08-03 - ERP solution deferred until after bOPEN Alpha and production baseline
 
 - Recorded `BOPEN-BERP-PLAN-001` as an operator-directed future plan at
@@ -972,48 +1112,3 @@
 ## 2026-07-12 — v1.0
 
 - Created BOPEN-BOOT-001 full AGENTS.md and documentation bootstrap pack.
-## 2026-08-07 - URE-Loop Staff Architect seated as a review lens
-
-- Added `DEC-URE-ARCHITECT-LENS`, transcribing the operator's 2026-08-07 authorization. The phrase
-  "Authorize Agent: URE-Loop Staff Architect Agent" carried three materially different readings â€”
-  a review role, a registered commit identity, or the ADR-owning authority the external v0.6
-  template assigns it â€” so the reading was put to the operator rather than chosen by an agent. The
-  review-role reading was selected.
-- Promoted `AGENTS.md` Â§26.2 from `PROPOSED` to in force: the architecture & boundary lens supplies
-  findings only. It is not a verifier seat (EBIV R1-R5 still governs who may ballot), holds no
-  identity, and confers no authority; the acting engine commits under its own `<agent>@bst.local`
-  address per Â§21.1.
-- Recorded why a persona was **not** added to `agent-identity-register.json`: the register maps
-  engines, not personas, and a persona ident would let one engine commit as three lenses and appear
-  to `check_ballot_attribution.py` as three independent verifiers â€” converting the register's one
-  working assurance into a means of manufacturing false independence.
-- `AGENTS.md` Â§26.3, Â§26.4, Â§26.5, Â§26.8 and Â§26.9 remain `PROPOSED`; the ten Â§26.6 exclusions remain
-  excluded, including panel acceptance of ADRs, which the 2026-08-06 rejection of AI authority
-  expansion still governs. This decision confers no implementation, merge, release, deployment,
-  production or EBIV verdict authority.
-
-## 2026-08-07 - URE-Loop v0.9 recorded as AGENTS.md §27, with three identifier collisions excluded
-
-- Added `AGENTS.md` §27 covering only what URE-Loop v0.9 adds over v0.6 (§26): governance lens
-  binding, stage-gate standard, capability matrix, ballot governance. Recorded `PROPOSED`; it does
-  not extend the single promotion made by `DEC-URE-ARCHITECT-LENS` (§26.2).
-- Recorded a provenance warning (§27.1): v0.9 restates this repository's own governance —
-  `DEC-URE-ARCHITECT-LENS`, §26.2, `agent-identity-register.json` — and gets two in-force rules
-  wrong. It says EBIV R1-R5 governs *human* ballot voting (agents are the verifiers here; Codex cast
-  31 admissible ballots at `64a2bfa`), and it conflates verification quorum with *release* quorum
-  (quorum never authorizes release). An external document mirroring a `DEC` is not a source of truth
-  about it: read the `DEC`, never the mirror.
-- Excluded three identifier collisions (§27.3). The most damaging is v0.9's `G0`-`G7` stage ladder:
-  `AGENTS.md` §3 already reads "GATE G7 CLEARED" meaning normative specs Approved and Phase 1
-  authorized, while v0.9's `G7` means post-production "Stabilization Exit" — importing it would make
-  an in-force line read as though production stabilization were complete. Also excluded the
-  `docs/pack/` topology (its `02` and `07` mean different things from ours) and its second ADR root.
-- Recorded the §12 contradiction (§27.4): v0.9 states AI agents do not vote on ballots or count
-  toward quorum, while `ballots.jsonl` holds 397 agent ballots (346 codex, 51 gemini) from which
-  EBIV quorum is counted. Adopting it unqualified would retroactively invalidate every verification
-  performed here. `BAL-INV-020` (no vote overrides a failing test or hard invariant) is compatible
-  and kept as a principle under a different name.
-- Adopted §11's capability vocabulary as naming only (§27.2); the one genuine addition is the
-  structured status set `DONE` / `DONE_WITH_CONCERNS` / `BLOCKED` / `NEEDS_CONTEXT`, which closes a
-  gap §17 leaves to prose. No gate, quorum rule, admissibility rule or authority changed.
-
