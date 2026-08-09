@@ -104,3 +104,66 @@ answered by argument rather than by a failed reproduction.
 checked before it is relied on.
 
 Raised advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+---
+
+## 8. Independent re-check 2026-08-09 — §4 understated the exposure
+
+§7 said this conclusion was one agent's and should be checked before being relied on. It was checked
+by Codex. **The governance conclusion holds; the severity assessment does not.**
+
+### 8.1 Confirmed
+
+- `P35-04R-16` is discharged for the corrected successor behaviour — a failed reproduction, and it
+  does not retroactively make `88e6ed2` unrefuted; its historical ballot stands.
+- `P35-04R-15` **remains undischarged**.
+- The code comment's technical reasoning is **correct** — Codex drove a bare Hono handler behind the
+  real Node adapter and observed both literal and percent-encoded dot segments arriving already
+  normalised as `/admin`. *"Nevertheless, that establishes why the behavior occurs; it does not make
+  the `P35-04R-15` reproduction fail. The source comment and the 'KNOWN LIMITATION' test therefore
+  cannot discharge the ballot."*
+
+### 8.2 Corrected — the maker undercounted what is reachable
+
+§4 said three routes exist outside `/v1`. **There are seven.** `FastAPI(...)` is constructed at
+`api.py:999` with no `docs_url`, `redoc_url` or `openapi_url` override anywhere in the file, so its
+four default documentation endpoints are live:
+
+| Route | Status in §4 |
+| :--- | :--- |
+| `/health`, `/readiness`, `/.well-known/jwks.json` | counted |
+| `/openapi.json`, `/docs`, `/docs/oauth2-redirect`, `/redoc` | **missed** |
+
+Verified independently: there is no `docs_url`/`redoc_url`/`openapi_url` anywhere in `api.py`.
+
+**So §4's claim that there is "no evidence of anything being reachable today that should not be" was
+wrong.** The kernel's OpenAPI schema and interactive documentation are reachable through the
+catch-all proxy right now, and **no governing artifact says whether they should be public.**
+
+Codex also notes `/readiness` performs a database query and its failure path returns
+`detail=f"persistence unavailable: {type(exc).__name__}"` — exception-type disclosure on an
+unauthenticated endpoint. Confirmed at `api.py`.
+
+### 8.3 Fail-open confirmed empirically
+
+Codex forwarded a hypothetical `/future-private` kernel path and it returned the injected upstream's
+200, reachable through **both** `/future-private` and `/v1/../future-private`. No repository
+deployment, ingress, Nginx, Traefik or reverse-proxy manifest adds path confinement; the runtime
+binds to `127.0.0.1` by default, which limits network exposure but not paths.
+
+**The structural risk is confirmed fail-open for future root routes**, not merely theoretical.
+
+### 8.4 A test asserts the opposite
+
+Codex found a test that **intentionally asserts the dot-segment behaviour as a "KNOWN LIMITATION"**.
+That is the re-assertion of §3 encoded as a passing test — the strongest form the argument has taken,
+and still not a failed reproduction.
+
+### 8.5 Effect on the options
+
+Option 1 (confine to `/v1`) now has a larger blast radius than §6 implied: `/health`, `/readiness`,
+JWKS **and the four documentation endpoints** are reachable through the gateway today, and confining
+would stop all seven. Whether each *should* remain reachable is now part of the decision rather than
+a detail.
+
+The maker's assessment ran in the direction that made the finding look smaller. Recorded.
