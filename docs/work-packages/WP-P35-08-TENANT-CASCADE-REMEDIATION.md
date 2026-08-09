@@ -140,3 +140,60 @@ authorize a tenant-offboarding or archival capability.
 
 The status line above remains **DRAFT** in its original text for provenance; this amendment
 supersedes it. The operative status is **ACCEPTED — entry gate GO 2026-08-08**.
+
+---
+
+## 11. Finding 2026-08-09 — the defect is reachable only as superuser, and R-2 as written is false
+
+Established while writing the R-1/R-2 probes, before any of them was made to pass. It corrects a
+premise in §1 and §4 that the maker held without checking.
+
+### 11.1 `bopen_app` cannot delete a tenant at all
+
+`tenants` carries `tenants_read` (SELECT), `tenants_provision` (INSERT) and `tenants_administer`
+(UPDATE) — and **no DELETE policy** (`007_registry_table_isolation.sql`). Under FORCE row security a
+`DELETE FROM tenants` from the application role therefore reaches **zero rows silently**.
+
+Measured:
+
+| role | superuser | bypassrls | `DELETE FROM tenants` |
+| :--- | :--- | :--- | :--- |
+| `bopen_app` | no | no | 0 rows, no error |
+| `postgres` | **yes** | **yes** | 1 row, tenant gone |
+
+Verified on a disposable tenant: as `postgres` against `bopen_dev`, insert then delete gave
+`rowcount 1` and no residue.
+
+### 11.2 What this changes
+
+**The tenant-cascade defect is not reachable from the application.** It is reachable from a
+superuser or owner connection — migrations, provisioning tools, operational scripts, and the
+verifier probe that first reproduced it. That is a real surface, not a theoretical one, but it is a
+narrower one than §1 implied.
+
+**It also makes the fix more clearly correct, not less.** Row security does not constrain a
+superuser; foreign-key constraints do. `ON DELETE RESTRICT` is therefore effective precisely on the
+path that is actually exposed — it is the only one of the two mechanisms that binds the role able to
+trigger the defect.
+
+### 11.3 R-2 as written is false and must be re-scoped
+
+§4 R-2 says *"Delete a tenant holding no evidence rows → **Permitted**"*. From the application role
+that is already impossible today, before any change. The row as written would fail against the
+current schema for a reason that has nothing to do with this work package.
+
+Re-scoped: **R-2 is asserted against the superuser path** — a superuser deleting a tenant that holds
+no evidence must still succeed after migration 022. The safety-valve intent is unchanged: a fix that
+made all tenant deletion impossible would satisfy R-1 completely and be wrong. Only the role the
+probe uses changes.
+
+R-1 is re-scoped the same way, for the same reason: a probe run as `bopen_app` would pass trivially
+today, proving nothing.
+
+### 11.4 A second-order question this raises, not answered here
+
+If `bopen_app` cannot delete a tenant and only a superuser can, then **tenant offboarding has no
+application-level path at all** — it is an operational act performed with credentials that bypass
+every policy in the isolation model. Whether that is intended, and what audit treatment such an act
+should carry (`AGENTS.md` §8 requires audit treatment for privileged access), is outside this
+package. Recorded so it is not lost.
