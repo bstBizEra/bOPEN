@@ -75,7 +75,17 @@
     {
       "pattern": "SIM-EXEC-THROWAWAY <sim@throwaway.invalid>",
       "observed_commits": 7,
-      "reason": "A throwaway identity is a commit deliberately made untraceable. Recorded as a control failure in the prior closure review, not merely an audit-trail defect."
+      "reason": "A throwaway identity is a commit deliberately made untraceable. Recorded as a control failure in the prior closure review, not merely an audit-trail defect.",
+      "unmerged_on_branch": {
+        "branch": "claude/BOPEN-P35-001-runtime-realization",
+        "commits": [
+          "23df5e23d621ad94c20a890944617df65219b3c7",
+          "177d559c0256b7e4cd2e08234875941be161ca26"
+        ],
+        "dated": "2026-07-28",
+        "content": "Two .gitignore hygiene changes. The content is trivial; the identity is not.",
+        "consequence": "A merge to main would place commits made under a deliberately untraceable identity into main. Surfaced 2026-08-09 by BOPEN-GOV-MERGE-READY-001 §2.1; no tool in the repository audits commit identity across a range, which is why they sat unnoticed from 2026-07-28."
+      }
     },
     {
       "pattern": "BST-DryRun-Throwaway <dryrun@throwaway.local>",
@@ -134,6 +144,53 @@
       "verification_consequence": "All 31 ballots are UNATTRIBUTABLE under AGENTS.md 21.3 and do not count toward quorum. The Location foundation's verification therefore rests on ballots the tool refuses. Disposition is raised as DEC-P4-LOCATION-BALLOT-ATTRIBUTION.",
       "ballots_affected": "31. Unlike the 2026-08-01 gap above, this one does reach ballots: check_ballot_attribution.py compares verifier_id against the git author of the introducing commit and finds 'codex' != 'claude' on every one of the 31 lines. tools/check_authority_bootstrap.py fails on test_ballot_attribution_holds as a direct result.",
       "not_repaired_by_this_entry": "Recording a gap does not clear the check. check_ballot_attribution.py reads only the canonical, legacy_recognised and forbidden fields of this register; it never consults attribution_gaps, and the verifier_id comparison is an unconditional equality. This entry is the record, not the remedy."
+    },
+    {
+      "range": "2026-08-03, two commits",
+      "commits": [
+        "3d57f902386bad343d35c407e6d8d042971c4597",
+        "fbc5da96dccfb94b2acd0c8f2a5df76c994fbe70"
+      ],
+      "ident_recorded": "Codex gpt-5.6-sol (BST-SA Verifier) <claude@bst.local>",
+      "actual_author": "Not established. The display name and the address disagree.",
+      "cause": "The display name says Codex and the address says claude@bst.local. AGENTS.md §21.1 exists so that either field alone identifies the agent and a disagreement between them is itself detectable. These two are detectably disagreeing.",
+      "detail": "History is not rewritten, per §21.4. Read as UNATTRIBUTABLE rather than as either agent's work.",
+      "verification_consequence": "Neither commit introduces a ballot line, so check_ballot_attribution.py is unaffected. Any independence claim resting on either commit's authorship is not established.",
+      "ballots_affected": "None.",
+      "found_by": "BOPEN-GOV-MERGE-READY-001 §2.2, 2026-08-09"
+    },
+    {
+      "range": "2026-07-29, seven commits",
+      "commits": [
+        "2221f2d1e6fa",
+        "b0fb4f66a059",
+        "6aa892bacae0",
+        "bd71a78246d4",
+        "b582fc1f388c",
+        "e65baf1dcfd8",
+        "fcae7a9be2dc"
+      ],
+      "ident_recorded": "BizEra <ounkhamvilay@gmail.com>",
+      "actual_author": "Not established.",
+      "cause": "These carry the operator identity and sit OUTSIDE the recorded 2026-07-29..30 gap, whose 29 commits are the contiguous range f59bbd2^..713c4a5 covering WP-P35-01..03. These seven precede that range and concern Phase 2 and Phase 3 work.",
+      "detail": "Two carry a Claude Co-Authored-By trailer and five do not; trailers are self-asserted and establish nothing. Whether the operator or an agent authored them is unrecorded.",
+      "verification_consequence": "§21.2.1 makes a commit attributed to the operator carry an authority claim an agent cannot make. Until authorship is established these seven should be read as unattributable rather than as operator-authored.",
+      "ballots_affected": "None.",
+      "found_by": "BOPEN-GOV-MERGE-READY-001 §2.3 as originally written claimed the register undercounts by seven. That claim was RETRACTED (§7) after independent re-check: the register's 29 is exact and scoped. What survives is that these seven are outside it and unestablished."
+    },
+    {
+      "range": "2026-08-01 and 2026-08-03, two commits with author/committer split",
+      "commits": [
+        "adc97fc",
+        "bd130d2"
+      ],
+      "ident_recorded": "adc97fc: author Gemini, committer Codex. bd130d2: author Codex, committer Claude.",
+      "actual_author": "Author fields are as recorded; the committer differs in each case.",
+      "cause": "A commit created by one agent carrying another agent's authorship.",
+      "detail": "adc97fc is the commit that introduced all 49 Gemini ballots, including those for WP-P35-01..03, and its committer is Codex.",
+      "verification_consequence": "Governance deliberately binds a ballot to its AUTHOR, so these do not mechanically invalidate any ballot. But the committer is normally the identity that created the commit, which qualifies claims of independent authorship resting on them.",
+      "ballots_affected": "49 Gemini ballots were introduced by adc97fc. They remain attributable to gemini as author.",
+      "found_by": "Independent re-check of BOPEN-GOV-MERGE-READY-001, 2026-08-10"
     }
   ],
   "verification": {
