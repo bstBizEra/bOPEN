@@ -31,7 +31,7 @@ false claim in this repository before.
 **`P35-04R-16`** — `buildUpstreamUrl('http://kernel.invalid/base', '/../../admin', '')` no longer
 returns `/admin`. It throws:
 
-```
+```text
 UpstreamPathEscape: resolved path /admin escapes the configured base path /base
 ```
 
@@ -94,12 +94,32 @@ The repair is to **write the propositions correctly and ballot them at a new can
 refutations remain true of `1b39a30` permanently; EBIV does not retract a refutation because a later
 proposition is better worded.
 
+## 4a. Correction — two of these were already carried, under renumbered propositions
+
+**Found after §1–§4 were written, and it changes what §5 asks for.** The premise of this whole review
+was that five refutations "had never been re-balloted at any successor candidate". That was derived by
+matching `proposition_id`, and **proposition identifiers are renumbered between revisions**:
+
+| Refuted as | Carried by | Where |
+| :--- | :--- | :--- |
+| `P35-04R-16` — base-path escape | **`P35-04R3-16`** — *"a path escaping the configured base prefix is refused, not resolved"* | `CONFIRMED` at `1b39a30` |
+| `P35-05aR3-02` — fractional NumericDate | **`P35-05aR4-01`** — *"refuse an assertion whose `exp − iat` exceeds 300s, including by a fractional amount with an integer `iat`"*, and `-02` as the exact-300s control | `CONFIRMED` at `119f2d8` and at `2c31379`, **which is disposed** (`wp-p35-05a-disposition.md`) |
+
+These are precisely the two whose reproduction failed in §1. **The two results agree, and neither was
+derived from the other** — the probes said the behaviour is fixed, and the ballot record says the fix
+was verified and, for `05a`, already accepted.
+
+Three, not five, are genuinely open: `P35-04R-15`, `P35-04R3-15`, `P35-04R3-17`.
+
+The old refutations stay `REFUTED` against `88e6ed2` and `e559d1d` permanently. That is correct and
+requires no action — EBIV does not retract a refutation because a successor was verified.
+
 ## 5. What would actually close each
 
 | Proposition | To close it |
 | :--- | :--- |
-| `P35-04R-16` | A successor candidate, a maker submission, and a ballot by an eligible verifier recording the failed reproduction |
-| `P35-05aR3-02` | The same, plus either the original end-to-end probe or an explicit record of the unit-level substitution (§3) |
+| `P35-04R-16` | **Nothing.** Carried by `P35-04R3-16`, `CONFIRMED` at `1b39a30` (§4a) |
+| `P35-05aR3-02` | **Nothing.** Carried by `P35-05aR4-01/02`, `CONFIRMED` at `2c31379`, which is disposed (§4a) |
 | `P35-04R3-15`, `P35-04R3-17` | Corrected propositions, balloted at a new candidate. The old ballots stay `REFUTED` |
 | `P35-04R-15` | **An operator decision on `DEC-P35-GATEWAY-PREFIX-CONFINEMENT` first.** Nothing an agent does closes this one |
 

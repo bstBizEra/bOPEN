@@ -74,7 +74,7 @@ def candidate_state(ballots: list[dict]) -> dict[str, dict]:
     state: dict[str, dict] = defaultdict(
         lambda: {"confirm": set(), "refuted": set(), "inadmissible": set(),
                  "other": set(), "propositions": set(), "refuted_props": set(),
-                 "unaddressed_props": set(), "malformed": 0}
+                 "no_same_id_followup": set(), "malformed": 0}
     )
     confirmed_elsewhere: dict[str, set[str]] = defaultdict(set)
 
@@ -103,21 +103,31 @@ def candidate_state(ballots: list[dict]) -> dict[str, dict]:
         else:
             s["other"].add(f"{who}:{verdict or '<none>'}")
 
-    # Per-PROPOSITION follow-up, not per-candidate.
+    # Follow-up resolved per PROPOSITION ID, not per candidate — and that is still not per CLAIM.
     #
-    # Reviewed on 2026-08-10: aggregating only by candidate listed `aa2a74b2` as blocked while both of
-    # its refuted propositions were CONFIRMED at a disposed successor. That was the third misleading
-    # row produced by the same coarseness, so the follow-up is now resolved one proposition at a time.
+    # Two corrections, an hour apart on 2026-08-10, in the same direction:
     #
-    # What this does NOT establish: EBIV §6.2 discharges a refutation by a FAILED REPRODUCTION, and a
-    # later CONFIRMED ballot on the same proposition is not that. Reproduction of the five open
-    # refutations on 2026-08-10 found two no longer reproducing and three still live, one of which
-    # awaits an operator decision and cannot be closed by any agent. So this field answers "was the
-    # proposition ever carried at another candidate", and nothing further.
+    #   1. Aggregating by CANDIDATE listed `aa2a74b2` as blocked while both of its refuted
+    #      propositions were CONFIRMED at a disposed successor. Fixed by resolving per proposition.
+    #   2. That fix was still wrong, because PROPOSITION IDS ARE RENUMBERED BETWEEN REVISIONS. The
+    #      base-path escape refuted as `P35-04R-16` is carried by `P35-04R3-16` ("a path escaping the
+    #      configured base prefix is refused, not resolved", CONFIRMED at `1b39a30`), and the
+    #      fractional-lifetime defect refuted as `P35-05aR3-02` is carried by `P35-05aR4-01/02`
+    #      (CONFIRMED at `2c31379`, which is disposed). Neither shares an ID with the refutation it
+    #      answers, so both still read here as never carried.
+    #
+    # Matching a renumbered successor requires reading proposition TEXT, which this tool does not do
+    # and should not guess at. So the field below is named for exactly what it computes — no later
+    # ballot under the SAME identifier — and the rendered output says the rest. An entry here means
+    # "look for a renumbered successor", not "unaddressed".
+    #
+    # And none of it is a §6.2 discharge in any case: a discharge is a FAILED REPRODUCTION. Of the
+    # five refutations reproduced at `ebb4dcc` on 2026-08-10, two no longer reproduce and three do,
+    # one of which awaits an operator decision and cannot be closed by any agent.
     for oid, s in state.items():
         if oid == "<malformed>":
             continue
-        s["unaddressed_props"] = {
+        s["no_same_id_followup"] = {
             p for p in s["refuted_props"] if not (confirmed_elsewhere.get(p, set()) - {oid})
         }
     return dict(state)
@@ -176,7 +186,7 @@ def build(phase_dir: Path) -> dict:
             "refuted_by": sorted(s["refuted"]),
             "inadmissible_from": sorted(s["inadmissible"]),
             "refuted_propositions": sorted(s["refuted_props"]),
-            "refuted_propositions_never_carried_elsewhere": sorted(s["unaddressed_props"]),
+            "refuted_propositions_with_no_later_ballot_under_the_same_id": sorted(s["no_same_id_followup"]),
             "disposition_file": signed.get(next((k for k in signed if oid.startswith(k)), ""), None),
         }
         row["disposition_file"] = str(row["disposition_file"].name) if row["disposition_file"] else None
@@ -192,7 +202,7 @@ def build(phase_dir: Path) -> dict:
             # scope, so it cannot distinguish that normal shape from a genuine acceptance of refuted
             # state. It reports the pointer; the reading is the operator's.
             disposed_refuted.append(row)
-        elif s["refuted"] and not s["unaddressed_props"]:
+        elif s["refuted"] and not s["no_same_id_followup"]:
             carried_elsewhere.append(row)
         elif s["refuted"]:
             blocked.append(row)
@@ -211,7 +221,7 @@ def build(phase_dir: Path) -> dict:
         "malformed_ballot_lines": sum(1 for b in ballots if b.get("_malformed")),
         "awaiting_disposition": ready,
         "blocked_by_refutation": blocked,
-        "refuted_proposition_carried_at_another_candidate": carried_elsewhere,
+        "refuted_proposition_carried_under_the_same_id_elsewhere": carried_elsewhere,
         "refuted_candidate_referenced_by_a_disposition": disposed_refuted,
         "no_admissible_confirmation": short_of_quorum,
         "disposed": disposed,
@@ -238,24 +248,28 @@ def render(data: dict) -> None:
 
     print(f"\nBLOCKED BY REFUTATION — {len(data['blocked_by_refutation'])}")
     print("    EBIV §6.2: discharged only by a failed reproduction, never by re-assertion.")
-    print("    Every refuted proposition below was never carried at any other candidate.")
+    print("    Each proposition below has NO LATER BALLOT UNDER THE SAME IDENTIFIER. That is not the")
+    print("    same as unaddressed: proposition IDs are renumbered between revisions, and two")
+    print("    refutations verified on 2026-08-10 were in fact carried by renumbered successors")
+    print("    (P35-04R-16 -> P35-04R3-16; P35-05aR3-02 -> P35-05aR4-01/02). Matching those needs")
+    print("    the proposition TEXT, which this tool does not read. An entry here means LOOK FOR A")
+    print("    RENUMBERED SUCCESSOR.")
     if not data["blocked_by_refutation"]:
         print("    none")
     for r in data["blocked_by_refutation"]:
         print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}"
               f"  (also {len(r['confirming_verifiers'])} confirming)")
-        print(f"        open: {', '.join(r['refuted_propositions_never_carried_elsewhere'])}")
+        print(f"        open: {', '.join(r['refuted_propositions_with_no_later_ballot_under_the_same_id'])}")
 
-    print(f"\nREFUTED PROPOSITION CARRIED AT ANOTHER CANDIDATE — "
-          f"{len(data['refuted_proposition_carried_at_another_candidate'])}")
-    print("    Every proposition refuted here later took an admissible CONFIRMED ballot somewhere")
-    print("    else. That is NOT a §6.2 discharge — a discharge is a FAILED REPRODUCTION, and a")
-    print("    later confirmation is not one. It means only that the proposition did not stay")
-    print("    unaddressed. Split out on 2026-08-10 after candidate-level aggregation reported one")
-    print("    such candidate as blocked for the third time.")
-    if not data["refuted_proposition_carried_at_another_candidate"]:
+    print(f"\nREFUTED PROPOSITION CARRIED UNDER THE SAME ID ELSEWHERE — "
+          f"{len(data['refuted_proposition_carried_under_the_same_id_elsewhere'])}")
+    print("    Every proposition refuted here later took an admissible CONFIRMED ballot under the")
+    print("    SAME identifier at another candidate. That is NOT a §6.2 discharge — a discharge is a")
+    print("    FAILED REPRODUCTION, and a later confirmation is not one. Split out on 2026-08-10")
+    print("    after candidate-level aggregation reported one such candidate blocked for a third time.")
+    if not data["refuted_proposition_carried_under_the_same_id_elsewhere"]:
         print("    none")
-    for r in data["refuted_proposition_carried_at_another_candidate"]:
+    for r in data["refuted_proposition_carried_under_the_same_id_elsewhere"]:
         print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}"
               f"  ->  {', '.join(r['refuted_propositions'])} carried elsewhere")
 
