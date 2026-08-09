@@ -995,3 +995,120 @@ governance voting. §27.2 could be promoted on its own; it introduces no new ide
 
 Promotion of any part requires an operator decision recorded in a `DEC` with verifiable Git
 provenance, naming which subsections bind. §26.6's ten exclusions are untouched by this section.
+
+---
+
+## 29. PROPOSED (not in force) — Enterprise delivery lifecycle: PRD → Production (`LC-1`…`LC-14`)
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** Recorded as the operator's directive of 2026-08-10, transcribed
+> by Claude (Motor). It binds nothing until promoted by an explicit operator decision with Git
+> provenance (`BOPEN-GOV-EBIV-001` §2 — an agent has no authority to make a normative specification
+> binding by itself).
+>
+> **This section differs from §26–§28 in one respect that matters:** it relaxes no control, widens no
+> permission and creates no authority. It only adds gates between "built" and "in production". That
+> makes promotion low-risk relative to the other proposed sections, but promotion is still an operator
+> act, not an agent's.
+
+### 29.1 Why the identifiers are `LC-n`
+
+`Step` is already the vocabulary of §25.1's maker cycle (steps 0–8), and `Stage` is in live use across
+six documents for the Notification build (`Stage 1`). Reusing either would corrupt existing records the
+way v0.9's `G0`–`G7` would have (§27.3). The lifecycle steps are therefore written `LC-1` … `LC-14`,
+and `step` continues to mean §25.1 only.
+
+### 29.2 The delivery lifecycle — `LC-1` … `LC-12`
+
+| | Step | Primary output / gate |
+| ---: | :--- | :--- |
+| `LC-1` | PRD Review and Baseline | Approved PRD and acceptance criteria |
+| `LC-2` | Requirement Decomposition | Epics, user stories, NFRs and RTM |
+| `LC-3` | Architecture Design | System architecture, data model and ADRs |
+| `LC-4` | Detailed Solution Design | API contracts, workflows, UX, RBAC and audit design |
+| `LC-5` | Security and Compliance Design | Threat model, privacy controls and security requirements |
+| `LC-6` | Implementation Planning | Work packages, estimates, environments and release plan |
+| `LC-7` | Development | Working code, migrations, configurations and documentation |
+| `LC-8` | Engineering Verification | Code review, unit, integration and end-to-end tests |
+| `LC-9` | Quality and Security Validation | Performance, resilience, vulnerability and penetration testing |
+| `LC-10` | UAT and Pilot | Business acceptance, defect closure and pilot evidence |
+| `LC-11` | Production Readiness Review | Runbooks, monitoring, backup, rollback and operational approval |
+| `LC-12` | Production Deployment | Controlled release, smoke testing and deployment evidence |
+
+### 29.3 The production lifecycle — `LC-13`, `LC-14`
+
+| | Step | Purpose |
+| ---: | :--- | :--- |
+| `LC-13` | Hypercare and Stabilization | Closely monitor incidents, performance and user adoption |
+| `LC-14` | Post-Implementation Review | Measure KPIs, document lessons and authorize normal operations |
+
+**`LC-1`–`LC-12` is the delivery lifecycle. `LC-1`–`LC-14` is the complete production lifecycle.**
+
+### 29.4 Governance flow
+
+```
+PRD_APPROVED → DESIGN_READY → IMPLEMENTATION_READY → BUILT → TESTED
+  → SECURITY_VALIDATED → UAT_ACCEPTED → PRODUCTION_READY → DEPLOYED → STABILIZED
+```
+
+**The load-bearing rule, stated by the operator and adopted verbatim:**
+
+> *"Built" or "sandbox tested" does not mean production-ready; `LC-9`–`LC-11` must still be passed
+> before production authorization.*
+
+`BUILT` is the one state name in this flow that already appears in the repository — as
+`BUILT AND UNVERIFIED` in `WP-P35-07` and `DOCUMENT-MANIFEST.json`. The meanings agree, and the longer
+form is the safer reading: **`BUILT` asserts that code exists, never that it was verified.** The
+remaining nine state names were checked against the tree and collide with nothing.
+
+### 29.5 Reconciliation with §25.1 — different axes, not competing loops
+
+§25.1 governs **one work package**. `LC-1`–`LC-14` governs **one release of the product**. A single
+`LC-7`/`LC-8` contains many complete §25.1 cycles.
+
+| Lifecycle | Existing bOPEN mechanism |
+| :--- | :--- |
+| `LC-1`–`LC-4` | `docs/01-product`, `docs/02-requirements`, `docs/03-architecture`, `docs/adr`, `TRACEABILITY-MATRIX.md` |
+| `LC-5` | `docs/07-security` — **shells only**, see §29.6 |
+| `LC-6` | `DEC-*` entry gates (§25.1 step 0), `docs/work-packages` |
+| `LC-7` | §25.1 steps 1–6 |
+| `LC-8` | §25.1 step 7 — `BOPEN-GOV-EBIV-001` ballots, `tools/run_tests.py` |
+| `LC-9`–`LC-11` | **none exists** |
+| `LC-12` | §20.3 places release and production outside agent authority; no pipeline exists |
+| `LC-13`–`LC-14` | **none exists** |
+
+**A §25.1 step-8 disposition is an `LC-8` verdict, never an `LC-12` authorization.** Every disposition
+recorded to date accepts that a work package was engineered and verified. None of them says anything
+about performance, resilience, penetration testing, business acceptance, runbooks, monitoring, backup
+or rollback — because no bOPEN mechanism has ever examined those. Reading a disposition as
+production readiness is the specific error this section exists to prevent.
+
+### 29.6 Where bOPEN actually stands, derived from the tree on 2026-08-10
+
+Not an assessment — file existence and line counts, reproducible by `find` and `wc -l`:
+
+| | Evidence in the repository |
+| :--- | :--- |
+| `LC-1`–`LC-4` | Substantive. Populated product, requirements, architecture and ADR trees. |
+| `LC-5` | **Shell.** `docs/07-security/threat-model/README.md` is **3 lines** and states what a threat model *shall* contain; it is not one. `privacy-baseline.md` and `supply-chain/dependency-policy.md` are **3 lines each**. `BOPEN-SEC-001-DRAFT.md` is 26 lines and `DOCUMENT-STATUS.md` classifies it "Draft shell". **No SBOM of any format exists.** |
+| `LC-6`–`LC-8` | Substantive, and the most developed part of the repository. |
+| `LC-9` | **Absent.** No performance, load, resilience or penetration artifact exists. |
+| `LC-10` | **Absent.** No UAT or pilot record exists. |
+| `LC-11` | **Shell.** `09-operations/backup-recovery.md`, `deployment.md`, `observability.md` and `service-level-objectives.md` are **3 lines each**; two runbooks (`migration-rollback.md`, 8 lines; `bootstrap-validation.md`) carry content. |
+| `LC-12` | `.github/workflows/` holds one governance workflow. **No deployment pipeline exists.** |
+
+**Position: `BUILT`, entering `TESTED` — four states short of `PRODUCTION_READY`.**
+
+This corrects a statement made in session on 2026-08-09 that "no threat-model file exists". The file
+exists; it is a three-line statement of what a threat model must contain. The substance was right and
+the wording was not.
+
+### 29.7 What promotion would require
+
+1. An operator decision recording `LC-1`–`LC-14` as normative, and whether it revises §5 or sits beside it.
+2. A named gate owner for `LC-9`, `LC-10` and `LC-11` — each is currently unowned, and `LC-11` ends in
+   an *operational* approval that §20.3 already places outside agent authority.
+3. A ruling on whether `LC-9`–`LC-11` evidence is admissible under `BOPEN-GOV-EBIV-001` or governed
+   separately. EBIV was built for propositions about code behaviour; a pilot acceptance and an SLO are
+   not that shape.
+
+Recorded advisory-only. Confers no implementation, approval, merge, release or production authority.
