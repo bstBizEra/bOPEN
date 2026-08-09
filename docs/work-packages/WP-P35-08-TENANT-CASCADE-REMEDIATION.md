@@ -197,3 +197,45 @@ application-level path at all** — it is an operational act performed with cred
 every policy in the isolation model. Whether that is intended, and what audit treatment such an act
 should carry (`AGENTS.md` §8 requires audit treatment for privileged access), is outside this
 package. Recorded so it is not lost.
+
+## 12. Mutation finding 2026-08-09 — R-1 does not isolate each table's own tenant edge
+
+Found by mutation, not by review, and recorded because it changes what the eleven R-1 probes can be
+said to prove.
+
+**The mutation:** `notification_attempt.tenant_id` was returned to `CASCADE` alone.
+`test_R1_notification_attempt_blocks_tenant_deletion` **stayed green**.
+
+**Why:** building an attempt requires a dispatch, and a dispatch requires a notification. Both
+parents also carry a tenant edge, and both are now `RESTRICT`. The tenant delete is refused by
+`notification_dispatch`, so the probe passes whatever `notification_attempt` declares.
+
+**Confirmed by extending the mutation:** with `notification_attempt` **and** `notification_dispatch`
+both returned to `CASCADE`, the probe went red. The chain, not the leaf, is what the probe binds to.
+
+### 12.1 What the probes actually prove
+
+| Row | Proves |
+| :--- | :--- |
+| R-1 (×11, behavioural) | A tenant holding evidence of that kind **cannot be deleted**. That is the keystone invariant of §3, stated exactly |
+| R-7 (structural) | **Each individual table's own** `tenant_id` edge is `RESTRICT`, per table, independent of any chain |
+
+Together they are complete. Separately, neither is: R-1 alone would let a leaf table silently revert
+to `CASCADE` while its parent kept the tenant undeletable, and R-7 alone would prove the declarations
+without ever exercising a delete.
+
+**The traceability rows must claim this pairing and not more.** An R-1 row that named
+"`notification_attempt_tenant_id_fkey` ON DELETE RESTRICT" as the mechanism whose removal breaks it
+would be false — that mechanism was removed and nothing broke. The mechanism for a child table is
+the RESTRICT edges on the chain reaching it; the per-table guarantee is R-7's to make.
+
+### 12.2 Why this was not restructured instead
+
+Isolating each leaf behaviourally would mean mutating every other table to `CASCADE` for the
+duration of each probe — eleven mutations of live schema per run, against a shared database, to
+prove something R-7 already proves statically and cheaply. The pairing is the better design; what
+was wrong was the claim, not the tests.
+
+Root-cause tables (`workflow_history`, `party_contact_points`, `location_*`) have no evidence parent
+above them and are not confounded. Only the notification chain and
+`party_contact_point_verification_events` are.
