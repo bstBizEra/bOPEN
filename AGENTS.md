@@ -1005,17 +1005,17 @@ provenance, naming which subsections bind. §26.6's ten exclusions are untouched
 > provenance (`BOPEN-GOV-EBIV-001` §2 — an agent has no authority to make a normative specification
 > binding by itself).
 >
-> **This section differs from §26–§28 in one respect that matters:** it relaxes no control, widens no
-> permission and creates no authority. It only adds gates between "built" and "in production". That
-> makes promotion low-risk relative to the other proposed sections, but promotion is still an operator
-> act, not an agent's.
+> **This section differs from §26–§28 in one respect:** it relaxes no control, widens no permission
+> and creates no authority. It only adds gates between "built" and "in production". Whether that makes
+> promotion cheaper to accept is the operator's judgement, not a property an agent may assert on its
+> behalf.
 
 ### 29.1 Why the identifiers are `LC-n`
 
-`Step` is already the vocabulary of §25.1's maker cycle (steps 0–8), and `Stage` is in live use across
-six documents for the Notification build (`Stage 1`). Reusing either would corrupt existing records the
-way v0.9's `G0`–`G7` would have (§27.3). The lifecycle steps are therefore written `LC-1` … `LC-14`,
-and `step` continues to mean §25.1 only.
+`Step` is already the vocabulary of §25.1's maker cycle (steps 0–8), and `Stage 1` appears in six
+documents for the Notification build — five governance records and one draft disposition. Reusing
+either word would create the same identifier ambiguity v0.9's `G0`–`G7` would have (§27.3). The
+lifecycle steps are therefore written `LC-1` … `LC-14`, and `step` continues to mean §25.1 only.
 
 ### 29.2 The delivery lifecycle — `LC-1` … `LC-12`
 
@@ -1055,10 +1055,13 @@ PRD_APPROVED → DESIGN_READY → IMPLEMENTATION_READY → BUILT → TESTED
 > *"Built" or "sandbox tested" does not mean production-ready; `LC-9`–`LC-11` must still be passed
 > before production authorization.*
 
-`BUILT` is the one state name in this flow that already appears in the repository — as
-`BUILT AND UNVERIFIED` in `WP-P35-07` and `DOCUMENT-MANIFEST.json`. The meanings agree, and the longer
-form is the safer reading: **`BUILT` asserts that code exists, never that it was verified.** The
-remaining nine state names were checked against the tree and collide with nothing.
+`BUILT` is the one state name in this flow that already appears in the repository, in two forms — as
+`BUILT AND UNVERIFIED` in `WP-P35-07` and `DOCUMENT-MANIFEST.json`, and as a quoted phase label
+`COMPLETED & BUILT` in `BOPEN-P1-001-EXECUTION-PLAN.md` §25, where the surrounding text says that
+status *"must be treated as an assertion until implementation evidence is inspected."* Both readings
+agree with each other and with this flow, and the longer form is the safer one:
+**`BUILT` asserts that code exists, never that it was verified.** The remaining nine state names were
+checked against the tree and collide with nothing.
 
 ### 29.5 Reconciliation with §25.1 — different axes, not competing loops
 
@@ -1072,35 +1075,74 @@ remaining nine state names were checked against the tree and collide with nothin
 | `LC-6` | `DEC-*` entry gates (§25.1 step 0), `docs/work-packages` |
 | `LC-7` | §25.1 steps 1–6 |
 | `LC-8` | §25.1 step 7 — `BOPEN-GOV-EBIV-001` ballots, `tools/run_tests.py` |
-| `LC-9`–`LC-11` | **none exists** |
+| `LC-9`–`LC-11` | **No release-wide gate exists.** Component-level evidence does exist in places — see the correction below |
 | `LC-12` | §20.3 places release and production outside agent authority; no pipeline exists |
 | `LC-13`–`LC-14` | **none exists** |
 
-**A §25.1 step-8 disposition is an `LC-8` verdict, never an `LC-12` authorization.** Every disposition
-recorded to date accepts that a work package was engineered and verified. None of them says anything
-about performance, resilience, penetration testing, business acceptance, runbooks, monitoring, backup
-or rollback — because no bOPEN mechanism has ever examined those. Reading a disposition as
-production readiness is the specific error this section exists to prevent.
+**A §25.1 step-8 disposition is an `LC-8` verdict, never an `LC-12` authorization.** All 33
+`production_activation_authority` fields across `docs/evidence/` read `false`; no disposition claims
+otherwise.
+
+**What that does *not* mean — a correction found by independent re-derivation on 2026-08-10.** This
+subsection first read *"none of them says anything about performance, resilience, ... or rollback —
+because no bOPEN mechanism has ever examined those."* **That was false, and the counter-example is
+one of the twelve disposed records.** `trial-to-paid-disposition.md` names
+`INV-MIGRATE-ROLLBACK-SAFE-01` as a balloted invariant, records that a failure before cutover leaves
+the tenant safely on the shared pool, discloses that a failure at or after the cutover UPDATE is not
+auto-repaired, and reports a measured latency regression (~365→417s). It examines rollback,
+failure-resilience and performance directly.
+
+The true statement is narrower and still sufficient:
+
+> No disposition establishes **release-wide** `LC-9`–`LC-11` readiness, and none confers `LC-12`
+> authority. Some contain component-level rollback, resilience and performance evidence, scoped to
+> the work package they accept.
+
+Reading any disposition as production readiness remains the error this section exists to prevent —
+but the reason is scope, not absence.
+
+**Scope of "every disposition".** The claims above are derived from the **12 non-draft dispositions in
+`docs/evidence/phase-3.5/`**. They do not extend to earlier phase records: `phase-3/completion-decision.md`
+is `IMPLEMENTED_UNVERIFIED` with its prior *GO ON EVIDENCE* withdrawn on 2026-07-30, and is not a
+disposition of verified work at all.
 
 ### 29.6 Where bOPEN actually stands, derived from the tree on 2026-08-10
 
-Not an assessment — file existence and line counts, reproducible by `find` and `wc -l`:
+The **evidence column** is file existence and line counts, reproducible by `find` and `wc -l`. The
+**one-word labels** — "substantive", "shell", "absent" — are a reading of that evidence, and an
+earlier draft of this line claimed the whole table was "not an assessment", which was itself an
+overclaim. Read the counts; the labels are a convenience.
 
 | | Evidence in the repository |
 | :--- | :--- |
 | `LC-1`–`LC-4` | Substantive. Populated product, requirements, architecture and ADR trees. |
-| `LC-5` | **Shell.** `docs/07-security/threat-model/README.md` is **3 lines** and states what a threat model *shall* contain; it is not one. `privacy-baseline.md` and `supply-chain/dependency-policy.md` are **3 lines each**. `BOPEN-SEC-001-DRAFT.md` is 26 lines and `DOCUMENT-STATUS.md` classifies it "Draft shell". **No SBOM of any format exists.** |
+| `LC-5` | **Shell.** `docs/07-security/threat-model/README.md` is **3 lines** and states what a threat model *shall* contain; it is not one. `07-security/privacy/privacy-baseline.md` and `07-security/supply-chain/dependency-policy.md` are **3 lines each**. `BOPEN-SEC-001-DRAFT.md` is 26 lines and `DOCUMENT-STATUS.md` classifies it "Draft shell". **No SBOM of any format exists.** |
 | `LC-6`–`LC-8` | Substantive, and the most developed part of the repository. |
-| `LC-9` | **Absent.** No performance, load, resilience or penetration artifact exists. |
+| `LC-9` | **No general package.** Searches for performance, load, benchmark, penetration and vulnerability artifacts returned nothing outside `node_modules`. **Narrow evidence does exist:** `tools/probes/probe_trial_to_paid_codex.py` exercises failure-before-cutover behaviour, and `trial-to-paid-disposition.md` records a latency measurement. Whether that clears an `LC-9` gate is **unanswerable** — this section defines no coverage threshold. |
 | `LC-10` | **Absent.** No UAT or pilot record exists. |
 | `LC-11` | **Shell.** `09-operations/backup-recovery.md`, `deployment.md`, `observability.md` and `service-level-objectives.md` are **3 lines each**; two runbooks (`migration-rollback.md`, 8 lines; `bootstrap-validation.md`) carry content. |
 | `LC-12` | `.github/workflows/` holds one governance workflow. **No deployment pipeline exists.** |
 
-**Position: `BUILT`, entering `TESTED` — four states short of `PRODUCTION_READY`.**
+**No position statement is made here, and an earlier draft was wrong to make one.** It read
+*"Position: `BUILT`, entering `TESTED` — four states short of `PRODUCTION_READY`."* That arithmetic is
+correct against §29.4's sequence, but a state is a property of **an identified release**, and this
+section binds none: no release or candidate is named, no state-entry criterion is defined, and nothing
+here establishes that all `LC-8` work is complete. Counting transitions on a sequence is not the same
+as locating the product on it.
 
-This corrects a statement made in session on 2026-08-09 that "no threat-model file exists". The file
-exists; it is a three-line statement of what a threat model must contain. The substance was right and
-the wording was not.
+What the table does support is narrower and enough to act on:
+
+> `LC-5`, `LC-9`, `LC-10` and `LC-11` have **no artifact that could be presented at a gate review**,
+> whatever the entry criteria eventually say.
+
+**Two corrections to earlier statements are recorded here rather than elsewhere,** because a
+correction filed away from the claim it fixes is not a correction:
+
+1. A statement made in session on 2026-08-09 that *"no threat-model file exists"*. The file exists; it
+   is a three-line statement of what a threat model must contain. The substance was right, the wording
+   was not.
+2. The `LC-9` row and the §29.5 absence claim, both overstated in the version committed at `909e4f5`
+   and both found by independent re-derivation the same day — not by re-reading the text.
 
 ### 29.7 What promotion would require
 
@@ -1110,5 +1152,9 @@ the wording was not.
 3. A ruling on whether `LC-9`–`LC-11` evidence is admissible under `BOPEN-GOV-EBIV-001` or governed
    separately. EBIV was built for propositions about code behaviour; a pilot acceptance and an SLO are
    not that shape.
+4. **State-entry criteria, and a bound release.** §29.4 names ten states but defines entry to none of
+   them, and §29.6 shows why that is not cosmetic: without criteria and an identified release, the
+   flow can order work but cannot say where the product currently is. Until both exist, no agent and
+   no document should assert a current state.
 
 Recorded advisory-only. Confers no implementation, approval, merge, release or production authority.
