@@ -492,3 +492,62 @@ see limitation 1.
 6. **`ALTER TABLE` revalidation was not separately observed.** `DROP CONSTRAINT` / `ADD CONSTRAINT`
    revalidates existing rows, and the database held data at the time, but no probe measured that
    revalidation independently of the migration succeeding.
+
+### Verification outcome 2026-08-09 — Codex, ballot commit `bf878c6`
+
+**16 `CONFIRMED`, 0 refuted, 1 non-ballot finding against the maker.** All ballots anchor to
+candidate `0412b85` / tree `7a4eb96`. Codex changed only `ballots.jsonl`, under `codex@bst.local`,
+and verified its own eligibility across migrations 013/014, 019–022 and both test files: zero
+Codex-authored lines.
+
+Its execution evidence: focused isolation `Ran 13 tests` / `OK`; structural `Ran 3 tests` / `OK`;
+canonical `Ran 685 tests in 690.860s` / `OK`; authority bootstrap, repository validation, clean-room,
+evidence anchors and ballot attribution all passing.
+
+#### It closed the gap the maker left open
+
+**R-6 is now met, by the verifier rather than the maker.** Limitation 2 disclosed that
+`022...down.sql` had never been executed. Codex executed it: down migration observed `CASCADE|11`,
+re-applying `022` observed `RESTRICT|11`, and the removal cycle produced
+`FAILED (failures=11)` with the down applied and `OK` after restoration.
+
+That is a complete removal-sensitivity proof of all eleven edges at once — stronger than the
+single-table mutation the maker ran, and it means the disclosed gap is closed rather than merely
+acknowledged.
+
+#### It reproduced the maker's own mutation finding independently
+
+*"Leaf-only `notification_attempt` CASCADE stayed green; attempt plus dispatch CASCADE failed.
+Therefore R-1 correctly proves behavioral refusal through the chain, while R-7 supplies the
+individual-edge guarantee."*
+
+**Judgment on limitation 1: the R-1/R-7 pairing is sufficient as worded**, because the chained R-1
+rows do not claim their leaf constraint is independently load-bearing. The maker's concern that the
+eleven rows might overclaim was examined and rejected on the wording actually used.
+
+It also verified the R5 guard by removing `BOPEN_ADMIN_DATABASE_URL` and observing
+`FAILED (failures=1)`, exit 1 — confirming the superuser seam fails loudly rather than skipping.
+
+#### Non-ballot finding — a maker defect, now fixed
+
+> *the live database had all 11 constraints applied but `schema_migrations` did not record version 022*
+
+Correct. The maker applied `022` with `psql -f` directly, which bypasses the ledger that
+`tools/db_bootstrap.py` maintains. The database and the migration record disagreed: a fresh
+environment would have been consistent, but this one carried an applied-yet-unrecorded migration —
+exactly the kind of drift `WP-P35-07` §10 was about, reintroduced by hand.
+
+Fixed by re-running `python tools/db_bootstrap.py --apply`, the canonical path, rather than by
+inserting a ledger row. `022` now appears in `schema_migrations` with its filename and checksum; the
+eleven constraints remain `RESTRICT` and both suites remain green (16 tests, `OK`).
+
+#### Residual risk carried forward
+
+Codex notes R-7 is intentionally migration-syntax based, so a future SQL style outside its regex
+conventions is a maintenance risk. Recorded rather than resolved.
+
+#### Status
+
+Under `BOPEN-GOV-EBIV-001` §6.5 this is one independent verifier, so confirmation additionally
+requires an explicit Completion Authority disposition labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
+**Not disposed. Not confirmed.**
