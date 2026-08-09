@@ -422,3 +422,73 @@ Under `BOPEN-GOV-EBIV-001` §6.5 this is one independent verifier, so confirmati
 requires an explicit Completion Authority disposition labelled `CONFIRMED_UNDER_TWO_AGENT_PROFILE`.
 **Not disposed. Not confirmed.** The tenant-cascade defect is unremediated and no fix is authorized
 by this record.
+
+---
+
+# WP-P35-08 — Append-only evidence survives tenant deletion
+
+**Submitted:** 2026-08-09
+**Maker:** Claude (agent, Motor role) — disqualified from voting on this package (EBIV §3)
+**Candidate commit:** `0412b85f02f3cd3249d46cb3b7031029de3a9f81`
+**Candidate tree:** `7a4eb96b16ba60ef71c67140cbf7218a3fc608db`
+**Authorization:** [`WP-P35-08`](../../work-packages/WP-P35-08-TENANT-CASCADE-REMEDIATION.md) §10 entry gate GO; [`DEC-P4-NOTIFY-TENANT-CASCADE`](../../decisions/DEC-P4-NOTIFY-TENANT-CASCADE.md) §7 (Option 2)
+**Baseline:** `arch-baseline/2026-08-08-pre-tenant-cascade-restrict`, tagged before the change (§23)
+
+**This submission carries no verdict weight (EBIV §8).** A passing suite is not a confirmation.
+
+## What changed
+
+Migration `022` turns `tenant_id ON DELETE CASCADE` into `ON DELETE RESTRICT` on eleven append-only
+evidence tables across Workflow (014), Party ContactPoint (019), Location (020) and Notification
+(021). **Only the delete action changes** — no policy, grant, column, index or table definition is
+touched.
+
+## Falsifiable propositions
+
+**16 verified** (`TCASCADE-*`) and **2 disclosed gaps**, in
+`docs/evidence/phase-3.5/invariant-traceability.csv`.
+
+The pairing matters and the rows state it: **R-1 proves a tenant holding evidence cannot be
+deleted; R-7 proves each individual table's own edge is `RESTRICT`.** Neither alone is sufficient —
+see limitation 1.
+
+## Checks
+
+- Canonical suite at this candidate, serialized in a clean tree: `Ran 685 tests in 628.033s` / `OK`
+  / exit 0 / 0 FAIL-ERROR.
+- All eleven constraints verified `RESTRICT` by catalogue query after the migration; none still
+  `CASCADE`.
+- Traceability verified both ways: no row names a missing test; no test lacks a row.
+- **No existing test broke** despite tenant deletion becoming conditional, which `WP-P35-08` §7.3
+  had flagged as a live risk.
+
+## Limitations and disclosed risks
+
+1. **R-1 does not isolate each table's own edge, and the mechanism column says so.** Mutation
+   showed that returning `notification_attempt.tenant_id` to `CASCADE` **alone left its probe
+   green** — the refusal came from `notification_dispatch` above it. Only with both returned to
+   `CASCADE` did it go red. For the three chained tables the mechanism is therefore the RESTRICT
+   edges on the chain, not the leaf constraint. This is the limitation most worth attacking: if the
+   pairing with R-7 is judged insufficient, the eleven R-1 rows overclaim.
+
+2. **R-6 is unmet.** `022...down.sql` is written and reviewed but **has never been executed**
+   against a populated database. `WP-P35-08` §8 requires the down migration to be exercised, not
+   merely written. Recorded as an `UNVERIFIED` row.
+
+3. **The probes run as superuser, and must.** `bopen_app` cannot delete a tenant at all — `tenants`
+   has no DELETE policy, so the statement reaches zero rows silently. A probe run as the application
+   role would pass trivially both before and after the migration. The superuser URL is *derived* in
+   the test (admin credentials, application database) rather than configured, which is a seam a
+   verifier should judge.
+
+4. **Tenant offboarding now has a prerequisite and no path.** A tenant holding evidence cannot be
+   deleted, and no archival or release capability exists. This is the intended consequence of
+   Option 2, but the product-level gap is real and is out of this package's scope.
+
+5. **Applied to the shared database before verification.** The migration was executed against the
+   live development database to make the probes meaningful. A verifier inspects a database that
+   already carries the change; the pre-change state is reachable only through the baseline tag.
+
+6. **`ALTER TABLE` revalidation was not separately observed.** `DROP CONSTRAINT` / `ADD CONSTRAINT`
+   revalidates existing rows, and the database held data at the time, but no probe measured that
+   revalidation independently of the migration succeeding.
