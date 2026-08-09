@@ -188,3 +188,72 @@ available and did not check it before writing "undercounts by seven" as a headin
 That is the fourth time in this session that a maker assessment ran in the direction which made a
 finding look larger or a build look better, and the fourth time an independent check corrected it.
 Recorded here rather than quietly edited, because the pattern is the more useful finding.
+
+---
+
+## 8. Correction 2026-08-10 — §3 was wrong twice, and §2's survey was incomplete
+
+The full re-check returned four further corrections. All were verified independently before being
+recorded here.
+
+### 8.1 §3's "12 artifacts disposed" is wrong — it is **16**
+
+Twelve is the count of non-draft **disposition files**, not of disposed artifacts. The manifest
+carries the `CONFIRMED_UNDER_TWO_AGENT_PROFILE` label **17 times** across 16 artifact entries, plus
+`WP-P35-04` recorded as blocked. One file covers two AUTH-D3 candidate groups, and `WP-P35-01`..`03`
+are recorded directly in the manifest with no file of their own.
+
+**The maker counted files and reported artifacts.**
+
+### 8.2 §3's "no candidate meets §6.1's two-verifier quorum" is wrong
+
+At candidate `88e6ed2`, **fourteen propositions — `P35-04R-01`..`14` — each carry admissible
+`CONFIRMED` ballots from both `codex` and `gemini`.** Verified: 14 propositions with two confirming
+verifiers.
+
+The candidate is not confirmed **as a whole** because `P35-04R-15` and `P35-04R-16` also carry
+`REFUTED` ballots, and §6.2 makes one reproducible refutation block regardless of confirmations.
+
+The accurate statement is: **no complete artifact currently holds a clean §6.1 confirmation.** That
+is a different claim from the one §3 made, and the difference matters — §6.1's quorum has been
+reached, fourteen times, on the very candidate this assessment elsewhere flags as refuted.
+
+### 8.3 §2's survey missed the committer dimension entirely
+
+It classified by **author** only. Two commits in the range have a cross-agent author/committer split:
+
+```text
+adc97fc   author = Gemini 3.6 Flash (BST-SA Cortex)   committer = Codex (BST-SA Motor)
+bd130d2   author = Codex (BST-SA Motor)               committer = Claude Opus 5 (BST-SA Motor)
+```
+
+**`adc97fc` is the commit that introduced all 49 Gemini ballots**, including those for
+`WP-P35-01`..`03` — and its committer is Codex. Governance deliberately binds a ballot to its
+*author*, so this does not mechanically invalidate them, but the committer is normally the identity
+that created the commit, and that materially qualifies any claim of independent authorship.
+
+Separately, **266 commits in the range carry a `Co-Authored-By: Claude` trailer**. Trailers are
+self-asserted and do not override the registered author, but a provenance survey that omits them is
+incomplete.
+
+### 8.4 Smaller corrections
+
+- **The branch is now 320 commits ahead, not 318.** The figure moves as this assessment is itself
+  committed — a count in a document that changes the count.
+- **Phases 1–3 remain `IMPLEMENTED_UNVERIFIED`.** §3's "Everything else: none" understated this: it
+  is a recorded state that a whole-branch merge carries, not merely an absence of ballots.
+- **The Location disposition and manifest still cite `b524846`**, the ballot commit whose
+  attribution was found invalid. The countable ballots were re-cast at `64a2bfa`, so attribution is
+  closed, but the disposition-to-ballot trace is stale.
+- **"13 Proposed" is literally correct but overstates what is open.** `DEC-P4-LOCATION-BALLOT-ATTRIBUTION`
+  is still `Proposed` in the register while its own document records the repair as closed.
+
+### 8.5 Standing of this assessment
+
+**The identity findings in §2.1 and §2.2 are substantially sound.** §2.3 is retracted (§7). **§3
+should not be relied on for a merge decision in its original form** — use §8.1 and §8.2.
+
+Five of the maker's claims in this document have now been corrected by independent re-check. The
+document is more useful for having been checked than it was when written, and that is the argument
+for checking it rather than for having written it more carefully — the errors were not the kind
+care alone removes.
