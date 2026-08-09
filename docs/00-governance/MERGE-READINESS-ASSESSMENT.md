@@ -79,7 +79,7 @@ The display name says Codex; the address says Claude. `AGENTS.md` §21.1 exists 
 *"either field alone identifies the agent, and a disagreement between them is itself detectable"*.
 These two are detectably disagreeing and are **not recorded in any `attribution_gaps` entry**.
 
-### 2.3 The recorded attribution gap undercounts by seven
+### 2.3 The recorded attribution gap undercounts by seven — **RETRACTED, see §7**
 
 `agent-identity-register.json` records the 2026-07-29..30 gap as **29 commits** authored by Claude
 under the operator's identity. The unmerged range carries **36** commits under
@@ -135,3 +135,56 @@ identity defect. It records the branch's state so the decision can be taken with
 
 **It has not been independently verified.** The identity survey, the counts and the defect list are
 one agent's work, and §2.3's discrepancy in particular should be checked before it is relied on.
+
+---
+
+## 7. Correction 2026-08-10 — §2.3's headline is retracted
+
+§6 said the §2.3 discrepancy should be checked before being relied on. It was checked by Codex and
+**the maker's headline was wrong.**
+
+> *"The history count is indeed 36, but the register's 29 matches one contiguous July 30 range
+> (`f59bbd2..713c4a5`) that contains the Phase 3.5 package work; the seven July 29 commits precede
+> that scoped range. So the assessment's 'register undercounts' headline is not supported."*
+
+Verified independently rather than accepted:
+
+```text
+git rev-list --count f59bbd2^..713c4a5   →  29
+git log f59bbd2^..713c4a5 --format=%an   →  29 × BizEra
+```
+
+**Twenty-nine commits, all under the operator identity, in one contiguous range.** The register's
+count is exact and scoped, not an undercount. `BOPEN-GOV-IDENT-001` describes that range as the
+whole of `WP-P35-01`..`03`, and the seven 2026-07-29 commits precede it — they are Phase 2 and
+Phase 3 work, a different body of commits entirely:
+
+```text
+2221f2d  docs(phase3): add Phase 3 completion decision and evidence
+b0fb4f6  feat(phase3): deliver Capability Registry, Commercial …
+6aa892b  feat(evidence): add machine-readable Phase 3 entry gate …
+bd71a78  fix(governance): harmonize status registers …
+b582fc1  feat(governance): evidence-driven Phase 3 entry gate …
+e65baf1  [BOPEN-P2-001] Enter Phase 2 and implement MILE-2.1 …
+fcae7a9  Preserve in-progress repo reorganisation before session …
+```
+
+### 7.1 What survives the retraction
+
+The register is accurate. **The seven 2026-07-29 commits still have unestablished authorship** —
+they carry the operator identity, they are outside the only recorded gap, and nothing says whether
+they were written by the operator or by an agent. That is a smaller finding than §2.3 claimed and it
+is not nothing: §21.2.1 makes a commit attributed to the operator carry an authority claim an agent
+cannot make.
+
+**§2.1 and §2.2 are unaffected** — the two forbidden-identity commits and the two name/email
+mismatches were verified directly and do not depend on this count.
+
+### 7.2 The error pattern, again
+
+§2.3 framed an exact scoped record as a defect in the record. The maker had the range boundary
+available and did not check it before writing "undercounts by seven" as a heading.
+
+That is the fourth time in this session that a maker assessment ran in the direction which made a
+finding look larger or a build look better, and the fourth time an independent check corrected it.
+Recorded here rather than quietly edited, because the pattern is the more useful finding.
