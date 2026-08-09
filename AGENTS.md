@@ -1158,3 +1158,119 @@ correction filed away from the claim it fixes is not a correction:
    no document should assert a current state.
 
 Recorded advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+---
+
+## 30. PROPOSED (not in force) — Evidence-Backed Agent Governance: authority-delta classification, delegation envelopes, dual-policy evaluation
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** Recorded as the operator's directive of 2026-08-10,
+> transcribed by Claude (Motor). Binds nothing until promoted by an explicit operator decision with
+> Git provenance (`BOPEN-GOV-EBIV-001` §2). Unlike §29, **this one would move authority if adopted
+> whole.** §30.5 names every part that would; those parts are excluded, not adopted.
+
+### 30.1 What it was written for, and why that matters here
+
+The source analysis concerns a pull request that modifies `ci.yml`, an OPA policy bundle, an ADR and a
+risk classifier — the machinery that decides its own permissions. **bOPEN has none of that
+machinery.** Verified against the tree on 2026-08-10: `.github/workflows/` contains one file
+(`bootstrap-governance.yml`), there is no `.rego` policy of any kind, no classifier, no merge queue,
+no GitHub App and no organization ruleset.
+
+The proposal therefore cannot be applied here; it can be adopted as design vocabulary, and its central
+idea is worth adopting on its own merits.
+
+### 30.2 Adopted as vocabulary — authority-delta over file-path
+
+> Replace *"touched a protected file ⇒ human required"* with *"increased authority beyond the
+> delegated envelope ⇒ constitutional review required."*
+
+This is the strongest idea in the source, and it is **the distinction bOPEN had already reached from
+the other end**. `DEC-STANDING-ENTRY-AUTHORIZATION` §2 — raised 2026-08-10, still `Proposed` —
+separates an **entry gate** (authorizes *starting* work whose scope a disposed decision already fixed;
+can be standing) from a **disposition** (the verdict itself; cannot be). Both say: **classify by what a
+change does to authority, not by which path it touches.**
+
+Also adopted as vocabulary, without the machinery: signed policy bundles, evidence digests bound to a
+commit SHA, transparency logging, dual-policy evaluation (a change to policy judged by *both* the
+current and the proposed rule), shadow-mode comparison before activation, and two-epoch activation for
+any gate script.
+
+### 30.3 Already in force — do not import these twice
+
+Three of the source's proposals are existing bOPEN rules. Re-adopting them under new names would
+create two vocabularies for one control:
+
+| Source proposal | Already in force as |
+| :--- | :--- |
+| §6 "proposer may not cast a ballot" | `BOPEN-GOV-EBIV-001` §3 maker exclusion — *any line of the artifact under review* |
+| §6 "evidence builder may not certify its own evidence" | EBIV §8 — a maker's own passing suite carries no verdict weight |
+| §5 "a new push invalidates all ballots" | EBIV candidate binding — a ballot names `commit_oid` and `tree_oid` and is void anywhere else |
+
+### 30.4 Excluded — identifier collisions, two of them repeats
+
+| Source token | Collides with | Ruling |
+| :--- | :--- | :--- |
+| `G0`–`G5` change classes | §3's in-force **"GATE G7 CLEARED (EVD-RES-001-G7)"** | **Excluded.** §27.3 already excluded v0.9's `G0`–`G7` for this exact reason and called it *"the most damaging item in v0.9"*. This is the second proposal in a row to reuse `G`-prefixed stage identifiers; a different prefix is required before the change classes can be considered. |
+| `A0`–`A4` authority ladder | §28.2 already records **Authority Level `A0`–`A4`** from URE-Loop v1.5, with different meanings | **Excluded as written.** Two `PROPOSED` sections would define `A2` as both "medium-risk changes" and a v1.5 authority level. One meaning per token, or neither. |
+| `L0`–`L3` governance layers | `EVD-SEC-001` line 561 uses `L3` to mean **assurance Level 3** | **Rename before use.** `GL-0`…`GL-3` is unused. Milder than the above, but an evidence document already reads `L3` as a maturity claim. |
+| `BAL-GOV-2026-001` ballot | EBIV ballots in `ballots.jsonl` (433 records) | **Excluded.** §27.3 already ruled on `BAL-GOV-001`: a second artifact called a "ballot", with a different admissibility model, makes "the ballot confirmed it" ambiguous. |
+| `REJECTED` verdict | EBIV verdicts are `CONFIRMED` / `REFUTED` / `INADMISSIBLE` | **Usable, but keep it distinct.** `REJECTED` appears zero times in `ballots.jsonl`, so there is no live conflict — but operator dispositions already use ACCEPT/REJECT, and a ballot verdict and a disposition outcome must not merge into one word. |
+
+### 30.5 Excluded — the parts that would move authority
+
+These are why this section carries a stronger banner than §29:
+
+1. **Retiring `HUMAN_REQUIRED` as a generic outcome (source §11).** bOPEN does not use that token, but
+   it uses the thing: §20.3 places merge, release and production outside agent authority, and §25.1
+   step 8 reserves disposition to the Completion Authority, *"which is not an agent role"*. Neither is
+   a placeholder awaiting a better council.
+2. **`AGENT_BALLOT_ELIGIBLE` for governance implementation (`G1`/`G2`).** Under it, agents would merge
+   changes to the gate and the classifier that judge them. EBIV §2 — *"agents may certify; agents may
+   not self-authorize"* — forbids exactly this.
+3. **`CONDITIONAL_AGENT_ELIGIBLE` ladder advance (`G3`).** An agent promoting its own authority tier on
+   KPI attainment is self-authorization with a counter attached.
+4. **Agent-executed auto-merge of any class.** §20.3, unconditional.
+5. **Optimistic auto-merge with rollback.** Excluded on a different ground — absent prerequisite, not
+   authority. It presumes a rollback capability; §29.6 records `09-operations/backup-recovery.md` as a
+   three-line shell.
+
+### 30.6 Not satisfiable here — the five-agent council
+
+The source requires five role-separated voters with distinct service identities, 4-of-5 approval,
+5-of-5 for gate changes, and Governance/Security veto.
+
+**bOPEN has two available verifying agents** — Claude and Codex — with gemini appearing in the
+historical record. `EBIV` §6.5's `CONFIRMED_UNDER_TWO_AGENT_PROFILE` exists precisely because the
+population is too small for a quorum of that shape, and §6.5.4 sets the profile to expire rather than
+pretend otherwise. Every one of the six candidates currently awaiting disposition carries **one**
+independent verifier.
+
+A 4-of-5 rule adopted today would not raise assurance. It would make every governance change
+permanently unmergeable while presenting itself as a stronger control. Recorded as **blocked on
+population, not on principle.**
+
+### 30.7 Adopted in full — the Genesis Ratification constraint
+
+The source's own closing safeguard is adopted verbatim as the condition on everything above:
+
+> Without an existing authority signing the Genesis Ratification, making the change agent-approved
+> would be a retroactive self-grant of authority, and cannot count as credible governance evidence.
+
+This restates `BOPEN-GOV-EBIV-001` §2. It is also why §30 is recorded as `PROPOSED` by the agent that
+transcribed it rather than adopted by it: **a section that would widen agent authority cannot be
+brought into force by an agent, and least of all by citing itself.**
+
+### 30.8 What promotion would require
+
+1. A **bootstrap/payload split**, as the source itself recommends — one operator ratification
+   installing the envelope, ballot schema and verifier, with the policy payload following under it.
+2. A **verifier outside the tree it judges.** bOPEN's only workflow lives in the repository it
+   validates, so a pull request can edit it. Closing that is a prerequisite to every
+   `AGENT_BALLOT_ELIGIBLE` class — and is worth doing on its own merits even if nothing else here is
+   adopted.
+3. A ruling on whether that verifier's output is admissible under `BOPEN-GOV-EBIV-001` or governed
+   separately — the same open question §29.7 item 3 raises for `LC-9`–`LC-11`.
+4. Enough independent verifying agents to make a quorum meaningful (§30.6), or an explicit decision to
+   keep operating under the two-agent profile with its expiry intact.
+
+Recorded advisory-only. Confers no implementation, approval, merge, release or production authority.
