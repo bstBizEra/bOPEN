@@ -152,9 +152,15 @@ def build(phase_dir: Path) -> dict:
         row["disposition_file"] = str(row["disposition_file"].name) if row["disposition_file"] else None
 
         if s["refuted"] and is_disposed:
-            # The category that matters most and that no summary asked about: an artifact carrying a
-            # refutation AND a signed disposition. Whether the refutation was discharged before the
-            # disposition is not derivable from the ballot record — only that both exist.
+            # A triage pointer, deliberately named for what it measures rather than for what it
+            # might mean. An earlier name — "disposed while carrying a refutation" — was semantically
+            # stronger than the fact and was corrected after independent re-check found all four
+            # entries to be the normal shape: the disposition binds a successor candidate and names
+            # the refuted one only as superseded.
+            #
+            # The tool aggregates by CANDIDATE and does not bind disposition scope to proposition
+            # scope, so it cannot distinguish that normal shape from a genuine acceptance of refuted
+            # state. It reports the pointer; the reading is the operator's.
             disposed_refuted.append(row)
         elif s["refuted"]:
             blocked.append(row)
@@ -173,7 +179,7 @@ def build(phase_dir: Path) -> dict:
         "malformed_ballot_lines": sum(1 for b in ballots if b.get("_malformed")),
         "awaiting_disposition": ready,
         "blocked_by_refutation": blocked,
-        "disposed_while_carrying_a_refutation": disposed_refuted,
+        "refuted_candidate_referenced_by_a_disposition": disposed_refuted,
         "no_admissible_confirmation": short_of_quorum,
         "disposed": disposed,
         "unsigned_drafts": [p.name for p in drafts],
@@ -205,13 +211,17 @@ def render(data: dict) -> None:
         print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}"
               f"  (also {len(r['confirming_verifiers'])} confirming)")
 
-    print(f"\nDISPOSED WHILE CARRYING A REFUTATION — {len(data['disposed_while_carrying_a_refutation'])}")
-    print("    Both a REFUTED ballot and a signed disposition exist for these candidates.")
-    print("    Whether the refutation was discharged before the disposition is NOT derivable here —")
-    print("    the ballot record shows only that both exist. Each one needs reading.")
-    if not data["disposed_while_carrying_a_refutation"]:
+    print(f"\nREFUTED CANDIDATE REFERENCED BY A SIGNED DISPOSITION — "
+          f"{len(data['refuted_candidate_referenced_by_a_disposition'])}")
+    print("    A candidate carrying a REFUTED ballot whose SHA appears somewhere in a signed")
+    print("    disposition. This is a TRIAGE POINTER, not a finding.")
+    print("    The normal and expected shape is that the disposition binds a SUCCESSOR candidate and")
+    print("    names this one only as superseded — independently verified to be the case for all four")
+    print("    entries on 2026-08-10. This tool aggregates by candidate and does not bind disposition")
+    print("    scope to proposition scope, so it cannot tell that shape from a real one. Read each.")
+    if not data["refuted_candidate_referenced_by_a_disposition"]:
         print("    none")
-    for r in data["disposed_while_carrying_a_refutation"]:
+    for r in data["refuted_candidate_referenced_by_a_disposition"]:
         print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}"
               f"  ->  {r['disposition_file']}")
 
