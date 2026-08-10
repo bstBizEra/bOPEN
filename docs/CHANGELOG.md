@@ -1,5 +1,21 @@
 # Documentation Changelog
 
+## 2026-08-10 - Governed-Autonomy Bootstrap: SecB L0 governance ported, AGENTS.md §31 added (conditional on Genesis Ratification)
+
+- Executed `AGENTS.md` §30.8 item 1 (bootstrap/payload split) under `BOPEN-WP-GOV-AUTONOMY-001`:
+  ported the SecB Project Framework's L0 governance machinery per its `NEW_PROJECT_BOOTSTRAP.md`
+  runbook. Nothing binds until the operator's ratification merge (`DEC-GOV-AUTONOMY-001`).
+- Added `docs/00-governance/GL_ROOT_CONSTITUTION.md` (layers `GL-0`-`GL-3`, change classes
+  `AD0`-`AD5`, authority-verdict vocabulary) and `config/delegation_envelope.json`
+  (`ENV-BOPEN-2026-001`, tier `AT1`, expires 2026-11-08) — identifiers renamed per the §30.4
+  collision rulings.
+- Added four enforcement scripts (`scripts/check_work_package_ref.py`, `check_budget.py`,
+  `classify_authority_delta.py`, `check_dual_policy.py`), 44 unittest-style subprocess tests under
+  `tests/governance/`, and the `governance-gates` CI workflow.
+- Added `AGENTS.md` §31 (autonomous `AD0` merge rule, conditions 1-6, announcement duty) and
+  recorded gate-failure proofs in `docs/evidence/governance-genesis/GATE-FAILURE-PROOFS.md` —
+  including the genesis package classifying itself `CONSTITUTIONAL_REQUIRED`.
+
 ## 2026-08-07 - URE-Loop v0.9 recorded as AGENTS.md §27, with three identifier collisions excluded
 
 - Added `AGENTS.md` §27 covering only what URE-Loop v0.9 adds over v0.6 (§26): governance lens

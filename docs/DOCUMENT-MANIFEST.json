@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 363,
+  "count": 380,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -8,6 +8,34 @@
       "status": "Operational",
       "sha256": "9ff67577da11a3e91ef2aa6b404f162296c734c7dbedb9c234586f87142d198c",
       "bytes": 3777
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
+      "title": "BOPEN-GOV-EBIV-001 \u2014 Evidence-Bound Independent Verification",
+      "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
+      "sha256": "894a93198e3d0c3b5d98677d81191d122f6ffafc60db0a068de6212bd789086b",
+      "bytes": 14979
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-IDENT-001.md",
+      "title": "BOPEN-GOV-IDENT-001 \u2014 Agent Commit Identity Register",
+      "status": "Proposed",
+      "sha256": "8cdbe9228f505a8d42686a4c4c5a354083ddf80fca31a634ce87a0771ca9fb5f",
+      "bytes": 10624
+    },
+    {
+      "path": "docs/00-governance/GL_ROOT_CONSTITUTION.md",
+      "title": "GL-0 \u2014 Root Constitution",
+      "status": "",
+      "sha256": "01ffec1fdcb47939b2310d95aa90b9b91a7fc4777336407e9c58aa7021c85698",
+      "bytes": 6912
+    },
+    {
+      "path": "docs/00-governance/MERGE-READINESS-ASSESSMENT.md",
+      "title": "Merge readiness assessment \u2014 `claude/BOPEN-P35-001-runtime-realization` \u2192 `main`",
+      "status": "**Advisory assessment \u2014 decides nothing, authorizes nothing**",
+      "sha256": "d18e761ca5302009b62db28994887aca01730c04810f350b61c00a9b58400190",
+      "bytes": 14004
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -20,8 +48,8 @@
       "path": "docs/00-governance/agent-identity-register.json",
       "title": "",
       "status": "",
-      "sha256": "f82ba45bd594cc9d3fb33764ce9abb7d3ed900f545b0011c75aa1417b4e8add4",
-      "bytes": 8848
+      "sha256": "327188072e28b5abe7b5cb84b5b14d1c04aae4db80a92a4327a6d3e635148746",
+      "bytes": 12965
     },
     {
       "path": "docs/00-governance/agent-role-catalog.md",
@@ -50,20 +78,6 @@
       "status": "Operational",
       "sha256": "cafc7e1cac9dce9d5a1914a335d0a85c0e2ff3207b1e93558370fa1a1a7407e0",
       "bytes": 3967
-    },
-    {
-      "path": "docs/00-governance/BOPEN-GOV-EBIV-001.md",
-      "title": "BOPEN-GOV-EBIV-001 \u2014 Evidence-Bound Independent Verification",
-      "status": "Proposed \u2014 pending `DEC-P35-RUNTIME`",
-      "sha256": "894a93198e3d0c3b5d98677d81191d122f6ffafc60db0a068de6212bd789086b",
-      "bytes": 14979
-    },
-    {
-      "path": "docs/00-governance/BOPEN-GOV-IDENT-001.md",
-      "title": "BOPEN-GOV-IDENT-001 \u2014 Agent Commit Identity Register",
-      "status": "Proposed",
-      "sha256": "8cdbe9228f505a8d42686a4c4c5a354083ddf80fca31a634ce87a0771ca9fb5f",
-      "bytes": 10624
     },
     {
       "path": "docs/00-governance/clean-room-policy.md",
@@ -139,8 +153,8 @@
       "path": "docs/00-governance/handoffs/HANDOFF-P35-PARALLEL-TO-CODEX.md",
       "title": "HANDOFF-P35-PARALLEL-TO-CODEX \u2014 Parallel execution split for Phase 3.5",
       "status": "Stood down 2026-07-30; **superseded 2026-07-31** by [`HANDOFF-P35-MAKER-SPLIT-TO-CODEX`](HANDOFF-P35-MAKER-SPLIT-TO-CODEX.md) \u2014 retained as a record, do not execute",
-      "sha256": "a162a0ad549c69c7f1342bb6c820b8f07db2fa40f38e3b6c79c203c3751d5930",
-      "bytes": 17426
+      "sha256": "7ae281bd7c778c14d10a120b5bef0a059219e579af909c48bc0d10d3a106f1f7",
+      "bytes": 17129
     },
     {
       "path": "docs/00-governance/handoffs/HANDOFF-P35-VERIFY-R2-TO-GEMINI-KIMI.md",
@@ -197,13 +211,6 @@
       "status": "Approved Specification",
       "sha256": "271439edc0915304ff8caaa2c0b659df04a5dee989618e766f3e3f4e073c4cae",
       "bytes": 6012
-    },
-    {
-      "path": "docs/01-product/ecosystem-map.md",
-      "title": "Ecosystem Map",
-      "status": "",
-      "sha256": "c8b58dee8317c502f0eb4aa02ebf630c4e46a08242f8274fcd3d4c35d75fbfbc",
-      "bytes": 289
     },
     {
       "path": "docs/01-product/FUTURE-DEVELOPMENT-PLAN.md",
@@ -388,6 +395,27 @@
       "bytes": 15792
     },
     {
+      "path": "docs/01-product/WP-P35-06-dedicated-db-provisioning-plan.md",
+      "title": "WP-P35-06 \u2014 Dedicated-database provisioning, design & first-slice plan",
+      "status": "**Design \u2014 advisory. Buildable on operator authorization.** Extends the disposed WP-P35-06 placement seam ([`EVD-P35-06-DISPOSITION`](../evidence/phase-3.5/wp-p35-06-disposition.md)) with the carried \"no dedicated DB provisioned\" item.",
+      "sha256": "5084517eff330569313615330bb3e6717348a6e6eca4027881893815003b8c54",
+      "bytes": 10064
+    },
+    {
+      "path": "docs/01-product/WP-P35-06-trial-to-paid-migration-plan.md",
+      "title": "WP-P35-06 \u2014 Trial\u2192paid tenant migration, design & slice plan",
+      "status": "**Design \u2014 advisory. Buildable on operator authorization.** The last open item of the hybrid tenancy model ([`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a78 Option D), deferred through the \u00a710 and \u00a711 slices.",
+      "sha256": "236e9407bcc938ae6bf3c85cab29bfbf151e2af65d87e6a9a936724baa877c0a",
+      "bytes": 9294
+    },
+    {
+      "path": "docs/01-product/ecosystem-map.md",
+      "title": "Ecosystem Map",
+      "status": "",
+      "sha256": "c8b58dee8317c502f0eb4aa02ebf630c4e46a08242f8274fcd3d4c35d75fbfbc",
+      "bytes": 289
+    },
+    {
       "path": "docs/01-product/principles.md",
       "title": "Product Principles",
       "status": "",
@@ -423,27 +451,6 @@
       "bytes": 327
     },
     {
-      "path": "docs/01-product/WP-P35-06-dedicated-db-provisioning-plan.md",
-      "title": "WP-P35-06 \u2014 Dedicated-database provisioning, design & first-slice plan",
-      "status": "**Design \u2014 advisory. Buildable on operator authorization.** Extends the disposed WP-P35-06 placement seam ([`EVD-P35-06-DISPOSITION`](../evidence/phase-3.5/wp-p35-06-disposition.md)) with the carried \"no dedicated DB provisioned\" item.",
-      "sha256": "5084517eff330569313615330bb3e6717348a6e6eca4027881893815003b8c54",
-      "bytes": 10064
-    },
-    {
-      "path": "docs/01-product/WP-P35-06-trial-to-paid-migration-plan.md",
-      "title": "WP-P35-06 \u2014 Trial\u2192paid tenant migration, design & slice plan",
-      "status": "**Design \u2014 advisory. Buildable on operator authorization.** The last open item of the hybrid tenancy model ([`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a78 Option D), deferred through the \u00a710 and \u00a711 slices.",
-      "sha256": "236e9407bcc938ae6bf3c85cab29bfbf151e2af65d87e6a9a936724baa877c0a",
-      "bytes": 9294
-    },
-    {
-      "path": "docs/02-requirements/acceptance/README.md",
-      "title": "Acceptance Criteria",
-      "status": "",
-      "sha256": "fe1b91e58b6b10402456f49672a1dd956e4c632c799b9abbb907f69119660ad9",
-      "bytes": 105
-    },
-    {
       "path": "docs/02-requirements/BOPEN-PRD-P35-001.md",
       "title": "BOPEN-PRD-P35-001 - Runtime Assurance and Completion Product Requirements",
       "status": "Proposed - assists `BOPEN-P35-001`; no implementation authority",
@@ -472,6 +479,20 @@
       "bytes": 863
     },
     {
+      "path": "docs/02-requirements/README.md",
+      "title": "Requirements",
+      "status": "",
+      "sha256": "333339f0e25a6686ff78f40e1904d898a0730a12423fc5cf15e4229e415d6e2d",
+      "bytes": 122
+    },
+    {
+      "path": "docs/02-requirements/acceptance/README.md",
+      "title": "Acceptance Criteria",
+      "status": "",
+      "sha256": "fe1b91e58b6b10402456f49672a1dd956e4c632c799b9abbb907f69119660ad9",
+      "bytes": 105
+    },
+    {
       "path": "docs/02-requirements/functional/README.md",
       "title": "Functional Requirements",
       "status": "",
@@ -486,11 +507,32 @@
       "bytes": 137
     },
     {
-      "path": "docs/02-requirements/README.md",
-      "title": "Requirements",
-      "status": "",
-      "sha256": "333339f0e25a6686ff78f40e1904d898a0730a12423fc5cf15e4229e415d6e2d",
-      "bytes": 122
+      "path": "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md",
+      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel, Common Business Foundation, Capability Package & Industry Pack Architecture v1.0",
+      "status": "Draft \u2014 no implementation authority",
+      "sha256": "75c058fe46a1ae92acab484fec9ff0b9e7c4ca013878f26e5cec855db1fafee8",
+      "bytes": 2118
+    },
+    {
+      "path": "docs/03-architecture/BOPEN-ARCH-001.md",
+      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel Architecture v1.0",
+      "status": "Approved for Phase 1 implementation",
+      "sha256": "679c266517726e38a34b1fbd2f2ccfa8f204fac978f0147184f9e015627f9ff9",
+      "bytes": 1007
+    },
+    {
+      "path": "docs/03-architecture/FINAL-TECH-PLAN.md",
+      "title": "bOPEN Final Integrated Technology & Language Architecture Plan v1.0",
+      "status": "Approved Master Architecture Plan",
+      "sha256": "ff9f1ba418ed824c37c7e0be8586191537429b465f27dc09b88e9a4f44de04ae",
+      "bytes": 6576
+    },
+    {
+      "path": "docs/03-architecture/TECHNOLOGY-MATRIX.md",
+      "title": "bOPEN Technology Matrix & Scoring Measure Specification v1.0",
+      "status": "Approved Specification",
+      "sha256": "b5079844796ea02f62576d82db85c222e070abe6fec08576878badcac93d132a",
+      "bytes": 4723
     },
     {
       "path": "docs/03-architecture/architecture-gates.md",
@@ -505,20 +547,6 @@
       "status": "",
       "sha256": "d5d39802dafca0c261fabe4f0053492d0d6c2e5d442e6796573246890691d19d",
       "bytes": 248
-    },
-    {
-      "path": "docs/03-architecture/BOPEN-ARCH-001-DRAFT.md",
-      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel, Common Business Foundation, Capability Package & Industry Pack Architecture v1.0",
-      "status": "Draft \u2014 no implementation authority",
-      "sha256": "75c058fe46a1ae92acab484fec9ff0b9e7c4ca013878f26e5cec855db1fafee8",
-      "bytes": 2118
-    },
-    {
-      "path": "docs/03-architecture/BOPEN-ARCH-001.md",
-      "title": "BOPEN-ARCH-001 \u2014 bOPEN Platform Kernel Architecture v1.0",
-      "status": "Approved for Phase 1 implementation",
-      "sha256": "679c266517726e38a34b1fbd2f2ccfa8f204fac978f0147184f9e015627f9ff9",
-      "bytes": 1007
     },
     {
       "path": "docs/03-architecture/bounded-contexts.md",
@@ -542,13 +570,6 @@
       "bytes": 204
     },
     {
-      "path": "docs/03-architecture/FINAL-TECH-PLAN.md",
-      "title": "bOPEN Final Integrated Technology & Language Architecture Plan v1.0",
-      "status": "Approved Master Architecture Plan",
-      "sha256": "ff9f1ba418ed824c37c7e0be8586191537429b465f27dc09b88e9a4f44de04ae",
-      "bytes": 6576
-    },
-    {
       "path": "docs/03-architecture/quality-attributes.md",
       "title": "Quality Attributes",
       "status": "",
@@ -561,27 +582,6 @@
       "status": "",
       "sha256": "216eb8d3f48a7408041554ed202ec3af1319ac934694496a049c45f1200d9ad4",
       "bytes": 272
-    },
-    {
-      "path": "docs/03-architecture/TECHNOLOGY-MATRIX.md",
-      "title": "bOPEN Technology Matrix & Scoring Measure Specification v1.0",
-      "status": "Approved Specification",
-      "sha256": "b5079844796ea02f62576d82db85c222e070abe6fec08576878badcac93d132a",
-      "bytes": 4723
-    },
-    {
-      "path": "docs/04-platform/agents/agent-principal.md",
-      "title": "Agent Principal",
-      "status": "",
-      "sha256": "a2dc428cdbc885c81a1883dd022a6063458328d950e41d29c779241a6f267189",
-      "bytes": 146
-    },
-    {
-      "path": "docs/04-platform/authorization/authorization-model.md",
-      "title": "Authorization Model",
-      "status": "",
-      "sha256": "29d27538a451d77068708bb0dd05b61dc5bc74d61b7f8b53d9242bcf7ccb98d7",
-      "bytes": 146
     },
     {
       "path": "docs/04-platform/BOPEN-AUTHZ-001-DRAFT.md",
@@ -601,8 +601,8 @@
       "path": "docs/04-platform/BOPEN-ENT-001.md",
       "title": "BOPEN-ENT-001 \u2014 bOPEN Entitlement, Usage & Commercial Kernel Specification",
       "status": "APPROVED FOR PHASE 3 IMPLEMENTATION",
-      "sha256": "c9f3a37002b97f7756b93baeaad4cae75ec11737bd2bb87a93acb05252615a31",
-      "bytes": 4174
+      "sha256": "3b0c3bb99f05532bb6d01a12666d85def53ef1221218f658c043f934687ececd",
+      "bytes": 4102
     },
     {
       "path": "docs/04-platform/BOPEN-IDP-001-DRAFT.md",
@@ -622,8 +622,8 @@
       "path": "docs/04-platform/BOPEN-MOD-001.md",
       "title": "BOPEN-MOD-001 \u2014 Product, Module, Feature & Capability Contracts Specification",
       "status": "APPROVED FOR PHASE 3 IMPLEMENTATION",
-      "sha256": "727abb37d4962f0e71a70ed5c7900f6898e53e035d372c4b042fb7727fb496fe",
-      "bytes": 3409
+      "sha256": "63ef403f7ccda99977ded854ed12bf148bcf0800173f8b5ad52259e79b31ba9a",
+      "bytes": 3344
     },
     {
       "path": "docs/04-platform/BOPEN-TENANT-001-DRAFT.md",
@@ -638,6 +638,20 @@
       "status": "Approved for Phase 1 implementation",
       "sha256": "05e262dd1629a216912877e5c9f4aca275d05f418b29bfb81674236562b96380",
       "bytes": 763
+    },
+    {
+      "path": "docs/04-platform/agents/agent-principal.md",
+      "title": "Agent Principal",
+      "status": "",
+      "sha256": "a2dc428cdbc885c81a1883dd022a6063458328d950e41d29c779241a6f267189",
+      "bytes": 146
+    },
+    {
+      "path": "docs/04-platform/authorization/authorization-model.md",
+      "title": "Authorization Model",
+      "status": "",
+      "sha256": "29d27538a451d77068708bb0dd05b61dc5bc74d61b7f8b53d9242bcf7ccb98d7",
+      "bytes": 146
     },
     {
       "path": "docs/04-platform/capability/capability-registry.md",
@@ -717,18 +731,18 @@
       "bytes": 138
     },
     {
-      "path": "docs/05-foundation/asset/README.md",
-      "title": "Asset",
-      "status": "",
-      "sha256": "42d5272436bec05bad9198f34d5d11813bbc4b169b90a269b403363087fc1799",
-      "bytes": 352
-    },
-    {
       "path": "docs/05-foundation/BOPEN-PARTY-001-DRAFT.md",
       "title": "BOPEN-PARTY-001 \u2014 bOPEN Party, Person, Organization, Legal Entity & Business Relationship Model v1.0",
       "status": "Draft \u2014 no implementation authority",
       "sha256": "76f6e4d017ca5a872ffc85493352b7d7ab6d20a0c835bda1228fddb73926cd4c",
       "bytes": 944
+    },
+    {
+      "path": "docs/05-foundation/asset/README.md",
+      "title": "Asset",
+      "status": "",
+      "sha256": "42d5272436bec05bad9198f34d5d11813bbc4b169b90a269b403363087fc1799",
+      "bytes": 352
     },
     {
       "path": "docs/05-foundation/calendar/README.md",
@@ -748,8 +762,8 @@
       "path": "docs/05-foundation/location/README.md",
       "title": "Location",
       "status": "",
-      "sha256": "30f5179862abedea96aee66ea9a54dd2b13220f00b5dca5efcbaf8ded6a8f3e1",
-      "bytes": 329
+      "sha256": "be332e427408d4d59de815f6980220d99c5153c3b3d930df556805a8d0f802f9",
+      "bytes": 1530
     },
     {
       "path": "docs/05-foundation/measurement/README.md",
@@ -769,8 +783,8 @@
       "path": "docs/05-foundation/notification/README.md",
       "title": "Notification",
       "status": "",
-      "sha256": "9630e29256d950d8daedfbc700b85780e3202d539d9d279f68af1273ee9d7230",
-      "bytes": 448
+      "sha256": "d9c9be441306e58533505f605e34c4a9448b2e6538204167173d339e3859bb24",
+      "bytes": 1598
     },
     {
       "path": "docs/05-foundation/organization/README.md",
@@ -783,8 +797,8 @@
       "path": "docs/05-foundation/party/README.md",
       "title": "Party",
       "status": "",
-      "sha256": "603c8d48018ff23de96361782ef3acf2ca162252e03098370addb4799e603c51",
-      "bytes": 574
+      "sha256": "ed349cebed378b657efd516da1bf220f86710fcb409125f10c7150a1684627c3",
+      "bytes": 1700
     },
     {
       "path": "docs/05-foundation/relationship/README.md",
@@ -797,8 +811,8 @@
       "path": "docs/05-foundation/workflow/README.md",
       "title": "Workflow",
       "status": "",
-      "sha256": "110d338402623ad9ab0df483f1f8218e3dbd05bc22914d8c09f2bd4f044d9792",
-      "bytes": 86
+      "sha256": "3318e8769e305c660b3785d1048afbb773663fd49620739103bacb08ae863e96",
+      "bytes": 1331
     },
     {
       "path": "docs/06-contracts/agents/agent-tool-contract.md",
@@ -857,18 +871,18 @@
       "bytes": 197
     },
     {
-      "path": "docs/07-security/authorization/privileged-access.md",
-      "title": "Privileged Access",
-      "status": "",
-      "sha256": "97b972709290aa9383e12c15397f7b7262296dd28f73fd18ed5e8344966444b6",
-      "bytes": 155
-    },
-    {
       "path": "docs/07-security/BOPEN-SEC-001-DRAFT.md",
       "title": "BOPEN-SEC-001 \u2014 bOPEN Application Security, DevSecOps & Software Supply Chain Security Specification v1.0",
       "status": "Draft \u2014 no production assurance",
       "sha256": "7280a5c988a8a34ab63091b7c59649a4aab08c0f6f5b83ee9a4dc9614c487fa2",
       "bytes": 1148
+    },
+    {
+      "path": "docs/07-security/authorization/privileged-access.md",
+      "title": "Privileged Access",
+      "status": "",
+      "sha256": "97b972709290aa9383e12c15397f7b7262296dd28f73fd18ed5e8344966444b6",
+      "bytes": 155
     },
     {
       "path": "docs/07-security/incident/incident-classification.md",
@@ -920,6 +934,27 @@
       "bytes": 287
     },
     {
+      "path": "docs/08-engineering/ENGINEERING-LOOP.md",
+      "title": "bOPEN Engineering Loop",
+      "status": "Operational",
+      "sha256": "edbe886450da37ddb3c70bf388be8fd424a3fb602df4fd45c3feaaead6ca2668",
+      "bytes": 7544
+    },
+    {
+      "path": "docs/08-engineering/PROGRAMMING-LANGUAGES-MATRIX.md",
+      "title": "bOPEN Programming Language Stacks Matrix & Scoring Measure Specification v1.0",
+      "status": "Approved Specification",
+      "sha256": "b87e9d3b207b574882ec1dcf365ce195813b2eb5d1350b6d214db2bfc091fb26",
+      "bytes": 4059
+    },
+    {
+      "path": "docs/08-engineering/VERSION-POLICY.md",
+      "title": "bOPEN Version Control & Semantic Versioning Policy v1.0",
+      "status": "Approved Specification",
+      "sha256": "b094d669463e6913a7daf3209a9abad1f5daa824d126cc84b504da1201e1bf41",
+      "bytes": 1957
+    },
+    {
       "path": "docs/08-engineering/branching.md",
       "title": "Branching",
       "status": "",
@@ -948,13 +983,6 @@
       "bytes": 194
     },
     {
-      "path": "docs/08-engineering/ENGINEERING-LOOP.md",
-      "title": "bOPEN Engineering Loop",
-      "status": "Operational",
-      "sha256": "edbe886450da37ddb3c70bf388be8fd424a3fb602df4fd45c3feaaead6ca2668",
-      "bytes": 7544
-    },
-    {
       "path": "docs/08-engineering/local-development.md",
       "title": "Local Development",
       "status": "",
@@ -976,13 +1004,6 @@
       "bytes": 178
     },
     {
-      "path": "docs/08-engineering/PROGRAMMING-LANGUAGES-MATRIX.md",
-      "title": "bOPEN Programming Language Stacks Matrix & Scoring Measure Specification v1.0",
-      "status": "Approved Specification",
-      "sha256": "b87e9d3b207b574882ec1dcf365ce195813b2eb5d1350b6d214db2bfc091fb26",
-      "bytes": 4059
-    },
-    {
       "path": "docs/08-engineering/release-management.md",
       "title": "Release Management",
       "status": "",
@@ -1002,13 +1023,6 @@
       "status": "",
       "sha256": "6b34a80d3f1d9d60665131248244a1548296428cc05080b4732e8fe541cc5824",
       "bytes": 180
-    },
-    {
-      "path": "docs/08-engineering/VERSION-POLICY.md",
-      "title": "bOPEN Version Control & Semantic Versioning Policy v1.0",
-      "status": "Approved Specification",
-      "sha256": "b094d669463e6913a7daf3209a9abad1f5daa824d126cc84b504da1201e1bf41",
-      "bytes": 1957
     },
     {
       "path": "docs/08-engineering/versioning.md",
@@ -1053,6 +1067,13 @@
       "bytes": 186
     },
     {
+      "path": "docs/09-operations/runbooks/README.md",
+      "title": "Runbooks",
+      "status": "",
+      "sha256": "57c7ff8bfc0d5b29b64547dc61df76ebd62a629609c3294a8c5ec21e97538a8b",
+      "bytes": 132
+    },
+    {
       "path": "docs/09-operations/runbooks/bootstrap-validation.md",
       "title": "Runbook \u2014 Bootstrap Validation",
       "status": "",
@@ -1065,13 +1086,6 @@
       "status": "",
       "sha256": "3685213e56a303d9a0d1766c7e4a2d531d75b57624433f8d91e474b496fa25ae",
       "bytes": 290
-    },
-    {
-      "path": "docs/09-operations/runbooks/README.md",
-      "title": "Runbooks",
-      "status": "",
-      "sha256": "57c7ff8bfc0d5b29b64547dc61df76ebd62a629609c3294a8c5ec21e97538a8b",
-      "bytes": 132
     },
     {
       "path": "docs/09-operations/runbooks/research-clone.md",
@@ -1093,6 +1107,13 @@
       "status": "",
       "sha256": "e62f8cd5b9bf19e10d1e90a33567a302c5ee6db51c2f363c595e8664d5e1b829",
       "bytes": 156
+    },
+    {
+      "path": "docs/10-products/README.md",
+      "title": "Product Composition",
+      "status": "",
+      "sha256": "100643266d448b9cc2184565aa6ef022ffa79ea3740b21c680a38f79b26668ee",
+      "bytes": 237
     },
     {
       "path": "docs/10-products/agriculture/product-composition.md",
@@ -1158,13 +1179,6 @@
       "bytes": 203
     },
     {
-      "path": "docs/10-products/README.md",
-      "title": "Product Composition",
-      "status": "",
-      "sha256": "100643266d448b9cc2184565aa6ef022ffa79ea3740b21c680a38f79b26668ee",
-      "bytes": 237
-    },
-    {
       "path": "docs/10-products/tourism/product-composition.md",
       "title": "tourism Product Composition",
       "status": "",
@@ -1177,6 +1191,76 @@
       "status": "Live \u2014 regenerate the state table when any row changes",
       "sha256": "a143dd4607df33a3d7f9ca55bee134751fc29a5663e43d89765be3bbbe5f4483",
       "bytes": 7271
+    },
+    {
+      "path": "docs/AGENTS.md",
+      "title": "AGENTS.md \u2014 Controlled documentation",
+      "status": "",
+      "sha256": "24c39c35d15b77af8ab0dc0d76152fd65ecf50129c8860be5bd581d3e8b3a504",
+      "bytes": 659
+    },
+    {
+      "path": "docs/ARTIFACT-REGISTER.md",
+      "title": "Artifact Register",
+      "status": "",
+      "sha256": "b1b73bfc95f749d534ae52d443b57fc876337d5c3f47e9a27b62bd352abeb924",
+      "bytes": 3205
+    },
+    {
+      "path": "docs/BOPEN-MILESTONE-AUTH-COMPLETE-2026-08-02.md",
+      "title": "bOPEN Milestone \u2014 Authentication boundary + AUTH-D3 hardening complete (2026-08-02)",
+      "status": "Historical checkpoint \u2014 verified and operator-disposed state as of 2026-08-02",
+      "sha256": "a323e2ea08a2977aeeb87eff36ca5913020b76b3465798d8881569a9cce97bd9",
+      "bytes": 3261
+    },
+    {
+      "path": "docs/BOPEN-STATE-ARCHIVE-2026-08-02.md",
+      "title": "bOPEN State Archive \u2014 2026-08-02",
+      "status": "Milestone checkpoint \u2014 Phase 3.5 closure, pending final `WP-P35-05a` R4 disposition",
+      "sha256": "e3989d0382d435cc47623c89d5e5ca92f2c37c6dbae693bd181df94ff9eb93dc",
+      "bytes": 6549
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "title": "Documentation Changelog",
+      "status": "",
+      "sha256": "d1935ab93fcb324f6617771aebdb75ae16261822051d92a66b0697c9aeaf34cb",
+      "bytes": 84332
+    },
+    {
+      "path": "docs/DOCUMENT-COVERAGE.md",
+      "title": "Documentation Coverage",
+      "status": "",
+      "sha256": "08f911027e42c8f81cb163b0ba3f9f48559bda3de03e7d5bc2a2607a11e7876e",
+      "bytes": 2457
+    },
+    {
+      "path": "docs/DOCUMENT-STATUS.md",
+      "title": "Document Status Register",
+      "status": "",
+      "sha256": "b235bae6249cdd050bd36738b4c6b12ecb8896add9668c49ab72f612ce1ee072",
+      "bytes": 3671
+    },
+    {
+      "path": "docs/GLOSSARY.md",
+      "title": "bOPEN Glossary",
+      "status": "",
+      "sha256": "736316c9d60541f11d541125f73ac24b1aac0debff61c8eae33baae7e9730045",
+      "bytes": 1513
+    },
+    {
+      "path": "docs/README.md",
+      "title": "bOPEN Documentation System",
+      "status": "",
+      "sha256": "297b9b73c51e0711ec0af701acf7b839282fd1ef966ae021d2b2572cb3faf147",
+      "bytes": 2438
+    },
+    {
+      "path": "docs/TRACEABILITY-MATRIX.md",
+      "title": "Traceability Matrix",
+      "status": "",
+      "sha256": "59def869982f3e4b0665c35f7c798a703d308a37b6c0f22572c0987f00ff72f7",
+      "bytes": 3880
     },
     {
       "path": "docs/adr/ADR-0001.md",
@@ -1319,39 +1403,11 @@
       "bytes": 132
     },
     {
-      "path": "docs/AGENTS.md",
-      "title": "AGENTS.md \u2014 Controlled documentation",
-      "status": "",
-      "sha256": "24c39c35d15b77af8ab0dc0d76152fd65ecf50129c8860be5bd581d3e8b3a504",
-      "bytes": 659
-    },
-    {
-      "path": "docs/ARTIFACT-REGISTER.md",
-      "title": "Artifact Register",
-      "status": "",
-      "sha256": "b1b73bfc95f749d534ae52d443b57fc876337d5c3f47e9a27b62bd352abeb924",
-      "bytes": 3205
-    },
-    {
-      "path": "docs/BOPEN-MILESTONE-AUTH-COMPLETE-2026-08-02.md",
-      "title": "bOPEN Milestone \u2014 Authentication boundary + AUTH-D3 hardening complete (2026-08-02)",
-      "status": "Historical checkpoint \u2014 verified and operator-disposed state as of 2026-08-02",
-      "sha256": "a323e2ea08a2977aeeb87eff36ca5913020b76b3465798d8881569a9cce97bd9",
-      "bytes": 3261
-    },
-    {
-      "path": "docs/BOPEN-STATE-ARCHIVE-2026-08-02.md",
-      "title": "bOPEN State Archive \u2014 2026-08-02",
-      "status": "Milestone checkpoint \u2014 Phase 3.5 closure, pending final `WP-P35-05a` R4 disposition",
-      "sha256": "e3989d0382d435cc47623c89d5e5ca92f2c37c6dbae693bd181df94ff9eb93dc",
-      "bytes": 6549
-    },
-    {
-      "path": "docs/CHANGELOG.md",
-      "title": "Documentation Changelog",
-      "status": "",
-      "sha256": "1891a7556d5fdd6585473fa65f1bf30721053b9e1c1fd6eb5d27fa7f4c37212e",
-      "bytes": 83102
+      "path": "docs/decisions/DEC-GOV-AUTONOMY-001.md",
+      "title": "DEC-GOV-AUTONOMY-001 \u2014 Genesis Ratification of the Governed-Autonomy Bootstrap (Engineer Loop autonomous merge)",
+      "status": "**PROPOSED \u2014 RATIFIED UPON THE OPERATOR'S MERGE OF THE `BOPEN-WP-GOV-AUTONOMY-001` PULL REQUEST**",
+      "sha256": "81b6a56751119ada95447b4cf01593acd76a0403c7b74d6e5354408d629bd57b",
+      "bytes": 5438
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1364,8 +1420,8 @@
       "path": "docs/decisions/DEC-P3-ENTRY.md",
       "title": "DEC-P3-ENTRY \u2014 Evidence-Driven Phase 3 Entry Gate Decision Record",
       "status": "**GO ON EVIDENCE (PHASE 3 IMPLEMENTATION AUTHORIZED)**",
-      "sha256": "70e02c9df8644dfa6c4c5b56ec2ab83288c3e8fdb623cc7f6d1682de519291a8",
-      "bytes": 3121
+      "sha256": "47932adc2892009072f68c05c9eb79478439450886f5604e8836bd19ba9166be",
+      "bytes": 3064
     },
     {
       "path": "docs/decisions/DEC-P35-AUDIT-ENVELOPE.md",
@@ -1378,8 +1434,8 @@
       "path": "docs/decisions/DEC-P35-AUTH-BOUNDARY.md",
       "title": "DEC-P35-AUTH-BOUNDARY \u2014 Where the kernel stops and the identity provider starts",
       "status": "Advisory. Recommends; does not decide.",
-      "sha256": "728b74f2b960f21e71dd70e57333e15e8d3c210051347575a4ae461d837d4b4e",
-      "bytes": 12235
+      "sha256": "2c2e5ddd445020a3fdb714e0ab58ad8b7547c067ed3e4a58d25e35e44af3c0ff",
+      "bytes": 12018
     },
     {
       "path": "docs/decisions/DEC-P35-AUTH-CLOSURE-RESEARCH.md",
@@ -1422,6 +1478,13 @@
       "status": "Partially ratified 2026-07-31 - `D-P35-001`..`D-P35-003` accepted (\u00a76.1); `D-P35-004`..`D-P35-018` awaiting designated authority decisions",
       "sha256": "96eeabfc938eba0bddbcd426e996c28bb510a910b537c1e2942fb0d3ea609c00",
       "bytes": 17363
+    },
+    {
+      "path": "docs/decisions/DEC-P35-GATEWAY-PREFIX-CONFINEMENT.md",
+      "title": "DEC-P35-GATEWAY-PREFIX-CONFINEMENT \u2014 a refutation was answered by argument, and its probe still reproduces",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (an architectural question is unresolved and a refutation is undischarged)**",
+      "sha256": "d00ec76e6bde8a8a971755ca52de1f9ce32fc3b65e5fe4e3f8ef7e7e06f33e72",
+      "bytes": 8766
     },
     {
       "path": "docs/decisions/DEC-P35-IDP-SPLIT.md",
@@ -1508,6 +1571,20 @@
       "bytes": 10960
     },
     {
+      "path": "docs/decisions/DEC-P4-NOTIFY-TENANT-CASCADE.md",
+      "title": "DEC-P4-NOTIFY-TENANT-CASCADE \u2014 deleting a tenant erases its notification evidence",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716 (a destructive path lacks a recovery strategy)**",
+      "sha256": "cb44bd5ab41aab7b95aa6e52438ffcded305c533fe206382ea1ac44acea16d50",
+      "bytes": 11762
+    },
+    {
+      "path": "docs/decisions/DEC-STANDING-ENTRY-AUTHORIZATION.md",
+      "title": "DEC-STANDING-ENTRY-AUTHORIZATION \u2014 pre-authorize entry gates, never dispositions",
+      "status": "**Proposed \u2014 decision request raised under `AGENTS.md` \u00a716**",
+      "sha256": "b5e2c7c3d55c1103dbb7da2a206afa971f620c3a500964105ab7727ab50ae933",
+      "bytes": 4914
+    },
+    {
       "path": "docs/decisions/DEC-URE-ARCHITECT-LENS.md",
       "title": "DEC-URE-ARCHITECT-LENS \u2014 the URE-Loop Staff Architect is seated as a review lens, not as an agent",
       "status": "**AUTHORIZED 2026-08-07** \u2014 operator directive, transcribed by Claude (Motor). Promotes `AGENTS.md` \u00a726.2 from `PROPOSED` to in force. Not a maker approval.",
@@ -1518,22 +1595,8 @@
       "path": "docs/decisions/DECISION-REGISTER.md",
       "title": "Decision Register",
       "status": "",
-      "sha256": "e896c612bb870520d25f2e5b680cacbfae0ff3cfaa77531cb8b5a06d4b531ba2",
-      "bytes": 11885
-    },
-    {
-      "path": "docs/DOCUMENT-COVERAGE.md",
-      "title": "Documentation Coverage",
-      "status": "",
-      "sha256": "08f911027e42c8f81cb163b0ba3f9f48559bda3de03e7d5bc2a2607a11e7876e",
-      "bytes": 2457
-    },
-    {
-      "path": "docs/DOCUMENT-STATUS.md",
-      "title": "Document Status Register",
-      "status": "",
-      "sha256": "b235bae6249cdd050bd36738b4c6b12ecb8896add9668c49ab72f612ce1ee072",
-      "bytes": 3671
+      "sha256": "d84536a19fe50f682368ab65c68f3df6402415397076f1b390f22f495ea25db0",
+      "bytes": 14692
     },
     {
       "path": "docs/evidence/EVD-BOOT-003-local-prep.md",
@@ -1553,15 +1616,22 @@
       "path": "docs/evidence/EVD-SEC-001-kernel-security-review.md",
       "title": "Evidence Record: Platform Kernel Adversarial Security Review",
       "status": "Seven findings closed, one recorded and not closed",
-      "sha256": "9a8f5f1885c6e485e81b7e4175674d3580b74d2a30350207906b181ca8ee8bb0",
-      "bytes": 35747
+      "sha256": "cf108a39a5a31fa8dd3f6c41fefde1c48813da46a75acddbcf798d23ab46c65f",
+      "bytes": 35420
     },
     {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "31b10aa57e06655d4c81b6bdfc8ad0580a43ed9da52314dcdc03df3babc78e86",
-      "bytes": 789
+      "sha256": "9bee51d33a98ba604956ad2d02cd3bab090458c8863052a607f5b2300c73f200",
+      "bytes": 780
+    },
+    {
+      "path": "docs/evidence/governance-genesis/GATE-FAILURE-PROOFS.md",
+      "title": "Gate-failure proofs \u2014 governed-autonomy bootstrap",
+      "status": "",
+      "sha256": "05c728ff59c85644eda630fcec50baac9199a3445723f493ad47104d5af2629f",
+      "bytes": 3880
     },
     {
       "path": "docs/evidence/phase-1/completion-decision.md",
@@ -1588,8 +1658,8 @@
       "path": "docs/evidence/phase-2/completion-decision.md",
       "title": "Phase 2 \u2014 Membership & Enterprise Onboarding Completion Decision",
       "status": "**TECHNICAL VERIFICATION COMPLETED (GO ON EVIDENCE)**",
-      "sha256": "25f8dcbe9a4673db54695eb50e5c96eb387c0d1db0a027c9885f13a59403d5bc",
-      "bytes": 2525
+      "sha256": "b17111be646bedfdecc847226f41ebd4f3dbb64ca3b2964e0edbacc4a964f5e2",
+      "bytes": 2473
     },
     {
       "path": "docs/evidence/phase-2/manifest.json",
@@ -1609,8 +1679,8 @@
       "path": "docs/evidence/phase-3/completion-decision.md",
       "title": "Phase 3 \u2014 Capability & Commercial Entitlement Kernel Completion Decision",
       "status": "**IMPLEMENTED_UNVERIFIED \u2014 prior GO ON EVIDENCE withdrawn 2026-07-30**",
-      "sha256": "d1e66ac2086b96af5b485df546450dd3bd0d26262bcfbd1a6fe73d2966a5a9ab",
-      "bytes": 8970
+      "sha256": "49c6e95992724316a249abf8524ca4abd041b0cd7a82bc843cb67c47b1fc3e26",
+      "bytes": 8819
     },
     {
       "path": "docs/evidence/phase-3/entry-gate-receipt.json",
@@ -1644,8 +1714,8 @@
       "path": "docs/evidence/phase-3.5/ballots.jsonl",
       "title": "",
       "status": "",
-      "sha256": "0add85aa3d13be17e0022565a31bcb13464a9bf24945c6de05dd34cdda9d5b42",
-      "bytes": 351078
+      "sha256": "150a1cc4f70ae005688e9870b083dbd0ba3297da6371553f8a7c5d169285b8e3",
+      "bytes": 387708
     },
     {
       "path": "docs/evidence/phase-3.5/codex-preflight-wp-p35-04-05a.md",
@@ -1672,8 +1742,8 @@
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
-      "sha256": "7d3400435d4a5919459c679e593f07fd4cec38396e486911677311a0bc73fa95",
-      "bytes": 66208
+      "sha256": "54a20aaff7f8129e043b33718a75eb6c0f2809f5b9d92cae9b1d14a98fd44344",
+      "bytes": 79319
     },
     {
       "path": "docs/evidence/phase-3.5/location-disposition.md",
@@ -1693,8 +1763,8 @@
       "path": "docs/evidence/phase-3.5/maker-submission.md",
       "title": "EVD-P35-01-MAKER \u2014 WP-P35-01 Maker Submission",
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 this is not a completion decision",
-      "sha256": "c829f232c9e2f02683b8c3711fecbfd89542544136c9bc8a8741cdaf1ff321fb",
-      "bytes": 15156
+      "sha256": "e5442a3fb37f16f342e3ebcec76523ecc28eef190579f9c155d77faf548305d8",
+      "bytes": 31165
     },
     {
       "path": "docs/evidence/phase-3.5/manifest.json",
@@ -1749,8 +1819,15 @@
       "path": "docs/evidence/phase-3.5/mutation-probes.json",
       "title": "",
       "status": "",
-      "sha256": "9748fc21a4431ad00519859bea8a2cad9be9ec97ee4621ef58aedf0ac21e1144",
-      "bytes": 10808
+      "sha256": "8f67c0455c758daf59bc0d1a4483401b36e4dcd7f04a111543957d470f8cfcb9",
+      "bytes": 10612
+    },
+    {
+      "path": "docs/evidence/phase-3.5/notification-stage1-disposition-DRAFT.md",
+      "title": "Notification Stage 1 disposition \u2014 DRAFT, UNSIGNED",
+      "status": "",
+      "sha256": "858b1a2a899bb8993044edc7f314b4ac95d43a7c2f235457db9feec8f438b119",
+      "bytes": 5045
     },
     {
       "path": "docs/evidence/phase-3.5/option-a-dedicated-auth-chain-disposition.md",
@@ -1765,6 +1842,20 @@
       "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision",
       "sha256": "649195f6561cc152b42a3cf14d579eb2110b54388af540bacf6cf49ef637c132",
       "bytes": 5780
+    },
+    {
+      "path": "docs/evidence/phase-3.5/proposition-lifecycle.json",
+      "title": "",
+      "status": "",
+      "sha256": "f0a486d0369f545d092f83c154ac1f67c77f013b1ea0a4ed4d0f8bd66e32fae8",
+      "bytes": 4871
+    },
+    {
+      "path": "docs/evidence/phase-3.5/refutation-reproduction-review-2026-08-10.md",
+      "title": "Reproduction review of the five undischarged refutations \u2014 2026-08-10",
+      "status": "",
+      "sha256": "3b86aef7e29ad1dec59d562b69e596285b9f0d3686fad30b5ffab726b2d35270",
+      "bytes": 7916
     },
     {
       "path": "docs/evidence/phase-3.5/trial-to-paid-disposition.md",
@@ -1823,11 +1914,39 @@
       "bytes": 10972
     },
     {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r4.md",
+      "title": "EVD-P35-04-MAKER-R4 \u2014 WP-P35-04 maker submission, revision 4 (API Gateway): two corrected propositions",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision, and not a discharge",
+      "sha256": "ca7e8448b56d41c01b4aecf8a59a39ff994f2d7c6d9022a6b84b4710b5fdabba",
+      "bytes": 8943
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r5.md",
+      "title": "EVD-P35-04-MAKER-R5 \u2014 WP-P35-04 maker submission, revision 5: one proposition, restated as a bounded positive claim",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision, not a discharge",
+      "sha256": "c34d8d34e1e1d3791dfbf40158858243e5c10ae665e8cca3ef2faa7fa45892bf",
+      "bytes": 8499
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission-r6.md",
+      "title": "EVD-P35-04-MAKER-R6 \u2014 WP-P35-04 maker submission, revision 6: the fourth attempt at one proposition",
+      "status": "**MAKER_SUBMISSION_AWAITING_VERIFICATION** \u2014 not a completion decision, not a discharge",
+      "sha256": "6919cae2a2dba41472f19ac379534126d1fbc4975ecf44b3640a741538eeca57",
+      "bytes": 7907
+    },
+    {
       "path": "docs/evidence/phase-3.5/wp-p35-04-maker-submission.md",
       "title": "EVD-P35-04-MAKER \u2014 WP-P35-04 Maker Submission (API Gateway)",
       "status": "**WITHDRAWN 2026-08-01 \u2014 superseded by [`EVD-P35-04-MAKER-R2`](wp-p35-04-maker-submission-r2.md). Do not ballot.**",
       "sha256": "9269986f4d291cfda824cc4397328c2c8bebeacd6b5e3bc4870b0e2579d3b338",
       "bytes": 9148
+    },
+    {
+      "path": "docs/evidence/phase-3.5/wp-p35-04-proposition-17-withdrawal.md",
+      "title": "WP-P35-04 \u2014 `-17` withdrawn after four refutations and a verifier's recommendation to retire it",
+      "status": "**MAKER WITHDRAWAL** \u2014 not a disposition, not a discharge, and not a verdict on anything",
+      "sha256": "7524455b1d724d4756ae9820f680e68611750d850914a0fa0bfd1c7e2bb41302",
+      "bytes": 5352
     },
     {
       "path": "docs/evidence/phase-3.5/wp-p35-05a-disposition.md",
@@ -1900,25 +2019,18 @@
       "bytes": 5172
     },
     {
+      "path": "docs/evidence/phase-3.5/wp-p35-08-disposition-DRAFT.md",
+      "title": "WP-P35-08 disposition \u2014 DRAFT, UNSIGNED",
+      "status": "",
+      "sha256": "005d926b558639f4b985ec3aab3a5bfbb31bb0397bd060dfb80d61d6f87085e7",
+      "bytes": 4765
+    },
+    {
       "path": "docs/evidence/phase-3.5/wp-p35-auth-d3-followon-maker.md",
       "title": "EVD-P35-AUTH-D3-FOLLOWON-MAKER \u2014 D-D3-002 (Option B) + AUTH-D3 Row 1(b)",
       "status": "**REVISED \u2014 R3 after two refutations (\u00a77).** `P35-D3b-05`/`-08` were refuted for single-encoding (R1, `7450661`) then double-encoding (R2, `aa2a74b`); both are path-classification defects, fixed by decoding to a fixpoint. The kernel Group A is byte-identical (`api.py` `4a58ddb`, carries); the gateway Group B needs a fresh ballot at the R3 candidate.",
       "sha256": "2f98f0ce42305615ab1bdeb26a39a0ac39f1f738f853b61cc512a582f51b71fd",
       "bytes": 10867
-    },
-    {
-      "path": "docs/GLOSSARY.md",
-      "title": "bOPEN Glossary",
-      "status": "",
-      "sha256": "736316c9d60541f11d541125f73ac24b1aac0debff61c8eae33baae7e9730045",
-      "bytes": 1513
-    },
-    {
-      "path": "docs/README.md",
-      "title": "bOPEN Documentation System",
-      "status": "",
-      "sha256": "297b9b73c51e0711ec0af701acf7b839282fd1ef966ae021d2b2572cb3faf147",
-      "bytes": 2438
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
@@ -2012,6 +2124,13 @@
       "bytes": 2070
     },
     {
+      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/README.md",
+      "title": "BoxyHQ Research Lab",
+      "status": "",
+      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
+      "bytes": 706
+    },
+    {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/authorization-analysis.md",
       "title": "Authorization Analysis",
       "status": "",
@@ -2080,13 +2199,6 @@
       "status": "",
       "sha256": "f18151f20dc37244b92a3bd7b0b3779f8dd507cbdbf6d8638da65502bb22ccc4",
       "bytes": 2681
-    },
-    {
-      "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/README.md",
-      "title": "BoxyHQ Research Lab",
-      "status": "",
-      "sha256": "2c29bcf4e568e8e335788182e91b9264a65c4fc6fd795ff256600b9c301e2356",
-      "bytes": 706
     },
     {
       "path": "docs/resources/open-source-research/BOPEN-RES-001/01-boxyhq/repository-structure-study.md",
@@ -2376,13 +2488,6 @@
       "bytes": 260
     },
     {
-      "path": "docs/TRACEABILITY-MATRIX.md",
-      "title": "Traceability Matrix",
-      "status": "",
-      "sha256": "59def869982f3e4b0665c35f7c798a703d308a37b6c0f22572c0987f00ff72f7",
-      "bytes": 3880
-    },
-    {
       "path": "docs/work-packages/BOOT-P0-01.md",
       "title": "BOOT-P0-01 \u2014 Repository initialization and protections",
       "status": "Proposed",
@@ -2491,8 +2596,8 @@
       "path": "docs/work-packages/BOPEN-P3-001-EXECUTION-PLAN.md",
       "title": "BOPEN-P3-001 Work Package \u2014 Phase 3 Capability & Commercial Entitlement Kernel Execution Plan",
       "status": "APPROVED FOR EXECUTION (GO ON EVIDENCE)",
-      "sha256": "b2a5da95a5651a5c8bbed5f4ab2929238c57f4e2f5532a76034d66052f8138e2",
-      "bytes": 3118
+      "sha256": "b9ab58b0672af13c99db1f7197c2d92973736ba613a9722ea18e78593c087cc7",
+      "bytes": 3053
     },
     {
       "path": "docs/work-packages/BOPEN-P35-001-EXECUTION-PLAN.md",
@@ -2514,6 +2619,13 @@
       "status": "**Proposed \u2014 entry blocked pending Security and Privacy review of `DEC-P35-CONTROL-PLANE`**",
       "sha256": "24d5896929398b41e2d8d620456ee2f12d44772145dd7f47ebcee6332f12d732",
       "bytes": 7250
+    },
+    {
+      "path": "docs/work-packages/BOPEN-WP-GOV-AUTONOMY-001.md",
+      "title": "BOPEN-WP-GOV-AUTONOMY-001 \u2014 Governed-Autonomy Bootstrap (SecB L0 port)",
+      "status": "Delivered on branch `claude/BOPEN-WP-GOV-AUTONOMY-001`; awaiting operator ratification merge",
+      "sha256": "b7aa28f0e4532aafc88ff8d56d855f17bd4507337fd9f6e86d3c96b8c0216dcb",
+      "bytes": 2223
     },
     {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
@@ -2540,8 +2652,15 @@
       "path": "docs/work-packages/WP-P35-07-QUORUM-DISPOSITION-RECORD.md",
       "title": "WP-P35-07 \u2014 Machine-readable disposition record and \u00a76.5 quorum reporting",
       "status": "**BUILT AND UNVERIFIED \u2014 verification PAUSED 2026-08-08 by operator decision (see \u00a714). Entry gate GO, operator authorization 2026-08-08** ([`DEC-P35-QUORUM-TOOL-GAP`](../decisions/DEC-P35-QUORUM-TOOL-GAP.md) \u00a77, \u00a78). Transcribed by Claude (Motor); not a maker approval.",
-      "sha256": "9519a27d0b833d38b3dc50818dbcf39b8210906989ea8b4bd525c44b83b38a07",
-      "bytes": 15427
+      "sha256": "4e0e98279c4a7e0b5281811d364f4dff8e41b3663607e17e9207b2ba40c737e9",
+      "bytes": 18772
+    },
+    {
+      "path": "docs/work-packages/WP-P35-08-TENANT-CASCADE-REMEDIATION.md",
+      "title": "WP-P35-08 \u2014 Append-only evidence survives tenant deletion",
+      "status": "**DRAFT \u2014 entry gate NOT recorded. No build is authorized by this document.**",
+      "sha256": "f407974d3d26b602cc2dc0d7d75866fd289f893559c1a79a7a71691ea3764140",
+      "bytes": 13458
     }
   ]
 }

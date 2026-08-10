@@ -1,0 +1,154 @@
+# bOPEN governance gates — the executable controls of the governed Engineer
+# Loop (BOPEN-WP-GOV-AUTONOMY-001; AGENTS.md §31; GL_ROOT_CONSTITUTION.md).
+#
+# Four jobs:
+#
+#   test-gate           — governance gate tests (unittest, stdlib only)
+#   authority-gate      — every PR cites a work-package ID (No Ticket, No Work)
+#   budget-gate         — declared diff budget honoured
+#   governance-verdict  — advisory: authority-delta class plus dual-policy
+#                         evaluation, written to the job summary
+#
+# CI is a signal, not a hard gate: nothing here blocks a merge by itself.
+# Under AGENTS.md §31 an autonomous merge is permitted ONLY when the verdict
+# is AUTO_APPROVED, dual-policy is PASS, and every gate is green; a red run
+# is the evidence that forbids it.
+#
+# NOTE ON TRUST: this verifier runs inside the repository it judges, so a PR
+# could in principle edit it. That is precisely why any change under .github/
+# classifies as AD4 (CONSTITUTIONAL_REQUIRED) — the only compensating control
+# available without an organization-level ruleset (AGENTS.md §30.8 item 2).
+
+name: governance-gates
+
+on:
+  push:
+    branches: [main, "claude/BOPEN-P35-001-runtime-realization"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-gate:
+    name: "Test gate — governance suite"
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: tests/governance/test_governance_validators.py drives
+      # tools/check_ballot_attribution.py, whose git-blame attribution is
+      # meaningless on a shallow clone.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run governance tests (stdlib unittest, matching Bootstrap Governance)
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests/governance -p 'test_*.py'
+
+  authority-gate:
+    name: "Authority gate (No Ticket, No Work)"
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # PR title/body are attacker-controlled text; they enter through the
+      # environment, never through shell interpolation.
+      - name: Require a BOPEN-WP-* work-package reference
+        env:
+          WP_TEXT: |
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.body }}
+        run: python scripts/check_work_package_ref.py
+
+  budget-gate:
+    name: "Budget circuit breaker"
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      # Full history so both the PR base and head are present for the
+      # three-dot diff (merge-base to head = the PR's own changes).
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Enforce the declared diff budget
+        env:
+          BUDGET_TEXT: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >
+          git diff --numstat "$BASE_SHA...$HEAD_SHA"
+          | python scripts/check_budget.py
+
+  governance-verdict:
+    name: "Governance verdict (advisory)"
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    # Advisory: this job reports the authority-delta class of the PR and
+    # whether the ratified delegation envelope covers it. It must never block
+    # — CONSTITUTIONAL_REQUIRED is the expected verdict for a large share of
+    # pull requests, and a job that presents an expected verdict as a broken
+    # build trains people to ignore it. The step therefore captures the exit
+    # code, records the verdict in the job summary, and exits 0.
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Classify authority delta, and evaluate under both policies
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --numstat "$BASE_SHA...$HEAD_SHA" > /tmp/pr.numstat
+          git diff "$BASE_SHA...$HEAD_SHA" > /tmp/pr.diff
+          set +e
+          single=$(DIFF_TEXT="$(cat /tmp/pr.diff)" \
+            python scripts/classify_authority_delta.py < /tmp/pr.numstat 2>&1)
+          single_code=$?
+          dual=$(BASE_REF="$BASE_SHA" \
+            python scripts/check_dual_policy.py < /tmp/pr.numstat 2>&1)
+          dual_code=$?
+          set -e
+          echo "$single"
+          echo "$dual"
+          {
+            echo "### Governance verdict (authority-delta class)"
+            echo ""
+            echo '```'
+            echo "$single"
+            echo '```'
+            echo ""
+            echo "### Dual-policy evaluation"
+            echo ""
+            echo '```'
+            echo "$dual"
+            echo '```'
+            echo ""
+            if [ "$single_code" -eq 0 ] && [ "$dual_code" -eq 0 ]; then
+              echo "The ratified delegation envelope covers this change; all gates must still be green."
+            elif [ "$single_code" -eq 3 ] || [ "$dual_code" -eq 3 ]; then
+              echo "**REJECTED** — prohibited under \`docs/00-governance/GL_ROOT_CONSTITUTION.md\`. Withdraw the change."
+            else
+              echo "**Escalation required.** Normal for governance, constitutional, oversized, or judgement-altering changes."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
