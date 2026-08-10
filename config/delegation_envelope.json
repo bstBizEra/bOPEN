@@ -1,0 +1,101 @@
+{
+  "envelope_id": "ENV-BOPEN-2026-001",
+  "schema_version": 1,
+  "authority_source": "Operator (vily), Genesis Ratification by operator merge of the BOPEN-WP-GOV-AUTONOMY-001 pull request (DEC-GOV-AUTONOMY-001)",
+  "effective_from": "2026-08-10",
+  "expires_at": "2026-11-08",
+  "signature": {
+    "state": "UNSIGNED",
+    "reason": "Cryptographic envelope signing requires a trust anchor outside this repository (AGENTS.md section 30.8 item 2: bOPEN's verifier runs inside the tree it judges). Until then the envelope's integrity rests on git history and the human merge that ratified it, and the classifier treats an unsigned envelope as valid ONLY for tiers at or below the ratified tier."
+  },
+  "current_tier": "AT1",
+  "authority_ladder": {
+    "AT0": {
+      "authority": "Documentation only",
+      "advance_conditions": []
+    },
+    "AT1": {
+      "authority": "Low-risk (AD0) auto-merge inside the envelope scope",
+      "advance_conditions": [
+        "30 consecutive auto-merged PRs with zero rollback",
+        "no CONSTITUTIONAL_REQUIRED verdict misclassified as lower"
+      ]
+    },
+    "AT2": {
+      "authority": "Medium-risk change auto-merge",
+      "advance_conditions": [
+        "AT1 conditions met",
+        "security review pass",
+        "defect-escape threshold held"
+      ]
+    },
+    "AT3": {
+      "authority": "Governance implementation (AD1) without fresh operator approval",
+      "advance_conditions": [
+        "AT2 conditions met",
+        "60 days of shadow-mode evidence comparing base and head gate decisions",
+        "independent ballot layer ACTIVE"
+      ]
+    },
+    "AT4": {
+      "authority": "Scope and ceiling adjustment inside the GL-0 absolute maxima (AD2)",
+      "advance_conditions": [
+        "AT3 conditions met",
+        "full ballot quorum with no veto",
+        "rollback verified by execution, not by description"
+      ]
+    }
+  },
+  "scope": {
+    "auto_paths": [
+      "docs/",
+      "tests/",
+      "apps/",
+      "packages/",
+      "services/",
+      "sdk/",
+      "artifacts/",
+      "research/",
+      "templates/"
+    ],
+    "max_changed_lines": 600,
+    "constitutional_paths": [
+      "docs/00-governance/GL_ROOT_CONSTITUTION.md",
+      "config/delegation_envelope.json",
+      "scripts/classify_authority_delta.py",
+      "scripts/check_dual_policy.py",
+      "scripts/check_work_package_ref.py",
+      "scripts/check_budget.py",
+      ".github/",
+      "AGENTS.md",
+      "GOVERNANCE.md",
+      "CODEOWNERS"
+    ],
+    "governance_implementation_paths": [
+      "docs/00-governance/",
+      "docs/decisions/",
+      "docs/adr/",
+      "scripts/",
+      "tools/",
+      "contracts/",
+      "infrastructure/"
+    ]
+  },
+  "absolute_ceilings": {
+    "max_changed_lines_ever": 2000,
+    "max_tier": "AT4",
+    "tiers_requiring_active_ballot_layer": ["AT3", "AT4"]
+  },
+  "ballot_layer": {
+    "state": "NOT_ACTIVE",
+    "reason": "bOPEN has two available verifying agents (Claude, Codex — AGENTS.md section 30.6); EBIV section 6.5 operates a CONFIRMED_UNDER_TWO_AGENT_PROFILE precisely because the population is too small for a role-separated quorum. One session emitting role-labelled ballots is self-approval in several hats; role banners are self-asserted text and must never gate a decision. Quorum is therefore not enforced anywhere in code, and every verdict that would depend on it escalates to the operator instead.",
+    "required_roles": ["architecture", "governance", "security", "qa", "operations"],
+    "quorum_when_active": "4 of 5, with governance and security holding veto; 5 of 5 for AD2-AD3",
+    "proposer_may_vote": false
+  },
+  "gate_activation": {
+    "policy": "two_epoch",
+    "note": "A change to a gate script merges INACTIVE and takes effect in the next governance epoch, so no PR is judged by the gate it introduces. Enforced today by the dual-policy rule (base and head logic must agree); full epoch machinery is deferred.",
+    "current_epoch": 1
+  }
+}

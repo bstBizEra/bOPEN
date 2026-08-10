@@ -1274,3 +1274,75 @@ brought into force by an agent, and least of all by citing itself.**
    keep operating under the two-agent profile with its expiry intact.
 
 Recorded advisory-only. Confers no implementation, approval, merge, release or production authority.
+
+---
+
+## 31. CONDITIONAL — Governed Autonomy: evidence-backed autonomous merge for the Engineer Loop
+
+> **STATUS: `PROPOSED` UNTIL THE GENESIS RATIFICATION; IN FORCE FROM THE OPERATOR'S MERGE OF THE
+> `BOPEN-WP-GOV-AUTONOMY-001` PULL REQUEST.** That merge is the "explicit operator authorization
+> with verifiable Git provenance" required by `BOPEN-GOV-EBIV-001` §2 and recorded in
+> [`DEC-GOV-AUTONOMY-001`](docs/decisions/DEC-GOV-AUTONOMY-001.md). Consistent with §30.7, the agent
+> that drafted this section cannot bring it into force and has not: **before that merge this section
+> binds nothing; after it, this section binds exactly what it says and no more.**
+>
+> **Provenance.** This is the §30.8 item-1 bootstrap/payload split, executed. The machinery is
+> ported from the SecB Project Framework (`bstBizEra/secb_pf`, L0 governance ratified at
+> `SECB-WP-FWK-012`, port procedure `SECB-WP-FWK-017`) under the operator's session directive of
+> 2026-08-10. §26.6's exclusions and §30.5's authority exclusions are amended **only** where §31.2
+> explicitly says so.
+
+### 31.1 What binds, and the identifier map
+
+The GL root constitution ([`docs/00-governance/GL_ROOT_CONSTITUTION.md`](docs/00-governance/GL_ROOT_CONSTITUTION.md)),
+the delegation envelope (`config/delegation_envelope.json`, `ENV-BOPEN-2026-001`, tier `AT1`,
+expires **2026-11-08**), the four enforcement scripts (`scripts/check_work_package_ref.py`,
+`check_budget.py`, `classify_authority_delta.py`, `check_dual_policy.py`), their tests under
+`tests/governance/`, and the `governance-gates` workflow.
+
+Honouring the §30.4 collision rulings: change classes are **`AD0`–`AD5`** (not `G0`–`G5`),
+governance layers are **`GL-0`–`GL-3`** (not `L0`–`L3`), authority tiers are **`AT0`–`AT4`** (not
+`A0`–`A4`; §28.2's `A0`–`A4` keep their URE-Loop v1.5 meanings). The classifier's outputs form the
+**authority verdict** vocabulary (`AUTO_APPROVED`, `AUTO_APPROVED_WITH_CONDITIONS`,
+`AGENT_BALLOT_REQUIRED`, `CONSTITUTIONAL_REQUIRED`, `REJECTED`) — a separate set from EBIV ballot
+verdicts and from operator dispositions; always name the set.
+
+### 31.2 The autonomous merge rule — the one thing this section changes
+
+An agent MAY merge its own pull request **when and only when ALL of the following hold**:
+
+1. The authority-delta classifier returns authority verdict `AUTO_APPROVED` (`AD0`) for the PR's
+   full diff against its base.
+2. Dual-policy evaluation returns `PASS` — base and head logic agree the envelope covers it.
+3. Every `governance-gates` job is green, including the Authority gate (a work-package ID cited)
+   and the Budget gate (exactly one `BUDGET: max_files=<n> max_lines=<n>` line, honoured).
+4. The envelope is unexpired, unrevoked, and `current_tier` is `AT1` or higher.
+5. The merge is **announced** on the work-package ticket — authority verdict, gate results, merge
+   SHA, work-package ID. **Silence is a policy violation.**
+6. The commits are authored under the acting agent's registered identity (§21.1), and §25.2
+   identity hygiene was applied.
+
+To this extent — and to this extent only — §20.3's placement of *merge* outside agent authority and
+§26.6/§30.5's exclusion of agent-executed auto-merge are amended for `AD0` changes. Everything else
+those sections place outside agent authority (release, deployment, production, dispositions,
+verdict authority) is unchanged.
+
+### 31.3 Escalation, unchanged
+
+- `AGENT_BALLOT_REQUIRED` (`AD1`/`AD2`) escalates to the operator while `ballot_layer.state` is
+  `NOT_ACTIVE` (§30.6: two verifying agents cannot form a quorum; EBIV §6.5 two-agent profile).
+- `CONSTITUTIONAL_REQUIRED` (`AD4`) is decided and merged by the operator, always — including every
+  change to this section, the constitution, the envelope, the gate scripts, `.github/`, `AGENTS.md`
+  itself, `GOVERNANCE.md` and `CODEOWNERS`.
+- `REJECTED` (`AD5`) is withdrawn, not argued. Prohibited-action signatures are listed in the
+  constitution and are never weighed against benefit.
+- Escalations are raised as decision requests (§16), not as merged facts.
+
+### 31.4 What this section does not grant
+
+No release, deployment, or production authority (§29's `LC-9`–`LC-14` remain untouched and stages
+9–11 unbegun). No ballot-layer activation. No ladder advance: `AT2` requires the envelope's
+recorded conditions objectively met and remains `AD3`; `AT3`/`AT4` are unreachable while the ballot
+layer is inert. No external trust anchor: the verifier still runs inside the repository it judges,
+which is exactly why `.github/` sits on the constitutional surface (§30.8 item 2 stays open and
+worth closing independently).
