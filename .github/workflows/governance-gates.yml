@@ -33,6 +33,29 @@ jobs:
   test-gate:
     name: "Test gate — governance suite"
     runs-on: ubuntu-latest
+    # tools/check_contract_conformance.py (driven by the governance suite)
+    # refuses a verdict when any canonical test skips, so the job provides the
+    # full environment: PostgreSQL, the application role, and a development
+    # signing key. Credentials are CI-throwaway values, non-production by
+    # declaration (BOPEN_DB_NON_PRODUCTION=1).
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - "5433:5432"
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      BOPEN_ADMIN_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5433/postgres
+      BOPEN_DATABASE_URL: postgresql://bopen_app:bopen_local_dev@127.0.0.1:5433/bopen_dev
+      BOPEN_APP_PASSWORD: bopen_local_dev
+      BOPEN_DB_NON_PRODUCTION: "1"
+      BOPEN_ALLOW_UNAUTHENTICATED_IDENTITY_ASSERTION: "1"
     steps:
       # Full history: tests/governance/test_governance_validators.py drives
       # tools/check_ballot_attribution.py, whose git-blame attribution is
@@ -45,7 +68,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run governance tests (stdlib unittest, matching Bootstrap Governance)
+      - name: Install runtime dependencies
+        run: python -m pip install --quiet -r requirements.txt
+
+      - name: Bootstrap the database (role, schema, migrations)
+        run: python tools/db_bootstrap.py --apply
+
+      - name: Generate a development signing key (CI-ephemeral, never committed)
+        run: >
+          python tools/generate_token_key.py
+          | sed -n 's/^BOPEN_CONTEXT_TOKEN_KEY="\(.*\)"$/BOPEN_CONTEXT_TOKEN_KEY=\1/p'
+          >> "$GITHUB_ENV"
+
+      - name: Run governance tests (unittest, matching Bootstrap Governance)
         env:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests/governance -p 'test_*.py'
