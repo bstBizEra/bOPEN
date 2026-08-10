@@ -388,6 +388,69 @@ describe('request target fidelity — after ballots P35-04R-15 and P35-04R-16', 
     assert.equal(url.pathname, '/base/v1/authorize');
   });
 
+  test('buildUpstreamUrl is exactly two setter assignments and a containment check', () => {
+    // `P35-04R6-17`, replacing `P35-04R5-17` — REFUTED by Codex on two grounds, both correct:
+    // with a configured base, `/v1/item` became `/base/v1/item` while a bare setter gave
+    // `/v1/item`; and `search` is not returned verbatim, because the search setter normalises
+    // (a raw space becomes `%20`).
+    //
+    // R5's equivalence compared against the WRONG reference — `path` rather than `basePath + path`
+    // — and its only vectors used an origin with no base path, so the test could not see the
+    // operation the claim omitted. That is the seventh proposition in this package whose test did
+    // not evaluate the claim it was named for.
+    //
+    // The reference here mirrors the implementation exactly: assign `basePath + path` to
+    // `pathname`, assign `search` to `search`, and let both setters normalise whatever they
+    // normalise. Base paths and searches are now vectors rather than a fixed no-base origin.
+    const BS = String.fromCharCode(92);
+    const bases = ['http://kernel.internal:8000', 'http://kernel.internal:8000/base', 'http://kernel.internal:8000/base/'];
+    const paths = [
+      '/v1/item',
+      `/v1${BS}item`, // backslash folded
+      `/v1/a${BS}b`,
+      '/v1/a%2Fb', // encoded slash preserved
+      '/v1/caf%C3%A9', // encoded UTF-8 preserved
+      '/v1//double',
+      '/v1/trailing/',
+      'v1/no-leading-slash',
+    ];
+    const searches = ['', '?a=1&b=%20', '?a=1&b= ', '?x', '?a=%2F', '?a=1&a=2'];
+
+    for (const base of bases) {
+      const basePath = new URL(base).pathname.replace(/\/+$/, '');
+      for (const path of paths) {
+        for (const search of searches) {
+          const reference = new URL(base);
+          reference.pathname = `${basePath}${path.startsWith('/') ? '' : '/'}${path}`;
+          reference.search = search;
+
+          const actual = buildUpstreamUrl(base, path, search);
+          assert.equal(
+            actual.href,
+            reference.href,
+            `${base} + ${JSON.stringify(path)} + ${JSON.stringify(search)} diverged from the setters`,
+          );
+        }
+      }
+    }
+  });
+
+  test('dot segments reaching buildUpstreamUrl directly are refused, not silently contained', () => {
+    // The containment check is the ONE place `buildUpstreamUrl` departs from the setters: the
+    // setters would resolve `/base` + `/../../admin` to `/admin` and return it. This asserts the
+    // departure, so the claim above is bounded by an enumerated exception rather than an implied
+    // one — the failure mode that produced three refutations in this package.
+    assert.throws(
+      () => buildUpstreamUrl('http://kernel.internal:8000/base', '/../../admin', ''),
+      UpstreamPathEscape,
+    );
+    assert.equal(
+      buildUpstreamUrl('http://kernel.internal:8000', '/../../admin', '').pathname,
+      '/admin',
+      'with no base configured there is nothing to escape, so the setters apply unchanged',
+    );
+  });
+
   test('the only path normalisation is the URL pathname setter, exactly', async () => {
     // `P35-04R5-17`, replacing `P35-04R4-17` — REFUTED by Codex because `/v1\item` became
     // `/v1/item`, a third transformation the wording had not excluded. It was the sixth
