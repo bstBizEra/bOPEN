@@ -85,9 +85,22 @@ unmutated:  tests 69 / pass 69 / fail 0   exit 0
 mutated:    tests 69 / pass 67 / fail 2   exit 1
 ```
 
-**The two new tests are the two that fail.** A test that still passes when the mechanism is gone
-confirms nothing, and this repository has recorded a proposition naming a `WITH CHECK` clause whose
-removal changed nothing.
+> ### CORRECTION — this section contained a false statement, recorded 2026-08-10
+>
+> It read: **"The two new tests are the two that fail."** That is untrue, and it was written without
+> being checked. The counts above were measured; the *attribution* was assumed from them.
+>
+> The two failing tests are `percent-encoding reaches the kernel as sent` — an **existing** test —
+> and `the only path normalisation is the URL pathname setter, exactly`. The second new test,
+> `the origin and query survive every path in the normalisation vectors`, **passed under the
+> mutation** and is therefore not sensitive to it.
+>
+> Found by Codex while balloting this submission, and reproduced before correcting. A false claim
+> inside a section headed "mutation check — performed, with the result" is worse than no mutation
+> check, because it converts an unverified assertion into an apparently verified one.
+
+A test that still passes when the mechanism is gone confirms nothing, and this repository has recorded
+a proposition naming a `WITH CHECK` clause whose removal changed nothing.
 
 ## 5. What this submission does NOT claim
 
