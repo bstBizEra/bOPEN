@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 382,
+  "count": 383,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1058,6 +1058,13 @@
       "status": "",
       "sha256": "9c51151e00edb03e631091bacb9328ea8bfdcc3ae2fbe01207ee36dab8930d8d",
       "bytes": 188
+    },
+    {
+      "path": "docs/09-operations/field-check-2026-08-11.md",
+      "title": "Field check \u2014 the running system, not the documents, 2026-08-11",
+      "status": "**OBSERVATION RECORD \u2014 advisory.** Not a disposition, not a verdict, not an authorization.",
+      "sha256": "71c90764df35ea281af7f6f3fdfcb4dc690fc0415a50072f8c50f56b770234bb",
+      "bytes": 8626
     },
     {
       "path": "docs/09-operations/incident-management.md",
