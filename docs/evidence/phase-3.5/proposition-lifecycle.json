@@ -1,0 +1,74 @@
+{
+  "schema": "bopen.proposition-lifecycle.v1",
+  "purpose": "Declared follow-up for propositions carrying a REFUTED ballot, where the follow-up cannot be derived from ballots.jsonl alone.",
+  "provenance_warning": "EVERY ENTRY HERE IS DECLARED BY A MAKER, NOT DERIVED FROM A BALLOT. A tool reading this file is reading an assertion, not evidence. Each entry names a record a verifier can check. Nothing here is a BOPEN-GOV-EBIV-001 §6.2 discharge: a discharge is a FAILED REPRODUCTION and no entry claims one.",
+  "why_this_file_exists": "Two facts about refutations are invisible to a ballot scan. (1) Proposition identifiers are RENUMBERED between revisions, so a successor carrying the same claim has a different id — P35-04R-16 is carried by P35-04R3-16. (2) A proposition can be WITHDRAWN, after which its refutation is permanent but no longer describes outstanding work. Without this file a tool reports both as open blockers, which it did on 2026-08-10 for six candidates when one was genuinely open.",
+  "statuses": {
+    "superseded": "The claim is carried by a differently-numbered proposition that took an admissible ballot elsewhere. The original stays REFUTED forever.",
+    "withdrawn": "The proposition was retired and has no successor. The original stays REFUTED forever."
+  },
+  "entries": [
+    {
+      "proposition_id": "P35-04R-16",
+      "refuted_at": "88e6ed2b4f2ab80a6b8ef0e8d570f761d8725b4b",
+      "status": "superseded",
+      "successor_proposition_id": "P35-04R3-16",
+      "successor_verdict_at": "1b39a30bfde007c65b88685b5102650de4f9e54c",
+      "record": "wp-p35-04-maker-submission-r3.md",
+      "note": "Successor claims 'a path escaping the configured base prefix is refused, not resolved'. Reproduction of the original probe at ebb4dcc failed — UpstreamPathEscape is thrown — recorded in refutation-reproduction-review-2026-08-10.md §2."
+    },
+    {
+      "proposition_id": "P35-04R3-15",
+      "refuted_at": "1b39a30bfde007c65b88685b5102650de4f9e54c",
+      "status": "superseded",
+      "successor_proposition_id": "P35-04R4-15",
+      "successor_verdict_at": "92ccbb1db9adc3008490b826f964087f9da6b739",
+      "record": "wp-p35-04-maker-submission-r4.md",
+      "note": "Successor adds the exclusion the refuted wording omitted: dot segments, encoded or not, are resolved by the URL parser before any gateway code runs."
+    },
+    {
+      "proposition_id": "P35-05aR3-02",
+      "refuted_at": "e559d1db92c17c1c96e5a888b49fc76c20d6fcdd",
+      "status": "superseded",
+      "successor_proposition_id": "P35-05aR4-01",
+      "successor_verdict_at": "2c31379ad7ed888ffad04ee0bff07172cc10cfca",
+      "record": "wp-p35-05a-maker-submission-r5.md",
+      "note": "Successor claims refusal of a lifetime exceeding 300s 'including by a fractional amount with an integer iat', with P35-05aR4-02 as the exact-300s control. The successor candidate is DISPOSED (wp-p35-05a-disposition.md). Reproduction failed at unit level at ebb4dcc; the original end-to-end probe was not run and the substitution is disclosed in the review §3."
+    },
+    {
+      "proposition_id": "P35-04R3-17",
+      "refuted_at": "1b39a30bfde007c65b88685b5102650de4f9e54c",
+      "status": "withdrawn",
+      "record": "wp-p35-04-proposition-17-withdrawal.md",
+      "note": "First of four wordings. Withdrawn 2026-08-10 on the verifier's recommendation after the fourth was refuted."
+    },
+    {
+      "proposition_id": "P35-04R4-17",
+      "refuted_at": "92ccbb1db9adc3008490b826f964087f9da6b739",
+      "status": "withdrawn",
+      "record": "wp-p35-04-proposition-17-withdrawal.md",
+      "note": "Second wording. Refuted on backslash folding."
+    },
+    {
+      "proposition_id": "P35-04R5-17",
+      "refuted_at": "2129b25fb288f792087e61c243d00e7485747a91",
+      "status": "withdrawn",
+      "record": "wp-p35-04-proposition-17-withdrawal.md",
+      "note": "Third wording. Refuted on the omitted base join and on 'search verbatim'."
+    },
+    {
+      "proposition_id": "P35-04R6-17",
+      "refuted_at": "fc0eb7775f8738e1a37526d4ce21185754c43c48",
+      "status": "withdrawn",
+      "record": "wp-p35-04-proposition-17-withdrawal.md",
+      "note": "Fourth wording. Refuted on the empty-path separator, where the test had mirrored the implementation's own expression and so could not diverge."
+    }
+  ],
+  "deliberately_absent": [
+    {
+      "proposition_id": "P35-04R-15",
+      "refuted_at": "88e6ed2b4f2ab80a6b8ef0e8d570f761d8725b4b",
+      "reason": "GENUINELY OPEN. /v1/../admin and /v1/%2E%2E/admin still reach the kernel as /admin at ebb4dcc, status 200 — the /v1 prefix does not confine the proxy. No successor exists and none should be written: DEC-P35-GATEWAY-PREFIX-CONFINEMENT is Proposed, and choosing between confining the proxy and declaring it a deliberate catch-all is the decision itself. No agent can close this."
+    }
+  ]
+}

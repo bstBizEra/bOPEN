@@ -168,13 +168,36 @@ def short(oid: str) -> str:
     return oid[:12] if oid and oid != "<none>" else oid
 
 
+def declared_lifecycle(phase_dir: Path) -> dict[str, dict]:
+    """Maker-declared follow-up for refuted propositions — an ASSERTION, not evidence.
+
+    Two facts are invisible to a ballot scan: proposition identifiers are renumbered between
+    revisions, so a successor carrying the same claim has a different id; and a proposition can be
+    withdrawn, after which its refutation is permanent but describes no outstanding work. Deriving
+    either needs the proposition TEXT, which this tool does not read.
+
+    So they are declared in `proposition-lifecycle.json` and reported with their provenance attached.
+    Everything else this tool prints comes from repository objects; these rows come from a maker, and
+    the rendered output says so rather than letting them blend in.
+    """
+    path = phase_dir / "proposition-lifecycle.json"
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {"<malformed>": {"status": "malformed"}}
+    return {e["proposition_id"]: e for e in data.get("entries", []) if e.get("proposition_id")}
+
+
 def build(phase_dir: Path) -> dict:
     ballots = load_ballots(phase_dir)
     state = candidate_state(ballots)
     signed, drafts = dispositions(phase_dir)
+    lifecycle = declared_lifecycle(phase_dir)
 
     ready, blocked, short_of_quorum, disposed, disposed_refuted = [], [], [], [], []
-    carried_elsewhere = []
+    carried_elsewhere, declared_closed = [], []
     for oid, s in sorted(state.items()):
         if oid == "<malformed>":
             continue
@@ -191,6 +214,15 @@ def build(phase_dir: Path) -> dict:
         }
         row["disposition_file"] = str(row["disposition_file"].name) if row["disposition_file"] else None
 
+        # A refuted proposition is "still open" only if nothing accounts for it: no later ballot under
+        # the same id, and no maker declaration of a renumbered successor or a withdrawal.
+        undeclared = {p for p in s["no_same_id_followup"] if p not in lifecycle}
+        row["refuted_propositions_unaccounted_for"] = sorted(undeclared)
+        row["declared_followup"] = {
+            p: f"{lifecycle[p]['status']} -> {lifecycle[p].get('successor_proposition_id') or lifecycle[p]['record']}"
+            for p in sorted(set(s["no_same_id_followup"]) - undeclared)
+        }
+
         if s["refuted"] and is_disposed:
             # A triage pointer, deliberately named for what it measures rather than for what it
             # might mean. An earlier name — "disposed while carrying a refutation" — was semantically
@@ -204,6 +236,8 @@ def build(phase_dir: Path) -> dict:
             disposed_refuted.append(row)
         elif s["refuted"] and not s["no_same_id_followup"]:
             carried_elsewhere.append(row)
+        elif s["refuted"] and not undeclared:
+            declared_closed.append(row)
         elif s["refuted"]:
             blocked.append(row)
         elif is_disposed:
@@ -221,6 +255,7 @@ def build(phase_dir: Path) -> dict:
         "malformed_ballot_lines": sum(1 for b in ballots if b.get("_malformed")),
         "awaiting_disposition": ready,
         "blocked_by_refutation": blocked,
+        "refuted_proposition_accounted_for_by_maker_declaration": declared_closed,
         "refuted_proposition_carried_under_the_same_id_elsewhere": carried_elsewhere,
         "refuted_candidate_referenced_by_a_disposition": disposed_refuted,
         "no_admissible_confirmation": short_of_quorum,
@@ -248,18 +283,30 @@ def render(data: dict) -> None:
 
     print(f"\nBLOCKED BY REFUTATION — {len(data['blocked_by_refutation'])}")
     print("    EBIV §6.2: discharged only by a failed reproduction, never by re-assertion.")
-    print("    Each proposition below has NO LATER BALLOT UNDER THE SAME IDENTIFIER. That is not the")
-    print("    same as unaddressed: proposition IDs are renumbered between revisions, and two")
-    print("    refutations verified on 2026-08-10 were in fact carried by renumbered successors")
-    print("    (P35-04R-16 -> P35-04R3-16; P35-05aR3-02 -> P35-05aR4-01/02). Matching those needs")
-    print("    the proposition TEXT, which this tool does not read. An entry here means LOOK FOR A")
-    print("    RENUMBERED SUCCESSOR.")
+    print("    Each proposition below is UNACCOUNTED FOR: no later ballot under the same identifier,")
+    print("    and no declared successor or withdrawal in proposition-lifecycle.json. Three earlier")
+    print("    versions of this category were wrong in the same direction — aggregating by candidate,")
+    print("    then by identifier, each reported normal bookkeeping as an open blocker.")
     if not data["blocked_by_refutation"]:
         print("    none")
     for r in data["blocked_by_refutation"]:
         print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}"
               f"  (also {len(r['confirming_verifiers'])} confirming)")
-        print(f"        open: {', '.join(r['refuted_propositions_with_no_later_ballot_under_the_same_id'])}")
+        print(f"        UNACCOUNTED FOR: {', '.join(r['refuted_propositions_unaccounted_for'])}")
+
+    print(f"\nREFUTED PROPOSITION ACCOUNTED FOR BY A MAKER DECLARATION — "
+          f"{len(data['refuted_proposition_accounted_for_by_maker_declaration'])}")
+    print("    !! THESE ROWS ARE AN ASSERTION, NOT EVIDENCE. Everything else this tool prints comes")
+    print("    from repository objects; these come from proposition-lifecycle.json, written by a")
+    print("    maker. Each entry names a record a verifier can check, and NONE is a §6.2 discharge.")
+    print("    The file exists because renumbered successors and withdrawals cannot be derived from")
+    print("    a ballot scan — both need the proposition TEXT, which this tool does not read.")
+    if not data["refuted_proposition_accounted_for_by_maker_declaration"]:
+        print("    none")
+    for r in data["refuted_proposition_accounted_for_by_maker_declaration"]:
+        print(f"    {r['candidate']}  refuted by {', '.join(r['refuted_by'])}")
+        for prop, how in r["declared_followup"].items():
+            print(f"        {prop}: {how}")
 
     print(f"\nREFUTED PROPOSITION CARRIED UNDER THE SAME ID ELSEWHERE — "
           f"{len(data['refuted_proposition_carried_under_the_same_id_elsewhere'])}")
