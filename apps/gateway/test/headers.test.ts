@@ -387,6 +387,54 @@ describe('request target fidelity — after ballots P35-04R-15 and P35-04R-16', 
     const url = buildUpstreamUrl('http://kernel.internal:8000/base', '/v1/authorize', '');
     assert.equal(url.pathname, '/base/v1/authorize');
   });
+
+  test('the only path normalisation is the URL pathname setter, exactly', async () => {
+    // `P35-04R5-17`, replacing `P35-04R4-17` — REFUTED by Codex because `/v1\item` became
+    // `/v1/item`, a third transformation the wording had not excluded. It was the sixth
+    // proposition in this package to claim more than its test evaluated.
+    //
+    // Enumerating exclusions cannot close an unbounded negative claim: every round finds one more
+    // that WHATWG performs. So the claim is stated positively and bounded by the setter itself —
+    // whatever `URL.pathname =` does IS the specification, and this asserts equivalence rather
+    // than listing behaviours. A future runtime changing the setter fails this test on both sides
+    // at once, which is the point: the claim tracks the mechanism instead of a snapshot of it.
+    const BS = String.fromCharCode(92);
+    const vectors = [
+      '/v1/item', // untouched
+      `/v1${BS}item`, // backslash folded — the refutation vector
+      `/v1/a${BS}b`,
+      '/v1/../admin', // dot segments resolved
+      '/v1/%2E%2E/admin', // encoded dot segments resolved
+      '/v1/a%2Fb', // encoded slash preserved
+      '/v1/caf%C3%A9', // encoded UTF-8 preserved
+      '/v1//double', // empty segment preserved
+      '/v1/trailing/',
+      'v1/no-leading-slash',
+    ];
+
+    for (const path of vectors) {
+      const reference = new URL('http://kernel.internal:8000');
+      reference.pathname = path.startsWith('/') ? path : `/${path}`;
+
+      assert.equal(
+        buildUpstreamUrl('http://kernel.internal:8000', path, '').pathname,
+        reference.pathname,
+        `buildUpstreamUrl transformed ${JSON.stringify(path)} beyond the pathname setter`,
+      );
+    }
+  });
+
+  test('the origin and query survive every path in the normalisation vectors', () => {
+    // The other half of `P35-04R5-17`: origin fixed, search verbatim. `P35-04R3-01` claims no
+    // request path can move the upstream off the kernel origin; this claims the same for direct
+    // calls, which is where the escape hazard lives.
+    const BS = String.fromCharCode(92);
+    for (const path of ['/v1/item', `/v1${BS}item`, '//evil.example/x', '/v1/../admin']) {
+      const url = buildUpstreamUrl('http://kernel.internal:8000', path, '?a=1&b=%20');
+      assert.equal(url.origin, 'http://kernel.internal:8000', `origin moved by ${path}`);
+      assert.equal(url.search, '?a=1&b=%20', `search altered by ${path}`);
+    }
+  });
 });
 
 describe('response header handling', () => {
