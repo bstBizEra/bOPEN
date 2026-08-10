@@ -3,7 +3,7 @@ name: Bootstrap Governance
 on:
   pull_request:
   push:
-    branches: [main, "claude/BOPEN-P35-001-runtime-realization"]
+    branches: [main]
 
 permissions:
   contents: read

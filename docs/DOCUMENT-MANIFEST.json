@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 380,
+  "count": 382,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -892,6 +892,13 @@
       "bytes": 221
     },
     {
+      "path": "docs/07-security/pre-publication-credential-scan-2026-08-10.md",
+      "title": "Pre-publication credential scan \u2014 every blob reachable from `HEAD`, 2026-08-10",
+      "status": "**SCAN RESULT \u2014 advisory.** Not an authorization to publish. Merge, release and any",
+      "sha256": "50c0b0e1dc5ab1a0f89b5e2ceb0e4ac56f74026e4eefbb4764b3565ca80b2c8c",
+      "bytes": 6125
+    },
+    {
       "path": "docs/07-security/privacy/privacy-baseline.md",
       "title": "Privacy Baseline",
       "status": "",
@@ -1406,8 +1413,8 @@
       "path": "docs/decisions/DEC-GOV-AUTONOMY-001.md",
       "title": "DEC-GOV-AUTONOMY-001 \u2014 Genesis Ratification of the Governed-Autonomy Bootstrap (Engineer Loop autonomous merge)",
       "status": "**PROPOSED \u2014 RATIFIED UPON THE OPERATOR'S MERGE OF THE `BOPEN-WP-GOV-AUTONOMY-001` PULL REQUEST**",
-      "sha256": "81b6a56751119ada95447b4cf01593acd76a0403c7b74d6e5354408d629bd57b",
-      "bytes": 5438
+      "sha256": "dd9137614208d6f798eee18c26b94e81308b9830dc9e17e49bdc71a21aaf1c70",
+      "bytes": 5584
     },
     {
       "path": "docs/decisions/DEC-P2-DOCKET.md",
@@ -1632,6 +1639,13 @@
       "status": "",
       "sha256": "05c728ff59c85644eda630fcec50baac9199a3445723f493ad47104d5af2629f",
       "bytes": 3880
+    },
+    {
+      "path": "docs/evidence/governance-genesis/GENESIS-CUTOVER-RECORD.md",
+      "title": "Genesis cutover record \u2014 non-rewrite canonical branch cutover",
+      "status": "",
+      "sha256": "7bf2468f04ada8546d1274e5bb15568792a542c9f496be2141cb22708d021b8c",
+      "bytes": 4228
     },
     {
       "path": "docs/evidence/phase-1/completion-decision.md",

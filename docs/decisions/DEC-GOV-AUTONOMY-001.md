@@ -90,7 +90,7 @@ signature).
 | Field | Bound value |
 | :--- | :--- |
 | Branch | `claude/BOPEN-WP-GOV-AUTONOMY-001` |
-| Base | `561333a` (`claude/BOPEN-P35-001-runtime-realization`) |
+| Base | `6a5511fe6b56131fb7867135429d6546ece2db54` — `main` after the non-rewrite cutover (originally drafted on `561333a`, rebased forward; see `docs/evidence/governance-genesis/GENESIS-CUTOVER-RECORD.md`) |
 | Ratification SHA | *the operator's merge commit — recorded on the PR at merge* |
 
 ---

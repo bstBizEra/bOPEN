@@ -23,7 +23,7 @@ name: governance-gates
 
 on:
   push:
-    branches: [main, "claude/BOPEN-P35-001-runtime-realization"]
+    branches: [main]
   pull_request:
 
 permissions:
