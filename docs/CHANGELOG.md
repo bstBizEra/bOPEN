@@ -1,5 +1,20 @@
 # Documentation Changelog
 
+## 2026-08-11 - FPSA v1.0 recorded: framework protection, self-audit and controlled evolution (AGENTS.md §33)
+
+- Transcribed the operator's WICG-FPSA v1.0 directive as
+  `docs/00-governance/FPSA-V1.0-FRAMEWORK-PROTECTION-SELF-AUDIT.md` (five protection layers
+  FPL-1..FPL-5, expansion vector and classes E0-E4, minimal-expansion proof, controls FP-01..FP-16,
+  hard decision logic, monotonic-hardening fast path, expansion manifest, self-audit modes and
+  verdicts, KPIs FP-K01..FP-K12, fifteen golden negative tests, roadmap FPSA-P0..FPSA-P4).
+- Added `AGENTS.md` §33: the framework-expansion invariant ("no proven gap, no minimal delta, no
+  bounded authority, no rollback and retirement path — no framework expansion") binding
+  procedurally at ratification; ten machinery-free controls in force; self-audit verdicts adopted
+  as a fifth named set; collision rulings (source `P1`-`P5`/`P0`-`P4` renamed `FPL-n`/`FPSA-Pn`
+  against bOPEN phase numbering; expansion-class `E`-tokens always set-qualified vs the
+  portfolio's evidence levels; `ADEC` resolves to operator escalation while the ballot layer is
+  inert); all machinery gated `NOT_IMPLEMENTED` behind the FPSA-P0..P4 roadmap, SHADOW first.
+
 ## 2026-08-11 - WICG v1.0 recorded: work intake, deduplication and conflict guard (AGENTS.md §32)
 
 - Transcribed the operator's WICG v1.0 directive as `docs/00-governance/WICG-V1.0-WORK-INTAKE-GUARD.md`
