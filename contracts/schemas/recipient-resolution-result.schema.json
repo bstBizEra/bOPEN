@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/candidate/recipient-resolution-result.json",
+  "title": "RecipientResolutionResultCandidate",
+  "version": "0.1.0",
+  "status": "draft",
+  "description": "CANDIDATE technical resolution result. It does not evaluate consent, preferences, suppression, message mandate, or dispatch authorization. A success exposes an opaque destination handle, not a raw endpoint.",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "outcome",
+        "resolution_id",
+        "party_id",
+        "contact_point_id",
+        "endpoint_version",
+        "endpoint_type",
+        "masked_endpoint",
+        "destination_handle",
+        "verification_state",
+        "lifecycle_state",
+        "decision_scope",
+        "dispatch_authority",
+        "resolver_version",
+        "resolved_at"
+      ],
+      "properties": {
+        "outcome": { "const": "resolved" },
+        "resolution_id": { "type": "string", "format": "uuid" },
+        "party_id": { "type": "string", "minLength": 1 },
+        "contact_point_id": { "type": "string", "pattern": "^cpt_[a-zA-Z0-9_-]+$" },
+        "endpoint_version": { "type": "integer", "minimum": 1 },
+        "endpoint_type": { "type": "string", "enum": ["email", "phone"] },
+        "masked_endpoint": { "type": "string", "minLength": 1 },
+        "destination_handle": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short-lived opaque handle redeemable only inside the protected delivery adapter boundary."
+        },
+        "verification_state": { "const": "verified" },
+        "lifecycle_state": { "const": "active" },
+        "decision_scope": { "const": "technical_resolution_only" },
+        "dispatch_authority": { "const": "not_evaluated" },
+        "resolver_version": { "type": "string", "minLength": 1 },
+        "resolved_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["outcome", "reason_code", "decision_scope", "dispatch_authority", "resolved_at"],
+      "properties": {
+        "outcome": { "const": "refused" },
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "NO_ELIGIBLE_CONTACT_POINT",
+            "CONTACT_POINT_NOT_ACCESSIBLE",
+            "CONTEXT_NOT_AUTHORIZED",
+            "CAPABILITY_NOT_ENTITLED",
+            "MODULE_NOT_AVAILABLE"
+          ],
+          "description": "External adapters must map tenant/party/contact mismatch to a uniform refusal and must not disclose which object exists."
+        },
+        "decision_scope": { "const": "technical_resolution_only" },
+        "dispatch_authority": { "const": "not_evaluated" },
+        "resolved_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

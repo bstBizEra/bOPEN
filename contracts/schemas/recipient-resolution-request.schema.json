@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/candidate/recipient-resolution-request.json",
+  "title": "RecipientResolutionRequestCandidate",
+  "version": "0.1.0",
+  "status": "draft",
+  "description": "CANDIDATE service-to-service request for technical endpoint resolution. Tenant and principal authority are derived from the validated server context, never from this body.",
+  "type": "object",
+  "required": ["party_id", "channel", "purpose_classification", "correlation_id"],
+  "properties": {
+    "party_id": { "type": "string", "minLength": 1 },
+    "channel": { "type": "string", "enum": ["email", "sms", "voice"] },
+    "purpose_classification": { "type": "string", "enum": ["security_operational", "transactional", "billing", "general"] },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "effective_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
