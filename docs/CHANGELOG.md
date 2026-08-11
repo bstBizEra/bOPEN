@@ -16,6 +16,14 @@
   recorded gate-failure proofs in `docs/evidence/governance-genesis/GATE-FAILURE-PROOFS.md` —
   including the genesis package classifying itself `CONSTITUTIONAL_REQUIRED`.
 
+## 2026-08-09 - URE-Loop v1.5 recorded as AGENTS.md §28 (Autonomous Authority Plane, Trust Fabric & Skill Router)
+
+- Added `AGENTS.md` §28 recording URE-Loop v1.5 (*Autonomous Skill Routing and Orchestration*, supplied via Google Drive `1meTS5PZBF8HlIvEkqG2XYOZbUn3vbMZr`).
+- Recorded `PROPOSED` status (§28): incorporates v1.0–v1.5 mechanisms including Autonomous Skill Routing & Orchestration (§30–§31, FIT-101–120), Task Authority Envelope & Control Plane (§13–§14), Autonomous Ballot & Single-Use Transition Warrants (§19–§20), and Deterministic Runtime Trust Fabric (§21–§29, FIT-061–100).
+- Recorded provenance hierarchy (§28.1): external design specs do not override bOPEN normative specs or ADRs; in-force governance documents prevail over external mirrors.
+- Re-stated exclusions and binding constraints (§28.3): skill routing and autonomous ballots cannot grant authority, bypass EBIV verification, or self-authorize production deployment.
+- Recorded status as **`READY_TO_IMPLEMENT`** (§28.4).
+
 ## 2026-08-07 - URE-Loop v0.9 recorded as AGENTS.md §27, with three identifier collisions excluded
 
 - Added `AGENTS.md` §27 covering only what URE-Loop v0.9 adds over v0.6 (§26): governance lens
