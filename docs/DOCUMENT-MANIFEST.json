@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 384,
+  "count": 385,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -22,6 +22,13 @@
       "status": "Proposed",
       "sha256": "8cdbe9228f505a8d42686a4c4c5a354083ddf80fca31a634ce87a0771ca9fb5f",
       "bytes": 10624
+    },
+    {
+      "path": "docs/00-governance/FPSA-V1.0-FRAMEWORK-PROTECTION-SELF-AUDIT.md",
+      "title": "WICG-FPSA v1.0 \u2014 Framework Protection, Self-Audit & Controlled Evolution",
+      "status": "",
+      "sha256": "a58312c17aa266e366756098dcc2adc8c4b517b64144276beab8aa09579609e0",
+      "bytes": 17508
     },
     {
       "path": "docs/00-governance/GL_ROOT_CONSTITUTION.md",
@@ -1245,8 +1252,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "ae66ab70f28a93f4929fffa4c83867522f082adfe85c8c4fbb9ef4e3d39f195c",
-      "bytes": 85163
+      "sha256": "ad3804570a5cb934c412c90c3416e62054bf98d18d3230b306eecef93677df31",
+      "bytes": 86371
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",

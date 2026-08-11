@@ -1410,3 +1410,71 @@ detection entering in `SHADOW` mode only, and autonomous admission opening only 
 risk classes. LLM output proposes; it never carries admission authority (WICG §5.2, §10). KPIs
 `WI-01`–`WI-10` are computed from the event ledger with reproducible queries once that ledger
 exists — never asserted from memory.
+
+---
+
+## 33. WICG-FPSA v1.0 — Framework Protection, Self-Audit & Controlled Evolution (operator directive 2026-08-11)
+
+> **STATUS: binding as stated below FROM the operator's merge of the PR that carries this section;
+> every mechanised part is `NOT_IMPLEMENTED` and gated by §33.4.** Provenance: supplied by the
+> operator in session 2026-08-11 as the protection layer over §32's WICG; full specification
+> transcribed at
+> [`docs/00-governance/FPSA-V1.0-FRAMEWORK-PROTECTION-SELF-AUDIT.md`](docs/00-governance/FPSA-V1.0-FRAMEWORK-PROTECTION-SELF-AUDIT.md).
+> FPSA governs how the **framework itself** may grow. What binds today is exactly and only
+> §33.1–§33.3.
+
+### 33.1 The framework-expansion invariant (binds at ratification)
+
+> **No proven gap, no minimal delta, no bounded authority, no rollback and retirement path — no
+> framework expansion.**
+
+Until the FPSA machinery exists, this binds procedurally: any change to governance machinery,
+policy, authority surfaces, shared components or the control plane must state its gap evidence,
+reuse analysis, minimal delta (`REQUIRED_DELTA = REQUESTED_CHANGE − EXISTING_CAPABILITY`; the
+optional remainder is cut or split), bounds, rollback path and retirement condition **in the PR or
+DEC that carries it** — and a framework never approves an expansion of its own authority, which
+this repository already enforces as `AD4`/`AD5` plus dual-policy.
+
+### 33.2 Adopted vocabulary, and the collision rulings
+
+- **Expansion classes `E0`–`E4`** (`NO_EXPANSION` → `CONSTITUTIONAL`), classed by
+  `max(S, A, I, D, O, R)` over the expansion vector — never averaged. Free in bOPEN; at portfolio
+  level the SecB framework uses `E0`–`E4` as *evidence levels*, so the set is always quoted as
+  **"expansion class E-n"**, never bare. bOPEN mapping: expansion class `E4` coincides with the
+  `AD4` constitutional surface; self-approval of `E4` is prohibited outright (§30.7 restated).
+- **Protection layers and roadmap phases renamed** (the §30.4 discipline): the source's layers
+  `P1`–`P5` read **`FPL-1`–`FPL-5`** and its roadmap `P0`–`P4` reads **`FPSA-P0`–`FPSA-P4`** —
+  bare `P`-numbers collide with bOPEN's phase identifiers (`BOOT-P0`, Phase 3.5, `WP-P35-*`).
+- **Controls `FP-01`–`FP-16` and KPIs `FP-K01`–`FP-K12`** — unused in bOPEN; adopted as named.
+- **Self-audit verdicts** (the thirteen of FPSA §12, `PASS_NO_EXPANSION` …
+  `RETIRE_COMPONENT`) — a **fifth named verdict set**, distinct from admission verdicts (§32),
+  authority verdicts, EBIV ballot verdicts and operator dispositions. Its
+  `E4_EXTERNAL_AUTHORITY_REQUIRED` is not §32's admission verdict `EXTERNAL_AUTHORITY_REQUIRED`;
+  always name the set.
+- **`ADEC` ballots** are a portfolio construct with no bOPEN definition: while bOPEN's ballot
+  layer is `NOT_ACTIVE`, every `E2`/`E3` ballot requirement resolves to operator escalation, and
+  `E4` external authorization resolves to the constitutional authority (the operator).
+
+### 33.3 Controls in force at ratification
+
+Of `FP-01`–`FP-16`, the following bind immediately as procedure because bOPEN already has their
+substance and they need no new machinery: `FP-01` (cite baseline SHA + policy version in every
+governance audit — already this repo's practice), `FP-02` (mandate boundary), `FP-04` (reuse
+first — restates the Lean discipline), `FP-05`/`FP-03` (no ticket fragmentation; declare the
+complete delta), `FP-06` (ordinary work never widens allow-sets — restates `AD0` scope),
+`FP-07` (constitutional isolation — restates `AD4`), `FP-08` (proposer ≠ auditor for `E2+` —
+restates EBIV maker exclusion), `FP-10` (fail closed), `FP-13` (exceptions carry owner, scope and
+expiry), `FP-16` (an enforcing control needs a negative test — the gate-failure-proofs discipline
+already applied at Genesis). `FP-09`, `FP-11`, `FP-12`, `FP-14`, `FP-15` bind when the
+enforcement points, trial sandboxes, caps and inventories that evaluate them exist.
+
+### 33.4 What stays gated on implementation
+
+The Framework Contract Registry, Expansion Manifest schema, expansion-class rules engine,
+self-audit engine and modes, health dashboard (`FP-K*`), monotonic-hardening fast path (which
+additionally requires a root-authorized clause that does not yet exist — until then such changes
+stay self-audit verdict `E4_EXTERNAL_AUTHORITY_REQUIRED`), and the fifteen golden negative tests
+are `NOT_IMPLEMENTED / NOT_EVIDENCED`. Implementation follows `FPSA-P0` → `FPSA-P4` in order,
+starts in `SHADOW` mode, needs an operator-authorized work package per component, and enforcement
+(`FPSA-P2`) may not activate before the `FPSA-P1` exit gate is met with reproducible evidence.
+Benefit scores and majority ballots never override hard controls (FPSA §8).
