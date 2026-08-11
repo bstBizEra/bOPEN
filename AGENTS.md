@@ -1346,3 +1346,67 @@ recorded conditions objectively met and remains `AD3`; `AT3`/`AT4` are unreachab
 layer is inert. No external trust anchor: the verifier still runs inside the repository it judges,
 which is exactly why `.github/` sits on the constitutional surface (§30.8 item 2 stays open and
 worth closing independently).
+
+---
+
+## 32. WICG v1.0 — Work Intake, Deduplication & Conflict Guard (operator directive 2026-08-11)
+
+> **STATUS: binding as stated below FROM the operator's merge of the PR that carries this section;
+> the machinery is `NOT_IMPLEMENTED` and §32.4 gates every mechanised part on real implementation.**
+> Provenance: supplied by the operator in session 2026-08-11; full specification transcribed at
+> [`docs/00-governance/WICG-V1.0-WORK-INTAKE-GUARD.md`](docs/00-governance/WICG-V1.0-WORK-INTAKE-GUARD.md).
+> WICG is **portfolio-scoped** (BST control plane above every project); this section is bOPEN's
+> adoption record. A governance document that overstates its own enforcement is the failure it
+> exists to prevent — what binds today is exactly and only §32.1–§32.3.
+
+### 32.1 The strengthened intake invariant (binds at ratification)
+
+The Authority gate's rule — *No Ticket, No Work* — is upgraded in principle to:
+
+> **No admitted ticket, no valid scope, no active lease — no work and no mutation.**
+
+Until the WICG machinery exists, this binds at the level bOPEN can actually enforce: every unit of
+work cites its work-package ID (mechanised — the Authority gate); states objective, deliverables,
+acceptance criteria, non-goals and baseline before execution (procedural); and one agent works one
+task in one worktree/branch at a time, with takeover of another agent's worktree or branch
+requiring recovery inspection first (procedural — the 2026-08-11 stranded-work landing is the
+worked example: inspect, preserve, land through the loop, never overwrite).
+
+### 32.2 Adopted vocabulary, and the collision rulings
+
+- **Relationship taxonomy** `DUPLICATE` / `OVERLAP` / `DEPENDENCY` / `CONFLICT`, with
+  `INTENTIONAL_OVERLAP` requiring a declared reason and separation of duties.
+- **Intake lifecycle states** (`DRAFT` … `ADMITTED` … `CLOSED` plus parking/terminal states) —
+  no collision with existing bOPEN state words; adopted as the intake vocabulary.
+- **Admission verdicts** (`ACCEPT_PARALLEL` … `EXTERNAL_AUTHORITY_REQUIRED`, the twelve of
+  WICG §9) — adopted as a **fourth named verdict set**, separate from authority verdicts (GL
+  constitution), EBIV ballot verdicts, and operator dispositions. Always name the set; never quote
+  a bare token.
+- **Identifier mappings** (per the §30.4 discipline): the WICG source example's `G4` protected
+  resource reads `AD4` here; its `L0` policy version reads `GL-0`; its `D`-risk classes are the
+  portfolio's decision classes and read as bOPEN risk tiers `R0`–`R4` (§28.2) until D-classes are
+  adopted portfolio-wide. `WI-01`…`WI-10` KPI names and `BST-WORK-*` IDs are unused in bOPEN —
+  no collision.
+
+### 32.3 Prohibitions in force at ratification
+
+Of WICG §7, the following bind immediately because they need no new machinery — they are
+restatements or tightenings of existing bOPEN law: #1 (as §32.1 states it), #2, #8 (no
+ticket-splitting to evade risk class or gates), #9 (no renaming to evade duplicate detection),
+#10 (no expired-lease takeover without recovery inspection), #12 (no editing authority,
+classifier, quorum or protected paths through ordinary work — restates `AD4`/`AD5`), #13
+(append-only verdicts — restates the evidence discipline), #14 (no proposer certifying its own
+high-risk clearance — restates EBIV maker exclusion), #15 (supersession records, never silent
+auto-cancel). The remainder (#3–#7, #11) bind when the registries and lease manager that can
+evaluate them exist.
+
+### 32.4 What stays gated on implementation
+
+The Global Work Registry, Project Contract Registry, Scope Compiler, Duplicate Detector
+(exact/semantic), Conflict Graph Engine, Policy Decision Engine, Lease Manager, Scheduler and
+Evidence Ledger are `NOT_IMPLEMENTED / NOT_EVIDENCED`. Building any of them is ordinary governed
+work: an operator-authorized work package per component, the WICG §12 roadmap order, semantic
+detection entering in `SHADOW` mode only, and autonomous admission opening only for the lowest
+risk classes. LLM output proposes; it never carries admission authority (WICG §5.2, §10). KPIs
+`WI-01`–`WI-10` are computed from the event ledger with reproducible queries once that ledger
+exists — never asserted from memory.

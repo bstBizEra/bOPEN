@@ -1,5 +1,16 @@
 # Documentation Changelog
 
+## 2026-08-11 - WICG v1.0 recorded: work intake, deduplication and conflict guard (AGENTS.md §32)
+
+- Transcribed the operator's WICG v1.0 directive as `docs/00-governance/WICG-V1.0-WORK-INTAKE-GUARD.md`
+  (portfolio-scoped control plane: intake lifecycle, duplicate/overlap/dependency/conflict taxonomy,
+  admission verdicts, work leases, fifteen prohibitions, WI-01..WI-10 KPIs, implementation roadmap).
+- Added `AGENTS.md` §32: the strengthened intake invariant ("No admitted ticket, no valid scope, no
+  active lease — no work and no mutation") binding at ratification at the level bOPEN can enforce
+  today; admission verdicts adopted as a fourth named verdict set; identifier mappings ruled
+  (`G4`→`AD4`, `L0`→`GL-0`, D-classes read as `R0`–`R4`); machinery gated `NOT_IMPLEMENTED` behind
+  the WICG §12 roadmap.
+
 ## 2026-08-10 - Governed-Autonomy Bootstrap: SecB L0 governance ported, AGENTS.md §31 added (conditional on Genesis Ratification)
 
 - Executed `AGENTS.md` §30.8 item 1 (bootstrap/payload split) under `BOPEN-WP-GOV-AUTONOMY-001`:
