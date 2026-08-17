@@ -1,9 +1,10 @@
 # bOPEN governance gates — the executable controls of the governed Engineer
 # Loop (BOPEN-WP-GOV-AUTONOMY-001; AGENTS.md §31; GL_ROOT_CONSTITUTION.md).
 #
-# Four jobs:
+# Five jobs:
 #
 #   test-gate           — governance gate tests (unittest, stdlib only)
+#   gateway-gate        — apps/gateway: npm ci then npm test on Node 24
 #   authority-gate      — every PR cites a work-package ID (No Ticket, No Work)
 #   budget-gate         — declared diff budget honoured
 #   governance-verdict  — advisory: authority-delta class plus dual-policy
@@ -84,6 +85,34 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests/governance -p 'test_*.py'
+
+  gateway-gate:
+    name: "Gateway gate — reproducible install and suite"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/gateway
+    steps:
+      - uses: actions/checkout@v4
+
+      # The version the package declares it supports. Pinning it here is the
+      # point: `node --test test/` ran on earlier majors and could not resolve
+      # the directory on 24, so the script was broken on the ONLY supported
+      # runtime and nothing noticed (PR #12).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # `npm ci`, not `npm install`. ci fails when package.json and
+      # package-lock.json disagree; install papers over it by rewriting the
+      # lock. Two dependency PRs (#15, #16) bumped the manifest and left the
+      # lock pinning the old versions — every existing job went green while the
+      # gateway was uninstallable from its own lockfile (PR #17).
+      - name: Reproducible install
+        run: npm ci
+
+      - name: Gateway suite
+        run: npm test
 
   authority-gate:
     name: "Authority gate (No Ticket, No Work)"
