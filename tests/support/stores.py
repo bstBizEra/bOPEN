@@ -175,3 +175,60 @@ class FakeQuotaReservationStore:
         )
         self.created.append(stored)
         return stored, balance
+
+
+class FakeUsageOutboxStore:
+    """A usage-outbox repository that holds records in memory, with real idempotency.
+
+    Implements the one method `UsageMeterService.record_event` calls —
+    `record(...) -> (StoredOutboxRecord, created: bool)` — so a real `MeteredEvent` can be produced
+    and validated against `contracts/schemas/usage-metered-event.schema.json` without a database.
+
+    Written for the same reason as `FakeQuotaReservationStore`: that schema was covered only by
+    database-gated integration tests, so its coverage vanished whenever the database did.
+
+    Idempotency is implemented rather than stubbed. `record_event` inspects `created` and, when a key
+    repeats, compares the stored fields against the new ones and raises on a conflict. A fake that
+    always returned `created=True` would leave that branch untested while the test still passed.
+    """
+
+    def __init__(self) -> None:
+        self.by_key: dict = {}
+        self.sequence = 0
+
+    def record(
+        self,
+        *,
+        tenant_id: str,
+        principal_id: str,
+        capability_id: str,
+        quantity: int,
+        unit: str,
+        correlation_id: str,
+        idempotency_key: str,
+    ):
+        from datetime import datetime, timezone
+
+        from platform_kernel.entitlement_repositories import StoredOutboxRecord
+
+        existing = self.by_key.get((tenant_id, idempotency_key))
+        if existing is not None:
+            return existing, False
+
+        self.sequence += 1
+        suffix = str(self.sequence).zfill(4)
+        stored = StoredOutboxRecord(
+            outbox_id="obx_" + suffix,
+            event_id="evt_" + suffix,
+            tenant_id=tenant_id,
+            principal_id=principal_id,
+            capability_id=capability_id,
+            quantity=quantity,
+            unit=unit,
+            correlation_id=correlation_id,
+            idempotency_key=idempotency_key,
+            created_at=datetime.now(timezone.utc),
+            dispatched_at=None,
+        )
+        self.by_key[(tenant_id, idempotency_key)] = stored
+        return stored, True
