@@ -1,0 +1,26 @@
+# Packaging for the bOPEN Python SDK.
+#
+# Work package: BOPEN-WP-PKG-KERNEL-001
+#
+# Second of the two components whose dependency list can be stated with certainty: every module
+# under `bopen_sdk` imports only the standard library, verified by scanning top-level imports.
+#
+# `platform_kernel` is deliberately not packaged in this change. It depends on fastapi, pydantic,
+# psycopg, pyjwt and cryptography, and a dependency list is a claim about resolution that a
+# `--no-deps` dry run cannot check. Declaring it belongs with a change that can exercise the
+# resolution rather than assert it.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bopen-sdk"
+version = "0.1.0"
+description = "bOPEN Python SDK: header contract helpers and client-side identifier rules"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+dependencies = []
+
+[tool.setuptools]
+packages = ["bopen_sdk"]
