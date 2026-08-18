@@ -105,3 +105,73 @@ class CollectingLifecycleSink:
 
     def record(self, event: dict) -> None:
         self.events.append(event)
+
+
+class FakeQuotaReservationStore:
+    """A quota-reservation repository that holds rows in memory.
+
+    Implements the one method `UsageMeterService.create_quota_reservation` calls —
+    `create(...) -> (StoredReservation, StoredBalance)` — so that an instance of the real
+    `QuotaReservation` can be produced and validated against its frozen schema without a database.
+
+    It exists because `contracts/schemas/quota-reservation.schema.json` was covered only by
+    database-gated integration tests. On 2026-08-17 the contract conformance gate reported a false
+    regression when the database timed out: the gated tests skipped, their coverage vanished with
+    them, and a schema that is in fact validated read as uncovered. Coverage that disappears with
+    the environment is not a measurement.
+
+    This fake deliberately does NOT bypass the service's own checks. The window it returns is a real
+    monthly window, so `_assert_window_matches` still runs and still raises on a mismatch — a fake
+    that returned a convenient window would let the test pass while proving nothing about the code
+    under test.
+    """
+
+    def __init__(self, *, quota_limit: int = 1000, used_quantity: int = 0) -> None:
+        from datetime import datetime, timezone
+
+        self.quota_limit = quota_limit
+        self.used_quantity = used_quantity
+        self.created: list = []
+        # A real calendar month, so the service's window assertion is exercised rather than dodged.
+        self.window_start = datetime(2026, 8, 1, tzinfo=timezone.utc)
+        self.window_end = datetime(2026, 9, 1, tzinfo=timezone.utc)
+
+    def create(
+        self,
+        *,
+        tenant_id: str,
+        capability_id: str,
+        reserved_quantity: int,
+        expires_at,
+        correlation_id: str,
+    ):
+        from datetime import datetime, timezone
+
+        from platform_kernel.entitlement_repositories import StoredBalance, StoredReservation
+
+        stored = StoredReservation(
+            reservation_id="rsv_" + str(len(self.created) + 1).zfill(4),
+            tenant_id=tenant_id,
+            capability_id=capability_id,
+            reserved_quantity=reserved_quantity,
+            expires_at=expires_at,
+            # The real repository INSERTs 'pending' (entitlement_repositories.py:608) and
+            # commit_reservation refuses anything else. The first draft of this fake used
+            # "held", and the schema's status enum rejected it — the fake was wrong and the
+            # contract test caught it, which is the whole reason to validate an instance
+            # rather than assert about a schema document.
+            status="pending",
+            correlation_id=correlation_id,
+            created_at=datetime.now(timezone.utc),
+        )
+        balance = StoredBalance(
+            balance_id="bal_0001",
+            tenant_id=tenant_id,
+            capability_id=capability_id,
+            used_quantity=self.used_quantity + reserved_quantity,
+            quota_limit=self.quota_limit,
+            window_start=self.window_start,
+            window_end=self.window_end,
+        )
+        self.created.append(stored)
+        return stored, balance

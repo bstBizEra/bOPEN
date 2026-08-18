@@ -51,7 +51,11 @@ from platform_kernel.metering import QuotaWindow, UsageMeterService
 ROOT = Path(__file__).resolve().parents[2]
 
 # Test doubles — see tests/support/stores.py for why they are not shipped in the package.
-from tests.support.stores import FakeFeatureToggleStore, FakeRateLimitStore
+from tests.support.stores import (
+    FakeFeatureToggleStore,
+    FakeQuotaReservationStore,
+    FakeRateLimitStore,
+)
 SCHEMA_DIR = ROOT / "contracts" / "schemas"
 
 
@@ -312,6 +316,53 @@ class ModuleManifestContractTests(unittest.TestCase):
             ModuleStatus.AVAILABLE,
             msg="from_dict honours a key the frozen schema forbids — see this test's docstring",
         )
+
+
+class QuotaReservationInstance(unittest.TestCase):
+    """contracts/schemas/quota-reservation.schema.json against the real UsageMeterService.
+
+    This module's header has listed this schema since it was written, and until now no case in it
+    validated a QuotaReservation. The coverage existed only in database-gated integration tests, so
+    when the database timed out on 2026-08-17 the conformance gate reported the schema as uncovered
+    and returned a false regression.
+
+    The service is constructed with an in-memory reservation store. Nothing is hand-built: the
+    instance comes from `create_quota_reservation`, and the store returns a real monthly window so
+    the service's own `_assert_window_matches` still runs.
+    """
+
+    def setUp(self) -> None:
+        self.schema = load_schema("quota-reservation.schema.json")
+        self.store = FakeQuotaReservationStore()
+        self.service = UsageMeterService(reservations=self.store)
+
+    def _reserve(self, quantity: int = 5) -> object:
+        return self.service.create_quota_reservation(
+            tenant_id="tnt_11111111-2222-3333-4444-555555555555",
+            capability_id="cap_reporting_export",
+            reserved_quantity=quantity,
+            expires_at=datetime(2026, 8, 15, 12, 0, tzinfo=timezone.utc),
+            correlation_id="corr_11111111-2222-3333-4444-555555555555",
+            quota_window=QuotaWindow.MONTHLY,
+        )
+
+    def test_a_reservation_validates_against_its_frozen_schema(self) -> None:
+        reservation = self._reserve()
+        validate(reservation.to_dict(), self.schema)
+
+    def test_the_producer_actually_ran(self) -> None:
+        """A validate() over a dict the test built itself would pass while proving nothing."""
+        reservation = self._reserve(7)
+        self.assertEqual(len(self.store.created), 1, "the service never reached the store")
+        self.assertEqual(reservation.reserved_quantity, 7)
+        self.assertEqual(reservation.reservation_id, self.store.created[0].reservation_id)
+
+    def test_the_service_window_check_is_still_enforced(self) -> None:
+        """The fake must not be able to dodge a check the real repository cannot dodge."""
+        self.store.window_end = self.store.window_start + timedelta(days=3)
+        with self.assertRaises(Exception) as caught:
+            self._reserve()
+        self.assertIn("window", str(caught.exception).lower())
 
 
 if __name__ == "__main__":
