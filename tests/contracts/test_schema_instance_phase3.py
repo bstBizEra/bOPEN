@@ -46,7 +46,7 @@ import jsonschema
 from kernel_core.capability import InvalidModuleManifestError, ModuleManifest, ModuleStatus
 from kernel_core.entitlement import EntitlementEvaluator, PlanTier, RateLimiter
 from kernel_core.types import ContextPayload
-from platform_kernel.metering import QuotaWindow, UsageMeterService
+from platform_kernel.metering import MeteredUnit, QuotaWindow, UsageMeterService
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -55,6 +55,7 @@ from tests.support.stores import (
     FakeFeatureToggleStore,
     FakeQuotaReservationStore,
     FakeRateLimitStore,
+    FakeUsageOutboxStore,
 )
 SCHEMA_DIR = ROOT / "contracts" / "schemas"
 
@@ -363,6 +364,64 @@ class QuotaReservationInstance(unittest.TestCase):
         with self.assertRaises(Exception) as caught:
             self._reserve()
         self.assertIn("window", str(caught.exception).lower())
+
+
+class MeteredEventInstance(unittest.TestCase):
+    """contracts/schemas/usage-metered-event.schema.json against the real UsageMeterService.
+
+    Second of the three schemas that were covered only by database-gated tests, and so read as
+    uncovered whenever the database was unreachable.
+
+    The outbox fake implements real idempotency, so `record_event`'s duplicate-key branch is
+    exercised rather than skipped: a fake that always reported a fresh insert would leave the
+    conflict comparison untested while the test still passed.
+    """
+
+    TENANT = "tnt_11111111-2222-3333-4444-555555555555"
+    PRINCIPAL = "prn_22222222-3333-4444-5555-666666666666"
+    CONTEXT = "ctx_33333333-4444-5555-6666-777777777777"
+    CORRELATION = "corr_44444444-5555-6666-7777-888888888888"
+
+    def setUp(self) -> None:
+        self.schema = load_schema("usage-metered-event.schema.json")
+        self.outbox = FakeUsageOutboxStore()
+        self.service = UsageMeterService(outbox=self.outbox)
+
+    def _record(self, key: str = "idem-0001", quantity: int = 3):
+        return self.service.record_event(
+            tenant_id=self.TENANT,
+            principal_id=self.PRINCIPAL,
+            context_id=self.CONTEXT,
+            capability_id="cap_reporting_export",
+            quantity=quantity,
+            unit=MeteredUnit.REQUESTS,
+            correlation_id=self.CORRELATION,
+            idempotency_key=key,
+        )
+
+    def test_a_metered_event_validates_against_its_frozen_schema(self) -> None:
+        validate(self._record().to_dict(), self.schema)
+
+    def test_the_producer_actually_ran(self) -> None:
+        event = self._record(quantity=9)
+        self.assertEqual(len(self.outbox.by_key), 1, "the service never reached the outbox")
+        self.assertEqual(event.quantity, 9)
+        self.assertEqual(event.event_id, self.outbox.by_key[(self.TENANT, "idem-0001")].event_id)
+
+    def test_a_repeated_idempotency_key_returns_the_same_event(self) -> None:
+        """The duplicate branch is real code; a fake that always inserted would hide it."""
+        first = self._record(key="idem-repeat")
+        second = self._record(key="idem-repeat")
+        self.assertEqual(first.event_id, second.event_id)
+        self.assertEqual(len(self.outbox.by_key), 1)
+        validate(second.to_dict(), self.schema)
+
+    def test_a_conflicting_replay_is_refused(self) -> None:
+        """Same key, different quantity: the service must refuse rather than silently accept."""
+        self._record(key="idem-conflict", quantity=3)
+        with self.assertRaises(Exception) as caught:
+            self._record(key="idem-conflict", quantity=99)
+        self.assertTrue(str(caught.exception), "the refusal carried no message")
 
 
 if __name__ == "__main__":
