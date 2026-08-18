@@ -1,0 +1,59 @@
+# Packaging for the bOPEN platform kernel service.
+#
+# Work package: BOPEN-WP-PKG-SERVICE-001
+#
+# The third component to declare itself, after bopen-kernel-core and bopen-sdk
+# (BOPEN-WP-PKG-KERNEL-001). Those two were packaged first because they import only the standard
+# library, so their dependency lists could be stated with certainty. This one could not, and the
+# earlier change said so and deferred it rather than asserting a resolution it had not exercised.
+#
+# It is declared now because the resolution has been exercised: `pip install --dry-run -e .` with
+# dependency resolution enabled, against the real index. That is the evidence the earlier change
+# said this declaration should wait for.
+#
+# VERSIONS MATCH requirements.txt EXACTLY for the four it pins. A service that resolves to a
+# different fastapi than the suite ran against is a different service.
+#
+# `cryptography` is pinned at a lower bound rather than an equality because requirements.txt does not
+# pin it: it arrives transitively through `pyjwt[crypto]`. The code imports it directly
+# (subject_assertion.py loads Ed25519 public keys), so it is declared directly rather than left to a
+# transitive dependency that a future pyjwt release could drop.
+
+# RESOLUTION EVIDENCE, and the one condition on it.
+#
+#   pip install --dry-run -e .                       exit 1
+#     ERROR: Could not find a version that satisfies bopen-kernel-core==0.1.0 (from versions: none)
+#
+#   pip wheel --no-deps -w <dir> packages/kernel-core/python   exit 0
+#   pip install --dry-run --find-links <dir> -e .              exit 0
+#     Would install bopen-kernel-core-0.1.0 bopen-platform-kernel-0.1.0
+#
+# The graph is correct and resolvable. It is NOT resolvable from a public index alone, because
+# bopen-kernel-core is a sibling in this repository and is published nowhere. That is a true fact
+# about the current state, not a defect in this file: any consumer installing this service today
+# must make kernel-core available, and the first failure above is what they will see if they do not.
+#
+# Recorded here rather than discovered by the next person who runs pip.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bopen-platform-kernel"
+version = "0.1.0"
+description = "bOPEN platform kernel service: tenancy, identity, context, authorization, entitlement, metering"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+
+dependencies = [
+    "fastapi==0.121.2",
+    "pydantic[email]==2.12.4",
+    "psycopg[binary]==3.3.4",
+    "pyjwt[crypto]==2.12.1",
+    "cryptography>=49.0.0",
+    "bopen-kernel-core==0.1.0",
+]
+
+[tool.setuptools]
+packages = ["platform_kernel"]
