@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 383,
+  "count": 384,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -36,6 +36,13 @@
       "status": "**Advisory assessment \u2014 decides nothing, authorizes nothing**",
       "sha256": "d18e761ca5302009b62db28994887aca01730c04810f350b61c00a9b58400190",
       "bytes": 14004
+    },
+    {
+      "path": "docs/00-governance/WICG-V1.0-WORK-INTAKE-GUARD.md",
+      "title": "WICG v1.0 \u2014 Work Intake, Deduplication & Conflict Guard",
+      "status": "",
+      "sha256": "d20ce1814e54487462f5da51b0d47ceafb84d4e2322449ef3accdb3116ab0651",
+      "bytes": 13004
     },
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -1238,8 +1245,8 @@
       "path": "docs/CHANGELOG.md",
       "title": "Documentation Changelog",
       "status": "",
-      "sha256": "d1935ab93fcb324f6617771aebdb75ae16261822051d92a66b0697c9aeaf34cb",
-      "bytes": 84332
+      "sha256": "ae66ab70f28a93f4929fffa4c83867522f082adfe85c8c4fbb9ef4e3d39f195c",
+      "bytes": 85163
     },
     {
       "path": "docs/DOCUMENT-COVERAGE.md",
