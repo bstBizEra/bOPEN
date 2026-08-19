@@ -998,6 +998,59 @@ provenance, naming which subsections bind. §26.6's ten exclusions are untouched
 
 ---
 
+## 28. PROPOSED (not in force) — URE-Loop v1.5: Autonomous Authority Plane, Runtime Trust Fabric & Skill Router
+
+> **STATUS: `PROPOSED` — NOT IN FORCE.** No normative authority. Does not replace §5, amend §25, or
+> extend the promotion recorded in §26 (`DEC-URE-ARCHITECT-LENS`, §26.2). Binds nothing until an
+> explicit operator authorization with verifiable Git provenance is recorded (`BOPEN-GOV-EBIV-001`
+> §2).
+>
+> **Provenance note.** *URE-Loop v1.5 (Autonomous Skill Routing and Orchestration)* was supplied by
+> the operator on 2026-08-09 (via Google Drive `1meTS5PZBF8HlIvEkqG2XYOZbUn3vbMZr`), superseding
+> v0.9 (§27), v0.6 (§26), and integrating v1.0–v1.4 upgrade specifications (`AUTH-URE-ENGLOOP-20260808-001`,
+> `AUTH-URE-BALLOT-UPGRADE-20260808-001`, `AUTH-URE-RUNTIME-ASSURANCE-20260809-001`, and
+> `AUTH-URE-SKILL-ROUTER-20260809-001`). It adds five primary pillars: Autonomous Authority Plane
+> (§13–§14), Autonomous Specification Factory & Git Controller (§16–§17), Autonomous Ballot Governance
+> & Single-Use Transition Warrants (§19–§20), Deterministic Runtime Assurance & Agent Trust Fabric
+> (§21–§29, FIT-061–100), and Autonomous Skill Routing & Orchestration Controller (§30–§31, FIT-101–120).
+> **Read §28.1 before anything else in this section.**
+
+### 28.1 Provenance & source-of-truth hierarchy
+
+An external design document — even at v1.5 — remains an external specification and **not** a bOPEN
+source of truth (§4). It cannot substitute for an approved bOPEN artifact, ADR, or contract. Where
+an external mirror restates bOPEN governance or in-force rules, the in-force `DEC` or `AGENTS.md` section
+governs and the external mirror is not evidence of anything.
+
+### 28.2 Adopted mechanisms and vocabulary
+
+The following v1.5 architectural mechanisms enrich bOPEN's engineering loop vocabulary and design:
+
+| Pillar | v1.5 Section | Adopted concept & vocabulary | Alignment with bOPEN |
+| :--- | :--- | :--- | :--- |
+| **Autonomous Skill Router** | §30–§31 | Intent classification, registry capability discovery, minimum-sufficient skill selection, prerequisite DAG resolution, typed multi-skill orchestration, output validation, fallback, routing evidence, outcome-calibrated learning (FIT-101–120) | Expands `.agents/skills/` routing discipline; routing cannot create authority, bypass confirmation/warrants, or mutate system state outside the Task Authority Envelope |
+| **Autonomous Authority Plane** | §13–§14 | Risk Tier (R0–R4) × Authority Level (A0–A4) matrix, Task Authority Envelope contract, circuit breakers, budget engines, ephemeral sandbox isolation, HITL escalation, durable checkpoint recovery, idempotency ledger | Reinforces §7, §9, §13, §25 authority boundaries and deny-by-default controls |
+| **Autonomous Ballot & Warrants** | §19–§20 | Immutable evidence snapshot, registered independent machine voters, deterministic ballot calculation, single-use Transition Warrants issued prior to state mutation | Maps to `BOPEN-GOV-EBIV-001` verification ballots; Transition Warrants enforce explicit authorization before state transitions |
+| **Deterministic Runtime Trust Fabric** | §21–§29 | Event-history replay, attested workload identity, context & tool trust boundaries, formal verification lab, attested artifact admission, progressive delivery, interop gateway (FIT-061–100) | Extends §11, §14, §19 testing, isolation, and evidence assurance |
+
+### 28.3 Exclusions and binding constraints
+
+To preserve repository invariants (§1, §4, §7, §20.3):
+
+1. **Skill Routing does not create authority.** The Autonomous Skill Router selects and sequences registry-qualified skills; it cannot grant permissions, bypass warrants, or self-authorize outputs.
+2. **Transition Warrants require EBIV verification.** A single-use Transition Warrant issued by the Authority Engine requires 100% passing tests and admissible EBIV ballots.
+3. **No self-assessed merge or release.** Rubric scores (even $\ge 85$) and autonomous ballots do not authorize production deployment or merge without explicit authority and operator decision.
+4. **Identifier collisions remain excluded.** The v0.9 stage-gate naming collisions (`G0`–`G7` vs bOPEN's cleared `G7`) and documentation tree topology overrides remain excluded (§27.3).
+
+### 28.4 Implementation Readiness & Readiness Status
+
+With URE-Loop v1.5 specification integration complete in `AGENTS.md` §28:
+- Specification integration: **`READY_TO_IMPLEMENT`**
+- Verification requirement: Implementation of Skill Router, Authority Control Plane, or Warrant controllers must satisfy test suites (`tools/run_tests.py`), clean-room verification (`tools/check_clean_room.py`), authority bootstrap (`tools/check_authority_bootstrap.py`), and contract conformance (`tools/check_contract_conformance.py`).
+
+
+---
+
 ## 29. PROPOSED (not in force) — Enterprise delivery lifecycle: PRD → Production (`LC-1`…`LC-14`)
 
 > **STATUS: `PROPOSED` — NOT IN FORCE.** Recorded as the operator's directive of 2026-08-10, transcribed
