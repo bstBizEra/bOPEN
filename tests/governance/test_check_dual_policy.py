@@ -95,9 +95,9 @@ class DualPolicyTest(unittest.TestCase):
         own scope cannot use that widening to approve the widening."""
         repo = make_repo(self.tmp_path)
         # Head envelope adds ops/ to the auto-approved scope.
-        envelope = json.loads((repo / "config" / "delegation_envelope.json").read_text())
+        envelope = json.loads((repo / "config" / "delegation_envelope.json").read_text(encoding="utf-8"))
         envelope["scope"]["auto_paths"].append("ops/")
-        (repo / "config" / "delegation_envelope.json").write_text(json.dumps(envelope))
+        (repo / "config" / "delegation_envelope.json").write_text(json.dumps(envelope), encoding="utf-8")
 
         result = run_dual(repo, "3\t0\tops/thing.tf\n")
         self.assertEqual(result.returncode, EXIT_ESCALATE)
@@ -127,9 +127,9 @@ class DualPolicyTest(unittest.TestCase):
 
     def test_head_envelope_expiry_diverges_and_escalates(self):
         repo = make_repo(self.tmp_path)
-        envelope = json.loads((repo / "config" / "delegation_envelope.json").read_text())
+        envelope = json.loads((repo / "config" / "delegation_envelope.json").read_text(encoding="utf-8"))
         envelope["expires_at"] = "2020-01-01"
-        (repo / "config" / "delegation_envelope.json").write_text(json.dumps(envelope))
+        (repo / "config" / "delegation_envelope.json").write_text(json.dumps(envelope), encoding="utf-8")
         result = run_dual(repo, "5\t2\tdocs/note.md\n")
         self.assertEqual(result.returncode, EXIT_ESCALATE)
 
