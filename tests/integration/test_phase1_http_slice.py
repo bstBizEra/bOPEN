@@ -591,6 +591,10 @@ class TestPhase1HttpSlice(unittest.TestCase):
         self.assertEqual(response.status_code, 422, response.text)
 
 
+@unittest.skipIf(
+    _unavailable_reason() is not None,
+    "database or web stack unavailable — reported as a failure by TestHttpSliceAvailability",
+)
 class TestAuditableInputBoundary(unittest.TestCase):
     """
     Nothing may be accepted that cannot then be audited.

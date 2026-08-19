@@ -55,9 +55,17 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 TESTS = ROOT / "tests"
 
-# Measured 2026-08-19. A change is a real change to how much of the suite can silently not run.
-EXPECTED_DATABASE_GATED = {"integration": 13, "isolation": 13}
-EXPECTED_DATABASE_GATED_TOTAL = 26
+# Measured 2026-08-19, updated the same day by BOPEN-WP-SKIP-GUARD-001.
+#
+# 26 -> 28. The two added guards cover TestRegistryTableIsolation (10 tests) and
+# TestAuditableInputBoundary (5), which previously FAILED rather than skipped when the
+# database was absent — reporting names like test_a_tenant_cannot_read_another_tenants_people,
+# which read as a tenant-isolation breach rather than a missing environment variable.
+#
+# The surface grew and the suite got MORE honest, which is why this number is pinned in both
+# directions rather than capped.
+EXPECTED_DATABASE_GATED = {"integration": 14, "isolation": 14}
+EXPECTED_DATABASE_GATED_TOTAL = 28
 EXPECTED_OTHER_CONDITIONAL_SKIPS = 0
 
 _SKIP_IF = re.compile(r"@unittest\.skipIf\(\s*([^\n]{0,120})")
