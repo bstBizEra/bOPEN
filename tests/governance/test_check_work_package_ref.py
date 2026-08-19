@@ -27,6 +27,7 @@ def run_gate(text: str | None) -> subprocess.CompletedProcess:
         [sys.executable, str(SCRIPT)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
         env=env,
         timeout=30,
     )
