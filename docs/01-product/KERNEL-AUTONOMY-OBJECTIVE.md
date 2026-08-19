@@ -26,8 +26,25 @@ running system; the derivation is named so each can be re-checked.
 | 5 | Runs without a human path fix | installable artifact; no hand-assembled `PYTHONPATH` |
 | 6 | Failure is visible and reversible | health signal, alert, and a rehearsed rollback |
 
-**Today no module satisfies all six.** Criteria 1, 2 and 4 are met broadly; 3 is partial; 5 and 6 are
-met nowhere.
+**Today no module satisfies all six.** Criteria 1, 2 and 4 are met broadly.
+
+### Movement since this objective was set, measured 2026-08-19
+
+| | Criterion | When set | Now |
+| ---: | :--- | :--- | :--- |
+| 3 | contract instance-validated | partial, and **environment-dependent** | 2 of 3 database-gated schemas now validate hermetically — `quota-reservation` and `usage-metered-event`. `tenant-context` still needs the context service, which persists to `active_contexts` |
+| 5 | installable without a hand-assembled path | **met nowhere** | 3 of 4 components declare themselves: `bopen-kernel-core`, `bopen-sdk`, `bopen-platform-kernel`. Resolution exercised, not asserted. `sdk/typescript` has source and no `package.json` |
+| 6 | failure visible and reversible | **met nowhere** | still nowhere. A gateway job and a canonical-suite job are prepared and await an operator merge |
+
+Two findings that change what the criteria mean rather than how far along they are:
+
+1. **CI runs 66 of 744 canonical tests.** All 146 isolation tests — the guarantees criteria 1
+   and 2 rest on — have never run in CI. Those criteria are met against a suite a person runs
+   by hand, last recorded 2026-08-11.
+2. **A green suite does not state how much of it executed.** `run_tests.py` never prints the
+   skip count and `wasSuccessful()` is True with skips. With no database, 294 of 741 skip.
+
+Neither is progress against the six. Both change how much a claim of progress is worth.
 
 ## 2. Where the kernel actually is
 
