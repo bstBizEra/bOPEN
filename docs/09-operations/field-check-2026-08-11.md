@@ -123,8 +123,9 @@ attempt used `:` as the separator, which is not the separator on this platform, 
 in the attempt rather than in the repository.
 
 **What remains true and much smaller:** deployment must supply four path entries by hand, in the
-right order, with no installable artifact declaring them. That is a packaging gap for `LC-11`/`LC-12`
-(`AGENTS.md` §29), not a blocker on running the service.
+right order, with no installable artifact declaring them. That is a packaging gap in the
+**production-readiness and deployment area** — described by `AGENTS.md` §29's `LC-11`/`LC-12`, which
+is **`PROPOSED`, not in force** — and not a blocker on running the service.
 
 ### 2.3 The development database grows by roughly 850 tenants per suite run
 
@@ -158,8 +159,10 @@ running system does not read.
 ## 3. What this check does NOT establish
 
 1. **It is a development environment.** Nothing here says anything about production behaviour, load,
-   resilience, or an environment that does not exist yet (`AGENTS.md` §29.6: `LC-9`–`LC-11` have no
-   artifact that could be presented at a gate review).
+   resilience, or an environment that does not exist yet. `AGENTS.md` §29.6 makes the same point
+   about its `LC-9`–`LC-11` stages, but §29 is **`PROPOSED`, not in force**, so nothing here rests
+   on it — and §29.6's own assessment of the security evidence is understated (see
+   [the AGENTS.md audit](../00-governance/agents-md-audit-2026-08-11.md) §2).
 2. **The suite passing carries no verdict weight** (EBIV §8), and this run was made by the maker.
 3. **The gateway probes used an injected `fetchImpl`,** not a running kernel over HTTP. They prove
    what path the gateway forwards, which is the claim being made, and not what a deployed kernel
