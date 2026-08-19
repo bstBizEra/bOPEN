@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/candidate/contact-point.json",
+  "title": "ContactPointMetadataCandidate",
+  "version": "0.1.0",
+  "status": "draft",
+  "description": "CANDIDATE metadata contract for a tenant-owned Party ContactPoint. This contract intentionally excludes the raw endpoint value. Purpose is classification only: it is not consent, suppression, authorization, entitlement, or permission to dispatch.",
+  "type": "object",
+  "required": [
+    "contact_point_id",
+    "tenant_id",
+    "party_id",
+    "endpoint_type",
+    "masked_endpoint",
+    "endpoint_version",
+    "lifecycle_state",
+    "verification_state",
+    "purpose_classification",
+    "is_primary",
+    "effective_from",
+    "revision",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "contact_point_id": { "type": "string", "pattern": "^cpt_[a-zA-Z0-9_-]+$" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "party_id": { "type": "string", "minLength": 1 },
+    "endpoint_type": { "type": "string", "enum": ["email", "phone"] },
+    "masked_endpoint": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Display-safe masked metadata. It must not be reversible and must not contain the complete endpoint."
+    },
+    "endpoint_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Increments whenever the normalized routing endpoint changes. Verification is valid only for the exact version it cites."
+    },
+    "lifecycle_state": { "type": "string", "enum": ["active", "suspended", "retired"] },
+    "verification_state": { "type": "string", "enum": ["unverified", "pending", "verified", "failed", "expired"] },
+    "current_verification_event_id": { "type": ["string", "null"], "format": "uuid" },
+    "purpose_classification": {
+      "type": "string",
+      "enum": ["security_operational", "transactional", "billing", "general"],
+      "description": "A technical use classification only. It does not establish consent, suppression status, authorization, or send permission."
+    },
+    "is_primary": { "type": "boolean" },
+    "effective_from": { "type": "string", "format": "date-time" },
+    "effective_to": { "type": ["string", "null"], "format": "date-time" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

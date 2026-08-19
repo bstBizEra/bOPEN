@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 383,
+  "count": 384,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -1415,6 +1415,13 @@
       "status": "",
       "sha256": "83a3bd941c7cae565e78bda89820bf719e1c5bef1897f659d8db5822ef00e16c",
       "bytes": 132
+    },
+    {
+      "path": "docs/decisions/ADR-P4-CONTACTPOINT-PROTECTION-001.md",
+      "title": "ADR-P4-CONTACTPOINT-PROTECTION-001 \u2014 ContactPoint endpoint protection and lookup",
+      "status": "`PROPOSED / DRAFT \u2014 NOT EFFECTIVE`",
+      "sha256": "565237a4f706cc1bfbcbb2247a6a0fb6b21a1f214fb38fd251d93b9b8b0db1f8",
+      "bytes": 16206
     },
     {
       "path": "docs/decisions/DEC-GOV-AUTONOMY-001.md",

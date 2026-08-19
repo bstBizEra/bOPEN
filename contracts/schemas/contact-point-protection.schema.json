@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/draft/contact-point-protection-0.1.0.json",
+  "title": "ContactPointProtectionEnvelope",
+  "description": "PROPOSED / DRAFT only. Candidate application-envelope-encryption and tenant-scoped keyed-lookup contract. It is not effective, grants no implementation authority, and must not be used as a runtime dependency until accepted by the Architecture and Security Authorities.",
+  "version": "0.1.0",
+  "status": "draft",
+  "$comment": "Migration 021 is an integrity-only corrective slice and must not silently make this cryptographic choice effective.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "contract_status",
+    "tenant_id",
+    "contact_point_id",
+    "endpoint_version",
+    "endpoint_type",
+    "normalization_profile",
+    "masking_profile",
+    "masked_value",
+    "cipher_suite",
+    "ciphertext",
+    "nonce",
+    "authentication_tag",
+    "encryption_key",
+    "lookup_scheme",
+    "lookup_key",
+    "lookup_digest",
+    "aad",
+    "protected_at"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "contract_status": {
+      "const": "draft"
+    },
+    "tenant_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "contact_point_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "endpoint_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "endpoint_type": {
+      "type": "string",
+      "enum": [
+        "email",
+        "phone"
+      ]
+    },
+    "normalization_profile": {
+      "type": "string",
+      "enum": [
+        "email-rfc5321-conservative-v1",
+        "phone-e164-v1"
+      ]
+    },
+    "masking_profile": {
+      "type": "string",
+      "enum": [
+        "email-domain-visible-v1",
+        "phone-last4-v1"
+      ]
+    },
+    "masked_value": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 320,
+      "description": "Versioned display mask only. It remains sensitive tenant data and is not an identifier, endpoint, or authorization fact."
+    },
+    "cipher_suite": {
+      "const": "A256GCM"
+    },
+    "ciphertext": {
+      "$ref": "#/$defs/base64Value"
+    },
+    "nonce": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base64Value"
+        }
+      ],
+      "description": "Base64 encoding of a fresh random 96-bit nonce. Decoded length must be exactly 12 bytes."
+    },
+    "authentication_tag": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base64Value"
+        }
+      ],
+      "description": "Base64 encoding of the 128-bit AEAD authentication tag. Decoded length must be exactly 16 bytes."
+    },
+    "encryption_key": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/keyReference"
+        },
+        {
+          "properties": {
+            "purpose": {
+              "const": "content_encryption"
+            }
+          }
+        }
+      ]
+    },
+    "lookup_scheme": {
+      "const": "HMAC-SHA-256"
+    },
+    "lookup_key": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/keyReference"
+        },
+        {
+          "properties": {
+            "purpose": {
+              "const": "lookup_hmac"
+            }
+          }
+        }
+      ]
+    },
+    "lookup_digest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base64Value"
+        }
+      ],
+      "description": "Base64 encoding of the 32-byte tenant-scoped HMAC. It must never be logged, exported by default, or compared across tenants."
+    },
+    "aad": {
+      "type": "object",
+      "required": [
+        "tenant_id",
+        "contact_point_id",
+        "endpoint_version",
+        "endpoint_type",
+        "normalization_profile",
+        "contract_version"
+      ],
+      "properties": {
+        "tenant_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "contact_point_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "endpoint_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "endpoint_type": {
+          "type": "string",
+          "enum": [
+            "email",
+            "phone"
+          ]
+        },
+        "normalization_profile": {
+          "type": "string",
+          "enum": [
+            "email-rfc5321-conservative-v1",
+            "phone-e164-v1"
+          ]
+        },
+        "contract_version": {
+          "const": "0.1.0"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Canonical authenticated metadata. These values must equal their enclosing envelope fields. JSON Schema cannot enforce cross-field equality; the implementation must."
+    },
+    "protected_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "base64Value": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "minLength": 4
+    },
+    "keyReference": {
+      "type": "object",
+      "required": [
+        "key_id",
+        "key_version",
+        "purpose"
+      ],
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "description": "Opaque bOPEN key-registry identifier; not raw key material or a provider credential."
+        },
+        "key_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "content_encryption",
+            "lookup_hmac"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "endpoint_type": {
+            "const": "email"
+          }
+        },
+        "required": [
+          "endpoint_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "normalization_profile": {
+            "const": "email-rfc5321-conservative-v1"
+          },
+          "masking_profile": {
+            "const": "email-domain-visible-v1"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "normalization_profile": {
+            "const": "phone-e164-v1"
+          },
+          "masking_profile": {
+            "const": "phone-last4-v1"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
