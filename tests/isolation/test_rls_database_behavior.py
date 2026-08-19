@@ -820,6 +820,10 @@ class TestRowLevelSecurityBehavior(unittest.TestCase):
                 )
 
 
+@unittest.skipIf(
+    _unavailable_reason() is not None,
+    "database unavailable — reported as a failure by TestDatabaseAvailability",
+)
 class TestRegistryTableIsolation(unittest.TestCase):
     """
     The registry tables — the ones that had no policy at all until migration 007.
