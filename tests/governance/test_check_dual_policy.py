@@ -31,7 +31,8 @@ EXIT_REJECTED = 3
 
 def git(repo: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
-        ["git", *args], cwd=repo, capture_output=True, text=True, timeout=60, check=True
+        ["git", *args], cwd=repo, capture_output=True, text=True, encoding="utf-8",
+        timeout=60, check=True
     )
 
 
@@ -63,6 +64,7 @@ def run_dual(repo: Path, numstat: str, base_ref: str = "main"):
         input=numstat,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         env=env,
         timeout=90,
     )

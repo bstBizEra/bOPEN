@@ -25,6 +25,7 @@ def run_gate(numstat: str, budget_text: str | None) -> subprocess.CompletedProce
         input=numstat,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         env=env,
         timeout=30,
     )

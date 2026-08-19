@@ -38,6 +38,7 @@ def run(numstat: str, envelope: Path | None = None, diff_text: str | None = None
         input=numstat,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         env=env,
         timeout=30,
     )
