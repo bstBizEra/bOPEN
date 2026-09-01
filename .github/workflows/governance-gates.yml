@@ -60,7 +60,7 @@ jobs:
       # Full history: tests/governance/test_governance_validators.py drives
       # tools/check_ballot_attribution.py, whose git-blame attribution is
       # meaningless on a shallow clone.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -90,7 +90,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
@@ -112,7 +112,7 @@ jobs:
     steps:
       # Full history so both the PR base and head are present for the
       # three-dot diff (merge-base to head = the PR's own changes).
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -140,7 +140,7 @@ jobs:
     # build trains people to ignore it. The step therefore captures the exit
     # code, records the verdict in the job summary, and exits 0.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
