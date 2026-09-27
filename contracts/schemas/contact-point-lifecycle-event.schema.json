@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bopen.io/schemas/candidate/contact-point-lifecycle-event.json",
+  "title": "ContactPointLifecycleEventCandidate",
+  "version": "0.1.0",
+  "status": "draft",
+  "description": "CANDIDATE append-only lifecycle event. Lifecycle is separate from verification and delivery outcomes.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "tenant_id",
+    "party_id",
+    "contact_point_id",
+    "endpoint_version",
+    "from_state",
+    "to_state",
+    "actor_principal_id",
+    "reason_code",
+    "correlation_id",
+    "occurred_at"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "party_id": { "type": "string", "minLength": 1 },
+    "contact_point_id": { "type": "string", "pattern": "^cpt_[a-zA-Z0-9_-]+$" },
+    "endpoint_version": { "type": "integer", "minimum": 1 },
+    "from_state": { "type": ["string", "null"], "enum": [null, "active", "suspended", "retired"] },
+    "to_state": { "type": "string", "enum": ["active", "suspended", "retired"] },
+    "actor_principal_id": { "type": "string", "minLength": 1 },
+    "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "causation_id": { "type": ["string", "null"] },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "metadata": {
+      "type": "object",
+      "description": "Redacted metadata only; endpoint values and verification secrets are prohibited by producer validation.",
+      "additionalProperties": { "type": ["string", "number", "integer", "boolean", "null"] }
+    }
+  },
+  "additionalProperties": false
+}
