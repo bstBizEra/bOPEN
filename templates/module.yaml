@@ -1,0 +1,41 @@
+id: bopen.<layer>.<module>
+name:
+version: 0.1.0
+owner:
+status: proposed
+
+classification:
+  layer: platform
+  tenant_aware: true
+  data_classification: internal
+
+dependencies:
+  modules: []
+  capabilities: []
+
+resources: []
+capabilities: []
+permissions: []
+entitlements: []
+
+events:
+  publishes: []
+  consumes: []
+
+interfaces:
+  api: []
+  jobs: []
+
+ui:
+  navigation: []
+  routes: []
+
+data:
+  tenant_key: tenant_id
+  migrations: required
+  retention_policy: default
+
+observability:
+  traces: required
+  metrics: required
+  audit: required

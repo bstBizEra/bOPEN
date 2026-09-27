@@ -1,0 +1,47 @@
+{
+  "artifact": "BOPEN-GOAL-REGISTER-001",
+  "version": "0.1",
+  "north_star": "Production-credible reusable multi-tenant platform kernel validated by bPro.",
+  "goals": [
+    {
+      "id": "G-01",
+      "name": "Governed delivery",
+      "target": "100% authorized and evidenced"
+    },
+    {
+      "id": "G-02",
+      "name": "Verified multi-tenancy",
+      "target": "100% negative tests pass"
+    },
+    {
+      "id": "G-03",
+      "name": "Reusable kernel",
+      "target": "No duplicated platform capabilities"
+    },
+    {
+      "id": "G-04",
+      "name": "Module factory",
+      "target": "Repeatable module-to-pilot pipeline"
+    },
+    {
+      "id": "G-05",
+      "name": "bPro reference",
+      "target": "Complete end-to-end reference flow"
+    },
+    {
+      "id": "G-06",
+      "name": "Operational readiness",
+      "target": "Restore/replay/rollback verified"
+    },
+    {
+      "id": "G-07",
+      "name": "Harness interoperability",
+      "target": "Shared controls and handoffs"
+    },
+    {
+      "id": "G-08",
+      "name": "Evidence-to-learning",
+      "target": "Controlled promotion only"
+    }
+  ]
+}

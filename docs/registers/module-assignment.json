@@ -1,0 +1,54 @@
+{
+  "artifact": "BOPEN-MODULE-ASSIGNMENT-001",
+  "version": "0.1",
+  "assignments": [
+    {
+      "work_package": "WP-01",
+      "maker": "Codex",
+      "checker": "Claude",
+      "human_owner": "Governance"
+    },
+    {
+      "work_package": "WP-02",
+      "maker": "Codex",
+      "checker": "Claude",
+      "human_owner": "Security"
+    },
+    {
+      "work_package": "WP-03",
+      "maker": "Codex",
+      "checker": "Claude",
+      "human_owner": "Architecture"
+    },
+    {
+      "work_package": "WP-04",
+      "maker": "Codex",
+      "checker": "Claude",
+      "verifier": "Independent security"
+    },
+    {
+      "work_package": "WP-05",
+      "maker": "Codex",
+      "checker": "Claude",
+      "human_owner": "Architecture"
+    },
+    {
+      "work_package": "WP-06",
+      "maker": "Antigravity+Codex",
+      "checker": "Claude",
+      "verifier": "E2E"
+    },
+    {
+      "work_package": "WP-07",
+      "maker": "Codex",
+      "checker": "Claude",
+      "verifier": "Recovery"
+    },
+    {
+      "work_package": "WP-08",
+      "maker": "Codex+Antigravity",
+      "checker": "Claude",
+      "verifier": "Conformance"
+    }
+  ]
+}

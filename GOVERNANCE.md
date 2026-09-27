@@ -1,24 +1,26 @@
-# Repository Governance
+# GOVERNANCE.md
 
-## Authorities
+## Current authority
 
-| Authority | Accountability |
-|---|---|
-| Product Authority | Product scope, value proposition and roadmap |
-| Architecture Authority | Normative architecture, ADRs and cross-domain consistency |
-| Security Authority | Security controls, threat acceptance and incident policy |
-| Data Authority | Data ownership, privacy, retention and isolation |
-| Engineering Authority | Repository, CI/CD, quality and release controls |
-| Research Authority | Source provenance, evidence and clean-room compliance |
+`BOPEN-BOOT-001.md` v1.0 is the currently approved authority for repository bootstrap
+and governed architecture work. Its boundary remains explicit: it does not authorize
+production kernel implementation.
 
-## Decision classes
+## Proposed operating model
 
-- **Normative artifact:** broad product or architecture specification.
-- **ADR:** durable architecture choice and trade-off.
-- **Contract:** machine-readable or externally observable interface.
-- **Work package:** bounded execution authorization.
-- **Exception:** time-bound approved deviation with expiry and owner.
+`docs/00-governance/BOPEN-GOV-001_v0.1.md` is **PROPOSED FOR APPROVAL / NO
+IMPLEMENTATION AUTHORITY**. Until independently reviewed and approved, it is a planning
+input only and may be used only where consistent with `BOPEN-BOOT-001`.
 
-## Escalation
+The proposed operating model would:
 
-Any unresolved conflict involving tenant isolation, authorization, legal/license obligations, privacy or destructive data change blocks implementation until the responsible authority records a decision.
+- Register every project, module, agent, skill, work item, decision and exception.
+- Apply stage gates from intake through retirement.
+- Maintain maker–checker separation.
+- Fail closed for missing authority, tenant context or evidence.
+- Treat tenant isolation as non-waivable for P0.
+- Require signed or otherwise attributable release decisions.
+- Promote learning only after evidence and evaluation.
+
+Nothing in this summary promotes a proposed artifact or grants implementation,
+acceptance, promotion, deployment, or release authority.

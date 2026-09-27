@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-12",
-  "count": 208,
+  "count": 237,
   "documents": [
     {
       "path": "docs/00-governance/agent-governance.md",
@@ -31,6 +31,20 @@
       "bytes": 249
     },
     {
+      "path": "docs/00-governance/AUTHORITY-MATRIX.md",
+      "title": "bOPEN Authority Matrix",
+      "status": "",
+      "sha256": "4606895b3b61625406b703b611f12f79ba1f3d71c1d871da09074b782e9f8089",
+      "bytes": 1142
+    },
+    {
+      "path": "docs/00-governance/BOPEN-GOV-001_v0.1.md",
+      "title": "BOPEN-GOV-001 \u2014 bOPEN Governed Platform, Product, Module and Delivery Operating Model v0.1",
+      "status": "PROPOSED FOR APPROVAL",
+      "sha256": "51ec694cf0a1cf34fa8e9e0dde4dd2877a45ae2e42db34f62b1d26602a855391",
+      "bytes": 6104
+    },
+    {
       "path": "docs/00-governance/clean-room-policy.md",
       "title": "Clean-Room Policy",
       "status": "",
@@ -43,6 +57,13 @@
       "status": "",
       "sha256": "3c2b2fe0f5bc1eae972e5e49065baa2537403fe136665a63a5c3ca620ad1dadd",
       "bytes": 246
+    },
+    {
+      "path": "docs/00-governance/DECISION-PROTOCOL.md",
+      "title": "Decision Protocol",
+      "status": "",
+      "sha256": "4eac79abe2d719a9cc020eb387bad977a127576e4604c05f117449bb44b0a31a",
+      "bytes": 408
     },
     {
       "path": "docs/00-governance/document-control.md",
@@ -120,6 +141,62 @@
       "status": "",
       "sha256": "8125193650f112f6253da26bf3e7d95e20b23559c699db85d4fc08d110366c19",
       "bytes": 327
+    },
+    {
+      "path": "docs/01-program/BOPEN-GOAL-001_v0.1.md",
+      "title": "GOALS.md \u2014 bOPEN Program Goals v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "f0dea369fed7a82f217381e4a351402f00ec806e5ecf8f7bf1c219ce94233d6e",
+      "bytes": 2786
+    },
+    {
+      "path": "docs/01-program/BOPEN-SCHEDULE-001_v0.1.md",
+      "title": "SCHEDULE.md \u2014 bOPEN Target Program Schedule v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "ae7ae1a9908ea3821e994a16c41dfd12b474c6c646a25670f0e04f27b3f54a6c",
+      "bytes": 2320
+    },
+    {
+      "path": "docs/01-program/ROADMAP.md",
+      "title": "bOPEN Roadmap",
+      "status": "",
+      "sha256": "325ff0fdb72682ba39e91133206704793bbc813a9433b4f95d2cb044d15690af",
+      "bytes": 994
+    },
+    {
+      "path": "docs/02-agents/BOPEN-AGENT-001_v0.1.md",
+      "title": "BOPEN-AGENT-001 \u2014 Multi-Agent Authority, Roles and Harness Operating Model v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "b492406c7f822831960e0b9da84339aed99f0b80a7ba92823aacc29d7ca913f7",
+      "bytes": 2559
+    },
+    {
+      "path": "docs/02-agents/HANDOFF-CONTRACT.md",
+      "title": "Handoff Contract",
+      "status": "",
+      "sha256": "e59129f3d82f708a6d06eeb261dc7a4e7f16d715f13041b02373dc684d9099cb",
+      "bytes": 452
+    },
+    {
+      "path": "docs/02-agents/HARNESS-MATRIX.md",
+      "title": "Harness Matrix",
+      "status": "",
+      "sha256": "34812aaab95d861bc502e578ff88cda73fcf4f6b7a7de1d48ec241337159983e",
+      "bytes": 1612
+    },
+    {
+      "path": "docs/02-agents/ROLE-CATALOG.md",
+      "title": "Agent Role Catalog and Suggested Harness Placement",
+      "status": "",
+      "sha256": "eed2a0a15bedf5fdbef59e797f53cf5f7338732b0d01d4181b0342772a20c23a",
+      "bytes": 1294
+    },
+    {
+      "path": "docs/02-agents/WORKTREE-POLICY.md",
+      "title": "Worktree Policy",
+      "status": "",
+      "sha256": "0d9ea8bf32af4794b0a47c1d467e6c9af6cc984b310849b17cb67d3606d7d7bb",
+      "bytes": 486
     },
     {
       "path": "docs/02-requirements/acceptance/README.md",
@@ -211,6 +288,20 @@
       "status": "",
       "sha256": "216eb8d3f48a7408041554ed202ec3af1319ac934694496a049c45f1200d9ad4",
       "bytes": 272
+    },
+    {
+      "path": "docs/03-loop/BOPEN-LOOP-001_v0.1.md",
+      "title": "LOOP.md \u2014 bOPEN Governed Delivery and Learning Loop v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "8656e4b89f2019b44359f4f488dd19c1d74821c887f4285e4f82950d4c35a808",
+      "bytes": 2033
+    },
+    {
+      "path": "docs/03-loop/PROFESSIONAL-JUDGMENT-PROTOCOL.md",
+      "title": "Professional Judgment Protocol",
+      "status": "",
+      "sha256": "a62d75680fe277700c1790cb4f7db1efd1a890664f75cd97dd3377d9d1e68854",
+      "bytes": 374
     },
     {
       "path": "docs/04-platform/agents/agent-principal.md",
@@ -332,6 +423,13 @@
       "bytes": 138
     },
     {
+      "path": "docs/04-skills/BOPEN-SKILL-001_v0.1.md",
+      "title": "SKILLS.md \u2014 bOPEN Skill Governance and Approved Starter Set v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "d5146e8540a39fb18e84bde6350c1d98e21fc2293cc9384bcc312783de3b457c",
+      "bytes": 1924
+    },
+    {
       "path": "docs/05-foundation/asset/README.md",
       "title": "Asset",
       "status": "",
@@ -409,6 +507,27 @@
       "bytes": 86
     },
     {
+      "path": "docs/05-modules/MODULE-ALLOCATION.md",
+      "title": "MODULES.md \u2014 bOPEN Module Portfolio and Harness Allocation v0.1",
+      "status": "",
+      "sha256": "d67a42d1668b37a2f3e0b8d296b4ae0fdb16896595c17f0313e08c46f839c853",
+      "bytes": 1631
+    },
+    {
+      "path": "docs/05-modules/MODULE-CONTRACT.md",
+      "title": "Module Contract",
+      "status": "",
+      "sha256": "7bb04e03a301b06b5a7c202204f204e18673d71799c17640ac792ac6b32e9faf",
+      "bytes": 330
+    },
+    {
+      "path": "docs/05-modules/MODULE-REGISTRY.md",
+      "title": "Initial Module Registry",
+      "status": "",
+      "sha256": "765af5fc49d0c07a5994e483344950b1e92a1a79d346ab52e08acf549be9e977",
+      "bytes": 815
+    },
+    {
       "path": "docs/06-contracts/agents/agent-tool-contract.md",
       "title": "Agent Tool Contract",
       "status": "",
@@ -465,6 +584,20 @@
       "bytes": 197
     },
     {
+      "path": "docs/06-evidence/EVIDENCE-ENVELOPE.md",
+      "title": "Evidence Envelope",
+      "status": "",
+      "sha256": "21f464a5628cc420305752b6732b012dafc89e953e3b930effd8387ab9b3e35e",
+      "bytes": 830
+    },
+    {
+      "path": "docs/06-evidence/VERIFICATION-MATRIX.md",
+      "title": "Verification Matrix",
+      "status": "",
+      "sha256": "481d206cb20c2b7ee43988251c5b73f6d735205d4f2e1542698bae0f582cbc30",
+      "bytes": 697
+    },
+    {
       "path": "docs/07-security/authorization/privileged-access.md",
       "title": "Privileged Access",
       "status": "",
@@ -519,6 +652,20 @@
       "status": "",
       "sha256": "13c9c2caae6446af0ae3bb9e8cbaa1926d6f7dc92b1aa30ff6aa6da4aaefa4ec",
       "bytes": 287
+    },
+    {
+      "path": "docs/07-technology/BOPEN-TECH-001_v0.1.md",
+      "title": "BOPEN-TECH-001 \u2014 P0 Technology Baseline and Freeze Decision Record v0.1",
+      "status": "PROPOSED \u2014 NOT YET FROZEN",
+      "sha256": "0a6ff5ee6df02a830f890876b0982ec3c19075e1b6322c68e416ccaeaae45199",
+      "bytes": 1102
+    },
+    {
+      "path": "docs/08-design/BOPEN-DESIGN-001_v0.1.md",
+      "title": "BOPEN-DESIGN-001 \u2014 Platform Experience and Module UI Governance v0.1",
+      "status": "PROPOSED \u2014 NO IMPLEMENTATION AUTHORITY",
+      "sha256": "3ae54a42c0459daa3321e71a065836739c5a934db0f9e46708494f424525ab20",
+      "bytes": 1273
     },
     {
       "path": "docs/08-engineering/branching.md",
@@ -633,6 +780,13 @@
       "bytes": 186
     },
     {
+      "path": "docs/09-operations/OPERATING-CADENCE.md",
+      "title": "Operating Cadence",
+      "status": "",
+      "sha256": "5a42bf43b8ffd147e33401c28ac753aa6799d3dbb7352d18911e7e34ba2f8717",
+      "bytes": 544
+    },
+    {
       "path": "docs/09-operations/runbooks/bootstrap-validation.md",
       "title": "Runbook \u2014 Bootstrap Validation",
       "status": "",
@@ -673,6 +827,13 @@
       "status": "",
       "sha256": "e62f8cd5b9bf19e10d1e90a33567a302c5ee6db51c2f363c595e8664d5e1b829",
       "bytes": 156
+    },
+    {
+      "path": "docs/09-operations/SESSION-RUNBOOK.md",
+      "title": "Governed Agent Session Runbook",
+      "status": "",
+      "sha256": "fc5f131ebb6e15ccd68caad7df91468f5b9cb6c846b2d5c33f3db678d7ebd2a4",
+      "bytes": 690
     },
     {
       "path": "docs/10-products/agriculture/product-composition.md",
@@ -871,11 +1032,18 @@
       "bytes": 1556
     },
     {
+      "path": "docs/evidence/EVD-BOOT-004-bootstrap-recovery.md",
+      "title": "EVD-BOOT-004 - Bootstrap Governance Recovery",
+      "status": "",
+      "sha256": "8b181d77d295a6b86265dab3fc783180295d8f1b8d4b44e52a9aebed99026f22",
+      "bytes": 5041
+    },
+    {
       "path": "docs/evidence/EVIDENCE-INDEX.md",
       "title": "Evidence Index",
       "status": "",
-      "sha256": "ac2a76cb3b50c141046c1e2d795166116afe43a48624ed3956cbb7545f6d0c95",
-      "bytes": 595
+      "sha256": "10fca956f3dc7b9d125e109c9ee79f67932c8354d4361dafbddb7613fe79bfeb",
+      "bytes": 763
     },
     {
       "path": "docs/GLOSSARY.md",
@@ -890,6 +1058,41 @@
       "status": "",
       "sha256": "70fc7f482a52af549042a53fcd2bccddf542c3fc0311c4a389b3255c40474ef1",
       "bytes": 1829
+    },
+    {
+      "path": "docs/registers/agent-registry.json",
+      "title": "",
+      "status": "",
+      "sha256": "3a0a6b8dd88987705903a272ba0bb3c938ce5680f89586f092be1fbde9623532",
+      "bytes": 802
+    },
+    {
+      "path": "docs/registers/goal-register.json",
+      "title": "",
+      "status": "",
+      "sha256": "67200adaeebe280ebadbdaffd9ce6e4db6e803ba016e245978e982b4d503f2fa",
+      "bytes": 1126
+    },
+    {
+      "path": "docs/registers/module-assignment.json",
+      "title": "",
+      "status": "",
+      "sha256": "41671b81b0810a454d09f3754822e884cb2a528e85aebbe18a6a9f2356ecea73",
+      "bytes": 1139
+    },
+    {
+      "path": "docs/registers/schedule-register.json",
+      "title": "",
+      "status": "",
+      "sha256": "35f88e8d4e445ffe75caef8f5a4be22c9fee39f01ea272049658ae3c70a3eb7a",
+      "bytes": 1099
+    },
+    {
+      "path": "docs/registers/skill-registry.json",
+      "title": "",
+      "status": "",
+      "sha256": "ccd138fd40a1a6b7ea13445c54f1ae64732337ca39b8c12266cc670732cdfc2d",
+      "bytes": 1409
     },
     {
       "path": "docs/resources/open-source-research/AGENTS.md",
