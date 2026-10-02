@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-29",
-  "count": 383,
+  "count": 387,
   "documents": [
     {
       "path": "docs/00-governance/AGENT-ALIGNMENT.md",
@@ -220,6 +220,13 @@
       "bytes": 3616
     },
     {
+      "path": "docs/01-product/KERNEL-AUTONOMY-OBJECTIVE.md",
+      "title": "Objective \u2014 bOPEN as a multi-tenant management kernel that runs itself",
+      "status": "**ADVISORY OBJECTIVE.** Not a roadmap amendment, not a phase authorization, not a gate.",
+      "sha256": "b52fd525ae7c46fd64bc5a9e8cb991a8c557995a9bd1ddfb3d22539f3843716e",
+      "bytes": 7510
+    },
+    {
       "path": "docs/01-product/MILE-4.1-party-foundation-plan.md",
       "title": "MILE-4.1 \u2014 Party & Relationship Foundation, first-slice plan (`BOPEN-PARTY-001`)",
       "status": "**Plan \u2014 buildable on Phase 4 authorization** ([`DEC-P4-ENTRY`](../decisions/DEC-P4-ENTRY.md))",
@@ -407,6 +414,13 @@
       "status": "**Design \u2014 advisory. Buildable on operator authorization.** The last open item of the hybrid tenancy model ([`DEC-P35-TENANCY-MODEL`](../decisions/DEC-P35-TENANCY-MODEL.md) \u00a78 Option D), deferred through the \u00a710 and \u00a711 slices.",
       "sha256": "236e9407bcc938ae6bf3c85cab29bfbf151e2af65d87e6a9a936724baa877c0a",
       "bytes": 9294
+    },
+    {
+      "path": "docs/01-product/design-track-intake-review-2026-08-18.md",
+      "title": "Design-track intake review \u2014 documents 002, 003, 004",
+      "status": "**REVIEW RECORD \u2014 advisory.** Adopts nothing, authorizes nothing.",
+      "sha256": "ae5ad8f059d365ec151a96f1db62bbdf875c89e6e6f72a9457435de6a4f24296",
+      "bytes": 6782
     },
     {
       "path": "docs/01-product/ecosystem-map.md",
@@ -1760,6 +1774,13 @@
       "bytes": 11080
     },
     {
+      "path": "docs/evidence/phase-3.5/disposition-queue-correction-2026-08-11.md",
+      "title": "The disposition queue is two items, not six \u2014 correction, 2026-08-11",
+      "status": "**CORRECTION RECORD \u2014 advisory.** Disposes nothing and changes no verdict.",
+      "sha256": "43114f57c9e8711bad2cf84654a947799e71926202d421ac0ee7672ce1b6c8e9",
+      "bytes": 4887
+    },
+    {
       "path": "docs/evidence/phase-3.5/invariant-traceability.csv",
       "title": "",
       "status": "",
@@ -2649,6 +2670,13 @@
       "bytes": 2223
     },
     {
+      "path": "docs/work-packages/BOPEN-WP-PLANS-001.md",
+      "title": "BOPEN-WP-PLANS-001 \u2014 A governed home and format for plan documents",
+      "status": "Proposed \u2014 awaiting operator acceptance; merging this file is the acceptance",
+      "sha256": "5b145c6fc87f0c72306c9a15bc00d608c0a66056a4be2f807b56153b890a6916",
+      "bytes": 5904
+    },
+    {
       "path": "docs/work-packages/FIRST-VERTICAL-SLICE-SPEC.md",
       "title": "First Platform Kernel Vertical Slice \u2014 Draft Execution Specification",
       "status": "",
@@ -2666,8 +2694,8 @@
       "path": "docs/work-packages/WORK-PACKAGE-REGISTER.md",
       "title": "Work-Package Register",
       "status": "",
-      "sha256": "26174c39549709e59b8973f3d8c49310ad1270769ce6200a47cb8be5d8092591",
-      "bytes": 4978
+      "sha256": "560e41ee7f0aa000c30740e80e649f94e5de53fa1e62111f0977cf14569f1f7e",
+      "bytes": 5237
     },
     {
       "path": "docs/work-packages/WP-P35-07-QUORUM-DISPOSITION-RECORD.md",
