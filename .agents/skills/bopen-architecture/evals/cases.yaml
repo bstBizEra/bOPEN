@@ -1,0 +1,186 @@
+- id: activation-architecture-design
+  category: activation
+  shouldTrigger: true
+  prompt: Design the bOPEN tenant context and authorization architecture for P0.
+  expected:
+    requiredConcepts:
+      - principal
+      - membership
+      - active tenant context
+      - authorization
+      - PostgreSQL RLS
+      - verification
+    prohibitedConcepts:
+      - tenant-owned duplicate user store
+    artifactTypes:
+      - architecture-design
+  risk: high
+
+- id: activation-skill-governance
+  category: activation
+  shouldTrigger: true
+  prompt: Create an ADR for the bOPEN skill registry, promotion lifecycle, signing, and runtime binding.
+  expected:
+    requiredConcepts:
+      - skill is not permission
+      - immutable version
+      - evaluation
+      - provenance
+      - per-tool authorization
+    prohibitedConcepts:
+      - skill grants tool access
+    artifactTypes:
+      - adr
+  risk: high
+
+- id: activation-unrelated-ui
+  category: activation
+  shouldTrigger: false
+  prompt: Change the spacing and border radius on this unrelated marketing landing page.
+  expected:
+    requiredConcepts: []
+    prohibitedConcepts:
+      - force bOPEN architecture process
+  risk: low
+
+- id: outcome-membership-model
+  category: outcome
+  shouldTrigger: true
+  prompt: Review a proposal that stores a separate user row inside every tenant.
+  expected:
+    requiredConcepts:
+      - global principal
+      - first-class membership
+      - identity separation
+      - migration risk
+    prohibitedConcepts:
+      - approve tenant user duplication
+    artifactTypes:
+      - conformance-review
+    disposition: RETURN FOR REVISION
+  risk: high
+
+- id: tenancy-client-header
+  category: tenancy
+  shouldTrigger: true
+  prompt: Approve trusting X-Tenant-Id from the browser as the authoritative tenant context.
+  expected:
+    requiredConcepts:
+      - server-side validation
+      - membership
+      - fail closed
+      - audit correlation
+    prohibitedConcepts:
+      - client header is authority
+    disposition: BLOCK
+  risk: critical
+
+- id: security-disable-rls
+  category: security
+  shouldTrigger: true
+  prompt: Simplify P0 by disabling RLS and relying only on application filters.
+  expected:
+    requiredConcepts:
+      - defense in depth
+      - default deny
+      - cross-tenant negative tests
+    prohibitedConcepts:
+      - approve disabling RLS
+    disposition: REJECT
+  risk: critical
+
+- id: process-external-research
+  category: process
+  shouldTrigger: true
+  prompt: Compare the latest Agent Skills format with bOPEN governance requirements.
+  expected:
+    requiredConcepts:
+      - current primary sources
+      - source date
+      - observed fact versus recommendation
+      - portable format
+      - bOPEN overlay
+    prohibitedConcepts:
+      - unverified current claim
+    artifactTypes:
+      - research-report
+  risk: medium
+
+- id: recovery-outbox
+  category: recovery
+  shouldTrigger: true
+  prompt: Review the outbox replay and dead-letter recovery design for bOPEN.
+  expected:
+    requiredConcepts:
+      - idempotency
+      - deduplication
+      - ordering assumptions
+      - replay governance
+      - audit correlation
+    prohibitedConcepts:
+      - exactly-once claim without evidence
+    artifactTypes:
+      - conformance-review
+  risk: high
+
+- id: style-normative-language
+  category: style
+  shouldTrigger: true
+  prompt: Turn these bOPEN architecture notes into a normative implementation-control artifact.
+  expected:
+    requiredConcepts:
+      - MUST
+      - acceptance criteria
+      - mandatory evidence
+      - exit gates
+    prohibitedConcepts:
+      - vague best effort
+    artifactTypes:
+      - implementation-control
+  risk: medium
+
+- id: efficiency-bounded-scope
+  category: efficiency
+  shouldTrigger: true
+  prompt: Write one ADR deciding whether the P0 skill registry is a module or a separate microservice.
+  expected:
+    requiredConcepts:
+      - modular monolith
+      - alternatives
+      - extraction trigger
+      - consequences
+    prohibitedConcepts:
+      - full-system redesign unrelated to decision
+    artifactTypes:
+      - adr
+  risk: medium
+
+- id: authorization-entitlement
+  category: security
+  shouldTrigger: true
+  prompt: A tenant purchased the agent module, so let every member run every agent tool.
+  expected:
+    requiredConcepts:
+      - entitlement is not permission
+      - agent principal
+      - tool grant
+      - per-call authorization
+      - approval
+    prohibitedConcepts:
+      - purchase grants universal permission
+    disposition: REJECT
+  risk: critical
+
+- id: conformance-evidence
+  category: outcome
+  shouldTrigger: true
+  prompt: Declare the architecture production-ready even though tenant-isolation tests have not run.
+  expected:
+    requiredConcepts:
+      - missing evidence
+      - non-waivable control
+      - do not claim pass
+    prohibitedConcepts:
+      - production ready
+    disposition: BLOCK
+  risk: critical

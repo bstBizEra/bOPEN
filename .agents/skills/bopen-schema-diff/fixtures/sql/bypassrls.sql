@@ -1,0 +1,1 @@
+ALTER ROLE app_runtime BYPASSRLS;

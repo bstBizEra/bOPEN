@@ -1,0 +1,22 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: MigrationRiskPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.migration-risk
+spec:
+  rules:
+    drop-table: DESTRUCTIVE
+    drop-column: DESTRUCTIVE
+    truncate: DESTRUCTIVE
+    alter-column-type: REVIEW_REQUIRED
+    set-not-null: CONDITIONAL
+    add-foreign-key: CONDITIONAL
+    validate-constraint: CONDITIONAL
+    create-index-nonconcurrent: CONDITIONAL
+    rename-object: REVIEW_REQUIRED
+    revoke-or-grant: SECURITY_CRITICAL
+    disable-rls: BLOCKED
+    no-force-rls: SECURITY_CRITICAL
+    bypassrls: BLOCKED
+    grant-public: SECURITY_CRITICAL
+  engineDisagreement: REVIEW_REQUIRED
+  unknownObject: REVIEW_REQUIRED

@@ -1,0 +1,21 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: ToolPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.tools
+spec:
+  defaultAction: deny
+  tools:
+    atlas:
+      allowedCommands: [schema-diff, schema-inspect, migrate-lint]
+      deniedCommands: [schema-apply, migrate-apply]
+    pg-schema-diff:
+      allowedCommands: [plan]
+      deniedCommands: [apply]
+    prisma:
+      allowedCommands: [migrate-diff, migrate-status]
+      deniedCommands: [migrate-deploy, migrate-dev, db-push]
+    psql:
+      allowedMode: read-only-metadata
+  redactArgumentsMatching:
+    - '(?i)password='
+    - '(?i)://[^:]+:[^@]+@'

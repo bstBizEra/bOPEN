@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/skills/bopen-skill.schema.json",
+  "title": "bOPEN Skill Manifest Minimum Contract",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "skills.bopen.io/v1alpha1"
+    },
+    "kind": {
+      "const": "Skill"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "owner",
+        "lifecycleStage"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9.-]+$"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycleStage": {
+          "enum": [
+            "OBSERVED",
+            "CANDIDATE",
+            "NORMALIZED",
+            "VALIDATED",
+            "EVALUATED",
+            "APPROVED",
+            "SIGNED",
+            "PUBLISHED",
+            "MONITORED",
+            "DEPRECATED",
+            "SUSPENDED",
+            "REVOKED"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "spec": {
+      "type": "object",
+      "required": [
+        "type",
+        "riskClass",
+        "scope",
+        "contracts",
+        "runtime",
+        "evaluation"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "analytical",
+            "transactional",
+            "generative",
+            "operational"
+          ]
+        },
+        "riskClass": {
+          "enum": [
+            "SKR0",
+            "SKR1",
+            "SKR2",
+            "SKR3",
+            "SKR4"
+          ]
+        },
+        "scope": {
+          "type": "object"
+        },
+        "contracts": {
+          "type": "object"
+        },
+        "runtime": {
+          "type": "object"
+        },
+        "evaluation": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

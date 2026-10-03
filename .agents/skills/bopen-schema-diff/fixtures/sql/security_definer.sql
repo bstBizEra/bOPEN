@@ -1,0 +1,1 @@
+CREATE FUNCTION tenant_lookup() RETURNS uuid LANGUAGE sql SECURITY DEFINER AS $$ SELECT current_setting('app.tenant_id')::uuid $$;

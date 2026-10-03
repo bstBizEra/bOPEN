@@ -1,0 +1,18 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: RevocationPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.revocation
+spec:
+  immediateRevocationTriggers:
+    - cross-tenant-false-negative
+    - credential-disclosure
+    - unauthorized-database-mutation
+    - signature-or-digest-failure
+    - known-critical-adapter-vulnerability
+  actions:
+    - disable-skill-version
+    - block-agent-bindings
+    - notify-owners
+    - preserve-evidence
+    - open-incident
+    - require-re-evaluation

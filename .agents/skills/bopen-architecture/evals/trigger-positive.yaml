@@ -1,0 +1,10 @@
+- Design the bOPEN module and capability registry.
+- Review this bOPEN tenant isolation proposal.
+- Create a bOPEN architecture ADR for ReBAC adoption.
+- Build the P0 implementation-control package for membership and RLS.
+- Research current skill package standards for bOPEN.
+- Produce a conformance verdict for the bOPEN outbox implementation.
+- Model bOPEN principal, party, tenant, organization, and legal-entity relationships.
+- Define bOPEN portal route contexts and tenant switching.
+- Create the bOPEN agent-to-skill runtime binding architecture.
+- Build a verification matrix for bOPEN entitlements and authorization.

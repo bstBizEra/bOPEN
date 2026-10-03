@@ -1,0 +1,11 @@
+prompts:
+- Compare this PostgreSQL migration with main and identify destructive changes.
+- Review our tenant RLS schema diff before merging.
+- Detect schema drift between staging and the migration directory.
+- Use Atlas and pg-schema-diff to produce a migration evidence report.
+- Check whether this new tenant-owned table has correct tenant_id and policies.
+- Analyze Prisma migration SQL for PostgreSQL features and breaking changes.
+- Classify lock, data-loss, and backward-compatibility risk in this DDL.
+- Create a normalized schema change set from these diff outputs.
+- Review grants, ownership, SECURITY DEFINER, and BYPASSRLS changes.
+- Prepare a governed schema-diff verdict for this pull request.

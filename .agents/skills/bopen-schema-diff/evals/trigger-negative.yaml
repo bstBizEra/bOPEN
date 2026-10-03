@@ -1,0 +1,11 @@
+prompts:
+- Design a new customer onboarding workflow.
+- Explain PostgreSQL SELECT syntax.
+- Create a marketing presentation.
+- Summarize this project meeting.
+- Write a REST API client.
+- Review TypeScript formatting only.
+- Generate a database ERD from business requirements without comparing schemas.
+- Deploy the application to Vercel.
+- Send an email to the database administrator.
+- Create a project roadmap.

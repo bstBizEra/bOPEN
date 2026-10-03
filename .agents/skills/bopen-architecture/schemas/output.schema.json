@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/skills/architecture-output.schema.json",
+  "title": "bOPEN Architecture Skill Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactId",
+    "title",
+    "version",
+    "status",
+    "disposition",
+    "executiveSummary",
+    "scope",
+    "decisions",
+    "controls",
+    "risks",
+    "verification",
+    "evidence",
+    "assumptions"
+  ],
+  "properties": {
+    "artifactId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "candidate",
+        "review",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "disposition": {
+      "enum": [
+        "APPROVE",
+        "APPROVE WITH CONDITIONS",
+        "RETURN FOR REVISION",
+        "REJECT",
+        "BLOCK"
+      ]
+    },
+    "executiveSummary": {
+      "type": "string",
+      "minLength": 20
+    },
+    "scope": {
+      "type": "object"
+    },
+    "architecture": {
+      "type": "object",
+      "properties": {
+        "principles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "flows": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "stateMachines": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.bopen.io/architecture/decision.schema.json"
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "implementationPlan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unresolvedItems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

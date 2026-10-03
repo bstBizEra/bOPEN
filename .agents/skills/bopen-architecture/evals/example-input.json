@@ -1,0 +1,53 @@
+{
+  "requestId": "ARCH-EXAMPLE-001",
+  "task": "design",
+  "objective": "Define the bOPEN Skills Registry and tenant activation architecture for a controlled P0 pilot.",
+  "scope": {
+    "platformAreas": [
+      "agent-governance",
+      "skill-registry",
+      "tenancy",
+      "authorization"
+    ],
+    "products": [],
+    "modules": [],
+    "tenantContext": "synthetic",
+    "environments": [
+      "development",
+      "test"
+    ]
+  },
+  "constraints": {
+    "topology": "modular-monolith",
+    "productionExecution": false
+  },
+  "assumptions": [
+    "Production agent runtime remains outside P0."
+  ],
+  "sources": [
+    {
+      "type": "approved-artifact",
+      "location": "BOPEN-SYS-001",
+      "authority": "controlling",
+      "required": true
+    },
+    {
+      "type": "approved-artifact",
+      "location": "BOPEN-P0-001",
+      "authority": "controlling",
+      "required": true
+    }
+  ],
+  "deliverables": [
+    "architecture-design",
+    "adr",
+    "verification-matrix"
+  ],
+  "research": {
+    "webAllowed": true,
+    "primarySourcesOnly": true,
+    "freshnessRequired": true,
+    "asOfDate": "2026-07-22"
+  },
+  "outputDirectory": "./artifacts"
+}

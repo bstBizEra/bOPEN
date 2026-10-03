@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/schema-diff/evaluation-case.schema.json",
+  "title": "Schema Diff Evaluation Case",
+  "type": "object",
+  "required": [
+    "id",
+    "fixture",
+    "expected_status",
+    "expected_verdict",
+    "required_rules"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "fixture": {
+      "type": "string"
+    },
+    "expected_status": {
+      "enum": [
+        "PASS",
+        "REVIEW",
+        "BLOCK",
+        "ERROR"
+      ]
+    },
+    "expected_verdict": {
+      "enum": [
+        "SAFE",
+        "CONDITIONAL",
+        "REVIEW_REQUIRED",
+        "BREAKING",
+        "DESTRUCTIVE",
+        "SECURITY_CRITICAL",
+        "BLOCKED",
+        "UNKNOWN"
+      ]
+    },
+    "required_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

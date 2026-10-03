@@ -1,0 +1,24 @@
+{
+  "package": "bopen-schema-diff",
+  "canonical_id": "io.bizera.bopen.database.schema-diff",
+  "version": "0.1.0",
+  "lifecycle_stage": "VALIDATED",
+  "built_at": "2026-07-22T11:02:46+00:00",
+  "top_level_directory": "bopen-schema-diff",
+  "authority": "Not approved, signed, or published",
+  "external_tools_bundled": [],
+  "verification_commands": [
+    "python scripts/validate_package.py",
+    "python -m unittest discover -s tests -v",
+    "python scripts/run_static_evals.py"
+  ],
+  "verification_summary": {
+    "package_checks_passed": 133,
+    "package_warnings": 0,
+    "package_failures": 0,
+    "unit_tests_passed": 11,
+    "unit_tests_failed": 0,
+    "static_evaluations_passed": 21,
+    "static_evaluations_failed": 0
+  }
+}

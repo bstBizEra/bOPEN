@@ -1,0 +1,9 @@
+ID,Risk,Impact,Control
+R-001,False negative on tenant isolation,Critical,Block release; 100% required eval recall
+R-002,Generated plan causes data loss,Critical,Analysis-only; destructive detection; independent review
+R-003,Credential appears in evidence,Critical,Runtime references; redaction; secret scan
+R-004,Engine disagreement ignored,High,REVIEW_REQUIRED and preserved raw outputs
+R-005,Static parser misses complex SQL,High,Conservative UNKNOWN; deterministic engine and human review
+R-006,Lock duration underestimated,High,Operational metadata and staging rehearsal required
+R-007,Tool supply-chain vulnerability,High,"Version pinning, SBOM, revocation policy"
+R-008,Skill applies production mutation,Critical,Command denylist and separate authority boundary

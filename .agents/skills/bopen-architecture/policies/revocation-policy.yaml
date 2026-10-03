@@ -1,0 +1,27 @@
+apiVersion: policy.bopen.io/v1alpha1
+kind: SkillRevocationPolicy
+metadata:
+  id: io.bizera.bopen.architecture.revocation
+  version: 0.1.0
+spec:
+  triggers:
+    - cross-tenant disclosure or unsafe recommendation
+    - privilege-escalation behavior
+    - malicious or altered package
+    - exposed secret or credential
+    - critical dependency or supply-chain finding
+    - model/runtime regression below evaluation threshold
+    - superseding architecture that makes guidance unsafe
+  actions:
+    - suspend implicit invocation
+    - block new installations and runs
+    - notify owners and installed tenants or repositories
+    - preserve evidence and affected-version inventory
+    - publish replacement or rollback guidance
+    - revoke signatures or registry status when applicable
+  restoration:
+    requires:
+      - root-cause analysis
+      - corrected immutable version
+      - regression evaluation
+      - security and architecture approval

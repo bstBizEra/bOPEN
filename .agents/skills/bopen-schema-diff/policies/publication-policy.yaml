@@ -1,0 +1,15 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: PublicationPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.publication
+spec:
+  minimumLifecycleStage: APPROVED
+  require:
+    - independent-security-review
+    - model-level-evaluation
+    - immutable-artifact-digest
+    - sbom
+    - provenance
+    - signature
+    - license-approval
+  currentExternalPublication: prohibited

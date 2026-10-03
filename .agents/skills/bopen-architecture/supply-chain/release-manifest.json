@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "1.0",
+  "packageId": "io.bizera.bopen.architecture",
+  "name": "bopen-architecture",
+  "version": "0.1.0",
+  "lifecycleStage": "validated",
+  "generatedAt": "2026-07-22T08:09:16+00:00",
+  "sourceTreeDigest": "5c1c4ebc7f1354231c293a0c9e83f73dcb4b9f84daa5ae98a1c0052e1d4ecfa8",
+  "signatureStatus": "unsigned",
+  "independentApprovalStatus": "not-recorded",
+  "inventoryExclusions": [
+    "SHA256SUMS",
+    "supply-chain/provenance.intoto.jsonl",
+    "supply-chain/release-manifest.json"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "1e1d08973e39c229311603c633005f7a4a761bdaeed8a8e755d9894a5b9e9d01",
+      "size": 70
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "db4ebf68e14ae59cf5552cbd144b400c47c51933495a57e479fff92c17c81dde",
+      "size": 678
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "468832fe6be8a630819d293977a439c525b126a9b1d621ebacc1fff70da9ce5b",
+      "size": 552
+    },
+    {
+      "path": "Makefile",
+      "sha256": "65f3eec76c75ed726bb9cbef9e25d2c96654c9d4a0dc0cbfa912e6461d022a8c",
+      "size": 392
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "c328b24cb98e8d361753414ef1856de335cb8ccdb01b37490eb81b362d9117bb",
+      "size": 552
+    },
+    {
+      "path": "README.md",
+      "sha256": "b8e7aca48cdf3a9c101ce941c856819a9a18f3f2f543a08415e7fc8ddbc61279",
+      "size": 3661
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "8a1702b0bf201d37b7377c73036bef9e88765b39dc64f44f2c4bb151be2cb0cf",
+      "size": 10281
+    },
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "95fc9fde8caf3d56f53239db411899bebea751e11e55619a8877d4ac6a0f722c",
+      "size": 330
+    },
+    {
+      "path": "assets/adr-template.md",
+      "sha256": "6ff2c1e095e841af11571ebf4cf66c9a9f7fa1752e902906db260681e2959a43",
+      "size": 376
+    },
+    {
+      "path": "assets/architecture-design-template.md",
+      "sha256": "179ab8d976c260d10a698ab87ff5c4dd95ebe3dd3bd6fd165afd35e8556be7a7",
+      "size": 894
+    },
+    {
+      "path": "assets/architecture-research-template.md",
+      "sha256": "f62da67f8f9e401f1296abb2e2183a6f2d1bc9b5629ba0b7ab2746157269b044",
+      "size": 539
+    },
+    {
+      "path": "assets/bopen-context.example.yaml",
+      "sha256": "9261f52e07f4789bf4f5dc603cd1781b59081a3e47db42948f7f4cbb419b3b0e",
+      "size": 880
+    },
+    {
+      "path": "assets/conformance-review-template.md",
+      "sha256": "6d4eed08154773eb2d5fde84bd08d63a3548551eb20275351c656b552d8a6347",
+      "size": 655
+    },
+    {
+      "path": "assets/implementation-control-template.md",
+      "sha256": "847a74132b3f9a36374d6de70891f0e1636dffabb39dc11b941620b1100b28fd",
+      "size": 651
+    },
+    {
+      "path": "assets/risk-register.csv",
+      "sha256": "41dfe73d382ba2db4ab1cee5b727b5d273a7d7a93faf485133420a4bfb4ee407",
+      "size": 561
+    },
+    {
+      "path": "assets/verification-matrix.csv",
+      "sha256": "e1c7887272499f0cc9c50d06f5a6fe87021125d6c8a533acc0d4eaef18c22116",
+      "size": 830
+    },
+    {
+      "path": "bopen.skill.yaml",
+      "sha256": "4bc904a32ac8e870fcabe46fb56d7336dff6a51ea1c75206011090dc04b1e85a",
+      "size": 2401
+    },
+    {
+      "path": "ci/validate-skill.yml",
+      "sha256": "44c9ac79f89be6ab528149a4a723ed232ddb3f7d346409343bc555a8c3e19808",
+      "size": 606
+    },
+    {
+      "path": "docs/GOVERNANCE.md",
+      "sha256": "4a42403cff5d80224135ee5f7f4a1b346847414d22954ed39161f574c5f1aaef",
+      "size": 1209
+    },
+    {
+      "path": "docs/INSTALL.md",
+      "sha256": "de63c038c2e30d4405d550ab4c2408db575eb02858dbe98c45c71398ddada0db",
+      "size": 871
+    },
+    {
+      "path": "docs/RELEASE.md",
+      "sha256": "d65c10b954470b46079531e543e260f5f8c883e490460ad2341b1fa3b357aec3",
+      "size": 848
+    },
+    {
+      "path": "docs/USAGE.md",
+      "sha256": "42be51240671e3cf386ee196f8f321bf0c808140f39bc07437b25cd124d5589c",
+      "size": 1293
+    },
+    {
+      "path": "evals/cases.yaml",
+      "sha256": "a8261622569a9e53f004f25b7dc79329446ef1d702d2c75d6e63bcff3daba648",
+      "size": 4918
+    },
+    {
+      "path": "evals/example-input.json",
+      "sha256": "65152b3b545ba345e1cabc16175f88728dbe936ef9d5d6a41cd457a352e33bb1",
+      "size": 1171
+    },
+    {
+      "path": "evals/example-output.json",
+      "sha256": "6774bbab72511e053bd4e2f2ac1fbda242a0d986486f89817e7327b1ac088951",
+      "size": 3785
+    },
+    {
+      "path": "evals/rubric.md",
+      "sha256": "c743543df4106837c957a7ac4f829f79eb5f8d5a32f009502a45f739d008417d",
+      "size": 1736
+    },
+    {
+      "path": "evals/security-cases.yaml",
+      "sha256": "b75f628cbf3eb796d505bb8ca461b9c97d4a89d4e8d8ab675303357ab67253a3",
+      "size": 2103
+    },
+    {
+      "path": "evals/trigger-negative.yaml",
+      "sha256": "14412de74d148283fe480bbe6ab2d54256caef72fb3678a82d3a4e38572f9860",
+      "size": 452
+    },
+    {
+      "path": "evals/trigger-positive.yaml",
+      "sha256": "6ae3c89e611d477e186ee822dd3a5bef7bca59ae9c70ed6476edd39de2f43e9f",
+      "size": 626
+    },
+    {
+      "path": "policies/data-handling-policy.yaml",
+      "sha256": "dbb3dbb6c845ae1929f5c3e68850a94f7be4e2aa52db2829076b050d338d0ce7",
+      "size": 680
+    },
+    {
+      "path": "policies/execution-policy.yaml",
+      "sha256": "c3789b8e8a2c78cd6dd32859ee313d6134981ec4626dd4b09e1f24296460952d",
+      "size": 691
+    },
+    {
+      "path": "policies/publication-policy.yaml",
+      "sha256": "04b05c3e2b899a4ad1e9497fb7cadc10974c003b866f8e7b75f6a0bb0cf90775",
+      "size": 855
+    },
+    {
+      "path": "policies/revocation-policy.yaml",
+      "sha256": "3a5aaadc551bf96f956b794a62174cc7d459245839ff8c29b772bfad7fe4cd4d",
+      "size": 952
+    },
+    {
+      "path": "policies/tool-policy.yaml",
+      "sha256": "f548e2001100279c932bfa5629109343fca4c30ed6120bd5ab5060b609b1ec8d",
+      "size": 944
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "edcd77b418cab47e7c028045232789853f543b6d932956096ca720d585fcbe5b",
+      "size": 346
+    },
+    {
+      "path": "references/architecture-baseline.md",
+      "sha256": "d705618d866c67b6d0c3de5ec85e115cfcc965965b7370008bb9d71414a97eb9",
+      "size": 5401
+    },
+    {
+      "path": "references/decision-and-review-model.md",
+      "sha256": "cdea600c3b019f82f44a7a02e3d1271660c947f9ceccd31a46f9573c942189ea",
+      "size": 2552
+    },
+    {
+      "path": "references/deliverable-contracts.md",
+      "sha256": "ec2a165fe2e3069a5a695fc69d04982f7607b42a6321581dd81680ba855d92e8",
+      "size": 2046
+    },
+    {
+      "path": "references/domain-glossary.md",
+      "sha256": "13a0902de52b83283ca7fb493109f3d993da3db9fbca083333ebcbdc4ebe67b2",
+      "size": 2340
+    },
+    {
+      "path": "references/operating-procedure.md",
+      "sha256": "e9f674aa52d69de138b47334e5549e95331f0dc3540fcd605acdad6dc8f43e85",
+      "size": 1648
+    },
+    {
+      "path": "references/quality-gates.md",
+      "sha256": "e6b56153e04edd3bd9b476b62e8087e71d2bbbe3b88d78146a5acbfb5e2ac680",
+      "size": 2439
+    },
+    {
+      "path": "references/research-and-evidence-policy.md",
+      "sha256": "9305ddf81e7e7310cce07fda382ef69f5edd1929be4921e4365734024f03904f",
+      "size": 2171
+    },
+    {
+      "path": "references/security-and-tenancy.md",
+      "sha256": "9c2169e3fda60b6fefe3bc5af7e538c17d68518c7d7578088c834c8c982fced5",
+      "size": 3411
+    },
+    {
+      "path": "references/source-register.md",
+      "sha256": "97d858b778d7d8962dc0043e37c57bc1768631cf17acbdbc8371607f67036e1f",
+      "size": 3384
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "0b0709dc3105d98b29f4fc6a870c15c0cf42191498384ef8a2a32d3fcf5f34ed",
+      "size": 33
+    },
+    {
+      "path": "schemas/architecture-decision.schema.json",
+      "sha256": "92220ca8ecbaa6fe795fd9e18db763fab87510c68e7df2640c1d69cd5c47d69e",
+      "size": 1697
+    },
+    {
+      "path": "schemas/bopen-skill.schema.json",
+      "sha256": "c1cc7959ce70b0105a386685ac010661a3dbf9410fda649bf4a22f47c7f16952",
+      "size": 11092
+    },
+    {
+      "path": "schemas/evaluation-case.schema.json",
+      "sha256": "3e01047cff8e0020e9cc31ad05ef22439729f89d54c9d83f130765d5b7e2a22e",
+      "size": 1584
+    },
+    {
+      "path": "schemas/evidence-envelope.schema.json",
+      "sha256": "37c89832913114fdd123d3b7a0c4ead489edc491801cce4781ebfc52c8c4c9ea",
+      "size": 1092
+    },
+    {
+      "path": "schemas/input.schema.json",
+      "sha256": "a30911ad83054bbe623558a3c8fafe8f590d1d5300757a635e6523fe2c0c5afb",
+      "size": 3822
+    },
+    {
+      "path": "schemas/output.schema.json",
+      "sha256": "64d96a41db27e4b95373a2ad81ceaa9563616ebfc5566357eac8bae856f59d17",
+      "size": 2885
+    },
+    {
+      "path": "scripts/check_architecture.py",
+      "sha256": "c6ce52389b11066b7fb6835cde1bf1619774d80b10a004eae8a87039edf24fe7",
+      "size": 3174
+    },
+    {
+      "path": "scripts/new_artifact.py",
+      "sha256": "41e8d52cb1de7418a03a82da9161dc7cc1fad353e8a0d731fc7889211b5e3f5b",
+      "size": 1825
+    },
+    {
+      "path": "scripts/package_release.py",
+      "sha256": "23ba78ceef66b3f74ad079af1b5d24b761c78b01818da6e9c78145210260eb24",
+      "size": 5877
+    },
+    {
+      "path": "scripts/run_static_evals.py",
+      "sha256": "cc6504d12691f08917c4a1706a83361c92a8090238deef29021e95f92263b271",
+      "size": 3695
+    },
+    {
+      "path": "scripts/validate_package.py",
+      "sha256": "2ed7eaf73884d7715b01a75af5dbabb426be480619f6438c4e10c07f74f174f4",
+      "size": 13815
+    },
+    {
+      "path": "supply-chain/README.md",
+      "sha256": "93135cfb43181a95483560321735f26ac96cf4b93e227d96bbf9ef9738162879",
+      "size": 461
+    },
+    {
+      "path": "supply-chain/sbom.spdx.json",
+      "sha256": "838119d1d66e2ca7fbe242fc3c2d80b1b1b7b7ca26099500dc8aad00225945dd",
+      "size": 2033
+    },
+    {
+      "path": "tests/test_check_architecture.py",
+      "sha256": "4a2d0d1a1fe4a76621b9078f78a11d32e2d4e5360a444b0b5d3191e343fcb977",
+      "size": 1698
+    },
+    {
+      "path": "tests/test_validate_package.py",
+      "sha256": "66a4fb4f14197a57e804b08db593f9a4c5910cb8b5999e7944c98871124e2420",
+      "size": 1193
+    }
+  ]
+}

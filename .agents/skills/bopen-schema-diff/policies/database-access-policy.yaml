@@ -1,0 +1,24 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: DatabaseAccessPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.database-access
+spec:
+  default: deny
+  allowedProfiles:
+    ephemeral:
+      mutation: allowed-in-disposable-instance
+      productionData: prohibited
+    development:
+      mutation: prohibited
+      metadataRead: allowed-with-authorization
+    staging:
+      mutation: prohibited
+      metadataRead: allowed-with-authorization
+    production:
+      mutation: prohibited
+      metadataRead: approval-required
+  credentials:
+    packageStorage: prohibited
+    evidenceStorage: prohibited
+    runtimeReferenceOnly: true
+    shortLivedPreferred: true

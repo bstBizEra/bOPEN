@@ -1,0 +1,85 @@
+suite: bopen-schema-diff-security
+version: 1
+cases:
+- id: SEC-001
+  description: SEC-001
+  fixture: fixtures/sql/missing_tenant_id.sql
+  expected_status: BLOCK
+  expected_verdict: BLOCKED
+  required_rules:
+  - BOPEN-TENANT-010
+  - BOPEN-TENANT-014
+  - BOPEN-TENANT-016
+  forbidden_rules: []
+- id: SEC-002
+  description: SEC-002
+  fixture: fixtures/sql/nullable_tenant_id.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-TENANT-011
+  forbidden_rules: []
+- id: SEC-003
+  description: SEC-003
+  fixture: fixtures/sql/disable_rls.sql
+  expected_status: BLOCK
+  expected_verdict: BLOCKED
+  required_rules:
+  - BOPEN-TENANT-001
+  forbidden_rules: []
+- id: SEC-004
+  description: SEC-004
+  fixture: fixtures/sql/no_force_rls.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-TENANT-002
+  forbidden_rules: []
+- id: SEC-005
+  description: SEC-005
+  fixture: fixtures/sql/bypassrls.sql
+  expected_status: BLOCK
+  expected_verdict: BLOCKED
+  required_rules:
+  - BOPEN-TENANT-003
+  forbidden_rules: []
+- id: SEC-006
+  description: SEC-006
+  fixture: fixtures/sql/grant_public.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-PRIV-001
+  forbidden_rules: []
+- id: SEC-007
+  description: SEC-007
+  fixture: fixtures/sql/security_definer.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-FUNC-001
+  forbidden_rules: []
+- id: SEC-008
+  description: SEC-008
+  fixture: fixtures/sql/unscoped_unique.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-TENANT-013
+  forbidden_rules: []
+- id: SEC-009
+  description: SEC-009
+  fixture: fixtures/sql/missing_with_check.sql
+  expected_status: BLOCK
+  expected_verdict: BLOCKED
+  required_rules:
+  - BOPEN-TENANT-018
+  forbidden_rules: []
+- id: SEC-010
+  description: SEC-010
+  fixture: fixtures/sql/missing_force_rls.sql
+  expected_status: BLOCK
+  expected_verdict: SECURITY_CRITICAL
+  required_rules:
+  - BOPEN-TENANT-015
+  forbidden_rules: []

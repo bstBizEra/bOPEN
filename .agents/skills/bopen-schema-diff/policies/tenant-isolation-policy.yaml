@@ -1,0 +1,21 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: TenantIsolationPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.tenant-isolation
+spec:
+  defaultVerdictOnViolation: BLOCKED
+  tenantOwnedTable:
+    requireTenantId: true
+    tenantIdNotNull: true
+    requireTenantForeignKey: true
+    requireRowLevelSecurity: true
+    requireForceRowLevelSecurity: conditional
+    requireReadPredicate: true
+    requireWriteCheck: true
+    tenantScopedUniqueness: true
+  prohibit:
+    - disable-row-level-security
+    - bypassrls-role
+    - unrestricted-public-grant
+    - implicit-cross-tenant-foreign-key
+    - client-selected-unvalidated-tenant

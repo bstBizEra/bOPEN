@@ -1,0 +1,13 @@
+[project]
+name = "bopen-architecture-skill"
+version = "0.1.0"
+description = "Validation and packaging utilities for the bOPEN Architecture Agent Skill"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML==6.0.3",
+  "jsonschema==4.26.0",
+]
+
+[tool.bopen-skill]
+canonical-id = "io.bizera.bopen.architecture"
+skill-directory = "bopen-architecture"

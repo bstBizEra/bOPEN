@@ -1,0 +1,21 @@
+request_id: SCHEMA-REVIEW-001
+mode: migration_review
+direction: source_to_target
+postgres_version: "18"
+tenant_context: null
+source:
+  kind: sql_file
+  location: schemas/current.sql
+  sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  read_only: true
+target:
+  kind: sql_file
+  location: migrations/20260722_add_projects.sql
+  sha256: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  read_only: true
+options:
+  engines: [atlas, pg-schema-diff, static]
+  require_second_opinion: true
+  include_raw_outputs: true
+  production_metadata: false
+  approved_read_only: true

@@ -1,0 +1,1 @@
+ALTER TABLE projects ADD COLUMN created_at timestamptz DEFAULT clock_timestamp();

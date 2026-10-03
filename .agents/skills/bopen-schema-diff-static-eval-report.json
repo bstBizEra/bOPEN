@@ -1,0 +1,218 @@
+{
+  "package": "bopen-schema-diff",
+  "version": "0.1.0",
+  "total": 21,
+  "passed": 21,
+  "failed": 0,
+  "results": [
+    {
+      "id": "EVAL-001",
+      "passed": true,
+      "status": "PASS",
+      "verdict": "SAFE",
+      "rules": [],
+      "errors": []
+    },
+    {
+      "id": "EVAL-002",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "DESTRUCTIVE",
+      "rules": [
+        "BOPEN-SCHEMA-002"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-003",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "DESTRUCTIVE",
+      "rules": [
+        "BOPEN-SCHEMA-001"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-004",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "DESTRUCTIVE",
+      "rules": [
+        "BOPEN-SCHEMA-003"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-005",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "CONDITIONAL",
+      "rules": [
+        "BOPEN-SCHEMA-005"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-006",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "REVIEW_REQUIRED",
+      "rules": [
+        "BOPEN-SCHEMA-004"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-007",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "REVIEW_REQUIRED",
+      "rules": [
+        "BOPEN-SCHEMA-008"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-008",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "REVIEW_REQUIRED",
+      "rules": [
+        "BOPEN-SCHEMA-009"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-009",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "CONDITIONAL",
+      "rules": [
+        "BOPEN-SCHEMA-006"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-010",
+      "passed": true,
+      "status": "REVIEW",
+      "verdict": "CONDITIONAL",
+      "rules": [
+        "BOPEN-SCHEMA-007"
+      ],
+      "errors": []
+    },
+    {
+      "id": "EVAL-011",
+      "passed": true,
+      "status": "PASS",
+      "verdict": "SAFE",
+      "rules": [],
+      "errors": []
+    },
+    {
+      "id": "SEC-001",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "BLOCKED",
+      "rules": [
+        "BOPEN-TENANT-010",
+        "BOPEN-TENANT-014",
+        "BOPEN-TENANT-015",
+        "BOPEN-TENANT-016"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-002",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-TENANT-011"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-003",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "BLOCKED",
+      "rules": [
+        "BOPEN-TENANT-001"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-004",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-TENANT-002"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-005",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "BLOCKED",
+      "rules": [
+        "BOPEN-TENANT-003"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-006",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-PRIV-001"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-007",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-FUNC-001"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-008",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-TENANT-013"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-009",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "BLOCKED",
+      "rules": [
+        "BOPEN-TENANT-018"
+      ],
+      "errors": []
+    },
+    {
+      "id": "SEC-010",
+      "passed": true,
+      "status": "BLOCK",
+      "verdict": "SECURITY_CRITICAL",
+      "rules": [
+        "BOPEN-TENANT-015"
+      ],
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE projects ALTER COLUMN external_ref SET NOT NULL;

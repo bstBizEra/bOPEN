@@ -1,0 +1,5 @@
+Copyright (c) 2026 BizEra Sole Co., Ltd.
+
+All rights reserved.
+
+This internal package may be used, reviewed, and modified within authorized BizEra and bOPEN environments. External distribution, sublicensing, or publication requires explicit written authorization. Third-party tools referenced by this package retain their respective licenses and are not redistributed in this release.

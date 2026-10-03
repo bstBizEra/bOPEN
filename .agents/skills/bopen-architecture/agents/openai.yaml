@@ -1,0 +1,7 @@
+interface:
+  display_name: "bOPEN Architecture"
+  short_description: "Design and review governed bOPEN platform architecture"
+  brand_color: "#0B6E69"
+  default_prompt: "Use $bopen-architecture to analyze this bOPEN architecture request and produce a governed, evidence-backed artifact."
+policy:
+  allow_implicit_invocation: true

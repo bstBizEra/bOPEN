@@ -1,0 +1,93 @@
+suite: bopen-schema-diff-core
+version: 1
+cases:
+- id: EVAL-001
+  description: Complete tenant table with RLS passes static controls
+  fixture: fixtures/sql/safe_tenant_table.sql
+  expected_status: PASS
+  expected_verdict: SAFE
+  required_rules: []
+  forbidden_rules:
+  - BOPEN-TENANT-010
+  - BOPEN-TENANT-014
+  - BOPEN-TENANT-016
+- id: EVAL-002
+  description: EVAL-002
+  fixture: fixtures/sql/drop_column.sql
+  expected_status: BLOCK
+  expected_verdict: DESTRUCTIVE
+  required_rules:
+  - BOPEN-SCHEMA-002
+  forbidden_rules: []
+- id: EVAL-003
+  description: EVAL-003
+  fixture: fixtures/sql/drop_table.sql
+  expected_status: BLOCK
+  expected_verdict: DESTRUCTIVE
+  required_rules:
+  - BOPEN-SCHEMA-001
+  forbidden_rules: []
+- id: EVAL-004
+  description: EVAL-004
+  fixture: fixtures/sql/truncate.sql
+  expected_status: BLOCK
+  expected_verdict: DESTRUCTIVE
+  required_rules:
+  - BOPEN-SCHEMA-003
+  forbidden_rules: []
+- id: EVAL-005
+  description: EVAL-005
+  fixture: fixtures/sql/set_not_null.sql
+  expected_status: REVIEW
+  expected_verdict: CONDITIONAL
+  required_rules:
+  - BOPEN-SCHEMA-005
+  forbidden_rules: []
+- id: EVAL-006
+  description: EVAL-006
+  fixture: fixtures/sql/alter_type.sql
+  expected_status: REVIEW
+  expected_verdict: REVIEW_REQUIRED
+  required_rules:
+  - BOPEN-SCHEMA-004
+  forbidden_rules: []
+- id: EVAL-007
+  description: EVAL-007
+  fixture: fixtures/sql/rename_column.sql
+  expected_status: REVIEW
+  expected_verdict: REVIEW_REQUIRED
+  required_rules:
+  - BOPEN-SCHEMA-008
+  forbidden_rules: []
+- id: EVAL-008
+  description: EVAL-008
+  fixture: fixtures/sql/volatile_default.sql
+  expected_status: REVIEW
+  expected_verdict: REVIEW_REQUIRED
+  required_rules:
+  - BOPEN-SCHEMA-009
+  forbidden_rules: []
+- id: EVAL-009
+  description: EVAL-009
+  fixture: fixtures/sql/add_fk.sql
+  expected_status: REVIEW
+  expected_verdict: CONDITIONAL
+  required_rules:
+  - BOPEN-SCHEMA-006
+  forbidden_rules: []
+- id: EVAL-010
+  description: EVAL-010
+  fixture: fixtures/sql/create_index.sql
+  expected_status: REVIEW
+  expected_verdict: CONDITIONAL
+  required_rules:
+  - BOPEN-SCHEMA-007
+  forbidden_rules: []
+- id: EVAL-011
+  description: EVAL-011
+  fixture: fixtures/sql/global_table.sql
+  expected_status: PASS
+  expected_verdict: SAFE
+  required_rules: []
+  forbidden_rules:
+  - BOPEN-TENANT-010

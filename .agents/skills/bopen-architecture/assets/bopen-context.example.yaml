@@ -1,0 +1,39 @@
+requestId: ARCH-EXAMPLE-001
+task: design
+objective: Define the bOPEN Skills Registry and tenant activation architecture.
+scope:
+  platformAreas:
+    - agent-governance
+    - skill-registry
+    - authorization
+    - tenancy
+  products: []
+  modules: []
+  tenantContext: synthetic
+  environments:
+    - development
+    - test
+constraints:
+  p0Topology: modular-monolith
+  crossTenantFailuresAllowed: 0
+assumptions:
+  - Production agent execution remains outside P0.
+sources:
+  - type: approved-artifact
+    location: BOPEN-SYS-001
+    authority: controlling
+    required: true
+  - type: approved-artifact
+    location: BOPEN-P0-001
+    authority: controlling
+    required: true
+deliverables:
+  - architecture-design
+  - adr
+  - verification-matrix
+research:
+  webAllowed: true
+  primarySourcesOnly: true
+  freshnessRequired: true
+  asOfDate: 2026-07-22
+outputDirectory: ./artifacts

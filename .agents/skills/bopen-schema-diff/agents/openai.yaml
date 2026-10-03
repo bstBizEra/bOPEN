@@ -1,0 +1,4 @@
+display_name: bOPEN Schema Diff
+description: Review PostgreSQL schema differences, migration safety, drift, RLS, tenant isolation, and evidence without applying production changes.
+default_prompt: Use $bopen-schema-diff to compare the supplied schema states, classify migration and tenancy risks, and produce a governed evidence-backed verdict.
+allow_implicit_invocation: true

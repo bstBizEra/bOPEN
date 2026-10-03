@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/schema-diff/input.schema.json",
+  "title": "bOPEN Schema Diff Input",
+  "type": "object",
+  "required": [
+    "request_id",
+    "mode",
+    "direction",
+    "source",
+    "target"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "branch_diff",
+        "desired_vs_history",
+        "repository_vs_environment",
+        "environment_drift",
+        "migration_review",
+        "tenant_isolation_review"
+      ]
+    },
+    "direction": {
+      "enum": [
+        "source_to_target"
+      ]
+    },
+    "postgres_version": {
+      "type": "string"
+    },
+    "tenant_context": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/schemaSource"
+    },
+    "target": {
+      "$ref": "#/$defs/schemaSource"
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "engines": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "atlas",
+              "pg-schema-diff",
+              "prisma",
+              "static"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "require_second_opinion": {
+          "type": "boolean"
+        },
+        "include_raw_outputs": {
+          "type": "boolean"
+        },
+        "production_metadata": {
+          "type": "boolean"
+        },
+        "approved_read_only": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "schemaSource": {
+      "type": "object",
+      "required": [
+        "kind",
+        "location",
+        "sha256"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "sql_file",
+            "migration_directory",
+            "database_snapshot",
+            "database_url_reference",
+            "atlas_hcl",
+            "prisma_schema",
+            "git_revision"
+          ]
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "read_only": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/schema-diff/risk-finding.schema.json",
+  "title": "Schema Risk Finding",
+  "type": "object",
+  "required": [
+    "id",
+    "rule_id",
+    "severity",
+    "verdict",
+    "message",
+    "evidence"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "rule_id": {
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "SAFE",
+        "CONDITIONAL",
+        "REVIEW_REQUIRED",
+        "BREAKING",
+        "DESTRUCTIVE",
+        "SECURITY_CRITICAL",
+        "BLOCKED",
+        "UNKNOWN"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "object": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "line": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "evidence": {
+      "type": "string"
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

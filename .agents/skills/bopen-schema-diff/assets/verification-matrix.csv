@@ -1,0 +1,13 @@
+ID,Domain,Control,Method,Gate
+VER-001,Package,SKILL.md frontmatter and name,Automated,Required
+VER-002,Package,Manifest JSON Schema validation,Automated,Required
+VER-003,Security,No embedded credentials,Automated,Required
+VER-004,Analysis,Destructive DDL detection,Static eval,Required
+VER-005,Tenancy,RLS disable detection,Static eval,Required
+VER-006,Tenancy,Missing tenant_id detection,Static eval,Required
+VER-007,Tenancy,Unscoped unique constraint detection,Static eval,Required
+VER-008,Security,BYPASSRLS and PUBLIC grant detection,Static eval,Required
+VER-009,Evidence,Output JSON Schema conformance,Automated,Required
+VER-010,Supply chain,Checksums and ZIP integrity,Automated,Required
+VER-011,Adapter,Atlas wrapper cannot apply,Unit test,Required
+VER-012,Adapter,pg-schema-diff wrapper captures version and digest,Unit test,Required

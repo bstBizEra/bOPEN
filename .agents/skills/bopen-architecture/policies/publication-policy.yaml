@@ -1,0 +1,29 @@
+apiVersion: policy.bopen.io/v1alpha1
+kind: SkillPublicationPolicy
+metadata:
+  id: io.bizera.bopen.architecture.publication
+  version: 0.1.0
+spec:
+  internalDraft:
+    signatureRequired: false
+    independentReviewRequired: false
+  approvedInternalRelease:
+    immutableVersion: true
+    staticValidation: required
+    modelEvaluation: required
+    architectureReview: required
+    securityReview: required
+    sbom: required
+    provenance: required
+    signature: required
+  externalRelease:
+    legalReview: required
+    licenseFinalized: required
+    sourceAndPrivacyReview: required
+    signedArtifact: required
+    revocationChannel: required
+  prohibitedClaims:
+    - approved without approval record
+    - signed without verifiable signature
+    - independently tested without independent evidence
+    - production ready without exit-gate evidence

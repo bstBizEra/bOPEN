@@ -1,0 +1,8 @@
+control_id,area,requirement,test_type,test_case,environment,expected_result,evidence,owner,status
+TEN-001,tenancy,Missing tenant context fails closed,integration,request_without_context,test,DENY,,,
+TEN-002,tenancy,Wrong-tenant resource access fails,integration,cross_tenant_resource_id,test,DENY,,,
+AUTH-001,authorization,Entitlement does not replace permission,integration,entitled_but_unauthorized,test,DENY,,,
+RLS-001,database,RLS is default deny,database,no_applicable_policy,test,DENY,,,
+EVT-001,events,Outbox publication is idempotent,integration,replay_same_outbox_message,test,ONE_EFFECT,,,
+AUD-001,audit,Privileged action has correlated audit record,integration,privileged_action,test,AUDIT_PRESENT,,,
+REC-001,recovery,Backup restore preserves tenant isolation,operational,restore_and_cross_tenant_tests,staging,PASS,,,

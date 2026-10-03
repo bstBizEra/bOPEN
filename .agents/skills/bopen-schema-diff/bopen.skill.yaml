@@ -1,0 +1,103 @@
+apiVersion: skills.bopen.io/v1alpha1
+kind: Skill
+metadata:
+  id: io.bizera.bopen.database.schema-diff
+  name: bopen-schema-diff
+  version: 0.1.0
+  owner: bopen-platform-architecture-authority
+  classification: internal
+  lifecycleStage: VALIDATED
+  license: Proprietary-Internal
+  sourceRepository: bstBizEra/bOPEN
+  sourceRevision: UNBOUND-SOURCE-REVISION
+spec:
+  type: analytical
+  riskClass: SKR2
+  purpose: >-
+    Compare PostgreSQL schema states, analyze migrations and drift, enforce bOPEN
+    tenant-isolation invariants, classify migration risk, and produce evidence.
+  scope:
+    allowed:
+      - repository
+      - worktree
+      - product
+      - module
+      - tenant-metadata
+      - environment-metadata
+    tenantContext: required-for-tenant-owned-data
+    productionMutation: prohibited
+  contracts:
+    inputSchema: schemas/input.schema.json
+    outputSchema: schemas/output.schema.json
+    canonicalChangeSchema: schemas/canonical-change.schema.json
+    evidenceSchema: schemas/evidence-envelope.schema.json
+  requires:
+    products:
+      - bopen
+    modules:
+      - bopen.database-governance
+    entitlements: []
+    capabilities:
+      - bopen.schema.inspect
+      - bopen.schema.compare
+      - bopen.schema.review
+      - bopen.schema.evidence.generate
+    tools:
+      - id: local.python
+        operations: [execute-approved-package-scripts]
+      - id: atlas.cli
+        optional: true
+        operations: [schema-diff, schema-inspect, migrate-lint]
+      - id: pg-schema-diff.cli
+        optional: true
+        operations: [plan]
+      - id: prisma.cli
+        optional: true
+        operations: [migrate-diff, migrate-status]
+  runtime:
+    sandboxProfile: bopen-database-analysis
+    networkPolicy: deny-by-default
+    filesystemPolicy: workspace-and-temp-only
+    databasePolicy: read-only-metadata-or-ephemeral
+    maxDuration: PT15M
+    maxSteps: 50
+    maxToolCalls: 30
+    outputSizeLimitBytes: 10485760
+  approval:
+    mode: conditional
+    requiredFor:
+      - live-production-metadata-inspection
+      - security-critical-verdict-acceptance
+      - destructive-change-exception
+      - engine-disagreement-resolution
+    prohibited:
+      - self-approval
+      - production-migration-application
+  data:
+    maximumClassification: confidential
+    crossTenantAccess: prohibited
+    secretsInPackage: prohibited
+    credentialsInEvidence: prohibited
+    redactionRequired: true
+  failure:
+    defaultDisposition: REVIEW_REQUIRED
+    retryPolicy: bounded
+    failClosedOn:
+      - unknown-comparison-direction
+      - missing-source-hash
+      - credential-exposure
+      - tenant-isolation-violation
+      - evidence-validation-failure
+  evaluation:
+    suite: evals/cases.yaml
+    securitySuite: evals/security-cases.yaml
+    minimumSuccessRate: 1.0
+    destructiveDetectionRecall: 1.0
+    tenantIsolationDetectionRecall: 1.0
+    crossTenantFailuresAllowed: 0
+    unauthorizedMutationsAllowed: 0
+  publication:
+    immutableVersions: true
+    digestBinding: required
+    signature: required-before-publication
+    provenance: required-before-publication

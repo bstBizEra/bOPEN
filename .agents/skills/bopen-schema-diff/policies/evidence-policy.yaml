@@ -1,0 +1,23 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: EvidencePolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.evidence
+spec:
+  required:
+    - source-hash
+    - target-hash
+    - comparison-direction
+    - package-version
+    - package-digest
+    - tool-version
+    - command-redacted
+    - raw-output-digest
+    - normalized-change-set
+    - findings
+    - verdict
+    - required-actions
+    - limitations
+  appendOnlyAfterClosure: true
+  credentialsProhibited: true
+  personalDataMinimization: true
+  correctionMethod: superseding-envelope

@@ -1,0 +1,1 @@
+CREATE TABLE currencies (code text PRIMARY KEY, name text NOT NULL);

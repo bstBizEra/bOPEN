@@ -72,6 +72,15 @@ Never use an upstream project, UI mockup, comment or prompt as a substitute for 
 
 A change without traceability is incomplete.
 
+### Skill registry
+
+The repository skill registry is `docs/registers/skill-registry.json`. Agents must
+consult it before invoking a bOPEN skill and must preserve each skill's declared
+candidate/inactive lifecycle, digest/source binding, owner, risk, and production
+mutation boundary. The `bopen-schema-diff` entry is a candidate only; it may
+inspect and assess schemas but must not apply production migrations or grant
+database authority.
+
 ## 6. Clean-room controls
 
 Repository zones:

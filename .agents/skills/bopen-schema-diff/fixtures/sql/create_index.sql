@@ -1,0 +1,1 @@
+CREATE INDEX idx_projects_status ON projects(status);

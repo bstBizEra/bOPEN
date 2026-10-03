@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.bopen.io/schema-diff/output.schema.json",
+  "title": "bOPEN Schema Diff Output",
+  "type": "object",
+  "required": [
+    "request_id",
+    "generated_at",
+    "status",
+    "verdict",
+    "summary",
+    "changes",
+    "findings",
+    "required_actions",
+    "limitations"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "REVIEW",
+        "BLOCK",
+        "ERROR"
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "SAFE",
+        "CONDITIONAL",
+        "REVIEW_REQUIRED",
+        "BREAKING",
+        "DESTRUCTIVE",
+        "SECURITY_CRITICAL",
+        "BLOCKED",
+        "UNKNOWN"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "comparison": {
+      "type": "object"
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "required_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tool_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

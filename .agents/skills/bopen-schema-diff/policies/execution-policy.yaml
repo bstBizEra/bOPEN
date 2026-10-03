@@ -1,0 +1,22 @@
+apiVersion: policies.bopen.io/v1alpha1
+kind: SkillExecutionPolicy
+metadata:
+  id: io.bizera.bopen.database.schema-diff.execution
+spec:
+  defaultAction: deny
+  allowedActions:
+    - read-workspace-files
+    - create-temp-files
+    - execute-approved-local-analyzers
+    - execute-approved-diff-cli-in-plan-mode
+    - inspect-read-only-database-metadata
+    - create-json-and-markdown-evidence
+  prohibitedActions:
+    - apply-production-migration
+    - modify-live-database
+    - obtain-or-store-database-password
+    - alter-migration-history
+    - self-approve
+    - disable-policy-checks
+  requireExplicitDirection: true
+  requireEvidence: true
