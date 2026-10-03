@@ -1,0 +1,2 @@
+# Store these byte-for-byte: SHA256SUMS lists their CRLF bytes.
+*.csv -text
